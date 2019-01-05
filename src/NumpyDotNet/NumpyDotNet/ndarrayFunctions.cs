@@ -93,6 +93,11 @@ namespace NumpyDotNet
         {
             NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
 
+            if (Get_NPYType(arr) != arrayType)
+            {
+                throw new Exception("Mismatch data types between input array and dtype");
+            }
+
             var arrayDescr = numpyAPI.NpyArray_DescrFromType(arrayType);
             if (arrayDescr == null)
             {
