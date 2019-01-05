@@ -493,58 +493,69 @@ namespace NumpyLib
 
             var value = invalue; // CoerceValue(invalue, obj.type_num);
 
-            switch (obj.type_num)
+            try
             {
-                case NPY_TYPES.NPY_BOOL:
-                    var dbool = obj.datap as bool[];
-                    dbool[index] = Convert.ToBoolean(value);
-                    break;
-                case NPY_TYPES.NPY_BYTE:
-                    var dsbyte = obj.datap as sbyte[];
-                    dsbyte[index] = Convert.ToSByte(value);
-                    break;
-                case NPY_TYPES.NPY_UBYTE:
-                    var dbyte = obj.datap as byte[];
-                    dbyte[index] = Convert.ToByte(value);
-                    break;
-                case NPY_TYPES.NPY_UINT16:
-                    var duint16 = obj.datap as UInt16[];
-                    duint16[index] = Convert.ToUInt16(value);
-                    break;
-                case NPY_TYPES.NPY_INT16:
-                    var dint16 = obj.datap as Int16[];
-                    dint16[index] = Convert.ToInt16(value);
-                    break;
-                case NPY_TYPES.NPY_UINT32:
-                    var duint32 = obj.datap as UInt32[];
-                    duint32[index] = Convert.ToUInt32(value);
-                    break;
-                case NPY_TYPES.NPY_INT32:
-                    var dint32 = obj.datap as Int32[];
-                    dint32[index] = Convert.ToInt32(value);
-                    break;
-                case NPY_TYPES.NPY_INT64:
-                    var dint64 = obj.datap as Int64[];
-                    dint64[index] = Convert.ToInt64(value);
-                    break;
-                case NPY_TYPES.NPY_UINT64:
-                    var duint64 = obj.datap as UInt64[];
-                    duint64[index] = Convert.ToUInt64(value);
-                    break;
-                case NPY_TYPES.NPY_FLOAT:
-                    var float1 = obj.datap as float[];
-                    float1[index] = Convert.ToSingle(value);
-                    break;
-                case NPY_TYPES.NPY_DOUBLE:
-                    var double1 = obj.datap as double[];
-                    double1[index] = Convert.ToDouble(value);
-                    break;
-                case NPY_TYPES.NPY_DECIMAL:
-                    var decimal1 = obj.datap as decimal[];
-                    decimal1[index] = Convert.ToDecimal(value);
-                    break;
-                default:
-                    throw new Exception("Unsupported data type");
+                switch (obj.type_num)
+                {
+                    case NPY_TYPES.NPY_BOOL:
+                        var dbool = obj.datap as bool[];
+                        dbool[index] = Convert.ToBoolean(value);
+                        break;
+                    case NPY_TYPES.NPY_BYTE:
+                        var dsbyte = obj.datap as sbyte[];
+                        dsbyte[index] = Convert.ToSByte(value);
+                        break;
+                    case NPY_TYPES.NPY_UBYTE:
+                        var dbyte = obj.datap as byte[];
+                        dbyte[index] = Convert.ToByte(value);
+                        break;
+                    case NPY_TYPES.NPY_UINT16:
+                        var duint16 = obj.datap as UInt16[];
+                        duint16[index] = Convert.ToUInt16(value);
+                        break;
+                    case NPY_TYPES.NPY_INT16:
+                        var dint16 = obj.datap as Int16[];
+                        dint16[index] = Convert.ToInt16(value);
+                        break;
+                    case NPY_TYPES.NPY_UINT32:
+                        var duint32 = obj.datap as UInt32[];
+                        duint32[index] = Convert.ToUInt32(value);
+                        break;
+                    case NPY_TYPES.NPY_INT32:
+                        var dint32 = obj.datap as Int32[];
+                        dint32[index] = Convert.ToInt32(value);
+                        break;
+                    case NPY_TYPES.NPY_INT64:
+                        var dint64 = obj.datap as Int64[];
+                        dint64[index] = Convert.ToInt64(value);
+                        break;
+                    case NPY_TYPES.NPY_UINT64:
+                        var duint64 = obj.datap as UInt64[];
+                        duint64[index] = Convert.ToUInt64(value);
+                        break;
+                    case NPY_TYPES.NPY_FLOAT:
+                        var float1 = obj.datap as float[];
+                        float1[index] = Convert.ToSingle(value);
+                        break;
+                    case NPY_TYPES.NPY_DOUBLE:
+                        var double1 = obj.datap as double[];
+                        double1[index] = Convert.ToDouble(value);
+                        break;
+                    case NPY_TYPES.NPY_DECIMAL:
+                        var decimal1 = obj.datap as decimal[];
+                        decimal1[index] = Convert.ToDecimal(value);
+                        break;
+                    default:
+                        throw new Exception("Unsupported data type");
+                }
+            }
+            catch (System.OverflowException oe)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
+            }
+            catch (Exception ex)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
             }
 
             return 1;
