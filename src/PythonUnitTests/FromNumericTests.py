@@ -921,6 +921,20 @@ class FromNumericTests(unittest.TestCase):
 
         return
 
+    def test_cumprod_1a(self):
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint64).reshape(3, 2, -1)
+        x = x * 1
+        y = np.cumprod(x);
+        print(y)
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.int64).reshape(3, 2, -1)
+        x = x * 1
+        y = np.cumprod(x);
+        print(y)
+
+        return
+
     def test_cumprod_2(self):
 
         a = np.array([1,2,3])
