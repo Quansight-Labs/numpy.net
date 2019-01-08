@@ -270,12 +270,12 @@ namespace NumpyDotNet
         }
     
 
-        private static uniqueData _unique1d(ndarray ar, bool return_index= false, 
+        private static uniqueData _unique1d(ndarray ar1, bool return_index= false, 
             bool return_inverse= false, bool return_counts= false)
         {
             //Find the unique elements of an array, ignoring shape.
 
-            ar = np.asanyarray(ar).flatten();
+            var ar = np.asanyarray(ar1).flatten();
 
             bool optional_indices = return_index || return_inverse;
 
@@ -287,7 +287,7 @@ namespace NumpyDotNet
             {
                 if (return_index)
                 {
-                    perm = ar.ArgSort(kind: NPY_SORTKIND.NPY_MERGESORT);
+                    perm = ar.ArgSort(kind: NPY_SORTKIND.NPY_QUICKSORT);
                 }
                 else
                 {
