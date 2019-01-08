@@ -541,7 +541,14 @@ namespace NumpyDotNet {
                 if (arg.GetType().IsArray)
                 {
                     dynamic arr1 = arg;
-                    array_arg = np.array(new VoidPtr(arr1), null);
+                    if (arr1[0] is ndarray)
+                    {
+
+                    }
+                    else
+                    {
+                        array_arg = np.array(new VoidPtr(arr1), null);
+                    }
                 }
                 else
                 {

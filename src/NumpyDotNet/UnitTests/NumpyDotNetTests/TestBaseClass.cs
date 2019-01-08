@@ -121,6 +121,14 @@ namespace NumpyDotNetTests
             Assert.AreEqual(a.Strides[1], s1);
             Assert.AreEqual(a.Strides[2], s2);
         }
+        internal void AssertStrides(ndarray a, int s0, int s1, int s2, int s3)
+        {
+            Assert.AreEqual(a.Strides.Length, 4);
+            Assert.AreEqual(a.Strides[0], s0);
+            Assert.AreEqual(a.Strides[1], s1);
+            Assert.AreEqual(a.Strides[2], s2);
+            Assert.AreEqual(a.Strides[3], s3);
+        }
 
         internal void AssertShape(ndarray a, int s0)
         {

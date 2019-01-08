@@ -611,6 +611,15 @@ namespace NumpyDotNet {
         {
             dtype chktype = null;
 
+            if (src.GetType().IsArray)
+            {
+                dynamic arr1 = src;
+                if (arr1[0] is ndarray)
+                {
+                    src = arr1[0];
+                }
+            }
+
             if (src is ndarray)
             {
                 chktype = ((ndarray)src).Dtype;
