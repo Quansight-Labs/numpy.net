@@ -861,15 +861,56 @@ namespace NumpyDotNet
       
         #region where
 
-        public static object where(object condition,  object x = null, object y = null)
+        public static object where(object condition,  ndarray x = null, ndarray y = null)
         {
-            if (x != null || y != null)
+            int missing = 0;
+            missing += x != null ? 0 : 1;
+            missing += y != null ? 0 : 1;
+
+            if (missing == 1)
             {
-                throw new NotImplementedException("not currently supporting x and y");
+                throw new Exception("Must provide both 'x' and 'y' or neither.");
+            }
+            if (missing == 2)
+            {
+                ndarray aCondition = np.FromAny(condition, null, 0, 0, 0, null);
+                return aCondition.NonZero();
             }
 
-            ndarray aCondition = np.FromAny(condition, null, 0, 0, 0, null);
-            return aCondition.NonZero();
+            ndarray aCondition1 = np.FromAny(condition, null, 0, 0, 0, null);
+            ndarray ret = np.ndarray(aCondition1.shape, x.Dtype);
+
+            for (int i = 0; i < aCondition1.Size; i++)
+            {
+                bool c = (bool)_GetWhereItem(aCondition1, i);
+                if (c)
+                {
+                    _SetWhereItem(ret, i, _GetWhereItem(x, i));
+                }
+                else
+                {
+                    _SetWhereItem(ret, i, _GetWhereItem(y, i));
+                }
+            }
+      
+            return ret;
+        }
+
+        private static void _SetWhereItem(ndarray a, int index, object v)
+        {
+            a.SetItem(v, _SanitizeIndex(a, index));
+        }
+
+        private static object _GetWhereItem(ndarray a, int index)
+        {
+            return a.GetItem(_SanitizeIndex(a, index));
+        }
+
+        private static long _SanitizeIndex(ndarray a, int index)
+        {
+            if (a.Size <= index)
+                return index % a.Size;
+            return index;
         }
 
         #endregion

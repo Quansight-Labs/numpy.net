@@ -1378,11 +1378,10 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_tril_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(3, 4));
+            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(4, 3));
             ndarray b = np.tril(a, -1);
             print(a);
             print("***********");
@@ -1399,11 +1398,10 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_triu_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(3, 4));
+            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(4, 3));
             ndarray b = np.triu(a, -1);
             print(a);
             print("***********");

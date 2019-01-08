@@ -509,8 +509,8 @@ namespace NumpyDotNet
             ndarray m1 = array(m.Dims).A("-2:");
             ndarray mask = tri(N: Convert.ToInt32(m1[0]), M: Convert.ToInt32(m1[1]), k: k, dtype: np.Bool);
 
-            return where(mask, m, zeros(new shape(1), dtype: m.Dtype)) as ndarray;
-
+            ndarray results = where(mask, m, zeros(new shape(1), dtype: m.Dtype)) as ndarray;
+            return results;
         }
 
         #endregion
