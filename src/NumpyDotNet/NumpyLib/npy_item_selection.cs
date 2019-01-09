@@ -795,8 +795,8 @@ namespace NumpyLib
 
             while (NpyArray_MultiIter_NOTDONE(multi))
             {
-                dynamic data = NpyArray_MultiIter_DATA(multi, n);
-                mi = data.datap[0];
+                VoidPtr data = NpyArray_MultiIter_DATA(multi, n);
+                mi = (npy_intp)GetIndex(data,data.data_offset/sizeof(npy_intp));
                 if (mi < 0 || mi >= n)
                 {
                     switch (clipmode)

@@ -648,7 +648,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    current = (NpyArray)va[i];
+                    current = (NpyArray)va[i-n];
                 }
                 multi.iters[i] = NpyArray_IterNew(current);
             }

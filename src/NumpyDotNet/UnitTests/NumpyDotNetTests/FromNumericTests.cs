@@ -181,7 +181,6 @@ namespace NumpyDotNetTests
 
         }
         
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_choose_1()
         {
@@ -195,6 +194,8 @@ namespace NumpyDotNetTests
             ndarray a = np.choose(np.array(new Int32[] { 2, 3, 1, 0 }), choices);
 
             print(a);
+
+            AssertArray(a, new Int32[] { 20, 31, 12, 3 });
         }
 
         [TestMethod]
