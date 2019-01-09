@@ -115,14 +115,23 @@ namespace NumpyDotNet
 
         internal static object BinaryOpInPlace(ndarray a, object b, ufunc f, ndarray ret)
         {
+            ndarray numericOpResult = null;
+
             if (b is ndarray)
             {
-                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, b as ndarray, true);
+                numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, b as ndarray, true);
             }
             else
             {
-                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), true);
+                numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), true);
             }
+
+            if (numericOpResult != null && ret != null)
+            {
+                NpyCoreApi.CopyAnyInto(ret, numericOpResult);
+            }
+
+            return numericOpResult;
         }
 
         internal static ndarray BinaryOp(ndarray a, object b, NpyArray_Ops op)
@@ -139,13 +148,13 @@ namespace NumpyDotNet
 
         internal static object UnaryOp(ndarray a, NpyArray_Ops op)
         {
-            throw new NotImplementedException();
+            return NpyCoreApi.PerformNumericOp(a, op, 0, false);
         }
 
 
         internal static object UnaryOpInPlace(ndarray a, NpyArray_Ops op, ndarray ret)
         {
-            throw new NotImplementedException();
+            return NpyCoreApi.PerformNumericOp(a, op, 0, true);
         }
 
 

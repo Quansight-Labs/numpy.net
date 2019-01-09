@@ -1925,24 +1925,29 @@ namespace NumpyDotNetTests
             print(np.size(a, 0));
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_around_1()
         {
             ndarray a = np.around(np.array(new double[] { 0.37, 1.64 }));
             print(a);
+            AssertArray(a, new double[] {0,2});
 
             ndarray b = np.around(np.array(new double[] { 0.37, 1.64 }), decimals: 1);
             print(b);
+            AssertArray(b, new double[] { 0.4, 1.6 });
 
             ndarray c = np.around(np.array(new double[] { .5, 1.5, 2.5, 3.5, 4.5 })); // rounds to nearest even value
             print(c);
+            AssertArray(c, new double[] { 0.0, 2.0, 2.0, 4.0, 4.0 });
 
             ndarray d = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
             print(d);
+            AssertArray(d, new double[] { 1,2,3,11 });
 
             ndarray e = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: -1);
             print(e);
+            AssertArray(e, new double[] { 0, 0, 0, 10 });
+
         }
 
         [TestMethod]

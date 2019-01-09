@@ -120,7 +120,7 @@ namespace NumpyDotNet
                 post = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_multiply);
                 decimals = -decimals;
             }
-            ndarray factor = np.FromAny(PowerOfTen(decimals));
+            var factor = PowerOfTen(decimals);
 
             // Make a temporary array, if we need it.
             NPY_TYPES tmpType = NPY_TYPES.NPY_DOUBLE;
