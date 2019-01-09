@@ -198,6 +198,41 @@ namespace NumpyDotNetTests
             AssertArray(a, new Int32[] { 20, 31, 12, 3 });
         }
 
+
+        [TestMethod]
+        public void test_choose_2()
+        {
+            ndarray choice1 = np.array(new Int32[] { 0, 1, 2, 3 });
+            ndarray choice2 = np.array(new Int32[] { 10, 11, 12, 13 });
+            ndarray choice3 = np.array(new Int32[] { 20, 21, 22, 23 });
+            ndarray choice4 = np.array(new Int32[] { 30, 31, 32, 33 });
+
+            ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
+
+            ndarray a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_CLIP);
+            print(a);
+            AssertArray(a, new Int32[] { 20, 31, 12, 3 });
+
+            a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_WRAP);
+            print(a);
+            AssertArray(a, new Int32[] { 20, 1, 12, 3 });
+
+            try
+            {
+                a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_RAISE);
+                print(a);
+                AssertArray(a, new Int32[] { 20, 1, 12, 3 });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("invalid entry in choice array"))
+                    return;
+            }
+            Assert.Fail("Should have caught exception from np.choose");
+
+
+        }
+
         [TestMethod]
         public void test_repeat_1()
         {

@@ -58,6 +58,25 @@ class FromNumericTests(unittest.TestCase):
 
         return
 
+    def test_choose_2(self):
+
+        choices = [[0, 1, 2, 3], [10, 11, 12, 13], [20, 21, 22, 23], [30, 31, 32, 33]]
+        a = np.choose([2, 4, 1, 0], choices, mode='clip')
+        print(a)
+
+        a = np.choose([2, 4, 1, 0], choices, mode='wrap')
+        print(a)
+
+        try:
+            a = np.choose([2, 4, 1, 0], choices, mode='raise')
+            print(a)
+        except:
+            assert(False)
+            return
+
+        assert(False)
+        return
+
     def test_repeat_1(self):
 
         x = np.array([1,2,3,4]).reshape(2,2)
