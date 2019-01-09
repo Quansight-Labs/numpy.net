@@ -101,23 +101,30 @@ namespace NumpyDotNet
 
         #region Operators
 
-        internal static object BinaryOp(object a, object b, ufunc f)
+        internal static ndarray BinaryOp(ndarray a, object b, ufunc f)
         {
-            throw new NotImplementedException();
+            return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), false);
         }
 
-        internal static object BinaryOpInPlace(object a, object b, ufunc f, ndarray ret)
+        internal static object BinaryOpInPlace(ndarray a, object b, ufunc f, ndarray ret)
         {
-            throw new NotImplementedException();
+            if (b is ndarray)
+            {
+                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, b as ndarray, true);
+            }
+            else
+            {
+                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), true);
+            }
         }
 
-        internal static object BinaryOp(object a, object b, NpyArray_Ops op)
+        internal static ndarray BinaryOp(ndarray a, object b, NpyArray_Ops op)
         {
             ufunc f = NpyCoreApi.GetNumericOp(op);
             return BinaryOp(a, b, f);
         }
 
-        public static object BinaryOpInPlace(object a, object b, NpyArray_Ops op, ndarray ret)
+        public static object BinaryOpInPlace(ndarray a, object b, NpyArray_Ops op, ndarray ret)
         {
             ufunc f = NpyCoreApi.GetNumericOp(op);
             return BinaryOpInPlace(a, b, f, ret);

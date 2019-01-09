@@ -1185,7 +1185,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_clip_1()
         {
@@ -1196,20 +1195,22 @@ namespace NumpyDotNetTests
             ndarray b = np.clip(a, 1, 8);
             print(b);
             print("*****");
+            AssertArray(b, new Int32[] { 1, 1, 2, 3, 4, 5, 6, 7, 8, 8 });
 
             ndarray c = np.clip(a, 3, 6, @out: a);
             print(c);
+            AssertArray(c, new Int32[] { 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, });
             print(a);
+            AssertArray(a, new Int32[] { 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, });
             print("*****");
 
 
             a = np.arange(10);
             print(a);
-            b = np.clip(a, new Int32[] { 3, 4, 1, 1, 1, 4, 4, 4, 4, 4 }, 8);
+            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1, 1, 4, 4, 4, 4, 4 }), 8);
             print(b);
+            AssertArray(a, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
             print("*****");
-
-
         }
 
         [TestMethod]

@@ -163,7 +163,7 @@ namespace NumpyDotNet
             }
             else
             {
-                object tmp = BinaryOp(this, max, NpyArray_Ops.npy_op_minimum);
+                ndarray tmp = BinaryOpInPlace(this, max, NpyArray_Ops.npy_op_minimum, ret) as ndarray;
                 return BinaryOpInPlace(tmp, min, NpyArray_Ops.npy_op_maximum, ret) as ndarray;
             }
         }
