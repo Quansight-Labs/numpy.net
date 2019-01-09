@@ -1160,7 +1160,7 @@ namespace NumpyDotNet
         #region floor
         public static ndarray floor(ndarray srcArray)
         {
-            return srcArray.Floor(null);
+            return NpyCoreApi.Floor(srcArray, null);
         }
 
         #endregion
@@ -1169,7 +1169,7 @@ namespace NumpyDotNet
         public static float NaN = float.NaN;
         public static ndarray isnan(ndarray input)
         {
-            return input.IsNan();
+            return NpyCoreApi.IsNaN(input);
         }
 
         #endregion

@@ -154,7 +154,14 @@ namespace NumpyDotNet
 
         internal static object UnaryOpInPlace(ndarray a, NpyArray_Ops op, ndarray ret)
         {
-            return NpyCoreApi.PerformNumericOp(a, op, 0, true);
+            ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, op, 0, true);
+
+            if (numericOpResult != null && ret != null)
+            {
+                NpyCoreApi.CopyAnyInto(ret, numericOpResult);
+            }
+
+            return numericOpResult;
         }
 
 

@@ -47,20 +47,12 @@ namespace NumpyDotNet
     public partial class ndarray
     {
 
-        internal ndarray Floor(ndarray ret = null)
+        internal object Mean(int axis, dtype rtype, ndarray ret = null)
         {
-            return NpyCoreApi.Floor(this, ret);
-        }
-
-        internal ndarray IsNan()
-        {
-            return NpyCoreApi.IsNaN(this);
-        }
-
-        internal object Mean(int axis, dtype rtype, ndarray ret = null) {
             ndarray newArray = NpyCoreApi.CheckAxis(this, ref axis, 0);
             ndarray sum = newArray.Sum(axis, rtype, ret);
-            ndarray denom = np.FromAny(newArray.Dims[axis], NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE),
+            ndarray denom = np.FromAny(newArray.Dims[axis], 
+                NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE),
                 0, 0, 0, null);
 
             return NpyCoreApi.PerformNumericOp(sum, NpyArray_Ops.npy_op_divide, denom);
@@ -68,24 +60,32 @@ namespace NumpyDotNet
 
         private static readonly double[] p10 = new double[] { 1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 };
 
-        private static double PowerOfTen(int n) {
+        private static double PowerOfTen(int n)
+        {
             double ret;
-            if (n < p10.Length) {
+            if (n < p10.Length)
+            {
                 ret = p10[n];
-            } else {
+            }
+            else
+            {
                 int start = p10.Length - 1;
                 ret = p10[start];
-                while (n-- > start) {
+                while (n-- > start)
+                {
                     ret *= 10;
                 }
             }
             return ret;
         }
 
-        internal object Round(int decimals, ndarray ret = null) {
+        internal object Round(int decimals, ndarray ret = null)
+        {
             // For complex just round both parts.
-            if (IsComplex) {
-                if (ret == null) {
+            if (IsComplex)
+            {
+                if (ret == null)
+                {
                     ret = Copy();
                 }
                 Real.Round(decimals, ret.Real);
@@ -93,18 +93,23 @@ namespace NumpyDotNet
                 return ret;
             }
 
-            if (decimals >= 0 && IsInteger) {
+            if (decimals >= 0 && IsInteger)
+            {
                 // There is nothing to do for integers.
-                if (ret != null) {
+                if (ret != null)
+                {
                     NpyCoreApi.CopyAnyInto(ret, this);
                     return ret;
-                } else {
+                }
+                else
+                {
                     return this;
                 }
             }
 
 
-            if (decimals == 0) {
+            if (decimals == 0)
+            {
                 // This is just a ufunc
                 return UnaryOpInPlace(this, NpyArray_Ops.npy_op_rint, ret);
             }
@@ -112,10 +117,13 @@ namespace NumpyDotNet
             // Set up to do a multiply, round, divide, or the other way around.
             ufunc pre;
             ufunc post;
-            if (decimals >= 0) {
+            if (decimals >= 0)
+            {
                 pre = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_multiply);
                 post = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_divide);
-            } else {
+            }
+            else
+            {
                 pre = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_divide);
                 post = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_multiply);
                 decimals = -decimals;
@@ -124,13 +132,17 @@ namespace NumpyDotNet
 
             // Make a temporary array, if we need it.
             NPY_TYPES tmpType = NPY_TYPES.NPY_DOUBLE;
-            if (!IsInteger) {
+            if (!IsInteger)
+            {
                 tmpType = Dtype.TypeNum;
             }
             ndarray tmp;
-            if (ret != null && ret.Dtype.TypeNum == tmpType) {
+            if (ret != null && ret.Dtype.TypeNum == tmpType)
+            {
                 tmp = ret;
-            } else {
+            }
+            else
+            {
                 tmp = NpyCoreApi.NewFromDescr(NpyCoreApi.DescrFromType(tmpType), Dims, null, 0, null);
             }
 
@@ -139,7 +151,8 @@ namespace NumpyDotNet
             UnaryOpInPlace(tmp, NpyArray_Ops.npy_op_rint, tmp);
             BinaryOpInPlace(tmp, factor, post, tmp);
 
-            if (ret != null && tmp != ret) {
+            if (ret != null && tmp != ret)
+            {
                 NpyCoreApi.CopyAnyInto(ret, tmp);
                 return ret;
             }
@@ -191,7 +204,8 @@ namespace NumpyDotNet
 
         }
 
-        internal ndarray Conjugate(ndarray ret = null) {
+        internal ndarray Conjugate(ndarray ret = null)
+        {
             return NpyCoreApi.Conjugate(this, ret);
         }
     }
