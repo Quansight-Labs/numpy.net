@@ -1437,6 +1437,16 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static ndarray SqueezeSelected(ndarray arr, int axis)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_SqueezeSelected(arr.Array, axis));
+            }
+        }
+
         internal static ndarray Sum(ndarray arr, int axis, dtype rtype, ndarray ret = null)
         {
             #if ENABLELOCKING

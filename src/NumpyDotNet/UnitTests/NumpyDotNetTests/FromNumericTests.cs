@@ -965,26 +965,113 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // does not produce correct results
         [TestMethod]
         public void test_squeeze_1()
         {
             ndarray x = np.array(new Int32[] { 0, 1, 2 }).reshape(new shape(1, 3, 1));
-            print(x.shape);
+            print(x);
+            AssertArray(x, new Int32[1, 3, 1] { { { 0 }, { 1 }, { 2 } } });
 
             ndarray a = np.squeeze(x);
-            print(a.shape);
+            print(a);
+            AssertArray(a, new Int32[] {0,1,2});
 
             ndarray b = np.squeeze(x, axis: 0);
-            print(b.shape);
+            print(b);
+            AssertArray(b, new Int32[3,1] { { 0 }, { 1 }, { 2 } });
 
-            ndarray c = np.squeeze(x, axis: 1);
-            print(c.shape);
+            bool CaughtException = false;
+              
+            try
+            {
+                ndarray c = np.squeeze(x, axis: 1);
+                print(c);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("cannot select an axis to squeeze out which has size not equal to one"))
+                    CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
 
             ndarray d = np.squeeze(x, axis: 2);
-            print(d.shape);
+            print(d);
+            AssertArray(d, new Int32[,] { { 0, 1, 2 } });
+        }
+
+        [TestMethod]
+        public void test_squeeze_2()
+        {
+            ndarray x = np.arange(0,32,1,dtype:np.Float32).reshape(new shape(-1,1,8,1));
+            print(x);
+
+            var ExpectedDataX = new float[,,,]
+                {{{{0.0f},{1.0f},{2.0f},{3.0f},{4.0f},{5.0f},{6.0f},{7.0f}}},
+                 {{{8.0f},{ 9.0f},{10.0f},{11.0f},{12.0f},{13.0f},{14.0f},{15.0f}}},
+                 {{{16.0f},{17.0f},{18.0f},{19.0f},{20.0f},{21.0f},{22.0f},{23.0f}}},
+                 {{{24.0f},{25.0f},{26.0f},{27.0f},{28.0f},{29.0f},{30.0f},{31.0f}}}};
+
+            AssertArray(x, ExpectedDataX);
+
+            ndarray a = np.squeeze(x);
+            print(a);
+
+            var ExpectedDataA = new float[,]
+                {{0.0f,  1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,  7.0f},
+                 {8.0f,  9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f},
+                 {16.0f, 17.0f, 18.0f, 19.0f, 20.0f, 21.0f, 22.0f, 23.0f},
+                 {24.0f, 25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f, 31.0f}};
+            AssertArray(a, ExpectedDataA);
+
+            ndarray b = np.squeeze(x, axis: 1);
+            print(b);
+
+            var ExpectedDataB = new float[,,]
+               {{{0.0f},{1.0f},{2.0f},{3.0f},{4.0f},{5.0f},{6.0f},{7.0f}},
+                {{8.0f},{ 9.0f},{10.0f},{11.0f},{12.0f},{13.0f},{14.0f},{15.0f}},
+                {{16.0f},{17.0f},{18.0f},{19.0f},{20.0f},{21.0f},{22.0f},{23.0f}},
+                {{24.0f},{25.0f},{26.0f},{27.0f},{28.0f},{29.0f},{30.0f},{31.0f}}};
+
+            AssertArray(b, ExpectedDataB);
+
+            bool CaughtException = false;
+
+            try
+            {
+                ndarray c = np.squeeze(x, axis: 0);
+                print(c);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("cannot select an axis to squeeze out which has size not equal to one"))
+                    CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
+
+            CaughtException = false;
+            try
+            {
+                ndarray d = np.squeeze(x, axis: 2);
+                print(d);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("cannot select an axis to squeeze out which has size not equal to one"))
+                    CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
 
 
+            ndarray e = np.squeeze(x, axis: 3);
+            print(e);
+
+            var ExpectedDataE = new float[4, 1, 8]
+                {{{0.0f,  1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,  7.0f}},
+                 {{8.0f,  9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f,}},
+                 {{16.0f, 17.0f, 18.0f, 19.0f, 20.0f, 21.0f, 22.0f, 23.0f,}},
+                 {{24.0f, 25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f, 31.0f,}}};
+
+            AssertArray(e, ExpectedDataE);
         }
 
         [TestMethod]

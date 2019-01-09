@@ -397,19 +397,58 @@ class FromNumericTests(unittest.TestCase):
     def test_squeeze_1(self):
 
         x = np.array([[[0], [1], [2]]])
-        print(x.shape)
+        print(x)
         
         a = np.squeeze(x)
-        print(a.shape)
+        print(a)
 
         b = np.squeeze(x, axis=0)
-        print(b.shape)
+        print(b)
 
-        #c = np.squeeze(x, axis=1)
-        #print(c.shape)
-    
+        caughtException = False
+        try:
+            c = np.squeeze(x, axis=1)
+            print(c)
+        except:
+             caughtException = True
+
+        assert(caughtException == True)
+
         d = np.squeeze(x, axis=2)
-        print(d.shape)
+        print(d)
+
+    def test_squeeze_2(self):
+
+        x = np.arange(0,32, 1, dtype=np.float32).reshape(-1,1,8,1)
+        print(x)
+        
+        a = np.squeeze(x)
+        print(a)
+
+        b = np.squeeze(x, axis=1)
+        print(b)
+
+        caughtException = False
+        try:
+            c = np.squeeze(x, axis=0)
+            print(c)
+        except:
+             caughtException = True
+
+        assert(caughtException == True)
+
+        caughtException = False
+        try:
+            c = np.squeeze(x, axis=2)
+            print(c)
+        except:
+             caughtException = True
+
+        assert(caughtException == True)
+
+        e = np.squeeze(x, axis=3)
+        print(e)
+
 
     def test_diagonal_1(self):
 

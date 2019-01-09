@@ -364,6 +364,7 @@ namespace NumpyLib
             int nd = self.nd;
             int newnd = nd;
             npy_intp[] dimensions = new npy_intp[npy_defs.NPY_MAXDIMS];
+            bool[] unit_dims = new bool[npy_defs.NPY_MAXDIMS];
             npy_intp[] strides = new npy_intp[npy_defs.NPY_MAXDIMS];
             int i, j;
             NpyArray ret;
@@ -378,19 +379,71 @@ namespace NumpyLib
                 if (self.dimensions[i] == 1)
                 {
                     newnd -= 1;
+                    unit_dims[i] = true;
                 }
                 else
                 {
                     dimensions[j] = self.dimensions[i];
                     strides[j++] = self.strides[i];
+                    unit_dims[i] = false;
                 }
             }
 
             Npy_INCREF(self.descr);
             ret = NpyArray_NewView(self.descr, newnd, dimensions, strides,
                                    self, 0, false);
+
             return ret;
 
+        }
+        internal static NpyArray NpyArray_SqueezeSelected(NpyArray self, npy_intp axis)
+        {
+            int nd = self.nd;
+            int newnd = nd;
+            npy_intp[] dimensions = new npy_intp[npy_defs.NPY_MAXDIMS];
+            npy_intp[] strides = new npy_intp[npy_defs.NPY_MAXDIMS];
+            bool[] axis_flags = new bool[npy_defs.NPY_MAXDIMS];
+            int i, j;
+            NpyArray ret;
+            bool any_ones = false;
+
+            if (nd == 0)
+            {
+                Npy_INCREF(self);
+                return self;
+            }
+            for (i = 0; i < nd; i++)
+            {
+                if (i == axis)
+                {
+                    if (self.dimensions[i] == 1)
+                    {
+                        any_ones = true;
+                        axis_flags[i] = true;
+                    }
+                    else
+                    {
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError,
+                            "cannot select an axis to squeeze out which has size not equal to one");
+                        return null;
+                    }
+                }
+   
+            }
+
+            if (!any_ones)
+            {
+                Npy_INCREF(self);
+                return self;
+            }
+
+            Npy_INCREF(self.descr);
+            ret = NpyArray_NewView(self.descr, self.nd, self.dimensions, self.strides,
+                                   self, 0, false);
+
+            NPyArray_RemoveAxesInPlace(ret, axis_flags);
+
+            return ret;
         }
 
 
@@ -865,5 +918,54 @@ namespace NumpyLib
             return 0;
         }
 
+        /*NUMPY_API
+         *
+         * Removes the axes flagged as True from the array,
+         * modifying it in place. If an axis flagged for removal
+         * has a shape entry bigger than one, this effectively selects
+         * index zero for that axis.
+         *
+         * WARNING: If an axis flagged for removal has a shape equal to zero,
+         *          the array will point to invalid memory. The caller must
+         *          validate this!
+         *          If an axis flagged for removal has a shape larger then one,
+         *          the aligned flag (and in the future the contiguous flags),
+         *          may need explicit update.
+         *          (check also NPY_RELAXED_STRIDES_CHECKING)
+         *
+         * For example, this can be used to remove the reduction axes
+         * from a reduction result once its computation is complete.
+         */
+        private static void NPyArray_RemoveAxesInPlace(NpyArray arr, bool[] flags)
+        {
+            NpyArray fa = (NpyArray)arr;
+            npy_intp[] shape = fa.dimensions;
+            npy_intp[] strides = fa.strides;
+            int idim = 0;
+            int ndim = fa.nd;
+            int idim_out = 0;
+
+            /* Compress the dimensions and strides */
+            for (idim = 0; idim < ndim; ++idim)
+            {
+                if (!flags[idim])
+                {
+                    shape[idim_out] = shape[idim];
+                    strides[idim_out] = strides[idim];
+                    ++idim_out;
+                }
+            }
+
+            /* The final number of dimensions */
+            fa.nd = idim_out;
+
+            /* May not be necessary for NPY_RELAXED_STRIDES_CHECKING (see comment) */
+            NpyArray_UpdateFlags(arr, NPYARRAYFLAGS.NPY_C_CONTIGUOUS | NPYARRAYFLAGS.NPY_F_CONTIGUOUS);
+        }
+
     }
+
+
+ 
+
 }

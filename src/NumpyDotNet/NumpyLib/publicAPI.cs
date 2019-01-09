@@ -1229,6 +1229,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Squeeze(self);
         }
 
+        public static NpyArray NpyArray_SqueezeSelected(NpyArray self, int axis)
+        {
+            return numpyinternal.NpyArray_SqueezeSelected(self, axis);
+        }
+
         public static NpyArray NpyArray_SwapAxes(NpyArray ap, int a1, int a2)
         {
             return numpyinternal.NpyArray_SwapAxes(ap, a1, a2);

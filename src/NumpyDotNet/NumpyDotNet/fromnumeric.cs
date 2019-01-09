@@ -1375,8 +1375,14 @@ namespace NumpyDotNet
             >>> np.squeeze(x, axis=2).shape
             (1, 3)             
             */
-
-            return NpyCoreApi.Squeeze(a);
+            if (axis != null)
+            {
+                return NpyCoreApi.SqueezeSelected(a, axis.Value);
+            }
+            else
+            {
+                return NpyCoreApi.Squeeze(a);
+            }
         }
 
         #endregion
