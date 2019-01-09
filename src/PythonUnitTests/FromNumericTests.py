@@ -71,11 +71,28 @@ class FromNumericTests(unittest.TestCase):
             a = np.choose([2, 4, 1, 0], choices, mode='raise')
             print(a)
         except:
-            assert(False)
             return
 
         assert(False)
         return
+
+    def test_choose_3(self):
+
+        a = [[1, 0, 1], [0, 1, 0], [1, 0, 1]]
+        choices = [-10, 10]
+        b = np.choose(a, choices)
+
+        print(b)
+    
+    def test_choose_4(self):
+
+        a = np.array([0, 1]).reshape((2,1,1))
+        c1 = np.array([1, 2, 3]).reshape((1,3,1))
+        c2 = np.array([-1, -2, -3, -4, -5]).reshape((1,1,5))
+        b = np.choose(a, (c1, c2)) # result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2
+
+        print(b)
+
 
     def test_repeat_1(self):
 

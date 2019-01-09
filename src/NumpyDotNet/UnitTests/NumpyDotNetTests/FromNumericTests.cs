@@ -234,6 +234,48 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_choose_3()
+        {
+            ndarray a = np.array(new Int32[] { 1, 0, 1, 0, 1, 0, 1, 0, 1 }).reshape(new shape(3, 3));
+            ndarray choice1 = np.array(new Int32[] { -10 });
+            ndarray choice2 = np.array(new Int32[] { 10 });
+            ndarray[] choices = new ndarray[] { choice1, choice2 };
+
+            ndarray b = np.choose(a, choices );
+            print(b);
+
+            var ExpectedDataB = new Int32[,]
+                {{10, -10, 10},
+                 {-10, 10,-10},
+                 {10, -10, 10}};
+            AssertArray(b, ExpectedDataB);
+        }
+
+        [TestMethod]
+        public void test_choose_4()
+        {
+            ndarray a = np.array(new Int32[] { 0,1 }).reshape(new shape(2,1,1));
+            ndarray c1 = np.array(new Int32[] { 1,2,3 }).reshape(new shape(1,3,1));
+            ndarray c2 = np.array(new Int32[] { -1,-2,-3,-4,-5 }).reshape(new shape(1,1,5));
+            ndarray[] choices = new ndarray[] { c1, c2 };
+
+            ndarray b = np.choose(a, choices);
+            print(b);
+
+            var ExpectedDataB = new Int32[,,]
+                {{{1,  1,  1,  1,  1},
+                  {2,  2,  2,  2,  2},
+                  {3,  3,  3,  3,  3}},
+
+                 {{-1, -2, -3, -4, -5},
+                  {-1, -2, -3, -4, -5},
+                  {-1, -2, -3, -4, -5}}};
+     
+            AssertArray(b, ExpectedDataB);
+        }
+
+
+        [TestMethod]
         public void test_repeat_1()
         {
             ndarray x = np.array(new Int32[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
