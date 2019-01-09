@@ -1113,21 +1113,24 @@ namespace NumpyDotNetTests
             print("*****");
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_trace_1()
         {
             ndarray a = np.trace(np.eye(3));
             print(a);
+            Assert.AreEqual(a.GetItem(0), 3.0);
             print("*****");
 
             a = np.arange(8).reshape(new shape(2, 2, 2));
             ndarray b = np.trace(a);
             print(b);
+            AssertArray(b, new Int32[] { 6, 8 });
             print("*****");
 
             a = np.arange(24).reshape(new shape(2, 2, 2, 3));
-            print(np.trace(a).shape);
+            var c = np.trace(a);
+            print(c);
+            AssertArray(c, new Int32[,] { { 18, 20, 22 }, { 24, 26, 28 } });
 
         }
 

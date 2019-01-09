@@ -439,8 +439,8 @@ class FromNumericTests(unittest.TestCase):
 
         caughtException = False
         try:
-            c = np.squeeze(x, axis=2)
-            print(c)
+            d = np.squeeze(x, axis=2)
+            print(d)
         except:
              caughtException = True
 
@@ -492,7 +492,7 @@ class FromNumericTests(unittest.TestCase):
        print("*****")
 
        a = np.arange(24).reshape((2,2,2,3))
-       print(np.trace(a).shape)
+       print(np.trace(a))
 
     def test_nonzero_1(self):
 

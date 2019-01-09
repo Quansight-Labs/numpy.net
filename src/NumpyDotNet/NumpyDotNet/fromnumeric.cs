@@ -1634,7 +1634,10 @@ namespace NumpyDotNet
             (2, 3)             
             */
 
-            throw new NotImplementedException();
+            var D = np.diagonal(a, offset, axis1, axis2);
+            var S = D.Sum();
+            return S;
+
         }
 
         #endregion
