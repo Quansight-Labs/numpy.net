@@ -104,28 +104,28 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // only use to check performance of add operations
-        [TestMethod]
-        public void test_add_operations_performance()
-        {
+        //[Ignore] // only use to check performance of add operations
+        //[TestMethod]
+        //public void test_add_operations_performance()
+        //{
 
-            var a = np.arange(0, 20000000, 1, dtype: np.Int32);
+        //    var a = np.arange(0, 20000000, 1, dtype: np.Int32);
 
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
+        //    System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        //    sw.Start();
 
-            // a = a.reshape(new shape(5, -1));
-            print(a.shape);
-            print(a.strides);
+        //    // a = a.reshape(new shape(5, -1));
+        //    print(a.shape);
+        //    print(a.strides);
 
-            var b = a + 8;
-            print(b.shape);
-            print(b.strides);
-            sw.Stop();
-            Console.WriteLine(sw.ElapsedMilliseconds);
+        //    var b = a + 8;
+        //    print(b.shape);
+        //    print(b.strides);
+        //    sw.Stop();
+        //    Console.WriteLine(sw.ElapsedMilliseconds);
 
 
-        }
+        //}
 
         [TestMethod]
         public void test_subtract_operations()
