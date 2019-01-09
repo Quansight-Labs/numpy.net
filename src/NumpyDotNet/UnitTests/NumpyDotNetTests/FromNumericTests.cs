@@ -1209,8 +1209,39 @@ namespace NumpyDotNetTests
             print(a);
             b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1, 1, 4, 4, 4, 4, 4 }), 8);
             print(b);
-            AssertArray(a, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
+            AssertArray(a, new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            AssertArray(b, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
             print("*****");
+        }
+
+        [TestMethod]
+        public void test_clip_2()
+        {
+            ndarray a = np.arange(16).reshape(new shape(4,4));
+            print(a);
+            print("*****");
+
+            ndarray b = np.clip(a, 1, 8);
+            print(b);
+            print("*****");
+            AssertArray(b, new Int32[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+
+            ndarray c = np.clip(a, 3, 6, @out: a);
+            print(c);
+            AssertArray(c, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print(a);
+            AssertArray(a, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print("*****");
+
+
+            // TODO: UFUNC - uncomment when fix the multi-array UFUNC problem.  This might work then.
+            //a = np.arange(16).reshape(new shape(4, 4));
+            //print(a);
+            //b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }), 8);
+            //print(b);
+            //AssertArray(a, new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            //AssertArray(b, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
+            //print("*****");
         }
 
         [TestMethod]

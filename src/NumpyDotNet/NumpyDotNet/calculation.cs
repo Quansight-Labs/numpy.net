@@ -148,24 +148,47 @@ namespace NumpyDotNet
 
         internal ndarray Clip(object min, object max, ndarray ret = null)
         {
-            // TODO: Add fast clipping
-            if (min == null && max == null)
+            if (ret != null)
             {
-                throw new ArgumentException("must set either max or min");
-            }
-            if (min == null)
-            {
-                return BinaryOpInPlace(this, max, NpyArray_Ops.npy_op_minimum, ret) as ndarray;
-            }
-            else if (max == null)
-            {
-                return BinaryOpInPlace(this, min, NpyArray_Ops.npy_op_maximum, ret) as ndarray;
+                if (min == null && max == null)
+                {
+                    throw new ArgumentException("must set either max or min");
+                }
+                if (min == null)
+                {
+                    return BinaryOpInPlace(this, max, NpyArray_Ops.npy_op_minimum, ret) as ndarray;
+                }
+                else if (max == null)
+                {
+                    return BinaryOpInPlace(this, min, NpyArray_Ops.npy_op_maximum, ret) as ndarray;
+                }
+                else
+                {
+                    ndarray tmp = BinaryOpInPlace(this, max, NpyArray_Ops.npy_op_minimum, ret) as ndarray;
+                    return BinaryOpInPlace(tmp, min, NpyArray_Ops.npy_op_maximum, ret) as ndarray;
+                }
             }
             else
             {
-                ndarray tmp = BinaryOpInPlace(this, max, NpyArray_Ops.npy_op_minimum, ret) as ndarray;
-                return BinaryOpInPlace(tmp, min, NpyArray_Ops.npy_op_maximum, ret) as ndarray;
+                if (min == null && max == null)
+                {
+                    throw new ArgumentException("must set either max or min");
+                }
+                if (min == null)
+                {
+                    return BinaryOp(this, max, NpyArray_Ops.npy_op_minimum) as ndarray;
+                }
+                else if (max == null)
+                {
+                    return BinaryOp(this, min, NpyArray_Ops.npy_op_maximum) as ndarray;
+                }
+                else
+                {
+                    ndarray tmp = BinaryOp(this, max, NpyArray_Ops.npy_op_minimum) as ndarray;
+                    return BinaryOp(tmp, min, NpyArray_Ops.npy_op_maximum) as ndarray;
+                }
             }
+
         }
 
         internal ndarray Conjugate(ndarray ret = null) {

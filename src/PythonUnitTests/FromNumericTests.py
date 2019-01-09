@@ -492,7 +492,8 @@ class FromNumericTests(unittest.TestCase):
        print("*****")
 
        a = np.arange(24).reshape((2,2,2,3))
-       print(np.trace(a))
+       c = np.trace(a);
+       print(c)
 
     def test_nonzero_1(self):
 
@@ -550,6 +551,27 @@ class FromNumericTests(unittest.TestCase):
         a = np.arange(10)
         print(a)
         b = np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)
+        print(b)
+        print("*****")
+
+    def test_clip_2(self):
+
+        a = np.arange(16).reshape(4,4)
+        print(a)
+        print("*****")
+
+        b = np.clip(a, 1, 8)
+        print(b)
+        print("*****")
+
+        c = np.clip(a, 3, 6, out=a)
+        print(c)
+        print(a)
+        print("*****")
+
+        a = np.arange(16).reshape(4,4)
+        print(a)
+        b = np.clip(a, [3, 4, 1, 1], 8)
         print(b)
         print("*****")
 
