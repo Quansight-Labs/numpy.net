@@ -1996,19 +1996,21 @@ namespace NumpyDotNetTests
             Assert.AreEqual(0.5500000007450581, c.GetItem(0));
         }
 
-        [Ignore] // need to implement complete UFUNC
         [TestMethod]
         public void test_std_1()
         {
             ndarray a = np.array(new int[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
             ndarray b = np.std(a);
             print(b);
+            Assert.AreEqual(1.11803398874989, (double)b.GetItem(0), 0.0000001);
 
             ndarray c = np.std(a, axis: 0);
             print(c);
+            AssertArray(c, new double[] { 1.0, 1.0 });
 
             ndarray d = np.std(a, axis: 1);
             print(d);
+            AssertArray(d, new double[] { 1.11803398874989, 1.80277563773199 });
 
             // In single precision, std() can be inaccurate:
             a = np.zeros(new shape(2, 512 * 512), dtype: np.Float32);
@@ -2016,10 +2018,11 @@ namespace NumpyDotNetTests
             a[1, ":"] = 0.1;
             b = np.std(a);
             print(b);
-
+            Assert.AreEqual(0.450010849825055, (double)b.GetItem(0), 0.0000001);
             // Computing the standard deviation in float64 is more accurate:
             c = np.std(a, dtype: np.Float64);
             print(c);
+            Assert.AreEqual(0.449999999255527, (double)c.GetItem(0), 0.0000001);
 
         }
 
