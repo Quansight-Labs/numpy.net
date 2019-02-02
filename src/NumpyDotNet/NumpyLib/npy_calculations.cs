@@ -1288,7 +1288,9 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(ref srcArray, operationType);
 
-            PerformNumericOpArray(srcArray, destArray, operandArray, destArray.dimensions, 0, 0, 0, 0, operation);
+            NpyArrayWrapper operandWrapper = new NpyArrayWrapper(operandArray);
+
+            PerformNumericOpArray(srcArray, destArray, operandWrapper, destArray.dimensions, 0, 0, 0, 0, operation);
         }
 
         /// <summary>
@@ -1299,13 +1301,15 @@ namespace NumpyLib
         /// <param name="src_strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="src_offset">Byte offset into data array, starts at 0</param>
-        private static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArray operandArray, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, long operand_offset, NumericOperation operation)
+        private static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArrayWrapper operandArray, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, long operand_offset, NumericOperation operation)
         {
             if (dimIdx == destArray.nd)
             {
 
                 var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
-                var operandValue = operandArray.descr.f.getitem(operand_offset, operandArray);
+
+                var operandValue = operandArray.array.descr.f.getitem(operandArray.GetIndex(), operandArray.array);
+
                 object destValue = operation(srcValue, Convert.ToDouble(operandValue));
 
                 try
@@ -1323,12 +1327,57 @@ namespace NumpyLib
                 {
                     long lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
                     long ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
-                    long loperand_offset = operand_offset + operandArray.strides[dimIdx] * i;
 
-                    PerformNumericOpArray(srcArray, destArray, operandArray, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, loperand_offset, operation);
+                    operandArray.operand_offset = operand_offset;
+                    operandArray.dimIdx = dimIdx;
+                    operandArray.i = i;
+
+                    PerformNumericOpArray(srcArray, destArray, operandArray, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operandArray.GetIndex(), operation);
                 }
             }
         }
+
+        private class NpyArrayWrapper
+        {
+            public NpyArray array = null;
+            public long offset = 0;
+            public long operand_offset = 0;
+            public int dimIdx = -1;
+            public int i = 0;
+
+            public NpyArrayWrapper(NpyArray array)
+            {
+                this.array = array;
+                this.offset = 0;
+            }
+
+            public long GetIndex()
+            {
+                if (array == null || array.strides == null || array.strides.Length == 0)
+                    return 0;
+
+                if (dimIdx >= array.strides.Length)
+                {
+                    dimIdx = dimIdx % array.strides.Length;
+                    operand_offset = 0;
+                }
+
+                long calculatedOffset =  operand_offset + array.strides[dimIdx] * i;
+                //Console.WriteLine("x:{0},{1}, {2}", calculatedOffset, operand_offset, i);
+
+                npy_intp ArraySize = NpyArray_SIZE(array);
+                npy_intp ItemSize = NpyArray_ITEMSIZE(array);
+                npy_intp MaxOffset = ArraySize * ItemSize;
+
+                if (calculatedOffset >= MaxOffset)
+                {
+                    calculatedOffset = calculatedOffset % MaxOffset;
+                }
+
+                return calculatedOffset;
+            }
+        }
+
         #endregion
 
         #region AddOperation
