@@ -943,9 +943,7 @@ namespace NumpyDotNet
             }
 
             // get the raw data from the array object and allocate another array big enough to hold the unpacked bits
-            var flattened = input.flatten();
-
-            var rawdatavp = numpyAPI.NpyArray_Index2Ptr(flattened.Array, 0);
+            var rawdatavp =  input.rawdata(0);
             byte[] rawdata = (byte [])rawdatavp.datap;
             byte[] packedData = new byte[rawdata.Length / 8];
 
@@ -999,9 +997,7 @@ namespace NumpyDotNet
             }
 
             // get the raw data from the array object and allocate another array big enough to hold the unpacked bits
-            var flattened = input.flatten();
-
-            var rawdatavp = numpyAPI.NpyArray_Index2Ptr(flattened.Array, 0);
+            var rawdatavp = input.rawdata(0);
             byte[] rawdata = (byte[])rawdatavp.datap;
             byte[] unpackedData = new byte[rawdata.Length * 8];
 
@@ -1081,9 +1077,7 @@ namespace NumpyDotNet
             else
             {
                 var copy = input.Copy();
-                var flattened = copy.flatten();
-
-                var rawdatavp = numpyAPI.NpyArray_Index2Ptr(flattened.Array, 0);
+                var rawdatavp = copy.rawdata(0);
                 dynamic RawData = (dynamic)rawdatavp.datap;
                 dynamic LastElement = 0;
 

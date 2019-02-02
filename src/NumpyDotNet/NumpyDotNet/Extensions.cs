@@ -239,6 +239,12 @@ namespace NumpyDotNet
             T[] data = (T[])a.rawdata(0).datap;
             return data.ToList();
         }
-   
+
+        public static T[] ToArray<T>(this ndarray a)
+        {
+            T[] data = (T[])a.rawdata(0).datap;
+            return data;
+        }
+
     }
 }

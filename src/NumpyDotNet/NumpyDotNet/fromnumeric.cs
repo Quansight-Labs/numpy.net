@@ -2960,9 +2960,7 @@ namespace NumpyDotNet
             }
             else
             {
-                var flattened = input.flatten();
-
-                var rawdatavp = numpyAPI.NpyArray_Index2Ptr(flattened.Array, 0);
+                var rawdatavp = input.rawdata(0);
                 dynamic RawData = (dynamic)rawdatavp.datap;
 
                 double total = 0;
