@@ -65,7 +65,7 @@
       <Name>NumpyDotNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NumpyLib\NumpyLib.csproj">
-      <Project>{c674a3e6-a4db-46e3-a444-8e452e6e75c7}</Project>
+      <Project>{ba8706a0-3efb-4c81-bc2d-e6bf25283d03}</Project>
       <Name>NumpyLib</Name>
     </ProjectReference>
   </ItemGroup>
