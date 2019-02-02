@@ -86,7 +86,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // must implement multiarray UFUNC first
         [TestMethod]
         public void test_add_operations_2()
         {
@@ -198,23 +197,31 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // must implement multiarray UFUNC first
         [TestMethod]
         public void test_subtract_operations_2()
         {
-            var a = np.arange(0, 4, 1, dtype: np.Int16);
-            var b = np.array(new Int16[] { 2 });
+            var a = np.arange(100, 102, 1, dtype: np.Int16);
+            var b = np.array(new Int16[] { 1,63 });
             var c = a - b;
             print(a);
+            print("****");
             print(b);
+            print("****");
             print(c);
+            print("****");
+            AssertArray(c, new Int16[] { 99, 38 });
+
 
             a = np.arange(0, 4, 1, dtype: np.Int16).reshape(new shape(2,2));
-            b = np.array(new Int16[] { 1, 2 }).reshape(new shape(1,2));
+            b = np.array(new Int16[] { 65, 78 }).reshape(new shape(1,2));
             c = a - b;
             print(a);
+            print("****");
             print(b);
+            print("****");
             print(c);
+            print("****");
+            AssertArray(c, new Int16[,] { { -65, -77 }, { -63, -75 } });
 
         }
 
