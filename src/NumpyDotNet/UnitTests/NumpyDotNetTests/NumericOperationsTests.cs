@@ -94,13 +94,38 @@ namespace NumpyDotNetTests
             a = a.reshape(new shape(5, -1));
             print(a);
 
+            var ExpectedDataA = new Int16[,]
+                {{0,  1,  2,  3},
+                 {4,  5,  6,  7},
+                 {8,  9, 10, 11},
+                 {12, 13, 14, 15},
+                 {16, 17, 18, 19}};
+            AssertArray(a, ExpectedDataA);
+
             var b = np.array(new Int16[] { 2 });
             var c = a + b;
             print(c);
 
+            var ExpectedDataC = new Int16[,]
+                {{2,  3,  4,  5},
+                 {6,  7,  8,  9},
+                 {10, 11, 12, 13},
+                 {14, 15, 16, 17},
+                 {18, 19, 20, 21}};
+            AssertArray(c, ExpectedDataC);
+
+
             b = np.array(new Int16[] { 10,20,30,40 });
-            c = a + b;
-            print(c);
+            var d = a + b;
+            print(d);
+
+            var ExpectedDataD = new Int16[,]
+                {{10, 21, 32, 43},
+                 {14, 25, 36, 47},
+                 {18, 29, 40, 51},
+                 {22, 33, 44, 55},
+                 {26, 37, 48, 59}};
+            AssertArray(d, ExpectedDataD);
         }
 
 
@@ -173,7 +198,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // must implement multiarray UFUNC first
+        //[Ignore] // must implement multiarray UFUNC first
         [TestMethod]
         public void test_subtract_operations_2()
         {
