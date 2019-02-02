@@ -938,7 +938,7 @@ namespace NumpyLib
             }
             else
             {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, operationType);
+                destArray = NpyArray_NumericOpArraySelection(srcArray, null, operationType);
             }
 
             PerformNumericOpScalar(srcArray, destArray, operand, operationType);
@@ -956,7 +956,7 @@ namespace NumpyLib
             }
             else
             {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, operationType);
+                destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
             }
                 
             PerformNumericOpArray(srcArray, destArray, operandArray, operationType);
@@ -1014,7 +1014,7 @@ namespace NumpyLib
             }
             else
             {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, operationType);
+                destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
             }
 
             var UFuncOp = get_op_loc(operationType);
@@ -1025,10 +1025,19 @@ namespace NumpyLib
             return destArray;
         }
 
-        private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray_Ops operationType)
+        private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, NpyArray_Ops operationType)
         {
             NpyArray_Descr newtype = srcArray.descr;
             NPYARRAYFLAGS flags = srcArray.flags | NPYARRAYFLAGS.NPY_ENSURECOPY | NPYARRAYFLAGS.NPY_FORCECAST;
+
+            if (operandArray != null)
+            {
+                if (NpyArray_ISFLOAT(operandArray))
+                {
+                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                }
+            }
+  
 
             switch (operationType)
             {
@@ -1342,7 +1351,7 @@ namespace NumpyLib
             public NpyArray array = null;
             public long offset = 0;
             public long operand_offset = 0;
-            public int dimIdx = -1;
+            public int dimIdx = 0;
             public int i = 0;
 
             public NpyArrayWrapper(NpyArray array)
