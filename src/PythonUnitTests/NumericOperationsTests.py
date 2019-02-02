@@ -38,8 +38,8 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(c)
 
         b = np.array([10,20,30,40], dtype = np.int16);
-        c = a + b;
-        print(c)
+        d = a + b;
+        print(d)
 
 
 
@@ -66,21 +66,26 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(b.shape)
         print(b.strides)
 
-    #def test_subtract_operations_2(self):
+    def test_subtract_operations_2(self):
 
-    #    a =  np.arange(0, 4, 1, dtype = np.int16)
-    #    b =  np.array([1,2], dtype = np.int16)
-    #    c = a-b
-    #    print(a)
-    #    print(b)
-    #    print(c)
+        a =  np.arange(100, 102, 1, dtype = np.int16)
+        b =  np.array([1,63], dtype = np.int16)
+        c = a-b
+        print(a)
+        print("****")
+        print(b)
+        print("****")
+        print(c)
+        print("****")
 
-    #    a =  np.arange(0, 4, 1, dtype = np.int16).reshape((2,2))
-    #    b =  np.array([1,2], dtype = np.int16).reshape(1,2)
-    #    c = a-b
-    #    print(a)
-    #    print(b)
-    #    print(c)
+        a =  np.arange(0, 4, 1, dtype = np.int16).reshape((2,2))
+        b =  np.array([65,78], dtype = np.int16).reshape(1,2)
+        c = a-b
+        print(a)
+        print("****")
+        print(b)
+        print("****")
+        print(c)
 
 
     def test_multiply_operations(self):
