@@ -198,7 +198,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore] // must implement multiarray UFUNC first
+        [Ignore] // must implement multiarray UFUNC first
         [TestMethod]
         public void test_subtract_operations_2()
         {
