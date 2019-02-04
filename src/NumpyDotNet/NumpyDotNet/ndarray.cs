@@ -69,7 +69,7 @@ namespace NumpyDotNet
             core = a;
         }
 
-  
+
         #region Public interfaces (must match CPython)
 
         private static Func<ndarray, string> reprFunction;
@@ -239,7 +239,7 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
         }
-        public static ndarray operator /(double operand,ndarray a)
+        public static ndarray operator /(double operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
         }
@@ -280,7 +280,7 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, b);
         }
 
-        
+
 
         public static ndarray operator &(ndarray a, Int64 operand) {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_and, operand);
@@ -328,7 +328,7 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_xor, operand);
         }
- 
+
         public static object operator ^(ndarray a, ndarray b) {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_xor, b);
         }
@@ -521,14 +521,14 @@ namespace NumpyDotNet
 
                     if (indexes.IsAdvancedIndexing)
                     {
-      
+
                         // advanced subscript case.
                         NpyCoreApi.Incref(Array);
                         //var newDType = NpyCoreApi.DescrFromType(this.Array.ItemType);
                         //NpyCoreApi.DescrReplaceSubarray(newDType, this.Dtype, result.Dims);
                         result = new ndarray(NpyCoreApi.ArraySubscript(this, indexes));
                         result = NpyCoreApi.FromArray(result, null, NPYARRAYFLAGS.NPY_ENSURECOPY);
-                 
+
                         NpyCoreApi.Decref(Array);
                     }
                     else
@@ -539,7 +539,7 @@ namespace NumpyDotNet
                         NpyCoreApi.Decref(Array);
                     }
 
-    
+
 
                     if (result.ndim == 0)
                     {
@@ -562,7 +562,7 @@ namespace NumpyDotNet
                             return result.Dtype.ToScalar(this);
                         }
                     }
-  
+
                     return result;
                 }
             }
@@ -623,7 +623,7 @@ namespace NumpyDotNet
                     if (single_offset >= 0)
                     {
                         // This is a single item assignment. Use SetItem.
-                        SetItem(value, single_offset/this.itemsize);
+                        SetItem(value, single_offset / this.itemsize);
                         return;
                     }
 
@@ -691,7 +691,7 @@ namespace NumpyDotNet
         /// Number of dimensions in the array
         /// </summary>
         public int ndim {
-            
+
             get { return core.nd; }
         }
 
@@ -837,7 +837,7 @@ namespace NumpyDotNet
 
         public long nbytes {
             get {
-                return itemsize*Size;
+                return itemsize * Size;
             }
         }
 
@@ -847,13 +847,13 @@ namespace NumpyDotNet
             }
         }
 
-   
+
         #endregion
 
         #region methods
 
-       
-        public ndarray astype(dtype dtype = null, string order="K", string casting="unsafe", bool subok=true, bool copy=true)
+
+        public ndarray astype(dtype dtype = null, string order = "K", string casting = "unsafe", bool subok = true, bool copy = true)
         {
             if (dtype == this.Dtype)
             {
@@ -898,7 +898,7 @@ namespace NumpyDotNet
         }
 
 
-   
+
 
         public object dot(object other) {
             return ModuleMethods.dot(this, other);
@@ -952,7 +952,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             long offset = indexes.SingleAssignOffset(this);
-                            return GetItem(offset/this.itemsize);
+                            return GetItem(offset / this.itemsize);
                         }
                         else
                         {
@@ -1008,7 +1008,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             long offset = indexes.SingleAssignOffset(this);
-                            SetItem(value, offset/this.itemsize);
+                            SetItem(value, offset / this.itemsize);
                         }
                         else
                         {
@@ -1024,7 +1024,7 @@ namespace NumpyDotNet
             dtype newtype = NpyCoreApi.DescrNewByteorder(Dtype, NpyUtil_ArgProcessing.ByteorderConverter(endian));
             return NpyCoreApi.View(this, newtype, null);
         }
-   
+
 
         public int put(object indices, object values, object mode = null)
         {
@@ -1051,7 +1051,7 @@ namespace NumpyDotNet
         }
         private static string[] resizeKeywords = { "refcheck" };
 
-  
+
         public void setflags(object write = null, object align = null, object uic = null) {
             NPYARRAYFLAGS flags = RawFlags;
             if (align != null) {
@@ -1217,6 +1217,11 @@ namespace NumpyDotNet
 
         public bool IsOneSegment {
             get { return ndim == 0 || ChkFlags(NPYARRAYFLAGS.NPY_FORTRAN) || ChkFlags(NPYARRAYFLAGS.NPY_CARRAY); }
+        }
+
+        public bool IsASlice
+        {
+            get { return BaseArray != null; }
         }
 
         /// <summary>

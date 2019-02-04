@@ -236,14 +236,36 @@ namespace NumpyDotNet
 
         public static List<T> ToList<T>(this ndarray a)
         {
-            T[] data = (T[])a.rawdata(0).datap;
-            return data.ToList();
+            if (a.IsASlice)
+            {
+                List<T> Data = new List<T>();
+                foreach (T d in a)
+                {
+                    Data.Add(d);
+                }
+                return Data;
+            }
+            else
+            {
+                T[] data = (T[])a.rawdata(0).datap;
+                return data.ToList();
+            }
+
         }
 
         public static T[] ToArray<T>(this ndarray a)
         {
-            T[] data = (T[])a.rawdata(0).datap;
-            return data;
+            if (a.IsASlice)
+            {
+                List<T> Data = a.ToList<T>();
+                return Data.ToArray();
+            }
+            else
+            {
+                T[] data = (T[])a.rawdata(0).datap;
+                return data;
+            }
+ 
         }
 
         public static double Mean<T>(this ndarray a)

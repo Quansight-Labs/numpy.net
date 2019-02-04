@@ -1996,6 +1996,20 @@ namespace NumpyDotNetTests
             Assert.AreEqual(0.5500000007450581, c.GetItem(0));
         }
 
+
+        [TestMethod]
+        public void test_mean_3()
+        {
+            ndarray x = np.array(new int[] { 1, 2, 2, 2, 1 });
+            var mean = x.Mean<int>();
+
+            ndarray y = x.A("1:3");
+            mean = y.Mean<int>();
+
+
+        }
+
+
         [TestMethod]
         public void test_std_1()
         {
