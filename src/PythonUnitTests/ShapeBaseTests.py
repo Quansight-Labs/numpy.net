@@ -48,10 +48,43 @@ class Test_ShapeBaseTests(unittest.TestCase):
         print("**************")
 
         c = np.atleast_3d([1,2], [[3,4]], [[5,6]])
-        #print(c)
+        print(c)
 
         for arr in c:
             print(arr, arr.shape)
+
+    def test_vstack_1(self):
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.vstack((a,b))
+
+        print(c)
+
+    def test_vstack_2(self):
+
+        a = np.array([[1], [2], [3]])
+        b = np.array([[2], [3], [4]])
+        c  = np.vstack((a,b))
+
+        print(c)
+
+    def test_hstack_1(self):
+
+        a = np.array((1, 2, 3))
+        b = np.array((2, 3, 4))
+        c = np.hstack((a,b))
+
+        print(c)
+
+    def test_hstack_2(self):
+
+        a = np.array([[1],[2],[3]])
+        b = np.array([[2],[3],[4]])
+        c = np.hstack((a,b))
+
+        print(c)
+
 
 if __name__ == '__main__':
     unittest.main()

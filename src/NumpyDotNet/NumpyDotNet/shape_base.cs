@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace NumpyDotNet
 {
@@ -278,7 +279,7 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            return np.concatenate(atleast_2d(tup));
         }
 
         public static ndarray hstack(ICollection<object> tup)
@@ -330,7 +331,16 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            var arrs = atleast_1d(tup);
+            if (arrs != null && arrs.ElementAt(0).ndim == 1)
+            {
+                return np.concatenate(arrs, 0);
+            }
+            else
+            {
+                return np.concatenate(arrs, 1);
+            }
+
         }
 
         public static ndarray stack(ICollection<object> tup, int? axis = null, ndarray _out = null)

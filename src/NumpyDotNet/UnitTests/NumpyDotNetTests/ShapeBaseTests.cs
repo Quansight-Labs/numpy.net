@@ -35,7 +35,7 @@ namespace NumpyDotNetTests
             var c = np.atleast_1d(new object[] { 1, new int[] { 3, 4 } });
 
             AssertArray(c.ElementAt(0), new Int32[] { 1 });
-            AssertArray(c.ElementAt(1), new Int32[] { 3,4 });
+            AssertArray(c.ElementAt(1), new Int32[] { 3, 4 });
             print(c);
 
         }
@@ -106,5 +106,52 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_vstack_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.vstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_vstack_2()
+        {
+            var a = np.array(new Int32[] {  1 ,  2 ,  3 }).reshape(new shape(-1,1));
+            var b = np.array(new Int32[] {  2 ,  3 ,  4 }).reshape(new shape(-1,1)); 
+            var c = np.vstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,] { { 1 }, { 2 }, { 3 } , { 2 }, { 3 }, { 4 }  });
+
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_hstack_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.hstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[] { 1, 2, 3, 2, 3, 4 });
+
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_hstack_2()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(-1, 1));
+            var b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(-1, 1));
+            var c = np.hstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+
+            print(c);
+        }
     }
 }
