@@ -47,7 +47,29 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            List<ndarray> res = new List<ndarray>();
+
+            foreach (var ary in arys)
+            {
+                ndarray result = null;
+                ndarray array = asanyarray(ary);
+                if (array.ndim == 0)
+                {
+                    result = array.reshape(new shape(1));
+                }
+                else
+                {
+                    result = array;
+                }
+                res.Add(result);
+            }
+
+            return res;
+        }
+
+        public static ICollection<ndarray> atleast_1d(object array)
+        {
+            return atleast_1d(new object[] { array });
         }
 
         public static ICollection<ndarray> atleast_2d(ICollection<object> arys)
@@ -89,7 +111,33 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            List<ndarray> res = new List<ndarray>();
+
+            foreach (var ary in arys)
+            {
+                ndarray result = null;
+                ndarray array = asanyarray(ary);
+                if (array.ndim == 0)
+                {
+                    result = array.reshape(new shape(1, 1));
+                }
+                else if (array.ndim == 1)
+                {
+                    result = array.reshape(new shape(1, (int)array.Dims[0]));
+                }
+                else
+                {
+                    result = array;
+                }
+                res.Add(result);
+            }
+
+            return res;
+        }
+
+        public static ICollection<ndarray> atleast_2d(object array)
+        {
+            return atleast_2d(new object[] { array });
         }
 
         public static ICollection<ndarray> atleast_3d(ICollection<object> arys)
@@ -143,7 +191,37 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            List<ndarray> res = new List<ndarray>();
+
+            foreach (var ary in arys)
+            {
+                ndarray result = null;
+                ndarray array = asanyarray(ary);
+                if (array.ndim == 0)
+                {
+                    result = array.reshape(new shape(1, 1, 1));
+                }
+                else if (array.ndim == 1)
+                {
+                    result = array.reshape(new shape(1, (int)array.Dims[0], 1));
+                }
+                else if (array.ndim == 2)
+                {
+                    result = array.reshape(new shape((int)array.Dims[0], (int)array.Dims[1], 1));
+                }
+                else
+                {
+                    result = array;
+                }
+                res.Add(result);
+            }
+
+            return res;
+        }
+
+        public static ICollection<ndarray> atleast_3d(object array)
+        {
+            return atleast_3d(new object[] { array });
         }
 
         public static ndarray vstack(ICollection<object> tup)
