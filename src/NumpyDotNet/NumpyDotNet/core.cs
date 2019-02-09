@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using NumpyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace NumpyDotNet
             return m;
         }
 
-        public static ndarray asanyarray(ndarray a, dtype dtype = null)
+        public static ndarray asanyarray(object a, dtype dtype = null)
         {
             //  Convert the input to a masked array, conserving subclasses.
 
@@ -105,14 +106,78 @@ namespace NumpyDotNet
             //return masked_array(a, dtype: dtype, copy: false, keep_mask: true, sub_ok: true);
             if (a is ndarray)
             {
-                return a;
+                return a as ndarray;
+            }
+            if (a.GetType().IsArray)
+            {
+                dynamic arr = a;
+                return np.array(new VoidPtr(arr), null);
             }
 
-            return a.Copy();
+            if (IsNumericType(a))
+            {
+                return np.array(GetSingleElementArray(a), null);
+            }
+
+            throw new Exception("Unable to convert object to ndarray");
         }
 
+        public static bool IsNumericType(object o)
+        {
+            switch (Type.GetTypeCode(o.GetType()))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
+        public static VoidPtr GetSingleElementArray(object o)
+        {
+            switch (Type.GetTypeCode(o.GetType()))
+            {
+                case TypeCode.Boolean:
+                    return new VoidPtr(new bool[] { (bool)o });
+                case TypeCode.Byte:
+                    return new VoidPtr(new byte[] { (byte)o });
+                case TypeCode.SByte:
+                    return new VoidPtr(new sbyte[] { (sbyte)o });
+                case TypeCode.UInt16:
+                    return new VoidPtr(new UInt16[] { (UInt16)o });
+                case TypeCode.UInt32:
+                    return new VoidPtr(new UInt32[] { (UInt32)o });
+                case TypeCode.UInt64:
+                    return new VoidPtr(new UInt64[] { (UInt64)o });
+                case TypeCode.Int16:
+                    return new VoidPtr(new Int16[] { (Int16)o });
+                case TypeCode.Int32:
+                    return new VoidPtr(new Int32[] { (Int32)o });
+                case TypeCode.Int64:
+                   return new VoidPtr(new Int64[] { (Int64)o });
+                case TypeCode.Decimal:
+                    return new VoidPtr(new Decimal[] { (Decimal)o });
+                case TypeCode.Double:
+                    return new VoidPtr(new Double[] { (Double)o });
+                case TypeCode.Single:
+                    return new VoidPtr(new Single[] { (Single)o });
+                default:
+                    throw new Exception("Unable to convert numeric type");
+            }
+        }
 
+     
         private static bool hasattr(ndarray m, string v)
         {
             return true;
