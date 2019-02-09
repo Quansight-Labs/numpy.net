@@ -362,6 +362,12 @@ namespace NumpyDotNet
         {
             npy_intp[] dims;
 
+            if (stop == null)
+            {
+                stop = start;
+                start = 0;
+            }
+
             // determine what data type it should be if not set,
             if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
             {
