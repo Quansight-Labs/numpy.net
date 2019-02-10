@@ -279,5 +279,17 @@ class Test_ShapeBaseTests(unittest.TestCase):
         y = np.vsplit(x, [3,6])
         print(y)
 
+    def test_dsplit_1(self):
+
+        x = np.arange(16).reshape(2,2,4)
+        y = np.dsplit(x, 2)
+        print(y)
+
+        print("**************")
+
+        x = np.arange(16).reshape(2,2,4)
+        y = np.dsplit(x, [3,6])
+        print(y)
+
 if __name__ == '__main__':
     unittest.main()

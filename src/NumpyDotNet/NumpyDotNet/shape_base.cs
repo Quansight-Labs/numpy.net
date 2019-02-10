@@ -1101,7 +1101,10 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            if (ndim(ary) < 3)
+                throw new ValueError("dsplit only works on arrays of 3 or more dimensions");
+
+            return split(ary, indices_or_sections, 2);
         }
 
         public static ndarray kron(ndarray a, ndarray b)
