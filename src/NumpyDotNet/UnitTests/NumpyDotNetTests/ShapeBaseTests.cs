@@ -291,5 +291,63 @@ namespace NumpyDotNetTests
             print(c);
         }
 
+        [TestMethod]
+        public void test_array_split_1()
+        {
+            var x = np.arange(8.0);
+            var y = np.array_split(x, 3);
+ 
+            AssertArray(y.ElementAt(0), new double[] { 0, 1, 2 });
+            AssertArray(y.ElementAt(0), new double[] { 3, 4, 5 });
+            AssertArray(y.ElementAt(0), new double[] { 6, 7 });
+            print(y);
+
+            print("**************");
+
+            x = np.arange(7.0);
+            y = np.array_split(x, 3);
+
+            AssertArray(y.ElementAt(0), new double[] { 0, 1, 2 });
+            AssertArray(y.ElementAt(0), new double[] { 3, 4 });
+            AssertArray(y.ElementAt(0), new double[] { 5, 6 });
+            print(y);
+        }
+
+        [TestMethod]
+        public void test_array_split_2()
+        {
+            var x = np.arange(16.0).reshape(new shape(2, 8, 1));
+            var y = np.array_split(x, 3, axis : 0);
+
+
+            AssertArray(y.ElementAt(0), new double[,,,] { { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } } });
+            AssertArray(y.ElementAt(1), new double[,,,] { { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } } });
+            AssertArray(y.ElementAt(2), new double[,,,] { { { } } });
+
+            print(y);
+
+            print("**************");
+
+            x = np.arange(16.0).reshape(new shape(2, 8, 1));
+            y = np.array_split(x, 3, axis : 1);
+
+            AssertArray(y.ElementAt(0), new double[,,,] { { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } } });
+            AssertArray(y.ElementAt(1), new double[,,,] { { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } } });
+            AssertArray(y.ElementAt(2), new double[,,,] { { { { 6 }, { 7 } }, { { 14 }, { 15 } } } } );
+
+
+            print(y);
+
+            print("**************");
+
+            x = np.arange(16.0).reshape(new shape(2, 8, 1));
+            y = np.array_split(x, 3, axis : 2);
+
+            AssertArray(y.ElementAt(0), new double[,,,] { { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } } });
+            AssertArray(y.ElementAt(1), new double[,,,] { { { } } });
+            AssertArray(y.ElementAt(2), new double[,,,] { { { } } });
+            print(y);
+        }
+
     }
 }

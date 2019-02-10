@@ -779,7 +779,7 @@ namespace NumpyDotNet
             return np.concatenate(atleast_3d(tup), 2);
         }
 
-        public static ICollection<ndarray> array_split(ndarray ary, int indices_or_sections, int? axis= null)
+        public static ICollection<ndarray> array_split(ndarray ary, int indices_or_sections, int axis= 0)
         {
           //
           //  Split an array into multiple sub-arrays.

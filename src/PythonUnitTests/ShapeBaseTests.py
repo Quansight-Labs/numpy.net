@@ -171,5 +171,35 @@ class Test_ShapeBaseTests(unittest.TestCase):
         c = np.dstack((a,b))
         print(c)
 
+    def test_array_split_1(self):
+
+        x = np.arange(8.0)
+        y = np.array_split(x, 3)
+        print(y)
+
+        print("**************")
+
+        x = np.arange(7.0)
+        y = np.array_split(x, 3)
+        print(y)
+
+    def test_array_split_2(self):
+
+        x = np.arange(16.0).reshape(2,8,1)
+        y = np.array_split(x, 3, axis=0)
+        print(y)
+
+        print("**************")
+
+        x = np.arange(16.0).reshape(2,8,1)
+        y = np.array_split(x, 3, axis=1)
+        print(y)
+
+        print("**************")
+
+        x = np.arange(16.0).reshape(2,8,1)
+        y = np.array_split(x, 3, axis=2)
+        print(y)
+
 if __name__ == '__main__':
     unittest.main()
