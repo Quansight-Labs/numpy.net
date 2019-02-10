@@ -779,35 +779,85 @@ namespace NumpyDotNet
             return np.concatenate(atleast_3d(tup), 2);
         }
 
-        public static ICollection<ndarray> array_split(ndarray ary, int indices_or_sections, int axis= 0)
+        public static ICollection<ndarray> array_split(ndarray ary, object indices_or_sections, int axis = 0)
         {
-          //
-          //  Split an array into multiple sub-arrays.
+            //
+            //  Split an array into multiple sub-arrays.
 
-          //  Please refer to the ``split`` documentation.The only difference
-          //between these functions is that ``array_split`` allows
-          //  `indices_or_sections` to be an integer that does *not * equally
-          //  divide the axis.For an array of length l that should be split
-          //  into n sections, it returns l % n sub - arrays of size l//n + 1
-          //    and the rest of size l//n.
+            //  Please refer to the ``split`` documentation.The only difference
+            //between these functions is that ``array_split`` allows
+            //  `indices_or_sections` to be an integer that does *not * equally
+            //  divide the axis.For an array of length l that should be split
+            //  into n sections, it returns l % n sub - arrays of size l//n + 1
+            //    and the rest of size l//n.
 
-          //    See Also
-          //    --------
-          //  split: Split array into multiple sub - arrays of equal size.
+            //    See Also
+            //    --------
+            //  split: Split array into multiple sub - arrays of equal size.
 
-          //   Examples
-          //   --------
-          //   >>> x = np.arange(8.0)
-          //   >>> np.array_split(x, 3)
-          //       [array([0., 1., 2.]), array([3., 4., 5.]), array([6., 7.])]
+            //   Examples
+            //   --------
+            //   >>> x = np.arange(8.0)
+            //   >>> np.array_split(x, 3)
+            //       [array([0., 1., 2.]), array([3., 4., 5.]), array([6., 7.])]
 
-          //  >>> x = np.arange(7.0)
-          //  >>> np.array_split(x, 3)
-          //      [array([0., 1., 2.]), array([3., 4.]), array([5., 6.])]
+            //  >>> x = np.arange(7.0)
+            //  >>> np.array_split(x, 3)
+            //      [array([0., 1., 2.]), array([3., 4.]), array([5., 6.])]
 
-          //
+            //
 
-            throw new NotImplementedException();
+            npy_intp Ntotal = 0;
+            int Nsections = 0;
+
+            if (axis < ary.Dims.Length)
+            {
+                Ntotal = ary.Dims[axis];
+            }
+            else
+            {
+                Ntotal = len(ary);
+            }
+
+            List<npy_intp> div_points = new List<npy_intp>();
+            if (indices_or_sections.GetType().IsArray)
+            {
+                npy_intp[] _indices_or_sections = indices_or_sections as npy_intp[];
+                Nsections = _indices_or_sections.Length + 1;
+                div_points.Add(0);
+                div_points.AddRange(_indices_or_sections);
+                div_points.Add(Ntotal);
+            }
+            else
+            {
+                Nsections = int.Parse(indices_or_sections.ToString());
+                if (Nsections <= 0)
+                    throw new ValueError("number sections must be larger than 0.");
+
+                npy_intp Neach_section = Ntotal / Nsections;
+                npy_intp extras = Ntotal % Nsections;
+
+                List<npy_intp> section_sizes = new List<npy_intp>();
+                section_sizes.Add(0);
+                for (int i = 0; i < extras; i++)
+                    section_sizes.Add(Neach_section + 1);
+                for (int i = 0; i < Nsections - extras; i++)
+                    section_sizes.Add(Neach_section);
+
+                var dpoints = array(section_sizes.ToArray()).cumsum();
+                div_points = dpoints.ToList<npy_intp>();
+            }
+
+            List<ndarray> sub_arys = new List<ndarray>();
+            var sary = swapaxes(ary, axis, 0);
+            for (int i = 0; i < Nsections; i++)
+            {
+                npy_intp st = div_points[i];
+                npy_intp end = div_points[i + 1];
+                sub_arys.Add(swapaxes(sary.A(st.ToString() + ":" + end.ToString()), axis, 0));
+            }
+
+            return sub_arys.ToArray();
         }
 
         public static ICollection<ndarray> split(ndarray ary, int indices_or_sections, int? axis = null)

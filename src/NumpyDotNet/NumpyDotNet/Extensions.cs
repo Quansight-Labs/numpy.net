@@ -192,7 +192,7 @@ namespace NumpyDotNet
             return np.all(a, axis, @out, keepdims);
         }
 
-        public static ndarray cumsum(this ndarray a, int? axis, dtype dtype = null, ndarray ret = null)
+        public static ndarray cumsum(this ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             return np.cumsum(a, axis, dtype, ret);
         }
