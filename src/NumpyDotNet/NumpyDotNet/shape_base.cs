@@ -940,7 +940,7 @@ namespace NumpyDotNet
             return res;
         }
 
-        public static ICollection<ndarray> hsplit(ndarray ary, int indices_or_sections)
+        public static ICollection<ndarray> hsplit(ndarray ary, object indices_or_sections)
         {
             //
             //Split an array into multiple sub-arrays horizontally(column - wise).
@@ -997,11 +997,15 @@ namespace NumpyDotNet
 
             //
 
- 
-            throw new NotImplementedException();
+            if (ndim(ary) == 0)
+                throw new ValueError("hsplit only works on arrays of 1 or more dimensions");
+            if (ary.ndim > 1)
+                return split(ary, indices_or_sections, 1);
+            else
+                return split(ary, indices_or_sections, 0);
         }
 
-        public static ICollection<ndarray> vsplit(ndarray ary, int indices_or_sections)
+        public static ICollection<ndarray> vsplit(ndarray ary, object indices_or_sections)
         {
             //
             //Split an array into multiple sub-arrays vertically(row - wise).
@@ -1053,7 +1057,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        public static ICollection<ndarray> dsplit(ndarray ary, int indices_or_sections)
+        public static ICollection<ndarray> dsplit(ndarray ary, object indices_or_sections)
         {
             //
             //Split array into multiple sub - arrays along the 3rd axis(depth).
