@@ -157,5 +157,19 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
         print(c)
 
+    def test_dstack_1(self):
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.dstack((a,b))
+
+        print(c)
+        print("**************")
+
+        a = np.array([[1], [2], [3]])
+        b = np.array([[2], [3], [4]])
+        c = np.dstack((a,b))
+        print(c)
+
 if __name__ == '__main__':
     unittest.main()

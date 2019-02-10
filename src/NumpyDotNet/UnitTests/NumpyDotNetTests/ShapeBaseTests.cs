@@ -272,5 +272,24 @@ namespace NumpyDotNetTests
             print(c);
         }
 
+        [TestMethod]
+        public void test_dstack_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.dstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
+            print(c);
+
+            a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(3,1));
+            b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(3,1));
+            c = np.dstack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            
+            print(c);
+        }
+
     }
 }

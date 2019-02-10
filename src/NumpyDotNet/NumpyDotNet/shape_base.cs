@@ -776,7 +776,7 @@ namespace NumpyDotNet
 
             //   
 
-            throw new NotImplementedException();
+            return np.concatenate(atleast_3d(tup), 2);
         }
 
         public static ICollection<ndarray> array_split(ndarray ary, int indices_or_sections, int? axis= null)
@@ -1193,8 +1193,6 @@ namespace NumpyDotNet
 
             throw new NotImplementedException();
         }
-
-  
 
         private static bool ValidateSameShapes(List<ndarray> arrays)
         {
