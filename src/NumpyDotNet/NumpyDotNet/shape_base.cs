@@ -1052,9 +1052,10 @@ namespace NumpyDotNet
             // array([[[ 4.,  5.],
             //        [ 6.,  7.]]])]
 
-            //
+            if (ndim(ary) < 2)
+                throw new ValueError("vsplit only works on arrays of 2 or more dimensions");
 
-            throw new NotImplementedException();
+            return split(ary, indices_or_sections, 0);
         }
 
         public static ICollection<ndarray> dsplit(ndarray ary, object indices_or_sections)

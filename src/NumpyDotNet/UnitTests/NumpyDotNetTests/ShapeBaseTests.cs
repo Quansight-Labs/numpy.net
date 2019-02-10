@@ -461,5 +461,52 @@ namespace NumpyDotNetTests
             print(y);
         }
 
+        [TestMethod]
+        public void test_vsplit_1()
+        {
+            var x = np.arange(16).reshape(new shape(4, 4));
+            var y = np.vsplit(x, 2);
+
+            Assert.AreEqual(2, y.Count);
+            AssertArray(y.ElementAt(0), new double[,] { { 0, 1, 2, 3 }, { 4, 5, 6, 7 } });
+            AssertArray(y.ElementAt(1), new double[,] { { 8, 9, 10, 11 }, { 12, 13, 14, 15 } } );
+            print(y);
+
+            print("**************");
+
+            x = np.arange(16).reshape(new shape(4, 4));
+            y = np.vsplit(x, new int[] { 3, 6 });
+
+            Assert.AreEqual(3, y.Count);
+            AssertArray(y.ElementAt(0), new double[,] { { 0, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 9, 10, 11 } });
+            AssertArray(y.ElementAt(1), new double[,] { { 12, 13, 14, 15 } });
+            AssertShape(y.ElementAt(2), 0, 4);
+            print(y);
+        }
+
+        [TestMethod]
+        public void test_vsplit_2()
+        {
+            var x = np.arange(8).reshape(new shape(2, 2, 2));
+            var y = np.vsplit(x, 2);
+
+            Assert.AreEqual(2, y.Count);
+            AssertArray(y.ElementAt(0), new double[,,] { { { 0, 1 }, { 2, 3 } } });
+            AssertArray(y.ElementAt(1), new double[,,] { { { 4, 5 }, { 6, 7 } } });
+            print(y);
+
+            print("**************");
+
+            x = np.arange(8).reshape(new shape(2, 2, 2));
+            y = np.vsplit(x, new int[] { 3, 6 });
+
+            Assert.AreEqual(3, y.Count);
+            AssertArray(y.ElementAt(0), new double[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertShape(y.ElementAt(1), 0, 2, 2);
+            AssertShape(y.ElementAt(2), 0, 2, 2);
+
+            print(y);
+        }
+
     }
 }
