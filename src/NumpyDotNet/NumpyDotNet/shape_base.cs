@@ -822,10 +822,11 @@ namespace NumpyDotNet
             List<npy_intp> div_points = new List<npy_intp>();
             if (indices_or_sections.GetType().IsArray)
             {
-                npy_intp[] _indices_or_sections = indices_or_sections as npy_intp[];
+                int[] _indices_or_sections = indices_or_sections as int[];
                 Nsections = _indices_or_sections.Length + 1;
                 div_points.Add(0);
-                div_points.AddRange(_indices_or_sections);
+                foreach (var _indices in _indices_or_sections)
+                    div_points.Add(_indices);
                 div_points.Add(Ntotal);
             }
             else
@@ -860,74 +861,83 @@ namespace NumpyDotNet
             return sub_arys.ToArray();
         }
 
-        public static ICollection<ndarray> split(ndarray ary, int indices_or_sections, int? axis = null)
+        public static ICollection<ndarray> split(ndarray ary, object indices_or_sections, int axis = 0)
         {
-           //
-           // Split an array into multiple sub-arrays.
+            //
+            // Split an array into multiple sub-arrays.
 
-           // Parameters
-           // ----------
-           // ary: ndarray
-           //    Array to be divided into sub - arrays.
-           //indices_or_sections : int or 1 - D array
-           //      If `indices_or_sections` is an integer, N, the array will be divided
-           //      into N equal arrays along `axis`.  If such a split is not possible,
-           //     an error is raised.
+            // Parameters
+            // ----------
+            // ary: ndarray
+            //    Array to be divided into sub - arrays.
+            //indices_or_sections : int or 1 - D array
+            //      If `indices_or_sections` is an integer, N, the array will be divided
+            //      into N equal arrays along `axis`.  If such a split is not possible,
+            //     an error is raised.
 
-           //     If `indices_or_sections` is a 1 - D array of sorted integers, the entries
-           //       indicate where along `axis` the array is split.For example,
-           //     ``[2, 3]`` would, for ``axis=0``, result in
+            //     If `indices_or_sections` is a 1 - D array of sorted integers, the entries
+            //       indicate where along `axis` the array is split.For example,
+            //     ``[2, 3]`` would, for ``axis=0``, result in
 
-           //       - ary[:2]
-           //       - ary[2:3]
-           //       - ary[3:]
+            //       - ary[:2]
+            //       - ary[2:3]
+            //       - ary[3:]
 
-           //     If an index exceeds the dimension of the array along `axis`,
-           //     an empty sub-array is returned correspondingly.
-           // axis : int, optional
-           //     The axis along which to split, default is 0.
+            //     If an index exceeds the dimension of the array along `axis`,
+            //     an empty sub-array is returned correspondingly.
+            // axis : int, optional
+            //     The axis along which to split, default is 0.
 
-           // Returns
-           // -------
-           // sub-arrays : list of ndarrays
-           //     A list of sub-arrays.
+            // Returns
+            // -------
+            // sub-arrays : list of ndarrays
+            //     A list of sub-arrays.
 
-           // Raises
-           // ------
-           // ValueError
-           //     If `indices_or_sections` is given as an integer, but
-           //     a split does not result in equal division.
+            // Raises
+            // ------
+            // ValueError
+            //     If `indices_or_sections` is given as an integer, but
+            //     a split does not result in equal division.
 
-           // See Also
-           // --------
-           // array_split : Split an array into multiple sub-arrays of equal or
-           //               near-equal size.  Does not raise an exception if
-           //               an equal division cannot be made.
-           // hsplit : Split array into multiple sub-arrays horizontally (column-wise).
-           // vsplit : Split array into multiple sub-arrays vertically(row wise).
-           // dsplit : Split array into multiple sub-arrays along the 3rd axis(depth).
-           // concatenate : Join a sequence of arrays along an existing axis.
-           // stack : Join a sequence of arrays along a new axis.
-           // hstack : Stack arrays in sequence horizontally(column wise).
-           // vstack : Stack arrays in sequence vertically(row wise).
-           // dstack : Stack arrays in sequence depth wise(along third dimension).
+            // See Also
+            // --------
+            // array_split : Split an array into multiple sub-arrays of equal or
+            //               near-equal size.  Does not raise an exception if
+            //               an equal division cannot be made.
+            // hsplit : Split array into multiple sub-arrays horizontally (column-wise).
+            // vsplit : Split array into multiple sub-arrays vertically(row wise).
+            // dsplit : Split array into multiple sub-arrays along the 3rd axis(depth).
+            // concatenate : Join a sequence of arrays along an existing axis.
+            // stack : Join a sequence of arrays along a new axis.
+            // hstack : Stack arrays in sequence horizontally(column wise).
+            // vstack : Stack arrays in sequence vertically(row wise).
+            // dstack : Stack arrays in sequence depth wise(along third dimension).
 
-           // Examples
-           // --------
-           // >>> x = np.arange(9.0)
-           // >>> np.split(x, 3)
-           // [array([ 0.,  1.,  2.]), array([ 3.,  4.,  5.]), array([ 6.,  7.,  8.])]
+            // Examples
+            // --------
+            // >>> x = np.arange(9.0)
+            // >>> np.split(x, 3)
+            // [array([ 0.,  1.,  2.]), array([ 3.,  4.,  5.]), array([ 6.,  7.,  8.])]
 
-           // >>> x = np.arange(8.0)
-           // >>> np.split(x, [3, 5, 6, 10])
-           // [array([0., 1., 2.]),
-           //  array([3., 4.]),
-           //  array([5.]),
-           //  array([6., 7.]),
-           //  array([], dtype = float64)]
-           //
+            // >>> x = np.arange(8.0)
+            // >>> np.split(x, [3, 5, 6, 10])
+            // [array([0., 1., 2.]),
+            //  array([3., 4.]),
+            //  array([5.]),
+            //  array([6., 7.]),
+            //  array([], dtype = float64)]
+            //
 
-            throw new NotImplementedException();
+            if (!indices_or_sections.GetType().IsArray)
+            {
+                int sections = int.Parse(indices_or_sections.ToString());
+                var N = ary.shape.iDims[axis];
+                if (N % sections != 0)
+                    throw new ValueError("array split does not result in an equal division");
+            }
+
+            var res = array_split(ary, indices_or_sections, axis);
+            return res;
         }
 
         public static ICollection<ndarray> hsplit(ndarray ary, int indices_or_sections)

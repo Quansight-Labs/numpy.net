@@ -349,5 +349,70 @@ namespace NumpyDotNetTests
             print(y);
         }
 
+        [TestMethod]
+        public void test_split_1()
+        {
+            var x = np.arange(9.0);
+            var y = np.split(x, 3);
+
+            AssertArray(y.ElementAt(0), new double[] { 0, 1, 2 });
+            AssertArray(y.ElementAt(1), new double[] { 3, 4, 5 });
+            AssertArray(y.ElementAt(2), new double[] { 6, 7, 8 });
+            print(y);
+
+            print("**************");
+
+            x = np.arange(8.0);
+            y = np.split(x, new int[] { 3, 5, 6, 10 });
+
+            AssertArray(y.ElementAt(0), new double[] { 0, 1, 2 });
+            AssertArray(y.ElementAt(1), new double[] { 3, 4 });
+            AssertArray(y.ElementAt(2), new double[] { 5 });
+            AssertArray(y.ElementAt(3), new double[] { 6,7 });
+            AssertShape(y.ElementAt(4), 0);
+            print(y);
+        }
+
+        [TestMethod]
+        public void test_split_2()
+        {
+            var x = np.arange(16.0).reshape(new shape(8, 2, 1));
+            var y = np.split(x, new int[] { 2, 3 }, axis: 0);
+
+            Assert.AreEqual(3, y.Count);
+            AssertArray(y.ElementAt(0), new double[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } } );
+            AssertArray(y.ElementAt(1), new double[,,] { { { 4 }, { 5 } } });
+            AssertArray(y.ElementAt(2), new double[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
+
+
+            print(y);
+
+            print("**************");
+
+            x = np.arange(16.0).reshape(new shape(8, 2, 1));
+            y = np.split(x, new int[] { 2, 3 }, axis: 1);
+
+            Assert.AreEqual(3, y.Count);
+            AssertArray(y.ElementAt(0), new double[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
+                                                        {{8},{9}},{{10},{11}}, {{12}, {13}}, {{14}, {15}}});
+            AssertShape(y.ElementAt(1), 8, 0, 1);
+            AssertShape(y.ElementAt(2), 8, 0, 1);
+
+            print(y);
+
+            print("**************");
+
+            x = np.arange(16.0).reshape(new shape(8, 2, 1));
+            y = np.split(x, new int[] { 2, 3 }, axis: 2);
+
+            Assert.AreEqual(3, y.Count);
+            AssertArray(y.ElementAt(0), new double[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
+                                                        {{ 8},{ 9}},{{10}, {11}}, {{12}, {13}}, {{14}, {15}}});
+            AssertShape(y.ElementAt(1), 8, 2, 0);
+            AssertShape(y.ElementAt(2), 8, 2, 0);
+  
+            print(y);
+        }
+
     }
 }
