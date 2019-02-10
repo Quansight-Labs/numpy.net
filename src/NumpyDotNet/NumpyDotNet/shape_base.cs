@@ -1107,7 +1107,7 @@ namespace NumpyDotNet
             return split(ary, indices_or_sections, 2);
         }
 
-        public static ndarray kron(ndarray a, ndarray b)
+        public static ndarray kron(object a, object b)
         {
            //
            // Kronecker product of two arrays.

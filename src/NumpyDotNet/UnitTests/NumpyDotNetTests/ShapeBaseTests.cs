@@ -533,5 +533,37 @@ namespace NumpyDotNetTests
             print(y);
         }
 
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_kron_1()
+        {
+            var a = np.kron(new int[] { 1, 10, 100 }, new int[] { 5, 6, 7 });
+            AssertArray(a, new int[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
+            print(a);
+
+            var b = np.kron(new int[] { 5, 6, 7 }, new int[] { 1, 10, 100 });
+            AssertArray(b, new int[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
+            print(b);
+
+            var c = np.kron(np.eye(2), np.ones(new shape(2, 2)));
+            AssertArray(c, new int[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
+
+        }
+
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_kron_2()
+        {
+            var a = np.arange(100).reshape(new shape(2, 5, 2, 5));
+            var b = np.arange(24).reshape(new shape(2, 3, 4));
+            var c = np.kron(a, b);
+            AssertShape(c, 2, 10, 6, 20);
+            print(c.shape);
+
+            var d = c.Sum();
+            Assert.AreEqual(1366200, d.GetItem(0));
+            print(d);
+
+        }
     }
 }

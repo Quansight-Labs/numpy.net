@@ -291,5 +291,26 @@ class Test_ShapeBaseTests(unittest.TestCase):
         y = np.dsplit(x, [3,6])
         print(y)
 
+    def test_kron_1(self):
+
+        a =  np.kron([1,10,100], [5,6,7])
+        print(a)
+
+        b = np.kron([5,6,7], [1,10,100])
+        print(b)
+
+        c = np.kron(np.eye(2, dtype=np.int32), np.ones((2,2), dtype=np.int32))
+        print(c)
+
+    def test_kron_2(self):
+        a = np.arange(100).reshape((2,5,2,5))
+        b = np.arange(24).reshape((2,3,4))
+        c = np.kron(a,b)
+        print(c.shape)
+
+        d = c.sum()
+        print(d)
+
+
 if __name__ == '__main__':
     unittest.main()
