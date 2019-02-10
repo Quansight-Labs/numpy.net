@@ -1180,7 +1180,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        public static ndarray tile(ndarray a, Int32[] reps)
+        public static ndarray tile(ndarray a, object reps)
         {
          //
          //   Construct an array by repeating A the number of times given by reps.

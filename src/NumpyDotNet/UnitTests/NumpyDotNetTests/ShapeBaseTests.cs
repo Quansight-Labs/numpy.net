@@ -565,5 +565,48 @@ namespace NumpyDotNetTests
             print(d);
 
         }
+
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_tile_1()
+        {
+            var a = np.array(new int[] { 0, 1, 2 });
+            var b = np.tile(a, 2);
+            AssertArray(b, new int[] { 0, 1, 2, 0, 1, 2 });
+            print(b);
+            print("**************");
+
+            var c = np.tile(a, new int[] { 2, 2 });
+            AssertArray(c, new int[,] { { 0, 1, 2, 0, 1, 2 }, { 0, 1, 2, 0, 1, 2 } });
+            print(c);
+            print("**************");
+
+            var d = np.tile(a, new int[] { 2, 1, 2 });
+            AssertArray(d, new int[,,] { { { 0, 1, 2, 0, 1, 2 } }, { { 0, 1, 2, 0, 1, 2 } } });
+            print(d);
+        }
+
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_tile_2()
+        {
+            var a = np.array(new int[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            var b = np.tile(a, 2);
+            AssertArray(b, new int[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
+            print(b);
+            print("**************");
+            
+            var c = np.tile(a, new int[] { 2, 1 });
+            AssertArray(c, new int[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
+            print(c);
+            print("**************");
+
+            var d = np.array(new int[] { 1, 2, 3, 4 });
+            var e = np.tile(d, new int[] { 4, 1 });
+
+            AssertArray(e, new int[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
+            print(e);
+        }
+
     }
 }

@@ -311,6 +311,35 @@ class Test_ShapeBaseTests(unittest.TestCase):
         d = c.sum()
         print(d)
 
+    def test_tile_1(self):
+
+        a = np.array([0, 1, 2])
+        b = np.tile(a, 2)
+        print(b)
+        print("**************")
+
+        c = np.tile(a, (2,2))
+        print(c)
+        print("**************")
+
+        d = np.tile(a, (2,1,2))
+        print(d)
+
+    def test_tile_2(self):
+
+        a = np.array([[1, 2], [3, 4]])
+        b = np.tile(a, 2)
+        print(b)
+        print("**************")
+   
+        c = np.tile(a, (2, 1))
+        print(c)
+        print("**************")
+
+        d = np.array([1,2,3,4])
+        e = np.tile(d,(4,1))
+        print(e)
+
 
 if __name__ == '__main__':
     unittest.main()
