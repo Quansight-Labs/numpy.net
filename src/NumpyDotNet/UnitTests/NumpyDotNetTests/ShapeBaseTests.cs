@@ -217,5 +217,38 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_expand_dims_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2,-1, 2));
+            var b = np.expand_dims(a, axis: 0);
+
+            var ExpectedDataB = new Int32[,,,] 
+            {{{{1,  2}, {3,  4}, {5,  6}},
+              {{7,  8}, {9, 10}, {11, 12}}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+            print("**************");
+
+            var c = np.expand_dims(a, axis: 1);
+            var ExpectedDataC = new Int32[,,,]
+                {{{{1,  2}, {3,  4}, {5,  6}}},
+                {{{ 7,  8},{ 9, 10}, {11, 12}}}};
+            AssertArray(c, ExpectedDataC);
+            print(c);
+            print("**************");
+
+            var d = np.expand_dims(a, axis: 2);
+            var ExpectedDataD = new Int32[,,,]
+            {{{{1,  2}},{{3,  4}},{{5,  6}}},
+             {{{7,  8}},{{9, 10}},{{11, 12}}}};
+
+            AssertArray(d, ExpectedDataD);
+            print(d);
+
+        }
+
+
     }
 }

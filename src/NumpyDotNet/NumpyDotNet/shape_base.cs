@@ -430,7 +430,7 @@ namespace NumpyDotNet
 
             foreach (var arr in _arrays)
             {
-                expanded_arrays.Add(ExpandOnAxis(arr, axis));
+                expanded_arrays.Add(expand_dims(arr, axis));
             }
 
             return np.concatenate(expanded_arrays, axis: axis);
@@ -586,6 +586,91 @@ namespace NumpyDotNet
 
         }
 
+        public static ndarray expand_dims(ndarray a, int axis)
+        {
+            // Expand the shape of an array.
+
+            // Insert a new axis that will appear at the `axis` position in the expanded
+            // array shape.
+
+            // .. note::Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor
+            //    ``axis > a.ndim`` raised errors or put the new axis where documented.
+            //    Those axis values are now deprecated and will raise an AxisError in the
+            //    future.
+
+            // Parameters
+            // ----------
+            // a: array_like
+            //    Input array.
+            //axis : int
+            //    Position in the expanded axes where the new axis is placed.
+
+            //Returns
+            // -------
+            // res : ndarray
+            //     Output array.The number of dimensions is one greater than that of
+            //    the input array.
+
+            // See Also
+            // --------
+            // squeeze : The inverse operation, removing singleton dimensions
+            // reshape : Insert, remove, and combine dimensions, and resize existing ones
+            // doc.indexing, atleast_1d, atleast_2d, atleast_3d
+
+            // Examples
+            // --------
+            // >>> x = np.array([1, 2])
+            // >>> x.shape
+            // (2,)
+
+            // The following is equivalent to ``x[np.newaxis,:]`` or ``x[np.newaxis]``:
+
+            // >>> y = np.expand_dims(x, axis = 0)
+            // >>> y
+            // array([[1, 2]])
+            // >>> y.shape
+            // (1, 2)
+
+            // >>> y = np.expand_dims(x, axis = 1)  # Equivalent to x[:,np.newaxis]
+            // >>> y
+            // array([[1],
+            //        [2]])
+            // >>> y.shape
+            // (2, 1)
+
+            // Note that some examples may use ``None`` instead of ``np.newaxis``.  These
+            // are the same objects:
+
+            // >>> np.newaxis is None
+            // True
+
+            if (axis > a.ndim || axis < -a.ndim - 1)
+            {
+                throw new ValueError("axis value is out of range for this array");
+            }
+
+            axis = normalize_axis_index(axis, a.ndim + 1);
+
+
+            npy_intp[] ExpandedDims = new npy_intp[a.Dims.Length + 1];
+
+            int j = 0;
+            for (int i = 0; i < ExpandedDims.Length; i++)
+            {
+                if (i == axis)
+                {
+                    ExpandedDims[i] = 1;
+                }
+                else
+                {
+                    ExpandedDims[i] = a.Dims[j];
+                    j++;
+                }
+            }
+
+            return a.reshape(new shape(ExpandedDims));
+        }
+
         public static ndarray column_stack(ICollection<object> tup)
         {
            //
@@ -621,6 +706,11 @@ namespace NumpyDotNet
            //
 
             throw new NotImplementedException();
+        }
+
+        public static ndarray row_stack(ICollection<object> tup)
+        {
+            return vstack(tup);
         }
 
         public static ndarray dstack(ICollection<object> tup)
@@ -1093,26 +1183,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        private static ndarray ExpandOnAxis(ndarray arr, int axis)
-        {
-            npy_intp[] ExpandedDims = new npy_intp[arr.Dims.Length + 1];
-
-            int j = 0;
-            for (int i = 0; i < ExpandedDims.Length; i++)
-            {
-                if (i == axis)
-                {
-                    ExpandedDims[i] = 1;
-                }
-                else
-                {
-                    ExpandedDims[i] = arr.Dims[j];
-                    j++;
-                }
-            }
-
-            return arr.reshape(new shape(ExpandedDims));
-        }
+  
 
         private static bool ValidateSameShapes(List<ndarray> arrays)
         {

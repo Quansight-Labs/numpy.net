@@ -122,7 +122,19 @@ class Test_ShapeBaseTests(unittest.TestCase):
         c = np.block([[a], [b]])             # vstack([a, b])
         print(c)
 
+    def test_expand_dims_1(self):
+        a = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).reshape(2,-1, 2)
+        b = np.expand_dims(a, axis=0)
+        print(b)
+        print("**************")
 
+        c = np.expand_dims(a, axis=1)
+        print(c)
+        print("**************")
+
+        d = np.expand_dims(a, axis=2)
+        print(d)
+        print("**************")
 
 if __name__ == '__main__':
     unittest.main()
