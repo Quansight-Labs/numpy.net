@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+using npy_ucs4 = System.Int64;
+#else
+using npy_intp = System.Int32;
+using npy_ucs4 = System.Int32;
+#endif
 
 namespace NumpyDotNet
 {
@@ -343,7 +350,7 @@ namespace NumpyDotNet
 
         }
 
-        public static ndarray stack(ICollection<object> tup, int? axis = null, ndarray _out = null)
+        public static ndarray stack(ICollection<object> arrays, int axis = 0, ndarray _out = null)
         {
             //
             //Join a sequence of arrays along a new axis.
@@ -401,7 +408,32 @@ namespace NumpyDotNet
 
             //
 
-            throw new NotImplementedException();
+            List<ndarray> _arrays = new List<ndarray>();
+            foreach (var _arr in arrays)
+            {
+                _arrays.Add(asanyarray(_arr));
+            }
+            if (_arrays == null || _arrays.Count() == 0)
+            {
+                throw new ValueError("need at least one array to stack");
+            }
+
+            if (!ValidateSameShapes(_arrays))
+            {
+                throw new ValueError("all input arrays must have the same shape");
+            }
+
+            var result_ndim = _arrays[0].ndim + 1;
+            axis = normalize_axis_index(axis, result_ndim);
+
+            List<ndarray> expanded_arrays = new List<ndarray>();
+
+            foreach (var arr in _arrays)
+            {
+                expanded_arrays.Add(ExpandOnAxis(arr, axis));
+            }
+
+            return np.concatenate(expanded_arrays, axis: axis);
         }
 
         public static ndarray column_stack(ICollection<object> tup)
@@ -909,6 +941,49 @@ namespace NumpyDotNet
          // 
 
             throw new NotImplementedException();
+        }
+
+        private static ndarray ExpandOnAxis(ndarray arr, int axis)
+        {
+            npy_intp[] ExpandedDims = new npy_intp[arr.Dims.Length + 1];
+
+            int j = 0;
+            for (int i = 0; i < ExpandedDims.Length; i++)
+            {
+                if (i == axis)
+                {
+                    ExpandedDims[i] = 1;
+                }
+                else
+                {
+                    ExpandedDims[i] = arr.Dims[j];
+                    j++;
+                }
+            }
+
+            return arr.reshape(new shape(ExpandedDims));
+        }
+
+        private static bool ValidateSameShapes(List<ndarray> arrays)
+        {
+            Dictionary<string, string> UniqueShapes = new Dictionary<string, string>();
+
+            foreach (var arr in arrays)
+            {
+                string Key = "";
+
+                foreach (var s in arr.Dims)
+                {
+                    Key += s.ToString() + "_";
+                }
+
+                if (!UniqueShapes.ContainsKey(Key))
+                {
+                    UniqueShapes.Add(Key, Key);
+                }
+            }
+
+            return UniqueShapes.Count == 1;
         }
 
     }

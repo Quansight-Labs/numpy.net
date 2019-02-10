@@ -85,6 +85,22 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
         print(c)
 
+    def test_stack_1(self):
+
+        a = np.array([[1],[2],[3]])
+        b = np.array([[2],[3],[4]])
+
+        c = np.stack((a,b), axis=0)
+        print(c)
+        print("**************")
+        
+        d = np.stack((a,b), axis=1)
+        print(d)
+        print("**************")
+
+        e = np.stack((a,b), axis=2)
+        print(e)
+
 
 if __name__ == '__main__':
     unittest.main()
