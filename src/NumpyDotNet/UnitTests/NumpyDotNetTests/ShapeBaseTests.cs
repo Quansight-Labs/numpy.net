@@ -176,6 +176,46 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore] // not implemented yet.  Too much work
+        [TestMethod]
+        public void test_block_1()
+        {
+            var A = np.eye(2) * 2;
+            var B = np.eye(3) * 3;
+            var C = np.block(new object[] {new object[] {A, np.zeros(new shape(2, 3))}, new object[] {np.ones(new shape(3, 2)), B}});
+
+            var ExpectedDataC = new double[,]
+                {{2.0, 0.0, 0.0, 0.0, 0.0},
+                 {0.0, 2.0, 0.0, 0.0, 0.0,},
+                 {1.0, 1.0, 3.0, 0.0, 0.0,},
+                 {1.0, 1.0, 0.0, 3.0, 0.0,},
+                 {1.0, 1.0, 0.0, 0.0, 3.0,}};
+
+            AssertArray(C, ExpectedDataC);
+
+            print(C);
+        }
+
+        [Ignore] // not implemented yet.  Too much work
+        [TestMethod]
+        public void test_block_2()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.block(new object[] { a, b, 10 });    // hstack([a, b, 10])
+
+            AssertArray(c, new Int32[] { 1,  2,  3,  2,  3,  4, 10 });
+            print(c);
+            print("**************");
+
+            a = np.array(new Int32[] { 1, 2, 3 });
+            b = np.array(new Int32[] { 2, 3, 4 });
+            c = np.block(new object[]{new object[]{a}, new object[] {b}});    // vstack([a, b])
+
+            AssertArray(c, new Int32[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            print(c);
+
+        }
 
     }
 }

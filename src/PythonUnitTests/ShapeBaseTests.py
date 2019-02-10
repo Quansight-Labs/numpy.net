@@ -101,6 +101,28 @@ class Test_ShapeBaseTests(unittest.TestCase):
         e = np.stack((a,b), axis=2)
         print(e)
 
+    def test_block_1(self):
+
+        A = np.eye(2) * 2
+        B = np.eye(3) * 3
+        C = np.block([[A, np.zeros((2, 3))], [np.ones((3, 2)), B]])
+        print(C)
+
+    def test_block_2(self):
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.block([a, b, 10])             # hstack([a, b, 10])
+        print(c)
+
+        print("**************")
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.block([[a], [b]])             # vstack([a, b])
+        print(c)
+
+
 
 if __name__ == '__main__':
     unittest.main()
