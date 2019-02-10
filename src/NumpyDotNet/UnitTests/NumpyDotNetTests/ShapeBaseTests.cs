@@ -249,6 +249,28 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_column_stack_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.column_stack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_row_stack_1()
+        {
+            var a = np.array(new Int32[] { 1, 2, 3 });
+            var b = np.array(new Int32[] { 2, 3, 4 });
+            var c = np.row_stack(new object[] { a, b });
+
+            AssertArray(c, new Int32[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+
+            print(c);
+        }
 
     }
 }

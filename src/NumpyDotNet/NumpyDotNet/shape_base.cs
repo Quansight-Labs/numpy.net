@@ -673,39 +673,50 @@ namespace NumpyDotNet
 
         public static ndarray column_stack(ICollection<object> tup)
         {
-           //
-           // Stack 1 - D arrays as columns into a 2 - D array.
+            //
+            // Stack 1 - D arrays as columns into a 2 - D array.
 
-           // Take a sequence of 1 - D arrays and stack them as columns
-           // to make a single 2 - D array. 2 - D arrays are stacked as-is,
-           // just like with `hstack`.  1 - D arrays are turned into 2 - D columns
-           // first.
+            // Take a sequence of 1 - D arrays and stack them as columns
+            // to make a single 2 - D array. 2 - D arrays are stacked as-is,
+            // just like with `hstack`.  1 - D arrays are turned into 2 - D columns
+            // first.
 
-           // Parameters
-           // ----------
-           // tup: sequence of 1 - D or 2 - D arrays.
-           //     Arrays to stack.All of them must have the same first dimension.
+            // Parameters
+            // ----------
+            // tup: sequence of 1 - D or 2 - D arrays.
+            //     Arrays to stack.All of them must have the same first dimension.
 
-           //Returns
-           //------ -
-           //stacked : 2 - D array
-           //      The array formed by stacking the given arrays.
+            //Returns
+            //------ -
+            //stacked : 2 - D array
+            //      The array formed by stacking the given arrays.
 
-           // See Also
-           // --------
-           // stack, hstack, vstack, concatenate
+            // See Also
+            // --------
+            // stack, hstack, vstack, concatenate
 
-           // Examples
-           // --------
-           // >>> a = np.array((1, 2, 3))
-           // >>> b = np.array((2, 3, 4))
-           // >>> np.column_stack((a, b))
-           // array([[1, 2],
-           //        [2, 3],
-           //        [3, 4]])
-           //
+            // Examples
+            // --------
+            // >>> a = np.array((1, 2, 3))
+            // >>> b = np.array((2, 3, 4))
+            // >>> np.column_stack((a, b))
+            // array([[1, 2],
+            //        [2, 3],
+            //        [3, 4]])
+            //
 
-            throw new NotImplementedException();
+            List<ndarray> arrays = new List<ndarray>();
+            foreach (var v in tup)
+            {
+                var arr = array(v, copy:false, subok:true);
+                if (arr.ndim < 2)
+                {
+                    arr = array(arr, copy: false, subok: true, ndmin: 2).T;
+                }
+                arrays.Add(arr);
+            }
+
+            return np.concatenate(arrays, 1);
         }
 
         public static ndarray row_stack(ICollection<object> tup)

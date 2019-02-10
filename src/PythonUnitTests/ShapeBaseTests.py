@@ -134,7 +134,28 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
         d = np.expand_dims(a, axis=2)
         print(d)
+
+    def test_column_stack_1(self):
+
+        a = np.array((1, 2, 3))
+        b = np.array((2, 3, 4))
+        c = np.column_stack((a, b))
+        print(c)
+
         print("**************")
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.column_stack([a, b])
+        print(c)
+ 
+    def test_row_stack_1(self):
+
+        a = np.array([1, 2, 3])
+        b = np.array([2, 3, 4])
+        c = np.row_stack((a,b))
+
+        print(c)
 
 if __name__ == '__main__':
     unittest.main()
