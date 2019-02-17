@@ -487,12 +487,11 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if a is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of uninitialized (arbitrary) data with the same shape and type as a.</returns>
-        public static ndarray empty_like(ndarray src, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray empty_like(object src, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
         {
             return zeros_like(src, dtype, order, subok);
         }
 
- 
         /// <summary>
         /// Return the identity array.
         /// </summary>
@@ -602,13 +601,14 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if a is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of zeros with the same shape and type as a.</returns>
-        public static ndarray zeros_like(ndarray src, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray zeros_like(object osrc, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
         {
-            if (src == null)
+            if (osrc == null)
             {
                 throw new Exception("array can't be null");
             }
 
+            var src = asanyarray(osrc);
             shape shape = new shape(src.Array.dimensions, src.Array.nd);
             double FillValue = 0;
 
@@ -1453,6 +1453,61 @@ namespace NumpyDotNet
         private static NPY_TYPES Get_NPYType<T>(T[] _Array)
         {
             Type ArrayType = typeof(T);
+
+            if (ArrayType == typeof(bool))
+            {
+                return NPY_TYPES.NPY_BOOL;
+            }
+            if (ArrayType == typeof(byte))
+            {
+                return NPY_TYPES.NPY_UBYTE;
+            }
+            if (ArrayType == typeof(sbyte))
+            {
+                return NPY_TYPES.NPY_BYTE;
+            }
+            if (ArrayType == typeof(Int16))
+            {
+                return NPY_TYPES.NPY_INT16;
+            }
+            if (ArrayType == typeof(UInt16))
+            {
+                return NPY_TYPES.NPY_UINT16;
+            }
+            if (ArrayType == typeof(Int32))
+            {
+                return NPY_TYPES.NPY_INT32;
+            }
+            if (ArrayType == typeof(UInt32))
+            {
+                return NPY_TYPES.NPY_UINT32;
+            }
+            if (ArrayType == typeof(Int64))
+            {
+                return NPY_TYPES.NPY_INT64;
+            }
+            if (ArrayType == typeof(UInt64))
+            {
+                return NPY_TYPES.NPY_UINT64;
+            }
+            if (ArrayType == typeof(float))
+            {
+                return NPY_TYPES.NPY_FLOAT;
+            }
+            if (ArrayType == typeof(double))
+            {
+                return NPY_TYPES.NPY_DOUBLE;
+            }
+            if (ArrayType == typeof(decimal))
+            {
+                return NPY_TYPES.NPY_DECIMAL;
+            }
+            return 0;
+        }
+
+        private static NPY_TYPES Get_NPYType(object obj)
+        {
+            Type ArrayType = obj.GetType();
 
             if (ArrayType == typeof(bool))
             {

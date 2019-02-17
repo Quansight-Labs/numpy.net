@@ -110,8 +110,38 @@ namespace NumpyDotNet
             }
             if (a.GetType().IsArray)
             {
-                dynamic arr = a;
-                return np.array(new VoidPtr(arr), null);
+                System.Array ssrc = a as System.Array;
+                NPY_TYPES type_num;
+                switch (ssrc.Rank)
+                {
+                    case 1:
+                        type_num = Get_NPYType(ssrc.GetValue(0));
+                        break;
+                    case 2:
+                        type_num = Get_NPYType(ssrc.GetValue(0,0));
+                        break;
+                    case 3:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0));
+                        break;
+                    case 4:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0));
+                        break;
+                    case 5:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0));
+                        break;
+                    case 6:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0));
+                        break;
+                    case 7:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0, 0));
+                        break;
+                    case 8:
+                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0, 0));
+                        break;
+                    default:
+                        throw new Exception("Number of dimensions is not supported");
+                }
+                return ndArrayFromMD(ssrc, type_num, ssrc.Rank);
             }
 
             if (IsNumericType(a))
@@ -120,6 +150,51 @@ namespace NumpyDotNet
             }
 
             throw new Exception("Unable to convert object to ndarray");
+        }
+
+        private static ndarray ndArrayFromMD(Array ssrc, NPY_TYPES type_num, int ndim)
+        {
+            npy_intp []newshape = new npy_intp[ndim];
+            for (int i = 0; i < ndim; i++)
+            {
+                newshape[i] = ssrc.GetLength(i);
+            }
+
+            return np.array(new VoidPtr(ArrayFromMD(ssrc, type_num), type_num), null).reshape(newshape);
+        }
+
+        private static System.Array ArrayFromMD(Array ssrc, NPY_TYPES type_num)
+        {
+            switch (type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return ssrc.Cast<bool>().ToArray();
+                case NPY_TYPES.NPY_BYTE:
+                    return ssrc.Cast<sbyte>().ToArray();
+                case NPY_TYPES.NPY_UBYTE:
+                    return ssrc.Cast<byte>().ToArray();
+                case NPY_TYPES.NPY_INT16:
+                    return ssrc.Cast<Int16>().ToArray();
+                case NPY_TYPES.NPY_UINT16:
+                    return ssrc.Cast<UInt16>().ToArray();
+                case NPY_TYPES.NPY_INT32:
+                    return ssrc.Cast<Int32>().ToArray();
+                case NPY_TYPES.NPY_UINT32:
+                    return ssrc.Cast<UInt32>().ToArray();
+                case NPY_TYPES.NPY_INT64:
+                    return ssrc.Cast<Int64>().ToArray();
+                case NPY_TYPES.NPY_UINT64:
+                    return ssrc.Cast<UInt64>().ToArray();
+                case NPY_TYPES.NPY_FLOAT:
+                    return ssrc.Cast<float>().ToArray();
+                case NPY_TYPES.NPY_DOUBLE:
+                    return ssrc.Cast<double>().ToArray();
+                case NPY_TYPES.NPY_DECIMAL:
+                    return ssrc.Cast<decimal>().ToArray();
+            }
+
+            throw new Exception("Unexpected NPY_TYPES");
+
         }
 
         public static bool IsNumericType(object o)
