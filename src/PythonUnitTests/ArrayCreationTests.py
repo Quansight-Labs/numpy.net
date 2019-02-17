@@ -16,6 +16,36 @@ class ArrayCreationTests(unittest.TestCase):
         b = np.empty((2,4), np.int32)
         print(b)
 
+    def test_empty_like_1(self):    
+
+        a = [1, 2, 3, 4, 5, 6]
+        b = np.empty_like(a, dtype=None)
+
+        b[2] = 99
+        print(b)
+        return
+
+
+    def test_empty_like_2(self):    
+
+        a = [[1, 2, 3], [4, 5, 6]]
+        b = np.empty_like(a)
+
+        b[1,2] = 99
+        print(b)
+        return
+
+    def test_empty_like_3(self):    
+
+        a = [[[1, 2, 3], [4, 5, 6]]]
+        b = np.empty_like(a)
+
+        b[0,0,2] = 99
+        b[0,1,1] = 88
+
+        print(b)
+        return
+
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
         print("Original List:",l)

@@ -37,6 +37,7 @@ using NumpyDotNet;
 using System.Collections.Generic;
 using System.Text;
 using NumpyLib;
+using System.Linq;
 
 namespace NumpyDotNetTests
 {
@@ -71,6 +72,44 @@ namespace NumpyDotNetTests
             var b = np.empty((2, 4), np.Int32);
             AssertShape(b, 2, 4);
             Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_INT32);
+        }
+
+        [TestMethod]
+        public void test_empty_like_1()
+        {
+            var a = new Int32[]{ 1,2,3, 4,5,6 };
+            var b = np.empty_like(a, dtype:null);
+            b[2] = 99;
+
+            AssertArray(b, new Int32[] {  0, 0, 99,  0, 0, 0 });
+
+            return;
+        
+        }
+
+        [TestMethod]
+        public void test_empty_like_2()
+        {
+            var a = new double[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+            var b = np.empty_like(a);
+            b[1, 2] = 99;
+
+            AssertArray(b, new double[,] { {0,0,0 }, {0,0,99 } });
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_empty_like_3()
+        {
+            var a = new double[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var b = np.empty_like(a);
+            b[0,0,2] = 99;
+            b[0,1,1] = 88;
+
+            AssertArray(b, new double[,,] { { { 0, 0, 99 }, { 0, 88, 0 } } });
+
+            return;
         }
 
         [TestMethod]
