@@ -76,6 +76,37 @@ class ArrayCreationTests(unittest.TestCase):
         print(b)
         return
 
+    def test_zeros_like_1(self):    
+
+        a = [1, 2, 3, 4, 5, 6]
+        b = np.zeros_like(a, dtype=None)
+
+        b[2] = 99
+        print(b)
+        return
+
+
+    def test_zeros_like_2(self):    
+
+        a = [[1, 2, 3], [4, 5, 6]]
+        b = np.zeros_like(a)
+
+        b[1,2] = 99
+        print(b)
+        return
+
+    def test_zeros_like_3(self):    
+
+        a = [[[1, 2, 3], [4, 5, 6]]]
+        b = np.zeros_like(a)
+
+        b[0,0,2] = 99
+        b[0,1,1] = 88
+
+        print(b)
+        return
+
+
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
         print("Original List:",l)
