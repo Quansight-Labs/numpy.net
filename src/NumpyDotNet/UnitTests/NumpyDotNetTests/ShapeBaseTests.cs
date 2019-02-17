@@ -121,8 +121,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_vstack_2()
         {
-            var a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(-1, 1));
-            var b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(-1, 1));
+            var a = np.array(new Int32[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Int32[,] { { 2 }, { 3 }, { 4 } });
             var c = np.vstack(new object[] { a, b });
 
             AssertArray(c, new Int32[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
@@ -145,8 +145,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_hstack_2()
         {
-            var a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(-1, 1));
-            var b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(-1, 1));
+            var a = np.array(new Int32[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Int32[,] { { 2 }, { 3 }, { 4 } });
             var c = np.hstack(new object[] { a, b });
 
             AssertArray(c, new Int32[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
@@ -157,8 +157,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_stack_1()
         {
-            var a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(-1, 1));
-            var b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(-1, 1));
+            var a = np.array(new Int32[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Int32[,] { { 2 }, { 3 }, { 4 } });
 
             var c = np.stack(new object[] { a, b }, axis: 0);
             AssertArray(c, new Int32[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
@@ -282,8 +282,8 @@ namespace NumpyDotNetTests
             AssertArray(c, new Int32[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
             print(c);
 
-            a = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(3, 1));
-            b = np.array(new Int32[] { 2, 3, 4 }).reshape(new shape(3, 1));
+            a = np.array(new Int32[,] { { 1 }, { 2 }, { 3 } } );
+            b = np.array(new Int32[,] { { 2 }, { 3 }, { 4 } } );
             c = np.dstack(new object[] { a, b });
 
             AssertArray(c, new Int32[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
@@ -590,7 +590,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_tile_2()
         {
-            var a = np.array(new int[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            var a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             var b = np.tile(a, 2);
             AssertArray(b, new int[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
             print(b);

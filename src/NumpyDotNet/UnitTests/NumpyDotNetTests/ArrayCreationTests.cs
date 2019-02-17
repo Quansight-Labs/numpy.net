@@ -444,7 +444,7 @@ namespace NumpyDotNetTests
             var y = x + 100;
             print(y);
 
-            var z = x.reshape(new shape(5,-1));
+            var z = x.reshape((5,-1));
             print(z);
         }
 
@@ -1834,8 +1834,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_insert_1()
         {
-            Int32[] TestData = new int[] { 1, 1, 2, 2, 3, 3 };
-            ndarray a = np.array(TestData, dtype: np.Int32).reshape(new shape(3, 2));
+            Int32[,] TestData = new int[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+            ndarray a = np.array(TestData, dtype: np.Int32);
             ndarray b = np.insert(a, 1, 5);
             ndarray c = np.insert(a, 0, new int[] { 999, 100, 101 });
 
@@ -1982,8 +1982,8 @@ namespace NumpyDotNetTests
         {
             Int32[] TestData1 = new int[] { 1, 1, 2, 2, 3, 3 };
             Int32[] TestData2 = new int[] { 4, 4, 5, 5, 6, 6 };
-            ndarray a = np.array(TestData1, dtype: np.Int32).reshape(new shape(2,-1));
-            ndarray b = np.array(TestData2, dtype: np.Int32).reshape(new shape(2,-1)); 
+            ndarray a = np.array(TestData1, dtype: np.Int32).reshape((2,-1));
+            ndarray b = np.array(TestData2, dtype: np.Int32).reshape((2,-1)); 
 
             ndarray c = np.append(a, b, axis:1);
 

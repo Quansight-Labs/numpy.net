@@ -1213,7 +1213,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rot90_1()
         {
-            ndarray m = np.array(new Int32[] { 1, 2, 3, 4 }, np.Int32).reshape(new shape(2, 2));
+            ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }, np.Int32);
             print(m);
             print("************");
 
@@ -1413,7 +1413,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_tril_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(4, 3));
+            ndarray a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
             ndarray b = np.tril(a, -1);
             print(a);
             print("***********");
@@ -1433,7 +1433,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_triu_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(4, 3));
+            ndarray a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
             ndarray b = np.triu(a, -1);
             print(a);
             print("***********");
@@ -1462,7 +1462,7 @@ namespace NumpyDotNetTests
             print(y);
             AssertArray(y, new int[] { -99, 1, 2, 3, -7, 88, 99 });
 
-            x = np.array(new int[] { 1, 2, 4, 1, 6, 24 }).reshape(new shape(2,3));
+            x = np.array(new int[,] { { 1, 2, 4 }, { 1, 6, 24 } });
             y = np.ediff1d(x);
             print(y);
             AssertArray(y, new int[] { 1, 2, -3, 5, 18 });

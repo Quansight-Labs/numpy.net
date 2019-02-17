@@ -57,7 +57,7 @@ namespace NumpyDotNetTests
 
 
             a = np.array(new Int32[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
-            indices = np.array(new Int32[] { 0, 1, 2, 3 }).reshape(new shape(2, 2));
+            indices = np.array(new Int32[,] { { 0, 1 }, { 2, 3 } });
             ndarray c = np.take(a, indices);
             print("C");
             print(c);
@@ -236,7 +236,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_choose_3()
         {
-            ndarray a = np.array(new Int32[] { 1, 0, 1, 0, 1, 0, 1, 0, 1 }).reshape(new shape(3, 3));
+            ndarray a = np.array(new Int32[,] { { 1, 0, 1 }, { 0, 1, 0 }, { 1, 0, 1 } });
             ndarray choice1 = np.array(new Int32[] { -10 });
             ndarray choice2 = np.array(new Int32[] { 10 });
             ndarray[] choices = new ndarray[] { choice1, choice2 };
@@ -405,7 +405,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_swapaxes_1()
         {
-            ndarray x = np.array(new Int32[] { 1, 2, 3 }).reshape(new shape(1, 3));
+            ndarray x = np.array(new Int32[,] { { 1, 2, 3 } });
             print(x);
             print("********");
 
@@ -414,7 +414,7 @@ namespace NumpyDotNetTests
             AssertArray(y, new Int32[3, 1] { { 1 }, { 2 }, { 3 } });
             print("********");
 
-            x = np.array(new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7 }).reshape(new shape(2, 2, 2));
+            x = np.array(new Int32[,,]{{{0, 1},{2, 3}},{{4,5},{6,7}}});
             print(x);
 
             var ExpectedDataX = new Int32[2, 2, 2]
@@ -726,7 +726,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_sort_1()
         {
-            var a = np.array(new int[] { 1, 4, 3, 1 }).reshape(new shape(2, 2));
+            var a = np.array(new int[,] { { 1, 4 }, { 3, 1 } });
             ndarray b = np.sort(a);                 // sort along the last axis
             print(b);
             AssertArray(b, new int[,] { { 1, 4 }, { 1, 3 } });
@@ -932,7 +932,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_resize_1()
         {
-            ndarray a = np.array(new Int32[] { 0, 1, 2, 3 }).reshape(new shape(2, 2));
+            ndarray a = np.array(new Int32[,] { { 0, 1 }, { 2, 3 } });
             print(a);
 
             ndarray b = np.resize(a, new shape(2, 3));
@@ -968,7 +968,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_squeeze_1()
         {
-            ndarray x = np.array(new Int32[] { 0, 1, 2 }).reshape(new shape(1, 3, 1));
+            ndarray x = np.array(new Int32[,,] { { { 0 }, { 1 }, { 2 } } });
             print(x);
             AssertArray(x, new Int32[1, 3, 1] { { { 0 }, { 1 }, { 2 } } });
 
@@ -1137,7 +1137,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_nonzero_1()
         {
-            ndarray x = np.array(new Int32[] { 1, 0, 0, 0, 2, 0, 1, 1, 0 }).reshape(new shape(3, 3));
+            ndarray x = np.array(new Int32[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);
             print("*****");
 
@@ -1160,7 +1160,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_compress_1()
         {
-            ndarray a = np.array(new Int32[] { 1, 2, 3, 4, 5, 6 }).reshape(new shape(3, 2));
+            ndarray a = np.array(new Int32[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
             print(a);
             print("*****");
 
@@ -1335,13 +1335,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_any_2()
         {
-            ndarray data = np.array(new bool[] { true, false, true, true }).reshape(new shape(2, 2));
+            ndarray data = np.array(new bool[,] { { true, false }, { true, true } });
             ndarray a = np.any(data);
             print(a);
             Assert.AreEqual(true, a.GetItem(0));
             print("*****");
 
-            data = np.array(new bool[] { true, false, false, false }).reshape(new shape(2, 2));
+            data = np.array(new bool[,] { { true, false }, { false, false } });
             ndarray b = np.any(data, axis: 0);
             print(b);
             AssertArray(b, new bool[] { true, false });
@@ -1419,17 +1419,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_all_2()
         {
-            ndarray data = np.array(new bool[] { true, false, true, true }).reshape(new shape(2, 2));
+            ndarray data = np.array(new bool[,] { { true, false }, { true, true } });
             ndarray a = np.all(data);
             print(a);
             Assert.AreEqual(false, a.GetItem(0));
 
-            data = np.array(new bool[] { true, false, true, true }).reshape(new shape(2, 2));
+            data = np.array(new bool[,] { { true, false }, { true, true } });
             ndarray b = np.all(data, axis: 0);
             print(b);
             AssertArray(b, new bool[] { true, false });
 
-            data = np.array(new bool[] { true, false, true, true }).reshape(new shape(2, 2));
+            data = np.array(new bool[,] { { true, false }, { true, true } });
             b = np.all(data, axis: 1);
             print(b);
             AssertArray(b, new bool[] { false, true });
@@ -1465,7 +1465,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_cumsum_2()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4, 5, 6 }).reshape(new shape(2, 3));
+            ndarray a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });
             print(a);
             print("*****");
 
@@ -1739,12 +1739,12 @@ namespace NumpyDotNetTests
             Assert.AreEqual((double)2, a.GetItem(0));
             print("*****");
 
-            ndarray b = np.prod(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).reshape(new shape(2, 2)));
+            ndarray b = np.prod(np.array(new double[,] { { 1.0, 2.0 }, { 3.0, 4.0 } }));
             print(b);
             Assert.AreEqual((double)24, b.GetItem(0));
             print("*****");
 
-            ndarray c = np.prod(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).reshape(new shape(2, 2)), axis: 1);
+            ndarray c = np.prod(np.array(new double[,] { { 1.0, 2.0 }, { 3.0, 4.0 } }), axis: 1);
             print(c);
             AssertArray(c, new double[] { 2, 12 });
             print("*****");
@@ -1774,7 +1774,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual((UInt64)6, b.GetItem(0));
             print("*****");
 
-            a = np.array(new Int32[] { 1, 2, 3, 4, 5, 6 }).reshape(new shape(2, 3));
+            a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
             ndarray c = np.prod(a, dtype: np.Float32); //specify type of output
             print(c);
             Assert.AreEqual((float)720, c.GetItem(0));
@@ -1898,7 +1898,7 @@ namespace NumpyDotNetTests
             AssertArray(b, new Int32[] { 1, 2, 6 });
             print("*****");
 
-            a = np.array(new Int32[] { 1, 2, 3, 4, 5, 6 }).reshape(new shape(2, 3));
+            a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
             ndarray c = np.cumprod(a, dtype: np.Float32); //specify type of output
             print(c);
             AssertArray(c, new float[] { 1f, 2f, 6f, 24f, 120f, 720f });
@@ -1919,7 +1919,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_size_2()
         {
-            ndarray a = np.array(new Int32[] { 1, 2, 3, 4, 5, 6 }).reshape(new shape(2, 3));
+            ndarray a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
             print(np.size(a));
             print(np.size(a, 1));
             print(np.size(a, 0));
@@ -2013,7 +2013,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_std_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            ndarray a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.std(a);
             print(b);
             Assert.AreEqual(1.11803398874989, (double)b.GetItem(0), 0.0000001);
@@ -2044,7 +2044,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_var_1()
         {
-            ndarray a = np.array(new int[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            ndarray a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
             print(b);
 
