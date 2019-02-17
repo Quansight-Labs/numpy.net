@@ -537,7 +537,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of ones with the given shape, dtype, and order.</returns>
-        public static ndarray ones(shape shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray ones(object shape, dtype dtype = null, order order = order.DEFAULT)
         {
             if (shape == null)
             {
@@ -559,12 +559,14 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if src is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of ones with the same shape and type as a.</returns>
-        public static ndarray ones_like(ndarray src, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray ones_like(object osrc, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
         {
-            if (src == null)
+            if (osrc == null)
             {
                 throw new Exception("array can't be null");
             }
+
+            var src = asanyarray(osrc);
 
             shape shape =  new shape(src.Array.dimensions, src.Array.nd);
             double FillValue = 1;

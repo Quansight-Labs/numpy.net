@@ -113,6 +113,45 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ones_like_1()
+        {
+            var a = new Int32[] { 1, 2, 3, 4, 5, 6 };
+            var b = np.ones_like(a, dtype: null);
+            b[2] = 99;
+
+            AssertArray(b, new Int32[] { 1, 1, 99, 1, 1, 1 });
+
+            return;
+
+        }
+
+        [TestMethod]
+        public void test_ones_like_2()
+        {
+            var a = new double[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+            var b = np.ones_like(a);
+            b[1, 2] = 99;
+
+            AssertArray(b, new double[,] { { 1, 1, 1 }, { 1, 1, 99 } });
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_ones_like_3()
+        {
+            var a = new double[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var b = np.ones_like(a);
+            b[0, 0, 2] = 99;
+            b[0, 1, 1] = 88;
+
+            AssertArray(b, new double[,,] { { { 1, 1, 99 }, { 1, 88, 1 } } });
+
+            return;
+        }
+
+
+        [TestMethod]
         public void test_OneDimensionalArray()
         {
             double[] l = new double[] { 12.23f, 13.32f, 100f, 36.32f };
@@ -414,9 +453,9 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_checkerboard_1()
         {
-            var x = np.ones(new shape(3, 3));
+            var x = np.ones((3, 3));
             print("Checkerboard pattern:");
-            x = np.zeros(new shape(8, 8), dtype: np.Int32);
+            x = np.zeros((8, 8), dtype: np.Int32);
             x["1::2", "::2"] = 1;
             x["::2", "1::2"] = 1;
             print(x);
