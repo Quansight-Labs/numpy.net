@@ -266,8 +266,7 @@ namespace NumpyDotNet {
 
                 if (t.IsArray)
                 {
-                    dynamic arr = src;
-                    result = np.array(new VoidPtr(arr), null);
+                    result = asanyarray(src);
                 }
 
                 if (src is ScalarGeneric)
