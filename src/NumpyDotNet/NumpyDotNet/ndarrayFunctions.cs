@@ -474,7 +474,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of uninitialized (arbitrary) data of the given shape, dtype, and order. Object arrays will be initialized to None.</returns>
-        public static ndarray empty(shape shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray empty(object shape, dtype dtype = null, order order = order.DEFAULT)
         {
             return zeros(shape, dtype, order);
         }
@@ -582,7 +582,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of zeros with the given shape, dtype, and order.</returns>
-        public static ndarray zeros(shape shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray zeros(object shape, dtype dtype = null, order order = order.DEFAULT)
         {
             if (shape == null)
             {
@@ -656,11 +656,21 @@ namespace NumpyDotNet
             return CommonFill(dtype, shape, fill_value, ConvertOrder(src, order), subok, 0);
         }
 
-        private static ndarray CommonFill(dtype dtype, shape shape, object FillValue, NPY_ORDER order, bool subok, int ndmin)
+        private static ndarray CommonFill(dtype dtype, object oshape, object FillValue, NPY_ORDER order, bool subok, int ndmin)
         {
             if (dtype == null)
             {
                 dtype = np.Float64;
+            }
+
+            shape shape = null;
+            if (oshape is shape)
+            {
+                shape = oshape as shape;
+            }
+            else if ((shape = NumpyExtensions.ConvertTupleToShape(oshape)) == null)
+            {
+                throw new Exception("Unable to convert shape object");
             }
 
             long ArrayLen = CalculateNewShapeSize(shape);
@@ -679,6 +689,8 @@ namespace NumpyDotNet
             var ndArray = array(a, dtype, false, order, subok, ndmin).reshape(shape);
             return ndArray;
         }
+
+   
 
 
         #endregion
