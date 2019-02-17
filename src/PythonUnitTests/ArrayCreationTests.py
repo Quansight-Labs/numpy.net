@@ -8,6 +8,14 @@ class ArrayCreationTests(unittest.TestCase):
     def test_PrintVersionString(self):
         print(np.__version__)
 
+    def test_empty(self):
+
+        a = np.empty((2,3))
+        print(a)
+
+        b = np.empty((2,4), np.int32)
+        print(b)
+
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
         print("Original List:",l)

@@ -61,7 +61,18 @@ namespace NumpyDotNetTests
             print(np.__version__);
         }
 
-     
+        [TestMethod]
+        public void test_empty()
+        {
+            var a = np.empty((2, 3));
+            AssertShape(a, 2, 3);
+            Assert.AreEqual(a.Dtype.TypeNum, NPY_TYPES.NPY_DOUBLE);
+
+            var b = np.empty((2, 4), np.Int32);
+            AssertShape(b, 2, 4);
+            Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_INT32);
+        }
+
         [TestMethod]
         public void test_OneDimensionalArray()
         {
