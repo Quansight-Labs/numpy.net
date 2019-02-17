@@ -188,6 +188,45 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_full_like_1()
+        {
+            var a = new Int32[] { 1, 2, 3, 4, 5, 6 };
+            var b = np.full_like(a, 66, dtype: null);
+            b[2] = 99;
+
+            AssertArray(b, new Int32[] { 66, 66, 99, 66, 66, 66 });
+
+            return;
+
+        }
+
+        [TestMethod]
+        public void test_full_like_2()
+        {
+            var a = new double[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+            var b = np.full_like(a, 55);
+            b[1, 2] = 99;
+
+            AssertArray(b, new double[,] { { 55, 55, 55 }, { 55, 55, 99 } });
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_full_like_3()
+        {
+            var a = new double[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var b = np.full_like(a, 33);
+            b[0, 0, 2] = 99;
+            b[0, 1, 1] = 88;
+
+            AssertArray(b, new double[,,] { { { 33, 33, 99 }, { 33, 88, 33 } } });
+
+            return;
+        }
+
+
 
         [TestMethod]
         public void test_OneDimensionalArray()
@@ -312,7 +351,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_full_1()
         {
-            var x = np.full(new shape(10), 99);
+            var x = np.full((10), 99);
             print(x);
             print("Update sixth value to 11");
             x[6] = 11;

@@ -67,6 +67,11 @@ namespace NumpyDotNet
         {
             var T = oshape.GetType();
 
+            if (oshape is Int32)
+            {
+                return new shape((Int32)oshape);
+            }
+
             if (oshape is ValueTuple<int>)
             {
                 ValueTuple<int> T1 = (ValueTuple<int>)oshape;
