@@ -188,6 +188,15 @@ class ArrayCreationTests(unittest.TestCase):
  
         y = np.require(x, dtype=np.float32, requirements=['A', 'O', 'W', 'F'])
         print(y.flags)
+
+    def test_asmatrix_1(self):
+
+        x = np.array([[1, 2], [3, 4]])
+        m = np.asmatrix(x)
+
+        x[0,0] = 5
+
+        print(m)
   
  
     def test_OneDimensionalArray(self):

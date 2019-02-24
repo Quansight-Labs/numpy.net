@@ -331,6 +331,22 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_asmatrix_1()
+        {
+            var x = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
+            var m = np.asmatrix(x);
+
+            x[0, 0] = 5;
+
+            AssertArray(m, new int[,] { { 5, 2 }, { 3, 4 } });
+
+            print(m);
+
+            return;
+        }
+
         [TestMethod]
         public void test_OneDimensionalArray()
         {
