@@ -347,6 +347,22 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_mat_1()
+        {
+  
+            return;
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_bmat_1()
+        {
+
+            return;
+        }
+
         [TestMethod]
         public void test_copy_1()
         {
@@ -420,6 +436,28 @@ namespace NumpyDotNetTests
             AssertArray(c, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
             print(d);
         }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_meshgrid_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_mgrid_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_ogrid_1()
+        {
+
+        }
+
 
         [TestMethod]
         public void test_OneDimensionalArray()

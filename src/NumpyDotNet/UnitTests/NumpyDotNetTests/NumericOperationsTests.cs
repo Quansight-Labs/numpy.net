@@ -1450,6 +1450,13 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_vander_1()
+        {
+
+        }
+
         [TestMethod]
         public void test_ediff1d_1()
         {
