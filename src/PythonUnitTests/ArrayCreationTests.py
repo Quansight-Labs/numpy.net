@@ -210,6 +210,41 @@ class ArrayCreationTests(unittest.TestCase):
         #True
         print(x[0] == z[0])
         #False
+
+        
+    def test_linspace_1(self):
+        a = np.linspace(2.0, 3.0, num=5)
+        print(a)
+
+        b = np.linspace(2.0, 3.0, num=5, endpoint=False)
+        print(b)
+
+        c = np.linspace(2.0, 3.0, num=5, retstep=True)
+        print(c)
+
+    def test_logspace_1(self):
+        a = np.logspace(2.0, 3.0, num=4)
+        print(a)
+
+        b = np.logspace(2.0, 3.0, num=4, endpoint=False)
+        print(b)
+
+        c = np.logspace(2.0, 3.0, num=4, base=2.0)
+        print(c)
+
+
+    def test_geomspace_1(self):
+        a = np.geomspace(1, 1000, num=4)
+        print(a)
+
+        b = np.geomspace(1, 1000, num=3, endpoint=False)
+        print(b)
+
+        c = np.geomspace(1, 1000, num=4, endpoint=False)
+        print(c)
+
+        d = np.geomspace(1, 256, num=9)
+        print(d)
  
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]

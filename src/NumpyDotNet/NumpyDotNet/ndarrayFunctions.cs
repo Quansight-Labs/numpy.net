@@ -335,18 +335,18 @@ namespace NumpyDotNet
 
         #endregion
 
-            #region arange
-            /// <summary>
-            /// Return evenly spaced values within a given interval.
-            /// </summary>
-            /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
-            /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
-            /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
-            /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
-            /// <returns>Array of evenly spaced values</returns>
-            /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
-            /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
-            public static ndarray arange(Int64 start, Int64? stop = null, Int64? step = null, dtype dtype = null)
+        #region arange
+        /// <summary>
+        /// Return evenly spaced values within a given interval.
+        /// </summary>
+        /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
+        /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
+        /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
+        /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
+        /// <returns>Array of evenly spaced values</returns>
+        /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
+        /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
+        public static ndarray arange(Int64 start, Int64? stop = null, Int64? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
 
@@ -565,6 +565,45 @@ namespace NumpyDotNet
             }
             return result;
         }
+        #endregion
+
+        #region linspace
+
+        public static ndarray linspace(Int64 start, Int64? stop = null, int? num = null, bool endpoint = true, bool retstep = false, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+        public static ndarray linspace(double start, double? stop = null, int? num = null, bool endpoint = true, bool retstep = false, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region logspace
+
+        public static ndarray logspace(Int64 start, Int64? stop = null, int? num = null, bool endpoint = true, double _base = 10.0, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+        public static ndarray logspace(double start, double? stop = null, int? num = null, bool endpoint = true, double _base = 10.0, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region geomspace
+
+        public static ndarray geomspace(Int64 start, Int64? stop = null, int? num = null, bool endpoint = true, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+        public static ndarray geomspace(double start, double? stop = null, int? num = null, bool endpoint = true, dtype dtype = null, int? axis = null)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region ones and zeros

@@ -366,6 +366,61 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_linspace_1()
+        {
+            var a = np.linspace(2.0, 3.0, num : 5);
+            AssertArray(a, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
+            print(a);
+
+            var b = np.linspace(2.0, 3.0, num :5, endpoint: false);
+            AssertArray(b, new double[] { 2.0, 2.2, 2.4, 2.6, 2.8 });
+            print(b);
+
+            var c = np.linspace(2.0, 3.0, num : 5, retstep : true);
+            AssertArray(c, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
+            print(c);
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_logspace_1()
+        {
+            var a = np.logspace(2.0, 3.0, num: 4);
+            AssertArray(a, new double[] { 100.0, 215.443469, 464.15888336, 1000.0 });
+            print(a);
+
+            var b = np.logspace(2.0, 3.0, num: 4, endpoint: false);
+            AssertArray(b, new double[] { 100.0, 177.827941, 316.22776602, 562.34132519 });
+            print(b);
+
+            var c = np.logspace(2.0, 3.0, num: 4, _base:2.0);
+            AssertArray(c, new double[] { 4.0, 5.0396842, 6.34960421, 8.0 });
+            print(c);
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_geomspace_1()
+        {
+            var a = np.geomspace(1, 1000, num:4);
+            AssertArray(a, new double[] { 1.0,   10.0,  100.0, 1000.0 });
+            print(a);
+
+            var b = np.geomspace(1, 1000, num : 3, endpoint : false);
+            AssertArray(b, new double[] { 1.0,  10.0, 100.0 });
+            print(b);
+
+            var c = np.geomspace(1, 1000, num : 4, endpoint : false);
+            AssertArray(c, new double[] { 1.0, 5.62341325, 31.6227766, 177.827941 });
+            print(c);
+
+            var d = np.geomspace(1, 256, num : 9);
+            AssertArray(c, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
+            print(d);
+        }
+
         [TestMethod]
         public void test_OneDimensionalArray()
         {
