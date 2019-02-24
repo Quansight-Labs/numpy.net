@@ -169,6 +169,17 @@ class ArrayCreationTests(unittest.TestCase):
         print(y)
 
         print(x.flags['C_CONTIGUOUS'])
+        print(y.flags['C_CONTIGUOUS'])
+ 
+
+    def test_asfortranarray_1(self):
+        
+        x = np.arange(6).reshape(2,3)
+        y = np.asfortranarray(x, dtype=np.float32)
+        print(y)
+
+        print(x.flags['F_CONTIGUOUS'])
+        print(y.flags['F_CONTIGUOUS'])
  
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]

@@ -981,10 +981,48 @@ namespace NumpyDotNet
         }
         #endregion
 
-      
-        #region where
+        #region asfortranarray
 
-        public static object where(object condition,  ndarray x = null, ndarray y = null)
+        public static ndarray asfortranarray(ndarray a, dtype dtype = null)
+        {
+            // Return an array laid out in Fortran order in memory.
+
+            // Parameters
+            // ----------
+            // a: array_like
+            //    Input array.
+            //dtype : str or dtype object, optional
+            //     By default, the data-type is inferred from the input data.
+
+            // Returns
+            // ------ -
+            // out : ndarray
+            //     The input `a` in Fortran, or column-major, order.
+
+            // See Also
+            // --------
+            // ascontiguousarray : Convert input to a contiguous(C order) array.
+            //asanyarray : Convert input to an ndarray with either row or
+            //     column - major memory order.
+            // require: Return an ndarray that satisfies requirements.
+            // ndarray.flags : Information about the memory layout of the array.
+
+            // Examples
+            // --------
+            // >>> x = np.arange(6).reshape(2, 3)
+            // >>> y = np.asfortranarray(x)
+            // >>> x.flags['F_CONTIGUOUS']
+            // False
+            // >>> y.flags['F_CONTIGUOUS']
+            // True
+
+            return array(a, dtype, copy: false, order: NPY_ORDER.NPY_FORTRANORDER, ndmin: 1);
+        }
+        #endregion
+
+            #region where
+
+            public static object where(object condition,  ndarray x = null, ndarray y = null)
         {
             int missing = 0;
             missing += x != null ? 0 : 1;
