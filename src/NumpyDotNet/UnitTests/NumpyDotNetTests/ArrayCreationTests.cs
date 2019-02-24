@@ -305,6 +305,32 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] // need to fully implement np.require.
+        [TestMethod]
+        public void test_require_1()
+        {
+            var x = np.arange(6).reshape((2, 3));
+            Assert.AreEqual(x.flags.c_contiguous, true);
+            Assert.AreEqual(x.flags.f_contiguous, false);
+            Assert.AreEqual(x.flags.owndata, false);
+            Assert.AreEqual(x.flags.writeable, true);
+            Assert.AreEqual(x.flags.aligned, true);
+            //Assert.AreEqual(x.flags.writebackifcopy, false);
+            Assert.AreEqual(x.flags.updateifcopy, false);
+
+            var y = np.require(x, np.Float32, new char[] { 'A', 'O', 'W', 'F' });
+
+            Assert.AreEqual(y.flags.c_contiguous, false);
+            Assert.AreEqual(y.flags.f_contiguous, true);
+            Assert.AreEqual(y.flags.owndata, true);
+            Assert.AreEqual(y.flags.writeable, true);
+            Assert.AreEqual(y.flags.aligned, true);
+            //Assert.AreEqual(y.flags.writebackifcopy, false);
+            Assert.AreEqual(y.flags.updateifcopy, false);
+
+            return;
+        }
+
         [TestMethod]
         public void test_OneDimensionalArray()
         {

@@ -180,6 +180,15 @@ class ArrayCreationTests(unittest.TestCase):
 
         print(x.flags['F_CONTIGUOUS'])
         print(y.flags['F_CONTIGUOUS'])
+
+    def test_require_1(self):
+
+        x = np.arange(6).reshape(2,3)
+        print(x.flags)
+ 
+        y = np.require(x, dtype=np.float32, requirements=['A', 'O', 'W', 'F'])
+        print(y.flags)
+  
  
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
