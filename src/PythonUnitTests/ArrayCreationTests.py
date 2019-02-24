@@ -136,6 +136,18 @@ class ArrayCreationTests(unittest.TestCase):
         print(b)
         return
 
+    def test_asarray_1(self):
+        
+        a = [1, 2]
+        b = np.asarray(a)
+        print(b)
+
+        c = np.array([1, 2], dtype=np.float32)
+        d = np.asarray(a, dtype=np.float32)
+        print(d)
+
+        e = np.asarray(a, dtype=np.float64)
+        print(e)
 
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
