@@ -243,13 +243,37 @@ namespace NumpyDotNetTests
             print(d);
 
             var e = np.asarray(a, dtype : np.Float64);
-            AssertArray(c, new double[] { 1.0, 2.0 });
+            AssertArray(e, new double[] { 1.0, 2.0 });
 
             print(e);
 
             return;
         }
 
+
+        [TestMethod]
+        public void test_asanyarray_1()
+        {
+            var a = new int[] { 1, 2 };
+            var b = np.asanyarray(a);
+
+            AssertArray(b, new int[] { 1, 2 });
+            print(b);
+
+            var c = np.array(new float[] { 1.0f, 2.0f }, dtype: np.Float32);
+            var d = np.asanyarray(c, dtype: np.Float32);
+
+            c[0] = 3.0f;
+            AssertArray(d, new float[] { 3.0f, 2.0f });
+            print(d);
+
+            var e = np.asanyarray(a, dtype: np.Float64);
+            AssertArray(e, new double[] { 1.0, 2.0 });
+
+            print(e);
+
+            return;
+        }
 
         [TestMethod]
         public void test_OneDimensionalArray()

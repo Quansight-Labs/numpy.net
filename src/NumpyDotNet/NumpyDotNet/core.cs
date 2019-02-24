@@ -52,7 +52,7 @@ namespace NumpyDotNet
             return m;
         }
 
-        public static ndarray asanyarray(object a, dtype dtype = null)
+        public static ndarray asanyarray(object a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
             //  Convert the input to a masked array, conserving subclasses.
 
@@ -104,6 +104,12 @@ namespace NumpyDotNet
             //    return a;
             //}
             //return masked_array(a, dtype: dtype, copy: false, keep_mask: true, sub_ok: true);
+
+            if (dtype != null)
+            {
+                return np.array(a, dtype, copy: false, order: order, subok: true);
+            }
+
             if (a is ndarray)
             {
                 return a as ndarray;
@@ -141,6 +147,7 @@ namespace NumpyDotNet
                     default:
                         throw new Exception("Number of dimensions is not supported");
                 }
+
                 return ndArrayFromMD(ssrc, type_num, ssrc.Rank);
             }
 
