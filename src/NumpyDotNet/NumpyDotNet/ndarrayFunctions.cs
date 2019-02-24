@@ -294,18 +294,59 @@ namespace NumpyDotNet
         }
         #endregion
 
-        #region arange
-        /// <summary>
-        /// Return evenly spaced values within a given interval.
-        /// </summary>
-        /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
-        /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
-        /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
-        /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
-        /// <returns>Array of evenly spaced values</returns>
-        /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
-        /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
-        public static ndarray arange(Int64 start, Int64? stop = null, Int64? step = null, dtype dtype = null)
+        #region ascontiguousarray
+
+        public static ndarray ascontiguousarray(object a, dtype dtype = null)
+        {
+            // Return a contiguous array in memory(C order).
+
+            // Parameters
+            // ----------
+            // a: array_like
+            //    Input array.
+            //dtype : str or dtype object, optional
+            //     Data - type of returned array.
+
+            //   Returns
+            //   ------ -
+            // out : ndarray
+            //     Contiguous array of same shape and content as `a`, with type `dtype`
+            //     if specified.
+
+            // See Also
+            // --------
+            // asfortranarray : Convert input to an ndarray with column - major
+            //                  memory order.
+            // require: Return an ndarray that satisfies requirements.
+            // ndarray.flags : Information about the memory layout of the array.
+
+            // Examples
+            // --------
+            // >>> x = np.arange(6).reshape(2, 3)
+            // >>> np.ascontiguousarray(x, dtype = np.float32)
+            // array([[0., 1., 2.],
+            //        [ 3.,  4.,  5.]], dtype=float32)
+            // >>> x.flags['C_CONTIGUOUS']
+            // True
+
+            return array(a, dtype, copy: false, order: NPY_ORDER.NPY_CORDER, ndmin : 1);
+
+        }
+
+        #endregion
+
+            #region arange
+            /// <summary>
+            /// Return evenly spaced values within a given interval.
+            /// </summary>
+            /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
+            /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
+            /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
+            /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
+            /// <returns>Array of evenly spaced values</returns>
+            /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
+            /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
+            public static ndarray arange(Int64 start, Int64? stop = null, Int64? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
 

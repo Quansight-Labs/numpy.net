@@ -143,12 +143,33 @@ class ArrayCreationTests(unittest.TestCase):
         print(b)
 
         c = np.array([1, 2], dtype=np.float32)
-        d = np.asarray(a, dtype=np.float32)
+        d = np.asarray(c, dtype=np.float32)
         print(d)
 
         e = np.asarray(a, dtype=np.float64)
         print(e)
 
+    def test_asanyarray_1(self):
+        
+        a = [1, 2]
+        b = np.asanyarray(a)
+        print(b)
+
+        c = np.array([1, 2], dtype=np.float32)
+        d = np.asanyarray(c, dtype=np.float32)
+        print(d)
+
+        e = np.asanyarray(c, dtype=np.float64)
+        print(e)
+
+    def test_ascontiguousarray_1(self):
+        
+        x = np.arange(6).reshape(2,3)
+        y = np.ascontiguousarray(x, dtype=np.float32)
+        print(y)
+
+        print(x.flags['C_CONTIGUOUS'])
+ 
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
         print("Original List:",l)

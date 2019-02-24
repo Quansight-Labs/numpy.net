@@ -276,6 +276,21 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ascontiguousarray_1()
+        {
+            var x = np.arange(6).reshape((2, 3));
+            var y = np.ascontiguousarray(x, dtype: np.Float32);
+
+            AssertArray(y, new float[,] { { 0f, 1f, 2f }, { 3f, 4f, 5 } });
+            print(y);
+
+            Assert.AreEqual(x.flags.c_contiguous, true);
+            Assert.AreEqual(y.flags.c_contiguous, true);
+
+            return;
+        }
+
+        [TestMethod]
         public void test_OneDimensionalArray()
         {
             double[] l = new double[] { 12.23f, 13.32f, 100f, 36.32f };
