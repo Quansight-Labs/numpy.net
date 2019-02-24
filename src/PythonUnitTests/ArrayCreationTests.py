@@ -198,6 +198,18 @@ class ArrayCreationTests(unittest.TestCase):
 
         print(m)
   
+
+    def test_copy_1(self):
+        x = np.array([1, 2, 3])
+        y = x
+        z = np.copy(x)
+        # Note that, when we modify x, y changes, but not z:
+
+        x[0] = 10
+        print(x[0] == y[0])
+        #True
+        print(x[0] == z[0])
+        #False
  
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]

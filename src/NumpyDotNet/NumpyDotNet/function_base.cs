@@ -570,7 +570,7 @@ namespace NumpyDotNet
         #endregion
 
         #region copy
-        public static ndarray copy(ndarray a, string order)
+        public static ndarray copy(ndarray a, order order = order.K)
         {
             /*
            Return an array copy of the given object.

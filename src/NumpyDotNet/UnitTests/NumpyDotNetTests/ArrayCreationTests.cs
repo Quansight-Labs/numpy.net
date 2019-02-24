@@ -348,6 +348,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_copy_1()
+        {
+            var x = np.array(new int[] { 1, 2, 3 });
+            var y = x;
+
+            var z = np.copy(x);
+
+            // Note that, when we modify x, y changes, but not z:
+
+            x[0] = 10;
+
+            Assert.AreEqual(10, y[0]);
+
+            Assert.AreEqual(1, z[0]);
+
+            return;
+        }
+
+        [TestMethod]
         public void test_OneDimensionalArray()
         {
             double[] l = new double[] { 12.23f, 13.32f, 100f, 36.32f };
