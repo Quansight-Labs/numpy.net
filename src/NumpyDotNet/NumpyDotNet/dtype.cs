@@ -407,7 +407,7 @@ namespace NumpyDotNet {
             get { return NpyDefs.IsNativeByteOrder(ByteOrder); }
         }
 
-        public byte Kind {
+        public char Kind {
             get {
                 return core.kind;
             }

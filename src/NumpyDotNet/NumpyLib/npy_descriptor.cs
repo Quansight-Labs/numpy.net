@@ -64,7 +64,7 @@ namespace NumpyLib
             this.type_num = type_num;
         }
 
-        public byte kind;              /* kind for this type */
+        public char kind;              /* kind for this type */
         public byte type;              /* unique-character representing this type */
         public char byteorder;         /*
                                  * '>' (big), '<' (little), '|'
