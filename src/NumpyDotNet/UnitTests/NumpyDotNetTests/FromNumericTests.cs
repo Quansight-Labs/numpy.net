@@ -180,7 +180,69 @@ namespace NumpyDotNetTests
             AssertArray(e, ExpectedDataE);
 
         }
-        
+
+        [TestMethod]
+        public void test_ravel_1()
+        {
+            var a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var b = np.ravel(a);
+            AssertArray(b, new int[] { 1, 2, 3, 4, 5, 6 });
+            print(b);
+
+            var c = a.reshape(-1);
+            AssertArray(c, new int[] { 1, 2, 3, 4, 5, 6 });
+            print(c);
+
+            var d = np.ravel(a, order: NPY_ORDER.NPY_FORTRANORDER);
+            AssertArray(d, new int[] { 1, 4, 2, 5, 3, 6 });
+            print(d);
+
+            // When order is 'A', it will preserve the array's 'C' or 'F' ordering:
+            var e = np.ravel(a.T);
+            AssertArray(e, new int[] { 1, 4, 2, 5, 3, 6 });
+            print(e);
+
+            var f = np.ravel(a.T, order: NPY_ORDER.NPY_ANYORDER);
+            AssertArray(f, new int[] { 1, 2, 3, 4, 5, 6 });
+            print(f);
+        }
+
+        [TestMethod]
+        public void test_ravel_2()
+        {
+            // When order is 'K', it will preserve orderings that are neither 'C' nor 'F', but won't reverse axes:
+
+            var a = np.arange(3)["::-1"] as ndarray;
+            AssertArray(a, new int[] { 2, 1, 0 });
+            print(a);
+
+            var b = a.ravel(order: NPY_ORDER.NPY_CORDER);
+            AssertArray(b, new int[] { 2, 1, 0 });
+            print(b);
+
+            var c = a.ravel(order : NPY_ORDER.NPY_ANYORDER);
+            AssertArray(c, new int[] { 2, 1, 0 });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_ravel_3()
+        {
+            var a = np.arange(12).reshape((2, 3, 2)).SwapAxes(1, 2);
+            AssertArray(a, new int[,,] { { { 0, 2, 4 }, { 1, 3, 5 } }, { { 6, 8, 10 }, { 7, 9, 11 } } } );
+
+            print(a);
+
+            var b = a.ravel(order: NPY_ORDER.NPY_CORDER);
+            AssertArray(b, new int[] { 0, 2, 4, 1, 3, 5, 6, 8, 10, 7, 9, 11 });
+            print(b);
+
+            var c = a.ravel(order: "K");
+            // AssertArray(c, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }); // todo: order K does not produce expected result
+            print(c);
+        }
+
+
         [TestMethod]
         public void test_choose_1()
         {

@@ -49,6 +49,48 @@ class FromNumericTests(unittest.TestCase):
         print("")
         print(np.reshape(np.ravel(a, order='F'), (2, 3), order='F'))
 
+    def test_ravel_1(self):
+        
+        a = np.array([[1, 2, 3], [4, 5, 6]])
+        b = np.ravel(a)
+        print(b)
+
+        c = a.reshape(-1)
+        print(c)
+
+        d = np.ravel(a, order='F')
+        print(d)
+
+        # When order is 'A', it will preserve the array's 'C' or 'F' ordering:
+        e = np.ravel(a.T)
+        print(e)
+
+        f = np.ravel(a.T, order='A');
+        print(f)
+
+    def test_ravel_2(self):
+        # When order is 'K', it will preserve orderings that are neither 'C' nor 'F', but won't reverse axes:
+
+        a = np.arange(3)[::-1];
+        print(a)
+
+        b = a.ravel(order='C')
+        print(b)
+
+        c = a.ravel(order='K')
+        print(c)
+
+    def test_ravel_3(self):
+
+        a = np.arange(12).reshape(2,3,2).swapaxes(1,2);
+        print(a)
+
+        b = a.ravel(order='C')
+        print(b)
+
+        c = a.ravel(order='K')
+        print(c)
+
     def test_choose_1(self):
 
         choices = [[0, 1, 2, 3], [10, 11, 12, 13], [20, 21, 22, 23], [30, 31, 32, 33]]
