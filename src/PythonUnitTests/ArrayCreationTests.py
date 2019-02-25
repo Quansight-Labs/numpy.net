@@ -1024,7 +1024,24 @@ class ArrayCreationTests(unittest.TestCase):
 
         for zz in x.flat:
             print(zz);
-            
+ 
+    def test_flat_2(self):
+
+        x = np.arange(1, 7).reshape(2, 3)
+        print(x)
+
+        print(x.flat[3])
+
+        print(x.T)
+        print(x.T.flat[3])
+
+        x.flat = 3
+        print(x)
+
+        x.flat[[1,4]] = 1
+        print(x)
+
+
     def test_intersect1d_1(self):
 
         a = np.array([ 1, 3, 4, 3 ])

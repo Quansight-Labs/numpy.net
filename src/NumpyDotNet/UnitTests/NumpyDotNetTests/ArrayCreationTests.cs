@@ -2365,6 +2365,27 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_flat_2()
+        {
+            var x = np.arange(1, 7).reshape((2, 3));
+            print(x);
+
+            Assert.AreEqual(4, x.Flat[3]);
+            print(x.Flat[3]);
+
+            print(x.T);
+            //Assert.AreEqual(5, x.Flat[3]);
+            //print(x.T.Flat[3]);
+
+            x.flat = 3;
+            AssertArray(x, new int[,] { {3,3,3 }, {3,3,3 } });
+            print(x);
+
+            x.Flat[new int[] { 1, 4 }] = 1;
+            AssertArray(x, new int[,] { { 3, 1, 3 }, { 3, 1, 3 } });
+            print(x);
+        }
 
         [TestMethod]
         public void test_intersect1d_1()
