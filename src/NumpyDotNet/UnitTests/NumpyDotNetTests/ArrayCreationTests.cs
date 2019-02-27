@@ -2375,11 +2375,11 @@ namespace NumpyDotNetTests
             print(x.Flat[3]);
 
             print(x.T);
-            //Assert.AreEqual(5, x.Flat[3]);
-            //print(x.T.Flat[3]);
+            Assert.AreEqual(5, x.T.Flat[3]);
+            print(x.T.Flat[3]);
 
             x.flat = 3;
-            AssertArray(x, new int[,] { {3,3,3 }, {3,3,3 } });
+            AssertArray(x, new int[,] { { 3, 3, 3 }, { 3, 3, 3 } });
             print(x);
 
             x.Flat[new int[] { 1, 4 }] = 1;

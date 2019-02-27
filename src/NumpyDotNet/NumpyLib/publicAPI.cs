@@ -477,23 +477,66 @@ namespace NumpyLib
             return numpyinternal.NpyDataMem_NEW(type_num, size, false);
         }
 
+        private class NpyArrayOffsetHelper
+        {
+            NpyArray srcArray;
+            long index;
 
+            public NpyArrayOffsetHelper(NpyArray srcArray)
+            {
+                this.srcArray = srcArray;
+                this.index = 0;
+            }
+
+            public long CalculateOffset(long index)
+            {
+                this.index = index;
+                return CalculateOffset(srcArray, 0, 0);
+            }
+
+            private long CalculateOffset(NpyArray arr, int dimIdx, long offset)
+            {
+                long CalculatedIndex = 0;
+
+                //Console.WriteLine(string.Format("dimIdx:{0}, offset:{1}, arr.nd:{2}", dimIdx, offset, arr.nd));
+
+                if (dimIdx == arr.nd)
+                {
+                    //Console.WriteLine("Found offset:{0}, {1}", offset, offset / arr.ItemSize);
+                    index--;
+                    return (offset / arr.ItemSize);
+                }
+                else
+                {
+                    for (int i = 0; i < arr.dimensions[dimIdx]; i++)
+                    {
+                        long lsrc_offset = offset + arr.strides[dimIdx] * i;
+                        CalculatedIndex = CalculateOffset(arr, dimIdx + 1, lsrc_offset);
+                        if (index < 0)
+                        {
+                            return CalculatedIndex;
+                        }
+                    }
+                }
+                return CalculatedIndex;
+            }
+
+        }
 
         public static object GetItem(NpyArray arr, npy_intp index)
         {
-            npy_intp offsetMultiplier = arr.strides != null ? arr.strides[arr.strides.Length - 1] : arr.ItemSize;
+            var offsetHelper = new NpyArrayOffsetHelper(arr);
+            long CalculatedOffset = offsetHelper.CalculateOffset(index);
 
-            //offsetMultiplier = arr.ItemSize;
-
-            return arr.descr.f.getitem(index * offsetMultiplier, arr);
+            return arr.descr.f.getitem(CalculatedOffset * arr.ItemSize, arr);
         }
 
         public static npy_intp SetItem(NpyArray arr, npy_intp index, object value)
         {
-            npy_intp offsetMultiplier = arr.strides != null ? arr.strides[arr.strides.Length-1] : arr.ItemSize;
+            var offsetHelper = new NpyArrayOffsetHelper(arr);
+            long CalculatedOffset = offsetHelper.CalculateOffset(index);
 
-            //offsetMultiplier = arr.ItemSize;
-            return arr.descr.f.setitem(index * offsetMultiplier, value, arr);
+            return arr.descr.f.setitem(CalculatedOffset * arr.ItemSize, value, arr);
         }
 
         public static npy_intp SetIndex(VoidPtr obj, npy_intp index, object value)
