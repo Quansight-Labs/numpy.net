@@ -440,6 +440,29 @@ class ArrayCreationTests(unittest.TestCase):
       y = x.flatten(order='K')
       print(y)
 
+    def test_ndarray_moveaxis(self):
+
+        x = np.zeros((3, 4, 5))
+        b = np.moveaxis(x, 0, -1).shape
+        print(b)
+
+        c = np.moveaxis(x, -1, 0).shape
+        print(c)
+
+        #These all achieve the same result:
+        d = np.transpose(x).shape
+        print(d)
+    
+        e = np.swapaxes(x, 0, -1).shape
+        print(e)
+
+        f = np.moveaxis(x, [0, 1], [-1, -2]).shape
+        print(f)
+
+        e = np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
+        print(e)
+
+
     def test_ndarray_byteswap(self):
       x = np.arange(32,64, dtype= np.int16)
       print(x)

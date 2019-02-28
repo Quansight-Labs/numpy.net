@@ -40,7 +40,7 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-        public static ndarray moveaxis(ndarray a, dynamic source, dynamic destination)
+        public static ndarray moveaxis(ndarray a, object source, object destination)
         {
             // Move axes of an array to new positions.
 
@@ -106,10 +106,10 @@ namespace NumpyDotNet
 
             source = normalize_axis_tuple(source, a.ndim, "source");
             destination = normalize_axis_tuple(destination, a.ndim, "destination");
-            if (len(source) != len(destination))
-            {
-                throw new Exception("`source` and `destination` arguments must have the same number of elements");
-            }
+            //if (len(source) != len(destination))
+            //{
+            //    throw new Exception("`source` and `destination` arguments must have the same number of elements");
+            //}
 
             return null;
         }

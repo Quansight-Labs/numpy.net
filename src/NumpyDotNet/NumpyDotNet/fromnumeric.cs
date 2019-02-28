@@ -529,7 +529,7 @@ namespace NumpyDotNet
 
         #region transpose
 
-        public static ndarray transpose(ndarray a, IEnumerable<npy_intp> axes)
+        public static ndarray transpose(ndarray a, IEnumerable<npy_intp> axes = null)
         {
             /*
             Permute the dimensions of an array.

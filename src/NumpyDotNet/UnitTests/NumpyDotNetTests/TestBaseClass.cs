@@ -132,29 +132,48 @@ namespace NumpyDotNetTests
 
         internal void AssertShape(ndarray a, int s0)
         {
-            Assert.AreEqual(a.shape.iDims.Length, 1);
-            Assert.AreEqual(a.shape.iDims[0], s0);
+            AssertShape(a.shape, s0);
         }
+        internal void AssertShape(shape s, int s0)
+        {
+            Assert.AreEqual(s.iDims.Length, 1);
+            Assert.AreEqual(s.iDims[0], s0);
+        }
+
         internal void AssertShape(ndarray a, int s0, int s1)
         {
-            Assert.AreEqual(a.shape.iDims.Length, 2);
-            Assert.AreEqual(a.shape.iDims[0], s0);
-            Assert.AreEqual(a.shape.iDims[1], s1);
+            AssertShape(a.shape, s0, s1);
         }
+        internal void AssertShape(shape s, int s0, int s1)
+        {
+            Assert.AreEqual(s.iDims.Length, 2);
+            Assert.AreEqual(s.iDims[0], s0);
+            Assert.AreEqual(s.iDims[1], s1);
+        }
+
         internal void AssertShape(ndarray a, int s0, int s1, int s2)
         {
-            Assert.AreEqual(a.shape.iDims.Length, 3);
-            Assert.AreEqual(a.shape.iDims[0], s0);
-            Assert.AreEqual(a.shape.iDims[1], s1);
-            Assert.AreEqual(a.shape.iDims[2], s2);
+            AssertShape(a.shape, s0, s1, s2);
         }
+        internal void AssertShape(shape s, int s0, int s1, int s2)
+        {
+            Assert.AreEqual(s.iDims.Length, 3);
+            Assert.AreEqual(s.iDims[0], s0);
+            Assert.AreEqual(s.iDims[1], s1);
+            Assert.AreEqual(s.iDims[2], s2);
+        }
+
         internal void AssertShape(ndarray a, int s0, int s1, int s2, int s3)
         {
-            Assert.AreEqual(a.shape.iDims.Length, 4);
-            Assert.AreEqual(a.shape.iDims[0], s0);
-            Assert.AreEqual(a.shape.iDims[1], s1);
-            Assert.AreEqual(a.shape.iDims[2], s2);
-            Assert.AreEqual(a.shape.iDims[3], s3);
+            AssertShape(a.shape, s0, s1, s2, s3);
+        }
+        internal void AssertShape(shape s, int s0, int s1, int s2, int s3)
+        {
+            Assert.AreEqual(s.iDims.Length, 4);
+            Assert.AreEqual(s.iDims[0], s0);
+            Assert.AreEqual(s.iDims[1], s1);
+            Assert.AreEqual(s.iDims[2], s2);
+            Assert.AreEqual(s.iDims[3], s3);
         }
 
         internal void AssertArrayNAN<T>(ndarray arrayData, T[] expectedData)
