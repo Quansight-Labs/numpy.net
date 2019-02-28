@@ -114,6 +114,51 @@ namespace NumpyDotNet
             return null;
         }
 
+        public static ndarray rollaxis(ndarray a, int axis, int start = 0)
+        {
+          //  Roll the specified axis backwards, until it lies in a given position.
+
+          //  This function continues to be supported for backward compatibility, but you
+          //  should prefer `moveaxis`. The `moveaxis` function was added in NumPy
+          //  1.11.
+
+          //  Parameters
+          //  ----------
+          //  a : ndarray
+          //      Input array.
+          //  axis : int
+          //      The axis to roll backwards.The positions of the other axes do not
+          //    change relative to one another.
+          //start : int, optional
+          //      The axis is rolled until it lies before this position.The default,
+          //      0, results in a "complete" roll.
+
+          //  Returns
+          //  ------ -
+          //  res : ndarray
+          //      For NumPy >= 1.10.0 a view of `a` is always returned. For earlier
+          //      NumPy versions a view of `a` is returned only if the order of the
+          //      axes is changed, otherwise the input array is returned.
+
+          //  See Also
+          //  --------
+          //  moveaxis : Move array axes to new positions.
+          //  roll : Roll the elements of an array by a number of positions along a
+          //      given axis.
+
+          //  Examples
+          //  --------
+          //  >>> a = np.ones((3, 4, 5, 6))
+          //  >>> np.rollaxis(a, 3, 1).shape
+          //  (3, 6, 4, 5)
+          //  >>> np.rollaxis(a, 2).shape
+          //  (5, 3, 4, 6)
+          //  >>> np.rollaxis(a, 1, 4).shape
+          //  (3, 5, 6, 4)
+
+            throw new NotImplementedException();
+        }
+
         private static dynamic normalize_axis_tuple(dynamic axis, int ndim, string argname = null, bool allow_duplicates = false)
         {
             //Normalizes an axis argument into a tuple of non - negative integer axes.

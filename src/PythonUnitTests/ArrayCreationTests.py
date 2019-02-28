@@ -459,9 +459,20 @@ class ArrayCreationTests(unittest.TestCase):
         f = np.moveaxis(x, [0, 1], [-1, -2]).shape
         print(f)
 
-        e = np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
-        print(e)
+        g = np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
+        print(g)
 
+    def test_ndarray_rollaxis(self):
+
+        a = np.ones((3,4,5,6))
+        b = np.rollaxis(a, 3, 1).shape
+        print(b)
+
+        c = np.rollaxis(a, 2).shape
+        print(c)
+
+        d = np.rollaxis(a, 1, 4).shape
+        print(d)
 
     def test_ndarray_byteswap(self):
       x = np.arange(32,64, dtype= np.int16)

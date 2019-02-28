@@ -925,6 +925,24 @@ namespace NumpyDotNetTests
             print(g);
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_ndarray_rollaxis()
+        {
+            var a = np.ones((3, 4, 5, 6));
+            var b = np.rollaxis(a, 3, 1).shape;
+            AssertShape(b, 3, 6, 4, 5);
+            print(b);
+
+            var c = np.rollaxis(a, 2).shape;
+            AssertShape(c, 5, 3, 4, 6);
+            print(c);
+
+            var d = np.rollaxis(a, 1, 4).shape;
+            AssertShape(c, 3, 5, 6, 4);
+            print(d);
+        }
+
         [TestMethod]
         public void test_ndarray_byteswap()
         {
