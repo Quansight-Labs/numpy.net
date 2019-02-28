@@ -664,7 +664,7 @@ namespace NumpyDotNetTests
             print(x);
             print(x.shape);
 
-            var y = np.transpose(x, new shape(1, 2, 3, 0));
+            var y = np.transpose(x, new long[] { 1, 2, 3, 0 });
 
             print("Y");
             print(y);
@@ -716,7 +716,7 @@ namespace NumpyDotNetTests
             print(x);
             print(x.shape);
 
-            var y = np.transpose(x, new shape(3, 2, 1, 0));
+            var y = np.transpose(x, new long[] { 3, 2, 1, 0 });
 
             print("Y");
             print(y);
