@@ -443,6 +443,44 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
+    def test_bitwise_not(self):
+
+        a = np.bitwise_not(13)
+        print(a)
+
+        b = np.bitwise_not(31)
+        print(b)
+
+        c = np.bitwise_not([31,3])
+        print(c)
+
+        d = np.bitwise_not([31,3])
+        print(d)
+
+        e = np.bitwise_not([True, False])
+        print(e)
+
+        return
+
+    def test_invert(self):
+
+        a = np.invert(13)
+        print(a)
+
+        b = np.invert(31)
+        print(b)
+
+        c = np.invert([31,3])
+        print(c)
+
+        d = np.invert([31,3])
+        print(d)
+
+        e = np.invert([True, False])
+        print(e)
+
+        return
+
     def test_right_shift(self):
 
         x = np.arange(1023, 1039, dtype= np.uint32).reshape(2, -1)

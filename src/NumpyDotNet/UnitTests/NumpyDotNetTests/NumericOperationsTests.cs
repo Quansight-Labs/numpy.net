@@ -957,8 +957,58 @@ namespace NumpyDotNetTests
             print(e);
 
             return;
+        }
 
+        [TestMethod]
+        public void test_bitwise_not()
+        {
+            var a = np.bitwise_not(13);
+            Assert.AreEqual(-14, a.GetItem(0));
+            print(a);
 
+            var b = np.bitwise_not(31);
+            Assert.AreEqual(-32, b.GetItem(0));
+            print(b);
+
+            var c = np.bitwise_not(new int[] { 31, 3 });
+            AssertArray(c, new int[] { -32, -4 });
+            print(c);
+
+            var d = np.bitwise_not(new int[] { 31, 3 });
+            AssertArray(d, new int[] { -32, -4 });
+            print(d);
+
+            var e = np.bitwise_not(new bool[] { true, false });
+            AssertArray(e, new bool[] { false, true });
+            print(e);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_invert()
+        {
+            var a = np.invert(13);
+            Assert.AreEqual(-14, a.GetItem(0));
+            print(a);
+
+            var b = np.invert(31);
+            Assert.AreEqual(-32, b.GetItem(0));
+            print(b);
+
+            var c = np.invert(new int[] { 31, 3 });
+            AssertArray(c, new int[] { -32, -4 });
+            print(c);
+
+            var d = np.invert(new int[] { 31, 3 });
+            AssertArray(d, new int[] { -32, -4 });
+            print(d);
+
+            var e = np.invert(new bool[] { true, false });
+            AssertArray(e, new bool[] { false, true });
+            print(e);
+
+            return;
         }
 
         [TestMethod]

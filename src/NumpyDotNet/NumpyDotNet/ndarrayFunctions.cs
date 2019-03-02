@@ -1417,6 +1417,21 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region bitwise_not
+        public static ndarray bitwise_not(object input)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_invert, 0, false);
+        }
+         #endregion
+
+        #region invert
+        public static ndarray invert(object input)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_invert, 0, false);
+        }
+  
+        #endregion
+
         #region right_shift
         public static ndarray right_shift(ndarray input, int shiftvalue)
         {
