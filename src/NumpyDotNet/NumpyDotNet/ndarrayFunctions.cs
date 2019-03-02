@@ -1385,24 +1385,24 @@ namespace NumpyDotNet
         #endregion
  
         #region bitwise_and
-        public static ndarray bitwise_and(ndarray input, int andvalue)
+        public static ndarray bitwise_and(object input, int andvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_and, andvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_and, andvalue, false);
         }
-        public static ndarray bitwise_and(ndarray input, ndarray andvalue)
+        public static ndarray bitwise_and(object input, object andvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_and, andvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_and, asanyarray(andvalue), false);
         }
         #endregion
 
         #region bitwise_or
-        public static ndarray bitwise_or(ndarray input, int orvalue)
+        public static ndarray bitwise_or(object input, int orvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, orvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_or, orvalue, false);
         }
-        public static ndarray bitwise_or(ndarray input, ndarray orvalue)
+        public static ndarray bitwise_or(object input, object orvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, orvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_or, asanyarray(orvalue), false);
         }
         #endregion
 
