@@ -424,6 +424,25 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
+    def test_bitwise_xor(self):
+
+        a = np.bitwise_xor(13, 17)
+        print(a)
+
+        b = np.bitwise_xor(31, 5)
+        print(b)
+
+        c = np.bitwise_xor([31,3], 5)
+        print(c)
+
+        d = np.bitwise_xor([31,3], [5,6])
+        print(d)
+
+        e = np.bitwise_xor([True, True], [False, True])
+        print(e)
+
+        return
+
     def test_right_shift(self):
 
         x = np.arange(1023, 1039, dtype= np.uint32).reshape(2, -1)

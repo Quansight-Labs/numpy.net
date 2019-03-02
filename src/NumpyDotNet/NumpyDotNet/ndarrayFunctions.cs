@@ -1396,13 +1396,24 @@ namespace NumpyDotNet
         #endregion
 
         #region bitwise_or
-        public static ndarray bitwise_or(ndarray input, int andvalue)
+        public static ndarray bitwise_or(ndarray input, int orvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, andvalue, false);
+            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, orvalue, false);
         }
-        public static ndarray bitwise_or(ndarray input, ndarray andvalue)
+        public static ndarray bitwise_or(ndarray input, ndarray orvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, andvalue, false);
+            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_bitwise_or, orvalue, false);
+        }
+        #endregion
+
+        #region bitwise_xor
+        public static ndarray bitwise_xor(object input, int xorvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_xor, xorvalue, false);
+        }
+        public static ndarray bitwise_xor(object input, object xorvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_bitwise_xor, asanyarray(xorvalue), false);
         }
         #endregion
 

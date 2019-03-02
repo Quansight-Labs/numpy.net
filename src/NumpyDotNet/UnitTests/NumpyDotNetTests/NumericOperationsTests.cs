@@ -934,6 +934,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_bitwise_xor()
+        {
+            var a = np.bitwise_xor(13, 17);
+            Assert.AreEqual(28, a.GetItem(0));
+            print(a);
+
+            var b = np.bitwise_xor(31, 5);
+            Assert.AreEqual(26, b.GetItem(0));
+            print(b);
+
+            var c = np.bitwise_xor(new int[] { 31, 3 }, 5);
+            AssertArray(c, new int[] { 26, 6 });
+            print(c);
+
+            var d = np.bitwise_xor(new int[] { 31, 3 }, new int[] { 5, 6 });
+            AssertArray(d, new int[] { 26, 5 });
+            print(d);
+
+            var e = np.bitwise_xor(new bool[] { true, true }, new bool[] { false, true });
+            AssertArray(e, new bool[] { true, false });
+            print(e);
+
+            return;
+
+
+        }
+
+        [TestMethod]
         public void test_right_shift()
         {
             var x = np.arange(1023, 1039, 1, dtype: np.UInt32).reshape(new shape(2, -1));
