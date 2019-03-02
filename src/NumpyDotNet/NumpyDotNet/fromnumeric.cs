@@ -324,7 +324,7 @@ namespace NumpyDotNet
 
         #region repeat
 
-        public static ndarray repeat(ndarray a, ndarray repeats, int? axis = null)
+        public static ndarray repeat(object a, object repeats, int? axis = null)
         {
             /*
             Repeat elements of an array.
@@ -366,30 +366,16 @@ namespace NumpyDotNet
                    [3, 4]])             
             */
 
+            var _a = asanyarray(a);
+            var _repeats = asanyarray(repeats);
+
             if (axis == null)
             {
-                a = a.flatten();
+                _a = _a.flatten();
             }
 
-            return NpyCoreApi.Repeat(a, repeats, axis.HasValue  ? axis.Value : -1);
+            return NpyCoreApi.Repeat(_a, _repeats, axis.HasValue  ? axis.Value : -1);
         }
-
-        public static ndarray repeat(object a, object repeats, int? axis = null)
-        {
-            ndarray aArray = np.FromAny(a);
-
-            ndarray aRepeats = (repeats as ndarray);
-            if (aRepeats == null)
-            {
-                aRepeats = np.FromAny(repeats, NpyCoreApi.DescrFromType(NpyDefs.NPY_INTP),
-                    0, 0, NPYARRAYFLAGS.NPY_CARRAY | NPYARRAYFLAGS.NPY_ENSURECOPY, null);
-            }
-
-            return np.repeat(aArray, aRepeats, axis);
-
-        }
-
-
 
         #endregion
 

@@ -167,7 +167,7 @@ namespace NumpyDotNet
         }
 
 
-        public static ndarray Repeat(this ndarray a, ndarray repeats, int? axis)
+        public static ndarray Repeat(this ndarray a, object repeats, int? axis)
         {
             return np.repeat(a, repeats, axis);
         }

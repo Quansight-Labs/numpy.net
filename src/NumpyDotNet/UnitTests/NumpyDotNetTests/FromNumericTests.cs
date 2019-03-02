@@ -341,7 +341,7 @@ namespace NumpyDotNetTests
         public void test_repeat_1()
         {
             ndarray x = np.array(new Int32[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
-            ndarray y = np.array(new Int32[] { 2 });
+            var y = new Int32[] { 2 };
 
             ndarray z = np.repeat(x, y);
             print(z);
