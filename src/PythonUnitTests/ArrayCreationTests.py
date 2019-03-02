@@ -181,6 +181,18 @@ class ArrayCreationTests(unittest.TestCase):
         print(x.flags['F_CONTIGUOUS'])
         print(y.flags['F_CONTIGUOUS'])
 
+    def test_asfarray_1(self):
+
+        a = np.asfarray([2, 3])
+        print(a)
+
+        b = np.asfarray([2, 3], dtype='float')
+        print(b)
+
+        c = np.asfarray([2, 3], dtype='int8')
+        print(c)
+
+
     def test_require_1(self):
 
         x = np.arange(6).reshape(2,3)

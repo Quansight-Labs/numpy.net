@@ -305,6 +305,14 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_asfarray_1()
+        {
+  
+            return;
+        }
+
         [Ignore] // need to fully implement np.require.
         [TestMethod]
         public void test_require_1()
