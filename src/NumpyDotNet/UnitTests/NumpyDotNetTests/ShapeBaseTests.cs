@@ -608,5 +608,26 @@ namespace NumpyDotNetTests
             print(e);
         }
 
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_apply_along_axis_1()
+        {
+
+        }
+
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_apply_along_axis_2()
+        {
+
+        }
+
+        [Ignore] // big task to port
+        [TestMethod]
+        public void test_apply_along_axis_3()
+        {
+
+        }
+
     }
 }

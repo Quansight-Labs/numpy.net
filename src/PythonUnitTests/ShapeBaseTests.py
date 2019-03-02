@@ -340,6 +340,31 @@ class Test_ShapeBaseTests(unittest.TestCase):
         e = np.tile(d,(4,1))
         print(e)
 
+    def test_apply_along_axis_1(self):
+
+        def my_func(a):
+            #Average first and last element of a 1-D array"""
+            return (a[0] + a[-1]) * 0.5
+
+        b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+        c = np.apply_along_axis(my_func, 0, b)
+        print(c)
+
+        d = np.apply_along_axis(my_func, 1, b);
+        print(d)
+
+    def test_apply_along_axis_2(self):
+
+        b = np.array([[8,1,7], [4,3,9], [5,2,6]])
+        c = np.apply_along_axis(sorted, 1, b)
+        print(c)
+
+    def test_apply_along_axis_3(self):
+
+        b = np.array([[1,2,3], [4,5,6], [7,8,9]])
+        c = np.apply_along_axis(np.diag, -1, b)
+        print(c)
+
 
 if __name__ == '__main__':
     unittest.main()
