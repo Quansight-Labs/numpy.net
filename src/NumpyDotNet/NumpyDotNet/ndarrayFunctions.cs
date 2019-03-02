@@ -1433,9 +1433,14 @@ namespace NumpyDotNet
         #endregion
 
         #region right_shift
-        public static ndarray right_shift(ndarray input, int shiftvalue)
+        public static ndarray right_shift(object input, int shiftvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_right_shift, shiftvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_right_shift, shiftvalue, false);
+        }
+
+        public static ndarray right_shift(object input, object shiftvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_right_shift, asanyarray(shiftvalue), false);
         }
         #endregion
 

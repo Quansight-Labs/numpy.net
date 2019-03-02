@@ -493,6 +493,11 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
+    def test_right_shift_2(self):
+
+        a = np.right_shift([10], [1,2,3]);
+        print(a)
+
     def test_left_shift(self):
 
         x = np.arange(1023, 1039, dtype= np.uint32).reshape(2, -1)
@@ -504,6 +509,11 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(z)
 
         return
+
+    def test_left_shift_2(self):
+
+        a = np.left_shift([10], [1,2,3]);
+        print(a)
 
     def test_NAN(self):
 

@@ -1030,7 +1030,15 @@ namespace NumpyDotNetTests
 
             AssertArray(y, ExpectedData);
             AssertArray(z, ExpectedData);
+        }
 
+        [Ignore] // does not produced broadcasted results
+        [TestMethod]
+        public void test_right_shift_2()
+        {
+            var a = np.right_shift(new int[] { 10 }, new int[] { 1, 2, 3 });
+            AssertArray(a, new int[] { 5, 2, 1 });
+            print(a);
         }
 
         [TestMethod]
@@ -1052,6 +1060,15 @@ namespace NumpyDotNetTests
 
             AssertArray(y, ExpectedData);
             AssertArray(z, ExpectedData);
+        }
+
+        [Ignore] // does not produced broadcasted results
+        [TestMethod]
+        public void test_left_shift_2()
+        {
+            var a = np.right_shift(new int[] { 10 }, new int[] { 1, 2, 3 });
+            AssertArray(a, new int[] { 20, 40, 80 });
+            print(a);
         }
 
         [TestMethod]
