@@ -62,6 +62,15 @@
     <Compile Include="StrideTricksTests.cs" />
     <Compile Include="IndexTricksTests.cs" />
     <Compile Include="TwoDimBaseTests.cs" />
+    <Compile Include="MaskedArrays.cs" />
+    <Compile Include="MatrixLibraryTests.cs" />
+    <Compile Include="FFTTests.cs" />
+    <Compile Include="FinancialFunctionsTests.cs" />
+    <Compile Include="LinearAlgebraTests.cs" />
+    <Compile Include="MathematicalFunctionsTests.cs" />
+    <Compile Include="PaddingTests.cs" />
+    <Compile Include="PolynomialTests.cs" />
+    <Compile Include="RandomSamplingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NumpyDotNet\NumpyDotNet.csproj">
