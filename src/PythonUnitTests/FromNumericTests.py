@@ -35,6 +35,8 @@ class FromNumericTests(unittest.TestCase):
         print(e.shape)
         print(e.strides)
 
+    def test_take_along_axis_1(self):
+        return;
 
     def test_reshape_1(self):
         a = np.arange(6).reshape((3, 2))
@@ -135,6 +137,13 @@ class FromNumericTests(unittest.TestCase):
 
         print(b)
 
+    def test_select_1(self):
+
+        x = np.arange(10)
+        condlist = [x<3, x>5]
+        choicelist = [x, x**2]
+        y = np.select(condlist, choicelist)
+        print(y)
 
     def test_repeat_1(self):
 
@@ -1202,6 +1211,11 @@ class FromNumericTests(unittest.TestCase):
         c = np.var(a, dtype=np.float64)
         print(c)
 
+    def test_place_1(self):
+
+        arr = np.arange(6).reshape(2, 3)
+        np.place(arr, arr>2, [44, 55])
+        print(arr)
 
 
 if __name__ == '__main__':

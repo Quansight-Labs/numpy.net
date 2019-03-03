@@ -128,6 +128,13 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_take_along_axis_1()
+        {
+
+        }
+
         [TestMethod]
         public void test_reshape_1()
         {
@@ -336,6 +343,13 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB);
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_select_1()
+        {
+
+        }
+
 
         [TestMethod]
         public void test_repeat_1()
@@ -461,6 +475,20 @@ namespace NumpyDotNetTests
                 return;
             }
             throw new Exception("this should have caught an exception");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_put_along_axis_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_put_mask_1()
+        {
 
         }
 
@@ -2126,6 +2154,13 @@ namespace NumpyDotNetTests
             // Computing the standard deviation in float64 is more accurate:
             c = np.var(a, dtype: np.Float64);
             print(c);
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_place_1()
+        {
 
         }
 
