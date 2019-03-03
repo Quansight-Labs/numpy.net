@@ -1677,22 +1677,43 @@ namespace NumpyDotNetTests
             var x = np.arange(0, 3000000, dtype: np.Int32);
 
             var y = np.where(x % 7 == 0);
-            print("Y");
-            print(y);
+            //print("Y");
+            //print(y);
 
-            for (int i = 0; i < 256; i++)
-            {
-                //print("X");
-                //print(x);
-
-                //ndarray[] y = (ndarray[])np.where(x % i == 0);
-                //print("Y");
-                //print(y);
-
-            }
+            var z = x[y] as ndarray;
+            var m = np.mean(z);
+            print("M");
+            Assert.AreEqual(1499998.5, m.GetItem(0));
+            print(m);
 
             return;
         }
+
+
+        [TestMethod]
+        public void test_ndarray_where_5()
+        {
+            var a = np.arange(10);
+
+            var b = np.where(a < 5, a, 10 * a) as ndarray;
+            AssertArray(b, new int[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
+            print(b);
+
+            a = np.array(new int[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
+            b = np.where(a< 4, a, -1) as ndarray;  // -1 is broadcast
+            AssertArray(b, new int[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
+            print(b);
+
+            var c = np.where(new bool[,] { { true, false }, { true, true } }, 
+                                    new int[,] { { 1, 2 }, { 3, 4 } }, 
+                                    new int[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
+
+            AssertArray(c, new int[,] { { 1, 8 }, { 3, 4 } });
+
+            print(c);
+
+            return;
+    }
 
 
         [TestMethod]

@@ -1130,8 +1130,10 @@ namespace NumpyDotNet
 
         #region where
 
-        public static object where(object condition,  ndarray x = null, ndarray y = null)
+        public static object where(object condition,  object x = null, object y = null)
         {
+            var _condition = asanyarray(condition);
+
             int missing = 0;
             missing += x != null ? 0 : 1;
             missing += y != null ? 0 : 1;
@@ -1142,23 +1144,26 @@ namespace NumpyDotNet
             }
             if (missing == 2)
             {
-                ndarray aCondition = np.FromAny(condition, null, 0, 0, 0, null);
+                ndarray aCondition = np.FromAny(_condition, null, 0, 0, 0, null);
                 return aCondition.NonZero();
             }
 
-            ndarray aCondition1 = np.FromAny(condition, null, 0, 0, 0, null);
-            ndarray ret = np.ndarray(aCondition1.shape, x.Dtype);
+            var _x = asanyarray(x);
+            var _y = asanyarray(y);
+
+            ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
+            ndarray ret = np.ndarray(aCondition1.shape, _x.Dtype);
 
             for (int i = 0; i < aCondition1.Size; i++)
             {
                 bool c = (bool)_GetWhereItem(aCondition1, i);
                 if (c)
                 {
-                    _SetWhereItem(ret, i, _GetWhereItem(x, i));
+                    _SetWhereItem(ret, i, _GetWhereItem(_x, i));
                 }
                 else
                 {
-                    _SetWhereItem(ret, i, _GetWhereItem(y, i));
+                    _SetWhereItem(ret, i, _GetWhereItem(_y, i));
                 }
             }
       

@@ -743,6 +743,18 @@ class ArrayCreationTests(unittest.TestCase):
       print("M")
       print(m)
 
+    def test_ndarray_where_5(self):
+        a = np.arange(10)
+
+        b = np.where(a < 5, a, 10*a)
+        print(b)
+
+        a = np.array([[0, 1, 2], [0, 2, 4], [0, 3, 6]])
+        b = np.where(a < 4, a, -1)  # -1 is broadcast
+        print(b)
+
+        c = np.where([[True, False], [True, True]], [[1, 2], [3, 4]], [[9, 8], [7, 6]])
+        print(c)
 
     def test_ndarray_unpackbits_1(self):
       x = np.arange(0,12, dtype=np.uint8).reshape(3,-1)
