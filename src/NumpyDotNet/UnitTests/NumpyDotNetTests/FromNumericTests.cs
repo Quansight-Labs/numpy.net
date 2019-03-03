@@ -1247,6 +1247,12 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_flatnonzero_1()
+        {
+        }
+
         [TestMethod]
         public void test_compress_1()
         {
@@ -2164,6 +2170,47 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_lexsort_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_msort_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_sort_complex_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_argwhere_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_extract_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_count_nonzero_1()
+        {
+
+        }
 
     }
 }

@@ -1393,5 +1393,129 @@ namespace NumpyDotNetTests
             AssertArray(y, new int[] { 1, 2, -3, 5, 18 });
 
         }
+
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isfinite_1()
+        {
+
+        }
+
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isinf_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isnat_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isneginf_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isposinf_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_logical_and_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_logical_or_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_logical_not_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_logical_xor_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_allclose_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isclose_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_array_equal_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_array_equiv_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_greater_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_greater_equal_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_less_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_less_equal_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_equal_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_not_equal_1()
+        {
+
+        }
+
     }
 }
