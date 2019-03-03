@@ -71,6 +71,8 @@
     <Compile Include="PaddingTests.cs" />
     <Compile Include="PolynomialTests.cs" />
     <Compile Include="RandomSamplingTests.cs" />
+    <Compile Include="NANFunctionsTest.cs" />
+    <Compile Include="StatisticsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NumpyDotNet\NumpyDotNet.csproj">
