@@ -73,6 +73,10 @@
     <Compile Include="RandomSamplingTests.cs" />
     <Compile Include="NANFunctionsTest.cs" />
     <Compile Include="StatisticsTests.cs" />
+    <Compile Include="DateTimeSupportTests.cs" />
+    <Compile Include="StringOperationsTests.cs" />
+    <Compile Include="ObjectOperationsTests.cs" />
+    <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NumpyDotNet\NumpyDotNet.csproj">
