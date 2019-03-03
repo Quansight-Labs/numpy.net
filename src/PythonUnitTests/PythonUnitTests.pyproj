@@ -41,6 +41,9 @@
     <Compile Include="StrideTricksTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IndexTricksTests.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|2.7" />

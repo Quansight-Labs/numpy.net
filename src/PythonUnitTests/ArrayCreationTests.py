@@ -753,7 +753,9 @@ class ArrayCreationTests(unittest.TestCase):
         b = np.where(a < 4, a, -1)  # -1 is broadcast
         print(b)
 
-        c = np.where([[True, False], [True, True]], [[1, 2], [3, 4]], [[9, 8], [7, 6]])
+        c = np.where([[True, False], [True, True]], 
+                     [[1, 2], [3, 4]], 
+                     [[9, 8], [7, 6]])
         print(c)
 
     def test_ndarray_unpackbits_1(self):

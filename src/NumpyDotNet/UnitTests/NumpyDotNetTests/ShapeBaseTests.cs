@@ -217,20 +217,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void test_c_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void test_r_1()
-        {
-
-        }
-
+  
         [TestMethod]
         public void test_expand_dims_1()
         {

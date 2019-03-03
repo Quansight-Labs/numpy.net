@@ -60,6 +60,7 @@
     <Compile Include="FromNumericTests.cs" />
     <Compile Include="ShapeBaseTests.cs" />
     <Compile Include="StrideTricksTests.cs" />
+    <Compile Include="IndexTricksTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NumpyDotNet\NumpyDotNet.csproj">
