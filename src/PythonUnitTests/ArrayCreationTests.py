@@ -1034,21 +1034,6 @@ class ArrayCreationTests(unittest.TestCase):
         print(c.strides)
         print("")
 
-    def test_eye_1(self):
-
-        a = np.eye(2, dtype = np.int32)
-
-        print(a)
-        print(a.shape)
-        print(a.strides)
-        print("")
-
-        b = np.eye(3, k = 1)
-
-        print(b)
-        print(b.shape)
-        print(b.strides)
-
     def test_identity_1(self):
 
         a = np.identity(2, dtype = np.float)

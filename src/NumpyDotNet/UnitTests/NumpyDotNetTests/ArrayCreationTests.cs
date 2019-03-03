@@ -2322,45 +2322,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_eye_1()
-        {
-            ndarray a = np.eye(2, dtype: np.Int32);
-
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var ExpectedDataA = new Int32[2, 2]
-            {
-                { 1,0 },
-                { 0,1 },
-            };
-            AssertArray(a, ExpectedDataA);
-            AssertShape(a, 2, 2);
-            AssertStrides(a, 8, 4);
-
-
-            ndarray b = np.eye(3, k:1);
-
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new double[3, 3]
-            {
-                { 0,1,0 },
-                { 0,0,1 },
-                { 0,0,0 },
-            };
-
-            AssertArray(b, ExpectedDataB);
-            AssertShape(b, 3, 3);
-            AssertStrides(b, 24, 8);
-
-
-        }
-
-        [TestMethod]
         public void test_identity_1()
         {
             ndarray a = np.identity(2, dtype: np.Float64);
