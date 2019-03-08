@@ -1616,6 +1616,134 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region array_equal
+
+        public static bool array_equal(object a1, object a2)
+        {
+           // True if two arrays have the same shape and elements, False otherwise.
+
+           // Parameters
+           // ----------
+           // a1, a2: array_like
+           //    Input arrays.
+
+           //Returns
+           //------ -
+           //b : bool
+           //    Returns True if the arrays are equal.
+
+           // See Also
+           // --------
+           // allclose: Returns True if two arrays are element - wise equal within a
+           //           tolerance.
+           // array_equiv: Returns True if input arrays are shape consistent and all
+           //              elements equal.
+
+           // Examples
+           // --------
+           // >>> np.array_equal([1, 2], [1, 2])
+           // True
+           // >>> np.array_equal(np.array([1, 2]), np.array([1, 2]))
+           // True
+           // >>> np.array_equal([1, 2], [1, 2, 3])
+           // False
+           // >>> np.array_equal([1, 2], [1, 4])
+           // False
+
+            ndarray arr1 = null;
+            ndarray arr2 = null;
+
+            try
+            {
+                arr1 = asanyarray(a1);
+                arr2 = asanyarray(a2);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            if (arr1.shape != arr2.shape)
+            {
+                return false;
+            }
+
+            return (bool)(arr1.Equals(arr2).All().GetItem(0));
+        }
+        #endregion
+
+        #region array_equiv
+
+        public static bool array_equiv(object a1, object a2)
+        {
+           // Returns True if input arrays are shape consistent and all elements equal.
+
+           // Shape consistent means they are either the same shape, or one input array
+           // can be broadcasted to create the same shape as the other one.
+
+           // Parameters
+           // ----------
+           // a1, a2: array_like
+           //    Input arrays.
+
+           //Returns
+           //------ -
+           // out : bool
+           //     True if equivalent, False otherwise.
+
+           // Examples
+           // --------
+           // >>> np.array_equiv([1, 2], [1, 2])
+           // True
+           // >>> np.array_equiv([1, 2], [1, 3])
+           // False
+
+           // Showing the shape equivalence:
+
+           // >>> np.array_equiv([1, 2], [[1, 2], [1, 2]])
+           // True
+           // >>> np.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])
+           // False
+
+           // >>> np.array_equiv([1, 2], [[1, 2], [1, 3]])
+           // False
+
+
+            ndarray arr1 = null;
+            ndarray arr2 = null;
+
+            try
+            {
+                arr1 = asanyarray(a1);
+                arr2 = asanyarray(a2);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            try
+            {
+                //multiarray.broadcast(arr1, arr2);
+                broadcast(arr1, arr2);
+            }
+            catch
+            {
+                return false;
+            }
+            //if (!broadcastable(arr1,arr2.Dims, arr2.ndim))
+            //{
+            //    return false;
+            //}
+
+            return (bool)(arr1.Equals(arr2).All().GetItem(0));
+        }
+
+ 
+
+
+        #endregion
+
         #region apply_along_axis
 
         public delegate void apply_along_axis_fnp(ndarray a, params object[] args);
@@ -1670,6 +1798,31 @@ namespace NumpyDotNet
         }
 
         #endregion
+
+        private static bool broadcastable(ndarray ao, npy_intp[] dims, int nd)
+        {
+            if (ao.ndim > nd)
+            {
+                return false;
+            }
+
+            int j, i;
+
+            j = nd - ao.ndim;
+            for (i = 0; i < ao.ndim; i++, j++)
+            {
+                if (ao.Array.dimensions[i] == 1)
+                {
+                    continue;
+                }
+                if (ao.Array.dimensions[i] != dims[j])
+                {
+                    return false;
+                }
+            }
+  
+            return true;
+        }
 
         private static long CalculateNewShapeSize(shape shape)
         {
@@ -1983,6 +2136,10 @@ namespace NumpyDotNet
             return new MaskedArray(a);
         }
 
+        private static void broadcast(ndarray arr1, ndarray arr2)
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }

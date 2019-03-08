@@ -48,6 +48,24 @@ namespace NumpyDotNet
     {
         public npy_intp[] iDims = null;
 
+        public static bool operator == (shape s1, shape s2)
+        {
+            if (s1.iDims.Length == s2.iDims.Length)
+            {
+                for (int i = 0; i < s1.iDims.Length; i++)
+                {
+                    if (s1.iDims[i] != s2.iDims[i])
+                        return false;
+                }
+                return true;
+            }
+            return false;
+        }
+        public static bool operator !=(shape s1, shape s2)
+        {
+            return !(s1 == s2);
+        }
+
         public shape(IEnumerable<npy_intp> dim)
         {
             int nd = dim.Count();

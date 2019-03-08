@@ -863,5 +863,31 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.not_equal(2, [4, 2, 1])
         print(c)
 
+    def test_array_equal_1(self):
+        a =np.array_equal([1, 2], [1, 2])
+        print(a)
+        b = np.array_equal(np.array([1, 2]), np.array([1, 2]))
+        print(b)
+        c = np.array_equal([1, 2], [1, 2, 3])
+        print(c)
+        d = np.array_equal([1, 2], [1, 4])
+        print(d)
+
+
+    def test_array_equiv_1(self):
+        
+        a =np.array_equiv([1, 2], [1, 2])
+        print(a)
+        b = np.array_equiv([1, 2], [1, 3])
+        print(b)
+        c = np.array_equiv([1, 2], [[1, 2], [1, 2]])
+        print(c)
+        d = np.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])
+        print(d)
+        
+        e = np.array_equiv([1, 2], [[1, 2], [1, 3]])
+        print(e)
+
+
 if __name__ == '__main__':
     unittest.main()
