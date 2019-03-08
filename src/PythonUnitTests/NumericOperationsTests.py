@@ -796,6 +796,29 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.logical_not(x<3)
         print(c)
 
+    def test_greater_1(self):
+
+        a = np.greater([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.greater([4, 2, 1], 1)
+        print(b)
+
+        c = np.greater(2, [4, 2, 1])
+        print(c)
+
+    def test_greater_equal_1(self):
+
+        a = np.greater_equal([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.greater_equal([4, 2, 1], 1)
+        print(b)
+
+        c = np.greater_equal(2, [4, 2, 1])
+        print(c)
+
+
 
 
 if __name__ == '__main__':

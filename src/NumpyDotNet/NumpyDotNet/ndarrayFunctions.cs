@@ -1467,7 +1467,21 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_equal, 0, false);
         }
-  
+
+        #endregion
+
+        #region greater
+        public static ndarray greater(object input, object gtvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_greater, asanyarray(gtvalue), false);
+        }
+        #endregion
+
+        #region greater_equal
+        public static ndarray greater_equal(object input, object gevalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_greater_equal, asanyarray(gevalue), false);
+        }
         #endregion
 
         #region invert
@@ -1592,15 +1606,14 @@ namespace NumpyDotNet
         #endregion
 
         #region numeric operations
-         
 
+   
+        public delegate bool numericOp(dynamic X1, dynamic X2);
 
-        public static bool greater_equal(dynamic x1, dynamic x2)
+        public static bool bgreater_equal(dynamic x1, dynamic x2)
         {
             return x1 >= x2;
         }
-
-        public delegate bool numericOp(dynamic X1, dynamic X2);
 
         public static ndarray outer(ndarray a, ndarray b, numericOp op)
         {

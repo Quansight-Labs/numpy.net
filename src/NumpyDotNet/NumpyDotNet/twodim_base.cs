@@ -460,7 +460,7 @@ namespace NumpyDotNet
 
 
             ndarray m = outer(arange(N, dtype: _min_int(0, N)),
-                            arange(-k, M - k, dtype: _min_int(-k, (int)M - k)), greater_equal);
+                            arange(-k, M - k, dtype: _min_int(-k, (int)M - k)), bgreater_equal);
 
             // Avoid making a copy if the requested type is already bool
             m = m.astype(dtype,  copy : false);

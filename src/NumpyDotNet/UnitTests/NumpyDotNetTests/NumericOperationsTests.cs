@@ -1514,43 +1514,39 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { false, false, false, true, true });
             print(c);
         }
- 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_allclose_1()
-        {
 
-        }
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_isclose_1()
-        {
 
-        }
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_array_equal_1()
-        {
-
-        }
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_array_equiv_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_greater_1()
         {
+            var a = np.greater(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, false, false });
+            print(a);
+
+            var b = np.greater(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, false });
+            print(b);
+
+            var c = np.greater(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, false, true });
+            print(c);
 
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_greater_equal_1()
         {
+            var a = np.greater_equal(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, true, false });
+            print(a);
 
+            var b = np.greater_equal(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, true });
+            print(b);
+
+            var c = np.greater_equal(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, true, true });
+            print(c);
         }
         [Ignore] // not implemented yet
         [TestMethod]
@@ -1576,6 +1572,32 @@ namespace NumpyDotNetTests
         {
 
         }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_allclose_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_isclose_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_array_equal_1()
+        {
+
+        }
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_array_equiv_1()
+        {
+
+        }
+
 
     }
 }
