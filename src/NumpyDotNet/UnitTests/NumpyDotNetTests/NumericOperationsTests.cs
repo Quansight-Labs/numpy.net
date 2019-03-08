@@ -1581,17 +1581,36 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_equal_1()
         {
- 
+            var a = np.equal(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, true, false });
+            print(a);
+
+            var b = np.equal(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, true });
+            print(b);
+
+            var c = np.equal(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, true, false });
+            print(c);
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_not_equal_1()
         {
+            var a = np.not_equal(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, false, true });
+            print(a);
 
+            var b = np.not_equal(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, false });
+            print(b);
+
+            var c = np.not_equal(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, false, true });
+            print(c);
         }
 
         [Ignore] // not implemented yet

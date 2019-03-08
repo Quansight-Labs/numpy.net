@@ -1498,6 +1498,20 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region equal
+        public static ndarray equal(object input, object gevalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_equal, asanyarray(gevalue), false);
+        }
+        #endregion
+
+        #region not_equal
+        public static ndarray not_equal(object input, object gevalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_not_equal, asanyarray(gevalue), false);
+        }
+        #endregion
+
         #region invert
         public static ndarray invert(object input)
         {

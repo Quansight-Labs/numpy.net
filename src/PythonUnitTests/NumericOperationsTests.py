@@ -841,6 +841,27 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.less_equal(2, [4, 2, 1])
         print(c)
 
+    def test_equal_1(self):
+
+        a = np.equal([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.equal([4, 2, 1], 1)
+        print(b)
+
+        c = np.equal(2, [4, 2, 1])
+        print(c)
+
+    def test_not_equal_1(self):
+
+        a = np.not_equal([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.not_equal([4, 2, 1], 1)
+        print(b)
+
+        c = np.not_equal(2, [4, 2, 1])
+        print(c)
 
 if __name__ == '__main__':
     unittest.main()
