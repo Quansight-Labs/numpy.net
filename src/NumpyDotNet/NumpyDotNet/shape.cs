@@ -48,18 +48,38 @@ namespace NumpyDotNet
     {
         public npy_intp[] iDims = null;
 
-        public static bool operator == (shape s1, shape s2)
+        public override bool Equals(object o2)
         {
-            if (s1.iDims.Length == s2.iDims.Length)
+            shape s2 = o2 as shape;
+
+            if (this.iDims.Length == s2.iDims.Length)
             {
-                for (int i = 0; i < s1.iDims.Length; i++)
+                for (int i = 0; i < this.iDims.Length; i++)
                 {
-                    if (s1.iDims[i] != s2.iDims[i])
+                    if (this.iDims[i] != s2.iDims[i])
                         return false;
                 }
                 return true;
             }
             return false;
+        }
+        public static bool operator ==(shape s1, shape s2)
+        {
+            // If left hand side is null...
+            if (System.Object.ReferenceEquals(s1, null) || System.Object.ReferenceEquals(s2, null))
+            {
+                // ...and right hand side is null...
+                if (System.Object.ReferenceEquals(s1, null) && System.Object.ReferenceEquals(s2, null))
+                {
+                    //...both are null and are Equal.
+                    return true;
+                }
+
+                // ...right hand side is not null, therefore not Equal.
+                return false;
+            }
+
+            return s1.Equals(s2);
         }
         public static bool operator !=(shape s1, shape s2)
         {
