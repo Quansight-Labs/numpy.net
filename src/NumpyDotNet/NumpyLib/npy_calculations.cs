@@ -957,6 +957,9 @@ namespace NumpyLib
             else
             {
                 destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
+
+                srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray);
+                destArray = NpyArray_NumericOpUpscaleSourceArray(destArray, operandArray);
             }
                 
             PerformNumericOpArray(srcArray, destArray, operandArray, operationType);
@@ -1175,10 +1178,45 @@ namespace NumpyLib
                         break;
                     }
             }
-
      
             NpyArray newArray = NpyArray_FromArray(srcArray, newtype, flags);
             return newArray;
+        }
+
+        private static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
+        {
+            if (srcArray != null && operandArray != null)
+            {
+                npy_intp srcArraySize = NpyArray_SIZE(srcArray);
+                npy_intp operandArraySize = NpyArray_SIZE(operandArray);
+
+                if (srcArraySize < operandArraySize)
+                {
+                    if (operandArraySize % srcArraySize != 0)
+                    {
+                        throw new Exception(string.Format("Unable to broadcast array size {0} to array size {1}", srcArraySize, operandArraySize));
+                    }
+
+                    Int64 repeatNumber = operandArraySize / srcArraySize;
+
+                    NpyArray repeatArray = NpyArray_Alloc(
+                        NpyArray_DescrFromType(NPY_TYPES.NPY_INT64),
+                        1, new npy_intp[] { 1 }, false, null);
+
+                    Int64[] Data = repeatArray.data.datap as Int64[];
+                    Data[0] = repeatNumber;
+
+                    srcArray = NpyArray_Repeat(srcArray, repeatArray, -1);
+
+                    NpyArray_Dims newDims = new NpyArray_Dims();
+                    newDims.len = operandArray.nd;
+                    newDims.ptr = operandArray.dimensions;
+
+                    srcArray = NpyArray_Newshape(srcArray, newDims, NPY_ORDER.NPY_ANYORDER);
+                }
+            }
+
+            return srcArray;
         }
 
         #region scalar numeric functions
