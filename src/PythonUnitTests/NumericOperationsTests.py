@@ -818,7 +818,28 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.greater_equal(2, [4, 2, 1])
         print(c)
 
+    def test_less_1(self):
 
+        a = np.less([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.less([4, 2, 1], 1)
+        print(b)
+
+        c = np.less(2, [4, 2, 1])
+        print(c)
+
+
+    def test_less_equal_1(self):
+
+        a = np.less_equal([4, 2, 1], [2, 2, 2])
+        print(a)
+
+        b = np.less_equal([4, 2, 1], 1)
+        print(b)
+
+        c = np.less_equal(2, [4, 2, 1])
+        print(c)
 
 
 if __name__ == '__main__':

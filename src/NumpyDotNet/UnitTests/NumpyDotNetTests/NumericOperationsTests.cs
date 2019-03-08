@@ -1548,23 +1548,44 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { false, true, true });
             print(c);
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_less_1()
         {
+            var a = np.less(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, false, true });
+            print(a);
 
+            var b = np.less(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, false });
+            print(b);
+
+            var c = np.less(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, false, false });
+            print(c);
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_less_equal_1()
         {
+            var a = np.less_equal(new int[] { 4, 2, 1 }, new int[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, true, true });
+            print(a);
 
+            var b = np.less_equal(new int[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, true });
+            print(b);
+
+            var c = np.less_equal(2, new int[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, true, false });
+            print(c);
         }
+
         [Ignore] // not implemented yet
         [TestMethod]
         public void test_equal_1()
         {
-
+ 
         }
         [Ignore] // not implemented yet
         [TestMethod]

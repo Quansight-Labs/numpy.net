@@ -1484,6 +1484,20 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region less
+        public static ndarray less(object input, object gevalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_less, asanyarray(gevalue), false);
+        }
+        #endregion
+
+        #region less_equal
+        public static ndarray less_equal(object input, object gevalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_less_equal, asanyarray(gevalue), false);
+        }
+        #endregion
+
         #region invert
         public static ndarray invert(object input)
         {
