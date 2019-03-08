@@ -1475,7 +1475,7 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore] // seems to want to convert to integers.  need to debug
+        [Ignore] // need to fix last calculation which scales up source to meet operand size
         [TestMethod]
         public void test_logical_xor_1()
         {
@@ -1501,18 +1501,20 @@ namespace NumpyDotNetTests
             AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_logical_not_1()
         {
             var a = np.logical_not(3);
+            Assert.AreEqual(false, a.GetItem(0));
             print(a);
 
-            var b = np.logical_not(new object[] { true, false, 0, 1 });
+            var b = np.logical_not(new object[] { 0, -1, 0, 1 });
+            AssertArray(b, new bool[] { true, false, true, false });
             print(b);
 
             var x = np.arange(5);
             var c = np.logical_not(x < 3);
+            AssertArray(c, new bool[] { false, false, false, true, true });
             print(c);
         }
  

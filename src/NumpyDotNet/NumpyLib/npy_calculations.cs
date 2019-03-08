@@ -2850,7 +2850,7 @@ namespace NumpyLib
         private static object BOOL_EqualOperation(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
-            return dValue == (bool)operand;
+            return dValue == Convert.ToBoolean(operand);
         }
         private static object BYTE_EqualOperation(object bValue, object operand)
         {
@@ -2918,7 +2918,7 @@ namespace NumpyLib
         private static object BOOL_NotEqualOperation(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
-            return dValue != (bool)operand;
+            return dValue != Convert.ToBoolean(operand);
         }
         private static object BYTE_NotEqualOperation(object bValue, object operand)
         {

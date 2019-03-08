@@ -1465,7 +1465,7 @@ namespace NumpyDotNet
         #region logical_not
         public static ndarray logical_not(object input)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_not_equal, null, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_equal, 0, false);
         }
   
         #endregion

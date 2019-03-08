@@ -789,7 +789,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
         a = np.logical_not(3)
         print(a)
 
-        b = np.logical_not([True, False, 0, 1])
+        b = np.logical_not([0, -1, 0, 1])
         print(b)
 
         x = np.arange(5)
