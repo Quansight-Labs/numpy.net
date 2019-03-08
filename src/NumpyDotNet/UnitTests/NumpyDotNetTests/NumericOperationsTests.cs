@@ -1393,40 +1393,148 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isfinite_1()
         {
+            var a = np.isfinite(1);
+            Assert.AreEqual(true, a.GetItem(0));
+            print(a);
 
+            var b = np.isfinite(0);
+            Assert.AreEqual(true, b.GetItem(0));
+            print(b);
+
+            var c = np.isfinite(np.NaN);
+            Assert.AreEqual(false, c.GetItem(0));
+            print(c);
+
+
+            var d = np.isfinite(np.Inf);
+            Assert.AreEqual(false, d.GetItem(0));
+            print(d);
+
+            var e = np.isfinite(np.NInf);
+            Assert.AreEqual(false, e.GetItem(0));
+            print(e);
+
+            //var f = np.isfinite(new float[] { np.log(-1.0), 1.0f, np.log(0) });
+            //print(f);
+
+
+            var x = np.array(new float[] { -np.Inf, 0.0f, np.Inf, np.Inf }).reshape((2,2));
+            var g = np.isfinite(x);
+            AssertArray(g, new bool[,] { { false, true }, { false, false } });
+            print(g);
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isinf_1()
         {
+            var a = np.isinf(1);
+            Assert.AreEqual(false, a.GetItem(0));
+            print(a);
 
+            var b = np.isinf(0);
+            Assert.AreEqual(false, b.GetItem(0));
+            print(b);
+
+            var c = np.isinf(np.NaN);
+            Assert.AreEqual(false, c.GetItem(0));
+            print(c);
+
+
+            var d = np.isinf(np.Inf);
+            Assert.AreEqual(true, d.GetItem(0));
+            print(d);
+
+            var e = np.isinf(np.NInf);
+            Assert.AreEqual(true, e.GetItem(0));
+            print(e);
+
+            //var f = np.isfinite(new float[] { np.log(-1.0), 1.0f, np.log(0) });
+            //print(f);
+
+
+            var x = np.array(new float[] { -np.Inf, 0.0f, np.Inf, np.Inf }).reshape((2, 2));
+            var g = np.isinf(x);
+            AssertArray(g, new bool[,] { { true, false }, { true, true } });
+            print(g);
         }
 
-        [Ignore] // not implemented yet
+        [Ignore] // not implemented yet.  This is Not A TIME.  Need to support DateTime
         [TestMethod]
         public void test_isnat_1()
         {
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isneginf_1()
         {
+            var a = np.isneginf(1);
+            Assert.AreEqual(false, a.GetItem(0));
+            print(a);
 
+            var b = np.isneginf(0);
+            Assert.AreEqual(false, b.GetItem(0));
+            print(b);
+
+            var c = np.isneginf(np.NaN);
+            Assert.AreEqual(false, c.GetItem(0));
+            print(c);
+
+
+            var d = np.isneginf(np.Inf);
+            Assert.AreEqual(false, d.GetItem(0));
+            print(d);
+
+            var e = np.isneginf(np.NInf);
+            Assert.AreEqual(true, e.GetItem(0));
+            print(e);
+
+            //var f = np.isfinite(new float[] { np.log(-1.0), 1.0f, np.log(0) });
+            //print(f);
+
+
+            var x = np.array(new float[] { -np.Inf, 0.0f, np.Inf, np.Inf }).reshape((2, 2));
+            var g = np.isneginf(x);
+            AssertArray(g, new bool[,] { { true, false }, { false, false } });
+            print(g);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isposinf_1()
         {
+            var a = np.isposinf(1);
+            Assert.AreEqual(false, a.GetItem(0));
+            print(a);
 
+            var b = np.isposinf(0);
+            Assert.AreEqual(false, b.GetItem(0));
+            print(b);
+
+            var c = np.isposinf(np.NaN);
+            Assert.AreEqual(false, c.GetItem(0));
+            print(c);
+
+
+            var d = np.isposinf(np.Inf);
+            Assert.AreEqual(true, d.GetItem(0));
+            print(d);
+
+            var e = np.isposinf(np.NInf);
+            Assert.AreEqual(false, e.GetItem(0));
+            print(e);
+
+            //var f = np.isfinite(new float[] { np.log(-1.0), 1.0f, np.log(0) });
+            //print(f);
+
+
+            var x = np.array(new float[] { -np.Inf, 0.0f, np.Inf, np.Inf }).reshape((2, 2));
+            var g = np.isposinf(x);
+            AssertArray(g, new bool[,] { { false, false }, { true, true } });
+            print(g);
         }
 
         [TestMethod]

@@ -1560,6 +1560,87 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region Infinity
+        public static float Inf = float.PositiveInfinity;
+        public static float NInf = float.NegativeInfinity;
+
+        public static ndarray isfinite(object o)
+        {
+            var input = asanyarray(o);
+            var output = new bool[input.size];
+
+            int oindex = 0;
+            foreach (var i in input.Flat)
+            {
+                float f = Convert.ToSingle(i);
+                if (float.IsNaN(f) || float.IsInfinity(f))
+                    output[oindex] = false;
+                else
+                    output[oindex] = true;
+                oindex++;
+            }
+
+            return array(output).reshape(input.shape);
+        }
+
+        public static ndarray isinf(object o)
+        {
+            var input = asanyarray(o);
+            var output = new bool[input.size];
+
+            int oindex = 0;
+            foreach (var i in input.Flat)
+            {
+                float f = Convert.ToSingle(i);
+                if (float.IsInfinity(f))
+                    output[oindex] = true;
+                else
+                    output[oindex] = false;
+                oindex++;
+            }
+
+            return array(output).reshape(input.shape);
+        }
+
+        public static ndarray isneginf(object o)
+        {
+            var input = asanyarray(o);
+            var output = new bool[input.size];
+
+            int oindex = 0;
+            foreach (var i in input.Flat)
+            {
+                float f = Convert.ToSingle(i);
+                if (float.IsNegativeInfinity(f))
+                    output[oindex] = true;
+                else
+                    output[oindex] = false;
+                oindex++;
+            }
+
+            return array(output).reshape(input.shape);
+        }
+
+        public static ndarray isposinf(object o)
+        {
+            var input = asanyarray(o);
+            var output = new bool[input.size];
+
+            int oindex = 0;
+            foreach (var i in input.Flat)
+            {
+                float f = Convert.ToSingle(i);
+                if (float.IsPositiveInfinity(f))
+                    output[oindex] = true;
+                else
+                    output[oindex] = false;
+                oindex++;
+            }
+
+            return array(output).reshape(input.shape);
+        }
+        #endregion
+
         #region Ravel
         private static ndarray ravel(dynamic values, dtype dtype = null)
         {

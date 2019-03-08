@@ -888,6 +888,114 @@ class Test_NumericOperationsTests(unittest.TestCase):
         e = np.array_equiv([1, 2], [[1, 2], [1, 3]])
         print(e)
 
+    def test_isfinite_1(self):
+
+        a = np.isfinite(1)
+        print(a)
+
+        b = np.isfinite(0)
+        print(b)
+
+        c = np.isfinite(np.nan)
+        print(c)
+        
+        d = np.isfinite(np.inf)
+        print(d)
+
+        e = np.isfinite(np.NINF)
+        print(e)
+
+        f = np.isfinite([np.log(-1.),1.,np.log(0)])
+        print(f)
+
+
+        x = np.array([-np.inf, 0., np.inf, np.inf]).reshape(2,2)
+        y = np.array([2, 2, 2])
+        g = np.isfinite(x)
+        print(g)
+        print(y)
+
+    def test_isinf_1(self):
+
+        a = np.isinf(1)
+        print(a)
+
+        b = np.isinf(0)
+        print(b)
+
+        c = np.isinf(np.nan)
+        print(c)
+        
+        d = np.isinf(np.inf)
+        print(d)
+
+        e = np.isinf(np.NINF)
+        print(e)
+
+        f = np.isinf([np.log(-1.),1.,np.log(0)])
+        print(f)
+
+
+        x = np.array([-np.inf, 0., np.inf, np.inf]).reshape(2,2)
+        y = np.array([2, 2, 2])
+        g = np.isinf(x)
+        print(g)
+        print(y)
+
+    def test_isneginf_1(self):
+
+        a = np.isneginf(1)
+        print(a)
+
+        b = np.isneginf(0)
+        print(b)
+
+        c = np.isneginf(np.nan)
+        print(c)
+        
+        d = np.isneginf(np.inf)
+        print(d)
+
+        e = np.isneginf(np.NINF)
+        print(e)
+
+        f = np.isneginf([np.log(-1.),1.,np.log(0)])
+        print(f)
+
+
+        x = np.array([-np.inf, 0., np.inf, np.inf]).reshape(2,2)
+        y = np.array([2, 2, 2])
+        g = np.isneginf(x)
+        print(g)
+        print(y)
+
+    def test_isposinf_1(self):
+
+        a = np.isposinf(1)
+        print(a)
+
+        b = np.isposinf(0)
+        print(b)
+
+        c = np.isposinf(np.nan)
+        print(c)
+        
+        d = np.isposinf(np.inf)
+        print(d)
+
+        e = np.isposinf(np.NINF)
+        print(e)
+
+        f = np.isposinf([np.log(-1.),1.,np.log(0)])
+        print(f)
+
+
+        x = np.array([-np.inf, 0., np.inf, np.inf]).reshape(2,2)
+        y = np.array([2, 2, 2])
+        g = np.isposinf(x)
+        print(g)
+        print(y)
+
 
 if __name__ == '__main__':
     unittest.main()
