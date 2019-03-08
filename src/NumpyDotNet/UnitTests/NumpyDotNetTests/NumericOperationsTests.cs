@@ -1032,7 +1032,6 @@ namespace NumpyDotNetTests
             AssertArray(z, ExpectedData);
         }
 
-        [Ignore] // does not produced broadcasted results
         [TestMethod]
         public void test_right_shift_2()
         {
@@ -1062,11 +1061,10 @@ namespace NumpyDotNetTests
             AssertArray(z, ExpectedData);
         }
 
-        [Ignore] // does not produced broadcasted results
         [TestMethod]
         public void test_left_shift_2()
         {
-            var a = np.right_shift(new int[] { 10 }, new int[] { 1, 2, 3 });
+            var a = np.left_shift(new int[] { 10 }, new int[] { 1, 2, 3 });
             AssertArray(a, new int[] { 20, 40, 80 });
             print(a);
         }
@@ -1475,7 +1473,6 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore] // need to fix last calculation which scales up source to meet operand size
         [TestMethod]
         public void test_logical_xor_1()
         {

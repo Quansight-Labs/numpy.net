@@ -1495,6 +1495,10 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_left_shift, shiftvalue, false);
         }
+        public static ndarray left_shift(object input, object shiftvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_left_shift, asanyarray(shiftvalue), false);
+        }
         #endregion
 
         #region floor
