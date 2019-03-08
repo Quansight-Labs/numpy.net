@@ -735,6 +735,67 @@ class Test_NumericOperationsTests(unittest.TestCase):
         y = [[1, 2, 4], [1, 6, 24]]
         print(np.ediff1d(y))
 
+    def test_logical_and_1(self):
+        a = np.logical_and(True, False)
+        print(a)
+
+        b = np.logical_and([True, False], [False, False])
+        print(b)
+
+        x = np.arange(5)
+        c = np.logical_and(x>1, x<4)
+        print(c)
+
+        y = np.arange(6).reshape(2,3)
+        d = np.logical_and(y>1, y<4)
+        print(d)
+
+    def test_logical_or_1(self):
+        a = np.logical_or(True, False)
+        print(a)
+
+        b = np.logical_or([True, False], [False, False])
+        print(b)
+
+        x = np.arange(5)
+        c = np.logical_or(x<1, x>3)
+        print(c)
+
+        y = np.arange(6).reshape(2,3)
+        d = np.logical_or(y<1, y>3)
+        print(d)
+
+    def test_logical_xor_1(self):
+        a = np.logical_xor(True, False)
+        print(a)
+
+        b = np.logical_xor([True, False], [False, False])
+        print(b)
+
+        x = np.arange(5)
+        c = np.logical_xor(x<1, x>3)
+        print(c)
+
+        y = np.arange(6).reshape(2,3)
+        d = np.logical_xor(y<1, y>3)
+        print(d)
+
+        e = np.logical_xor(0, np.eye(2))
+        print(e)
+
+
+    def test_logical_not_1(self):
+ 
+        a = np.logical_not(3)
+        print(a)
+
+        b = np.logical_not([True, False, 0, 1])
+        print(b)
+
+        x = np.arange(5)
+        c = np.logical_not(x<3)
+        print(c)
+
 
 
 if __name__ == '__main__':

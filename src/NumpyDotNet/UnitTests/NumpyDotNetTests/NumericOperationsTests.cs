@@ -1431,30 +1431,91 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_logical_and_1()
         {
+            var a = np.logical_and(true, false);
+            Assert.AreEqual(false, a.GetItem(0));
+            print(a);
 
+            var b = np.logical_and(new bool[] { true, false }, new bool[] { false, false });
+            AssertArray(b, new bool[] { false, false });
+            print(b);
+
+            var x = np.arange(5);
+            var c = np.logical_and(x > 1, x < 4);
+            AssertArray(c, new bool[] { false, false, true, true, false });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3));
+            var d = np.logical_and(y > 1, y < 4);
+            AssertArray(d, new bool[,] { { false, false, true }, {true, false, false } });
+            print(d);
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_logical_or_1()
         {
+            var a = np.logical_or(true, false);
+            Assert.AreEqual(true, a.GetItem(0));
+            print(a);
 
-        }
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_logical_not_1()
-        {
+            var b = np.logical_or(new bool[] { true, false }, new bool[] { false, false });
+            AssertArray(b, new bool[] { true, false });
+            print(b);
 
+            var x = np.arange(5);
+            var c = np.logical_or(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3));
+            var d = np.logical_or(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
         }
-        [Ignore] // not implemented yet
+
+        [Ignore] // seems to want to convert to integers.  need to debug
         [TestMethod]
         public void test_logical_xor_1()
         {
+            var a = np.logical_xor(true, false);
+            Assert.AreEqual(true, a.GetItem(0));
+            print(a);
 
+            var b = np.logical_xor(new bool[] { true, false }, new bool[] { false, false });
+            AssertArray(b, new bool[] { true, false });
+            print(b);
+
+            var x = np.arange(5);
+            var c = np.logical_xor(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3));
+            var d = np.logical_xor(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
+
+            var e = np.logical_xor(0, np.eye(2));
+            AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
+
+        [Ignore] // needs to be debugged
+        [TestMethod]
+        public void test_logical_not_1()
+        {
+            var a = np.logical_not(3);
+            print(a);
+
+            var b = np.logical_not(new object[] { true, false, 0, 1 });
+            print(b);
+
+            var x = np.arange(5);
+            var c = np.logical_not(x < 3);
+            print(c);
+        }
+ 
         [Ignore] // not implemented yet
         [TestMethod]
         public void test_allclose_1()

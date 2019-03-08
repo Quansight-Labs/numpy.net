@@ -1427,7 +1427,48 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_invert, 0, false);
         }
-         #endregion
+        #endregion
+
+        #region logical_and
+        public static ndarray logical_and(object input, int andvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_logical_and, andvalue, false);
+        }
+        public static ndarray logical_and(object input, object andvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_logical_and, asanyarray(andvalue), false);
+        }
+        #endregion
+
+        #region logical_or
+        public static ndarray logical_or(object input, int orvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_logical_or, orvalue, false);
+        }
+        public static ndarray logical_or(object input, object orvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_logical_or, asanyarray(orvalue), false);
+        }
+        #endregion
+
+        #region logical_xor
+        public static ndarray logical_xor(object input, int xorvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_not_equal, xorvalue, false);
+        }
+        public static ndarray logical_xor(object input, object xorvalue)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_not_equal, asanyarray(xorvalue), false);
+        }
+        #endregion
+
+        #region logical_not
+        public static ndarray logical_not(object input)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_not_equal, null, false);
+        }
+  
+        #endregion
 
         #region invert
         public static ndarray invert(object input)
