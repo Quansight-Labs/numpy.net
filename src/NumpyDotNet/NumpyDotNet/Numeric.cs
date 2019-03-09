@@ -959,7 +959,7 @@ namespace NumpyDotNet
 
         #region outer
 
-        public static ndarray outer(ndarray a, ndarray b, numericOp op)
+        public static ndarray UFunc_Outer(object a, object b, numericOp op)
         {
            // Compute the outer product of two vectors.
 
@@ -1003,18 +1003,18 @@ namespace NumpyDotNet
            //               ``np.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.
 
 
-            a = a.ravel();
-            b = b.ravel();
+            var a1 = asanyarray(a).ravel();
+            var b1 = asanyarray(b).ravel();
 
-            int alen = len(a);
-            int blen = len(b);
+            int alen = len(a1);
+            int blen = len(b1);
 
             ndarray r = empty(new shape(alen, blen), dtype: np.Float64);
             for (int i = 0; i < alen; i++)
             {
                 for (int j = 0; j < blen; j++)
                 {
-                    r[i, j] = Convert.ToDouble(op(a[i], b[j]));     // op = ufunc in question
+                    r[i, j] = Convert.ToDouble(op(a1[i], b1[j]));     // op = ufunc in question
                 }
 
             }
