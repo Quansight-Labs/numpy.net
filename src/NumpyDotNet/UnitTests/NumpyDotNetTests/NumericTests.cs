@@ -514,11 +514,16 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
+        [Ignore] //needs to be debugged
         [TestMethod]
         public void test_outer_1()
         {
+            var a = np.arange(2, 10).reshape((2, 4));
+            var b = np.arange(12, 20).reshape((2, 4));
+            var c = np.outer(a, b);
+            print(c);
 
+            return;
         }
 
         [Ignore] // not implemented yet

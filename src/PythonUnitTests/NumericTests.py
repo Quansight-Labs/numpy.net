@@ -330,7 +330,13 @@ class NumericTests(unittest.TestCase):
     def test_convolve_1(self):    
         return
            
-    def test_outer_1(self):    
+    def test_outer_1(self):
+        
+        a = np.arange(2,10).reshape(2,4)
+        b = np.arange(12,20).reshape(2,4)
+        c = np.outer(a,b)
+        print(c)
+
         return
            
     def test_tensordot_1(self):    
