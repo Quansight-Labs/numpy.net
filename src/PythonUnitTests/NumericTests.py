@@ -202,7 +202,7 @@ class NumericTests(unittest.TestCase):
         a = np.count_nonzero(np.eye(4))
         print(a)
 
-        b = np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]]);
+        b = np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
         print(b)
 
         c = np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=0)
@@ -268,7 +268,29 @@ class NumericTests(unittest.TestCase):
         print(y.flags)
 
         
-    def test_isfortran_1(self):    
+    def test_isfortran_1(self): 
+        
+        a = np.array([[1, 2, 3], [4, 5, 6]], order='C')
+        a1 = np.isfortran(a)
+        print(a1)
+
+        b = np.array([[1, 2, 3], [4, 5, 6]], order='FORTRAN')
+        b1 = np.isfortran(b)
+        print(b1)
+
+        c = np.array([[1, 2, 3], [4, 5, 6]], order='C')
+        c1 = np.isfortran(c)
+        print(c1)
+
+        d = a.T
+        d1 = np.isfortran(d)
+        print(d1)
+
+        # C-ordered arrays evaluate as False even if they are also FORTRAN-ordered.
+
+        e1 = np.isfortran(np.array([1, 2], order='FORTRAN'))
+        print(e1)
+
         return
 
        

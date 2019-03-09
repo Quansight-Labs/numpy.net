@@ -423,10 +423,37 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isfortran_1()
         {
+
+            var a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var a1 = np.isfortran(a);
+            Assert.AreEqual(false, a1);
+            print(a1);
+
+            var b = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_FORTRANORDER);
+            var b1 = np.isfortran(b);
+            Assert.AreEqual(true, b1);
+            print(b1);
+
+            var c = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var c1 = np.isfortran(c);
+            Assert.AreEqual(false, c1);
+            print(c1);
+
+            var d = a.T;
+            var d1 = np.isfortran(d);
+            Assert.AreEqual(true, d1);
+            print(d1);
+
+            // C-ordered arrays evaluate as False even if they are also FORTRAN-ordered.
+
+            var e1 = np.isfortran(np.array(new int[] { 1, 2 }, order: NPY_ORDER.NPY_FORTRANORDER));
+            Assert.AreEqual(false, e1);
+            print(e1);
+
+            return;
 
         }
 
