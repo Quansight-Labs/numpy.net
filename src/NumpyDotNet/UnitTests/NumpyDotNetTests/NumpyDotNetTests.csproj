@@ -76,6 +76,7 @@
     <Compile Include="DateTimeSupportTests.cs" />
     <Compile Include="StringOperationsTests.cs" />
     <Compile Include="ObjectOperationsTests.cs" />
+    <Compile Include="NumericTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1721,64 +1721,23 @@ namespace NumpyDotNetTests
             print(c);
         }
 
+   
+
+
+        [Ignore] // not implemented yet
         [TestMethod]
-        public void test_array_equal_1()
+        public void test_subtract_1()
         {
-            var a = np.array_equal(new int[] { 1, 2 }, new int[] { 1, 2 });
-            Assert.AreEqual(true, a);
-            print(a);
 
-            var b = np.array_equal(np.array(new int[] { 1, 2 }), np.array(new int[] { 1, 2 }));
-            Assert.AreEqual(true, b);
-            print(b);
-
-            var c = np.array_equal(new int[] { 1, 2 }, new int[] { 1, 2, 3 });
-            Assert.AreEqual(false, c);
-            print(c);
-
-            var d = np.array_equal(new int[] { 1, 2 }, new int[] { 1, 4 });
-            Assert.AreEqual(false, d);
-            print(d);
-        }
-
-        [Ignore] // need to implement the broadcast function first
-        [TestMethod]
-        public void test_array_equiv_1()
-        {
-            var a = np.array_equiv(new int[] { 1, 2 }, new int[] { 1, 2 });
-            Assert.AreEqual(true, a);
-            print(a);
-
-            var b = np.array_equiv(new int[] { 1, 2 }, new int[] { 1, 3 });
-            Assert.AreEqual(false, b);
-            print(b);
-
-            var c = np.array_equiv(new int[] { 1, 2 }, new int[,] {{ 1, 2 },{ 1, 2 } });
-            Assert.AreEqual(true, c);
-            print(c);
-
-            var d = np.array_equiv(new int[] { 1, 2 }, new int[,] { { 1, 2, 1,2 }, { 1, 2, 1, 2 } });
-            Assert.AreEqual(false, d);
-            print(d);
-
-            var e = np.array_equiv(new int[] { 1, 2 }, new int[,] { { 1, 2 }, { 1, 3 } });
-            Assert.AreEqual(false, e);
-            print(e);
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_allclose_1()
+        public void test_multiply_1()
         {
 
         }
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_isclose_1()
-        {
 
-        }
-    
 
 
     }
