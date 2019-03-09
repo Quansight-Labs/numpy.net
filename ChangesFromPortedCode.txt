@@ -1,0 +1,45 @@
+
+
+
+
+
+numpylib rework:
+
+function_base.py
+twodim_base.py
+shape_base.py
+
+todo:
+
+
+arraysetops.py
+index_tricks.py
+arraypad.py
+nanfunctions.py
+
+arrayterator.py
+financial.py
+format.py
+histograms.py
+
+info.py
+mixins.py
+
+npyio.py
+polynomial.py
+recfunctions.py
+scimath.py
+setup.py
+
+stride_tricks.py
+
+type_check.py
+ufunclike.py
+user_array.py
+utils.py
+
+
+
+
+ fill out the x and y of the where function
+ fill out nonzero function

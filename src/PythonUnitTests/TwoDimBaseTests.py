@@ -100,11 +100,36 @@ class Test_test1(unittest.TestCase):
     
     def test_mask_indices(self):
 
+        iu = np.mask_indices(3, np.triu)
+        print(iu)
+
+        a = np.arange(9).reshape(3, 3)
+        b = a[iu]
+        print(b)
+
+        iu1 = np.mask_indices(3, np.triu, 1)
+
+        c = a[iu1]
+        print(c)
+
         return
 
     
     def test_tril_indices(self):
 
+        il1 = np.tril_indices(4)
+        il2 = np.tril_indices(4, 2)
+
+        a = np.arange(16).reshape(4, 4)
+        b = a[il1]
+        print(b)
+
+        a[il1] = -1
+        print(a)
+ 
+        a[il2] = -10
+        print(a)
+ 
         return
     
     def test_tril_indices_from(self):
