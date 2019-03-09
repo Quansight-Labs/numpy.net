@@ -565,8 +565,12 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Transpose(a, axes == null ? null : axes.ToArray());
         }
+        public static ndarray transpose(ndarray []a, npy_intp[] axes = null)
+        {
+            return transpose(vstack(a), axes);
+        }
 
-  
+
 
         #endregion
 

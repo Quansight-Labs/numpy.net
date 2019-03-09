@@ -743,9 +743,7 @@ namespace NumpyDotNet
             //           [1, 1],
             //           [1, 2]])
 
-            //return transpose(nonzero(a));
-
-            throw new NotImplementedException();
+            return transpose(nonzero(a));
         }
 
         #endregion

@@ -294,7 +294,20 @@ class NumericTests(unittest.TestCase):
         return
 
        
-    def test_argwhere_1(self):    
+    def test_argwhere_1(self): 
+        
+        x = np.arange(6).reshape(2, 3)
+
+        x1 = np.nonzero(x > 1)
+        x2 = np.transpose(x1)
+
+        y = np.argwhere(x > 1)
+        print(y)
+
+        a = np.arange(12).reshape(2, 3, 2)
+        b = np.argwhere(a > 1)
+        print(b)
+
         return
            
     def test_flatnonzero_1(self):    

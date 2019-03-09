@@ -458,11 +458,28 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_argwhere_1()
         {
+            var x = np.arange(6).reshape((2, 3));
+            var y = np.argwhere(x > 1);
 
+            var ExpectedY = new int[,] {{0, 2}, {1, 0}, {1, 1}, {1, 2}};
+            AssertArray(y, ExpectedY);
+            print(y);
+
+            var a = np.arange(12).reshape((2, 3, 2));
+            var b = np.argwhere(a > 1);
+
+            var ExpectedB = new int[,]
+                {{0, 1, 0}, {0, 1, 1}, {0, 2, 0}, {0, 2, 1}, {1, 0, 0},
+                 {1, 0, 1}, {1, 1, 0}, {1, 1, 1}, {1, 2, 0}, {1, 2, 1}};
+
+            AssertArray(b, ExpectedB);
+
+            print(b);
+
+            return;
         }
 
 
