@@ -294,11 +294,26 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_count_nonzero_1()
         {
+            var a = np.count_nonzero(np.eye(4));
+            Assert.AreEqual(4, a.GetItem(0));
+            print(a);
 
+            var b = np.count_nonzero(new int[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
+            Assert.AreEqual(5, b.GetItem(0));
+            print(b);
+
+            var c = np.count_nonzero(new int[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis:0);
+            AssertArray(c, new int[] { 1,1,1,1,1});
+            print(c);
+
+            var d = np.count_nonzero(new int[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis:1);
+            AssertArray(d, new int[] { 2,3 });
+            print(d);
+
+            return;
         }
 
         [TestMethod]
