@@ -28,6 +28,9 @@
     <Compile Include="NumericOperationsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NumericTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PythonUnitTests.py" />
     <Compile Include="ArrayCreationTests.py">
       <SubType>Code</SubType>
