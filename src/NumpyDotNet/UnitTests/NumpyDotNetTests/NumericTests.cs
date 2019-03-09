@@ -482,11 +482,22 @@ namespace NumpyDotNetTests
             return;
         }
 
-
-        [Ignore]
         [TestMethod]
         public void test_flatnonzero_1()
         {
+            var x = np.arange(-2, 3);
+
+            var y = np.flatnonzero(x);
+            AssertArray(y, new int[] {0,1,3,4});
+            print(y);
+
+            // Use the indices of the non-zero elements as an index array to extract these elements:
+
+            var z = x.ravel()[np.flatnonzero(x)] as ndarray;
+            AssertArray(z, new int[] { -2,-1,1,2 });
+            print(z);
+
+            return;
         }
 
 

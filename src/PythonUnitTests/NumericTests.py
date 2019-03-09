@@ -310,7 +310,18 @@ class NumericTests(unittest.TestCase):
 
         return
            
-    def test_flatnonzero_1(self):    
+    def test_flatnonzero_1(self): 
+        
+        x = np.arange(-2, 3)
+
+        y = np.flatnonzero(x)
+        print(y)
+
+        # Use the indices of the non-zero elements as an index array to extract these elements:
+
+        z = x.ravel()[np.flatnonzero(x)]
+        print(z)
+
         return
            
     def test_correlate_1(self):    
