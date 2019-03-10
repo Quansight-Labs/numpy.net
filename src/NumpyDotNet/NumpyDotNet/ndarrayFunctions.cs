@@ -1336,12 +1336,12 @@ namespace NumpyDotNet
 
         #region subtract
 
-        private static ndarray subtract(object x1, object x2)
+        public static ndarray subtract(object x1, object x2)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_subtract, asanyarray(x2));
         }
 
-        private static ndarray subtract(object x1, int x2)
+        public static ndarray subtract(object x1, int x2)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_subtract, x2);
         }
@@ -1349,12 +1349,12 @@ namespace NumpyDotNet
 
         #region multiply
 
-        private static ndarray multiply(object x1, object x2)
+        public static ndarray multiply(object x1, object x2)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, asanyarray(x2));
         }
 
-        private static ndarray multiply(object x1, int x2)
+        public static ndarray multiply(object x1, int x2)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, x2);
         }
