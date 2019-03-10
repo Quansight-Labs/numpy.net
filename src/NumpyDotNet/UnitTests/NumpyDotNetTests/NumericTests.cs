@@ -540,10 +540,32 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
+        public void xxx_test_inner_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
         public void xxx_test_tensordot_1()
         {
 
         }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void xxx_test_dot_1()
+        {
+
+        }
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void xxx_test_einsum_1()
+        {
+
+        }
+
 
 
         [TestMethod]
