@@ -46,12 +46,6 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-
-        private static ndarray asarray(ndarray m)
-        {
-            return m;
-        }
-
   
         private static ndarray ndArrayFromMD(Array ssrc, NPY_TYPES type_num, int ndim)
         {

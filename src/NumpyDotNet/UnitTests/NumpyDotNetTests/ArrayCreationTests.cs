@@ -63,18 +63,28 @@ namespace NumpyDotNetTests
         }
 
 
-
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_asfarray_1()
         {
-  
+            var a = np.asfarray(new int[] { 2, 3 });
+            AssertArray(a, new double[] { 2, 3 });
+            print(a);
+
+            var b = np.asfarray(new int []{ 2, 3}, dtype : np.Float32);
+            AssertArray(b, new double[] { 2, 3 });
+            print(b);
+
+            var c = np.asfarray(new int[] { 2, 3 }, dtype : np.Int8);
+            AssertArray(c, new double[] { 2, 3 });
+            print(c);
+
+
             return;
         }
 
-        [Ignore] // not implemented yet
+        [Ignore]  // waiting to implement matrix code
         [TestMethod]
-        public void test_asmatrix_1()
+        public void xxx_test_asmatrix_1()
         {
             var x = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             var m = np.asmatrix(x);
@@ -90,7 +100,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_mat_1()
+        public void xxx_test_mat_1()
         {
   
             return;
@@ -98,7 +108,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_bmat_1()
+        public void xxx_test_bmat_1()
         {
 
             return;
@@ -180,21 +190,21 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_meshgrid_1()
+        public void xxx_test_meshgrid_1()
         {
 
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_mgrid_1()
+        public void xxx_test_mgrid_1()
         {
 
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_ogrid_1()
+        public void xxx_test_ogrid_1()
         {
 
         }
@@ -314,7 +324,7 @@ namespace NumpyDotNetTests
 
         //[Ignore] // throws an error in python code
         [TestMethod]
-        public void test_1_OnBorder_0Inside()
+        public void xxx_test_1_OnBorder_0Inside()
         {
             var x = np.ones(new shape(15, 15));
             print("Original array:");
@@ -437,7 +447,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // this needs to be implemented
         [TestMethod]
-        public void test_RealImage_1()
+        public void xxx_test_RealImage_1()
         {
             // todo: this needs work.  Need to understand how these complex numbers are really used.
             var x = np.sqrt(np.array(1.0f));
@@ -1134,7 +1144,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // needs to be debugged
         [TestMethod]
-        public void test_ndarray_unique_2()
+        public void xxx_test_ndarray_unique_2()
         {
             var x = np.array(new Int32[] { 1, 2, 3, 1, 98, 97, 96, 94, 3, 4, 5, 4, 4, 1, 9, 6, 9, 11, 23, 9, 5, 0, 11, 12 }).reshape(new shape(6,4));
 
@@ -1558,7 +1568,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // bit operation is not producing the expected result
         [TestMethod]
-        public void test_arange_slice_2C()
+        public void xxx_test_arange_slice_2C()
         {
             var a = np.arange(0, 32, dtype: np.Int16).reshape(new shape(2, 4, -1));
             var b = np.arange(100, 132, dtype: np.Int16).reshape(new shape(2, 4, -1));

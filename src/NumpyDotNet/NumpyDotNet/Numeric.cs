@@ -570,6 +570,29 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region asfarray
+
+        public static ndarray asfarray(object a, dtype dtype = null)
+        {
+
+            var a1 = asanyarray(a);
+
+            if (dtype == null)
+            {
+                dtype = np.Float64;
+            }
+
+            var arr = a1.Array;
+            if (NpyCoreApi.ScalarKind(dtype.TypeNum, ref arr) != NPY_SCALARKIND.NPY_FLOAT_SCALAR)
+            {
+                dtype = np.Float64;
+            }
+
+            return asarray(a1, dtype: dtype);
+        }
+
+        #endregion
+
         #region require
 
         public static ndarray require(ndarray a, dtype dtype = null, char[] requirements = null)
