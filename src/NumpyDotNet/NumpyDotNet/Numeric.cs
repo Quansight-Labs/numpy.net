@@ -1420,9 +1420,12 @@ namespace NumpyDotNet
 
         #region isscalar
 
-        public static ndarray isscalar(ndarray a, object source, object destination)
+        public static bool isscalar(object source)
         {
-            throw new NotImplementedException();
+            if (source.GetType().IsPrimitive)
+                return true;
+
+            return false;
         }
 
         #endregion

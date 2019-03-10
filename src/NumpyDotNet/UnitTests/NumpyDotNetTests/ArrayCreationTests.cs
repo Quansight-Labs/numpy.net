@@ -133,19 +133,20 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_linspace_1()
         {
-            var a = np.linspace(2.0, 3.0, num : 5);
+            double retstep = 0;
+
+            var a = np.linspace(2.0, 3.0, ref retstep, num : 5);
             AssertArray(a, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
             print(a);
 
-            var b = np.linspace(2.0, 3.0, num :5, endpoint: false);
+            var b = np.linspace(2.0, 3.0, ref retstep, num :5, endpoint: false);
             AssertArray(b, new double[] { 2.0, 2.2, 2.4, 2.6, 2.8 });
             print(b);
 
-            var c = np.linspace(2.0, 3.0, num : 5, retstep : true);
+            var c = np.linspace(2.0, 3.0, ref retstep, num : 5);
             AssertArray(c, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
             print(c);
         }
