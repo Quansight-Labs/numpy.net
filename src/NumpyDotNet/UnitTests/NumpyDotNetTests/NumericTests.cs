@@ -399,7 +399,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // need to fully implement np.require.
         [TestMethod]
-        public void test_require_1()
+        public void xxx_test_require_1()
         {
             var x = np.arange(6).reshape((2, 3));
             Assert.AreEqual(x.flags.c_contiguous, true);
@@ -503,20 +503,20 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_correlate_1()
+        public void xxx_test_correlate_1()
         {
         }
 
         [Ignore]
         [TestMethod]
-        public void test_convolve_1()
+        public void xxx_test_convolve_1()
         {
         }
 
 
-        [Ignore] //needs to be debugged
+        [Ignore] // waiting for multiply to be implemented
         [TestMethod]
-        public void test_outer_1()
+        public void xxx_test_outer_1()
         {
             var a = np.arange(2, 10).reshape((2, 4));
             var b = np.arange(12, 20).reshape((2, 4));
@@ -528,7 +528,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_tensordot_1()
+        public void xxx_test_tensordot_1()
         {
 
         }
@@ -590,9 +590,9 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
+        [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void test_ndarray_rollaxis()
+        public void xxx_test_ndarray_rollaxis()
         {
             var a = np.ones((3, 4, 5, 6));
             var b = np.rollaxis(a, 3, 1).shape;
@@ -611,7 +611,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_ndarray_moveaxis()
+        public void xxx_test_ndarray_moveaxis()
         {
             var x = np.zeros((3, 4, 5));
             var b = np.moveaxis(x, 0, -1).shape;
@@ -640,23 +640,23 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-        [Ignore] // not implemented yet
+        [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void test_cross_1()
+        public void xxx_test_cross_1()
         {
 
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_indices_1()
+        public void xxx_test_indices_1()
         {
 
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_fromfunction_1()
+        public void xxx_test_fromfunction_1()
         {
 
         }
@@ -671,14 +671,14 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_binary_repr()
+        public void xxx_test_binary_repr()
         {
 
         }
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_base_repr()
+        public void xxx_test_base_repr()
         {
 
         }
@@ -754,9 +754,9 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore] // need to implement the broadcast function first
+        [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void test_array_equiv_1()
+        public void xxx_test_array_equiv_1()
         {
             var a = np.array_equiv(new int[] { 1, 2 }, new int[] { 1, 2 });
             Assert.AreEqual(true, a);

@@ -14,7 +14,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void Test_BartlettWindow_Placeholder()
+        public void xxx_Test_BartlettWindow_Placeholder()
         {
         }
     }

@@ -14,7 +14,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void Test_NANFunctions_Placeholder()
+        public void xxx_Test_NANFunctions_Placeholder()
         {
         }
     }

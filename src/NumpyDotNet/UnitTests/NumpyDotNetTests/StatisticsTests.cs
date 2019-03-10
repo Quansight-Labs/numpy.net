@@ -15,7 +15,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void Test_StatisticsFunctions_Placeholder()
+        public void xxx_Test_StatisticsFunctions_Placeholder()
         {
         }
     }

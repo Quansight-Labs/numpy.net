@@ -14,7 +14,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void Test_RandomSampling_PlaceHolder()
+        public void xxx_Test_RandomSampling_PlaceHolder()
         {
         }
     }

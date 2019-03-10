@@ -17,7 +17,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void Test_ObjectOperations_Placeholder()
+        public void xxx_Test_ObjectOperations_Placeholder()
         {
         }
     }
