@@ -229,17 +229,17 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_vander_1()
+        public void xxx_test_vander_1()
         {
-
+            // waiting for multiply.accumulate to be implemented
         }
 
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_histogram2d()
+        public void xxx_test_histogram2d()
         {
-
+            // waiting for histogramdd to be implemented
         }
 
         [TestMethod]
@@ -294,25 +294,72 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_tril_indices_from()
         {
+            var a = np.arange(16).reshape((4, 4));
+            var il1 = np.tril_indices_from(a, 0);
 
+            AssertArray(il1[0], new Int64[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il1[1], new Int64[] { 0, 0, 1, 0, 1, 2, 0, 1, 2, 3 });
+            print(il1);
+
+            var il2 = np.tril_indices_from(a, 2);
+            AssertArray(il2[0], new Int64[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il2[1], new Int64[] { 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
+
+            print(il2);
+
+            return;
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_triu_indices()
         {
+            var il1 = np.triu_indices(4);
+            var il2 = np.triu_indices(4, 2);
 
+            var a = np.arange(16).reshape((4, 4));
+            var b = a[il1] as ndarray;
+            AssertArray(b, new int[] { 0,  1,  2,  3,  5,  6,  7, 10, 11, 15 });
+            print(b);
+
+            a[il1] = -1;
+
+            var ExpectedDataA1 = new int[,]
+                {{-1, -1, -1, -1}, { 4, -1, -1, -1},
+                 { 8,  9, -1, -1}, {12, 13, 14, -1}};
+            AssertArray(a, ExpectedDataA1);
+            print(a);
+
+            a[il2] = -10;
+
+            var ExpectedDataA2 = new int[,]
+                {{-1, -1, -10, -10}, {4,  -1, -1, -10},
+                 { 8,  9, -1,  -1},  {12, 13, 14, -1}};
+            AssertArray(a, ExpectedDataA2);
+            print(a);
+
+            return;
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_triu_indices_from()
         {
+            var a = np.arange(16).reshape((4, 4));
+            var il1 = np.triu_indices_from(a, 0);
 
+            AssertArray(il1[0], new Int64[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
+            AssertArray(il1[1], new Int64[] { 0, 1, 2, 3, 1, 2, 3, 2, 3, 3 });
+            print(il1);
+
+            var il2 = np.triu_indices_from(a, 2);
+            AssertArray(il2[0], new Int64[] { 0, 0, 1 });
+            AssertArray(il2[1], new Int64[] { 2, 3, 3 });
+
+            print(il2);
+
+            return;
         }
 
     }

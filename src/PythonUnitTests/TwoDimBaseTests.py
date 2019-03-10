@@ -134,16 +134,42 @@ class Test_test1(unittest.TestCase):
     
     def test_tril_indices_from(self):
 
+        a = np.arange(16).reshape(4, 4)
+        il1 = np.tril_indices_from(a, 0)
+        il2 = np.tril_indices_from(a, 2)
+
+        print(il1)
+        print(il2)
+
         return
     
     def test_triu_indices(self):
 
+        il1 = np.triu_indices(4)
+        il2 = np.triu_indices(4, 2)
+
+        a = np.arange(16).reshape(4, 4)
+        b = a[il1]
+        print(b)
+
+        a[il1] = -1
+        print(a)
+ 
+        a[il2] = -10
+        print(a)
+ 
         return
     
     def test_triu_indices_from(self):
 
+        a = np.arange(16).reshape(4, 4)
+        il1 = np.triu_indices_from(a, 0)
+        il2 = np.triu_indices_from(a, 2)
+
+        print(il1)
+        print(il2)
+
         return
- 
 
 if __name__ == '__main__':
     unittest.main()
