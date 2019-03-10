@@ -1490,20 +1490,226 @@ namespace NumpyDotNet
 
         #region allclose
 
-        public static ndarray allclose()
+        public static bool allclose(object a, object b, double rtol = 1.0E-5, double atol = 1.0E-8, bool equal_nan=false)
         {
-            throw new NotImplementedException();
+            //  Returns True if two arrays are element - wise equal within a tolerance.
+
+            //  The tolerance values are positive, typically very small numbers.  The
+            //  relative difference(`rtol` *abs(`b`)) and the absolute difference
+            //  `atol` are added together to compare against the absolute difference
+            //  between `a` and `b`.
+
+            //  If either array contains one or more NaNs, False is returned.
+            //  Infs are treated as equal if they are in the same place and of the same
+            //  sign in both arrays.
+
+            //  Parameters
+            //  ----------
+            //  a, b: array_like
+            //     Input arrays to compare.
+            // rtol : float
+            //     The relative tolerance parameter(see Notes).
+            // atol : float
+            //     The absolute tolerance parameter(see Notes).
+            // equal_nan : bool
+            //     Whether to compare NaN's as equal.  If True, NaN's in `a` will be
+            //      considered equal to NaN's in `b` in the output array.
+
+            //      ..versionadded:: 1.10.0
+
+            //  Returns
+            //  ------ -
+            //  allclose : bool
+            //      Returns True if the two arrays are equal within the given
+            //      tolerance; False otherwise.
+
+            //  See Also
+            //  --------
+            //  isclose, all, any, equal
+
+            //  Notes
+            //  -----
+            //  If the following equation is element - wise True, then allclose returns
+            //  True.
+
+            //   absolute(`a` - `b`) <= (`atol` + `rtol` *absolute(`b`))
+
+            //  The above equation is not symmetric in `a` and `b`, so that
+            //  ``allclose(a, b)`` might be different from ``allclose(b, a)`` in
+            //  some rare cases.
+
+            //  The comparison of `a` and `b` uses standard broadcasting, which
+            //  means that `a` and `b` need not have the same shape in order for
+            //  ``allclose(a, b)`` to evaluate to True.The same is true for
+            //  `equal` but not `array_equal`.
+
+
+            //Examples
+            //--------
+            //>>> np.allclose([1e10, 1e-7], [1.00001e10, 1e-8])
+            //                  False
+            //                  >>> np.allclose([1e10, 1e-8], [1.00001e10,1e-9])
+            //  True
+            //  >>> np.allclose([1e10, 1e-8], [1.0001e10, 1e-9])
+            //  False
+            //  >>> np.allclose([1.0, np.nan], [1.0, np.nan])
+            //  False
+            //  >>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
+
+            ndarray res = all(isclose(a, b, rtol : rtol, atol : atol, equal_nan : equal_nan));
+            return Convert.ToBoolean(res.GetItem(0));
         }
 
         #endregion
 
         #region isclose
 
-        public static ndarray isclose()
+        public static ndarray isclose(object a, object b, double rtol = 1.0E-5, double atol = 1.0E-8, bool equal_nan = false)
         {
-            throw new NotImplementedException();
+            // Returns a boolean array where two arrays are element - wise equal within a
+            // tolerance.
+
+            // The tolerance values are positive, typically very small numbers.  The
+            // relative difference(`rtol` *abs(`b`)) and the absolute difference
+            // `atol` are added together to compare against the absolute difference
+            // between `a` and `b`.
+
+            // .. warning::The default `atol` is not appropriate for comparing numbers
+
+            //             that are much smaller than one(see Notes).
+
+            //Parameters
+            //----------
+
+            //a, b : array_like
+
+            //    Input arrays to compare.
+            //rtol : float
+
+            //    The relative tolerance parameter(see Notes).
+            //atol : float
+
+            //    The absolute tolerance parameter(see Notes).
+            //equal_nan : bool
+
+            //    Whether to compare NaN's as equal.  If True, NaN's in `a` will be
+
+            //    considered equal to NaN's in `b` in the output array.
+
+
+            //Returns
+            //------ -
+            //y : array_like
+
+            //    Returns a boolean array of where `a` and `b` are equal within the
+
+            //    given tolerance.If both `a` and `b` are scalars, returns a single
+
+            //    boolean value.
+
+
+            //See Also
+            //--------
+
+            //allclose
+
+
+            //Notes
+            //---- -
+
+            //..versionadded:: 1.7.0
+
+
+            //For finite values, isclose uses the following equation to test whether
+
+            //two floating point values are equivalent.
+
+            // absolute(`a` - `b`) <= (`atol` + `rtol` *absolute(`b`))
+
+            //             Unlike the built -in `math.isclose`, the above equation is not symmetric
+            // in `a` and `b` --it assumes `b` is the reference value-- so that
+            // `isclose(a, b)` might be different from `isclose(b, a)`. Furthermore,
+            // the default value of atol is not zero, and is used to determine what
+            // small values should be considered close to zero. The default value is
+            // appropriate for expected values of order unity: if the expected values
+            // are significantly smaller than one, it can result in false positives.
+            // `atol` should be carefully selected for the use case at hand.A zero value
+            // for `atol` will result in `False` if either `a` or `b` is zero.
+
+            // Examples
+            // --------
+            // >>> np.isclose([1e10, 1e-7], [1.00001e10,1e-8])
+            // array([True, False])
+            // >>> np.isclose([1e10, 1e-8], [1.00001e10, 1e-9])
+            // array([True, True])
+            // >>> np.isclose([1e10, 1e-8], [1.0001e10, 1e-9])
+            // array([False, True])
+            // >>> np.isclose([1.0, np.nan], [1.0, np.nan])
+            // array([True, False])
+            // >>> np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
+            // array([True, True])
+            // >>> np.isclose([1e-8, 1e-7], [0.0, 0.0])
+            // array([True, False], dtype= bool)
+            // >>> np.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)
+            // array([False, False], dtype= bool)
+            // >>> np.isclose([1e-10, 1e-10], [1e-20, 0.0])
+            // array([True, True], dtype= bool)
+            // >>> np.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)
+            // array([False, True], dtype= bool)
+
+            ndarray x = asanyarray(a);
+            ndarray y = asanyarray(b);
+
+            dtype dt = np.Float64; // multiarray.result_type(y, 1.0);
+            y = array(y, dtype: dt, copy: false, subok: true);
+
+            var xfin = isfinite(x);
+            var yfin = isfinite(y);
+            if ((bool)(all(xfin).GetItem(0)) && (bool)(all(yfin).GetItem(0)))
+            {
+                return within_tol(x, y, atol, rtol);
+            }
+            else
+            {
+                ndarray finite = xfin & yfin;
+                ndarray cond = zeros_like(finite, subok: true);
+                // Because we're using boolean indexing, x & y must be the same shape.
+                // Ideally, we'd just do x, y = broadcast_arrays(x, y). It's in
+                // lib.stride_tricks, though, so we can't import it here.
+                x = x * ones_like(cond);
+                y = y * ones_like(cond);
+                // Avoid subtraction with infinite/nan values...
+                cond[finite] = within_tol(x.A(finite), y.A(finite), atol, rtol);
+                // Check for equality of infinite values...
+
+                cond[~finite] = x.A(~finite).Equals(y.A(~finite));
+
+                if (equal_nan)
+                {
+                    // Make NaN == NaN
+                    ndarray both_nan = isnan(x) & isnan(y);
+
+                    // Needed to treat masked arrays correctly. = True would not work.
+                    cond[both_nan] = both_nan[both_nan];
+                }
+   
+                return cond.astype(np.Bool);        // Flatten 0d arrays to scalars
+            }
+
         }
 
+        private static ndarray within_tol(ndarray x, ndarray y, double atol, double rtol)
+        {
+            try
+            {
+                return less_equal(absolute(x - y), atol + rtol * absolute(y));
+            }
+            catch
+            {
+                throw new Exception("Exception calculating differences between arrays");
+            }
+        }
+    
         #endregion
 
         #region array_equal

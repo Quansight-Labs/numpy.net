@@ -741,17 +741,70 @@ namespace NumpyDotNetTests
             AssertStrides(b, 5, 1);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_allclose_1()
         {
+            bool a = np.allclose(new double[] { 1e10, 1e-7 }, new double[] { 1.00001e10, 1e-8 });
+            Assert.AreEqual(false, a);
+            print(a);
 
+            bool b = np.allclose(new double[] { 1e10, 1e-8 }, new double[] { 1.00001e10, 1e-9 });
+            Assert.AreEqual(true, b);
+            print(b);
+
+            bool c = np.allclose(new double[] { 1e10, 1e-8 }, new double[] { 1.0001e10, 1e-9 });
+            Assert.AreEqual(false, c);
+            print(c);
+
+            bool d = np.allclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN });
+            Assert.AreEqual(false, d);
+            print(d);
+
+            bool e = np.allclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN }, equal_nan: true);
+            Assert.AreEqual(true, e);
+            print(e);
+
+            return;
         }
-        [Ignore] // not implemented yet
+
         [TestMethod]
         public void test_isclose_1()
         {
+            var a = np.isclose(new double[] { 1e10, 1e-7 }, new double[] { 1.00001e10, 1e-8 });
+            AssertArray(a, new bool[] { true, false });
+            print(a);
 
+            var b = np.isclose(new double[] { 1e10, 1e-8 }, new double[] { 1.00001e10, 1e-9 });
+            AssertArray(b, new bool[] { true, true });
+            print(b);
+
+            var c = np.isclose(new double[] { 1e10, 1e-8 }, new double[] { 1.0001e10, 1e-9 });
+            AssertArray(c, new bool[] { false, true });
+            print(c);
+
+            var d = np.isclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN });
+            AssertArray(d, new bool[] { true, false });
+            print(d);
+
+            var e = np.isclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN }, equal_nan: true);
+            AssertArray(e, new bool[] { true, true });
+            print(e);
+
+            var f = np.isclose(new double[] { 1e-8, 1e-7 }, new double[] { 0.0, 0.0 });
+            AssertArray(f, new bool[] { true, false });
+            print(f);
+
+            var g = np.isclose(new double[] { 1e-100, 1e-7 }, new double[] { 0.0, 0.0 }, atol:0.0);
+            AssertArray(g, new bool[] { false, false });
+            print(g);
+
+            var h = np.isclose(new double[] { 1e-10, 1e-10 }, new double[] { 1e-20, 0.0 });
+            AssertArray(h, new bool[] { true, true });
+            print(h);
+
+            var i = np.isclose(new double[] { 1e-10, 1e-10 }, new double[] { 1e-20, 0.999999e-10 }, atol: 0.0);
+            AssertArray(i, new bool[] { false, true });
+            print(i);
         }
 
         [TestMethod]

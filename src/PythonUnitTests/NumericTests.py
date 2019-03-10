@@ -466,10 +466,55 @@ class NumericTests(unittest.TestCase):
         print(b.shape)
         print(b.strides)
 
-    def test_allclose_1(self):    
+    def test_allclose_1(self):
+        
+        a = np.allclose([1e10,1e-7], [1.00001e10,1e-8])
+        print(a)
+
+        b = np.allclose([1e10,1e-8], [1.00001e10,1e-9])
+        print(b)
+
+        c = np.allclose([1e10,1e-8], [1.0001e10,1e-9])
+        print(c)
+
+        d = np.allclose([1.0, np.nan], [1.0, np.nan])
+        print(d)
+
+        e = np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
+        print(e)
+
         return
 
-    def test_isclose_1(self):    
+    def test_isclose_1(self): 
+  
+        a = np.isclose([1e10,1e-7], [1.00001e10,1e-8])
+        print(a)
+
+        b = np.isclose([1e10,1e-8], [1.00001e10,1e-9])
+        print(b)
+
+        c = np.isclose([1e10,1e-8], [1.0001e10,1e-9])
+        print(c)
+
+        d = np.isclose([1.0, np.nan], [1.0, np.nan])
+        print(d)
+
+        e = np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
+        print(e)
+
+        f = np.isclose([1e-8, 1e-7], [0.0, 0.0])
+        print(f)
+
+        g = np.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)
+        print(g)
+
+        h = np.isclose([1e-10, 1e-10], [1e-20, 0.0])
+        print(h)
+
+        i = np.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)
+        print(i)
+
+
         return
 
 
