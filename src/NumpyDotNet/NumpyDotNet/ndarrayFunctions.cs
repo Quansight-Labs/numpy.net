@@ -729,13 +729,142 @@ namespace NumpyDotNet
 
         #region geomspace
 
-        public static ndarray geomspace(Int64 start, Int64? stop = null, int? num = null, bool endpoint = true, dtype dtype = null, int? axis = null)
+        public static ndarray geomspace(Int64 start, Int64 stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
-            throw new NotImplementedException();
+            return geomspace(Convert.ToDouble(start), Convert.ToDouble(stop), num, endpoint, dtype);
         }
-        public static ndarray geomspace(double start, double? stop = null, int? num = null, bool endpoint = true, dtype dtype = null, int? axis = null)
+        public static ndarray geomspace(double start, double stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
-            throw new NotImplementedException();
+            //  Return numbers spaced evenly on a log scale(a geometric progression).
+
+            //  This is similar to `logspace`, but with endpoints specified directly.
+            //  Each output sample is a constant multiple of the previous.
+
+            //  Parameters
+            //  ----------
+            //  start: scalar
+            //     The starting value of the sequence.
+            // stop : scalar
+            //     The final value of the sequence, unless `endpoint` is False.
+            //     In that case, ``num + 1`` values are spaced over the
+            //     interval in log - space, of which all but the last(a sequence of
+            //       length `num`) are returned.
+            //  num: integer, optional
+            //     Number of samples to generate.  Default is 50.
+            // endpoint : boolean, optional
+            //     If true, `stop` is the last sample.Otherwise, it is not included.
+            //      Default is True.
+            //  dtype : dtype
+            //      The type of the output array.If `dtype` is not given, infer the data
+            //    type from the other input arguments.
+
+            //Returns
+            //------ -
+            //samples : ndarray
+            //      `num` samples, equally spaced on a log scale.
+
+            //  See Also
+            //  --------
+            //  logspace : Similar to geomspace, but with endpoints specified using log
+            //             and base.
+            //  linspace : Similar to geomspace, but with arithmetic instead of geometric
+            //             progression.
+            //  arange : Similar to linspace, with the step size specified instead of the
+            //           number of samples.
+
+            //  Notes
+            //  ---- -
+            //  If the inputs or dtype are complex, the output will follow a logarithmic
+            //  spiral in the complex plane.  (There are an infinite number of spirals
+            //  passing through two points; the output will follow the shortest such path.)
+
+            //  Examples
+            //  --------
+            //  >>> np.geomspace(1, 1000, num = 4)
+            //  array([1., 10., 100., 1000.])
+            //  >>> np.geomspace(1, 1000, num = 3, endpoint = False)
+            //  array([1., 10., 100.])
+            //  >>> np.geomspace(1, 1000, num = 4, endpoint = False)
+            //  array([1.        , 5.62341325, 31.6227766, 177.827941])
+            //  >>> np.geomspace(1, 256, num = 9)
+            //  array([1., 2., 4., 8., 16., 32., 64., 128., 256.])
+
+            //  Note that the above may not produce exact integers:
+
+            //  >>> np.geomspace(1, 256, num = 9, dtype = int)
+            //  array([1, 2, 4, 7, 16, 32, 63, 127, 256])
+            //  >>> np.around(np.geomspace(1, 256, num = 9)).astype(int)
+            //  array([1, 2, 4, 8, 16, 32, 64, 128, 256])
+
+            //  Negative, decreasing, and complex inputs are allowed:
+
+            //  >>> np.geomspace(1000, 1, num = 4)
+            //  array([1000., 100., 10., 1.])
+            //  >>> np.geomspace(-1000, -1, num = 4)
+            //  array([-1000., -100., -10., -1.])
+            //  >>> np.geomspace(1j, 1000j, num = 4)  # Straight line
+            //  array([0.   + 1.j, 0.  + 10.j, 0. + 100.j, 0.+ 1000.j])
+            //  >>> np.geomspace(-1 + 0j, 1 + 0j, num = 5)  # Circle
+            //  array([-1.00000000 + 0.j, -0.70710678 + 0.70710678j,
+            //          0.00000000 + 1.j, 0.70710678 + 0.70710678j,
+            //          1.00000000 + 0.j])
+
+            //  Graphical illustration of ``endpoint`` parameter:
+
+            //  >>> import matplotlib.pyplot as plt
+            //  >>> N = 10
+            //  >>> y = np.zeros(N)
+            //  >>> plt.semilogx(np.geomspace(1, 1000, N, endpoint = True), y + 1, 'o')
+            //  >>> plt.semilogx(np.geomspace(1, 1000, N, endpoint = False), y + 2, 'o')
+            //  >>> plt.axis([0.5, 2000, 0, 3])
+            //  >>> plt.grid(True, color = '0.7', linestyle = '-', which = 'both', axis = 'both')
+            //  >>> plt.show()
+
+            if (start == 0 || stop == 0)
+            {
+                throw new ValueError("Geometric sequence cannot include zero");
+            }
+
+            dtype dt = np.Float64; // result_type(start, stop, float(num))
+            if (dtype == null)
+            {
+                dtype = dt;
+            }
+
+            // Avoid negligible real or imaginary parts in output by rotating to
+            // positive real, calculating, then undoing rotation
+            double out_sign = 1;
+            //if (start.real == stop.real == 0)
+            //{
+            //    start = start.imag;
+            //    stop = stop.imag;
+            //    out_sign = 1j* out_sign;
+            //}
+            if (start < 0 && stop < 0)
+            {
+                start = -start;
+                stop = -stop;
+                out_sign = -out_sign;
+            }
+
+            // Promote both arguments to the same dtype in case, for instance, one is
+            // complex and another is negative and log would produce NaN otherwise
+            start = start + (stop - stop);
+            stop = stop + (start - start);
+            //if (_nx.issubdtype(dtype, _nx.complexfloating))
+            //{
+            //    start = start + 0j;
+            //    stop = stop + 0j;
+            //}
+
+
+            var log_start = Math.Log10(start);
+            var log_stop = Math.Log10(stop);
+
+            var result = out_sign * logspace(log_start, log_stop, num: num,
+                                         endpoint: endpoint, _base: 10.0, dtype: dtype);
+
+            return result.astype(dtype);
         }
 
         #endregion

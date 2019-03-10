@@ -167,7 +167,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_geomspace_1()
         {
@@ -184,7 +183,7 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.geomspace(1, 256, num : 9);
-            AssertArray(c, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
+            AssertArray(d, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
             print(d);
         }
 
