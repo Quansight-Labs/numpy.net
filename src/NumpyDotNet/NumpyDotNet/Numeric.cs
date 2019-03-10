@@ -1053,23 +1053,18 @@ namespace NumpyDotNet
             // ``b = [b0, b1, ..., bN]``,
             // the outer product[1]_ is::
 
-
             //  [[a0 * b0  a0 * b1...a0 * bN]
             //   [a1 * b0.
-
             //   [ ...          .
-
             //   [aM * b0            aM * bN]]
 
             // Parameters
             // ----------
             // a: (M,) array_like
             //    First input vector.  Input is flattened if
-
             //    not already 1 - dimensional.
-            //b : (N,) array_like
+            // b: (N,) array_like
             //    Second input vector.  Input is flattened if
-
             //    not already 1 - dimensional.
             // out : (M, N) ndarray, optional
             //     A location where the result is stored
@@ -1092,9 +1087,9 @@ namespace NumpyDotNet
             var a1 = asarray(a);
             var b1 = asarray(b);
 
-            //return multiply(a1.ravel()[":", null] as ndarray, b1.ravel()[null, ":"] as ndarray);
-            return multiply(a1.ravel(), b1.ravel());
+            return multiply_outer(a1, b1);
         }
+        
 
         #endregion
 

@@ -514,13 +514,25 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // waiting for multiply to be implemented
         [TestMethod]
-        public void xxx_test_outer_1()
+        public void test_outer_1()
         {
             var a = np.arange(2, 10).reshape((2, 4));
             var b = np.arange(12, 20).reshape((2, 4));
             var c = np.outer(a, b);
+
+            var ExpectedDataC = new int[,]
+                {{24,  26,  28,  30,  32,  34,  36,  38},
+                 {36,  39,  42,  45,  48,  51,  54,  57},
+                 {48,  52,  56,  60,  64,  68,  72,  76},
+                 {60,  65,  70,  75,  80,  85,  90,  95},
+                 {72,  78,  84,  90,  96, 102, 108, 114},
+                 {84,  91,  98, 105, 112, 119, 126, 133},
+                 {96, 104, 112, 120, 128, 136, 144, 152},
+                 {108, 117, 126, 135, 144, 153, 162, 171}};
+
+            AssertArray(c, ExpectedDataC);
+
             print(c);
 
             return;
