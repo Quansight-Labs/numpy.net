@@ -661,11 +661,31 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_isscalar_1()
         {
 
+            bool a = np.isscalar(3.1);
+            Assert.AreEqual(true, a);
+            print(a);
+
+            bool b = np.isscalar(np.array(3.1));
+            Assert.AreEqual(false, b);
+            print(b);
+
+            bool c = np.isscalar(new double[] { 3.1 });
+            Assert.AreEqual(false, c);
+            print(c);
+
+            bool d = np.isscalar(false);
+            Assert.AreEqual(true, d);
+            print(d);
+
+            bool e = np.isscalar("numpy");
+            Assert.AreEqual(false, e);
+            print(e);
+
+            return;
         }
 
 

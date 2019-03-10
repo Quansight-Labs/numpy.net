@@ -425,7 +425,23 @@ class NumericTests(unittest.TestCase):
     def test_fromfunction_1(self):    
         return
 
-    def test_isscalar_1(self):    
+    def test_isscalar_1(self): 
+        
+        a = np.isscalar(3.1)
+        print(a)
+
+        b = np.isscalar(np.array(3.1))
+        print(b)
+
+        c = np.isscalar([3.1])
+        print(c)
+
+        d = np.isscalar(False)
+        print(d)
+
+        e = np.isscalar('numpy')
+        print(e)
+
         return
 
     def test_binary_repr(self):    
