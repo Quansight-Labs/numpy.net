@@ -61,7 +61,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_as_strided_1()
+        public void xxx_test_as_strided_1()
         {
         }
 

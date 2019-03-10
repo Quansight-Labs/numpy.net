@@ -1464,7 +1464,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet.  This is Not A TIME.  Need to support DateTime
         [TestMethod]
-        public void test_isnat_1()
+        public void xxx_test_isnat_1()
         {
 
         }

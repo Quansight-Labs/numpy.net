@@ -789,7 +789,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_partition_1()
+        public void xxx_test_partition_1()
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.partition(a, 3);
@@ -802,7 +802,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_argpartition_1()
+        public void xxx_test_argpartition_1()
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.argpartition(a, 3);
@@ -2133,7 +2133,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void test_var_1()
+        public void xxx_test_var_1()
         {
             ndarray a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
