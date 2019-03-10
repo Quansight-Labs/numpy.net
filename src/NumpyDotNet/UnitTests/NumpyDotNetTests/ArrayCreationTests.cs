@@ -151,7 +151,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_logspace_1()
         {
