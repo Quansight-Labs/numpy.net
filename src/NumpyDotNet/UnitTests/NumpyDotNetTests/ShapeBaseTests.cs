@@ -536,7 +536,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // need faster np.outer and need to reimplement np.concatenate as in multiarraymodule.c
         [TestMethod] 
-        public void test_kron_1()
+        public void xxx_test_kron_1()
         {
             var a = np.kron(new int[] { 1, 10, 100 }, new int[] { 5, 6, 7 });
             AssertArray(a, new int[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
@@ -557,7 +557,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // need faster np.outer and need to reimplement np.concatenate  as in multiarraymodule.c
         [TestMethod]
-        public void test_kron_2()
+        public void xxx_test_kron_2()
         {
             var a = np.arange(100).reshape(new shape(2, 5, 2, 5));
             var b = np.arange(24).reshape(new shape(2, 3, 4));
