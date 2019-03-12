@@ -1621,7 +1621,7 @@ namespace NumpyDotNet
             */
 
             var D = np.diagonal(a, offset, axis1, axis2);
-            var S = D.Sum();
+            var S = D.Sum(axis:-1);
             return S;
 
         }

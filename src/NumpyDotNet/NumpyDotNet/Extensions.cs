@@ -240,7 +240,7 @@ namespace NumpyDotNet
             return np.clip(a, a_min, a_max, ret);
         }
 
-        public static ndarray Sum(this ndarray a, int? axis = -1, dtype dtype = null, ndarray ret = null)
+        public static ndarray Sum(this ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             return np.sum(a, axis, dtype, ret);
         }
