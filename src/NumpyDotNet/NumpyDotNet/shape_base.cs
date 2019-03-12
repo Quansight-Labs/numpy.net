@@ -1107,78 +1107,157 @@ namespace NumpyDotNet
             return split(ary, indices_or_sections, 2);
         }
 
+
+        private delegate ndarray array_wrapper(ndarray r);
+        private static array_wrapper get_array_wrap(ndarray a1, ndarray b1)
+        {
+            return null;
+        }
+
+        private static array_wrapper get_array_prepare(ndarray a1, ndarray b1)
+        {
+            return null;
+        }
         public static ndarray kron(object a, object b)
         {
-           //
-           // Kronecker product of two arrays.
+            //
+            // Kronecker product of two arrays.
 
-           // Computes the Kronecker product, a composite array made of blocks of the
-           // second array scaled by the first.
+            // Computes the Kronecker product, a composite array made of blocks of the
+            // second array scaled by the first.
 
-           // Parameters
-           // ----------
-           // a, b: array_like
+            // Parameters
+            // ----------
+            // a, b: array_like
 
-           //Returns
-           // -------
-           // out : ndarray
+            //Returns
+            // -------
+            // out : ndarray
 
-           // See Also
-           // --------
-           // outer: The outer product
+            // See Also
+            // --------
+            // outer: The outer product
 
-           //Notes
-           // -----
-           // The function assumes that the number of dimensions of `a` and `b`
-           // are the same, if necessary prepending the smallest with ones.
-           // If `a.shape = (r0, r1,.., rN)` and `b.shape = (s0, s1,..., sN)`,
-           // the Kronecker product has shape `(r0 * s0, r1 * s1, ..., rN * SN)`.
-           // The elements are products of elements from `a` and `b`, organized
-           // explicitly by::
+            //Notes
+            // -----
+            // The function assumes that the number of dimensions of `a` and `b`
+            // are the same, if necessary prepending the smallest with ones.
+            // If `a.shape = (r0, r1,.., rN)` and `b.shape = (s0, s1,..., sN)`,
+            // the Kronecker product has shape `(r0 * s0, r1 * s1, ..., rN * SN)`.
+            // The elements are products of elements from `a` and `b`, organized
+            // explicitly by::
 
-           //     kron(a, b)[k0, k1,..., kN] = a[i0, i1,..., iN] * b[j0, j1,..., jN]
+            //     kron(a, b)[k0, k1,..., kN] = a[i0, i1,..., iN] * b[j0, j1,..., jN]
 
-           // where::
+            // where::
 
-           //     kt = it * st + jt,  t = 0,...,N
+            //     kt = it * st + jt,  t = 0,...,N
 
-           // In the common 2 - D case (N = 1), the block structure can be visualized::
-    
-
-           //         [[a[0, 0] * b, a[0, 1] * b,  ... , a[0, -1] * b],
-           //      [  ...                              ...   ],
-           //      [a[-1,0]* b, a[-1, 1]*b, ... , a[-1, -1]*b ]]
+            // In the common 2 - D case (N = 1), the block structure can be visualized::
 
 
-           // Examples
-           // --------
-           // >>> np.kron([1, 10, 100], [5, 6, 7])
-           // array([  5,   6,   7,  50,  60,  70, 500, 600, 700])
-           // >>> np.kron([5, 6, 7], [1, 10, 100])
-           // array([  5,  50, 500,   6,  60, 600,   7,  70, 700])
+            //         [[a[0, 0] * b, a[0, 1] * b,  ... , a[0, -1] * b],
+            //      [  ...                              ...   ],
+            //      [a[-1,0]* b, a[-1, 1]*b, ... , a[-1, -1]*b ]]
 
-           // >>> np.kron(np.eye(2), np.ones((2,2)))
-           // array([[ 1.,  1.,  0.,  0.],
-           //        [ 1.,  1.,  0.,  0.],
-           //        [ 0.,  0.,  1.,  1.],
-           //        [ 0.,  0.,  1.,  1.]])
 
-           // >>> a = np.arange(100).reshape((2,5,2,5))
-           // >>> b = np.arange(24).reshape((2,3,4))
-           // >>> c = np.kron(a, b)
-           // >>> c.shape
-           // (2, 10, 6, 20)
-           // >>> I = (1,3,0,2)
-           // >>> J = (0,2,1)
-           // >>> J1 = (0,) + J             # extend to ndim=4
-           // >>> S1 = (1,) + b.shape
-           // >>> K = tuple(np.array(I) * np.array(S1) + np.array(J1))
-           // >>> c[K] == a[I]*b[J]
-           // True
+            // Examples
+            // --------
+            // >>> np.kron([1, 10, 100], [5, 6, 7])
+            // array([  5,   6,   7,  50,  60,  70, 500, 600, 700])
+            // >>> np.kron([5, 6, 7], [1, 10, 100])
+            // array([  5,  50, 500,   6,  60, 600,   7,  70, 700])
 
-           //
-            throw new NotImplementedException();
+            // >>> np.kron(np.eye(2), np.ones((2,2)))
+            // array([[ 1.,  1.,  0.,  0.],
+            //        [ 1.,  1.,  0.,  0.],
+            //        [ 0.,  0.,  1.,  1.],
+            //        [ 0.,  0.,  1.,  1.]])
+
+            // >>> a = np.arange(100).reshape((2,5,2,5))
+            // >>> b = np.arange(24).reshape((2,3,4))
+            // >>> c = np.kron(a, b)
+            // >>> c.shape
+            // (2, 10, 6, 20)
+            // >>> I = (1,3,0,2)
+            // >>> J = (0,2,1)
+            // >>> J1 = (0,) + J             # extend to ndim=4
+            // >>> S1 = (1,) + b.shape
+            // >>> K = tuple(np.array(I) * np.array(S1) + np.array(J1))
+            // >>> c[K] == a[I]*b[J]
+            // True
+
+            //
+
+
+            var b1 = asanyarray(b);
+            var a1 = array(a, copy: false, subok: true, ndmin: b1.ndim);
+            var ndb = b1.ndim;
+            var nda = a1.ndim;
+            if (nda == 0 || ndb == 0)
+            {
+                return np.multiply(a, b);
+            }
+
+            List<npy_intp> new_ashape = new List<npy_intp>();
+            List<npy_intp> new_bshape = new List<npy_intp>();
+
+            var as_ = a1.shape;
+            var bs = b1.shape;
+
+            new_ashape.AddRange(as_.iDims);
+            new_bshape.AddRange(bs.iDims);
+
+            if (!a1.flags.contiguous)
+                a1 = reshape(a1, as_);
+            if (!b1.flags.contiguous)
+                b1 = reshape(b1, bs);
+
+            var nd = ndb;
+            if (ndb != nda)
+            {
+                if (ndb > nda)
+                {
+                    new_ashape = new List<npy_intp>();
+                    for (int i = 0; i < ndb - nda; i++)
+                        new_ashape.Add(1);
+                    new_ashape.AddRange(as_.iDims);
+                }
+                else
+                {
+                    new_bshape = new List<npy_intp>();
+                    for (int i = 0; i < nda - ndb; i++)
+                        new_bshape.Add(1);
+                    new_bshape.AddRange(bs.iDims);
+                    nd = nda;
+                }
+            }
+
+            new_ashape.AddRange(new_bshape);
+            var result = outer(a, b).reshape(new_ashape.ToArray());
+            var axis = nd - 1;
+            for (int i = 0; i < nd; i++)
+            {
+                //result = np.concatenate(new ndarray[] { result }, axis : axis);
+
+                npy_intp[] oldDims = new npy_intp[result.ndim];
+                Array.Copy(result.Dims, oldDims, result.ndim);
+                npy_intp[] newDims = new npy_intp[oldDims.Length - 1];
+                Array.Copy(oldDims, 1, newDims, 0, newDims.Length);
+                newDims[axis] *= oldDims[0];
+
+                result = result.reshape(new shape(newDims));
+            }
+            var wrapper = get_array_prepare(a1, b1);
+            if (wrapper != null)
+                result = wrapper(result);
+            wrapper = get_array_wrap(a1, b1);
+            if (wrapper != null)
+                result = wrapper(result);
+            return result;
         }
+
+  
 
         public static ndarray tile(ndarray a, object reps)
         {

@@ -712,3 +712,48 @@ class nptest(object):
         sl = (slice(None),) * axis + (_nx.newaxis,)
         expanded_arrays = [arr[sl] for arr in arrays]
         return _nx.concatenate(expanded_arrays, axis=axis, out=out)
+
+    @staticmethod
+    def get_array_prepare(*args):
+        return None
+
+    @staticmethod
+    def get_array_wrap(*args):
+        return None
+
+
+    @staticmethod
+    def kron(a, b):
+
+        b = asanyarray(b)
+        a = array(a, copy=False, subok=True, ndmin=b.ndim)
+        ndb, nda = b.ndim, a.ndim
+        if (nda == 0 or ndb == 0):
+            return _nx.multiply(a, b)
+        as_ = a.shape
+        bs = b.shape
+        if not a.flags.contiguous:
+            a = reshape(a, as_)
+        if not b.flags.contiguous:
+            b = reshape(b, bs)
+        nd = ndb
+        if (ndb != nda):
+            if (ndb > nda):
+                as_ = (1,)*(ndb-nda) + as_
+            else:
+                bs = (1,)*(nda-ndb) + bs
+                nd = nda
+        result = np.outer(a, b).reshape(as_+bs)
+        axis = nd-1
+        for _ in range(nd):
+            result = np.concatenate(result, axis=axis)
+            kk = 1
+
+        np.source(np.concatenate)
+        #wrapper = get_array_prepare(a, b)
+        #if wrapper is not None:
+        #    result = wrapper(result)
+        #wrapper = get_array_wrap(a, b)
+        #if wrapper is not None:
+        #    result = wrapper(result)
+        return result

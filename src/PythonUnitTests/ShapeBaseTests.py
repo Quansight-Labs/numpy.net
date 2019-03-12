@@ -303,6 +303,9 @@ class Test_ShapeBaseTests(unittest.TestCase):
         c = np.kron(np.eye(2, dtype=np.int32), np.ones((2,2), dtype=np.int32))
         print(c)
 
+        d = np.kron(np.ones((5,7,9, 11), dtype=np.int32), np.ones((3,4, 6, 8), dtype=np.int32))
+        print(d.shape)
+
     def test_kron_2(self):
         a = np.arange(100).reshape((2,5,2,5))
         b = np.arange(24).reshape((2,3,4))

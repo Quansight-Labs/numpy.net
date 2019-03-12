@@ -331,11 +331,25 @@ class NumericTests(unittest.TestCase):
         return
            
     def test_outer_1(self):
-
        
         a = np.arange(2,10).reshape(2,4,1,1)
         b = np.arange(12,20).reshape(2,4)
         c = np.outer(a,b)
+        print(c)
+        print(c.shape)
+
+        return
+
+    def test_inner_1(self):
+
+        a = np.arange(1,5).reshape(2,2)
+        b = np.arange(11,15).reshape(2,2)
+        c = np.inner(a,b)
+        print(c)
+       
+        a = np.arange(2,10).reshape(2,4)
+        b = np.arange(12,20).reshape(2,4)
+        c = np.inner(a,b)
         print(c)
         print(c.shape)
 

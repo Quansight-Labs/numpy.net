@@ -534,8 +534,8 @@ namespace NumpyDotNetTests
             print(y);
         }
 
-        [Ignore] // big task to port
-        [TestMethod]
+        [Ignore] // need faster np.outer and need to reimplement np.concatenate as in multiarraymodule.c
+        [TestMethod] 
         public void test_kron_1()
         {
             var a = np.kron(new int[] { 1, 10, 100 }, new int[] { 5, 6, 7 });
@@ -549,9 +549,13 @@ namespace NumpyDotNetTests
             var c = np.kron(np.eye(2), np.ones(new shape(2, 2)));
             AssertArray(c, new int[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
 
+            var d = np.kron(np.ones((5, 7, 9, 11), dtype: np.Int32), np.ones((3, 4, 6, 8), dtype: np.Int32));
+            AssertShape(d, 15, 28, 54, 88);
+            print(d.shape);
+
         }
 
-        [Ignore] // big task to port
+        [Ignore] // need faster np.outer and need to reimplement np.concatenate  as in multiarraymodule.c
         [TestMethod]
         public void test_kron_2()
         {
