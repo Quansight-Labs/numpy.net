@@ -318,6 +318,7 @@ class Test_ShapeBaseTests(unittest.TestCase):
     def test_tile_1(self):
 
         a = np.array([0, 1, 2])
+  
         b = np.tile(a, 2)
         print(b)
         print("**************")
@@ -328,6 +329,10 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
         d = np.tile(a, (2,1,2))
         print(d)
+
+        e = np.arange(100).reshape((2,5,2,5))
+        f = np.tile(e, (2,1,2))
+        print(f.shape)
 
     def test_tile_2(self):
 

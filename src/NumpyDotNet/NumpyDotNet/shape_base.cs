@@ -1259,86 +1259,140 @@ namespace NumpyDotNet
 
   
 
-        public static ndarray tile(ndarray a, object reps)
+        public static ndarray tile(ndarray A, object reps)
         {
-         //
-         //   Construct an array by repeating A the number of times given by reps.
+            //
+            //   Construct an array by repeating A the number of times given by reps.
 
-         //   If `reps` has length ``d``, the result will have dimension of
-         //   ``max(d, A.ndim)``.
+            //   If `reps` has length ``d``, the result will have dimension of
+            //   ``max(d, A.ndim)``.
 
-         //   If ``A.ndim < d``, `A` is promoted to be d-dimensional by prepending new
-         //   axes.So a shape(3,) array is promoted to (1, 3) for 2 - D replication,
-         // or shape(1, 1, 3) for 3 - D replication.If this is not the desired
+            //   If ``A.ndim < d``, `A` is promoted to be d-dimensional by prepending new
+            //   axes.So a shape(3,) array is promoted to (1, 3) for 2 - D replication,
+            // or shape(1, 1, 3) for 3 - D replication.If this is not the desired
 
-         //behavior, promote `A` to d - dimensions manually before calling this
+            //behavior, promote `A` to d - dimensions manually before calling this
 
-         //function.
+            //function.
 
-         //If ``A.ndim > d``, `reps` is promoted to `A`.ndim by pre - pending 1's to it.
+            //If ``A.ndim > d``, `reps` is promoted to `A`.ndim by pre - pending 1's to it.
 
-         //Thus for an `A` of shape(2, 3, 4, 5), a `reps` of(2, 2) is treated as
-         //(1, 1, 2, 2).
+            //Thus for an `A` of shape(2, 3, 4, 5), a `reps` of(2, 2) is treated as
+            //(1, 1, 2, 2).
 
-         //Note : Although tile may be used for broadcasting, it is strongly
-         //recommended to use numpy's broadcasting operations and functions.
-
-
-         //Parameters
-         //----------
-
-         //A : array_like
-
-         //    The input array.
-         //reps : array_like
-
-         //    The number of repetitions of `A` along each axis.
-
-         //Returns
-         //------ -
-         //c : ndarray
-
-         //    The tiled output array.
+            //Note : Although tile may be used for broadcasting, it is strongly
+            //recommended to use numpy's broadcasting operations and functions.
 
 
-         //See Also
-         //--------
+            //Parameters
+            //----------
 
-         //repeat : Repeat elements of an array.
-         //broadcast_to : Broadcast an array to a new shape
+            //A : array_like
+
+            //    The input array.
+            //reps : array_like
+
+            //    The number of repetitions of `A` along each axis.
+
+            //Returns
+            //------ -
+            //c : ndarray
+
+            //    The tiled output array.
 
 
-         //Examples
-         //--------
-         //>>> a = np.array([0, 1, 2])
-         //   >>> np.tile(a, 2)
-         //   array([0, 1, 2, 0, 1, 2])
-         //   >>> np.tile(a, (2, 2))
-         //   array([[0, 1, 2, 0, 1, 2],
-         //          [0, 1, 2, 0, 1, 2]])
-         //   >>> np.tile(a, (2, 1, 2))
-         //   array([[[0, 1, 2, 0, 1, 2]],
-         //          [[0, 1, 2, 0, 1, 2]]])
+            //See Also
+            //--------
 
-         //   >>> b = np.array([[1, 2], [3, 4]])
-         //   >>> np.tile(b, 2)
-         //   array([[1, 2, 1, 2],
-         //          [3, 4, 3, 4]])
-         //   >>> np.tile(b, (2, 1))
-         //   array([[1, 2],
-         //          [3, 4],
-         //          [1, 2],
-         //          [3, 4]])
+            //repeat : Repeat elements of an array.
+            //broadcast_to : Broadcast an array to a new shape
 
-         //   >>> c = np.array([1, 2, 3, 4])
-         //   >>> np.tile(c, (4,1))
-         //   array([[1, 2, 3, 4],
-         //          [1, 2, 3, 4],
-         //          [1, 2, 3, 4],
-         //          [1, 2, 3, 4]])
-         // 
 
-            throw new NotImplementedException();
+            //Examples
+            //--------
+            //>>> a = np.array([0, 1, 2])
+            //   >>> np.tile(a, 2)
+            //   array([0, 1, 2, 0, 1, 2])
+            //   >>> np.tile(a, (2, 2))
+            //   array([[0, 1, 2, 0, 1, 2],
+            //          [0, 1, 2, 0, 1, 2]])
+            //   >>> np.tile(a, (2, 1, 2))
+            //   array([[[0, 1, 2, 0, 1, 2]],
+            //          [[0, 1, 2, 0, 1, 2]]])
+
+            //   >>> b = np.array([[1, 2], [3, 4]])
+            //   >>> np.tile(b, 2)
+            //   array([[1, 2, 1, 2],
+            //          [3, 4, 3, 4]])
+            //   >>> np.tile(b, (2, 1))
+            //   array([[1, 2],
+            //          [3, 4],
+            //          [1, 2],
+            //          [3, 4]])
+
+            //   >>> c = np.array([1, 2, 3, 4])
+            //   >>> np.tile(c, (4,1))
+            //   array([[1, 2, 3, 4],
+            //          [1, 2, 3, 4],
+            //          [1, 2, 3, 4],
+            //          [1, 2, 3, 4]])
+            // 
+
+
+            var tup = asanyarray(reps);
+
+            var d = len(tup);
+
+            if ((bool)(all(tup == 1).GetItem(0)) == true)
+            {
+                // Fixes the problem that the function does not make a copy if A is a
+                // numpy array and the repetitions are 1 in all dimensions
+                return np.array(A, copy: true, subok: true, ndmin: d);
+            }
+
+     
+            // Note that no copy of zero-sized arrays is made. However since they
+            // have no data there is no risk of an inadvertent overwrite.
+            ndarray c = np.array(A, copy: false, subok: true, ndmin: d);
+
+            List<npy_intp> tupList = new List<npy_intp>();
+            foreach (var t1 in tup)
+                tupList.Add(Convert.ToInt64(t1));
+
+            if (d < c.ndim)
+            {
+                //tup = (1,) * (c.ndim - d) + tup
+                tupList = new List<npy_intp>();
+                for (int i = 0; i < c.ndim - d; i++)
+                    tupList.Add(1);
+                foreach (var t1 in tup)
+                    tupList.Add(Convert.ToInt64(t1));
+            }
+
+            List<npy_intp> shape_out = new List<npy_intp>();
+            for (int i = 0; i < c.ndim; i++)
+            {
+                shape_out.Add(c.shape.iDims[i] * tupList[i]);
+            }
+
+            var n = c.size;
+            if (n > 0)
+            {
+                var originalShape = c.shape.iDims;
+                for (int i = 0; i < originalShape.Length; i++)
+                {
+                    npy_intp dim_in = originalShape[i];
+                    npy_intp nrep = tupList[i];
+
+                    if (nrep != 1)
+                    {
+                        c = c.reshape(((npy_intp)(-1), n)).Repeat(nrep, 0);
+                    }
+                    n /= dim_in;
+
+                }
+            }
+            return c.reshape(new shape(shape_out));
         }
 
         private static bool ValidateSameShapes(List<ndarray> arrays)

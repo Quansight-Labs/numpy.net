@@ -757,3 +757,29 @@ class nptest(object):
         #if wrapper is not None:
         #    result = wrapper(result)
         return result
+
+    @staticmethod
+    def tile(A, reps):
+        try:
+            tup = tuple(reps)
+        except TypeError:
+            tup = (reps,)
+        d = len(tup)
+        if all(x == 1 for x in tup) and isinstance(A, _nx.ndarray):
+            # Fixes the problem that the function does not make a copy if A is a
+            # numpy array and the repetitions are 1 in all dimensions
+            return _nx.array(A, copy=True, subok=True, ndmin=d)
+        else:
+            # Note that no copy of zero-sized arrays is made. However since they
+            # have no data there is no risk of an inadvertent overwrite.
+            c = _nx.array(A, copy=False, subok=True, ndmin=d)
+        if (d < c.ndim):
+            tup = (1,)*(c.ndim-d) + tup
+        shape_out = tuple(s*t for s, t in zip(c.shape, tup))
+        n = c.size
+        if n > 0:
+            for dim_in, nrep in zip(c.shape, tup):
+                if nrep != 1:
+                    c = c.reshape(-1, n).repeat(nrep, 0)
+                n //= dim_in
+        return c.reshape(shape_out)

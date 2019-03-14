@@ -571,12 +571,12 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // big task to port
         [TestMethod]
         public void test_tile_1()
         {
             var a = np.array(new int[] { 0, 1, 2 });
             var b = np.tile(a, 2);
+
             AssertArray(b, new int[] { 0, 1, 2, 0, 1, 2 });
             print(b);
             print("**************");
@@ -589,9 +589,13 @@ namespace NumpyDotNetTests
             var d = np.tile(a, new int[] { 2, 1, 2 });
             AssertArray(d, new int[,,] { { { 0, 1, 2, 0, 1, 2 } }, { { 0, 1, 2, 0, 1, 2 } } });
             print(d);
+
+            var e = np.arange(100).reshape((2, 5, 2, 5));
+            var f = np.tile(e, new int[] { 2, 1, 2 });
+            AssertShape(f, 2, 10, 2, 10);
+            print(f.shape);
         }
 
-        [Ignore] // big task to port
         [TestMethod]
         public void test_tile_2()
         {
