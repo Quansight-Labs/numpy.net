@@ -71,45 +71,96 @@ namespace NumpyDotNet
             {
                 return new shape((Int32)oshape);
             }
+            if (oshape is Int64)
+            {
+                return new shape((Int64)oshape);
+            }
 
             if (oshape is ValueTuple<int>)
             {
                 ValueTuple<int> T1 = (ValueTuple<int>)oshape;
                 return new shape(T1.Item1);
             }
+            if (oshape is ValueTuple<long>)
+            {
+                ValueTuple<long> T1 = (ValueTuple<long>)oshape;
+                return new shape(T1.Item1);
+            }
+
             if (oshape is ValueTuple<int, int>)
             {
                 ValueTuple<int, int> T2 = (ValueTuple<int, int>)oshape;
                 return new shape(T2.Item1, T2.Item2);
             }
+            if (oshape is ValueTuple<long, long>)
+            {
+                ValueTuple<long, long> T2 = (ValueTuple<long, long>)oshape;
+                return new shape(T2.Item1, T2.Item2);
+            }
+
             if (oshape is ValueTuple<int, int, int>)
             {
                 ValueTuple<int, int, int> T3 = (ValueTuple<int, int, int>)oshape;
                 return new shape(T3.Item1, T3.Item2, T3.Item3);
             }
+            if (oshape is ValueTuple<long, long, long>)
+            {
+                ValueTuple<long, long, long> T3 = (ValueTuple<long, long, long>)oshape;
+                return new shape(T3.Item1, T3.Item2, T3.Item3);
+            }
+
             if (oshape is ValueTuple<int, int, int, int>)
             {
                 ValueTuple<int, int, int, int> T4 = (ValueTuple<int, int, int, int>)oshape;
                 return new shape(T4.Item1, T4.Item2, T4.Item3, T4.Item4);
             }
+            if (oshape is ValueTuple<long, long, long, long>)
+            {
+                ValueTuple<long, long, long, long> T4 = (ValueTuple<long, long, long, long>)oshape;
+                return new shape(T4.Item1, T4.Item2, T4.Item3, T4.Item4);
+            }
+
             if (oshape is ValueTuple<int, int, int, int, int>)
             {
                 ValueTuple<int, int, int, int, int> T5 = (ValueTuple<int, int, int, int, int>)oshape;
                 return new shape(new npy_intp[] { T5.Item1, T5.Item2, T5.Item3, T5.Item4, T5.Item5 });
             }
+            if (oshape is ValueTuple<long, long, long, long, long>)
+            {
+                ValueTuple<long, long, long, long, long> T5 = (ValueTuple<long, long, long, long, long>)oshape;
+                return new shape(new npy_intp[] { T5.Item1, T5.Item2, T5.Item3, T5.Item4, T5.Item5 });
+            }
+
             if (oshape is ValueTuple<int, int, int, int, int, int>)
             {
                 ValueTuple<int, int, int, int, int, int> T6 = (ValueTuple<int, int, int, int, int, int>)oshape;
                 return new shape(new npy_intp[] { T6.Item1, T6.Item2, T6.Item3, T6.Item4, T6.Item5, T6.Item6 });
             }
+            if (oshape is ValueTuple<long, long, long, long, long, long>)
+            {
+                ValueTuple<long, long, long, long, long, long> T6 = (ValueTuple<long, long, long, long, long, long>)oshape;
+                return new shape(new npy_intp[] { T6.Item1, T6.Item2, T6.Item3, T6.Item4, T6.Item5, T6.Item6 });
+            }
+
             if (oshape is ValueTuple<int, int, int, int, int, int, int>)
             {
                 ValueTuple<int, int, int, int, int, int, int> T7 = (ValueTuple<int, int, int, int, int, int, int>)oshape;
                 return new shape(new npy_intp[] { T7.Item1, T7.Item2, T7.Item3, T7.Item4, T7.Item5, T7.Item6, T7.Item7 });
             }
+            if (oshape is ValueTuple<long, long, long, long, long, long, long>)
+            {
+                ValueTuple<long, long, long, long, long, long, long> T7 = (ValueTuple<long, long, long, long, long, long, long>)oshape;
+                return new shape(new npy_intp[] { T7.Item1, T7.Item2, T7.Item3, T7.Item4, T7.Item5, T7.Item6, T7.Item7 });
+            }
+
             if (oshape is ValueTuple<int, int, int, int, int, int, int, int>)
             {
                 ValueTuple<int, int, int, int, int, int, int, int> T8 = (ValueTuple<int, int, int, int, int, int, int, int>)oshape;
+                return new shape(new npy_intp[] { T8.Item1, T8.Item2, T8.Item3, T8.Item4, T8.Item5, T8.Item6, T8.Item7, T8.Rest });
+            }
+            if (oshape is ValueTuple<long, long, long, long, long, long, long, long>)
+            {
+                ValueTuple<long, long, long, long, long, long, long, long> T8 = (ValueTuple<long, long, long, long, long, long, long, long>)oshape;
                 return new shape(new npy_intp[] { T8.Item1, T8.Item2, T8.Item3, T8.Item4, T8.Item5, T8.Item6, T8.Item7, T8.Rest });
             }
             return null;

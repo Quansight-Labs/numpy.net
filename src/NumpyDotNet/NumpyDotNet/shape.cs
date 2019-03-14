@@ -114,25 +114,26 @@ namespace NumpyDotNet
             Array.Copy(s.iDims, iDims, s.iDims.Length);
         }
 
-        public shape(int Dim1)
+        public shape(npy_intp Dim1)
         {
             iDims = new npy_intp[1];
             iDims[0] = Dim1;
         }
-        public shape(int Dim1, int Dim2)
+
+        public shape(npy_intp Dim1, npy_intp Dim2)
         {
             iDims = new npy_intp[2];
             iDims[0] = Dim1;
             iDims[1] = Dim2;
         }
-        public shape(int Dim1, int Dim2, int Dim3)
+        public shape(npy_intp Dim1, npy_intp Dim2, npy_intp Dim3)
         {
             iDims = new npy_intp[3];
             iDims[0] = Dim1;
             iDims[1] = Dim2;
             iDims[2] = Dim3;
         }
-        public shape(int Dim1, int Dim2, int Dim3, int Dim4)
+        public shape(npy_intp Dim1, npy_intp Dim2, npy_intp Dim3, npy_intp Dim4)
         {
             iDims = new npy_intp[4];
             iDims[0] = Dim1;
