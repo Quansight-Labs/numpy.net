@@ -175,6 +175,16 @@ namespace NumpyDotNetTests
             Assert.AreEqual(s.iDims[2], s2);
             Assert.AreEqual(s.iDims[3], s3);
         }
+        internal void AssertShape(shape s, int s0, int s1, int s2, int s3, int s4, int s5)
+        {
+            Assert.AreEqual(s.iDims.Length, 6);
+            Assert.AreEqual(s.iDims[0], s0);
+            Assert.AreEqual(s.iDims[1], s1);
+            Assert.AreEqual(s.iDims[2], s2);
+            Assert.AreEqual(s.iDims[3], s3);
+            Assert.AreEqual(s.iDims[4], s4);
+            Assert.AreEqual(s.iDims[5], s5);
+        }
 
         internal void AssertArrayNAN<T>(ndarray arrayData, T[] expectedData)
         {

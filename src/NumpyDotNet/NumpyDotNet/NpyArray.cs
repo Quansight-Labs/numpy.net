@@ -1035,7 +1035,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static ndarray InnerProduct(object o1, object o2)
+        public static ndarray inner(object o1, object o2)
         {
             dtype d = FindArrayType(o1, null);
             d = FindArrayType(o2, d);

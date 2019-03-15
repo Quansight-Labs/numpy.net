@@ -538,11 +538,63 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_inner_1()
+        {
+            var a = np.arange(1, 5, dtype:np.Int16).reshape((2, 2));
+            var b = np.arange(11, 15, dtype: np.Int32).reshape((2, 2));
+            var c = np.inner(a, b);
+            AssertArray(c, new Int32[,] { { 35, 41 }, { 81, 95 } });
+            print(c);
+
+
+            a = np.arange(2, 10).reshape((2, 4));
+            b = np.arange(12, 20).reshape((2, 4));
+            c = np.inner(a, b);
+            print(c);
+            AssertArray(c, new Int32[,] { { 194, 250 }, { 410, 530 } });
+            print(c.shape);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_inner_2()
+        {
+            var a = np.array(new bool[] { true, false, false, true}).reshape((2, 2));
+            var b = np.array(new bool[] { true, false, true, true }).reshape((2, 2));
+            var c = np.inner(a, b);
+            AssertArray(c, new bool[,] { { true, true }, { false, true } });
+
+
+            b = np.arange(11, 15, dtype: np.Int16).reshape((2, 2));
+            c = np.inner(a, b);
+            AssertArray(c, new Int32[,] { { 11, 13 }, { 12, 14 } });
+            print(c);
+            c = np.inner(b, a);
+            AssertArray(c, new Int32[,] { { 11, 12 }, { 13, 14 } });
+            print(c);
+
+            a = np.arange(0, 80, dtype: np.Int32).reshape((-1, 4, 5, 2));
+            b = np.arange(100, 180, dtype: np.Float32).reshape((-1, 4, 5, 2));
+            c = np.inner(a, b);
+            //print(c);
+            Assert.AreEqual(c.Dtype.TypeNum, NPY_TYPES.NPY_DOUBLE); // note: this is a different type than python produces
+            AssertShape(c.shape, 2, 4, 5, 2, 4, 5);
+            print(c.shape);
+
+            Assert.AreEqual((double)17633600, c.Sum().GetItem(0));
+
+            print(c.Sum(axis: 1));
+
+            return;
+        }
+
         [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_inner_1()
+        public void xxx_test_matrixproduct_1()
         {
-
+            // see the NpyArray_MatrixProduct
         }
 
         [Ignore] // not implemented yet

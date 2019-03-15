@@ -342,8 +342,8 @@ class NumericTests(unittest.TestCase):
 
     def test_inner_1(self):
 
-        a = np.arange(1,5).reshape(2,2)
-        b = np.arange(11,15).reshape(2,2)
+        a = np.arange(1,5, dtype = np.int16).reshape(2,2)
+        b = np.arange(11,15, dtype = np.int32).reshape(2,2)
         c = np.inner(a,b)
         print(c)
        
@@ -352,6 +352,32 @@ class NumericTests(unittest.TestCase):
         c = np.inner(a,b)
         print(c)
         print(c.shape)
+
+        return
+
+    def test_inner_2(self):
+
+        a = np.array([True,False, False, True]).reshape(2,2)
+        b = np.array([True,False, True, True]).reshape(2,2)
+        c = np.inner(a,b)
+        print(c)
+
+        b = np.arange(11,15, dtype = np.int16).reshape(2,2)
+        c = np.inner(a,b)
+        print(c)
+
+        c = np.inner(b,a)
+        print(c)
+       
+        a = np.arange(0,80).reshape(-1,4,5,2)
+        b = np.arange(100,180).reshape(-1,4,5,2)
+        c = np.inner(a,b)
+        #print(c)
+        print(c.shape)
+
+        print(c.sum())
+        print(c.sum(axis=1))
+        print(c.sum(axis=2))
 
         return
            

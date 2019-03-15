@@ -1110,227 +1110,277 @@ namespace NumpyLib
             bool[] ip1 = _ip1.datap as bool[];
             bool[] ip2 = _ip2.datap as bool[];
             bool[] op = _op.datap as bool[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                if ((ip1[ip1_index] == true) && (ip2[ip2_index] == true))
+                if ((ip1[ip1_index/ip1Size] == true) && (ip2[ip2_index/ip2Size] == true))
                 {
                     tmp = true;
                     break;
                 }
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void BYTE_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            sbyte tmp = 0;
             npy_intp i;
 
             sbyte[] ip1 = _ip1.datap as sbyte[];
             sbyte[] ip2 = _ip2.datap as sbyte[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            sbyte[] op = _op.datap as sbyte[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (sbyte)((sbyte)ip1[ip1_index / ip1Size] * (sbyte)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void UBYTE_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            byte tmp = 0;
             npy_intp i;
 
             byte[] ip1 = _ip1.datap as byte[];
             byte[] ip2 = _ip2.datap as byte[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            byte[] op = _op.datap as byte[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (byte)((byte)ip1[ip1_index / ip1Size] * (byte)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void INT16_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            Int16 tmp = 0;
             npy_intp i;
 
             Int16[] ip1 = _ip1.datap as Int16[];
             Int16[] ip2 = _ip2.datap as Int16[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            Int16[] op = _op.datap as Int16[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (Int16)((Int16)ip1[ip1_index / ip1Size] * (Int16)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void UINT16_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            ulong tmp = 0;
+            UInt16 tmp = 0;
             npy_intp i;
 
-            Int16[] ip1 = _ip1.datap as Int16[];
-            Int16[] ip2 = _ip2.datap as Int16[];
-            ulong[] op = _op.datap as ulong[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            UInt16[] ip1 = _ip1.datap as UInt16[];
+            UInt16[] ip2 = _ip2.datap as UInt16[];
+            UInt16[] op = _op.datap as UInt16[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (ulong)ip1[ip1_index] * (ulong)ip2[ip2_index];
-
+                tmp += (UInt16)((UInt16)ip1[ip1_index / ip1Size] * (UInt16)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void INT32_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            Int32 tmp = 0;
             npy_intp i;
 
             Int32[] ip1 = _ip1.datap as Int32[];
             Int32[] ip2 = _ip2.datap as Int32[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            Int32[] op = _op.datap as Int32[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (Int32)ip1[ip1_index / ip1Size] * (Int32)ip2[ip2_index / ip2Size];
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
+   
         internal static void UINT32_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            ulong tmp = 0;
+            UInt32 tmp = 0;
             npy_intp i;
 
             UInt32[] ip1 = _ip1.datap as UInt32[];
             UInt32[] ip2 = _ip2.datap as UInt32[];
-            ulong[] op = _op.datap as ulong[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            UInt32[] op = _op.datap as UInt32[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (ulong)ip1[ip1_index] * (ulong)ip2[ip2_index];
-
+                tmp += (UInt32)((UInt32)ip1[ip1_index / ip1Size] * (UInt32)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void INT64_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            Int64 tmp = 0;
             npy_intp i;
 
             Int64[] ip1 = _ip1.datap as Int64[];
             Int64[] ip2 = _ip2.datap as Int64[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            Int64[] op = _op.datap as Int64[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (Int64)((Int64)ip1[ip1_index / ip1Size] * (Int64)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void UINT64_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            ulong tmp = 0;
+            UInt64 tmp = 0;
             npy_intp i;
 
             UInt64[] ip1 = _ip1.datap as UInt64[];
             UInt64[] ip2 = _ip2.datap as UInt64[];
-            ulong[] op = _op.datap as ulong[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            UInt64[] op = _op.datap as UInt64[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (ulong)ip1[ip1_index] * (ulong)ip2[ip2_index];
-
+                tmp += (UInt64)((UInt64)ip1[ip1_index / ip1Size] * (UInt64)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void FLOAT_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            long tmp = 0;
+            float tmp = 0;
             npy_intp i;
 
             float[] ip1 = _ip1.datap as float[];
             float[] ip2 = _ip2.datap as float[];
-            long[] op = _op.datap as long[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            float[] op = _op.datap as float[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (long)ip1[ip1_index] * (long)ip2[ip2_index];
-
+                tmp += (float)((float)ip1[ip1_index / ip1Size] * (float)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void DOUBLE_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            ulong tmp = 0;
+            double tmp = 0;
             npy_intp i;
 
             double[] ip1 = _ip1.datap as double[];
             double[] ip2 = _ip2.datap as double[];
-            ulong[] op = _op.datap as ulong[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            double[] op = _op.datap as double[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (ulong)ip1[ip1_index] * (ulong)ip2[ip2_index];
-
+                tmp += (double)((double)ip1[ip1_index / ip1Size] * (double)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
 
         internal static void DECIMAL_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            ulong tmp = 0;
+            decimal tmp = 0;
             npy_intp i;
 
             decimal[] ip1 = _ip1.datap as decimal[];
             decimal[] ip2 = _ip2.datap as decimal[];
-            ulong[] op = _op.datap as ulong[];
-            npy_intp ip1_index = 0;
-            npy_intp ip2_index = 0;
+            decimal[] op = _op.datap as decimal[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
-                tmp += (ulong)ip1[ip1_index] * (ulong)ip2[ip2_index];
-
+                tmp += (decimal)((decimal)ip1[ip1_index / ip1Size] * (decimal)ip2[ip2_index / ip2Size]);
             }
-            op[0] = tmp;
+            op[_op.data_offset / opSize] = tmp;
         }
         #endregion
 

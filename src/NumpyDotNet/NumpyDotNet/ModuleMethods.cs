@@ -101,7 +101,7 @@ namespace NumpyDotNet {
         }
 
         public static object inner(object o1, object o2) {
-            return ndarray.ArrayReturn(np.InnerProduct(o1, o2));
+            return ndarray.ArrayReturn(np.inner(o1, o2));
         }
 
         public static object correlate(object o1, object o2, object mode) {
