@@ -1143,6 +1143,7 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_true_divide:
                     {
+                        newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
                         break;
                     }
                 case NpyArray_Ops.npy_op_logical_or:
