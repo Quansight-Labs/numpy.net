@@ -1391,6 +1391,18 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region floor_divide
+        public static ndarray floor_divide(object x1, object x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, asanyarray(x2));
+        }
+        public static ndarray floor_divide(object x1, int x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, x2);
+        }
+
+        #endregion
+
         #region mod/remainder
 
         public static ndarray mod(object x1, object x2)

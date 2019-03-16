@@ -885,7 +885,7 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_floor_divide:
                     {
-                        return DivideOperation;
+                        return FloorDivideOperation;
                     }
                 case NpyArray_Ops.npy_op_true_divide:
                     {
@@ -1769,6 +1769,19 @@ namespace NumpyLib
                 return dValue;
             }
             return dValue / operand;
+        }
+        #endregion
+
+        #region FloorDivideOperation
+        private static T FloorDivideOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            if (operand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return Math.Floor(dValue / operand);
         }
         #endregion
 

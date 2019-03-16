@@ -585,7 +585,20 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
-    def test_mod(self):
+    def test_floor_divide(self):
+
+        a = np.floor_divide(7,3)
+        print(a)
+
+        b = np.floor_divide([1., 2., 3., 4.], 2.5)
+        print(b)
+
+        c = np.floor_divide([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
+        print(c)
+
+        return
+
+    def test_mod_1(self):
 
         x = np.mod([4, 7], [2, 3])
         print(x)
@@ -595,7 +608,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
-    def test_remainder(self):
+    def test_remainder_1(self):
 
         x = np.remainder([4, 7], [2, 3])
         print(x)
