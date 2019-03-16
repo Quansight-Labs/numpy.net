@@ -783,3 +783,28 @@ class nptest(object):
                     c = c.reshape(-1, n).repeat(nrep, 0)
                 n //= dim_in
         return c.reshape(shape_out)
+
+    @staticmethod
+    def select(condlist, choicelist, default=0):
+        n = len(condlist)
+        n2 = len(choicelist)
+        if n2 != n:
+            raise ValueError("list of cases must be same length as list of conditions")
+        choicelist = [default] + choicelist
+        S = 0
+        pfac = 1
+        for k in range(1, n+1):
+            S += k * pfac * np.asarray(condlist[k-1])
+            if k < n:
+                pfac *= (1-np.asarray(condlist[k-1]))
+        # handle special case of a 1-element condition but
+        #  a multi-element choice
+        if type(S) in np.ScalarType or max(asarray(S).shape)==1:
+            pfac = asarray(1)
+            for k in range(n2+1):
+                pfac = pfac + asarray(choicelist[k])
+            if type(S) in ScalarType:
+                S = S*np.ones(asarray(pfac).shape, type(S))
+            else:
+                S = S*np.ones(asarray(pfac).shape, S.dtype)
+        return np.choose(S, tuple(choicelist))

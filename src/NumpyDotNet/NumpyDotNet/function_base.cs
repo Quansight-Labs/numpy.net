@@ -526,7 +526,7 @@ namespace NumpyDotNet
         #endregion
 
         #region select
-        public static ndarray select(bool[] condlist, object[] funclist, int _default = 0)
+        public static ndarray select(ndarray[] condlist, ndarray[] choicelist, int _default = 0)
         {
             /*
             Return an array drawn from elements in choicelist, depending on conditions.
@@ -565,7 +565,51 @@ namespace NumpyDotNet
              
             */
 
-            throw new NotImplementedException();
+            var n = condlist.Length;
+            var n2 = choicelist.Length;
+
+            if (n2 != n)
+            {
+                throw new ValueError("list of cases must be same length as list of conditions");
+            }
+
+            var ExpandedChoiceList = new ndarray[choicelist.Length + 1];
+            ExpandedChoiceList[0] = array(new int[] { 0 });
+            Array.Copy(choicelist, 0, ExpandedChoiceList, 1, choicelist.Length);
+            choicelist = ExpandedChoiceList;
+
+            ndarray S = array(new int[] { 0 });
+            ndarray pfac = array(new int[] { 1 });
+            for (int k = 1; k < n+1; k++)
+            {
+                S += k * pfac * asarray(condlist[k - 1]);
+                if (k < n)
+                {
+                    pfac *= (1 - asarray(condlist[k - 1]));
+                }
+
+            }
+
+            // handle special case of a 1-element condition but
+            // a multi-element choice
+            if (S.size == 1 || np.max(asanyarray(S.shape.iDims)) == 1)
+            {
+                pfac = asarray(1);
+                for (int k = 0; k < n2+1; k++)
+                {
+                    pfac = pfac + asarray(choicelist[k]);
+                }
+                if (S.size == 1)
+                {
+                    S = S * ones(asarray(pfac).shape, S.Dtype);
+                }
+                else
+                {
+                    S = S * ones(asarray(pfac).shape, S.Dtype);
+                }
+            }
+
+            return choose(S, choicelist);
         }
         #endregion
 
