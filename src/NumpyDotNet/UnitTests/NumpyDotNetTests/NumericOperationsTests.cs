@@ -1228,6 +1228,29 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_divmode()
+        {
+            var a = np.divmod(7, 3);
+            Assert.AreEqual(2, a[0].GetItem(0));
+            Assert.AreEqual(1, a[1].GetItem(0));
+
+            print(a);
+
+            var b = np.divmod(new double[] { 1.0, 2.0, 3.0, 4.0 }, 2.5);
+            AssertArray(b[0], new double[] { 0, 0, 1, 1 });
+            AssertArray(b[1], new double[] { 1, 2, 0.5, 1.5 });
+            print(b);
+
+            var c = np.divmod(new double[] { 1.0, 2.0, 3.0, 4.0 }, new double[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c[0], new double[] { 2, 0, 1, 1 });
+            AssertArray(c[1], new double[] { 0, 2, 0.5, 0.5 });
+            print(c);
+
+            return;
+
+        }
+
 
         [TestMethod]
         public void test_mod_1()
@@ -1844,7 +1867,7 @@ namespace NumpyDotNetTests
             var b = np.arange(9.0).reshape((3, 3));
             var c = np.arange(3.0);
             var d = np.multiply(b, c);
-            AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 6, 7, 16 } });
+            AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
             print(d);
         }
 
