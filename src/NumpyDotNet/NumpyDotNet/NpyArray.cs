@@ -1037,12 +1037,22 @@ namespace NumpyDotNet {
 
         public static ndarray inner(object o1, object o2)
         {
-            dtype d = FindArrayType(o1, null);
-            d = FindArrayType(o2, d);
+            dtype d = FindArrayType(asanyarray(o1), null);
+            d = FindArrayType(asanyarray(o2), d);
 
             ndarray a1 = np.FromAny(o1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
             ndarray a2 = np.FromAny(o2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
             return NpyCoreApi.InnerProduct(a1, a2, d.TypeNum);
+        }
+
+        public static ndarray dot(object o1, object o2)
+        {
+            dtype d = FindArrayType(asanyarray(o1), null);
+            d = FindArrayType(asanyarray(o2), d);
+
+            ndarray a1 = np.FromAny(o1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            ndarray a2 = np.FromAny(o2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            return NpyCoreApi.MatrixProduct(a1, a2, d.TypeNum);
         }
 
         public static ndarray MatrixProduct(object o1, object o2)

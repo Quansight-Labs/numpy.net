@@ -369,8 +369,8 @@ class NumericTests(unittest.TestCase):
         c = np.inner(b,a)
         print(c)
        
-        a = np.arange(0,80).reshape(-1,4,5,2)
-        b = np.arange(100,180).reshape(-1,4,5,2)
+        a = np.arange(0,80, dtype = np.Int32).reshape(-1,4,5,2)
+        b = np.arange(100,180, dtype= np.float).reshape(-1,4,5,2)
         c = np.inner(a,b)
         #print(c)
         print(c.shape)
@@ -383,6 +383,25 @@ class NumericTests(unittest.TestCase):
            
     def test_tensordot_1(self):    
         return
+
+    def test_dot_1(self):
+
+        a = [[1, 0], [0, 1]]
+        b = [[4, 1], [2, 2]]
+        c = np.dot(a, b)
+        print(c)
+
+        d = np.dot(3,4)
+        print(d)
+
+        e = np.arange(3*4*5*6).reshape((3,4,5,6))
+        f = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
+        g = np.dot(e, f)
+        print(g.shape)
+        print(g.sum())
+
+        g = g[2,3,2,1,2,2]
+        print(g)
 
     
     def test_roll_forward(self):

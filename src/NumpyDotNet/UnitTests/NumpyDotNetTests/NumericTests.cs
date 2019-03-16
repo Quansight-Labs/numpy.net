@@ -604,10 +604,29 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_dot_1()
+        public void test_dot_1()
         {
+            var a = new int[,] { { 1, 0 }, { 0, 1 } };
+            var b = new int[,] { { 4, 1 }, { 2, 2 } };
+            var c = np.dot(a, b);
+            AssertArray(c, new int[,] { {4,1}, {2,2} });
+            print(c);
+
+            var d = np.dot(3, 4);
+            Assert.AreEqual(12, d.GetItem(0));
+            print(d);
+
+            var e = np.arange(3 * 4 * 5 * 6).reshape((3, 4, 5, 6));
+            var f = np.arange(3 * 4 * 5 * 6).A("::-1").reshape((5, 4, 6, 3));
+            var g = np.dot(e, f);
+            AssertShape(g.shape, 3, 4, 5, 5, 4, 3);
+            Assert.AreEqual(695768400, g.Sum().GetItem(0));
+
+            // TODO: NOTE: this crazy indexing is not currently working
+            //g = g.A(2, 3, 2, 1, 2, 2);
+            //Assert.AreEqual(499128, g.GetItem(0));
+            //print(g);
 
         }
 
