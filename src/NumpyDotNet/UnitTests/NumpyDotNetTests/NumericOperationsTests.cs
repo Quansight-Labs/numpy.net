@@ -127,7 +127,7 @@ namespace NumpyDotNetTests
             AssertArray(d, ExpectedDataD);
         }
 
-
+  
         //[Ignore] // only use to check performance of add operations
         //[TestMethod]
         //public void test_add_operations_performance()
@@ -1806,23 +1806,47 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-   
+        [TestMethod]
+        public void test_add_1()
+        {
+            var a = np.add(1.0, 4.0);
+            Assert.AreEqual(5.0, a.GetItem(0));
+            print(a);
 
+            var b = np.arange(9.0).reshape((3, 3));
+            var c = np.arange(3.0);
+            var d = np.add(b, c);
+            AssertArray(d, new double[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
+            print(d);
+        }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_subtract_1()
         {
+            var a = np.subtract(1.0, 4.0);
+            Assert.AreEqual(-3.0, a.GetItem(0));
+            print(a);
 
+            var b = np.arange(9.0).reshape((3, 3));
+            var c = np.arange(3.0);
+            var d = np.subtract(b, c);
+            AssertArray(d, new double[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            print(d);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_multiply_1()
         {
+            var a = np.multiply(2.0, 4.0);
+            Assert.AreEqual(8.0, a.GetItem(0));
+            print(a);
 
+            var b = np.arange(9.0).reshape((3, 3));
+            var c = np.arange(3.0);
+            var d = np.multiply(b, c);
+            AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 6, 7, 16 } });
+            print(d);
         }
-
 
 
     }

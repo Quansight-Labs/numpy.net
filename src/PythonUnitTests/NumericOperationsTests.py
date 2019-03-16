@@ -40,8 +40,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
         b = np.array([10,20,30,40], dtype = np.int16);
         d = a + b;
         print(d)
-
-
+         
 
     def test_subtract_operations(self):
         a =  np.arange(0, 20, 1, dtype = np.int16)
@@ -922,7 +921,35 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.not_equal(2, [4, 2, 1])
         print(c)
 
- 
+    def test_add_1(self):        
+
+        a = np.add(1.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.add(b, c)
+        print(d)
+
+    def test_subtract_1(self):        
+
+        a = np.subtract(2.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.subtract(b, c)
+        print(d)
+
+    def test_multiply_1(self):        
+
+        a = np.multiply(1.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.multiply(b, c)
+        print(d)
 
     def test_isfinite_1(self):
 
