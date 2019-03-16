@@ -893,6 +893,26 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_msort_1()
+        {
+            var a = np.array(new int[,] { { 1, 4 }, { 3, 1 } });
+            ndarray b = np.msort(a);
+            print(b);
+            AssertArray(b, new int[,] { { 1, 1 }, { 3, 4 } });
+
+            a = np.arange(32.2, 0.2, -1.0, dtype: np.Float64);
+            b = np.msort(a);
+
+            var ExpectedDataB = new double[]
+            {1.2,  2.2,  3.2,  4.2,  5.2,  6.2,  7.2,  8.2, 9.2, 10.2, 11.2, 12.2, 13.2, 14.2, 15.2, 16.2,
+            17.2, 18.2, 19.2, 20.2, 21.2, 22.2, 23.2, 24.2, 25.2, 26.2, 27.2, 28.2, 29.2, 30.2, 31.2, 32.2};
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+        }
+
         [TestMethod]
         public void test_ndarray_argsort_1()
         {
@@ -2177,12 +2197,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_msort_1()
-        {
-
-        }
 
         [Ignore] // not implemented yet
         [TestMethod]

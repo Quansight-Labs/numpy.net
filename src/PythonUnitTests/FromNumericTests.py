@@ -362,6 +362,17 @@ class FromNumericTests(unittest.TestCase):
         print(d)
         print("********")
 
+    def test_msort_1(self):
+
+        a = np.array([[1,4],[3,1]])
+        b = np.msort(a)               
+        print(b)
+        print("********")
+
+        a = np.arange(32.2, 0.2, -1.0)
+        b = np.msort(a)               
+        print(b)
+
 
 
     def test_ndarray_argsort_1(self):

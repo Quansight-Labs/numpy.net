@@ -1965,31 +1965,31 @@ namespace NumpyDotNet
 
         public static ndarray msort(ndarray a)
         {
-            /*
-            Return a copy of an array sorted along the first axis.
+            // Return a copy of an array sorted along the first axis.
 
-            Parameters
-            ----------
-            a : array_like
-                Array to be sorted.
+            // Parameters
+            // ----------
+            // a: array_like
+            //    Array to be sorted.
 
-            Returns
-            -------
-            sorted_array : ndarray
-                Array of the same type and shape as `a`.
+            //Returns
+            //------ -
+            //sorted_array : ndarray
+            //    Array of the same type and shape as `a`.
 
-            See Also
-            --------
-            sort
+            // See Also
+            // --------
+            // sort
 
-            Notes
-            -----
-            ``np.msort(a)`` is equivalent to  ``np.sort(a, axis=0)``.             
-            */
+            // Notes
+            // ---- -
+            // ``np.msort(a)`` is equivalent to  ``np.sort(a, axis = 0)``.
 
-
-            throw new NotImplementedException();
+            ndarray b = array(a, subok: true, copy: true);
+            b = b.Sort(0);
+            return b;
         }
+
         #endregion
 
         #region median
