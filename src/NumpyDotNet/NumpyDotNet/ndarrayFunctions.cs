@@ -1391,6 +1391,27 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region mod/remainder
+
+        public static ndarray mod(object x1, object x2)
+        {
+            return remainder(x1, x2);
+        }
+        public static ndarray mod(object x1, int x2)
+        {
+            return remainder(x1, x2);
+        }
+        public static ndarray remainder(object x1, object x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, asanyarray(x2));
+        }
+        public static ndarray remainder(object x1, int x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
+        }
+
+        #endregion
+
         #region isnan
         public static float NaN = float.NaN;
         public static ndarray isnan(ndarray input)

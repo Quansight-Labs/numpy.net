@@ -1172,6 +1172,35 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_mod_1()
+        {
+            var x = np.mod(new int[] { 4, 7 }, new int[] { 2, 3 });
+            AssertArray(x, new int[] { 0, 1 });
+            print(x);
+
+            var y = np.mod(np.arange(7), 5);
+            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_remainder_1()
+        {
+            var x = np.remainder(new int[] { 4, 7 }, new int[] { 2, 3 });
+            AssertArray(x, new int[] { 0, 1 });
+            print(x);
+
+            var y = np.remainder(np.arange(7), 5);
+            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
         [TestMethod]
         public void test_min()
         {

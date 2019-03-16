@@ -584,6 +584,26 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(y)
 
         return
+
+    def test_mod(self):
+
+        x = np.mod([4, 7], [2, 3])
+        print(x)
+
+        y = np.mod(np.arange(7), 5)
+        print(y)
+
+        return
+
+    def test_remainder(self):
+
+        x = np.remainder([4, 7], [2, 3])
+        print(x)
+
+        y = np.remainder(np.arange(7), 5)
+        print(y)
+
+        return
     
     def test_min(self):
 
