@@ -955,10 +955,15 @@ namespace NumpyLib
         {
             return numpyinternal.NpyArray_Subarray(self, dataptr);
         }
+        public static IList<npy_intp> NpyArray_IndexesFromAxis(NpyArray op, int axis)
+        {
+            return numpyinternal.NpyArray_IndexesFromAxis(op, axis);
+        }
+
 
 #endregion
 
-#region npy_iterators
+        #region npy_iterators
 
 
         public static VoidPtr NpyArray_IterNext(NpyArrayIterObject it)

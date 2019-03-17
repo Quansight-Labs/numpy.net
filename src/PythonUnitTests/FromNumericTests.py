@@ -1245,5 +1245,30 @@ class FromNumericTests(unittest.TestCase):
         print(arr)
 
 
+        
+    def test_indicesfromaxis_1(self):
+        TestData = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+        a = np.zeros_like(TestData, dtype= np.uint32).reshape((3, 2, -1));
+         #print(a);
+
+
+        a[:, 0, 0] = 9;
+        print(a);
+        #UpdateArrayByAxis(a, 0, 99);
+        print(a.ravel());
+        print("************")
+
+        a[0, :, 0] = 1;
+        print(a);
+        #UpdateArrayByAxis(a, 1, 11);
+        print(a.ravel());
+        print("************")
+
+        a[0, 0, :] = 2;
+        print(a);
+        #UpdateArrayByAxis(a, 1, 22);
+        print(a.ravel());
+
+
 if __name__ == '__main__':
     unittest.main()

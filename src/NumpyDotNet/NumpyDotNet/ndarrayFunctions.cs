@@ -1660,8 +1660,15 @@ namespace NumpyDotNet
             return x1 >= x2;
         }
 
-  
 
+
+        #endregion
+
+        #region IndicesFromAxis
+        public static IList<npy_intp> IndicesFromAxis(ndarray a, int axis)
+        {
+            return NpyCoreApi.IndicesFromAxis(a, axis);
+        }
         #endregion
 
         private static bool broadcastable(ndarray ao, npy_intp[] dims, int nd)

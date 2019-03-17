@@ -1283,6 +1283,52 @@ namespace NumpyLib
             return result;
         }
 
+        internal static IList<npy_intp> NpyArray_IndexesFromAxis(NpyArray op, int axis)
+        {
+            NpyArray ap = null;
+            List<npy_intp> indexes = new List<npy_intp>();
+            npy_intp elCount, stride;
+            int elsize;
+
+            if ((ap = NpyArray_CheckAxis(op, ref axis, 0)) == null)
+            {
+                return null;
+            }
+
+            /* Will get native-byte order contiguous copy. */
+            ap = NpyArray_ContiguousFromArray(op, op.descr.type_num);
+            Npy_DECREF(op);
+            if (ap == null)
+            {
+                return null;
+            }
+   
+            elsize = ap.descr.elsize;
+            stride = ap.strides[axis];
+            stride = stride / elsize;
+            if (stride == 0)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "attempt to get indices of an empty sequence");
+                goto fail;
+            }
+
+            elCount = ap.dimensions[axis];
+
+            npy_intp data_offset = ap.data.data_offset;
+            for (int i = 0; i < elCount; i++, data_offset += elsize * stride)
+            {
+                indexes.Add(data_offset / elsize);
+            }
+
+            Npy_DECREF(ap);
+  
+            return indexes;
+
+            fail:
+            Npy_DECREF(ap);
+            return null;
+        }
+
         private static npy_intp[] ConvertToIntP(VoidPtr data)
         {
             #if NPY_INTP_64

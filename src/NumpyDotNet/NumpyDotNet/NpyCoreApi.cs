@@ -773,6 +773,16 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static IList<npy_intp> IndicesFromAxis(ndarray self, int axis)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_IndexesFromAxis(self.Array, axis);
+            }
+        }
+
         internal static dtype DescrNewByteorder(dtype d, char order)
         {
             #if ENABLELOCKING

@@ -30,10 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NumpyDotNet;
 using NumpyLib;
+using System;
+using System.Linq;
 
 namespace NumpyDotNetTests
 {
@@ -2238,6 +2239,44 @@ namespace NumpyDotNetTests
         public void test_extract_1()
         {
 
+        }
+
+        [TestMethod]
+        public void test_indicesfromaxis_1()
+        {
+            UInt32[] TestData = new UInt32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var a = np.zeros_like(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+            //print(a);
+
+
+            a[":", 0, 0] = 9;
+            print(a);
+            UpdateArrayByAxis(a, 0, 99);
+            AssertArray(a, new UInt32[,,] { { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            print(a);
+
+            a[0, ":", 0] = 1;
+            print(a);
+            UpdateArrayByAxis(a, 1, 11);
+            AssertArray(a, new UInt32[,,] { { { 11, 0 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            print(a);
+
+            a[0, 0, ":"] = 2;
+            print(a);
+            UpdateArrayByAxis(a, 2, 22);
+            AssertArray(a, new UInt32[,,] { { { 22, 22 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            print(a);
+
+
+        }
+
+        private void UpdateArrayByAxis(ndarray a, int axis, int v)
+        {
+            var b = np.IndicesFromAxis(a, axis);
+            foreach (var index in b)
+            {
+                a.SetItem(v, index);
+            }
         }
 
     }
