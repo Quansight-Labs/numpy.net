@@ -355,12 +355,17 @@ class Test_ShapeBaseTests(unittest.TestCase):
             #Average first and last element of a 1-D array"""
             return (a[0] + a[-1]) * 0.5
 
+        def my_func2(a):
+            #Average first and last element of a 1-D array"""
+            return (a[0]  * 10)
+
         b = np.array([[1,2,3], [4,5,6], [7,8,9]])
-        c = np.apply_along_axis(my_func, 0, b)
+        c = np.apply_along_axis(my_func2, 0, b)
         print(c)
 
         d = np.apply_along_axis(my_func, 1, b);
         print(d)
+        print(b)
 
     def test_apply_along_axis_2(self):
 
