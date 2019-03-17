@@ -2278,10 +2278,14 @@ namespace NumpyDotNetTests
         private void UpdateArrayByAxis(ndarray a, int axis, int v)
         {
             var b = np.IndicesFromAxis(a, axis);
-            foreach (var index in b)
-            {
-                a.SetItem(v, index);
-            }
+
+            //a.ravel()[np.array(b.ToArray())] = v;
+            //a.ravel()[b.ToArray()] = v;
+            a.ravel()[b] = v;
+            //foreach (var index in b)
+            //{
+            //    a.SetItem(v, index);
+            //}
         }
 
     }
