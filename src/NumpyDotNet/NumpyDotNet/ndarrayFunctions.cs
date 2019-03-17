@@ -2006,5 +2006,36 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
+        class zip2IntArrays
+        {
+            public List<Tuple<int, int>> data = new List<Tuple<int, int>>();
+
+            public zip2IntArrays(int[] d, int[] s)
+            {
+                if (d.Length != s.Length)
+                    throw new Exception("Must be same sized arrays");
+
+                for (int i = 0; i < d.Length; i++)
+                {
+                    data.Add(new Tuple<int, int>(d[i], s[i]));
+                }
+            }
+
+            public void Sort()
+            {
+                data.Sort((c1, c2) =>
+                {
+
+                    if (c1.Item1 > c2.Item1)
+                        return 1;
+
+                    if (c1.Item1 < c2.Item1)
+                        return -1;
+
+                    return 0;
+                });
+            }
+        }
+
     }
 }
