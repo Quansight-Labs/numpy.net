@@ -2156,18 +2156,21 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
+        [Ignore]
         [TestMethod]
         public void xxx_test_var_1()
         {
             ndarray a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
+            Assert.AreEqual(1.25, b.GetItem(0));
             print(b);
 
             ndarray c = np.var(a, axis: 0);
+            AssertArray(c, new double[] { 1.0, 1.0 });
             print(c);
 
             ndarray d = np.var(a, axis: 1);
+            AssertArray(d, new double[] {0.25, 0.25 });
             print(d);
 
             // In single precision, std() can be inaccurate:
@@ -2175,10 +2178,12 @@ namespace NumpyDotNetTests
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             b = np.var(a);
+            Assert.AreEqual((double)0.202509764960269, Convert.ToDouble(b.GetItem(0)), 0.00000001);
             print(b);
 
             // Computing the standard deviation in float64 is more accurate:
             c = np.var(a, dtype: np.Float64);
+            Assert.AreEqual((double)0.202499999329974, Convert.ToDouble(c.GetItem(0)), 0.00000001);
             print(c);
 
         }

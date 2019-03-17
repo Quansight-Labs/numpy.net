@@ -3157,7 +3157,7 @@ namespace NumpyDotNet
 
         #region var
 
-        public static ndarray var(ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null, bool variance = false, int ddof = 0)
+        public static ndarray var(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
             /*
             Compute the variance along the specified axis.
@@ -3260,7 +3260,60 @@ namespace NumpyDotNet
             0.2025             
             */
 
-            throw new NotImplementedException();
+            var arr = asanyarray(a);
+
+            long rcount = _count_reduce_items(arr, axis);
+            if (ddof >= rcount)
+            {
+                Console.WriteLine("Degrees of freedom <= 0 for slice");
+            }
+
+            if (dtype == null && (NpyDefs.IsInteger(arr.Dtype.TypeNum) || NpyDefs.IsBool(arr.Dtype.TypeNum)))
+            {
+                dtype = np.Float32;
+            }
+
+            // Compute the mean.
+            var arrmean = np.sum(arr, axis, dtype);
+            arrmean = np.true_divide(arrmean, rcount);
+
+            // Compute sum of squared deviations from mean
+
+            var x = asanyarray(arr - arrmean);
+            x = np.multiply(x, x);
+
+            var ret = np.sum(x, axis, dtype);
+
+            // Compute degrees of freedom and make sure it is not negative.
+            rcount = Math.Max(rcount - ddof, 0);
+
+            //divide by degrees of freedom
+            ret = np.true_divide(ret, rcount);
+
+            return ret;
+        }
+
+        private static long _count_reduce_items(ndarray arr, int? axis)
+        {
+            int[] dimArray = null;
+            if (axis == null)
+            {
+                dimArray = new int[arr.ndim];
+                for (int i = 0; i < arr.ndim; i++)
+                    dimArray[i] = i;
+            }
+            else
+            {
+                dimArray = new int[1] { axis.Value };
+            }
+
+            long items = 1;
+            foreach (int index in dimArray)
+            {
+                items *= arr.shape.iDims[index];
+            }
+
+            return items;    
         }
 
 
