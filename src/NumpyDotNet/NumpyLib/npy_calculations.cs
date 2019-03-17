@@ -3326,7 +3326,7 @@ namespace NumpyLib
             n = NpyArray_SIZE(ap) / m;
             rptr = rp.data.datap as npy_intp[];
 
-            for (ip = ap.data, i = 0; i < n; i++, ip.data_offset += elsize * m)
+            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
             {
                 arg_func(ip, ip.data_offset / elsize, m, ref rptr[i], ap);
             }
@@ -3447,7 +3447,7 @@ namespace NumpyLib
             n = NpyArray_SIZE(ap) / m;
             rptr = rp.data.datap as npy_intp[];
 
-            for (ip = ap.data, i = 0; i < n; i++, ip.data_offset += elsize * m)
+            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
             {
                 arg_func(ip, ip.data_offset / elsize, m, ref rptr[i], ap);
             }
