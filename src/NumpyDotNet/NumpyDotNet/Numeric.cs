@@ -1274,7 +1274,7 @@ namespace NumpyDotNet
         #endregion
 
         #region normalize_axis_tuple
-        private static dynamic normalize_axis_tuple(dynamic axis, int ndim, string argname = null, bool allow_duplicates = false)
+        private static int[] normalize_axis_tuple(object axis, int ndim, string argname = null, bool allow_duplicates = false)
         {
             //Normalizes an axis argument into a tuple of non - negative integer axes.
 
@@ -1318,22 +1318,39 @@ namespace NumpyDotNet
             //--------
             //normalize_axis_index: normalizing a single scalar axis
 
-            return 0;
-            throw new NotImplementedException();
+            int[] _axis = null;
+
+            try
+            {
+                if (axis.GetType().IsArray)
+                {
+                    System.Array tempAxis = axis as System.Array;
+                    _axis = new int[tempAxis.Length];
+                    int index = 0;
+                    foreach (var t in tempAxis)
+                    {
+                        _axis[index++] = Convert.ToInt32(t);
+                    }
+                }
+                else
+                {
+                    _axis = new int[1];
+                    _axis[0] = Convert.ToInt32(axis);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ValueError("index must be integer or array of integers");
+            }
 
 
-            //    try:
-            //    axis = [operator.index(axis)]
-            //except TypeError:
-            //    axis = tuple(axis)
-            //axis = tuple(normalize_axis_index(ax, ndim, argname) for ax in axis)
-            //        if not allow_duplicate and len(set(axis)) != len(axis):
-            //    if argname:
-            //        raise ValueError('repeated axis in `{}` argument'.format(argname))
-            //    else:
-            //        raise ValueError('repeated axis')
-            //return axis
+            List<int> axes = new List<int>();
 
+            foreach (var a in _axis)
+            {
+                axes.Add(normalize_axis_index(a, ndim));
+            }
+            return axes.ToArray();
         }
         #endregion
 
@@ -1402,15 +1419,36 @@ namespace NumpyDotNet
                 throw new Exception("moveaxis:Failure on transpose");
             }
 
-            source = normalize_axis_tuple(source, a.ndim, "source");
-            destination = normalize_axis_tuple(destination, a.ndim, "destination");
-            //if (len(source) != len(destination))
-            //{
-            //    throw new Exception("`source` and `destination` arguments must have the same number of elements");
-            //}
+            var source_axes = normalize_axis_tuple(source, a.ndim, "source");
+            var destination_axes = normalize_axis_tuple(destination, a.ndim, "destination");
+            if (source_axes.Length != destination_axes.Length)
+            {
+                throw new Exception("`source` and `destination` arguments must have the same number of elements");
+            }
 
-            return null;
+
+            List<int> order = new List<int>();
+            for (int n = 0; n < a.ndim; n++)
+            {
+                if (!source_axes.Contains(n))
+                {
+                    order.Add(n);
+                }
+            }
+
+            var zip = new zip2IntArrays(destination_axes, source_axes);
+            zip.Sort();
+            foreach (var d in zip.data)
+            {
+                order.Insert(d.Item1, d.Item2);
+            }
+
+            var result = np.transpose(a, order.ToArray());
+            return result;
         }
+
+    
+
         #endregion
 
         #region cross

@@ -741,9 +741,8 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_ndarray_moveaxis()
+        public void test_ndarray_moveaxis()
         {
             var x = np.zeros((3, 4, 5));
             var b = np.moveaxis(x, 0, -1).shape;
@@ -751,24 +750,24 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.moveaxis(x, -1, 0).shape;
-            AssertShape(b, 5, 3, 4);
+            AssertShape(c, 5, 3, 4);
             print(c);
 
             // These all achieve the same result:
             var d = np.transpose(x).shape;
-            AssertShape(b, 5, 4, 3);
+            AssertShape(d, 5, 4, 3);
             print(d);
 
             var e = np.swapaxes(x, 0, -1).shape;
-            AssertShape(b, 5, 4, 3);
+            AssertShape(e, 5, 4, 3);
             print(e);
 
             var f = np.moveaxis(x, new int[] { 0, 1 }, new int[] { -1, -2 }).shape;
-            AssertShape(b, 5, 4, 3);
+            AssertShape(f, 5, 4, 3);
             print(f);
 
             var g = np.moveaxis(x, new int[] { 0, 1, 2 }, new int[] { -1, -2, -3 }).shape;
-            AssertShape(b, 5, 4, 3);
+            AssertShape(g, 5, 4, 3);
             print(g);
         }
 
