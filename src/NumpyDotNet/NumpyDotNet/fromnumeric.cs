@@ -570,6 +570,21 @@ namespace NumpyDotNet
             return transpose(vstack(a), axes);
         }
 
+        public static ndarray transpose(ndarray a, int[] axes)
+        {
+            if (axes != null)
+            {
+                List<npy_intp> _axes = new List<npy_intp>();
+                foreach (var axis in axes)
+                {
+                    _axes.Add(axis);
+                }
+
+                return transpose(a, _axes.ToArray());
+            }
+            return transpose(a, (npy_intp[])null);
+        }
+
 
 
         #endregion
