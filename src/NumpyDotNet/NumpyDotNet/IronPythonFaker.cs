@@ -361,4 +361,13 @@ namespace NumpyDotNet
         }
     }
 
+
+    public class AxisError : Exception
+    {
+        public AxisError(string message) : base(message)
+        {
+
+        }
+    }
+
 }

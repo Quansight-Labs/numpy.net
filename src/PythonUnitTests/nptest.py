@@ -808,3 +808,25 @@ class nptest(object):
             else:
                 S = S*np.ones(asarray(pfac).shape, S.dtype)
         return np.choose(S, tuple(choicelist))
+
+
+    
+    @staticmethod
+    def rollaxis(a, axis, start=0):
+
+        n = a.ndim
+        axis = normalize_axis_index(axis, n)
+        if start < 0:
+            start += n
+        msg = "'%s' arg requires %d <= %s < %d, but %d was passed in"
+        if not (0 <= start < n + 1):
+            raise AxisError(msg % ('start', -n, 'start', n + 1, start))
+        if axis < start:
+            # it's been removed
+            start -= 1
+        if axis == start:
+            return a[...]
+        axes = list(range(0, n))
+        axes.remove(axis)
+        axes.insert(start, axis)
+        return a.transpose(axes)

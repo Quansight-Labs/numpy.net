@@ -1243,7 +1243,33 @@ namespace NumpyDotNet
             //  >>> np.rollaxis(a, 1, 4).shape
             //  (3, 5, 6, 4)
 
-            throw new NotImplementedException();
+            var n = a.ndim;
+            axis = normalize_axis_index(axis, n);
+            if (start < 0)
+                start += n;
+
+            string msg = "{0} arg requires {1} <= {2} < {3}, but {4} was passed in";
+            if (((0 <= start) || (start < n + 1)) == false)
+            {
+                throw new AxisError(string.Format(msg, "start", -n, "start", n + 1, start));
+            }
+
+            if (axis < start)
+            {
+                // it's been removed
+                start -= 1;
+            }
+            if (axis == start)
+            {
+                return a["..."] as ndarray;
+            }
+
+            List<npy_intp> axes = new List<npy_intp>();
+            for (int i = 0; i < n; i++)
+                axes.Add(i);
+            axes.Remove(axis);
+            axes.Insert(start, axis);
+            return a.Transpose(axes.ToArray());
         }
         #endregion
 

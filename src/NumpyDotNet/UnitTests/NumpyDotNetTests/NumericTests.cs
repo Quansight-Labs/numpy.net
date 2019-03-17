@@ -694,10 +694,37 @@ namespace NumpyDotNetTests
             AssertShape(c, 10);
         }
 
-
         [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void xxx_test_ndarray_rollaxis()
+        public void xxx_test_roll_backward_1()
+        {
+            var a = np.arange(10, dtype: np.UInt16).reshape((4,4));
+
+            print("A");
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = np.roll(a, -2, axis:0);
+            print("B");
+            print(b);
+            print(b.shape);
+            print(b.strides);
+            AssertArray(b, new UInt16[] { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 });
+            AssertShape(b, 10);
+
+            var c = np.roll(b, -6, axis: 1);
+            print("C");
+            print(c);
+            print(c.shape);
+            print(c.strides);
+            AssertArray(c, new UInt16[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            AssertShape(c, 10);
+        }
+
+
+        [TestMethod]
+        public void test_ndarray_rollaxis()
         {
             var a = np.ones((3, 4, 5, 6));
             var b = np.rollaxis(a, 3, 1).shape;
@@ -709,7 +736,7 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.rollaxis(a, 1, 4).shape;
-            AssertShape(c, 3, 5, 6, 4);
+            AssertShape(d, 3, 5, 6, 4);
             print(d);
         }
 
