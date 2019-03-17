@@ -560,6 +560,11 @@ namespace NumpyDotNet {
                 {
                     array_arg = np.FromIEnumerable((IEnumerable<object>)arg, null, false, 0, 0);
                 }
+                if (array_arg == null && arg is IEnumerable<npy_intp>)
+                {
+                    var arr1 = arg as IEnumerable<npy_intp>;
+                    array_arg = np.array(arr1.ToArray(), null);
+                }
 
                 // Boolean scalars
                 if (array_arg != null &&
