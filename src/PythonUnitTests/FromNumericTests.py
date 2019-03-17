@@ -1147,16 +1147,32 @@ class FromNumericTests(unittest.TestCase):
       y = np.mean(x);
       print("Y")
       print(y)
+
+      y = np.mean(x, axis= 0);
+      print("Y")
+      print(y)
+
+      y = np.mean(x, axis= 1);
+      print("Y")
+      print(y)
    
 
     def test_mean_1(self):
 
         x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
         x = x * 3
-        y = np.mean(x);
-
-
         print(x)
+
+        y = np.mean(x);
+        print(y)
+
+        y = np.mean(x, axis=0);
+        print(y)
+
+        y = np.mean(x, axis=1);
+        print(y)
+
+        y = np.mean(x, axis=2);
         print(y)
 
         return

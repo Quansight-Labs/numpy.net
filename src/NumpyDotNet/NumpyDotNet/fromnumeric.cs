@@ -2836,7 +2836,7 @@ namespace NumpyDotNet
         /// <param name="axis">Axis or axes along which the means are computed. The default is to compute the mean of the flattened arra</param>
         /// <param name="dtype">Type to use in computing the mean. For integer inputs, the default is float64; for floating point inputs, it is the same as the input dtype.</param>
         /// <returns>ndarray, see dtype parameter above</returns>
-        public static ndarray mean(ndarray input, int? axis = null, dtype dtype = null)
+        public static ndarray mean(object a, int? axis = null, dtype dtype = null, bool keepdims = false)
         {
             /*
             Compute the arithmetic mean along the specified axis.
@@ -2928,36 +2928,26 @@ namespace NumpyDotNet
             0.55000000074505806
             */
 
-            ndarray AdjustedArray = input;
+            var arr = asanyarray(a);
 
-            if (axis.HasValue)
+            long rcount = _count_reduce_items(arr, axis);
+            if (rcount == 0)
             {
-                if (axis.Value == 0)
-                {
-                    AdjustedArray = input.A(":");
-                }
-                else
-                {
-                    throw new Exception("axis != 0 not implemented yet");
-                }
-
-                throw new Exception("axis != 0 not implemented yet");
-
+                Console.WriteLine("mean of empty slice");
             }
-            else
+
+            if (dtype == null)
             {
-                var rawdatavp = input.rawdata(0);
-                dynamic RawData = (dynamic)rawdatavp.datap;
-
-                double total = 0;
-                foreach (var rd in RawData)
+                if (NpyDefs.IsInteger(arr.Dtype.TypeNum) || NpyDefs.IsBool(arr.Dtype.TypeNum))
                 {
-                    total += rd;
+                    dtype = np.Float64;
                 }
-
-                double mean = total / RawData.Length;
-                return array(new double[] { mean });
             }
+
+            var ret = np.sum(arr, axis, dtype);
+            ret = np.true_divide(ret, rcount);
+            return ret;
+   
         }
 
         public static ndarray average(ndarray input, int? axis = null, dtype dtype = null)
@@ -3096,7 +3086,7 @@ namespace NumpyDotNet
             // Reshape and get axis
             x = NpyCoreApi.CheckAxis(a, ref _axis, 0);
             // Compute the mean
-            mean = np.FromAny(x.Mean(_axis, dtype, null), dtype);
+            mean = np.FromAny(np.mean(x,_axis, dtype), dtype);
             // Add an axis back to the mean so it will broadcast correctly
             newshape = x.Dims.Select(y => (npy_intp)y).ToArray();
             newshape[_axis] = (npy_intp)1;
@@ -3160,7 +3150,7 @@ namespace NumpyDotNet
 
 #endregion
 
-#region var
+        #region var
 
         public static ndarray var(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
@@ -3298,6 +3288,8 @@ namespace NumpyDotNet
             return ret;
         }
 
+        #endregion
+
         private static long _count_reduce_items(ndarray arr, int? axis)
         {
             int[] dimArray = null;
@@ -3318,10 +3310,7 @@ namespace NumpyDotNet
                 items *= arr.shape.iDims[index];
             }
 
-            return items;    
+            return items;
         }
-
-
-#endregion
     }
 }

@@ -2075,11 +2075,23 @@ namespace NumpyDotNetTests
             print(x);
 
             var y = (ndarray)np.mean(x);
+            Assert.AreEqual(5.5, y.GetItem(0));
 
             print("Y");
             print(y);
 
-            Assert.AreEqual(5.5, y.GetItem(0));
+            y = (ndarray)np.mean(x, axis:0);
+            AssertArray(y, new double[] { 4, 5, 6, 7 });
+
+            print("Y");
+            print(y);
+
+            y = (ndarray)np.mean(x, axis: 1);
+            AssertArray(y, new double[] { 1.5, 5.5, 9.5 });
+
+            print("Y");
+            print(y);
+
         }
 
 
@@ -2089,11 +2101,23 @@ namespace NumpyDotNetTests
             UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
             var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
             x = x * 3;
-            var y = np.mean(x);
-
             print(x);
+
+            var y = np.mean(x);
             print(y);
             Assert.AreEqual(131.5, y.GetItem(0));
+
+            y = np.mean(x, axis:0);
+            print(y);
+            AssertArray(y, new double[,] { { 113,150 }, {113, 150 } });
+
+            y = np.mean(x, axis: 1);
+            print(y);
+            AssertArray(y, new double[,] { { 52.5, 90 }, { 132, 157.5 }, { 154.5, 202.5} });
+
+            y = np.mean(x, axis: 2);
+            print(y);
+            AssertArray(y, new double[,] { { 37.5, 105 }, { 252, 37.5 }, { 105, 252 } });
 
         }
 
@@ -2105,7 +2129,7 @@ namespace NumpyDotNetTests
             a[1, ":"] = 0.1;
             ndarray b = np.mean(a);
             print(b);
-            Assert.AreEqual(0.5500000007450581, (double)b.GetItem(0), 0.0000001);
+            Assert.AreEqual(0.546875f, (double)b.GetItem(0), 0.0000001);
 
             ndarray c = np.mean(a, dtype: np.Float64);
             print(c);

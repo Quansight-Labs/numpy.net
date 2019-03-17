@@ -47,16 +47,7 @@ namespace NumpyDotNet
     public partial class ndarray
     {
 
-        internal object Mean(int axis, dtype rtype, ndarray ret = null)
-        {
-            ndarray newArray = NpyCoreApi.CheckAxis(this, ref axis, 0);
-            ndarray sum = newArray.Sum(axis, rtype, ret);
-            ndarray denom = np.FromAny(newArray.Dims[axis], 
-                NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE),
-                0, 0, 0, null);
-
-            return NpyCoreApi.PerformNumericOp(sum, NpyArray_Ops.npy_op_divide, denom);
-        }
+    
 
         private static readonly double[] p10 = new double[] { 1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 };
 
