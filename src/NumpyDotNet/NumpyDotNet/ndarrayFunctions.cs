@@ -1671,6 +1671,29 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region ViewFromAxis
+
+        /// <summary>
+        /// Creates a view that matches only the specified axis values
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
+        public static ndarray ViewFromAxis(ndarray a, int axis)
+        {
+            axis = normalize_axis_index(axis, a.ndim);
+
+            var slices = new object[a.ndim];
+            for (int i = 0; i < slices.Length; i++)
+            {
+                slices[i] = 0;
+            }
+            slices[axis] = ":";
+
+            return a.A(slices);
+        }
+        #endregion
+
         private static bool broadcastable(ndarray ao, npy_intp[] dims, int nd)
         {
             if (ao.ndim > nd)

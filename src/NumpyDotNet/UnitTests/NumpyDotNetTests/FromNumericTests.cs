@@ -2275,6 +2275,38 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_viewfromaxis_1()
+        {
+            UInt32[] TestData = new UInt32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var a = np.zeros_like(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+            //print(a);
+
+
+            var b = np.ViewFromAxis(a, 0);
+            b[":"] = 99;
+            //print(a);
+            AssertArray(a, new UInt32[,,] { { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 0), new UInt32[,] { { 297, 0 }, { 0, 0 } });
+
+            b = np.ViewFromAxis(a, 1);
+            b[":"] = 11;
+            AssertArray(a, new UInt32[,,] { { { 11, 0 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 1), new UInt32[,] { { 22, 0 }, { 99, 0 }, { 99, 0 } });
+
+            b = np.ViewFromAxis(a, 2);
+            b[":"] = 22;
+            AssertArray(a, new UInt32[,,] { { { 22, 22 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 2), new UInt32[,] { { 44, 11 }, { 99, 0 }, { 99, 0 } });
+
+            Assert.AreEqual((UInt32)253, np.sum(a).GetItem(0));
+
+
+        }
+
         private void UpdateArrayByAxis(ndarray a, int axis, int v)
         {
             var b = np.IndicesFromAxis(a, axis);
