@@ -1252,22 +1252,27 @@ class FromNumericTests(unittest.TestCase):
          #print(a);
 
 
-        a[:, 0, 0] = 9;
-        print(a);
+        a[:, 0, 0] = 99;
+        #print(a);
         #UpdateArrayByAxis(a, 0, 99);
-        print(a.ravel());
+        #print(a.ravel());
+        print(np.sum(a, axis=0))
         print("************")
 
-        a[0, :, 0] = 1;
-        print(a);
+        a[0, :, 0] = 11;
+        #print(a);
         #UpdateArrayByAxis(a, 1, 11);
-        print(a.ravel());
+        #print(a.ravel());
+        print(np.sum(a, axis=1))
         print("************")
 
-        a[0, 0, :] = 2;
-        print(a);
+        a[0, 0, :] = 22;
+        #print(a);
         #UpdateArrayByAxis(a, 1, 22);
-        print(a.ravel());
+        #print(a.ravel());
+        print(np.sum(a, axis=2))
+
+        print(np.sum(a))
 
 
 if __name__ == '__main__':

@@ -2249,23 +2249,28 @@ namespace NumpyDotNetTests
             //print(a);
 
 
-            a[":", 0, 0] = 9;
-            print(a);
+            //a[":", 0, 0] = 9;
+            //print(a);
             UpdateArrayByAxis(a, 0, 99);
             AssertArray(a, new UInt32[,,] { { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
-            print(a);
+            //print(a);
+            AssertArray(np.sum(a, axis: 0), new UInt32[,] { {297,0 }, {0,0 } });
 
-            a[0, ":", 0] = 1;
-            print(a);
+            //a[0, ":", 0] = 1;
+            //print(a);
             UpdateArrayByAxis(a, 1, 11);
             AssertArray(a, new UInt32[,,] { { { 11, 0 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
-            print(a);
+            //print(a);
+            AssertArray(np.sum(a, axis: 1), new UInt32[,] { { 22, 0 }, { 99, 0 }, { 99, 0 } });
 
-            a[0, 0, ":"] = 2;
-            print(a);
+            //a[0, 0, ":"] = 2;
+            //print(a);
             UpdateArrayByAxis(a, 2, 22);
             AssertArray(a, new UInt32[,,] { { { 22, 22 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
-            print(a);
+            //print(a);
+            AssertArray(np.sum(a, axis: 2), new UInt32[,] { { 44, 11 }, { 99, 0 }, { 99, 0 } });
+
+            Assert.AreEqual((UInt32)253, np.sum(a).GetItem(0));
 
 
         }
