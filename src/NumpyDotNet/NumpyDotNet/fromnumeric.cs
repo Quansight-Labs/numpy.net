@@ -2969,7 +2969,7 @@ namespace NumpyDotNet
 
         #region std
 
-        public static ndarray std(ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null, bool variance =false, int ddof = 0)
+        public static ndarray std(ndarray a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
             /*
             Compute the standard deviation along the specified axis.
@@ -3072,6 +3072,10 @@ namespace NumpyDotNet
             0.44999999925494177             
             */
 
+            ndarray ret = var(a, axis, dtype, ddof, keep_dims);
+            return np.sqrt(ret);
+
+#if OLDER_VERSION
             ndarray x, mean, tmp;
             object result;
             long n;
@@ -3115,7 +3119,7 @@ namespace NumpyDotNet
             // Divide by n (or n-ddof) and maybe take the sqrt
             n = x.Dims[_axis] - ddof;
             if (n == 0) n = 1;
-            if (!variance)
+            if (true)
             {
                 result = np.sqrt(np.FromAny(tmp * (1.0 / n)));
             }
@@ -3150,12 +3154,13 @@ namespace NumpyDotNet
                 return ret;
             }
             return result as ndarray;
+#endif
         }
 
 
-        #endregion
+#endregion
 
-        #region var
+#region var
 
         public static ndarray var(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
@@ -3317,6 +3322,6 @@ namespace NumpyDotNet
         }
 
 
-        #endregion
+#endregion
     }
 }
