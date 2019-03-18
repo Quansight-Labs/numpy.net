@@ -2212,27 +2212,15 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
+        [Ignore]
         [TestMethod]
-        public void test_place_1()
+        public void xxx_test_place_1()
         {
-
+            var arr = np.arange(6).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55 });
+            print(arr);
         }
 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_lexsort_1()
-        {
-
-        }
-
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_sort_complex_1()
-        {
-
-        }
 
         [TestMethod]
         public void test_extract_1()
@@ -2308,6 +2296,22 @@ namespace NumpyDotNetTests
 
             Assert.AreEqual((UInt32)253, np.sum(a).GetItem(0));
 
+
+        }
+
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_lexsort_1()
+        {
+
+        }
+
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_sort_complex_1()
+        {
 
         }
 

@@ -1055,7 +1055,7 @@ namespace NumpyDotNet
         #endregion
 
         #region place
-        public static ndarray place(ndarray arr, ndarray mask, object[] vals)
+        public static void place(ndarray arr, ndarray mask, Int32[] vals)
         {
             /*
             Change elements of an array based on conditional and input values.
@@ -1092,7 +1092,9 @@ namespace NumpyDotNet
                    [44, 55, 44]])             
             */
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("need to implement _compiled_base.c version of _insert first");
+            // _insert(arr.ravel(), mask, vals);
+            return;
         }
         #endregion
 
