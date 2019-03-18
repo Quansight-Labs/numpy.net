@@ -65,9 +65,21 @@ class Test_test1(unittest.TestCase):
         return
 
     def test_diag_indices_1(self):
+
+        di = np.diag_indices(4)
+        print(di)
+
+        a = np.arange(16).reshape(4, 4)
+        a[di] = 100
+        print(a)
+
         return
     
     def test_diag_indices_from_1(self):
+
+        a = np.arange(16).reshape(4, 4)
+        b = np.diag_indices_from(a)
+        print(b)
         return
 
 

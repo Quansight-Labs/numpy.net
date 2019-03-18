@@ -96,18 +96,32 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet.  Too much work
         [TestMethod]
-        public void xxx_test_diag_indices_1()
+        public void test_diag_indices_1()
         {
+            var di = np.diag_indices(4);
+            AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
+            AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
+            print(di);
+
+            var a = np.arange(16).reshape((4, 4));
+            a[di] = 100;
+
+            AssertArray(a, new Int32[,] { {100,1,2,3 }, {4,100,6,7 }, {8, 9, 100, 11 }, { 12,13,14,100 } });
+            print(a);
+
+            return;
 
         }
 
-        [Ignore] // not implemented yet.  Too much work
         [TestMethod]
-        public void xxx_test_diag_indices_from_1()
+        public void test_diag_indices_from_1()
         {
-
+            var a = np.arange(16).reshape((4, 4));
+            var di = np.diag_indices_from(a);
+            AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
+            AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
+            print(di);
         }
 
 
