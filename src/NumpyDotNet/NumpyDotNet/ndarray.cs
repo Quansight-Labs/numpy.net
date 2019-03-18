@@ -1346,74 +1346,29 @@ namespace NumpyDotNet
             }
             return sb.ToString();
         }
-             
 
-        #region Direct Typed Accessors
-        // BEWARE!  These are direct memory accessors and ignore the type of the array.
-        // Yes, you can do clever things and yes, you can hang yourself, too.
-
-        public int ReadAsInt32(long index)
-        {
-            return (int)numpyAPI.GetItem(this.Array, (int)OffsetToItem(index));
-        }
-
-        public void WriteAsInt32(long index, int v)
-        {
-            numpyAPI.SetItem(this.Array, (int)OffsetToItem(index), v);
-        }
-
-        public long ReadAsInt64(long index)
-        {
-            return (long)numpyAPI.GetItem(this.Array, (int)OffsetToItem(index));
-        }
-
-        public void WriteAsInt64(long index, long v)
-        {
-            numpyAPI.SetItem(this.Array, (int)OffsetToItem(index), v);
-        }
-
-        public float ReadAsFloat(long index)
-        {
-            return (float)numpyAPI.GetItem(this.Array, (int)OffsetToItem(index));
-        }
-
-        public void WriteAsFloat(long index, float v)
-        {
-            numpyAPI.SetItem(this.Array, (int)OffsetToItem(index), v);
-        }
-
-        public double ReadAsDouble(long index) {
-            return (double)numpyAPI.GetItem(this.Array, (int)OffsetToItem(index));
-        }
-
-        public void WriteAsDouble(long index, double v) {
-            numpyAPI.SetItem(this.Array, (int)OffsetToItem(index), v);
-        }
-
-        private long OffsetToItem(long index) {
-            if (ndim > 1) {
-                throw new IndexOutOfRangeException("Only 1-d arrays are currently supported. Please use ArrayItem().");
-            }
-
-            long dim0 = Dims[0];
-            if (index < 0) {
-                index += dim0;
-            }
-            if (index < 0 || index >= dim0) {
-                throw new IndexOutOfRangeException("Index out of range");
-            }
-            return index * Strides[0];
-        }
-        #endregion
 
         /// <summary>
         /// Indexes an array by a single long and returns either an item or a sub-array.
         /// </summary>
         /// <param name="index">The index into the array</param>
-        object GetArrayItem(npy_intp index) {
-            if (ndim == 1) {
+        object GetArrayItem(npy_intp index)
+        {
+            if (ndim == 1)
+            {
+                if (Math.Abs(index) >= this.shape.iDims[0])
+                {
+                    throw new Exception("index exceeds size of array");
+                }
+
+                if (index < 0)
+                {
+                    index += this.shape.iDims[0];
+                }
                 return numpyAPI.GetItem(this.Array, index);
-            } else {
+            }
+            else
+            {
                 return NpyCoreApi.ArrayItem(this, index);
             }
         }
