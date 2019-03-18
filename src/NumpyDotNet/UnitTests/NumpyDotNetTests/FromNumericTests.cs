@@ -129,12 +129,12 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
-        [TestMethod]
-        public void test_take_along_axis_1()
-        {
-
-        }
+        //[Ignore]
+        //[TestMethod]
+        //public void test_take_along_axis_1()
+        //{
+        //    // we don't seem to have the source code for this one
+        //}
 
         [TestMethod]
         public void test_reshape_1()

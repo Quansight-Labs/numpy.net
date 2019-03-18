@@ -36,6 +36,29 @@ class FromNumericTests(unittest.TestCase):
         print(e.strides)
 
     def test_take_along_axis_1(self):
+
+        a = np.array([[10, 30, 20], [60, 40, 50]])
+        b = np.sort(a, axis=1)
+        #print(b)
+
+        ai = np.argsort(a, axis=1)
+        print(ai)
+        print("*********")
+
+        c = np.take_along_axis(a, ai, axis=1)
+        print(c)
+
+        print("*********")
+
+        d = np.take(a, ai)
+        print(d)
+
+        print("*********")
+
+        aa = a[0,:]
+        e = np.take(a[0,:], ai)
+        print(e)
+
         return;
 
     def test_reshape_1(self):
