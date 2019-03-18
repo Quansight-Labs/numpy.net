@@ -694,12 +694,37 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [Ignore] // big task to port
-        [TestMethod]
-        public void test_apply_over_axis_1()
-        {
+        //[Ignore] // This can be achieved by calling apply_along_axis for each axis you want and them combining them
+        //[TestMethod]
+        //public void test_apply_over_axis_1()
+        //{
+        //    ndarray sortedFull(ndarray a, ndarray view)
+        //    {
+        //        return np.sort(a);
+        //    }
 
-        }
+        //    ndarray sortedView(ndarray a, ndarray view)
+        //    {
+        //        return np.sort(view);
+        //    }
+
+        //    var b = np.array(new int[,,] { { { 8, 1, 7 }, { 4, 3, 9 }, { 5, 2, 6 } } });
+        //    var c = np.apply_over_axis(sortedFull, 1, b);
+        //    AssertArray(c, new int[,,] { { { 1, 7, 8 }, { 3, 4, 9 }, { 2, 5, 6 } } });
+        //    print(c);
+
+        //    c = np.apply_over_axis(sortedView, 0, b);
+        //    AssertArray(c, new int[] { 8 });
+        //    print(c);
+
+        //    c = np.apply_over_axis(sortedView, 1, b);
+        //    AssertArray(c, new int[] { 4, 5, 8 });
+        //    print(c);
+
+        //    c = np.apply_over_axis(sortedView, 2, b);
+        //    AssertArray(c, new int[] { 1, 7, 8 });
+        //    print(c);
+        //}
 
     }
 }

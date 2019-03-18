@@ -14,6 +14,7 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+
         public static ICollection<ndarray> atleast_1d(ICollection<object> arys)
         {
             //
@@ -231,6 +232,69 @@ namespace NumpyDotNet
         {
             return atleast_3d(new object[] { array });
         }
+
+        #region apply_along_axis
+
+        public delegate ndarray apply_along_axis_view(ndarray a, ndarray view);
+        public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
+
+        public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
+        {
+            if (fn == null)
+            {
+                throw new Exception("function can't be null");
+            }
+            var indices = IndicesFromAxis(arr, axis);
+
+            try
+            {
+                var ret = fn(arr, indices);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        public static ndarray apply_along_axis(apply_along_axis_view fn, int axis, ndarray arr)
+        {
+            if (fn == null)
+            {
+                throw new Exception("function can't be null");
+            }
+            var view = ViewFromAxis(arr, axis);
+
+            try
+            {
+                var ret = fn(arr, view);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region apply_over_axis
+
+        public delegate ndarray apply_over_axis_view(ndarray a, ndarray view);
+        public delegate ndarray apply_over_axis_indices(ndarray a, IList<npy_intp> indices);
+
+        public static ndarray apply_over_axis(apply_over_axis_indices fn, object axis, ndarray arr)
+        {
+            throw new NotImplementedException("This can be achieved by calling apply_along_axis for each axis you want and them combining them");
+        }
+
+        public static ndarray apply_over_axis(apply_over_axis_view fn, int axis, ndarray arr)
+        {
+            throw new NotImplementedException("This can be achieved by calling apply_along_axis for each axis you want and them combining them");
+        }
+
+        #endregion
 
         public static ndarray vstack(ICollection<object> tup)
         {

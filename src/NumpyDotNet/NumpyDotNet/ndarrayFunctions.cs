@@ -1633,55 +1633,11 @@ namespace NumpyDotNet
 
         #endregion
 
-        #region apply_along_axis
 
-        public delegate ndarray apply_along_axis_view(ndarray a, ndarray view);
-        public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
-
-        public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
-        {
-            if (fn == null)
-            {
-                throw new Exception("function can't be null");
-            }
-            var indices = IndicesFromAxis(arr, axis);
-
-            try
-            {
-                var ret = fn(arr, indices);
-                return ret;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-        }
-
-        public static ndarray apply_along_axis(apply_along_axis_view fn, int axis, ndarray arr)
-        {
-            if (fn == null)
-            {
-                throw new Exception("function can't be null");
-            }
-            var view = ViewFromAxis(arr, axis);
-
-            try
-            {
-                var ret = fn(arr, view);
-                return ret;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        #endregion
 
         #region numeric operations
 
-   
+
         public delegate bool numericOp(dynamic X1, dynamic X2);
 
         public static bool bgreater_equal(dynamic x1, dynamic x2)

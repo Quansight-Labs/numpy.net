@@ -393,17 +393,35 @@ class Test_ShapeBaseTests(unittest.TestCase):
     def test_apply_over_axis_1(self):
 
         a = np.arange(24).reshape(2,3,4)
-        print(a)
+        # print(a)
 
         # Sum over axes 0 and 2. The result has same number of dimensions as the original array:
 
         b = np.apply_over_axes(np.sum, a, [0,2])
         print(b)
 
+        print("");
+        print("*******")
+        print("");
+
         # Tuple axis arguments to ufuncs are equivalent:
 
         c = np.sum(a, axis=(0,2), keepdims=True)
         print(c)
+
+        print("");
+        print("*******")
+        print("");
+
+        d = np.sum(a, axis=0, keepdims=True)
+        print(d)
+
+        print("");
+        print("*******")
+        print("");
+
+        e = np.sum(a, axis=2, keepdims=True)
+        print(e)
 
 
 
