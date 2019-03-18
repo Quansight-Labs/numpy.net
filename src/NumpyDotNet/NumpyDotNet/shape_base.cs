@@ -131,7 +131,7 @@ namespace NumpyDotNet
                 }
                 else if (array.ndim == 1)
                 {
-                    result = array.reshape(new shape(1, (int)array.Dims[0]));
+                    result = array.reshape(new shape(1, (int)array.Dim(0)));
                 }
                 else
                 {
@@ -211,11 +211,11 @@ namespace NumpyDotNet
                 }
                 else if (array.ndim == 1)
                 {
-                    result = array.reshape(new shape(1, (int)array.Dims[0], 1));
+                    result = array.reshape(new shape(1, (int)array.Dim(0), 1));
                 }
                 else if (array.ndim == 2)
                 {
-                    result = array.reshape(new shape((int)array.Dims[0], (int)array.Dims[1], 1));
+                    result = array.reshape(new shape((int)array.Dim(0), (int)array.Dim(1), 1));
                 }
                 else
                 {
@@ -652,7 +652,7 @@ namespace NumpyDotNet
             axis = normalize_axis_index(axis, a.ndim + 1);
 
 
-            npy_intp[] ExpandedDims = new npy_intp[a.Dims.Length + 1];
+            npy_intp[] ExpandedDims = new npy_intp[a.dims.Length + 1];
 
             int j = 0;
             for (int i = 0; i < ExpandedDims.Length; i++)
@@ -663,7 +663,7 @@ namespace NumpyDotNet
                 }
                 else
                 {
-                    ExpandedDims[i] = a.Dims[j];
+                    ExpandedDims[i] = a.Dim(j);
                     j++;
                 }
             }
@@ -810,9 +810,9 @@ namespace NumpyDotNet
             npy_intp Ntotal = 0;
             int Nsections = 0;
 
-            if (axis < ary.Dims.Length)
+            if (axis < ary.dims.Length)
             {
-                Ntotal = ary.Dims[axis];
+                Ntotal = ary.Dim(axis);
             }
             else
             {
@@ -1241,7 +1241,7 @@ namespace NumpyDotNet
                 //result = np.concatenate(new ndarray[] { result }, axis : axis);
 
                 npy_intp[] oldDims = new npy_intp[result.ndim];
-                Array.Copy(result.Dims, oldDims, result.ndim);
+                Array.Copy(result.dims, oldDims, result.ndim);
                 npy_intp[] newDims = new npy_intp[oldDims.Length - 1];
                 Array.Copy(oldDims, 1, newDims, 0, newDims.Length);
                 newDims[axis] *= oldDims[0];
@@ -1403,7 +1403,7 @@ namespace NumpyDotNet
             {
                 string Key = "";
 
-                foreach (var s in arr.Dims)
+                foreach (var s in arr.dims)
                 {
                     Key += s.ToString() + "_";
                 }

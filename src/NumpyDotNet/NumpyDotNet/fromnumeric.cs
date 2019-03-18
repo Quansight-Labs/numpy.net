@@ -1539,8 +1539,8 @@ namespace NumpyDotNet
             {
                 long n1, n2, start, stop, step;
 
-                n1 = newarray.Dims[0];
-                n2 = newarray.Dims[1];
+                n1 = newarray.Dim(0);
+                n2 = newarray.Dim(1);
                 step = n2 + 1;
                 if (offset < 0)
                 {
@@ -1564,7 +1564,7 @@ namespace NumpyDotNet
                 // return array(my_diagonal);
                 dtype typecode = newarray.Dtype;
                 List<ndarray> my_diagonal = new List<ndarray>();
-                long n1 = newarray.Dims[0];
+                long n1 = newarray.Dim(0);
                 for (long i = 0; i < n1; i++)
                 {
                     ndarray sub = newarray.A(i);
@@ -2758,7 +2758,7 @@ namespace NumpyDotNet
                 {
                     throw new Exception(string.Format("np.size: axis {0} out of range for array with {1} dimenstions", axis.Value, a.ndim));
                 }
-                return a.Dims[axis.Value];
+                return a.Dim(axis.Value);
             }
         }
 
@@ -3103,7 +3103,7 @@ namespace NumpyDotNet
             // Compute the mean
             mean = np.FromAny(np.mean(x,_axis, dtype), dtype);
             // Add an axis back to the mean so it will broadcast correctly
-            newshape = x.Dims.Select(y => (npy_intp)y).ToArray();
+            newshape = x.dims.Select(y => (npy_intp)y).ToArray();
             newshape[_axis] = (npy_intp)1;
             tmp = NpyCoreApi.Newshape(mean, newshape, NPY_ORDER.NPY_CORDER);
             // Compute x - mean
@@ -3122,7 +3122,7 @@ namespace NumpyDotNet
             tmp = tmp.Sum(_axis, dtype);
 
             // Divide by n (or n-ddof) and maybe take the sqrt
-            n = x.Dims[_axis] - ddof;
+            n = x.dims[_axis] - ddof;
             if (n == 0) n = 1;
             if (true)
             {

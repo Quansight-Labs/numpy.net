@@ -134,7 +134,7 @@ namespace NumpyDotNet
             }
             else
             {
-                tmp = NpyCoreApi.NewFromDescr(NpyCoreApi.DescrFromType(tmpType), Dims, null, 0, null);
+                tmp = NpyCoreApi.NewFromDescr(NpyCoreApi.DescrFromType(tmpType), dims, null, 0, null);
             }
 
             // Do the work

@@ -206,12 +206,8 @@ namespace NumpyDotNet
             get { return 1; }
         }
 
-        public npy_intp[] Strides {
+        public npy_intp[] strides {
             get { return new npy_intp[0]; }
-        }
-
-        public PythonTuple strides {
-            get { return NpyUtil_Python.ToPythonTuple(Strides); }
         }
 
    

@@ -314,7 +314,7 @@ namespace NumpyDotNet
             int i;
 
             v = asanyarray(v);
-            var s = v.Dims;
+            var s = v.dims;
             if (len(s) == 1)
             {
                 int n = (int)(s[0] + Math.Abs(k));
@@ -506,7 +506,7 @@ namespace NumpyDotNet
             */
 
             m = asanyarray(m);
-            ndarray m1 = array(m.Dims).A("-2:");
+            ndarray m1 = array(m.dims).A("-2:");
             ndarray mask = tri(N: Convert.ToInt32(m1[0]), M: Convert.ToInt32(m1[1]), k: k, dtype: np.Bool);
 
             ndarray results = where(mask, m, zeros(new shape(1), dtype: m.Dtype)) as ndarray;
@@ -541,7 +541,7 @@ namespace NumpyDotNet
             */
 
             m = asanyarray(m);
-            ndarray m1 = array(m.Dims).A("-2:");
+            ndarray m1 = array(m.dims).A("-2:");
             ndarray mask = tri(N: Convert.ToInt32(m1[0]), M: Convert.ToInt32(m1[1]), k: k-1, dtype: np.Bool);
 
             return where(mask, zeros(new shape(1), dtype: m.Dtype), m) as ndarray;
@@ -940,8 +940,8 @@ namespace NumpyDotNet
             {
                 throw new ValueError("input array must be 2-d");
             }
-            ndarray m1 = array(arr.Dims).A("-2");
-            ndarray m2 = array(arr.Dims).A("-1");
+            ndarray m1 = array(arr.dims).A("-2");
+            ndarray m2 = array(arr.dims).A("-1");
 
             return tril_indices(n: Convert.ToInt32(m1[0]), k: k, m: Convert.ToInt32(m2[0]));
 
@@ -1067,8 +1067,8 @@ namespace NumpyDotNet
                 throw new ValueError("input array must be 2-d");
             }
 
-            ndarray m1 = array(arr.Dims).A("-2");
-            ndarray m2 = array(arr.Dims).A("-1");
+            ndarray m1 = array(arr.dims).A("-2");
+            ndarray m2 = array(arr.dims).A("-1");
 
             return triu_indices(Convert.ToInt32(m1[0]), k: k, m: Convert.ToInt32(m2[0]));
         }

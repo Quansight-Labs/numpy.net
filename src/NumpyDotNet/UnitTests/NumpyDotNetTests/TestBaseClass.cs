@@ -105,29 +105,29 @@ namespace NumpyDotNetTests
 
         internal void AssertStrides(ndarray a, int s0)
         {
-            Assert.AreEqual(a.Strides.Length, 1);
-            Assert.AreEqual(a.Strides[0], s0);
+            Assert.AreEqual(a.strides.Length, 1);
+            Assert.AreEqual(a.strides[0], s0);
         }
         internal void AssertStrides(ndarray a, int s0, int s1)
         {
-            Assert.AreEqual(a.Strides.Length, 2);
-            Assert.AreEqual(a.Strides[0], s0);
-            Assert.AreEqual(a.Strides[1], s1);
+            Assert.AreEqual(a.strides.Length, 2);
+            Assert.AreEqual(a.strides[0], s0);
+            Assert.AreEqual(a.strides[1], s1);
         }
         internal void AssertStrides(ndarray a, int s0, int s1, int s2)
         {
-            Assert.AreEqual(a.Strides.Length, 3);
-            Assert.AreEqual(a.Strides[0], s0);
-            Assert.AreEqual(a.Strides[1], s1);
-            Assert.AreEqual(a.Strides[2], s2);
+            Assert.AreEqual(a.strides.Length, 3);
+            Assert.AreEqual(a.strides[0], s0);
+            Assert.AreEqual(a.strides[1], s1);
+            Assert.AreEqual(a.strides[2], s2);
         }
         internal void AssertStrides(ndarray a, int s0, int s1, int s2, int s3)
         {
-            Assert.AreEqual(a.Strides.Length, 4);
-            Assert.AreEqual(a.Strides[0], s0);
-            Assert.AreEqual(a.Strides[1], s1);
-            Assert.AreEqual(a.Strides[2], s2);
-            Assert.AreEqual(a.Strides[3], s3);
+            Assert.AreEqual(a.strides.Length, 4);
+            Assert.AreEqual(a.strides[0], s0);
+            Assert.AreEqual(a.strides[1], s1);
+            Assert.AreEqual(a.strides[2], s2);
+            Assert.AreEqual(a.strides[3], s3);
         }
 
         internal void AssertShape(ndarray a, int s0)

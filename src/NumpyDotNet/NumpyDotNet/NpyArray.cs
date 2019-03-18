@@ -66,7 +66,7 @@ namespace NumpyDotNet {
             if (dest.Dtype.Type == NPY_TYPECHAR.NPY_CHARLTR &&
                 dest.ndim > 0 && src is String)
             {
-                int ndimNew = (int)dest.Dims[dest.ndim - 1];
+                int ndimNew = (int)dest.Dim(dest.ndim - 1);
                 int ndimOld = ((String)src).Length;
 
                 if (ndimNew > ndimOld)
@@ -98,7 +98,7 @@ namespace NumpyDotNet {
             if (dest.Dtype.Type == NPY_TYPECHAR.NPY_CHARLTR &&
                 dest.ndim > 0 && src is String)
             {
-                int ndimNew = (int)dest.Dims[dest.ndim - 1];
+                int ndimNew = (int)dest.Dim(dest.ndim - 1);
                 int ndimOld = ((String)src).Length;
 
                 if (ndimNew > ndimOld)
@@ -580,8 +580,8 @@ namespace NumpyDotNet {
             for (int i = num; i < ndmin; i++)
             {
                 int k = i - num;
-                newdims[i] = (npy_intp)arr.Dims[k];
-                newstrides[i] = (npy_intp)arr.Strides[k];
+                newdims[i] = (npy_intp)arr.Dim(k);
+                newstrides[i] = (npy_intp)arr.Stride(k);
             }
 
             return NpyCoreApi.NewView(arr.Dtype, ndmin, newdims, newstrides, arr, 0, false);
@@ -811,7 +811,7 @@ namespace NumpyDotNet {
                 if (arr.ndim == 0) dims[dimIdx] = 0;
                 else
                 {
-                    npy_intp[] d = arr.Dims;
+                    npy_intp[] d = arr.dims;
                     for (int i = 0; i < numDim; i++)
                     {
                         dims[i + dimIdx] = d[i];
@@ -929,7 +929,7 @@ namespace NumpyDotNet {
                 seq = (IEnumerable<object>)array;
             }
 
-            if (seq.Count() != result.Dims[dim])
+            if (seq.Count() != result.Dim(dim))
             {
                 throw new RuntimeException("AssignFromSeq: sequence/array shape mismatch.");
             }
@@ -984,7 +984,7 @@ namespace NumpyDotNet {
                     mps[i] = NpyCoreApi.FromArray(mps[i].SwapAxes(axis, 0), null, NPYARRAYFLAGS.NPY_C_CONTIGUOUS);
                 }
             }
-            npy_intp[] dims = mps[0].Dims;
+            npy_intp[] dims = mps[0].dims;
             if (dims.Length == 0)
             {
                 throw new ArgumentException("0-d arrays can't be concatenated");
@@ -992,7 +992,7 @@ namespace NumpyDotNet {
             npy_intp new_dim = dims[0];
             for (i = 1; i < n; i++)
             {
-                npy_intp[] dims2 = mps[i].Dims;
+                npy_intp[] dims2 = mps[i].dims;
                 if (dims.Length != dims2.Length)
                 {
                     throw new ArgumentException("arrays must have same number of dimensions");

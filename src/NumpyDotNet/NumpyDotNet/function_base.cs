@@ -2676,8 +2676,8 @@ namespace NumpyDotNet
             object[] slobj = BuildSliceArray(new Slice(null), ndim);
             object[] slobj2;
 
-            long N = arr.Dims[(int)axis];
-            var newshape = list(arr.Dims);
+            long N = arr.Dim((int)axis);
+            var newshape = list(arr.dims);
 
 
             ndarray indices;
@@ -2737,7 +2737,7 @@ namespace NumpyDotNet
                     //values = np.moveaxis(values, 0, axis);
                 }
 
-                numnew = values.Dims[(int)axis];
+                numnew = values.Dim((int)axis);
                 newshape[(int)axis] += numnew;
                 newarray = empty(new shape(newshape), dtype: arr.Dtype, order: arrorder);
                 slobj[(int)axis] = new Slice(null, index);

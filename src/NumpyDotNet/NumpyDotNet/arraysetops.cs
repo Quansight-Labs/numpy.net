@@ -231,7 +231,7 @@ namespace NumpyDotNet
                 throw new Exception(Error);
             }
 
-            npy_intp[] orig_shape = ar.Dims;
+            npy_intp[] orig_shape = ar.dims;
             dtype orig_dtype = ar.Dtype;
 
             ar = ar.reshape(new shape((int)orig_shape[0], -1));

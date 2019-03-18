@@ -62,8 +62,7 @@ namespace NumpyDotNet
         void setflags(object write = null, object align = null, object uic = null);
         shape shape { get; }
         npy_intp size { get; }
-        npy_intp[] Strides { get; }
-        PythonTuple strides { get; }
+        npy_intp[] strides { get; }
         object take(object indices, object axis = null, ndarray @out = null, object mode = null);
         object this[params object[] args] { get; set; }
         object this[int index] { get; }

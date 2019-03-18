@@ -494,8 +494,8 @@ namespace NumpyDotNet
                     {
                         // Optimization for single item index.
                         long offset = 0;
-                        npy_intp[] dims = Dims;
-                        npy_intp[] s = Strides;
+                        npy_intp[] dims = this.dims;
+                        npy_intp[] s = strides;
                         for (int i = 0; i < ndim; i++)
                         {
                             long d = dims[i];
@@ -525,7 +525,7 @@ namespace NumpyDotNet
                         // advanced subscript case.
                         NpyCoreApi.Incref(Array);
                         //var newDType = NpyCoreApi.DescrFromType(this.Array.ItemType);
-                        //NpyCoreApi.DescrReplaceSubarray(newDType, this.Dtype, result.Dims);
+                        //NpyCoreApi.DescrReplaceSubarray(newDType, this.Dtype, result.dims);
                         result = new ndarray(NpyCoreApi.ArraySubscript(this, indexes));
                         result = NpyCoreApi.FromArray(result, null, NPYARRAYFLAGS.NPY_ENSURECOPY);
 
@@ -702,7 +702,7 @@ namespace NumpyDotNet
         {
             get
             {
-                return new shape(this.Dims, this.ndim);
+                return new shape(this.dims, this.ndim);
             }
         }
 
@@ -769,17 +769,8 @@ namespace NumpyDotNet
             }
         }
 
-        /// <summary>
-        /// Returns an array of the stride of each dimension.
-        /// </summary>
-        public npy_intp[] Strides {
-            get { return this.Array.strides; }
-        }
-
-        public PythonTuple strides {
-            get { return NpyUtil_Python.ToPythonTuple(Strides); }
-        }
-
+ 
+  
         public object real {
             get {
                 return NpyCoreApi.GetReal(this);
@@ -1192,8 +1183,30 @@ namespace NumpyDotNet
         /// a new array with each call and must make a managed-to-native call so it's
         /// worth caching the results if used in a loop.
         /// </summary>
-        public npy_intp[] Dims {
+ 
+        public npy_intp[] dims
+        {
             get { return NpyCoreApi.GetArrayDimsOrStrides(this, true); }
+        }
+
+        /// <summary>
+        /// Returns an array of the stride of each dimension.
+        /// </summary>
+
+        public npy_intp[] strides
+        {
+            get { return NpyCoreApi.GetArrayDimsOrStrides(this, false); }
+        }
+
+        /// <summary>
+        /// Returns the stride of a given dimension. For looping over all dimensions,
+        /// use 'strides'.  This is more efficient if only one dimension is of interest.
+        /// </summary>
+        /// <param name="dimension">Dimension to query</param>
+        /// <returns>Data stride in bytes</returns>
+        public long Dim(int dimension)
+        {
+            return this.Array.dimensions[dimension];
         }
 
 
@@ -1203,8 +1216,9 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="dimension">Dimension to query</param>
         /// <returns>Data stride in bytes</returns>
-        public long Stride(int dimension) {
-            return NpyCoreApi.GetArrayStride(this, dimension);
+        public long Stride(int dimension)
+        {
+            return this.Array.strides[dimension];
         }
 
 
@@ -1320,7 +1334,7 @@ namespace NumpyDotNet
 
         internal long Length {
             get {
-                return Dims[0];
+                return Dim(0);
             }
         }
 
@@ -1513,7 +1527,7 @@ namespace NumpyDotNet
 
         public bool MoveNext() {
             index += 1;
-            return (index < arr.Dims[0]);
+            return (index < arr.dims[0]);
         }
 
         public void Reset() {

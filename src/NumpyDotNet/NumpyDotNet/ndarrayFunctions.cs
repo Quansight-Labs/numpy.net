@@ -2029,7 +2029,7 @@ namespace NumpyDotNet
 
         private static int len(ndarray array)
         {
-            return (int)array.Dims[0];
+            return (int)array.Dim(0);
         }
         private static int len(int []arr)
         {

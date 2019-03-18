@@ -1886,7 +1886,7 @@ namespace NumpyDotNet
             {
                 return false;
             }
-            //if (!broadcastable(arr1,arr2.Dims, arr2.ndim))
+            //if (!broadcastable(arr1,arr2.dims, arr2.ndim))
             //{
             //    return false;
             //}

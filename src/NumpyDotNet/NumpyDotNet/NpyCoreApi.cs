@@ -1543,6 +1543,16 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static long GetArrayDimension(ndarray arr, int dims)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return arr.Array.dimensions[dims];
+            }
+        }
+
         internal static long GetArrayStride(ndarray arr, int dims)
         {
             #if ENABLELOCKING

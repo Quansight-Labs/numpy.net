@@ -344,7 +344,7 @@ namespace NumpyDotNet
                 }
                 else
                 {
-                    endingIndex = arr.Dims[index];
+                    endingIndex = arr.Dim(index);
                 }
                 step = 1;
             }
@@ -353,7 +353,7 @@ namespace NumpyDotNet
             {
                 string ss = s as String;
                 npy_intp i = 0;
-                npy_intp j = arr.Dims[index];
+                npy_intp j = arr.Dim(index);
                 npy_intp k = 1;
 
                 // check if this is a CSharpTuple 
@@ -376,13 +376,13 @@ namespace NumpyDotNet
                         k = kt;
                         if (k < 0)
                         {
-                            i = arr.Dims[index] - 1;
-                            j = -arr.Dims[index] - 1;
+                            i = arr.Dim(index) - 1;
+                            j = -arr.Dim(index) - 1;
                         }
                         else
                         {
                             i = 0;
-                            j = arr.Dims[index];
+                            j = arr.Dim(index);
                         }
                     }
 
@@ -394,7 +394,7 @@ namespace NumpyDotNet
                     {
                         if (jt < 0)
                         {
-                            j = arr.Dims[index] + jt;
+                            j = arr.Dim(index) + jt;
                         }
                         else
                         {
@@ -409,7 +409,7 @@ namespace NumpyDotNet
                     {
                         if (it < 0)
                         {
-                            i = arr.Dims[index] + it;
+                            i = arr.Dim(index) + it;
                         }
                         else
                         {
@@ -425,7 +425,7 @@ namespace NumpyDotNet
                 if (ss == ":" || ss == "::")
                 {
                     i = 0;
-                    j = arr.Dims[index];
+                    j = arr.Dim(index);
                     k = 1;
                 }
 
