@@ -82,37 +82,7 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]  // waiting to implement matrix code
-        [TestMethod]
-        public void xxx_test_asmatrix_1()
-        {
-            var x = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
-            var m = np.asmatrix(x);
 
-            x[0, 0] = 5;
-
-            AssertArray(m, new int[,] { { 5, 2 }, { 3, 4 } });
-
-            print(m);
-
-            return;
-        }
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_mat_1()
-        {
-  
-            return;
-        }
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_bmat_1()
-        {
-
-            return;
-        }
 
         [TestMethod]
         public void test_copy_1()
@@ -187,6 +157,7 @@ namespace NumpyDotNetTests
             print(d);
         }
 
+        #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_meshgrid_1()
@@ -207,7 +178,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
+        #endif
 
         [TestMethod]
         public void test_OneDimensionalArray()

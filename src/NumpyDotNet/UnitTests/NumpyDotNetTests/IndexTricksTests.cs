@@ -12,6 +12,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class IndexTricksTests : TestBaseClass
     {
+        #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet.  Too much work
         [TestMethod]
         public void xxx_test_ravel_multi_index_1()
@@ -88,6 +89,7 @@ namespace NumpyDotNetTests
         {
 
         }
+        #endif
 
         [Ignore] // not implemented yet.  Too much work
         [TestMethod]

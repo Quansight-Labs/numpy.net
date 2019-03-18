@@ -1072,6 +1072,18 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(g)
         print(y)
 
+    def test_mat_1(self):
+
+        a = np.matrix('1 2; 3 4')
+        print(a)
+
+        x = np.array([[1, 2], [3, 4]])
+        m = np.asmatrix(x);
+        n = np.mat(x)
+
+        print(m)
+        print(n)
+
 
 if __name__ == '__main__':
     unittest.main()

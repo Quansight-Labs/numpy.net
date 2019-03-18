@@ -396,7 +396,7 @@ namespace NumpyDotNetTests
             return;
         }
 
-
+        #if NOT_PLANNING_TODO
         [Ignore] // need to fully implement np.require.
         [TestMethod]
         public void xxx_test_require_1()
@@ -422,6 +422,7 @@ namespace NumpyDotNetTests
 
             return;
         }
+        #endif
 
         [TestMethod]
         public void test_isfortran_1()
@@ -590,12 +591,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_matrixproduct_1()
-        {
-            // see the NpyArray_MatrixProduct
-        }
 
         [Ignore] // not implemented yet
         [TestMethod]
@@ -630,13 +625,14 @@ namespace NumpyDotNetTests
 
         }
 
+        #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_einsum_1()
         {
 
         }
-
+        #endif
 
 
         [TestMethod]
@@ -785,12 +781,14 @@ namespace NumpyDotNetTests
 
         }
 
+#if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_fromfunction_1()
         {
 
         }
+#endif
 
         [TestMethod]
         public void test_isscalar_1()
@@ -819,7 +817,7 @@ namespace NumpyDotNetTests
             return;
         }
 
-
+#if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_binary_repr()
@@ -833,7 +831,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
+#endif
 
         [TestMethod]
         public void test_identity_1()

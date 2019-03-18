@@ -12,10 +12,12 @@ namespace NumpyDotNetTests
     [TestClass]
     public class StringOperationsTests : TestBaseClass
     {
+        #if NOT_PLANNING_TODO
         [Ignore]
         [TestMethod]
         public void xxx_Test_StringOperations_Placeholder()
         {
         }
+        #endif
     }
 }

@@ -1570,12 +1570,7 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-        [Ignore] // not implemented yet.  This is Not A TIME.  Need to support DateTime
-        [TestMethod]
-        public void xxx_test_isnat_1()
-        {
-
-        }
+   
 
         [TestMethod]
         public void test_isneginf_1()
