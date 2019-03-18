@@ -491,12 +491,12 @@ namespace NumpyDotNetTests
         //    // not implemented.  we don't seem to have the source code
         //}
 
-        [Ignore]
-        [TestMethod]
-        public void test_put_mask_1()
-        {
-
-        }
+        //[Ignore]
+        //[TestMethod]
+        //public void test_put_mask_1()
+        //{
+        //    // not implemented.  we don't seem to have the source code
+        //}
 
         [TestMethod]
         public void test_swapaxes_1()
