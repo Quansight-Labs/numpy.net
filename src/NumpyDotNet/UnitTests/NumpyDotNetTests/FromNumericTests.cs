@@ -2214,7 +2214,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_place_1()
+        public void test_place_1()
         {
 
         }
@@ -2234,11 +2234,15 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_extract_1()
         {
+            var arr = np.arange(12).reshape((3, 4));
+            var condition = np.mod(arr, 3) == 0;
+            print(condition);
 
+            var b = np.extract(condition, arr);
+            print(b);
         }
 
         [TestMethod]

@@ -1050,7 +1050,7 @@ namespace NumpyDotNet
             array([0, 3, 6, 9])             
             */
 
-            throw new NotImplementedException();
+            return take(ravel(arr), nonzero(ravel(condition))[0]);
         }
         #endregion
 

@@ -1268,6 +1268,15 @@ class FromNumericTests(unittest.TestCase):
         print(arr)
 
 
+    def test_extract_1(self):
+
+        arr = np.arange(12).reshape((3, 4))
+        condition = np.mod(arr, 3)==0
+        print(condition)
+
+        b = np.extract(condition, arr)
+        print(b)
+ 
         
     def test_indicesfromaxis_1(self):
         TestData = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
