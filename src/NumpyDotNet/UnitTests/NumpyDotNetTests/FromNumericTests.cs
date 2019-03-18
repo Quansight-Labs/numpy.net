@@ -484,12 +484,12 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
-        [TestMethod]
-        public void test_put_along_axis_1()
-        {
-
-        }
+        //[Ignore]
+        //[TestMethod]
+        //public void test_put_along_axis_1()
+        //{
+        //    // not implemented.  we don't seem to have the source code
+        //}
 
         [Ignore]
         [TestMethod]
