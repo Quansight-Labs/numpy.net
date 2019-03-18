@@ -1635,17 +1635,46 @@ namespace NumpyDotNet
 
         #region apply_along_axis
 
-        public delegate void apply_along_axis_fnp(ndarray a, params object[] args);
-        public delegate void apply_along_axis_fn(ndarray a);
+        public delegate ndarray apply_along_axis_view(ndarray a, ndarray view);
+        public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
 
-        public static ndarray apply_along_axis(apply_along_axis_fn fn, int axis, ndarray arr)
+        public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
         {
-            throw new NotImplementedException();
+            if (fn == null)
+            {
+                throw new Exception("function can't be null");
+            }
+            var indices = IndicesFromAxis(arr, axis);
+
+            try
+            {
+                var ret = fn(arr, indices);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
-        public static ndarray apply_along_axis(apply_along_axis_fnp fn, int axis, ndarray arr)
+        public static ndarray apply_along_axis(apply_along_axis_view fn, int axis, ndarray arr)
         {
-            throw new NotImplementedException();
+            if (fn == null)
+            {
+                throw new Exception("function can't be null");
+            }
+            var view = ViewFromAxis(arr, axis);
+
+            try
+            {
+                var ret = fn(arr, view);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         #endregion
@@ -1667,6 +1696,8 @@ namespace NumpyDotNet
         #region IndicesFromAxis
         public static IList<npy_intp> IndicesFromAxis(ndarray a, int axis)
         {
+            axis = normalize_axis_index(axis, a.ndim);
+
             return NpyCoreApi.IndicesFromAxis(a, axis);
         }
         #endregion

@@ -344,7 +344,6 @@ class Test_ShapeBaseTests(unittest.TestCase):
         c = np.tile(a, (2, 1))
         print(c)
         print("**************")
-
         d = np.array([1,2,3,4])
         e = np.tile(d,(4,1))
         print(e)
@@ -369,14 +368,26 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
     def test_apply_along_axis_2(self):
 
-        b = np.array([[8,1,7], [4,3,9], [5,2,6]])
+        b = np.array([[[8,1,7], [4,3,9], [5,2,6]]])
         c = np.apply_along_axis(sorted, 1, b)
+        print(c)
+
+        c = np.apply_along_axis(sorted, 0, b[:,0,0])
+        print(c)
+        
+        c = np.apply_along_axis(sorted, 0, b[0,:,0])
+        print(c)
+
+        c = np.apply_along_axis(sorted, 0, b[0,0,:])
         print(c)
 
     def test_apply_along_axis_3(self):
 
         b = np.array([[1,2,3], [4,5,6], [7,8,9]])
-        c = np.apply_along_axis(np.diag, -1, b)
+
+        c = np.diag(b)
+
+        c = np.apply_along_axis(np.diag, 1, b)
         print(c)
 
     def test_apply_over_axis_1(self):
