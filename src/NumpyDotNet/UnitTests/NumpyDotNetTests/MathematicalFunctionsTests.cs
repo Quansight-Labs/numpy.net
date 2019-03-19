@@ -659,6 +659,50 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_arctanh_1()
+        {
+            var ExpectedResult = new double[] { double.NegativeInfinity, -1.15129254649702, -0.752038698388137, -0.490414626505863,
+                                                     -0.279807893967711, -0.0911607783969772, 0.0911607783969772, 0.279807893967711,
+                                                      0.490414626505863, 0.752038698388137, 1.15129254649702, double.PositiveInfinity };
+
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arctanh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arctanh(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{double.NegativeInfinity, -1.15129254649702, -0.752038698388137},
+                  {-0.490414626505863, -0.279807893967711, -0.0911607783969772}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arctanh(a, where: a > -0.5);
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.279807893967711, 0.0911607783969772, 0.490414626505863, 1.15129254649702 });
+            print(b);
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arctanh(a, where: new bool[] { false, false, true, true, true, true });
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.279807893967711, 0.0911607783969772, 0.490414626505863, 1.15129254649702 });
+            print(b);
+
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
