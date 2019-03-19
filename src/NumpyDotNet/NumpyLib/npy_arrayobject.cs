@@ -127,11 +127,39 @@ namespace NumpyLib
 
         }
 
+   
 
     }
 
     internal partial class numpyinternal
     {
+
+        internal static long[] GetViewOffsets(NpyArray arr)
+        {
+            long[] offsets = new long[NpyArray_SIZE(arr)];
+            long offset_index = 0;
+
+            GetViewOffsets(arr, 0, 0, offsets, ref offset_index);
+            return offsets;
+        }
+
+        private static void GetViewOffsets(NpyArray arr, int dimIdx, long offset, long[] offsets, ref long offset_index)
+        {
+            if (dimIdx == arr.nd)
+            {
+                offsets[offset_index++] = offset / arr.ItemSize;
+            }
+            else
+            {
+                for (int i = 0; i < arr.dimensions[dimIdx]; i++)
+                {
+                    GetViewOffsets(arr, dimIdx + 1, offset + arr.strides[dimIdx] * i, offsets, ref offset_index);
+                }
+            }
+
+        }
+
+
         private static void Npy_DECREF(NpyObject_HEAD Head)
         {
             lock (Head)

@@ -142,6 +142,10 @@ namespace NumpyLib
             return numpyinternal.NpyArray_dealloc(self);
         }
 
+        public static long[] GetViewOffsets(NpyArray self)
+        {
+            return numpyinternal.GetViewOffsets(self);
+        }
  
 #endregion
 

@@ -997,6 +997,16 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static long[] GetViewOffsets(ndarray arr)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.GetViewOffsets(arr.Array);
+            }
+        }
+
         internal static NpyArray ArraySubscript(ndarray arr, NpyIndexes indexes)
         {
             #if ENABLELOCKING
