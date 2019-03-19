@@ -229,7 +229,25 @@ class MathematicalFunctionsTests(unittest.TestCase):
         r = np.radians(deg, out)
         print(np.all(r == out))
 
+    def test_rad2deg_1(self):
 
+        rad = np.arange(12.)*np.pi/6
+        a = np.rad2deg(rad)
+        print(a)
+
+        out = np.zeros((rad.shape))
+        r = np.rad2deg(rad, out)
+        print(np.all(r == out))
+
+    def test_deg2rad_1(self):
+
+        deg = np.arange(12.0, dtype=np.float64) * 30.0;
+        a = np.deg2rad(deg)
+        print(a)
+
+        out = np.zeros((deg.shape))
+        r = np.deg2rad(deg, out)
+        print(np.all(r == out))
 
 
 if __name__ == '__main__':

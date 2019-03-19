@@ -224,6 +224,10 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray rad2deg(object x, object where = null)
+        {
+            return degrees(x, where);
+        }
         public static ndarray degrees(object x, object where = null)
         {
             MathHelper ch = new MathHelper(x);
@@ -242,6 +246,10 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray deg2rad(object x, object where = null)
+        {
+            return radians(x, where);
+        }
         public static ndarray radians(object x, object where = null)
         {
             MathHelper ch = new MathHelper(x);

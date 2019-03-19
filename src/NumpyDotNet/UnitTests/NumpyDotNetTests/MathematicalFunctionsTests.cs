@@ -379,6 +379,42 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]  // too much work.
+        [TestMethod]
+        public void test_unwrap_1()
+        {
+
+        }
+
+        [TestMethod]
+        public void test_rad2deg_1()
+        {
+            var rad = np.arange(12.0, dtype: np.Float64) * Math.PI / 6;
+            var a = np.rad2deg(rad);
+            AssertArray(a, new double[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 });
+            print(a);
+
+            //var _out = np.zeros((rad.shape));
+            //var r = np.degrees(rad, _out);
+            //print(np.all(r == _out));
+
+        }
+
+        [TestMethod]
+        public void test_deg2rad_1()
+        {
+            var deg = np.arange(12.0, dtype: np.Float64) * 30.0;
+            var a = np.deg2rad(deg);
+            AssertArray(a, new double[] { 0.0, 0.523598775598299, 1.0471975511966, 1.5707963267949, 2.0943951023932,
+                                         2.61799387799149, 3.14159265358979, 3.66519142918809, 4.18879020478639,
+                                        4.71238898038469, 5.23598775598299, 5.75958653158129 });
+            print(a);
+
+            //var _out = np.zeros((deg.shape));
+            //var r = np.radians(deg, _out);
+            //print(np.all(r == _out));
+
+        }
 
         #endregion
 
