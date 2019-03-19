@@ -322,6 +322,33 @@ namespace NumpyDotNetTests
             print(b);
 
         }
+
+        [Ignore]  // too much work.
+        [TestMethod]
+        public void test_hypot_1()
+        {
+
+        }
+
+        [TestMethod]
+        public void test_arctan2_1()
+        {
+            var x = np.array(new double[] { -1, +1, +1, -1 });
+            var y = np.array(new double[] { -1, -1, +1, +1 });
+            var z = np.arctan2(y, x) * 180 / Math.PI;
+            AssertArray(z, new double[] { -135.0, -45.0, 45.0, 135.0 });
+            print(z);
+
+            var a = np.arctan2(new double[] { 1.0, -1.0}, new double[] { 0.0, 0.0} );
+            AssertArray(a, new double[] { 1.5707963267949, -1.5707963267949 });
+            print(a);
+
+            var b = np.arctan2(new double[] { 0.0, 0.0, double.PositiveInfinity}, new double[] { +0.0, -0.0, double.PositiveInfinity});
+            AssertArray(b, new double[] { 0.0, 3.14159265358979, double.NaN });
+            print(b);
+
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

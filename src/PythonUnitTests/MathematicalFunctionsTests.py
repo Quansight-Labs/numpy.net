@@ -196,5 +196,19 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.arctan(a, where= x, out = out )
         print(b)
 
+    def test_arctan2_1(self):
+
+        x = np.array([-1, +1, +1, -1])
+        y = np.array([-1, -1, +1, +1])
+        z = np.arctan2(y, x) * 180 / np.pi
+        print(z)
+
+        a = np.arctan2([1., -1.], [0., 0.])
+        print(a)
+
+        b = np.arctan2([0., 0., np.inf], [+0., -0., np.inf])
+        print(b)
+
+
 if __name__ == '__main__':
     unittest.main()

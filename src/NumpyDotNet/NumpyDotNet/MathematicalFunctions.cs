@@ -182,6 +182,49 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray hypot(object x1, object x2, object where = null)
+        {
+            MathHelper ch1 = new MathHelper(x1);
+            MathHelper ch2 = new MathHelper(x2);
+
+            throw new NotImplementedException();
+
+            //for (int i = 0; i < ch.offsets.Length; i++)
+            //{
+            //    ch.s[i] = Math.Asin(ch.dd[ch.offsets[i]]);
+            //}
+
+            //var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            //if (where != null)
+            //{
+            //    ret[np.invert(where)] = np.NaN;
+            //}
+
+            //return ret;
+        }
+
+        public static ndarray arctan2(object x1, object x2, object where = null)
+        {
+            MathHelper ch = new MathHelper(x1);
+            MathHelper ch2 = new MathHelper(x2);
+
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Atan2(ch.dd[ch.offsets[i]], ch2.dd[ch2.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+
+
         #endregion
 
     }
