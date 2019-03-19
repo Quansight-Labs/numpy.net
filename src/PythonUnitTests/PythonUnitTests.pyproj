@@ -47,6 +47,9 @@
     <Compile Include="IndexTricksTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MathematicalFunctionsTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TwoDimBaseTests.py">
       <SubType>Code</SubType>
     </Compile>
