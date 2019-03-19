@@ -138,7 +138,7 @@ namespace NumpyDotNet
             }
 
             // Do the work
-            BinaryOpInPlace(this, factor, pre, tmp);
+            tmp = BinaryOp(this, factor, pre);
             UnaryOpInPlace(tmp, NpyArray_Ops.npy_op_rint, tmp);
             BinaryOpInPlace(tmp, factor, post, tmp);
 
