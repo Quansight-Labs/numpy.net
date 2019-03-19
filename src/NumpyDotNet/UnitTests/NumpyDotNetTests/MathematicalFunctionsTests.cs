@@ -12,6 +12,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class MathematicalFunctionsTests : TestBaseClass
     {
+        #region Trigonometric Functions
         [TestMethod]
         public void test_sin_1()
         {
@@ -86,6 +87,61 @@ namespace NumpyDotNetTests
 
             //Assert.IsTrue(CompareArrays(b, c));
         }
+
+        [TestMethod]
+        public void test_cos_1()
+        {
+            var ExpectedResult = new double[] { 1.0, -0.416146836547142, -0.653643620863612, 0.960170286650366, -0.145500033808614 };
+
+            var a = np.arange(0, 10, dtype: np.Float64);
+            a = a["::2"] as ndarray;
+            var b = np.cos(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Float32);
+            a = a["::2"] as ndarray;
+            b = np.cos(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Int16);
+            a = a["::2"] as ndarray;
+            b = np.cos(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Float64).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.cos(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ 1.0,               0.54030230586814, -0.416146836547142, -0.989992496600445, -0.653643620863612},
+                  { 0.283662185463226, 0.960170286650366, 0.753902254343305, -0.145500033808614, -0.911130261884677}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.cos(a, where: a > 2);
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
+            print(b);
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.cos(a, where: new bool[,] { { false, false, false, true, true } });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
+            print(b);
+
+        }
+
+
+        #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
         {

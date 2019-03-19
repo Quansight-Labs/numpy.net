@@ -514,8 +514,8 @@ namespace NumpyDotNetTests
         {
         }
 
-
-        [TestMethod]
+        // todo: need to speed up the generation of the matrix
+        [TestMethod]  
         public void test_outer_1()
         {
             var a = np.arange(2, 10).reshape((2, 4));

@@ -89,7 +89,61 @@ namespace NumpyDotNet
 
             return ret;
         }
-   
+
+        public static ndarray cos(object x, object where = null)
+        {
+            MathHelper ch = new MathHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Cos(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray tan(object x, object where = null)
+        {
+            MathHelper ch = new MathHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Tan(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray arcsin(object x, object where = null)
+        {
+            MathHelper ch = new MathHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Pow(Math.Sin(ch.dd[ch.offsets[i]]), -1);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
 
     }
 }

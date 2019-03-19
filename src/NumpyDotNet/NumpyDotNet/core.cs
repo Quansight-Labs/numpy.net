@@ -46,6 +46,7 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        // todo: need to speed this up
         private static ndarray multiply_outer(ndarray a, ndarray b)
         {
             ndarray a1 = a.ravel();
