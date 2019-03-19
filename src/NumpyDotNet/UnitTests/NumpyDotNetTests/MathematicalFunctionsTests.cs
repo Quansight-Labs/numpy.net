@@ -418,6 +418,62 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Hyperbolic functions
+
+        [TestMethod]
+        public void test_sinh_1()
+        {
+            var ExpectedResult = new double[] { 0.0, 3.62686040784702, 27.2899171971278, 201.713157370279, 1490.47882578955 };
+
+            var a = np.arange(0, 10, dtype: np.Float64);
+            a = a["::2"] as ndarray;
+            var b = np.sinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Float32);
+            a = a["::2"] as ndarray;
+            b = np.sinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Int16);
+            a = a["::2"] as ndarray;
+            b = np.sinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Float64).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.sinh(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ 0.0, 1.1752011936438, 3.62686040784702, 10.0178749274099, 27.2899171971278},
+                  {74.2032105777888, 201.713157370279, 548.316123273246, 1490.47882578955, 4051.54190208279}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.sinh(a, where: a > 2);
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 10.0178749274099, 27.2899171971278 } });
+            print(b);
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.sinh(a, where: new bool[,] { { false, false, false, true, true } });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 10.0178749274099, 27.2899171971278 } });
+            print(b);
+
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)
