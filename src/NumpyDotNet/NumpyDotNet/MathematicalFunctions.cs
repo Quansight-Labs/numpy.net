@@ -386,10 +386,27 @@ namespace NumpyDotNet
 
             return ret;
         }
-  
+
 
         #endregion
-    
+
+        #region Rounding Functions
+
+        public static ndarray rint(object x, object where = null)
+        {
+            var a = asanyarray(x);
+
+            var ret = NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_rint, 0);
+            ret = ret.reshape(new shape(a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        #endregion
 
     }
 

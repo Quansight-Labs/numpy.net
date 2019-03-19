@@ -461,5 +461,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
         c = np.round(a,4)
         print(c)
 
+    def test_rint_1(self):
+
+        a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
+        b = np.rint(a)
+        print(b)
+
+        b = np.rint(a.reshape(2,4))
+        print(b)
+
+        x = a > 0.0
+        print(x)
+
+        b = np.rint(a, where = x)
+        print(b)
+
 if __name__ == '__main__':
     unittest.main()

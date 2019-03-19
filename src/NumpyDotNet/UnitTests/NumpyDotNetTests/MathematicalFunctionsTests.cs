@@ -766,6 +766,26 @@ namespace NumpyDotNetTests
      
         }
 
+        [TestMethod]
+        public void test_rint_1()
+        {
+            var a = np.array(new double[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2 });
+            var b = np.rint(a);
+            AssertArray(b, new double[] { -2.0, -2.0, 0.0, 0.0, 2.0, 2.0, 2.0, -4.0 });
+            print(b);
+
+            b = np.rint(a.reshape((2, 4)));
+            AssertArray(b, new double[,] { { -2.0, -2.0, 0.0, 0.0 }, { 2.0, 2.0, 2.0, -4.0 } });
+            print(b);
+
+            var x = a > 0.0;
+            print(x);
+
+            b = np.rint(a, where : x);
+            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, 0.0, 2.0, 2.0, 2.0, double.NaN });
+            print(b);
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
