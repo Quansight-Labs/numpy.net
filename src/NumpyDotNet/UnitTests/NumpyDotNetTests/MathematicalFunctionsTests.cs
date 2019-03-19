@@ -816,6 +816,20 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_ceil_1()
+        {
+            float[] TestData = new float[] { -1.7f, -1.5f, -0.2f, 0.2f, 1.5f, 1.7f, 2.0f };
+            var x = np.array(TestData);
+            var y = np.ceil(x);
+
+            print(x);
+            print(y);
+
+            AssertArray(y, new float[] { -1.0f, -1.0f, -0.0f, 1.0f, 2.0f, 2.0f, 2.0f });
+
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

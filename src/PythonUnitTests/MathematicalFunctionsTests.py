@@ -488,7 +488,7 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(c)
 
         
-    def test_floor(self):
+    def test_floor_1(self):
 
         x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
         y = np.floor(x);
@@ -498,6 +498,13 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(y)
 
         return
+
+    def test_ceil_1(self):
+
+        a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
+        b = np.ceil(a)
+        print(b)
+
 
 if __name__ == '__main__':
     unittest.main()
