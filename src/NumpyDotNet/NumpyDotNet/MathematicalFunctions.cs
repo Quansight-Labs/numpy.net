@@ -51,14 +51,15 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-        class MathHelper
+        #region MathFunctionHelper
+        class MathFunctionHelper
         {
             public ndarray a;
             public long[] offsets = null;
             public double[] dd = null;
             public double[] s = null;
 
-            public MathHelper(object x)
+            public MathFunctionHelper(object x)
             {
                 a = asanyarray(x);
                 if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
@@ -71,12 +72,13 @@ namespace NumpyDotNet
                 s = new double[offsets.Length];
             }
         }
+        #endregion
 
         #region Trigonometric Functions
 
         public static ndarray sin(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
             
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -94,7 +96,7 @@ namespace NumpyDotNet
 
         public static ndarray cos(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -112,7 +114,7 @@ namespace NumpyDotNet
 
         public static ndarray tan(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -130,7 +132,7 @@ namespace NumpyDotNet
 
         public static ndarray arcsin(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -148,7 +150,7 @@ namespace NumpyDotNet
 
         public static ndarray arccos(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -166,7 +168,7 @@ namespace NumpyDotNet
 
         public static ndarray arctan(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -184,8 +186,8 @@ namespace NumpyDotNet
 
         public static ndarray hypot(object x1, object x2, object where = null)
         {
-            MathHelper ch1 = new MathHelper(x1);
-            MathHelper ch2 = new MathHelper(x2);
+            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
+            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
 
             throw new NotImplementedException();
 
@@ -205,8 +207,8 @@ namespace NumpyDotNet
 
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
-            MathHelper ch = new MathHelper(x1);
-            MathHelper ch2 = new MathHelper(x2);
+            MathFunctionHelper ch = new MathFunctionHelper(x1);
+            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
 
 
             for (int i = 0; i < ch.offsets.Length; i++)
@@ -228,9 +230,10 @@ namespace NumpyDotNet
         {
             return degrees(x, where);
         }
+
         public static ndarray degrees(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -250,9 +253,10 @@ namespace NumpyDotNet
         {
             return radians(x, where);
         }
+
         public static ndarray radians(object x, object where = null)
         {
-            MathHelper ch = new MathHelper(x);
+            MathFunctionHelper ch = new MathFunctionHelper(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -268,9 +272,258 @@ namespace NumpyDotNet
             return ret;
         }
 
-
-
         #endregion
 
+        #region Hyperbolic functions
+
+        public static ndarray sinh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Sinh(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray cosh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Cosh(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray tanh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Tanh(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray arcsinh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+
+                ch.s[i] = MathHelper.HArcsin(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray arccosh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = MathHelper.HArccos(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+ 
+
+
+        public static ndarray arctanh(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = MathHelper.HArctan(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+  
+
+        #endregion
+    
+
     }
+
+    #region MathHelper
+    // special thanks to David Relihan
+    // derived from here: https://stackoverflow.com/posts/5790661/edit
+    public static class MathHelper
+    {
+        // Secant 
+        public static double Sec(double x)
+        {
+            return 1 / Math.Cos(x);
+        }
+
+        // Cosecant
+        public static double Cosec(double x)
+        {
+            return 1 / Math.Sin(x);
+        }
+
+        // Cotangent 
+        public static double Cotan(double x)
+        {
+            return 1 / Math.Tan(x);
+        }
+
+        // Inverse Sine 
+        public static double Arcsin(double x)
+        {
+            return Math.Atan(x / Math.Sqrt(-x * x + 1));
+        }
+
+        // Inverse Cosine 
+        public static double Arccos(double x)
+        {
+            return Math.Atan(-x / Math.Sqrt(-x * x + 1)) + 2 * Math.Atan(1);
+        }
+
+
+        // Inverse Secant 
+        public static double Arcsec(double x)
+        {
+            return 2 * Math.Atan(1) - Math.Atan(Math.Sign(x) / Math.Sqrt(x * x - 1));
+        }
+
+        // Inverse Cosecant 
+        public static double Arccosec(double x)
+        {
+            return Math.Atan(Math.Sign(x) / Math.Sqrt(x * x - 1));
+        }
+
+        // Inverse Cotangent 
+        public static double Arccotan(double x)
+        {
+            return 2 * Math.Atan(1) - Math.Atan(x);
+        }
+
+        // Hyperbolic Sine 
+        public static double HSin(double x)
+        {
+            return (Math.Exp(x) - Math.Exp(-x)) / 2;
+        }
+
+        // Hyperbolic Cosine 
+        public static double HCos(double x)
+        {
+            return (Math.Exp(x) + Math.Exp(-x)) / 2;
+        }
+
+        // Hyperbolic Tangent 
+        public static double HTan(double x)
+        {
+            return (Math.Exp(x) - Math.Exp(-x)) / (Math.Exp(x) + Math.Exp(-x));
+        }
+
+        // Hyperbolic Secant 
+        public static double HSec(double x)
+        {
+            return 2 / (Math.Exp(x) + Math.Exp(-x));
+        }
+
+        // Hyperbolic Cosecant 
+        public static double HCosec(double x)
+        {
+            return 2 / (Math.Exp(x) - Math.Exp(-x));
+        }
+
+        // Hyperbolic Cotangent 
+        public static double HCotan(double x)
+        {
+            return (Math.Exp(x) + Math.Exp(-x)) / (Math.Exp(x) - Math.Exp(-x));
+        }
+
+        // Inverse Hyperbolic Sine 
+        public static double HArcsin(double x)
+        {
+            return Math.Log(x + Math.Sqrt(x * x + 1));
+        }
+
+        // Inverse Hyperbolic Cosine 
+        public static double HArccos(double x)
+        {
+            return Math.Log(x + Math.Sqrt(x * x - 1));
+        }
+
+        // Inverse Hyperbolic Tangent 
+        public static double HArctan(double x)
+        {
+            return Math.Log((1 + x) / (1 - x)) / 2;
+        }
+
+        // Inverse Hyperbolic Secant 
+        public static double HArcsec(double x)
+        {
+            return Math.Log((Math.Sqrt(-x * x + 1) + 1) / x);
+        }
+
+        // Inverse Hyperbolic Cosecant 
+        public static double HArccosec(double x)
+        {
+            return Math.Log((Math.Sign(x) * Math.Sqrt(x * x + 1) + 1) / x);
+        }
+
+        // Inverse Hyperbolic Cotangent 
+        public static double HArccotan(double x)
+        {
+            return Math.Log((x + 1) / (x - 1)) / 2;
+        }
+
+        // Logarithm to base N 
+        public static double LogN(double x, double n)
+        {
+            return Math.Log(x) / Math.Log(n);
+        }
+    }
+    #endregion
 }
