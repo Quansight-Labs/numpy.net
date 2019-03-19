@@ -1158,19 +1158,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void test_floor()
-        {
-            float[] TestData = new float[] { -1.7f, -1.5f, -0.2f, 0.2f, 1.5f, 1.7f, 2.0f };
-            var x = np.array(TestData);
-            var y = np.floor(x);
-
-            print(x);
-            print(y);
-
-            AssertArray(y, new float[] { -2.0f, -2.0f, -1.0f,  0.0f,  1.0f,  1.0f,  2.0f });
-
-        }
+  
 
 
         [TestMethod]

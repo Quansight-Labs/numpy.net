@@ -573,16 +573,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
-    def test_floor(self):
-
-        x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
-        y = np.floor(x);
-
-
-        print(x)
-        print(y)
-
-        return
 
     def test_divide(self):
 
