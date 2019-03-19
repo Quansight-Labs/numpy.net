@@ -72,6 +72,8 @@ namespace NumpyDotNet
             }
         }
 
+        #region Trigonometric Functions
+
         public static ndarray sin(object x, object where = null)
         {
             MathHelper ch = new MathHelper(x);
@@ -144,6 +146,7 @@ namespace NumpyDotNet
             return ret;
         }
 
+        #endregion
 
     }
 }

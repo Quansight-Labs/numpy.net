@@ -140,6 +140,57 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_tan_1()
+        {
+            var ExpectedResult = new double[] { 0.0, -2.18503986326152, 1.15782128234958, -0.291006191384749, -6.79971145522038 };
+
+            var a = np.arange(0, 10, dtype: np.Float64);
+            a = a["::2"] as ndarray;
+            var b = np.tan(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Float32);
+            a = a["::2"] as ndarray;
+            b = np.tan(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Int16);
+            a = a["::2"] as ndarray;
+            b = np.tan(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Float64).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.tan(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ 0.0, 1.5574077246549, -2.18503986326152, -0.142546543074278, 1.15782128234958},
+                  { -3.38051500624659, -0.291006191384749, 0.871447982724319, -6.79971145522038, -0.45231565944181}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.tan(a, where: a > 2);
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
+            print(b);
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.tan(a, where: new bool[,] { { false, false, false, true, true } });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
+            print(b);
+
+        }
 
         #endregion
 
