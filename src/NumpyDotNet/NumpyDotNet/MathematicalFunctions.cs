@@ -430,6 +430,16 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray trunc(object x)
+        {
+            var a = asanyarray(x);
+            var y1 = np.floor(a);
+            var y2 = np.ceil(a);
+
+            y1["..."] = np.where(a >= 0, y1, y2);
+            return y1;
+        }
+
         #endregion
 
     }

@@ -830,6 +830,22 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_trunc_1()
+        {
+            var a = np.trunc(3.14);
+            Assert.AreEqual((double)3.0, a.GetItem(0));
+            print(a);
+
+            var b = np.trunc(3);
+            Assert.AreEqual((int)3, b.GetItem(0));
+            print(b);
+
+            var c = np.trunc(new double[] { 2.1, 2.9, -2.1, -2.9 });
+            AssertArray(c, new double[] { 2.0, 2.0, -2.0, -2.0 });
+            print(c);
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

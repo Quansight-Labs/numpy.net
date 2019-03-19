@@ -487,6 +487,9 @@ class MathematicalFunctionsTests(unittest.TestCase):
         c = np.fix([2.1, 2.9, -2.1, -2.9])
         print(c)
 
+        d = np.fix([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
+        print(d)
+
         
     def test_floor_1(self):
 
@@ -505,6 +508,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.ceil(a)
         print(b)
 
+
+    def test_trunc_1(self):
+
+        a = np.trunc(3.14)
+        print(a)
+
+        b = np.trunc(3)
+        print(b)
+
+        c = np.trunc([2.1, 2.9, -2.1, -2.9])
+        print(c)
+
+        d = np.trunc([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
+        print(d)
 
 if __name__ == '__main__':
     unittest.main()
