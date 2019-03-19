@@ -51,21 +51,37 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        class MathHelper
+        {
+            public ndarray a;
+            public long[] offsets = null;
+            public double[] dd = null;
+            public double[] s = null;
+
+            public MathHelper(object x)
+            {
+                a = asanyarray(x);
+                if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                {
+                    a = a.astype(dtype: np.Float64);
+                }
+
+                offsets = NpyCoreApi.GetViewOffsets(a);
+                dd = a.Array.data.datap as double[];
+                s = new double[offsets.Length];
+            }
+        }
 
         public static ndarray sin(object x, object where = null)
         {
-            var a = np.array(x, null);
-
-            var dd = a.AsDoubleArray();
-
-            List<double> s = new List<double>();
-            for (int i = 0; i < dd.Length; i++)
+            MathHelper ch = new MathHelper(x);
+            
+            for (int i = 0; i < ch.offsets.Length; i++)
             {
-                s.Add(Math.Sin(dd[i]));
+                ch.s[i] = Math.Sin(ch.dd[ch.offsets[i]]);
             }
 
-            var ret = np.array(s.ToArray()).reshape(new shape(a.dims));
-
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -73,7 +89,7 @@ namespace NumpyDotNet
 
             return ret;
         }
+   
 
- 
     }
 }

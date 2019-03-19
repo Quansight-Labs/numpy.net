@@ -64,6 +64,52 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_sin_2()
+        {
+
+            var a = np.arange(0, 1024 * 1024, dtype: np.Float64).reshape((256, 64, 32, 2));
+
+            var sw1 = new  System.Diagnostics.Stopwatch();
+            sw1.Start();
+            ndarray b = np.sin(a);
+            sw1.Stop();
+
+            var sw2 = new System.Diagnostics.Stopwatch();
+            sw2.Start();
+            ndarray c = np.sin(a);
+            sw2.Stop();
+
+
+            Console.WriteLine("Entries1: {0} Elapsed1: {1}", b.size, sw1.ElapsedMilliseconds);
+            Console.WriteLine("Entries2: {0} Elapsed2: {1}", c.size, sw2.ElapsedMilliseconds);
+
+            //Assert.IsTrue(CompareArrays(b, c));
+        }
+
+        private bool CompareArrays(ndarray a1, ndarray a2)
+        {
+            if (a1.size != a2.size)
+                return false;
+
+            if (a1.Dtype.TypeNum != a2.Dtype.TypeNum)
+                return false;
+
+            long ElementCount = a1.size;
+
+            for (int i = 0; i < ElementCount; i++)
+            {
+                var a1d = a1.GetItem(i);
+                var a2d = a2.GetItem(i);
+
+                if (!a1d.Equals(a2d))
+                    return false;
+            }
+
+            return true;
+
+        }
+
         [Ignore]
         [TestMethod]
         public void xxx_Test_MathematicalFunctions_Placeholder()
