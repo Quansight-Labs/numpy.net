@@ -437,5 +437,29 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         b = np.arctanh(a, where= x, out = out )
         print(b)
+
+    def test_round_1(self):
+
+        a = np.linspace(-1.0, 1.0, 12).reshape((2,2,3))
+        print(a)
+
+        print("********")
+        b = np.round_(a, 2)
+        print(b)
+
+        print("********")
+
+        c = np.round(a,2)
+        print(c)
+
+        print("********")
+        b = np.round_(a, 4)
+        print(b)
+
+        print("********")
+
+        c = np.round(a,4)
+        print(c)
+
 if __name__ == '__main__':
     unittest.main()

@@ -2840,6 +2840,10 @@ namespace NumpyDotNet
         {
             return np.around(a, decimals, @out);
         }
+        public static ndarray round(ndarray a, int decimals = 0, ndarray @out = null)
+        {
+            return np.around(a, decimals, @out);
+        }
         #endregion
 
         #region mean

@@ -705,6 +705,69 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Rounding Functions
+
+        [TestMethod]
+        public void test_around_1()
+        {
+            ndarray a = np.around(np.array(new double[] { 0.37, 1.64 }));
+            print(a);
+            AssertArray(a, new double[] { 0, 2 });
+
+            ndarray b = np.around(np.array(new double[] { 0.37, 1.64 }), decimals: 1);
+            print(b);
+            AssertArray(b, new double[] { 0.4, 1.6 });
+
+            ndarray c = np.around(np.array(new double[] { .5, 1.5, 2.5, 3.5, 4.5 })); // rounds to nearest even value
+            print(c);
+            AssertArray(c, new double[] { 0.0, 2.0, 2.0, 4.0, 4.0 });
+
+            ndarray d = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
+            print(d);
+            AssertArray(d, new double[] { 1, 2, 3, 11 });
+
+            ndarray e = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: -1);
+            print(e);
+            AssertArray(e, new double[] { 0, 0, 0, 10 });
+        }
+
+        [TestMethod]
+        public void test_round_1()
+        {
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            print(a);
+
+            var ExpectedData1 = new double[,,] {{{-1.0, -0.82, -0.64}, {-0.45, -0.27, -0.09}},{{0.09, 0.27, 0.45},{0.64, 0.82, 1.0}}};
+
+            print("********");
+            var b = np.round_(a, 2);
+            AssertArray(b, ExpectedData1);
+            print(b);
+
+            print("********");
+
+            var c = np.round(a, 2);
+            AssertArray(c, ExpectedData1);
+            print(c);
+
+            var ExpectedData2 = new double[,,] {{{-1.0, -0.8182, -0.6364}, {-0.4545, -0.2727, -0.0909}}, {{0.0909, 0.2727, 0.4545}, {0.6364, 0.8182, 1.0}}};
+
+            print("********");
+            b = np.round_(a, 4);
+            AssertArray(b, ExpectedData2);
+            print(b);
+
+            print("********");
+
+            c = np.round(a, 4);
+            AssertArray(c, ExpectedData2);
+            print(c);
+     
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)
