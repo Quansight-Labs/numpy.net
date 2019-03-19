@@ -236,6 +236,49 @@ namespace NumpyDotNetTests
         }
 
 
+
+        [TestMethod]
+        public void test_arccos_1()
+        {
+            var ExpectedResult = new double[] { 3.14159265358979, 2.52903791525045, 2.2605713275804, 2.04265816407454,
+                                                1.84702295755849, 1.66183110483231, 1.47976154875748, 1.29456969603131,
+                                                1.09893448951525, 0.881021326009397, 0.612554738339339, 0.0 };
+
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arccos(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arccos(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{3.14159265358979, 2.52903791525045, 2.2605713275804},
+                  {2.04265816407454, 1.84702295755849, 1.66183110483231}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arccos(a, where: a > -0.5);
+            AssertArray(b, new double[] { np.NaN, np.NaN, 1.84702295755849, 1.47976154875748, 1.09893448951525, 0.612554738339339 });
+            print(b);
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arccos(a, where: new bool[] { false, false, true, true, true, true });
+            AssertArray(b, new double[] { np.NaN, np.NaN, 1.84702295755849, 1.47976154875748, 1.09893448951525, 0.612554738339339 });
+            print(b);
+
+        }
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
