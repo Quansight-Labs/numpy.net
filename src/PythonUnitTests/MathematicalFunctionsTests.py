@@ -357,5 +357,31 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.tanh(a, where= x, out = out )
         print(b)
 
+    def test_arcsinh_1(self):
+
+        a = np.linspace(-1.0, 1.0, 12)
+        b = np.arcsinh(a)
+        print(b)
+
+       
+        print("********")
+
+        a = np.linspace(-1.0, 1.0, 12).reshape((2,2,3))
+        a = a[::2]
+        b = np.arcsinh(a)
+        print(b)
+
+        print("********")
+
+        a = np.linspace(-1.0, 1.0, 12)
+        a = a[::2]
+
+        x = a > -0.5
+        print(x)
+
+        out = np.zeros_like(a, dtype=np.float64)
+
+        b = np.arcsinh(a, where= x, out = out )
+        print(b)
 if __name__ == '__main__':
     unittest.main()

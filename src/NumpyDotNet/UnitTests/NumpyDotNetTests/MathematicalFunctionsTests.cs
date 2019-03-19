@@ -235,8 +235,6 @@ namespace NumpyDotNetTests
 
         }
 
-
-
         [TestMethod]
         public void test_arccos_1()
         {
@@ -572,6 +570,48 @@ namespace NumpyDotNetTests
             a = a["::2"] as ndarray;
             b = np.tanh(a, where: new bool[,] { { false, false, false, true, true } });
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.99505475368673, 0.999329299739067 } });
+            print(b);
+        }
+
+        [TestMethod]
+        public void test_arcsinh_1()
+        {
+            var ExpectedResult = new double[] { -0.881373587019543, -0.7468029948789, -0.599755399970846, -0.440191235352683,
+                                                -0.26945474934928, -0.090784335188522, 0.0907843351885222, 0.269454749349279,
+                                                 0.440191235352683, 0.599755399970846, 0.7468029948789, 0.881373587019543 };
+
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arcsinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arcsinh(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ -0.881373587019543, -0.7468029948789, -0.599755399970846},
+                  { -0.440191235352683, -0.26945474934928, -0.090784335188522}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arcsinh(a, where: a > -0.5);
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.26945474934928, 0.0907843351885222, 0.440191235352683, 0.7468029948789 });
+            print(b);
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arcsinh(a, where: new bool[] { false, false, true, true, true, true });
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.26945474934928, 0.0907843351885222, 0.440191235352683, 0.7468029948789 });
             print(b);
 
         }
