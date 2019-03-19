@@ -279,6 +279,49 @@ namespace NumpyDotNetTests
             print(b);
 
         }
+
+        [TestMethod]
+        public void test_arctan_1()
+        {
+            var ExpectedResult = new double[] { -0.785398163397448, -0.685729510906286, -0.566729217523506, -0.426627493126876,
+                                                -0.266252049150925, -0.090659887200745, 0.090659887200745,   0.266252049150925,
+                                                 0.426627493126876, 0.566729217523506, 0.685729510906286, 0.785398163397448 };
+
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arctan(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arctan(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{-0.785398163397448, -0.685729510906286, -0.566729217523506},
+                  {-0.426627493126876, -0.266252049150925, -0.090659887200745}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arctan(a, where: a > -0.5);
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.266252049150925, 0.090659887200745, 0.426627493126876, 0.685729510906286 });
+            print(b);
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arctan(a, where: new bool[] { false, false, true, true, true, true });
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.266252049150925, 0.090659887200745, 0.426627493126876, 0.685729510906286 });
+            print(b);
+
+        }
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
