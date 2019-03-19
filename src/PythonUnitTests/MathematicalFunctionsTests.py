@@ -476,5 +476,17 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.rint(a, where = x)
         print(b)
 
+    def test_fix_1(self):
+
+        a = np.fix(3.14)
+        print(a)
+
+        b = np.fix(3)
+        print(b)
+
+        c = np.fix([2.1, 2.9, -2.1, -2.9])
+        print(c)
+
+
 if __name__ == '__main__':
     unittest.main()

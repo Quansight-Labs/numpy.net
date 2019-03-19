@@ -406,6 +406,30 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray fix(object x)
+        {
+            var a = asanyarray(x);
+            var y1 = np.floor(a);
+            var y2 = np.ceil(a);
+
+            y1["..."] = np.where(a >= 0, y1, y2);
+            return y1;
+        }
+
+        public static ndarray ceil(object x, object where = null)
+        {
+            var a = asanyarray(x);
+
+            var ret = NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_ceil, 0);
+            ret = ret.reshape(new shape(a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
         #endregion
 
     }
