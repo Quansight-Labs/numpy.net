@@ -3219,7 +3219,15 @@ namespace NumpyLib
         private static T RintOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return Math.Round(dValue);
+
+            if (bValue is decimal)
+            {
+                return Math.Round(Convert.ToDecimal(dValue));
+            }
+            else
+            {
+                return Math.Round(Convert.ToDouble(dValue));
+            }
         }
         private static T ConjugateOperation<T>(T bValue, dynamic operand)
         {
