@@ -209,6 +209,28 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.arctan2([0., 0., np.inf], [+0., -0., np.inf])
         print(b)
 
+    def test_degrees_1(self):
+
+        rad = np.arange(12.)*np.pi/6
+        a = np.degrees(rad)
+        print(a)
+
+        out = np.zeros((rad.shape))
+        r = np.degrees(rad, out)
+        print(np.all(r == out))
+
+    def test_radians_1(self):
+
+        deg = np.arange(12.0, dtype=np.float64) * 30.0;
+        a = np.radians(deg)
+        print(a)
+
+        out = np.zeros((deg.shape))
+        r = np.radians(deg, out)
+        print(np.all(r == out))
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -214,6 +214,43 @@ namespace NumpyDotNet
                 ch.s[i] = Math.Atan2(ch.dd[ch.offsets[i]], ch2.dd[ch2.offsets[i]]);
             }
 
+            
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray degrees(object x, object where = null)
+        {
+            MathHelper ch = new MathHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] =  ch.dd[ch.offsets[i]] * (180 / Math.PI);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray radians(object x, object where = null)
+        {
+            MathHelper ch = new MathHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.PI * ch.dd[ch.offsets[i]] / 180;
+            }
+
             var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
             if (where != null)
             {
