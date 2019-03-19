@@ -232,8 +232,48 @@ namespace NumpyDotNet
         {
             return zeros(shape, dtype);
         }
+
+        public static ndarray array(object input, object where)
+        {
+            ndarray arr = null;
+            ndarray wherearr = null;
+
+            try
+            {
+                arr = asanyarray(input);
+            }
+            catch (Exception ex)
+            {
+                throw new ValueError("Unable to convert input into an ndarray.");
+            }
+
+            if (where != null)
+            {
+                try
+                {
+                    wherearr = asanyarray(where);
+                }
+                catch (Exception ex)
+                {
+                    throw new ValueError("Unable to convert 'where' into an ndarray.");
+                }
+
+                try
+                {
+                    arr = arr.A(wherearr);
+                }
+                catch (Exception ex)
+                {
+                    throw new ValueError("input[where] does not result in a valid ndarray.");
+                }
+
+            }
+
+
+            return arr;
+        }
         #endregion
- 
+
         #region arange
         /// <summary>
         /// Return evenly spaced values within a given interval.
@@ -1632,8 +1672,6 @@ namespace NumpyDotNet
         }
 
         #endregion
-
-
 
         #region numeric operations
 
