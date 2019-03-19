@@ -445,8 +445,200 @@ namespace NumpyDotNet
             return Math.Sqrt(variance);
         }
 
+        public static sbyte[] AsSByteArray(this ndarray a)
+        {
+            return np.AsSByteArray(a);
+        }
+        public static byte[] AsByteArray(this ndarray a)
+        {
+            return np.AsByteArray(a);
+        }
+        public static Int16[] AsInt16Array(this ndarray a)
+        {
+            return np.AsInt16Array(a);
+        }
+        public static UInt16[] AsUInt16Array(this ndarray a)
+        {
+            return np.AsUInt16Array(a);
+        }
+        public static Int32[] AsInt32Array(this ndarray a)
+        {
+            return np.AsInt32Array(a);
+        }
+        public static UInt32[] AsUInt32Array(this ndarray a)
+        {
+            return np.AsUInt32Array(a);
+        }
+        public static Int64[] AsInt64Array(this ndarray a)
+        {
+            return np.AsInt64Array(a);
+        }
+        public static UInt64[] AsUInt64Array(this ndarray a)
+        {
+            return np.AsUInt64Array(a);
+        }
+        public static float[] AsFloatArray(this ndarray a)
+        {
+            return np.AsFloatArray(a);
+        }
+        public static double[] AsDoubleArray(this ndarray a)
+        {
+            return np.AsDoubleArray(a);
+        }
+        public static decimal[] AsDecimalArray(this ndarray a)
+        {
+            return np.AsDecimalArray(a);
+        }
     }
 
- 
+    public static partial class np
+    {
+        #region as(.NET System.Array)
+
+        public static sbyte[] AsSByteArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_BYTE)
+            {
+                a = a.astype(np.Int8);
+            }
+
+            return a.rawdata(0).datap as sbyte[];
+        }
+        public static byte[] AsByteArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UBYTE)
+            {
+                a = a.astype(np.UInt8);
+            }
+
+            return a.rawdata(0).datap as byte[];
+        }
+        public static Int16[] AsInt16Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT16)
+            {
+                a = a.astype(np.Int16);
+            }
+
+            return a.rawdata(0).datap as Int16[];
+        }
+        public static UInt16[] AsUInt16Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT16)
+            {
+                a = a.astype(np.UInt16);
+            }
+
+            return a.rawdata(0).datap as UInt16[];
+        }
+        public static Int32[] AsInt32Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT32)
+            {
+                a = a.astype(np.Int32);
+            }
+
+            return a.rawdata(0).datap as Int32[];
+        }
+        public static UInt32[] AsUInt32Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT32)
+            {
+                a = a.astype(np.UInt32);
+            }
+
+            return a.rawdata(0).datap as UInt32[];
+        }
+        public static Int64[] AsInt64Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT64)
+            {
+                a = a.astype(np.Int64);
+            }
+
+            return a.rawdata(0).datap as Int64[];
+        }
+        public static UInt64[] AsUInt64Array(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT64)
+            {
+                a = a.astype(np.UInt32);
+            }
+
+            return a.rawdata(0).datap as UInt64[];
+        }
+        public static float[] AsFloatArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_FLOAT)
+            {
+                a = a.astype(np.Float32);
+            }
+
+            return a.rawdata(0).datap as float[];
+        }
+        public static double[] AsDoubleArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+            {
+                a = a.astype(np.Float64);
+            }
+
+            return a.rawdata(0).datap as double[];
+        }
+        public static decimal[] AsDecimalArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.Dtype.TypeNum != NPY_TYPES.NPY_DECIMAL)
+            {
+                a = a.astype(np.Float64);
+            }
+
+            return a.rawdata(0).datap as decimal[];
+        }
+
+        private static ndarray ConvertToFlattenedArray(object input)
+        {
+            ndarray arr = null;
+
+            try
+            {
+                arr = asanyarray(input);
+            }
+            catch (Exception ex)
+            {
+                throw new ValueError("Unable to convert input into an ndarray.");
+            }
+
+
+            if (arr.IsASlice)
+            {
+                arr = arr.flatten();
+            }
+
+            return arr;
+        }
+        #endregion
+    }
 
 }
