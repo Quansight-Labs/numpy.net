@@ -53,13 +53,13 @@ namespace NumpyDotNetTests
             a = np.array(new int[,] {{0, 1, 2, 3, 4},{5,6,7,8,9}});
             a = a["::2"] as ndarray;
             b = np.sin(a, where: a > 2);
-            AssertArray(b, new double[] { 0.141120008059867, -0.756802495307928 });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.141120008059867, -0.756802495307928 } });
             print(b);
 
             a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.sin(a, where: new bool[,] { { false, false, false, true, true } });
-            AssertArray(b, new double[] { 0.141120008059867, -0.756802495307928 });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.141120008059867, -0.756802495307928 } });
             print(b);
 
         }

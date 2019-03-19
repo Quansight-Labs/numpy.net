@@ -54,7 +54,7 @@ namespace NumpyDotNet
 
         public static ndarray sin(object x, object where = null)
         {
-            var a = np.array(x, where);
+            var a = np.array(x, null);
 
             var dd = a.AsDoubleArray();
 
@@ -65,6 +65,11 @@ namespace NumpyDotNet
             }
 
             var ret = np.array(s.ToArray()).reshape(new shape(a.dims));
+
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
 
             return ret;
         }

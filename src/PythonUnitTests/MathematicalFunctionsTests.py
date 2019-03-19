@@ -35,7 +35,9 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         x = a>2
 
-        b = np.sin(a, where= x )
+        out = np.zeros_like(a, dtype=np.float64)
+
+        b = np.sin(a, where= x, out = out )
         print(b)
 
 if __name__ == '__main__':
