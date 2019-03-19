@@ -3199,22 +3199,57 @@ namespace NumpyLib
         private static T FloorOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return Math.Floor(dValue);
+
+            if (bValue is decimal)
+            {
+                return Math.Floor(Convert.ToDecimal(dValue));
+            }
+            else
+            {
+                return Math.Floor(Convert.ToDouble(dValue));
+            }
         }
         private static T CeilOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return Math.Ceiling(dValue);
+
+            if (bValue is decimal)
+            {
+                return Math.Ceiling(Convert.ToDecimal(dValue));
+            }
+            else
+            {
+                return Math.Ceiling(Convert.ToDouble(dValue));
+            }
+
         }
         private static T MaximumOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return Math.Max(dValue, operand);
+
+            if (bValue is decimal)
+            {
+                return Math.Max(Convert.ToDecimal(dValue), operand);
+            }
+            else
+            {
+                return Math.Max(Convert.ToDouble(dValue), operand);
+            }
+
         }
         private static T MinimumOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return Math.Min(dValue, operand);
+
+            if (bValue is decimal)
+            {
+                return Math.Min(Convert.ToDecimal(dValue), operand);
+            }
+            else
+            {
+                return Math.Min(Convert.ToDouble(dValue), operand);
+            }
+
         }
         private static T RintOperation<T>(T bValue, dynamic operand)
         {
