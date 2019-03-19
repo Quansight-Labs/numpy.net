@@ -204,7 +204,15 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < length; i++)
             {
-                Assert.AreEqual(Convert.ToDouble(expectedData[i]), Convert.ToDouble(arrayData[i]), 0.00000001);
+                double E1 = Convert.ToDouble(expectedData[i]);
+                double A1 = Convert.ToDouble(arrayData[i]);
+
+                if (double.IsNaN(E1) && double.IsNaN(A1))
+                    continue;
+                if (double.IsInfinity(E1) && double.IsInfinity(A1))
+                    continue;
+
+                Assert.AreEqual(E1, A1, 0.00000001);
             }
         }
 
@@ -219,7 +227,15 @@ namespace NumpyDotNetTests
                 ndarray rowData = arrayData[i] as ndarray;
                 for (int j = 0; j < lengthd1; j++)
                 {
-                    Assert.AreEqual(Convert.ToDouble(expectedData[i, j]), Convert.ToDouble(rowData[j]), 0.00000001);
+                    double E1 = Convert.ToDouble(expectedData[i, j]);
+                    double A1 = Convert.ToDouble(rowData[j]);
+
+                    if (double.IsNaN(E1) && double.IsNaN(A1))
+                        continue;
+                    if (double.IsInfinity(E1) && double.IsInfinity(A1))
+                        continue;
+
+                    Assert.AreEqual(E1, A1, 0.00000001);
                 }
             }
         }
@@ -239,7 +255,15 @@ namespace NumpyDotNetTests
                     ndarray dim2Data = dim1Data[j] as ndarray;
                     for (int k = 0; k < lengthd2; k++)
                     {
-                        Assert.AreEqual(Convert.ToDouble(expectedData[i, j, k]), Convert.ToDouble(dim2Data[k]), 0.00000001);
+                        double E1 = Convert.ToDouble(expectedData[i, j, k]);
+                        double A1 = Convert.ToDouble(dim2Data[k]);
+
+                        if (double.IsNaN(E1) && double.IsNaN(A1))
+                            continue;
+                        if (double.IsInfinity(E1) && double.IsInfinity(A1))
+                            continue;
+
+                        Assert.AreEqual(E1, A1, 0.00000001);
                     }
                 }
             }
@@ -264,7 +288,15 @@ namespace NumpyDotNetTests
                         ndarray dim3Data = dim2Data[k] as ndarray;
                         for (int l = 0; l < lengthd3; l++)
                         {
-                            Assert.AreEqual(Convert.ToDouble(expectedData[i, j, k, l]), Convert.ToDouble(dim3Data[l]), 0.00000001);
+                            double E1 = Convert.ToDouble(expectedData[i, j, k, l]);
+                            double A1 = Convert.ToDouble(dim3Data[l]);
+
+                            if (double.IsNaN(E1) && double.IsNaN(A1))
+                                continue;
+                            if (double.IsInfinity(E1) && double.IsInfinity(A1))
+                                continue;
+
+                            Assert.AreEqual(E1, A1, 0.00000001);
                         }
                     }
                 }
