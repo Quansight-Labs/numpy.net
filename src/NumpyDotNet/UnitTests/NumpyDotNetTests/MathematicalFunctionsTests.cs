@@ -472,6 +472,58 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_cosh_1()
+        {
+            var ExpectedResult = new double[] { 1.0, 3.76219569108363, 27.3082328360165, 201.715636122456, 1490.47916125218 };
+
+            var a = np.arange(0, 10, dtype: np.Float64);
+            a = a["::2"] as ndarray;
+            var b = np.cosh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Float32);
+            a = a["::2"] as ndarray;
+            b = np.cosh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            a = np.arange(0, 10, dtype: np.Int16);
+            a = a["::2"] as ndarray;
+            b = np.cosh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Float64).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.cosh(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ 1.0,               1.54308063481524, 3.76219569108363, 10.0676619957778, 27.3082328360165},
+                  { 74.2099485247878, 201.715636122456, 548.317035155212, 1490.47916125218, 4051.54202549259}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.cosh(a, where: a > 2);
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 10.0676619957778, 27.3082328360165 } });
+            print(b);
+
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = a["::2"] as ndarray;
+            b = np.cosh(a, where: new bool[,] { { false, false, false, true, true } });
+            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 10.0676619957778, 27.3082328360165 } });
+            print(b);
+
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)
