@@ -192,6 +192,50 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_arcsin_1()
+        {
+            var ExpectedResult = new double[] { -1.5707963267949, -0.958241588455558, -0.6897750007855, -0.471861837279642,
+                                                -0.276226630763592, -0.091034778037415, 0.091034778037415, 0.276226630763592,
+                                                 0.471861837279642, 0.6897750007855, 0.958241588455558, 1.5707963267949 };
+
+            double ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arcsin(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+ 
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2,2,3));
+            a = a["::2"] as ndarray;
+            b = np.arcsin(a);
+
+            var ExpectedDataB = new double[,,]
+                {{{ -1.5707963267949, -0.958241588455558, -0.6897750007855},
+                  { -0.471861837279642, -0.276226630763592, -0.091034778037415}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arcsin(a, where: a > -0.5);
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558});
+            print(b);
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            a = a.A("::2");
+            b = np.arcsin(a, where: new bool[] { false, false, true, true, true, true });
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558 });
+            print(b);
+
+        }
+
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

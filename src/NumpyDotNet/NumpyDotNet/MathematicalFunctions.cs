@@ -134,7 +134,7 @@ namespace NumpyDotNet
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
-                ch.s[i] = Math.Pow(Math.Sin(ch.dd[ch.offsets[i]]), -1);
+                ch.s[i] = Math.Asin(ch.dd[ch.offsets[i]]);
             }
 
             var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
