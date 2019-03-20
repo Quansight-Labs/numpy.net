@@ -1420,6 +1420,22 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Rational routines
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_lcm_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_gcdPlaceholder()
+        {
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)

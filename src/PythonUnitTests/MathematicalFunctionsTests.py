@@ -870,5 +870,10 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     #endregion
 
+    #region Rational routines
+
+
+    #endregion
+
 if __name__ == '__main__':
     unittest.main()
