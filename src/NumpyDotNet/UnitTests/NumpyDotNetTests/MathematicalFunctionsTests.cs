@@ -1244,6 +1244,19 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_nancumproduct_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [TestMethod]
+        public void test_nancumsum_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

@@ -25,6 +25,20 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nancumproduct_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nancumsum_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
         [Ignore]
         [TestMethod]
         public void xxx_Test_NANFunctions_Placeholder()
