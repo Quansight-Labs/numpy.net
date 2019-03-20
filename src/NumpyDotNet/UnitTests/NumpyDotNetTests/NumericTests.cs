@@ -767,12 +767,7 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-        [Ignore] // waiting for broadcast to be implemented
-        [TestMethod]
-        public void xxx_test_cross_1()
-        {
-
-        }
+  
 
         [Ignore] // not implemented yet
         [TestMethod]

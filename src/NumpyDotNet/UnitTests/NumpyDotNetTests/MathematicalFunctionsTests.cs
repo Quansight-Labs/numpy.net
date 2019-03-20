@@ -1332,6 +1332,25 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void xxx_test_gradient_placeholder()
+        {
+
+        }
+
+        [Ignore] // waiting for broadcast to be implemented
+        [TestMethod]
+        public void xxx_test_cross_placeholder()
+        {
+
+        }
+
+        [Ignore] 
+        [TestMethod]
+        public void test_trapz_placeholder()
+        {
+
+        }
 
         #endregion
 
