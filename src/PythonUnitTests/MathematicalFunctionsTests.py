@@ -840,6 +840,18 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
+    
+
+    def test_ediff1d_1(self):
+        x = np.array([1, 2, 4, 7, 0])
+        y = np.ediff1d(x)
+        print(y)
+
+        print(np.ediff1d(x, to_begin=-99, to_end=np.array([88, 99])))
+
+        y = [[1, 2, 4], [1, 6, 24]]
+        print(np.ediff1d(y))
+
 
         #endregion    
 

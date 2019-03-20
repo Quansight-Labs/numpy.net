@@ -1415,25 +1415,6 @@ namespace NumpyDotNetTests
         }
 
 
-        [TestMethod]
-        public void test_ediff1d_1()
-        {
-            ndarray x = np.array(new int[] { 1, 2, 4, 7, 0 });
-            ndarray y = np.ediff1d(x);
-            print(y);
-            AssertArray(y, new int[] { 1, 2, 3, -7});
-
-            y = np.ediff1d(x, to_begin : np.array(new int[] {-99 }), to_end : np.array(new int []{88, 99}));
-            print(y);
-            AssertArray(y, new int[] { -99, 1, 2, 3, -7, 88, 99 });
-
-            x = np.array(new int[,] { { 1, 2, 4 }, { 1, 6, 24 } });
-            y = np.ediff1d(x);
-            print(y);
-            AssertArray(y, new int[] { 1, 2, -3, 5, 18 });
-
-        }
-
 
         [TestMethod]
         public void test_isfinite_1()
