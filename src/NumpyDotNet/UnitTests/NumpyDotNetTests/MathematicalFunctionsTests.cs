@@ -930,6 +930,73 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_sum_1()
+        {
+            UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+            x = x * 3;
+            var y = np.sum(x);
+
+            print(x);
+            print(y);
+
+            Assert.AreEqual(y.GetItem(0), (UInt32)1578);
+
+        }
+
+        [TestMethod]
+        public void test_sum_2()
+        {
+            UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+            x = x * 3;
+
+            var y = np.sum(x, axis: 0);
+            print(y);
+            AssertArray(y, new UInt32[,] { { 339, 450 }, { 339, 450 } });
+
+            print("*****");
+
+            y = np.sum(x, axis: 1);
+            print(y);
+            AssertArray(y, new UInt32[,] { { 105, 180 }, { 264, 315 }, { 309, 405 } });
+
+            print("*****");
+
+            y = np.sum(x, axis: 2);
+            print(y);
+            AssertArray(y, new UInt32[,] { { 75, 210 }, { 504, 75 }, { 210, 504 } });
+
+            print("*****");
+
+        }
+
+        [TestMethod]
+        public void test_sum_3()
+        {
+            double[] TestData = new double[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Float64).reshape(new shape(3, 2, -1));
+            x = x * 3.456;
+
+            var y = np.sum(x, axis: 0);
+            print(y);
+            AssertArray(y, new double[,] { { 390.528, 518.4 }, { 390.528, 518.4 } });
+            print("*****");
+
+            y = np.sum(x, axis: 1);
+            print(y);
+            AssertArray(y, new double[,] { { 120.96, 207.36 }, { 304.128, 362.88 }, { 355.968, 466.56 } });
+            print("*****");
+
+            y = np.sum(x, axis: 2);
+            print(y);
+            AssertArray(y, new double[,] { { 86.4, 241.92 }, { 580.608, 86.4 }, { 241.92, 580.608 } });
+
+            print("*****");
+
+        }
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

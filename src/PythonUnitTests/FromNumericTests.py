@@ -660,57 +660,7 @@ class FromNumericTests(unittest.TestCase):
         print(b)
         print("*****")
 
-        
-    def test_sum_1(self):
-
-        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
-        x = x * 3
-        y = np.sum(x);
-
-
-        print(x)
-        print(y)
-
-        return
-
-          
-    def test_sum_2(self):
-
-        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
-        x = x * 3
-
-        y = np.sum(x, axis=0);
-        print(y)
-        print("*****")
-
-        y = np.sum(x, axis=1);
-        print(y)
-        print("*****")
-
-        y = np.sum(x, axis=2);
-        print(y)
-        print("*****")
-
-        return
-
-    def test_sum_3(self):
-
-        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.float64).reshape(3, 2, -1)
-        x = x * 3.456
-
-        y = np.sum(x, axis=0);
-        print(y)
-        print("*****")
-
-        y = np.sum(x, axis=1);
-        print(y)
-        print("*****")
-
-        y = np.sum(x, axis=2);
-        print(y)
-        print("*****")
-
-        return
+ 
 
     def test_any_1(self):
 
