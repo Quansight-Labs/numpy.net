@@ -848,6 +848,90 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Sums, products, differences
+
+        [TestMethod]
+        public void test_prod_1()
+        {
+            //UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            //var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+
+            UInt64[] TestData = new UInt64[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.UInt64);
+
+            var y = np.prod(x);
+
+            print(x);
+            print(y);
+            Assert.AreEqual((UInt64)1403336390624999936, y.GetItem(0));
+
+        }
+
+
+        [TestMethod]
+        public void test_prod_2()
+        {
+            ndarray a = np.prod(np.array(new double[] { 1.0, 2.0 }));
+            print(a);
+            Assert.AreEqual((double)2, a.GetItem(0));
+            print("*****");
+
+            ndarray b = np.prod(np.array(new double[,] { { 1.0, 2.0 }, { 3.0, 4.0 } }));
+            print(b);
+            Assert.AreEqual((double)24, b.GetItem(0));
+            print("*****");
+
+            ndarray c = np.prod(np.array(new double[,] { { 1.0, 2.0 }, { 3.0, 4.0 } }), axis: 1);
+            print(c);
+            AssertArray(c, new double[] { 2, 12 });
+            print("*****");
+
+            ndarray d = np.array(new byte[] { 1, 2, 3 }, dtype: np.UInt8);
+            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_UINT64;  // note: different typenum from python
+            print(e);
+            Assert.AreEqual(true, e);
+            print("*****");
+
+            ndarray f = np.array(new sbyte[] { 1, 2, 3 }, dtype: np.Int8);
+            bool g = np.prod(f).Dtype.TypeNum == NPY_TYPES.NPY_UINT64; // note: different typenum from python
+            print(g);
+            Assert.AreEqual(true, g);
+
+            print("*****");
+
+        }
+
+        [TestMethod]
+        public void test_prod_3()
+        {
+            ndarray a = np.array(new Int32[] { 1, 2, 3 });
+            ndarray b = np.prod(a);          // intermediate results 1, 1*2
+                                             // total product 1*2*3 = 6
+            print(b);
+            Assert.AreEqual((UInt64)6, b.GetItem(0));
+            print("*****");
+
+            a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            ndarray c = np.prod(a, dtype: np.Float32); //specify type of output
+            print(c);
+            Assert.AreEqual((float)720, c.GetItem(0));
+            print("*****");
+
+            ndarray d = np.prod(a, axis: 0);
+            print(d);
+            AssertArray(d, new Int64[] { 4, 10, 18 });
+            print("*****");
+
+
+            ndarray e = np.prod(a, axis: 1);
+            print(e);
+            AssertArray(e, new Int64[] { 6, 120 });
+            print("*****");
+
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)
