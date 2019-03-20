@@ -1087,61 +1087,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void test_diff_1()
-        {
-            UInt32[] TestData = new UInt32[6] { 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.UInt32);
-            x = x * 3;
-            var y = np.diff(x.A("1:"));
-
-            print(x);
-            print(y);
-
-            AssertArray(y, new UInt32[] { 30, 60, 99, 36 });
-        }
-
-        [TestMethod]
-        public void test_diff_2()
-        {
-            UInt32[] TestData = new UInt32[6] { 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(2, -1));
-            x = x * 3;
-            var y = np.diff(x, axis: 0);
-
-            print(x);
-            print(y);
-
-            AssertArray(y, new UInt32[,] { { 105, 189, 195 } });
-
-        }
-
-        [TestMethod]
-        public void test_diff_3()
-        {
-            UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
-            x = x * 3;
-            var y = np.diff(x, axis: 2);
-
-            print(x);
-            print(y);
-
-            var ExpectedData = new UInt32[,,]
-                {
-                 {{15},
-                  {60}},
-
-                 {{36},
-                  {15}},
-
-                 {{60},
-                  {36}}
-                };
-
-            AssertArray(y, ExpectedData);
-
-        }
+  
 
         [TestMethod]
         public void test_average()

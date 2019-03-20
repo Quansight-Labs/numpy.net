@@ -523,42 +523,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
-    def test_diff_1(self):
-
-        x = np.array([10,15,25,45,78,90], dtype= np.uint32)
-        x = x * 3
-        y = np.diff(x[1:]);
-
-
-        print(x)
-        print(y)
-
-        return
-
-    def test_diff_2(self):
-
-        x = np.array([10,15,25,45,78,90], dtype= np.uint32).reshape(2, -1)
-        x = x * 3
-        y = np.diff(x, axis=0);
-
-
-        print(x)
-        print(y)
-
-        return
-
-    def test_diff_3(self):
-
-        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
-        x = x * 3
-        y = np.diff(x,axis=2);
-
-
-        print(x)
-        print(y)
-
-        return
-
 
 
     def test_average(self):
