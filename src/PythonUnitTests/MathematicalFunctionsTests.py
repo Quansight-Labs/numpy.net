@@ -4,6 +4,8 @@ from nptest import nptest
 
 class MathematicalFunctionsTests(unittest.TestCase):
 
+    #region Trigonometric Functions
+
     def test_sin_1(self):
 
         a = np.arange(0, 10, dtype = np.float64)
@@ -249,6 +251,10 @@ class MathematicalFunctionsTests(unittest.TestCase):
         r = np.deg2rad(deg, out)
         print(np.all(r == out))
 
+    #endregion
+
+    #region Hyperbolic functions
+
     def test_sinh_1(self):
 
         a = np.arange(0, 10, dtype = np.float64)
@@ -438,6 +444,27 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.arctanh(a, where= x, out = out )
         print(b)
 
+        #endregion
+
+    #region Rounding Functions
+
+    def test_around_1(self):
+
+        a = np.around([0.37, 1.64])
+        print(a)
+
+        b = np.around([0.37, 1.64], decimals=1)
+        print(b)
+
+        c = np.around([.5, 1.5, 2.5, 3.5, 4.5]) # rounds to nearest even value
+        print(c)
+
+        d = np.around([1,2,3,11], decimals=1) # ndarray of ints is returned
+        print(d)
+
+        e = np.around([1,2,3,11], decimals=-1)
+        print(e)
+
     def test_round_1(self):
 
         a = np.linspace(-1.0, 1.0, 12).reshape((2,2,3))
@@ -522,6 +549,70 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         d = np.trunc([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
         print(d)
+
+    #endregion
+
+    #region  Sums, products, differences             
+    def test_prod_1(self):
+
+        #x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
+        x = np.array([10,15,25,45,78,90, 10, 15, 25, 45, 78, 90 ], dtype= np.uint64)
+
+        y = np.prod(x);
+
+
+        print(x)
+        print(y)
+
+        return
+
+    def test_prod_2(self):
+
+        a = np.prod([1.,2.])
+        print(a)
+        print("*****")
+
+        b = np.prod([[1.,2.],[3.,4.]])
+        print(b)
+        print("*****")
+
+        c = np.prod([[1.,2.],[3.,4.]], axis=1)
+        print(c)
+        print("*****")
+
+        d = np.array([1, 2, 3], dtype=np.uint8)
+        e = np.prod(d).dtype == np.uint
+        print(e)
+        print("*****")
+
+        f = np.array([1, 2, 3], dtype=np.int8)
+        g = np.prod(f).dtype == int
+        print(g)
+        print("*****")
+
+
+    def test_prod_3(self):
+
+        a = np.array([1,2,3])
+        b = np.prod(a)   # intermediate results 1, 1*2
+                            # total product 1*2*3 = 6
+        print(b)
+        print("*****")
+
+        a = np.array([[1, 2, 3], [4, 5, 6]])
+        c = np.prod(a, dtype=float)  # specify type of output
+        print(c)
+        print("*****")
+
+        d = np.prod(a, axis=0)
+        print(d)
+        print("*****")
+  
+        e = np.prod(a,axis=1)
+        print(e)
+        print("*****")
+
+        #endregion    
 
 if __name__ == '__main__':
     unittest.main()

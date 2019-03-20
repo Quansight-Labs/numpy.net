@@ -369,7 +369,7 @@ class NumericTests(unittest.TestCase):
         c = np.inner(b,a)
         print(c)
        
-        a = np.arange(0,80, dtype = np.Int32).reshape(-1,4,5,2)
+        a = np.arange(0,80, dtype = np.int32).reshape(-1,4,5,2)
         b = np.arange(100,180, dtype= np.float).reshape(-1,4,5,2)
         c = np.inner(a,b)
         #print(c)

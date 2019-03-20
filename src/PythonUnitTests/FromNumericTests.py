@@ -1028,66 +1028,7 @@ class FromNumericTests(unittest.TestCase):
         g = np.nanmin(b)
         print(g)
 
-        
-    def test_prod_1(self):
-
-        #x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
-        x = np.array([10,15,25,45,78,90, 10, 15, 25, 45, 78, 90 ], dtype= np.uint64)
-
-        y = np.prod(x);
-
-
-        print(x)
-        print(y)
-
-        return
-
-    def test_prod_2(self):
-
-        a = np.prod([1.,2.])
-        print(a)
-        print("*****")
-
-        b = np.prod([[1.,2.],[3.,4.]])
-        print(b)
-        print("*****")
-
-        c = np.prod([[1.,2.],[3.,4.]], axis=1)
-        print(c)
-        print("*****")
-
-        d = np.array([1, 2, 3], dtype=np.uint8)
-        e = np.prod(d).dtype == np.uint
-        print(e)
-        print("*****")
-
-        f = np.array([1, 2, 3], dtype=np.int8)
-        g = np.prod(f).dtype == int
-        print(g)
-        print("*****")
-
-
-    def test_prod_3(self):
-
-        a = np.array([1,2,3])
-        b = np.prod(a)   # intermediate results 1, 1*2
-                            # total product 1*2*3 = 6
-        print(b)
-        print("*****")
-
-        a = np.array([[1, 2, 3], [4, 5, 6]])
-        c = np.prod(a, dtype=float)  # specify type of output
-        print(c)
-        print("*****")
-
-        d = np.prod(a, axis=0)
-        print(d)
-        print("*****")
-  
-        e = np.prod(a,axis=1)
-        print(e)
-        print("*****")
-        
+ 
 
     def test_cumprod_1(self):
 
