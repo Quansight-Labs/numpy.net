@@ -1354,6 +1354,32 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Exponents and logarithms
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_Test_ExponentsAndLogarithms_Placeholder()
+        {
+        }
+
+        #endregion
+
+        #region Other special Functions
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_iO_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_sinc_Placeholder()
+        {
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)
@@ -1375,12 +1401,6 @@ namespace NumpyDotNetTests
 
             return true;
 
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void xxx_Test_MathematicalFunctions_Placeholder()
-        {
         }
 
 
