@@ -1380,6 +1380,46 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region Floating point routines
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_signbit_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_copysign_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_frexp_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_idexp_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_nextafter_Placeholder()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_spacing_Placeholder()
+        {
+        }
+
+        #endregion
+
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)

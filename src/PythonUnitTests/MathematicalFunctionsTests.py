@@ -853,7 +853,22 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(np.ediff1d(y))
 
 
-        #endregion    
+    #endregion
+       
+    #region Exponents and logarithms
+
+    #endregion    
+
+    #region Other special Functions
+
+
+    #endregion
+
+    #region Floating point routines
+
+
+
+    #endregion
 
 if __name__ == '__main__':
     unittest.main()
