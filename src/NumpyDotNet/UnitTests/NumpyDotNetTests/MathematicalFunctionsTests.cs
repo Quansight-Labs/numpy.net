@@ -1009,6 +1009,131 @@ namespace NumpyDotNetTests
             // see the NANFunctionsTest version
         }
 
+
+        [TestMethod]
+        public void test_cumprod_1()
+        {
+
+            bool CaughtException = false;
+
+            try
+            {
+                UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+                var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+                x = x * 3;
+
+                var y = np.cumprod(x);
+                print(y);
+
+                AssertArray(y, new UInt32[] {30,1350,101250,13668750,3198487500,303198504,
+                            506020528,1296087280,2717265488,1758620720,3495355360,3148109376 });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("NpyExc_OverflowError"))
+                    CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
+
+            try
+            {
+                Int32[] TestData2 = new Int32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+                var x = np.array(TestData2, dtype: np.Int32).reshape(new shape(3, 2, -1));
+                x = x * 3;
+
+                var y = np.cumprod(x);
+
+                print(y);
+
+                AssertArray(y, new Int32[] { 30, 1350, 101250, 13668750, -1096479796, 303198504,
+                            506020528, 1296087280, -1577701808, 1758620720, -799611936 -1146857920});
+            }
+            catch (Exception ex)
+            {
+                CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
+
+
+
+        }
+
+        [TestMethod]
+        public void test_cumprod_1a()
+        {
+
+            bool CaughtException = false;
+
+            try
+            {
+                UInt64[] TestData = new UInt64[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+                var x = np.array(TestData, dtype: np.UInt64).reshape(new shape(3, 2, -1));
+                x = x * 1;
+
+                var y = np.cumprod(x);
+                print(y);
+
+                AssertArray(y, new UInt64[] {10, 150, 3750, 168750, 13162500, 1184625000,
+                                11846250000, 177693750000, 4442343750000,199905468750000,
+                                15592626562500000, 1403336390625000000 });
+            }
+            catch (Exception ex)
+            {
+                CaughtException = true;
+            }
+            Assert.IsFalse(CaughtException);
+
+            try
+            {
+                Int64[] TestData2 = new Int64[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+                var x = np.array(TestData2, dtype: np.Int64).reshape(new shape(3, 2, -1));
+                x = x * 1;
+
+                var y = np.cumprod(x);
+
+                print(y);
+
+                AssertArray(y, new Int64[] {10, 150, 3750, 168750, 13162500, 1184625000,
+                                11846250000, 177693750000, 4442343750000,199905468750000,
+                                15592626562500000, 1403336390625000000 });
+            }
+            catch (Exception ex)
+            {
+                CaughtException = true;
+            }
+            Assert.IsFalse(CaughtException);
+
+        }
+
+        [TestMethod]
+        public void test_cumprod_2()
+        {
+            ndarray a = np.array(new Int32[] { 1, 2, 3 });
+            ndarray b = np.cumprod(a);          // intermediate results 1, 1*2
+                                                // total product 1*2*3 = 6
+            print(b);
+            AssertArray(b, new Int32[] { 1, 2, 6 });
+            print("*****");
+
+            a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            ndarray c = np.cumprod(a, dtype: np.Float32); //specify type of output
+            print(c);
+            AssertArray(c, new float[] { 1f, 2f, 6f, 24f, 120f, 720f });
+            print("*****");
+
+            ndarray d = np.cumprod(a, axis: 0);
+            print(d);
+            AssertArray(d, new Int32[,] { { 1, 2, 3 }, { 4, 10, 18 } });
+            print("*****");
+
+            ndarray e = np.cumprod(a, axis: 1);
+            print(e);
+            AssertArray(e, new Int32[,] { { 1, 2, 6 }, { 4, 20, 120 } });
+            print("*****");
+
+        }
+
+
         #endregion
 
         private bool CompareArrays(ndarray a1, ndarray a2)

@@ -662,6 +662,56 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
+
+    def test_cumprod_1(self):
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
+        x = x * 3
+        y = np.cumprod(x);
+        print(y)
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.int32).reshape(3, 2, -1)
+        x = x * 3
+        y = np.cumprod(x);
+        print(y)
+
+        return
+
+    def test_cumprod_1a(self):
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint64).reshape(3, 2, -1)
+        x = x * 1
+        y = np.cumprod(x);
+        print(y)
+
+        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.int64).reshape(3, 2, -1)
+        x = x * 1
+        y = np.cumprod(x);
+        print(y)
+
+        return
+
+    def test_cumprod_2(self):
+
+        a = np.array([1,2,3])
+        b = np.cumprod(a)   # intermediate results 1, 1*2
+                            # total product 1*2*3 = 6
+        print(b)
+        print("*****")
+
+        a = np.array([[1, 2, 3], [4, 5, 6]])
+        c = np.cumprod(a, dtype=float)  # specify type of output
+        print(c)
+        print("*****")
+
+        d = np.cumprod(a, axis=0)
+        print(d)
+        print("*****")
+  
+        e = np.cumprod(a,axis=1)
+        print(e)
+        print("*****")
+
         #endregion    
 
 if __name__ == '__main__':
