@@ -1504,10 +1504,66 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
         [TestMethod]
-        public void xxx_Test_ExponentsAndLogarithms_Placeholder()
+        public void test_log1p_1()
         {
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E, 2), 0 });
+            var a = np.log1p(x);
+            AssertArray(a, new double[] { 0.0, 1.0, 2.0, double.NegativeInfinity });
+            print(a);
+
+
+            a = np.log(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.0, 1.0 },
+                                           {2.0, double.NegativeInfinity } });
+            print(a);
+
+            a = np.log(x, where: x > 0);
+            AssertArray(a, new double[] { 0.0, 1.0, 2.0, double.NaN });
+            print(a);
+
+        }
+
+        [TestMethod]
+        public void test_logaddexp_1()
+        {
+            var prob1 = np.log(1e-50);
+            var prob2 = np.log(2.5e-50);
+            var a = np.logaddexp(prob1, prob2);
+            AssertArray(a, new double[] { -113.876491681207 });
+            print(a);
+            var b = np.exp(a);
+            AssertArray(b, new double[] { 3.50000000000001E-50 });
+            print(b);
+
+        }
+
+        [TestMethod]
+        public void test_logaddexp2_1()
+        {
+            var prob1 = np.log2(1e-50);
+            var prob2 = np.log2(2.5e-50);
+            var a = np.logaddexp2(prob1, prob2);
+            AssertArray(a, new double[] { -164.289049822311 });
+            print(a);
+            var b = Math.Pow(2, (double)a.GetItem(0));
+            Assert.AreEqual(b, 3.4999999999999914E-50);
+            print(b);
+
+        }
+
+        [TestMethod]
+        public void test_logaddexpn_1()
+        {
+            var prob1 = np.log2(1e-50);
+            var prob2 = np.log2(2.5e-50);
+            var a = np.logaddexpn(prob1, prob2, 4);
+            AssertArray(a, new double[] { -329.334828493609 });
+            print(a);
+            var b = Math.Pow(2, (double)a.GetItem(0));
+            Assert.AreEqual(b, 7.2500000000000423E-100);
+            print(b);
+
         }
 
         #endregion

@@ -582,6 +582,93 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray log1p(object x, object where = null)
+        {
+            /* from numpy C code
+            static void
+            nc_log1p@c@(@ctype@ *x, @ctype@ *r)
+            {
+                @ftype@ l = npy_hypot@c@(x->real + 1, x->imag);
+                r->imag = npy_atan2@c@(x->imag, x->real + 1);
+                r->real = npy_log@c@(l);
+                return;
+            }
+            */
+
+
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Log(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray logaddexp(object x1, object x2, object where = null)
+        {
+            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
+            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+
+            for (int i = 0; i < ch1.offsets.Length; i++)
+            {
+                ch1.s[i] = Math.Log(Math.Exp(ch1.dd[ch1.offsets[i]]) + Math.Exp(ch2.dd[ch2.offsets[i]]));
+            }
+
+            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray logaddexp2(object x1, object x2, object where = null)
+        {
+            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
+            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+
+            for (int i = 0; i < ch1.offsets.Length; i++)
+            {
+                ch1.s[i] = Math.Log(Math.Pow(2, ch1.dd[ch1.offsets[i]]) + Math.Pow(2, ch2.dd[ch2.offsets[i]]), 2);
+            }
+
+            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
+        {
+            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
+            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+
+            for (int i = 0; i < ch1.offsets.Length; i++)
+            {
+                ch1.s[i] = Math.Log(Math.Pow(n, ch1.dd[ch1.offsets[i]]) + Math.Pow(n, ch2.dd[ch2.offsets[i]]), 2);
+            }
+
+            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
 
         #endregion
 
