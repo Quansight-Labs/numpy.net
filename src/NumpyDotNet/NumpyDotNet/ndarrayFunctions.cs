@@ -992,31 +992,31 @@ namespace NumpyDotNet
         #endregion
 
         #region numeric operations
-        public static ndarray power(ndarray a, double operand)
+        public static ndarray power(object a, double operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_power, operand);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, operand);
         }
-        public static ndarray power(ndarray a, ndarray b)
+        public static ndarray power(object a, ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_power, b);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, b);
         }
-        public static ndarray square(ndarray a)
+        public static ndarray square(object a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_square, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_square, 0);
         }
-        public static ndarray reciprocal(ndarray a)
+        public static ndarray reciprocal(object a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_reciprocal, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_reciprocal, 0);
         }
        
-        public static ndarray sqrt(ndarray a)
+        public static ndarray sqrt(object a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_sqrt, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_sqrt, 0);
         }
 
-        public static ndarray absolute(ndarray a)
+        public static ndarray absolute(object a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_absolute, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_absolute, 0);
         }
 
         #endregion
@@ -1452,9 +1452,9 @@ namespace NumpyDotNet
         #endregion
 
         #region left_shift
-        public static ndarray left_shift(ndarray input, int shiftvalue)
+        public static ndarray left_shift(object input, int shiftvalue)
         {
-            return NpyCoreApi.PerformNumericOp(input, NpyArray_Ops.npy_op_left_shift, shiftvalue, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_left_shift, shiftvalue, false);
         }
         public static ndarray left_shift(object input, object shiftvalue)
         {
@@ -1463,10 +1463,11 @@ namespace NumpyDotNet
         #endregion
 
         #region floor
-        public static ndarray floor(ndarray srcArray)
+        public static ndarray floor(object srcArray)
         {
-            return NpyCoreApi.Floor(srcArray, null);
+            return NpyCoreApi.Floor(asanyarray(srcArray), null);
         }
+
 
         #endregion
 
