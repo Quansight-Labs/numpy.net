@@ -1378,6 +1378,29 @@ namespace NumpyDotNetTests
 
         }
 
+        //[Ignore] // need to figure out real numbers first
+        [TestMethod]
+        public void test_expm1_1()
+        {
+            var x = np.array(new double[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2 });
+            var a = np.expm1(x);
+            AssertArray(a, new double[] { 0.182683524052735, 0.22313016014843, 0.818730753077982, 1.22140275816017,
+                                          4.48168907033806, 5.4739473917272, 7.38905609893065, 0.0149955768204777 });
+            print(a);
+
+
+            a = np.expm1(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.182683524052735, 0.22313016014843, 0.818730753077982, 1.22140275816017 },
+                                           {4.48168907033806, 5.4739473917272, 7.38905609893065, 0.0149955768204777  } });
+            print(a);
+
+            a = np.expm1(x, where: x > 0);
+            AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 1.22140275816017,
+                                          4.48168907033806, 5.4739473917272, 7.38905609893065, double.NaN });
+            print(a);
+
+        }
+
 
         [Ignore]
         [TestMethod]
@@ -1463,6 +1486,51 @@ namespace NumpyDotNetTests
 
 
         #endregion
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_ComplexNumbers_Placeholder()
+        {
+            System.Numerics.Complex c = new System.Numerics.Complex(1.2, 2.0);
+            Console.WriteLine(c.Real);
+            Console.WriteLine(c.Imaginary);
+
+            c = c * 2;
+
+            Console.WriteLine(c.Real);
+            Console.WriteLine(c.Imaginary);
+
+            var d1 = Convert.ToDecimal(c);
+
+            var d2 = Convert.ToDouble(c);
+
+            var cc = new System.Numerics.Complex(d2, 0);
+
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_BigInteger_Placeholder()
+        {
+            System.Numerics.BigInteger c = new System.Numerics.BigInteger(1.0);
+            Console.WriteLine(c.IsZero);
+            Console.WriteLine(c.IsPowerOfTwo);
+
+            c = c * 2;
+
+            Console.WriteLine(c);
+            Console.WriteLine(c);
+
+            var d1 = Convert.ToDecimal(c);
+
+            var d2 = Convert.ToDouble(c);
+
+            var cc = new System.Numerics.Complex(d2, 0);
+
+
+        }
+
 
         private bool CompareArrays(ndarray a1, ndarray a2)
         {

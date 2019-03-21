@@ -462,6 +462,36 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray expm1(object x, object where = null)
+        {
+
+            /* from numpy C code
+            
+            nc_expm1@c@(@ctype@ *x, @ctype@ *r)
+            {
+                @ftype@ a = npy_exp@c@(x->real);
+                r->real = a*npy_cos@c@(x->imag) - 1.0@c@;
+                r->imag = a*npy_sin@c@(x->imag);
+                return;
+            }
+            */
+
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Exp(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
         #endregion
 
     }
