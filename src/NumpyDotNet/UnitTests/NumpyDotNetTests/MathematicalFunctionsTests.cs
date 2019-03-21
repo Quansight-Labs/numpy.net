@@ -1356,6 +1356,29 @@ namespace NumpyDotNetTests
 
         #region Exponents and logarithms
 
+        [TestMethod]
+        public void test_exp_1()
+        {
+            var x = np.array(new double[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2 });
+            var a = np.exp(x);
+            AssertArray(a, new double[] { 0.182683524052735, 0.22313016014843, 0.818730753077982, 1.22140275816017,
+                                          4.48168907033806, 5.4739473917272, 7.38905609893065, 0.0149955768204777 });
+            print(a);
+
+
+            a = np.exp(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.182683524052735, 0.22313016014843, 0.818730753077982, 1.22140275816017 },
+                                           {4.48168907033806, 5.4739473917272, 7.38905609893065, 0.0149955768204777  } });
+            print(a);
+
+            a = np.exp(x, where: x > 0);
+            AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 1.22140275816017,
+                                          4.48168907033806, 5.4739473917272, 7.38905609893065, double.NaN });
+            print(a);
+
+        }
+
+
         [Ignore]
         [TestMethod]
         public void xxx_Test_ExponentsAndLogarithms_Placeholder()
@@ -1430,9 +1453,14 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void xxx_gcdPlaceholder()
+        public void xxx_gcd_Placeholder()
         {
         }
+
+        #endregion
+
+        #region Arithmetic operations
+
 
         #endregion
 

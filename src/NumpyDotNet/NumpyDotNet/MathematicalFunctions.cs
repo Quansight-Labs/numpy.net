@@ -442,6 +442,28 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region Exponents and logarithms
+
+        public static ndarray exp(object x, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = Math.Exp(ch.dd[ch.offsets[i]]);
+            }
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        #endregion
+
     }
 
     #region MathHelper

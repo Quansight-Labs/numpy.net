@@ -857,6 +857,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
        
     #region Exponents and logarithms
 
+    def test_exp_1(self):
+
+        x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
+        a = np.exp(x)
+        print(a)
+
+        a = np.exp(x.reshape(2,-1))
+        print(a)
+
+        b = x > 0
+        a = np.exp(x, where= b)
+        print(a)
+        return
+
     #endregion    
 
     #region Other special Functions
@@ -871,6 +885,11 @@ class MathematicalFunctionsTests(unittest.TestCase):
     #endregion
 
     #region Rational routines
+
+
+    #endregion
+
+    #region Arithmetic operations
 
 
     #endregion
