@@ -899,6 +899,49 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(a)
         return
 
+
+    def test_log_1(self):
+
+        x = np.array([1, np.e, np.e**2, 0])
+        a = np.log(x)
+        print(a)
+
+        a = np.log(x.reshape(2,-1))
+        print(a)
+
+        b = x > 0
+        a = np.log(x, where= b)
+        print(a)
+        return
+
+    def test_log10_1(self):
+
+        x = np.array([1, np.e, np.e**2, 0])
+        a = np.log10(x)
+        print(a)
+
+        a = np.log10(x.reshape(2,-1))
+        print(a)
+
+        b = x > 0
+        a = np.log10(x, where= b)
+        print(a)
+        return
+
+    def test_log2_1(self):
+
+        x = np.array([1, np.e, np.e**2, 0])
+        a = np.log2(x)
+        print(a)
+
+        a = np.log2(x.reshape(2,-1))
+        print(a)
+
+        b = x > 0
+        a = np.log2(x, where= b)
+        print(a)
+        return
+
     #endregion    
 
     #region Other special Functions

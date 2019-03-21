@@ -1423,6 +1423,86 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_log_1()
+        {
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E,2), 0 });
+            var a = np.log(x);
+            AssertArray(a, new double[] { 0.0, 1.0, 2.0, double.NegativeInfinity });
+            print(a);
+
+
+            a = np.log(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.0, 1.0 },
+                                           {2.0, double.NegativeInfinity } });
+            print(a);
+
+            a = np.log(x, where: x > 0);
+            AssertArray(a, new double[] { 0.0, 1.0, 2.0, double.NaN });
+            print(a);
+
+        }
+
+        [TestMethod]
+        public void test_log10_1()
+        {
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E, 2), 0 });
+            var a = np.log10(x);
+            AssertArray(a, new double[] { 0.0, 0.434294481903252, 0.868588963806504, double.NegativeInfinity });
+            print(a);
+
+
+            a = np.log10(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.0, 0.434294481903252 },
+                                           {0.868588963806504, double.NegativeInfinity } });
+            print(a);
+
+            a = np.log10(x, where: x > 0);
+            AssertArray(a, new double[] { 0.0, 0.434294481903252, 0.868588963806504, double.NaN });
+            print(a);
+
+        }
+
+        [TestMethod]
+        public void test_log2_1()
+        {
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E, 2), 0 });
+            var a = np.log2(x);
+            AssertArray(a, new double[] { 0.0, 1.44269504088896, 2.88539008177793, double.NegativeInfinity });
+            print(a);
+
+
+            a = np.log2(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.0, 1.44269504088896 },
+                                           {2.88539008177793, double.NegativeInfinity } });
+            print(a);
+
+            a = np.log2(x, where: x > 0);
+            AssertArray(a, new double[] { 0.0, 1.44269504088896, 2.88539008177793, double.NaN });
+            print(a);
+
+        }
+
+        [TestMethod]
+        public void test_logn_1()
+        {
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E, 2), 0 });
+            var a = np.logn(x, 2);
+            AssertArray(a, new double[] { 0.0, 1.44269504088896, 2.88539008177793, double.NegativeInfinity });
+            print(a);
+
+
+            a = np.logn(x.reshape((2, -1)), 16);
+            AssertArray(a, new double[,] { {0.0, 0.360673760222241 },
+                                           {0.721347520444482, double.NegativeInfinity } });
+            print(a);
+
+            a = np.logn(x, 32, where: x > 0);
+            AssertArray(a, new double[] { 0.0, 0.288539008177793, 0.577078016355585, double.NaN });
+            print(a);
+
+        }
+
 
         [Ignore]
         [TestMethod]
