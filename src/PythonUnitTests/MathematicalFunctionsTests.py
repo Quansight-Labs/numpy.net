@@ -885,6 +885,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(a)
         return
 
+    def test_exp2_1(self):
+
+        x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
+        a = np.exp2(x)
+        print(a)
+
+        a = np.exp2(x.reshape(2,-1))
+        print(a)
+
+        b = x > 0
+        a = np.exp2(x, where= b)
+        print(a)
+        return
+
     #endregion    
 
     #region Other special Functions

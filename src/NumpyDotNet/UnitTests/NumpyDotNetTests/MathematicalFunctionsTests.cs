@@ -1378,7 +1378,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore] // need to figure out real numbers first
+        [Ignore] // need to figure out real numbers first
         [TestMethod]
         public void test_expm1_1()
         {
@@ -1397,6 +1397,28 @@ namespace NumpyDotNetTests
             a = np.expm1(x, where: x > 0);
             AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 1.22140275816017,
                                           4.48168907033806, 5.4739473917272, 7.38905609893065, double.NaN });
+            print(a);
+
+        }
+
+        [TestMethod]
+        public void test_exp2_1()
+        {
+            var x = np.array(new double[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2 });
+            var a = np.exp2(x);
+            AssertArray(a, new double[] { 0.307786103336229, 0.353553390593274, 0.870550563296124, 1.14869835499704,
+                                          2.82842712474619,  3.24900958542494,  4.0,               0.0544094102060078 });
+            print(a);
+
+
+            a = np.exp2(x.reshape((2, -1)));
+            AssertArray(a, new double[,] { {0.307786103336229, 0.353553390593274, 0.870550563296124, 1.14869835499704, },
+                                           {2.82842712474619,  3.24900958542494,  4.0,               0.0544094102060078  } });
+            print(a);
+
+            a = np.exp2(x, where: x > 0);
+            AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 1.14869835499704,
+                                          2.82842712474619,  3.24900958542494,  4.0, double.NaN });
             print(a);
 
         }
