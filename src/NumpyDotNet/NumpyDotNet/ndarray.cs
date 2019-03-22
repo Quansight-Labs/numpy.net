@@ -1285,6 +1285,11 @@ namespace NumpyDotNet
             get { return NpyDefs.IsInteger(Dtype.TypeNum); }
         }
 
+        internal bool IsFloatingPoint
+        {
+            get { return NpyDefs.IsFloat(Dtype.TypeNum); }
+        }
+
         public bool IsFlexible {
             get { return NpyDefs.IsFlexible(Dtype.TypeNum); }
         }

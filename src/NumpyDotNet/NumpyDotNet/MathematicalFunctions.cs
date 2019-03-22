@@ -826,12 +826,100 @@ namespace NumpyDotNet
 
         #region Floating point routines
 
+        public static ndarray signbit(object x, object where = null)
+        {
+            var xa = asanyarray(x);
+            if (xa.IsFloatingPoint)
+            {
+                if (xa.itemsize <= sizeof(float))
+                {
+                    MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
+                    ch.s = null;
+
+                    bool[] bret = new bool[ch.offsets.Length];
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        float f = ch.dd[ch.offsets[i]];
+                        if (float.IsNegativeInfinity(f))
+                        {
+                            bret[i] = true;
+                        }
+                        else
+                        if (float.IsPositiveInfinity(f))
+                        {
+                            bret[i] = false;
+                        }
+                        if (float.IsNaN(f))
+                        {
+                            bret[i] = false;
+                        }
+                        else
+                        {
+                            bret[i] = Math.Sign(f) < 0 ? true : false;
+                        }
+
+                    }
+
+                    var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+                else
+                {
+                    MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+                    ch.s = null;
+
+                    bool[] bret = new bool[ch.offsets.Length];
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        double f = ch.dd[ch.offsets[i]];
+                        if (double.IsNegativeInfinity(f))
+                        {
+                            bret[i] = true;
+                        }
+                        else
+                        if (double.IsPositiveInfinity(f))
+                        {
+                            bret[i] = false;
+                        }
+                        if (double.IsNaN(f))
+                        {
+                            bret[i] = false;
+                        }
+                        else
+                        {
+                            bret[i] = Math.Sign(f) < 0 ? true : false;
+                        }
+
+                    }
+
+                    var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+            }
+            else
+            {
+                throw new ValueError("This function only operates on floating point values");
+            }
+
+        }
 
         #endregion
 
         #region Rational routines
 
-    
+
         private static long _gcdl(long a, long b)
         {
             while (b != 0)

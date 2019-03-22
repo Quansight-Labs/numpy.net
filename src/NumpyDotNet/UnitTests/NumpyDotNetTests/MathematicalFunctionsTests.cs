@@ -18,19 +18,19 @@ namespace NumpyDotNetTests
         {
             var ExpectedResult = new double[] { 0, 0.909297426825682, -0.756802495307928, -0.279415498198926, 0.989358246623382 };
 
-            var a = np.arange(0, 10, dtype : np.Float64);
+            var a = np.arange(0, 10, dtype: np.Float64);
             a = a["::2"] as ndarray;
             var b = np.sin(a);
             AssertArray(b, ExpectedResult);
             print(b);
 
-            a = np.arange(0, 10, dtype : np.Float32);
+            a = np.arange(0, 10, dtype: np.Float32);
             a = a["::2"] as ndarray;
             b = np.sin(a);
             AssertArray(b, ExpectedResult);
             print(b);
 
-            a = np.arange(0, 10, dtype : np.Int16);
+            a = np.arange(0, 10, dtype: np.Int16);
             a = a["::2"] as ndarray;
             b = np.sin(a);
             AssertArray(b, ExpectedResult);
@@ -38,7 +38,7 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Float64).reshape((1,2,5));
+            a = np.arange(0, 10, dtype: np.Float64).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.sin(a);
 
@@ -51,7 +51,7 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.array(new int[,] {{0, 1, 2, 3, 4},{5,6,7,8,9}});
+            a = np.array(new int[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.sin(a, where: a > 2);
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.141120008059867, -0.756802495307928 } });
@@ -71,7 +71,7 @@ namespace NumpyDotNetTests
 
             var a = np.arange(0, 1024 * 1024, dtype: np.Float64).reshape((256, 64, 32, 2));
 
-            var sw1 = new  System.Diagnostics.Stopwatch();
+            var sw1 = new System.Diagnostics.Stopwatch();
             sw1.Start();
             ndarray b = np.sin(a);
             sw1.Stop();
@@ -204,11 +204,11 @@ namespace NumpyDotNetTests
             var b = np.arcsin(a);
             AssertArray(b, ExpectedResult);
             print(b);
- 
+
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2,2,3));
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arcsin(a);
 
@@ -224,7 +224,7 @@ namespace NumpyDotNetTests
             a = np.linspace(-1.0, 1.0, ref ref_step, 12);
             a = a.A("::2");
             b = np.arcsin(a, where: a > -0.5);
-            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558});
+            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558 });
             print(b);
 
             a = np.linspace(-1.0, 1.0, ref ref_step, 12);
@@ -337,11 +337,11 @@ namespace NumpyDotNetTests
             AssertArray(z, new double[] { -135.0, -45.0, 45.0, 135.0 });
             print(z);
 
-            var a = np.arctan2(new double[] { 1.0, -1.0}, new double[] { 0.0, 0.0} );
+            var a = np.arctan2(new double[] { 1.0, -1.0 }, new double[] { 0.0, 0.0 });
             AssertArray(a, new double[] { 1.5707963267949, -1.5707963267949 });
             print(a);
 
-            var b = np.arctan2(new double[] { 0.0, 0.0, double.PositiveInfinity}, new double[] { +0.0, -0.0, double.PositiveInfinity});
+            var b = np.arctan2(new double[] { 0.0, 0.0, double.PositiveInfinity }, new double[] { +0.0, -0.0, double.PositiveInfinity });
             AssertArray(b, new double[] { 0.0, 3.14159265358979, double.NaN });
             print(b);
 
@@ -352,7 +352,7 @@ namespace NumpyDotNetTests
         {
             var rad = np.arange(12.0, dtype: np.Float64) * Math.PI / 6;
             var a = np.degrees(rad);
-            AssertArray(a, new double[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330});
+            AssertArray(a, new double[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 });
             print(a);
 
             //var _out = np.zeros((rad.shape));
@@ -738,7 +738,7 @@ namespace NumpyDotNetTests
             var a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
             print(a);
 
-            var ExpectedData1 = new double[,,] {{{-1.0, -0.82, -0.64}, {-0.45, -0.27, -0.09}},{{0.09, 0.27, 0.45},{0.64, 0.82, 1.0}}};
+            var ExpectedData1 = new double[,,] { { { -1.0, -0.82, -0.64 }, { -0.45, -0.27, -0.09 } }, { { 0.09, 0.27, 0.45 }, { 0.64, 0.82, 1.0 } } };
 
             print("********");
             var b = np.round_(a, 2);
@@ -751,7 +751,7 @@ namespace NumpyDotNetTests
             AssertArray(c, ExpectedData1);
             print(c);
 
-            var ExpectedData2 = new double[,,] {{{-1.0, -0.8182, -0.6364}, {-0.4545, -0.2727, -0.0909}}, {{0.0909, 0.2727, 0.4545}, {0.6364, 0.8182, 1.0}}};
+            var ExpectedData2 = new double[,,] { { { -1.0, -0.8182, -0.6364 }, { -0.4545, -0.2727, -0.0909 } }, { { 0.0909, 0.2727, 0.4545 }, { 0.6364, 0.8182, 1.0 } } };
 
             print("********");
             b = np.round_(a, 4);
@@ -763,7 +763,7 @@ namespace NumpyDotNetTests
             c = np.round(a, 4);
             AssertArray(c, ExpectedData2);
             print(c);
-     
+
         }
 
         [TestMethod]
@@ -781,7 +781,7 @@ namespace NumpyDotNetTests
             var x = a > 0.0;
             print(x);
 
-            b = np.rint(a, where : x);
+            b = np.rint(a, where: x);
             AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, 0.0, 2.0, 2.0, 2.0, double.NaN });
             print(b);
         }
@@ -798,7 +798,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fix(new double[] { 2.1, 2.9, -2.1, -2.9 });
-            AssertArray(c, new double[] { 2.0,  2.0, -2.0, -2.0 });
+            AssertArray(c, new double[] { 2.0, 2.0, -2.0, -2.0 });
             print(c);
         }
 
@@ -1345,7 +1345,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] 
+        [Ignore]
         [TestMethod]
         public void test_trapz_placeholder()
         {
@@ -1426,7 +1426,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_log_1()
         {
-            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E,2), 0 });
+            var x = np.array(new double[] { 1, Math.E, Math.Pow(Math.E, 2), 0 });
             var a = np.log(x);
             AssertArray(a, new double[] { 0.0, 1.0, 2.0, double.NegativeInfinity });
             print(a);
@@ -1587,13 +1587,31 @@ namespace NumpyDotNetTests
         #region Floating point routines
 
         [TestMethod]
-        public void xxx_signbit_Placeholder()
+        public void test_signbit_1()
         {
-            ndarray a = np.arange(0.1, 1.1, step : 0.2);
-            print(a.Imag);
+            var a = np.signbit(-1.2);
+            Assert.AreEqual(true, a.GetItem(0));
             print(a);
 
-            
+            var b = np.signbit(np.array(new double[] {1, -2.3, 2.1}));
+            AssertArray(b, new bool[] {false, true, false});
+            print(b);
+
+            var c = np.signbit(np.array(new double[] { +0.0, -0.0}));  // note: different result than python.  No such thing as -0.0
+            AssertArray(c, new bool[] { false, false });
+            print(c);
+
+            var d = np.signbit(np.array(new float[] { float.NegativeInfinity, float.PositiveInfinity }));
+            AssertArray(d, new bool[] { true, false });
+            print(d);
+
+            var e = np.signbit(np.array(new double[] { -double.NaN, double.NaN })); // note: different result.  No such thing as -NaN
+            AssertArray(e, new bool[] { false, false });
+            print(e);
+
+            var f = np.signbit(np.array(new float[] { -1, 0, 1}));
+            AssertArray(f, new bool[] { true, false, false });
+            print(f);
         }
 
         [Ignore]
