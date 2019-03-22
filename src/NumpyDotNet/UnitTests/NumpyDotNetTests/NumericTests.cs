@@ -508,12 +508,6 @@ namespace NumpyDotNetTests
         {
         }
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_test_convolve_1()
-        {
-        }
-
         // todo: need to speed up the generation of the matrix
         [TestMethod]  
         public void test_outer_1()

@@ -567,39 +567,7 @@ namespace NumpyDotNetTests
 
    
 
-        [TestMethod]
-        public void test_square_operations()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.Int32);
-            print(a);
-
-            var b = np.square(a);
-            print(b);
-
-            var ExpectedDataB1 = new Int32[]
-            {
-                0,   1,   4,   9,  16,  25,  36,  49,  64,  81, 100, 121, 144, 169, 196, 225, 256, 289,
-                324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961
-            };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int64);
-            print(a);
-
-            b = np.square(a);
-            print(b);
-
-            var ExpectedDataB2 = new Int64[]
-            {
-                4194304, 4198401, 4202500, 4206601, 4210704, 4214809, 4218916, 4223025, 4227136,
-                4231249, 4235364, 4239481, 4243600, 4247721, 4251844, 4255969, 4260096, 4264225,
-                4268356, 4272489, 4276624, 4280761, 4284900, 4289041, 4293184, 4297329, 4301476,
-                4305625, 4309776, 4313929, 4318084, 4322241
-            };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
+   
 
         [TestMethod]
         public void test_sqrt_operations()
@@ -654,24 +622,6 @@ namespace NumpyDotNetTests
                                       -21, -22, -23, -24, -25, -26, -27, -28, -29, -30, -31 });
         }
 
-        [TestMethod]
-        public void test_absolute_operations()
-        {
-            var a = np.arange(-32, 32, 1, dtype: np.Int16);
-            print(a);
-
-            var b = np.absolute(a);
-            print(b);
-
-            var ExpectedDataB = new Int16[]
-            {
-                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
-                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
-                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
-                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                28, 29, 30, 31
-            };
-        }
 
         [TestMethod]
         public void test_invert_operations()

@@ -326,9 +326,7 @@ class NumericTests(unittest.TestCase):
            
     def test_correlate_1(self):    
         return
-           
-    def test_convolve_1(self):    
-        return
+ 
            
     def test_outer_1(self):
        

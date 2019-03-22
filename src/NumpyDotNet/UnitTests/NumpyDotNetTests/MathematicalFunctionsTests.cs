@@ -2044,7 +2044,202 @@ namespace NumpyDotNetTests
         #endregion
 
 
+        #region Miscellaneous
 
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_test_convolve_1()
+        {
+        }
+
+
+        [TestMethod]
+        public void test_clip_1()
+        {
+            ndarray a = np.arange(10);
+            print(a);
+            print("*****");
+
+            ndarray b = np.clip(a, 1, 8);
+            print(b);
+            print("*****");
+            AssertArray(b, new Int32[] { 1, 1, 2, 3, 4, 5, 6, 7, 8, 8 });
+
+            ndarray c = np.clip(a, 3, 6, @out: a);
+            print(c);
+            AssertArray(c, new Int32[] { 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, });
+            print(a);
+            AssertArray(a, new Int32[] { 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, });
+            print("*****");
+
+
+            a = np.arange(10);
+            print(a);
+            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1, 1, 4, 4, 4, 4, 4 }), 8);
+            print(b);
+            AssertArray(a, new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            AssertArray(b, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
+            print("*****");
+        }
+
+        [TestMethod]
+        public void test_clip_2()
+        {
+            ndarray a = np.arange(16).reshape(new shape(4, 4));
+            print(a);
+            print("*****");
+
+            ndarray b = np.clip(a, 1, 8);
+            print(b);
+            print("*****");
+            AssertArray(b, new Int32[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+
+            ndarray c = np.clip(a, 3, 6, @out: a);
+            print(c);
+            AssertArray(c, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print(a);
+            AssertArray(a, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print("*****");
+
+
+            // TODO: UFUNC - uncomment when fix the multi-array UFUNC problem.  This might work then.
+            //a = np.arange(16).reshape(new shape(4, 4));
+            //print(a);
+            //b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }), 8);
+            //print(b);
+            //AssertArray(a, new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            //AssertArray(b, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
+            //print("*****");
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_cbrt_1()
+        {
+
+        }
+
+        [TestMethod]
+        public void test_square_operations()
+        {
+            var a = np.arange(0, 32, 1, dtype: np.Int32);
+            print(a);
+
+            var b = np.square(a);
+            print(b);
+
+            var ExpectedDataB1 = new Int32[]
+            {
+                0,   1,   4,   9,  16,  25,  36,  49,  64,  81, 100, 121, 144, 169, 196, 225, 256, 289,
+                324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int64);
+            print(a);
+
+            b = np.square(a);
+            print(b);
+
+            var ExpectedDataB2 = new Int64[]
+            {
+                4194304, 4198401, 4202500, 4206601, 4210704, 4214809, 4218916, 4223025, 4227136,
+                4231249, 4235364, 4239481, 4243600, 4247721, 4251844, 4255969, 4260096, 4264225,
+                4268356, 4272489, 4276624, 4280761, 4284900, 4289041, 4293184, 4297329, 4301476,
+                4305625, 4309776, 4313929, 4318084, 4322241
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+
+        [TestMethod]
+        public void test_absolute_operations()
+        {
+            var a = np.arange(-32, 32, 1, dtype: np.Int16);
+            print(a);
+
+            var b = np.absolute(a);
+            print(b);
+
+            var ExpectedDataB = new Int16[]
+            {
+                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
+                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
+                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
+                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                28, 29, 30, 31
+            };
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fabs_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_sign_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_heaviside_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_maximum_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_minimum_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fmax_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fmin_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_nan_to_num_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_interp_1()
+        {
+
+        }
+
+
+        #endregion
+
+        #region UFunc Special Calls
         [Ignore]
         [TestMethod]
         public void xxx_UFunc_Reduce_Placeholder()
@@ -2075,7 +2270,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
+        #endregion
 
 
         private bool CompareArrays(ndarray a1, ndarray a2)

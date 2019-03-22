@@ -1232,5 +1232,90 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     #endregion
 
+    #region Miscellaneous
+
+              
+    def test_convolve_1(self):    
+        return
+
+    def test_clip_1(self):
+
+        a = np.arange(10)
+        print(a)
+        print("*****")
+
+        b = np.clip(a, 1, 8)
+        print(b)
+        print("*****")
+
+        c = np.clip(a, 3, 6, out=a)
+        print(c)
+        print(a)
+        print("*****")
+
+        a = np.arange(10)
+        print(a)
+        b = np.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)
+        print(b)
+        print("*****")
+
+    def test_clip_2(self):
+
+        a = np.arange(16).reshape(4,4)
+        print(a)
+        print("*****")
+
+        b = np.clip(a, 1, 8)
+        print(b)
+        print("*****")
+
+        c = np.clip(a, 3, 6, out=a)
+        print(c)
+        print(a)
+        print("*****")
+
+        a = np.arange(16).reshape(4,4)
+        print(a)
+        b = np.clip(a, [3, 4, 1, 1], 8)
+        print(b)
+        print("*****")
+
+         
+    def test_sqrt_operations(self):
+        a =  np.arange(0, 32, 1, dtype = np.int16)
+        print(a)
+
+        b = np.sqrt(a)
+        print(b)
+        
+        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
+        print(a)
+
+        b = np.sqrt(a)
+        print(b)
+
+
+    def test_square_operations(self):
+        a =  np.arange(0, 32, 1, dtype = np.int16)
+        print(a)
+
+        b = np.square(a)
+        print(b)
+        
+        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
+        print(a)
+
+        b = np.square(a)
+        print(b)
+
+    def test_absolute_operations(self):
+        a =  np.arange(-32, 32, 1, dtype = np.int16)
+        print(a)
+
+        b = np.absolute(a)
+        print(b)
+
+    #endregion
+
 if __name__ == '__main__':
     unittest.main()

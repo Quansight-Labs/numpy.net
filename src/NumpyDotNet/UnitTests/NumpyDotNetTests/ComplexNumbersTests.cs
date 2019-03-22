@@ -55,5 +55,13 @@ namespace NumpyDotNetTests
         public void xxx_test_conj_1()
         {
         }
+        [Ignore]
+        [TestMethod]
+        public void test_real_if_close_1()
+        {
+
+        }
+
+
     }
 }

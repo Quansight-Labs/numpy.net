@@ -257,33 +257,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(b)
 
 
-    def test_square_operations(self):
-        a =  np.arange(0, 32, 1, dtype = np.int16)
-        print(a)
-
-        b = np.square(a)
-        print(b)
-        
-        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
-        print(a)
-
-        b = np.square(a)
-        print(b)
-
-  
-    def test_sqrt_operations(self):
-        a =  np.arange(0, 32, 1, dtype = np.int16)
-        print(a)
-
-        b = np.sqrt(a)
-        print(b)
-        
-        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
-        print(a)
-
-        b = np.sqrt(a)
-        print(b)
-
     def test_negative_operations(self):
         a =  np.arange(0, 32, 1, dtype = np.int16)
         print(a)
@@ -291,12 +264,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
         b = -a
         print(b)
 
-    def test_absolute_operations(self):
-        a =  np.arange(-32, 32, 1, dtype = np.int16)
-        print(a)
-
-        b = np.absolute(a)
-        print(b)
   
     def test_invert_operations(self):
         a =  np.arange(-32, 32, 1, dtype = np.int16)
