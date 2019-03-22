@@ -1180,6 +1180,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return 
 
+    
+    def test_floor_divide(self):
+
+        a = np.floor_divide(7,3)
+        print(a)
+
+        b = np.floor_divide([1., 2., 3., 4.], 2.5)
+        print(b)
+
+        c = np.floor_divide([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
+        print(c)
+
+        return
+
     #endregion
 
 if __name__ == '__main__':
