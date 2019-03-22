@@ -67,6 +67,11 @@ namespace NumpyDotNet
         {
             var T = oshape.GetType();
 
+            if (oshape is shape)
+            {
+                return oshape as shape;
+            }
+
             if (oshape is Int32)
             {
                 return new shape((Int32)oshape);
