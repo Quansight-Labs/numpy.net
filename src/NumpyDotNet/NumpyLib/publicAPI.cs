@@ -399,9 +399,19 @@ namespace NumpyLib
             return numpyinternal.NpyArray_All(self, axis, _out);
         }
 
-#endregion
+        public static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
+        {
+            return numpyinternal.NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray);
+        }
 
-#region npy_common
+        public static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, npy_intp[] dimensions, int nd)
+        {
+            return numpyinternal.NpyArray_NumericOpUpscaleSourceArray(srcArray, dimensions, nd);
+        }
+
+        #endregion
+
+        #region npy_common
 
         public static bool Npy_IsAligned(NpyArray ap)
         {

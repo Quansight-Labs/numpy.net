@@ -1113,6 +1113,25 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static ndarray NpyArray_UpscaleSourceArray(ndarray srcArray, ndarray operandArray)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_NumericOpUpscaleSourceArray(srcArray.Array, operandArray.Array));
+            }
+        }
+        internal static ndarray NpyArray_UpscaleSourceArray(ndarray srcArray, shape newshape)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_NumericOpUpscaleSourceArray(srcArray.Array, newshape.iDims, newshape.iDims.Length));
+            }
+        }
+
         internal static ndarray ArrayArgMax(ndarray self, int axis, ndarray ret)
         {
             #if ENABLELOCKING

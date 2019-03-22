@@ -1184,12 +1184,17 @@ namespace NumpyLib
             return newArray;
         }
 
-        private static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
+        internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
         {
-            if (srcArray != null && operandArray != null)
+            return NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray.dimensions, operandArray.nd);
+        }
+
+        internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, npy_intp [] newdims, int nd)
+        {
+            if (srcArray != null && newdims != null)
             {
                 npy_intp srcArraySize = NpyArray_SIZE(srcArray);
-                npy_intp operandArraySize = NpyArray_SIZE(operandArray);
+                npy_intp operandArraySize = NpyArray_MultiplyList(newdims, nd);
 
                 if (srcArraySize < operandArraySize)
                 {
@@ -1210,8 +1215,8 @@ namespace NumpyLib
                     srcArray = NpyArray_Repeat(srcArray, repeatArray, -1);
 
                     NpyArray_Dims newDims = new NpyArray_Dims();
-                    newDims.len = operandArray.nd;
-                    newDims.ptr = operandArray.dimensions;
+                    newDims.len = nd;
+                    newDims.ptr = newdims;
 
                     srcArray = NpyArray_Newshape(srcArray, newDims, NPY_ORDER.NPY_ANYORDER);
                 }
