@@ -1112,6 +1112,16 @@ class MathematicalFunctionsTests(unittest.TestCase):
         e  = np.negative([[1, 0, -1], [-2, 3, -4]])
         print(e)
 
+    def test_multiply_1(self):        
+
+        a = np.multiply(1.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.multiply(b, c)
+        print(d)
+
     #endregion
 
 if __name__ == '__main__':

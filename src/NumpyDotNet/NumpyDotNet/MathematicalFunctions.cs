@@ -1174,6 +1174,16 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_negative, 0);
         }
 
+        public static ndarray multiply(object x1, object x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, asanyarray(x2));
+        }
+
+        public static ndarray multiply(object x1, int x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, x2);
+        }
+
         #endregion
 
     }

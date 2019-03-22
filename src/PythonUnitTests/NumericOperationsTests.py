@@ -877,15 +877,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
         d = np.subtract(b, c)
         print(d)
 
-    def test_multiply_1(self):        
-
-        a = np.multiply(1.0, 4.0)
-        print(a)
-
-        b = np.arange(9.0).reshape((3, 3))
-        c = np.arange(3.0)
-        d = np.multiply(b, c)
-        print(d)
+ 
 
     def test_isfinite_1(self):
 

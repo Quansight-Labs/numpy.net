@@ -1716,19 +1716,7 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [TestMethod]
-        public void test_multiply_1()
-        {
-            var a = np.multiply(2.0, 4.0);
-            Assert.AreEqual(8.0, a.GetItem(0));
-            print(a);
-
-            var b = np.arange(9.0).reshape((3, 3));
-            var c = np.arange(3.0);
-            var d = np.multiply(b, c);
-            AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
-            print(d);
-        }
+   
 
 
     }
