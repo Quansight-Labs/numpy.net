@@ -1630,12 +1630,11 @@ namespace NumpyDotNetTests
 
         #region Rational routines
 
-        [Ignore]  // need to return the values in integer or type appropriate results
         [TestMethod]
         public void test_lcm_1()
         {
             var a = np.lcm(12, 20);
-            Assert.AreEqual(60, a.GetItem(0));
+            Assert.AreEqual((long)60, a.GetItem(0));
             print(a);
 
             //var b = np.lcm.reduce(new int[] { 3, 12, 20 }); // todo: need to implement reduce functionality
@@ -1645,11 +1644,11 @@ namespace NumpyDotNetTests
             //print(c);
 
             var d = np.lcm(np.arange(6), new int[] { 20 });
-            AssertArray(d, new double[] { 0, 20, 20, 60, 20, 20 });
+            AssertArray(d, new long[] { 0, 20, 20, 60, 20, 20 });
             print(d);
 
-            var e = np.lcm(new double[] { 20, 20 }, np.arange(6).reshape((3, 2)));
-            AssertArray(d, new double[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            var e = np.lcm(new long[] { 20, 20 }, np.arange(6).reshape((3, 2)));
+            AssertArray(e, new long[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
             print(e);
         }
 

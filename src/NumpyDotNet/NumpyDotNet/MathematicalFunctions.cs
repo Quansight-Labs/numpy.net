@@ -831,7 +831,8 @@ namespace NumpyDotNet
 
         #region Rational routines
 
-        private static double _gcd(double a, double b)
+    
+        private static long _gcd(long a, long b)
         {
             while (b != 0)
             {
@@ -842,14 +843,15 @@ namespace NumpyDotNet
             return a;
         }
 
-        private static double _lcm(double a, double b)
+  
+        private static long _lcm(long a, long b)
         {
             return a / _gcd(a, b) * b;
         }
 
         public static ndarray lcm(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
 
 
             for (int i = 0; i < ch.offsets.Length; i++)
@@ -869,7 +871,7 @@ namespace NumpyDotNet
 
         public static ndarray gcd(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
