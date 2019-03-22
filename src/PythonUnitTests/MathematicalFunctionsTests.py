@@ -983,11 +983,50 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     #region Floating point routines
 
+    def test_signbit_1(self):
 
+        a =np.signbit(-1.2)
+        print(a)
+        
+        b = np.signbit(np.array([1, -2.3, 2.1]))
+        print(b)
+
+        b = np.signbit(np.array([+0.0, -0.0]))
+        print(b)
+
+        c = np.signbit(np.array([-np.inf, np.inf]))
+        print(c)
+
+        d = np.signbit(np.array([-np.nan, np.nan]))
+        print(d)
+
+
+        e = np.signbit(np.array([-1, 0, 1]))
+        print(e)
 
     #endregion
 
     #region Rational routines
+
+    def test_lcm_1(self):
+
+        a = np.lcm(12, 20)
+        print(a)
+
+        b = np.lcm.reduce([3, 12, 20])
+        print(b)
+
+        c = np.lcm.reduce([40, 12, 20])
+        print(c)
+ 
+        d = np.lcm(np.arange(6), [20])
+        print(d)
+
+        e = np.lcm([20, 20], np.arange(6).reshape(3, 2))
+        print(e)
+
+        #f = np.lcm(np.arange(8).reshape(2,4), np.arange(16).reshape(4, 4))
+        #print(f)
 
 
     #endregion

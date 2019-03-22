@@ -1586,10 +1586,14 @@ namespace NumpyDotNetTests
 
         #region Floating point routines
 
-        [Ignore]
         [TestMethod]
         public void xxx_signbit_Placeholder()
         {
+            ndarray a = np.arange(0.1, 1.1, step : 0.2);
+            print(a.Imag);
+            print(a);
+
+            
         }
 
         [Ignore]
@@ -1626,10 +1630,27 @@ namespace NumpyDotNetTests
 
         #region Rational routines
 
-        [Ignore]
+        [Ignore]  // need to return the values in integer or type appropriate results
         [TestMethod]
-        public void xxx_lcm_Placeholder()
+        public void test_lcm_1()
         {
+            var a = np.lcm(12, 20);
+            Assert.AreEqual(60, a.GetItem(0));
+            print(a);
+
+            //var b = np.lcm.reduce(new int[] { 3, 12, 20 }); // todo: need to implement reduce functionality
+            //print(b);
+
+            //var c = np.lcm.reduce(new int[] { 40, 12, 20 }); // tod: need to implement reduce functionality
+            //print(c);
+
+            var d = np.lcm(np.arange(6), new int[] { 20 });
+            AssertArray(d, new double[] { 0, 20, 20, 60, 20, 20 });
+            print(d);
+
+            var e = np.lcm(new double[] { 20, 20 }, np.arange(6).reshape((3, 2)));
+            AssertArray(d, new double[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            print(e);
         }
 
         [Ignore]
@@ -1688,6 +1709,38 @@ namespace NumpyDotNetTests
 
 
         }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_UFunc_Reduce_Placeholder()
+        {
+
+        }
+        [Ignore]
+        [TestMethod]
+        public void xxx_UFunc_Accumlate_Placeholder()
+        {
+
+        }
+        [Ignore]
+        [TestMethod]
+        public void xxx_UFunc_ReduceAt_Placeholder()
+        {
+
+        }
+        [Ignore]
+        [TestMethod]
+        public void xxx_UFunc_Outer_Placeholder()
+        {
+
+        }
+        [Ignore]
+        [TestMethod]
+        public void xxx_UFunc_At_Placeholder()
+        {
+
+        }
+
 
 
         private bool CompareArrays(ndarray a1, ndarray a2)
