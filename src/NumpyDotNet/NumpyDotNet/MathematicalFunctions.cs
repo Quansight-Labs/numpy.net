@@ -52,7 +52,8 @@ namespace NumpyDotNet
     public static partial class np
     {
         #region MathFunctionHelper
-        class MathFunctionHelper
+
+        class MathFunctionHelper<T>
         {
             public ndarray a;
             private ndarray b;
@@ -60,28 +61,106 @@ namespace NumpyDotNet
             public long[] offsets = null;
             private long[] offsets2 = null;
 
-            public double[] dd = null;
-            public double[] x1 = null;
-            public double[] x2 = null;
+            public T[] dd = null;
+            public T[] x1 = null;
+            public T[] x2 = null;
 
-            public double[] s = null;
+            public T[] s = null;
+
+            private NPY_TYPES target_nptype;
+            private dtype target_dtype;
+
+            public void SetupTypes()
+            {
+                T[] n = new T[1];
+
+                switch (Type.GetTypeCode(n[0].GetType()))
+                {
+                    case TypeCode.Boolean:
+                        target_nptype = NPY_TYPES.NPY_BOOL;
+                        target_dtype = np.Bool;
+                        break;
+
+                    case TypeCode.Byte:
+                        target_nptype = NPY_TYPES.NPY_UBYTE;
+                        target_dtype = np.UInt8;
+                        break;
+
+                    case TypeCode.SByte:
+                        target_nptype = NPY_TYPES.NPY_BYTE;
+                        target_dtype = np.Int8;
+                        break;
+
+                    case TypeCode.UInt16:
+                        target_nptype = NPY_TYPES.NPY_UINT16;
+                        target_dtype = np.UInt16;
+                        break;
+
+                    case TypeCode.UInt32:
+                        target_nptype = NPY_TYPES.NPY_UINT32;
+                        target_dtype = np.UInt32;
+                        break;
+
+                    case TypeCode.UInt64:
+                        target_nptype = NPY_TYPES.NPY_UINT64;
+                        target_dtype = np.UInt64;
+                        break;
+
+                    case TypeCode.Int16:
+                        target_nptype = NPY_TYPES.NPY_INT16;
+                        target_dtype = np.Int16;
+                        break;
+
+                    case TypeCode.Int32:
+                        target_nptype = NPY_TYPES.NPY_INT32;
+                        target_dtype = np.Int32;
+                        break;
+
+                    case TypeCode.Int64:
+                        target_nptype = NPY_TYPES.NPY_INT64;
+                        target_dtype = np.Int64;
+                        break;
+
+                    case TypeCode.Decimal:
+                        target_nptype = NPY_TYPES.NPY_DECIMAL;
+                        target_dtype = np.Decimal;
+                        break;
+
+                    case TypeCode.Double:
+                        target_nptype = NPY_TYPES.NPY_DOUBLE;
+                        target_dtype = np.Float64;
+                        break;
+
+                    case TypeCode.Single:
+                        target_nptype = NPY_TYPES.NPY_FLOAT;
+                        target_dtype = np.Float32;
+                        break;
+
+                    default:
+                        throw new Exception("Data type not supported");
+                }
+            }
 
 
             public MathFunctionHelper(object x)
             {
+                SetupTypes();
+
                 a = asanyarray(x);
-                if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                if (a.Dtype.TypeNum != target_nptype)
                 {
-                    a = a.astype(dtype: np.Float64);
+                    a = a.astype(dtype: target_dtype);
                 }
 
                 offsets = NpyCoreApi.GetViewOffsets(a);
-                dd = a.Array.data.datap as double[];
-                s = new double[offsets.Length];
+                dd = a.Array.data.datap as T[];
+                s = new T[offsets.Length];
             }
 
             public MathFunctionHelper(object x1, object x2)
             {
+                SetupTypes();
+
                 a = asanyarray(x1);
                 b = asanyarray(x2);
 
@@ -95,22 +174,22 @@ namespace NumpyDotNet
                     a = np.broadcast_to(a, b.shape);
                 }
 
-                if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                if (a.Dtype.TypeNum != target_nptype)
                 {
-                    a = a.astype(dtype: np.Float64);
+                    a = a.astype(dtype: target_dtype);
                 }
-                if (b.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                if (b.Dtype.TypeNum != target_nptype)
                 {
-                    b = b.astype(dtype: np.Float64);
+                    b = b.astype(dtype: target_dtype);
                 }
 
                 offsets = NpyCoreApi.GetViewOffsets(a);
                 offsets2 = NpyCoreApi.GetViewOffsets(b);
 
-                this.x1 = a.Array.data.datap as double[];
-                this.x2 = b.Array.data.datap as double[];
+                this.x1 = a.Array.data.datap as T[];
+                this.x2 = b.Array.data.datap as T[];
 
-                s = new double[offsets.Length];
+                s = new T[offsets.Length];
             }
 
             public long GetOffset(long index)
@@ -152,7 +231,7 @@ namespace NumpyDotNet
 
         public static ndarray sin(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
             
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -170,7 +249,7 @@ namespace NumpyDotNet
 
         public static ndarray cos(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -188,7 +267,7 @@ namespace NumpyDotNet
 
         public static ndarray tan(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -206,7 +285,7 @@ namespace NumpyDotNet
 
         public static ndarray arcsin(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -224,7 +303,7 @@ namespace NumpyDotNet
 
         public static ndarray arccos(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -242,7 +321,7 @@ namespace NumpyDotNet
 
         public static ndarray arctan(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -260,7 +339,7 @@ namespace NumpyDotNet
 
         public static ndarray hypot(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
 
             throw new NotImplementedException();
@@ -281,7 +360,7 @@ namespace NumpyDotNet
 
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -305,7 +384,7 @@ namespace NumpyDotNet
 
         public static ndarray degrees(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -328,7 +407,7 @@ namespace NumpyDotNet
 
         public static ndarray radians(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -350,7 +429,7 @@ namespace NumpyDotNet
 
         public static ndarray sinh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -368,7 +447,7 @@ namespace NumpyDotNet
 
         public static ndarray cosh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -386,7 +465,7 @@ namespace NumpyDotNet
 
         public static ndarray tanh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -404,7 +483,7 @@ namespace NumpyDotNet
 
         public static ndarray arcsinh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -423,7 +502,7 @@ namespace NumpyDotNet
 
         public static ndarray arccosh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -443,7 +522,7 @@ namespace NumpyDotNet
 
         public static ndarray arctanh(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -518,7 +597,7 @@ namespace NumpyDotNet
 
         public static ndarray exp(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -548,7 +627,7 @@ namespace NumpyDotNet
             }
             */
 
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -566,7 +645,7 @@ namespace NumpyDotNet
 
         public static ndarray exp2(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -584,7 +663,7 @@ namespace NumpyDotNet
 
         public static ndarray log(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -602,7 +681,7 @@ namespace NumpyDotNet
 
         public static ndarray log10(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -620,7 +699,7 @@ namespace NumpyDotNet
 
         public static ndarray log2(object x, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -638,7 +717,7 @@ namespace NumpyDotNet
 
         public static ndarray logn(object x, int n, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -668,7 +747,7 @@ namespace NumpyDotNet
             */
 
 
-            MathFunctionHelper ch = new MathFunctionHelper(x);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -686,7 +765,7 @@ namespace NumpyDotNet
 
         public static ndarray logaddexp(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -704,7 +783,7 @@ namespace NumpyDotNet
 
         public static ndarray logaddexp2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -722,7 +801,7 @@ namespace NumpyDotNet
 
         public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
@@ -770,7 +849,7 @@ namespace NumpyDotNet
 
         public static ndarray lcm(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
 
             for (int i = 0; i < ch.offsets.Length; i++)
@@ -790,7 +869,7 @@ namespace NumpyDotNet
 
         public static ndarray gcd(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
