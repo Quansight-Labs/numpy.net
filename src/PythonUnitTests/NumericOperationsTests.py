@@ -836,17 +836,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
  
 
-    def test_subtract_1(self):        
-
-        a = np.subtract(2.0, 4.0)
-        print(a)
-
-        b = np.arange(9.0).reshape((3, 3))
-        c = np.arange(3.0)
-        d = np.subtract(b, c)
-        print(d)
-
- 
 
     def test_isfinite_1(self):
 

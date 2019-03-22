@@ -1363,20 +1363,7 @@ namespace NumpyDotNet
 
         #endregion
 
-        #region subtract
-
-        public static ndarray subtract(object x1, object x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_subtract, asanyarray(x2));
-        }
-
-        public static ndarray subtract(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_subtract, x2);
-        }
-        #endregion
-
-    
+ 
 
         #region true_divide
 

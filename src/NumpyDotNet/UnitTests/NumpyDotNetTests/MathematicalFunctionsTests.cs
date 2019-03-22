@@ -1902,6 +1902,24 @@ namespace NumpyDotNetTests
 
         }
 
+
+
+        [TestMethod]
+        public void test_subtract_1()
+        {
+            var a = np.subtract(1.0, 4.0);
+            Assert.AreEqual(-3.0, a.GetItem(0));
+            print(a);
+
+            var b = np.arange(9.0).reshape((3, 3));
+            var c = np.arange(3.0);
+            var d = np.subtract(b, c);
+            AssertArray(d, new double[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            print(d);
+        }
+
+
+
         #endregion
 
         [Ignore]

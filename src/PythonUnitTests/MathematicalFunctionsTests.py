@@ -1156,6 +1156,19 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.power(a, 0.5)
         print(b)
 
+        
+    def test_subtract_1(self):        
+
+        a = np.subtract(2.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.subtract(b, c)
+        print(d)
+
+ 
+
     #endregion
 
 if __name__ == '__main__':
