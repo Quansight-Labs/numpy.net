@@ -910,7 +910,24 @@ namespace NumpyDotNet
             }
             else
             {
-                throw new ValueError("This function only operates on floating point values");
+                MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x);
+                ch.s = null;
+
+                bool[] bret = new bool[ch.offsets.Length];
+
+                for (int i = 0; i < ch.offsets.Length; i++)
+                {
+                    long f = ch.dd[ch.offsets[i]];
+                    bret[i] = Math.Sign(f) < 0 ? true : false;
+                }
+
+                var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
         }

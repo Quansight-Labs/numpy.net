@@ -1609,7 +1609,7 @@ namespace NumpyDotNetTests
             AssertArray(e, new bool[] { false, false });
             print(e);
 
-            var f = np.signbit(np.array(new float[] { -1, 0, 1}));
+            var f = np.signbit(np.array(new int[] { -1, 0, 1}));
             AssertArray(f, new bool[] { true, false, false });
             print(f);
         }
