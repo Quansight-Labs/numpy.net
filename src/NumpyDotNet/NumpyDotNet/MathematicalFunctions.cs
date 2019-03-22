@@ -932,6 +932,93 @@ namespace NumpyDotNet
 
         }
 
+
+        public static ndarray copysign(object x1, object x2, object where = null)
+        {
+            var xa = asanyarray(x1);
+            if (xa.IsFloatingPoint)
+            {
+                if (xa.itemsize <= sizeof(float))
+                {
+                    MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        var a = ch.x1[ch.GetOffsetX1(i)];
+                        var b = ch.x2[ch.GetOffsetX2(i)];
+
+                        if (Math.Sign(a) != Math.Sign(b))
+                        {
+                            a = -a;
+                        }
+
+                        ch.s[i] = a;
+                    }
+
+                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+                else
+                {
+                    MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        var a = ch.x1[ch.GetOffsetX1(i)];
+                        var b = ch.x2[ch.GetOffsetX2(i)];
+
+                        if (Math.Sign(a) != Math.Sign(b))
+                        {
+                            a = -a;
+                        }
+
+                        ch.s[i] = a;
+                    }
+
+                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+            }
+            else
+            {
+                MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x1, x2);
+
+                for (int i = 0; i < ch.offsets.Length; i++)
+                {
+                    var a = ch.x1[ch.GetOffsetX1(i)];
+                    var b = ch.x2[ch.GetOffsetX2(i)];
+
+                    if (Math.Sign(a) != Math.Sign(b))
+                    {
+                        a = -a;
+                    }
+
+                    ch.s[i] = a;
+                }
+
+                var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret.astype(xa.Dtype);
+            }
+
+
+    
+        }
+
         #endregion
 
         #region Rational routines

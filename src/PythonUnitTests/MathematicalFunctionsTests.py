@@ -991,18 +991,37 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.signbit(np.array([1, -2.3, 2.1]))
         print(b)
 
-        b = np.signbit(np.array([+0.0, -0.0]))
-        print(b)
-
-        c = np.signbit(np.array([-np.inf, np.inf]))
+        c = np.signbit(np.array([+0.0, -0.0]))
         print(c)
 
-        d = np.signbit(np.array([-np.nan, np.nan]))
+        d = np.signbit(np.array([-np.inf, np.inf]))
         print(d)
 
-
-        e = np.signbit(np.array([-1, 0, 1]))
+        e = np.signbit(np.array([-np.nan, np.nan]))
         print(e)
+
+
+        f = np.signbit(np.array([-1, 0, 1]))
+        print(f)
+
+    def test_copysign_1(self):
+
+        a = np.copysign(1.3, -1)
+        print(a)
+
+        b = 1/np.copysign(0, 1)
+        print(b)
+
+        c = 1/np.copysign(0, -1)
+        print(c)
+
+
+        d = np.copysign([-1, 0, 1], -1.1)
+        print(d)
+
+        e  = np.copysign([-1, 0, 1], np.arange(3)-1)
+        print(e)
+
 
     #endregion
 

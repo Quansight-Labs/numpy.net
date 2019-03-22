@@ -1614,10 +1614,29 @@ namespace NumpyDotNetTests
             print(f);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_copysign_Placeholder()
+        public void test_copysign_1()
         {
+            var a = np.copysign(1.3, -1);
+            Assert.AreEqual(-1.3, a.GetItem(0));
+            print(a);
+
+            var b = np.divide(1 , np.copysign(0, 1));
+            Assert.AreEqual(0, b.GetItem(0));  // note: python gets a np.inf value here
+            print(b);
+
+            var c = 1 / np.copysign(0, -1);
+            Assert.AreEqual(0, c.GetItem(0));  // note: python gets a -np.inf value here
+            print(c);
+
+
+            var d = np.copysign(new int[] { -1, 0, 1 }, -1.1);
+            AssertArray(d, new int[] { -1, 0, -1 });
+            print(d);
+
+            var e = np.copysign(new int[] { -1, 0, 1 }, np.arange(3) - 1);
+            AssertArray(e, new int[] { -1, 0, 1});
+            print(e);
         }
 
         [Ignore]
