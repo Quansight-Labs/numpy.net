@@ -1720,30 +1720,6 @@ namespace NumpyDotNet
         }
         #endregion
 
-        private static bool broadcastable(ndarray ao, npy_intp[] dims, int nd)
-        {
-            if (ao.ndim > nd)
-            {
-                return false;
-            }
-
-            int j, i;
-
-            j = nd - ao.ndim;
-            for (i = 0; i < ao.ndim; i++, j++)
-            {
-                if (ao.Array.dimensions[i] == 1)
-                {
-                    continue;
-                }
-                if (ao.Array.dimensions[i] != dims[j])
-                {
-                    return false;
-                }
-            }
-  
-            return true;
-        }
 
         private static long CalculateNewShapeSize(shape shape)
         {
