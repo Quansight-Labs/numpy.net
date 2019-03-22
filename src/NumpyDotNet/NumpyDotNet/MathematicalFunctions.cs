@@ -1184,6 +1184,25 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, x2);
         }
 
+        public static ndarray divide(object x1, object x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_divide, asanyarray(x2));
+        }
+
+        public static ndarray divide(object x1, int x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_divide, x2);
+        }
+
+        public static ndarray power(object a, double operand)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, operand);
+        }
+        public static ndarray power(object a, ndarray b)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, b);
+        }
+
         #endregion
 
     }

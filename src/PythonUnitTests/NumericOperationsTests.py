@@ -256,24 +256,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
         b = a % 6
         print(b)
 
-    def test_power_operations(self):
-        a =  np.arange(0, 32, 1, dtype = np.int16)
-        print(a)
-
-        b = np.power(a, 3.23)
-        print(b)
-        
-        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
-        print(a)
-
-        b = np.power(a, 4)
-        print(b)
-
-        b = np.power(a, 0)
-        print(b)
-
-        b = np.power(a, 0.5)
-        print(b)
 
     def test_square_operations(self):
         a =  np.arange(0, 32, 1, dtype = np.int16)
@@ -525,19 +507,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
         return
 
-
-    def test_divide(self):
-
-        a = np.divide(7,3)
-        print(a)
-
-        b = np.divide([1., 2., 3., 4.], 2.5)
-        print(b)
-
-        c = np.divide([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
-        print(c)
-
-        return
 
     def test_true_divide(self):
 

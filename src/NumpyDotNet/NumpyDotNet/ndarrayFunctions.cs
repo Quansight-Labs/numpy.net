@@ -992,14 +992,7 @@ namespace NumpyDotNet
         #endregion
 
         #region numeric operations
-        public static ndarray power(object a, double operand)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, operand);
-        }
-        public static ndarray power(object a, ndarray b)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, b);
-        }
+   
         public static ndarray square(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_square, 0);
@@ -1384,19 +1377,6 @@ namespace NumpyDotNet
         #endregion
 
     
-
-        #region divide
-
-        public static ndarray divide(object x1, object x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_divide, asanyarray(x2));
-        }
-
-        public static ndarray divide(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_divide, x2);
-        }
-        #endregion
 
         #region true_divide
 
