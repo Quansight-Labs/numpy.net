@@ -510,39 +510,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
 
 
-    def test_divmod(self):
-
-        a = np.divmod(7,3)
-        print(a)
-
-        b = np.divmod([1., 2., 3., 4.], 2.5)
-        print(b)
-
-        c = np.divmod([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
-        print(c)
-
-        return
-
-    def test_mod_1(self):
-
-        x = np.mod([4, 7], [2, 3])
-        print(x)
-
-        y = np.mod(np.arange(7), 5)
-        print(y)
-
-        return
-
-    def test_remainder_1(self):
-
-        x = np.remainder([4, 7], [2, 3])
-        print(x)
-
-        y = np.remainder(np.arange(7), 5)
-        print(y)
-
-        return
-    
+ 
     def test_min(self):
 
         x = np.array([2.5, -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])

@@ -1399,50 +1399,8 @@ namespace NumpyDotNet
 
   
 
-        #region divmod
 
-        public static ndarray[] divmod(object x1, object x2)
-        {
-            ndarray[] results = new ndarray[2];
-
-            results[0] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, asanyarray(x2));
-            results[1] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, asanyarray(x2));
-
-            return results;
-        }
-        public static ndarray[] divmod(object x1, int x2)
-        {
-            ndarray[] results = new ndarray[2];
-
-            results[0] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, x2);
-            results[1] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
-
-            return results;
-
-        }
-
-        #endregion
-
-        #region mod/remainder
-
-        public static ndarray mod(object x1, object x2)
-        {
-            return remainder(x1, x2);
-        }
-        public static ndarray mod(object x1, int x2)
-        {
-            return remainder(x1, x2);
-        }
-        public static ndarray remainder(object x1, object x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, asanyarray(x2));
-        }
-        public static ndarray remainder(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
-        }
-
-        #endregion
+  
 
         #region isnan
         public static float NaN = float.NaN;
