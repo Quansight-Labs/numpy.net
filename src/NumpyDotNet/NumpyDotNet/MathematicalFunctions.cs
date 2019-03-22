@@ -55,9 +55,17 @@ namespace NumpyDotNet
         class MathFunctionHelper
         {
             public ndarray a;
+            private ndarray b;
+
             public long[] offsets = null;
+            private long[] offsets2 = null;
+
             public double[] dd = null;
+            public double[] x1 = null;
+            public double[] x2 = null;
+
             public double[] s = null;
+
 
             public MathFunctionHelper(object x)
             {
@@ -70,6 +78,72 @@ namespace NumpyDotNet
                 offsets = NpyCoreApi.GetViewOffsets(a);
                 dd = a.Array.data.datap as double[];
                 s = new double[offsets.Length];
+            }
+
+            public MathFunctionHelper(object x1, object x2)
+            {
+                a = asanyarray(x1);
+                b = asanyarray(x2);
+
+                if (!broadcastable(a,b))
+                {
+                    throw new Exception(string.Format("operands could not be broadcast together with shapes ({0}),({1})", a.shape.ToString(), b.shape.ToString()));
+                }
+
+                if (NpyCoreApi.ArraySize(a) < NpyCoreApi.ArraySize(b))
+                {
+                    a = np.broadcast_to(a, b.shape);
+                }
+
+                if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                {
+                    a = a.astype(dtype: np.Float64);
+                }
+                if (b.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                {
+                    b = b.astype(dtype: np.Float64);
+                }
+
+                offsets = NpyCoreApi.GetViewOffsets(a);
+                offsets2 = NpyCoreApi.GetViewOffsets(b);
+
+                this.x1 = a.Array.data.datap as double[];
+                this.x2 = b.Array.data.datap as double[];
+
+                s = new double[offsets.Length];
+            }
+
+            public long GetOffset(long index)
+            {
+                long j = index;
+                if (index >= this.offsets.Length)
+                {
+                    j = index % this.offsets.Length;
+                }
+
+                return j;
+            }
+
+            public long GetOffsetX1(long index)
+            {
+                long j = index;
+                if (index >= this.offsets.Length)
+                {
+                    j = index % this.offsets.Length;
+                }
+
+                return j;
+            }
+
+            public long GetOffsetX2(long index)
+            {
+                long j = index;
+                if (index >= this.offsets2.Length)
+                {
+                    j = index % this.offsets2.Length;
+                }
+
+                return j;
             }
         }
         #endregion
@@ -186,8 +260,8 @@ namespace NumpyDotNet
 
         public static ndarray hypot(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
-            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+
 
             throw new NotImplementedException();
 
@@ -207,13 +281,11 @@ namespace NumpyDotNet
 
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch = new MathFunctionHelper(x1);
-            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
-
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
 
             for (int i = 0; i < ch.offsets.Length; i++)
             {
-                ch.s[i] = Math.Atan2(ch.dd[ch.offsets[i]], ch2.dd[ch2.offsets[i]]);
+                ch.s[i] = Math.Atan2(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
             }
 
             
@@ -614,15 +686,14 @@ namespace NumpyDotNet
 
         public static ndarray logaddexp(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
-            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
 
-            for (int i = 0; i < ch1.offsets.Length; i++)
+            for (int i = 0; i < ch.offsets.Length; i++)
             {
-                ch1.s[i] = Math.Log(Math.Exp(ch1.dd[ch1.offsets[i]]) + Math.Exp(ch2.dd[ch2.offsets[i]]));
+                ch.s[i] = Math.Log(Math.Exp(ch.x1[ch.GetOffsetX1(i)]) + Math.Exp(ch.x2[ch.GetOffsetX2(i)]));
             }
 
-            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -633,15 +704,14 @@ namespace NumpyDotNet
 
         public static ndarray logaddexp2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
-            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
 
-            for (int i = 0; i < ch1.offsets.Length; i++)
+            for (int i = 0; i < ch.offsets.Length; i++)
             {
-                ch1.s[i] = Math.Log(Math.Pow(2, ch1.dd[ch1.offsets[i]]) + Math.Pow(2, ch2.dd[ch2.offsets[i]]), 2);
+                ch.s[i] = Math.Log(Math.Pow(2, ch.x1[ch.GetOffsetX1(i)]) + Math.Pow(2, ch.x2[ch.GetOffsetX2(i)]), 2);
             }
 
-            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -652,15 +722,14 @@ namespace NumpyDotNet
 
         public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
         {
-            MathFunctionHelper ch1 = new MathFunctionHelper(x1);
-            MathFunctionHelper ch2 = new MathFunctionHelper(x2);
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
 
-            for (int i = 0; i < ch1.offsets.Length; i++)
+            for (int i = 0; i < ch.offsets.Length; i++)
             {
-                ch1.s[i] = Math.Log(Math.Pow(n, ch1.dd[ch1.offsets[i]]) + Math.Pow(n, ch2.dd[ch2.offsets[i]]), 2);
+                ch.s[i] = Math.Log(Math.Pow(n, ch.x1[ch.GetOffsetX1(i)]) + Math.Pow(n, ch.x2[ch.GetOffsetX2(i)]), 2);
             }
 
-            var ret = np.array(ch1.s).reshape(new shape(ch1.a.dims));
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -669,6 +738,74 @@ namespace NumpyDotNet
             return ret;
         }
 
+
+        #endregion
+
+        #region Other special functions
+
+        #endregion
+
+        #region Floating point routines
+
+
+        #endregion
+
+        #region Rational routines
+
+        private static double _gcd(double a, double b)
+        {
+            while (b != 0)
+            {
+                var tempb = b;
+                b = a % b;
+                a = tempb;
+            }
+            return a;
+        }
+
+        private static double _lcm(double a, double b)
+        {
+            return a / _gcd(a, b) * b;
+        }
+
+        public static ndarray lcm(object x1, object x2, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = _lcm(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+            }
+
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
+
+        public static ndarray gcd(object x1, object x2, object where = null)
+        {
+            MathFunctionHelper ch = new MathFunctionHelper(x1, x2);
+
+            for (int i = 0; i < ch.offsets.Length; i++)
+            {
+                ch.s[i] = _gcd(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+            }
+
+
+            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+        }
 
         #endregion
 
