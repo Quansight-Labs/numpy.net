@@ -832,7 +832,17 @@ namespace NumpyDotNet
         #region Rational routines
 
     
-        private static long _gcd(long a, long b)
+        private static long _gcdl(long a, long b)
+        {
+            while (b != 0)
+            {
+                var tempb = b;
+                b = a % b;
+                a = tempb;
+            }
+            return a;
+        }
+        private static int _gcdi(int a, int b)
         {
             while (b != 0)
             {
@@ -843,27 +853,55 @@ namespace NumpyDotNet
             return a;
         }
 
-  
-        private static long _lcm(long a, long b)
+
+        private static long _lcml(long a, long b)
         {
-            return a / _gcd(a, b) * b;
+            return a / _gcdl(a, b) * b;
+        }
+        private static int _lcmi(int a, int b)
+        {
+            return a / _gcdi(a, b) * b;
         }
 
         public static ndarray lcm(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
+            ndarray ret;
 
-
-            for (int i = 0; i < ch.offsets.Length; i++)
+            var xa = asanyarray(x1);
+            if (xa.IsInteger)
             {
-                ch.s[i] = _lcm(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                if (xa.itemsize <= sizeof(Int32))
+                {
+                    MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        ch.s[i] = _lcmi(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                    }
+                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
+                else
+                {
+                    MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        ch.s[i] = _lcml(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                    }
+                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
             }
-
-
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
-            if (where != null)
+            else
             {
-                ret[np.invert(where)] = np.NaN;
+                throw new ValueError("This function only operates on integer type values");
             }
 
             return ret;
@@ -871,18 +909,43 @@ namespace NumpyDotNet
 
         public static ndarray gcd(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
+            ndarray ret;
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            var xa = asanyarray(x1);
+            if (xa.IsInteger)
             {
-                ch.s[i] = _gcd(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                if (xa.itemsize <= sizeof(Int32))
+                {
+                    MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        ch.s[i] = _gcdi(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                    }
+                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
+                else
+                {
+                    MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        ch.s[i] = _gcdl(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                    }
+                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
             }
-
-
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
-            if (where != null)
+            else
             {
-                ret[np.invert(where)] = np.NaN;
+                throw new ValueError("This function only operates on integer type values");
             }
 
             return ret;

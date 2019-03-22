@@ -1028,6 +1028,25 @@ class MathematicalFunctionsTests(unittest.TestCase):
         #f = np.lcm(np.arange(8).reshape(2,4), np.arange(16).reshape(4, 4))
         #print(f)
 
+    def test_gcd_1(self):
+
+        a = np.gcd(12, 20)
+        print(a)
+
+        b = np.gcd.reduce([3, 12, 20])
+        print(b)
+
+        c = np.gcd.reduce([40, 12, 20])
+        print(c)
+ 
+        d = np.gcd(np.arange(6), [20])
+        print(d)
+
+        e = np.gcd([20, 20], np.arange(6).reshape(3, 2))
+        print(e)
+
+        #f = np.lcm(np.arange(8).reshape(2,4), np.arange(16).reshape(4, 4))
+        #print(f)
 
     #endregion
 

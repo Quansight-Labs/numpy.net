@@ -1634,7 +1634,7 @@ namespace NumpyDotNetTests
         public void test_lcm_1()
         {
             var a = np.lcm(12, 20);
-            Assert.AreEqual((long)60, a.GetItem(0));
+            Assert.AreEqual(60, a.GetItem(0));
             print(a);
 
             //var b = np.lcm.reduce(new int[] { 3, 12, 20 }); // todo: need to implement reduce functionality
@@ -1644,18 +1644,42 @@ namespace NumpyDotNetTests
             //print(c);
 
             var d = np.lcm(np.arange(6), new int[] { 20 });
-            AssertArray(d, new long[] { 0, 20, 20, 60, 20, 20 });
+            AssertArray(d, new int[] { 0, 20, 20, 60, 20, 20 });
             print(d);
 
-            var e = np.lcm(new long[] { 20, 20 }, np.arange(6).reshape((3, 2)));
-            AssertArray(e, new long[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            var e = np.lcm(new int[] { 20, 20 }, np.arange(6).reshape((3, 2)));
+            AssertArray(e, new int[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
             print(e);
+
+            var f = np.lcm(new long[] { 20, 20 }, np.arange(6, dtype: np.Int64).reshape((3, 2)));
+            AssertArray(f, new long[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            print(f);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_gcd_Placeholder()
+        public void test_gcd_1()
         {
+            var a = np.gcd(12, 20);
+            Assert.AreEqual(4, a.GetItem(0));
+            print(a);
+
+            //var b = np.gcd.reduce(new int[] { 3, 12, 20 }); // todo: need to implement reduce functionality
+            //print(b);
+
+            //var c = np.gcd.reduce(new int[] { 40, 12, 20 }); // tod: need to implement reduce functionality
+            //print(c);
+
+            var d = np.gcd(np.arange(6), new int[] { 20 });
+            AssertArray(d, new int[] { 20, 1, 2, 1, 4, 5 });
+            print(d);
+
+            var e = np.gcd(new int[] { 20, 20 }, np.arange(6).reshape((3, 2)));
+            AssertArray(e, new int[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
+            print(e);
+
+            var f = np.gcd(new long[] { 20, 20 }, np.arange(6, dtype: np.Int64).reshape((3, 2)));
+            AssertArray(f, new long[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
+            print(f);
         }
 
         #endregion
