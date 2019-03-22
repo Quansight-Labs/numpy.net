@@ -50,6 +50,12 @@
     <Compile Include="MathematicalFunctionsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ComplexNumberTests.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BigIntegersTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TwoDimBaseTests.py">
       <SubType>Code</SubType>
     </Compile>

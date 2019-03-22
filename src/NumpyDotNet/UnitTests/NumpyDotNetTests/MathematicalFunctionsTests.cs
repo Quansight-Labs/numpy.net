@@ -2037,49 +2037,13 @@ namespace NumpyDotNetTests
 
         #endregion
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_ComplexNumbers_Placeholder()
-        {
-            System.Numerics.Complex c = new System.Numerics.Complex(1.2, 2.0);
-            Console.WriteLine(c.Real);
-            Console.WriteLine(c.Imaginary);
+        #region Handling complex numbers
 
-            c = c * 2;
+        // see the functions in ComplexNumbersTests
 
-            Console.WriteLine(c.Real);
-            Console.WriteLine(c.Imaginary);
-
-            var d1 = Convert.ToDecimal(c);
-
-            var d2 = Convert.ToDouble(c);
-
-            var cc = new System.Numerics.Complex(d2, 0);
+        #endregion
 
 
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void xxx_BigInteger_Placeholder()
-        {
-            System.Numerics.BigInteger c = new System.Numerics.BigInteger(1.0);
-            Console.WriteLine(c.IsZero);
-            Console.WriteLine(c.IsPowerOfTwo);
-
-            c = c * 2;
-
-            Console.WriteLine(c);
-            Console.WriteLine(c);
-
-            var d1 = Convert.ToDecimal(c);
-
-            var d2 = Convert.ToDouble(c);
-
-            var cc = new System.Numerics.Complex(d2, 0);
-
-
-        }
 
         [Ignore]
         [TestMethod]

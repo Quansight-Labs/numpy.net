@@ -76,6 +76,8 @@
     <Compile Include="StringOperationsTests.cs" />
     <Compile Include="ObjectOperationsTests.cs" />
     <Compile Include="NumericTests.cs" />
+    <Compile Include="ComplexNumbersTests.cs" />
+    <Compile Include="BigIntegerTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
