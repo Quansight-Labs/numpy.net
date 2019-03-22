@@ -288,19 +288,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
         b = np.square(a)
         print(b)
 
-    def test_reciprocal_operations(self):
-        a =  np.arange(1, 32, 1, dtype = np.float32)
-        print(a)
-
-        b = np.reciprocal(a)
-        print(b)
-        
-        a = np.arange(2048, 2048+32, 1, dtype = np.float64)
-        print(a)
-
-        b = np.reciprocal(a)
-        print(b)
-
+  
     def test_sqrt_operations(self):
         a =  np.arange(0, 32, 1, dtype = np.int16)
         print(a)
@@ -877,15 +865,7 @@ class Test_NumericOperationsTests(unittest.TestCase):
         c = np.not_equal(2, [4, 2, 1])
         print(c)
 
-    def test_add_1(self):        
-
-        a = np.add(1.0, 4.0)
-        print(a)
-
-        b = np.arange(9.0).reshape((3, 3))
-        c = np.arange(3.0)
-        d = np.add(b, c)
-        print(d)
+ 
 
     def test_subtract_1(self):        
 

@@ -1145,6 +1145,32 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region Arithmetic operations
+
+
+        public static ndarray add(object x1, object x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_add, asanyarray(x2));
+        }
+
+        public static ndarray add(object x1, int x2)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_add, x2);
+        }
+
+        public static ndarray reciprocal(object a)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_reciprocal, 0);
+        }
+
+        public static ndarray positive(object o)
+        {
+            var a = asanyarray(o);
+            return a.Copy();
+        }
+
+        #endregion
+
     }
 
     #region MathHelper

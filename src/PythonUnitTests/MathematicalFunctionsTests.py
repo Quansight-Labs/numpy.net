@@ -1071,6 +1071,37 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     #region Arithmetic operations
 
+    def test_add_1(self):        
+
+        a = np.add(1.0, 4.0)
+        print(a)
+
+        b = np.arange(9.0).reshape((3, 3))
+        c = np.arange(3.0)
+        d = np.add(b, c)
+        print(d)
+
+    def test_reciprocal_operations(self):
+
+        a =  np.arange(1, 32, 1, dtype = np.float32)
+        print(a)
+
+        b = np.reciprocal(a)
+        print(b)
+        
+        a = np.arange(2048, 2048+32, 1, dtype = np.float64)
+        print(a)
+
+        b = np.reciprocal(a)
+        print(b)
+
+    def test_positive_1(self):
+ 
+        d = np.positive([-1, -0, 1])
+        print(d)
+
+        e  = np.positive([[1, 0, -1], [-2, 3, -4]])
+        print(e)
 
     #endregion
 

@@ -1004,11 +1004,7 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_square, 0);
         }
-        public static ndarray reciprocal(object a)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_reciprocal, 0);
-        }
-       
+  
         public static ndarray sqrt(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_sqrt, 0);
@@ -1372,19 +1368,6 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(asanyarray(input), NpyArray_Ops.npy_op_invert, 0, false);
         }
 
-        #endregion
-
-        #region add
-
-        public static ndarray add(object x1, object x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_add, asanyarray(x2));
-        }
-
-        public static ndarray add(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_add, x2);
-        }
         #endregion
 
         #region subtract
