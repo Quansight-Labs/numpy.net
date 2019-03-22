@@ -1791,6 +1791,18 @@ namespace NumpyDotNetTests
             print(e);
         }
 
+        [TestMethod]
+        public void test_negative_1()
+        {
+            var d = np.negative(new int[] { -1, -0, 1 });
+            AssertArray(d, new int[] { 1, 0, -1 });
+            print(d);
+
+            var e = np.negative(new int[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            AssertArray(e, new int[,] { { -1, 0, 1 }, { 2, -3, 4 } });
+            print(e);
+        }
+
         #endregion
 
         [Ignore]

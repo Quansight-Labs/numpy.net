@@ -1103,6 +1103,15 @@ class MathematicalFunctionsTests(unittest.TestCase):
         e  = np.positive([[1, 0, -1], [-2, 3, -4]])
         print(e)
 
+        
+    def test_negative_1(self):
+ 
+        d = np.negative([-1, -0, 1])
+        print(d)
+
+        e  = np.negative([[1, 0, -1], [-2, 3, -4]])
+        print(e)
+
     #endregion
 
 if __name__ == '__main__':

@@ -1169,6 +1169,11 @@ namespace NumpyDotNet
             return a.Copy();
         }
 
+        public static ndarray negative(object a)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_negative, 0);
+        }
+
         #endregion
 
     }
