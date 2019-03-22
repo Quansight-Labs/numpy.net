@@ -1365,19 +1365,6 @@ namespace NumpyDotNet
 
  
 
-        #region true_divide
-
-        public static ndarray true_divide(object x1, object x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_true_divide, asanyarray(x2));
-        }
-
-        public static ndarray true_divide(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_true_divide, x2);
-        }
-        #endregion
-
         #region right_shift
         public static ndarray right_shift(object input, int shiftvalue)
         {

@@ -1167,7 +1167,18 @@ class MathematicalFunctionsTests(unittest.TestCase):
         d = np.subtract(b, c)
         print(d)
 
- 
+    def test_true_divide(self):
+
+        a = np.true_divide(7,3)
+        print(a)
+
+        b = np.true_divide([1., 2., 3., 4.], 2.5)
+        print(b)
+
+        c = np.true_divide([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
+        print(c)
+
+        return 
 
     #endregion
 

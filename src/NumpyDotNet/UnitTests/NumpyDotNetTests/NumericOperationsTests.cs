@@ -1000,26 +1000,6 @@ namespace NumpyDotNetTests
 
         }
 
-  
-
-
-        [TestMethod]
-        public void test_true_divide()
-        {
-            var a = np.true_divide(7, 3);
-            Assert.AreEqual(2.3333333333333335, a.GetItem(0));
-            print(a);
-
-            var b = np.true_divide(new double[] { 1.0, 2.0, 3.0, 4.0 }, 2.5);
-            AssertArray(b, new double[] { 0.4, 0.8, 1.2, 1.6 });
-            print(b);
-
-            var c = np.true_divide(new double[] { 1.0, 2.0, 3.0, 4.0 }, new double[] { 0.5, 2.5, 2.5, 3.5 });
-            AssertArray(c, new double[] { 2.0, 0.8, 1.2, 1.14285714 });
-            print(c);
-
-            return;
-        }
 
         [TestMethod]
         public void test_floor_divide()
