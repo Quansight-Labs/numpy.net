@@ -217,9 +217,9 @@ namespace NumpyDotNet
             private long GetOffsetX1(long index)
             {
                 long j = index;
-                if (index >= this.expectedLength)
+                if (index >= this.offsets.Length)
                 {
-                    j = index % this.expectedLength;
+                    j = index % this.offsets.Length;
                 }
 
                 return offsets[j];
