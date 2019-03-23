@@ -958,8 +958,8 @@ namespace NumpyLib
             {
                 destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
 
-                srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray);
-                destArray = NpyArray_NumericOpUpscaleSourceArray(destArray, operandArray);
+                //srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray);
+                //destArray = NpyArray_NumericOpUpscaleSourceArray(destArray, operandArray);
             }
                 
             PerformNumericOpArray(srcArray, destArray, operandArray, operationType);
@@ -1179,8 +1179,16 @@ namespace NumpyLib
                         break;
                     }
             }
-     
-            NpyArray newArray = NpyArray_FromArray(srcArray, newtype, flags);
+
+            NpyArray newArray = null;
+            if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
+            {
+                newArray = NpyArray_FromArray(srcArray, newtype, flags);
+            }
+            else
+            {
+                newArray = NpyArray_FromArray(operandArray, newtype, flags);
+            }
             return newArray;
         }
 
@@ -1300,13 +1308,13 @@ namespace NumpyLib
 
         private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperation operation)
         {
-            var srcSize = NpyArray_Size(srcArray);
+            var destSize = NpyArray_Size(destArray);
 
-            var SrcIter = NpyArray_BroadcastToShape(srcArray, srcArray.dimensions, srcArray.nd);
+            var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
             var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
 
-            for (long i = 0; i < srcSize; i++)
+            for (long i = 0; i < destSize; i++)
             {
                 var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
                 var operValue = operArray.descr.f.getitem(OperIter.dataptr.data_offset - operArray.data.data_offset, operArray);
