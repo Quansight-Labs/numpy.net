@@ -1280,6 +1280,136 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region Misc
+
+        public static ndarray sign(object x, object where = null)
+        {
+            var xa = asanyarray(x);
+            if (xa.IsFloatingPoint)
+            {
+                if (xa.itemsize <= sizeof(float))
+                {
+                    MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        float r = 0.0f;
+
+                        float f = ch.dd[ch.offsets[i]];
+                        if (float.IsNegativeInfinity(f))
+                        {
+                            r = -1.0f;
+                        }
+                        else
+                        if (float.IsPositiveInfinity(f))
+                        {
+                            r = 1.0f;
+                        }
+                        if (float.IsNaN(f))
+                        {
+                            r = float.NaN;
+                        }
+                        else
+                        {
+                            if (f == 0.0f)
+                            {
+                                r = 0.0f;
+                            }
+                            else
+                            {
+                                r = Math.Sign(f) < 0 ? -1.0f : 1.0f;
+                            }
+                        }
+                        ch.s[i] = r;
+                    }
+ 
+
+                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+                else
+                {
+                    MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                    for (int i = 0; i < ch.offsets.Length; i++)
+                    {
+                        double r = 0.0;
+
+                        double d = ch.dd[ch.offsets[i]];
+                        if (double.IsNegativeInfinity(d))
+                        {
+                            r = -1.0;
+                        }
+                        else
+                        if (double.IsPositiveInfinity(d))
+                        {
+                            r = 1.0;
+                        }
+                        if (double.IsNaN(d))
+                        {
+                            r = double.NaN;
+                        }
+                        else
+                        {
+                            if (d == 0)
+                            {
+                                r = 0;
+                            }
+                            else
+                            {
+                                r = Math.Sign(d) < 0 ? -1.0 : 1.0;
+                            }
+                        }
+                        ch.s[i] = r;
+                    }
+
+
+                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+
+                    return ret;
+                }
+            }
+            else
+            {
+                MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x);
+
+
+                for (int i = 0; i < ch.offsets.Length; i++)
+                {
+                    long f = ch.dd[ch.offsets[i]];
+
+                    if (f == 0)
+                    {
+                        ch.s[i] = 0;
+                    }
+                    else
+                    {
+                        ch.s[i] = Math.Sign(f) < 0 ? -1 : 1;
+                    }
+                }
+
+                var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
+        }
+
+        #endregion
+
     }
 
     #region MathHelper

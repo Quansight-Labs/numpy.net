@@ -2174,11 +2174,32 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
         [TestMethod]
         public void test_sign_1()
         {
+            var a = np.sign(-1.2f);
+            Assert.AreEqual(-1.0f, a.GetItem(0));
+            print(a);
 
+            var b = np.sign(np.array(new double[] { 1, -2.3, 2.1 }));
+            AssertArray(b, new double[] { 1, -1, 1 });
+            print(b);
+
+            var c = np.sign(np.array(new double[] { +0.0, -0.0 }));  
+            AssertArray(c, new double[] { 0, 0 });
+            print(c);
+
+            var d = np.sign(np.array(new float[] { float.NegativeInfinity, float.PositiveInfinity }));
+            AssertArray(d, new float[] { -1, 1 });
+            print(d);
+
+            var e = np.sign(np.array(new double[] { -double.NaN, double.NaN })); // note: different result.  No such thing as -NaN
+            AssertArray(e, new double[] { double.NaN , double.NaN });
+            print(e);
+
+            var f = np.sign(np.array(new int[] { -1, 0, 1 }));
+            AssertArray(f, new int[] { -1, 0, 1 });
+            print(f);
         }
 
         [Ignore]

@@ -1329,6 +1329,27 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.absolute(a)
         print(b)
 
+    def test_sign_1(self):
+
+        a =np.sign(-1.2)
+        print(a)
+        
+        b = np.sign(np.array([1, -2.3, 2.1]))
+        print(b)
+
+        c = np.sign(np.array([+0.0, -0.0]))
+        print(c)
+
+        d = np.sign(np.array([-np.inf, np.inf]))
+        print(d)
+
+        e = np.sign(np.array([-np.nan, np.nan]))
+        print(e)
+
+
+        f = np.sign(np.array([-1, 0, 1]))
+        print(f)
+
     #endregion
 
 if __name__ == '__main__':
