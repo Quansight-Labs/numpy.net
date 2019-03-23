@@ -1041,7 +1041,7 @@ class MathematicalFunctionsTests(unittest.TestCase):
         d = np.lcm(np.arange(6), [20])
         print(d)
 
-        e = np.lcm([20, 20], np.arange(6).reshape(3, 2))
+        e = np.lcm([20, 21], np.arange(6).reshape(3, 2))
         print(e)
 
         #f = np.lcm(np.arange(8).reshape(2,4), np.arange(16).reshape(4, 4))
@@ -1190,6 +1190,24 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(b)
 
         c = np.floor_divide([1., 2., 3., 4.], [0.5, 2.5, 2.5, 3.5 ])
+        print(c)
+
+        return
+
+    def test_float_power(self):
+
+        x1 = range(6)
+
+        a = np.float_power(x1, 3)
+        print(a)
+
+        x2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]
+        b = np.float_power(x1, x2)
+        print(b)
+
+        x3 = np.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])
+
+        c = np.float_power(x1, x3)
         print(c)
 
         return

@@ -1684,12 +1684,12 @@ namespace NumpyDotNetTests
             AssertArray(d, new int[] { 0, 20, 20, 60, 20, 20 });
             print(d);
 
-            var e = np.lcm(new int[] { 20, 20 }, np.arange(6).reshape((3, 2)));
-            AssertArray(e, new int[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            var e = np.lcm(new int[] { 20, 21 }, np.arange(6).reshape((3, 2)));
+            AssertArray(e, new int[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
             print(e);
 
-            var f = np.lcm(new long[] { 20, 20 }, np.arange(6, dtype: np.Int64).reshape((3, 2)));
-            AssertArray(f, new long[,] { { 0, 20 }, { 20, 60 }, { 20, 20 } });
+            var f = np.lcm(new long[] { 20, 21 }, np.arange(6, dtype: np.Int64).reshape((3, 2)));
+            AssertArray(f, new long[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
             print(f);
         }
 
@@ -1958,11 +1958,26 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_float_power_Placeholder()
+        public void test_float_power()
         {
+            var x1 = new int[] { 0, 1, 2, 3, 4, 5 };
 
+            var a = np.float_power(x1, 3);
+            AssertArray(a, new double[] { 0.0, 1.0, 8.0, 27.0, 64.0, 125.0 });
+            print(a);
+
+            var x2 = new double[] { 1.0, 2.0, 3.0, 3.0, 2.0, 1.0 };
+            var b = np.float_power(x1, x2);
+            AssertArray(b, new double[] { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 });
+            print(b);
+
+            var x3 = np.array(new double[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
+            var c = np.float_power(x1, x3);
+            AssertArray(c, new double[,] { { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 }, { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 } });
+            print(c);
+
+            return;
         }
 
         [Ignore]
