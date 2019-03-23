@@ -332,6 +332,17 @@ namespace NumpyDotNet {
             }
         }
 
+
+        internal static NpyArrayIterObject BroadcastToShape(ndarray ao, npy_intp[] dims, int nd)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_BroadcastToShape(ao.core, dims, nd);
+            }
+        }
+
         internal static ndarray IterSubscript(flatiter iter, NpyIndexes indexes)
         {
             #if ENABLELOCKING
@@ -1004,6 +1015,17 @@ namespace NumpyDotNet {
             #endif
             {
                 return numpyAPI.GetViewOffsets(arr.Array);
+            }
+        }
+
+
+        internal static long[] GetViewOffsets(NpyArrayIterObject iter, long count)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.GetViewOffsets(iter,count);
             }
         }
 

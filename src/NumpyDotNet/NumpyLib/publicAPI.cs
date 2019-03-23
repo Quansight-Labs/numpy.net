@@ -146,10 +146,15 @@ namespace NumpyLib
         {
             return numpyinternal.GetViewOffsets(self);
         }
- 
-#endregion
 
-#region npy_array_access
+        public static long[] GetViewOffsets(NpyArrayIterObject iter, long count)
+        {
+            return numpyinternal.GetViewOffsets(iter, count);
+        }
+
+        #endregion
+
+        #region npy_array_access
 
         public static NpyDict_Iter NpyArrayAccess_DictAllocIter()
         {
