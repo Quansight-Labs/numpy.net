@@ -148,6 +148,26 @@ namespace NumpyDotNetTests
         //    Console.WriteLine("Milliseconds = {0}", sw.ElapsedMilliseconds);
         //}
 
+        //[TestMethod]
+        //public void test_add_operations_performance_2()
+        //{
+
+        //    var a = np.arange(0, 20000000, 1, dtype: np.Int32);
+
+        //    System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        //    sw.Start();
+
+        //    a = a.reshape(new shape(-1, 5));
+        //    //print(a.shape);
+        //    //print(a.strides);
+
+        //    var b = a + np.arange(2, 7);
+        //    //print(b.shape);
+        //    //print(b.strides);
+        //    sw.Stop();
+        //    Console.WriteLine("Milliseconds = {0}", sw.ElapsedMilliseconds);
+        //}
+
         [TestMethod]
         public void test_subtract_operations()
         {
