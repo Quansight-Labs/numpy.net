@@ -1298,6 +1298,37 @@ namespace NumpyLib
         }
 
 
+        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperation operation)
+        {
+            var srcSize = NpyArray_Size(srcArray);
+
+            var SrcIter = NpyArray_BroadcastToShape(srcArray, srcArray.dimensions, srcArray.nd);
+            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
+            var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
+
+            for (long i = 0; i < srcSize; i++)
+            {
+                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+                var operValue = operArray.descr.f.getitem(OperIter.dataptr.data_offset - operArray.data.data_offset, operArray);
+
+                object destValue = null;
+
+                destValue = operation(srcValue, Convert.ToDouble(operValue));
+
+                try
+                {
+                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                }
+                catch
+                {
+                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                }
+
+                NpyArray_ITER_NEXT(SrcIter);
+                NpyArray_ITER_NEXT(DestIter);
+                NpyArray_ITER_NEXT(OperIter);
+            }
+        }
 
 
         internal static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
@@ -1373,7 +1404,9 @@ namespace NumpyLib
 
             NpyArrayWrapper operandWrapper = new NpyArrayWrapper(operandArray);
 
-            PerformNumericOpArray(srcArray, destArray, operandWrapper, destArray.dimensions, 0, 0, 0, 0, operation);
+            //PerformNumericOpArray(srcArray, destArray, operandWrapper, destArray.dimensions, 0, 0, 0, 0, operation);
+
+            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operation);
         }
 
         /// <summary>
