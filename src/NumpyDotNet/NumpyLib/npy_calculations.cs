@@ -1230,7 +1230,10 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(ref srcArray, operationType);
 
+            //PerformNumericOpScalarIter(srcArray, destArray, operand, operation);
+
             PerformNumericOpScalar(srcArray, destArray, operand, destArray.dimensions, 0, 0, 0, operation);
+
 
             //PerformNumericOpScalar2(srcArray, destArray, operand, operation);
 
@@ -1267,8 +1270,35 @@ namespace NumpyLib
             }
         }
 
+        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
+        {
+            var srcSize = NpyArray_Size(srcArray);
+            var SrcIter = NpyArray_BroadcastToShape(srcArray, srcArray.dimensions, srcArray.nd);
+            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
 
- 
+            for (long i = 0; i < srcSize; i++)
+            {
+                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
+                object destValue = null;
+
+                destValue = operation(srcValue, operand);
+
+                try
+                {
+                    destArray.descr.f.setitem(DestIter.dataptr.data_offset-destArray.data.data_offset, destValue, destArray);
+                }
+                catch
+                {
+                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                }
+
+                NpyArray_ITER_NEXT(SrcIter);
+                NpyArray_ITER_NEXT(DestIter);
+            }
+        }
+
+
+
 
         internal static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
         {
