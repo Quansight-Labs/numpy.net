@@ -127,8 +127,7 @@ namespace NumpyDotNetTests
             AssertArray(d, ExpectedDataD);
         }
 
-  
-        //[Ignore] // only use to check performance of add operations
+
         //[TestMethod]
         //public void test_add_operations_performance()
         //{
@@ -138,7 +137,7 @@ namespace NumpyDotNetTests
         //    System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         //    sw.Start();
 
-        //    // a = a.reshape(new shape(5, -1));
+        //    a = a.reshape(new shape(5, -1));
         //    print(a.shape);
         //    print(a.strides);
 
@@ -146,9 +145,7 @@ namespace NumpyDotNetTests
         //    print(b.shape);
         //    print(b.strides);
         //    sw.Stop();
-        //    Console.WriteLine(sw.ElapsedMilliseconds);
-
-
+        //    Console.WriteLine("Milliseconds = {0}", sw.ElapsedMilliseconds);
         //}
 
         [TestMethod]
