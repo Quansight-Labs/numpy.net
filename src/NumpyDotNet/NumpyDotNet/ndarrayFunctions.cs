@@ -1003,6 +1003,12 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_sqrt, 0);
         }
 
+
+        public static ndarray cbrt(object a)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, 1.0/3.0);
+        }
+
         public static ndarray absolute(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_absolute, 0);

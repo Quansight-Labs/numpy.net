@@ -1294,6 +1294,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.sqrt(a)
         print(b)
 
+                
+    def test_cbrt_operations(self):
+        a =  np.arange(0, 32, 1, dtype = np.int16)
+        print(a)
+
+        b = np.cbrt(a)
+        print(b)
+        
+        a = np.arange(2048, 2048+32, 1, dtype = np.int64)
+        print(a)
+
+        b = np.cbrt(a)
+        print(b)
+
 
     def test_square_operations(self):
         a =  np.arange(0, 32, 1, dtype = np.int16)
