@@ -135,6 +135,13 @@ namespace NumpyLib
             int i, diff, j, k;
             bool compat;
 
+            // if this is a scalar with no dimensions, let's fake 1 dimension
+            if (dims == null)
+            {
+                dims = new npy_intp[1] { 1 };
+                nd = 1;
+            }
+
             if (ao.nd > nd)
             {
                 goto err;
