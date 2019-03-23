@@ -55,17 +55,19 @@ namespace NumpyDotNet
 
         class MathFunctionHelper<T>
         {
-            public ndarray a;
+            private ndarray a;
             private ndarray b;
 
-            public long[] offsets = null;
+            public shape expectedShape = null;
+            public long expectedLength = 0;
+
+            private long[] offsets = null;
             private long[] offsets2 = null;
 
-            public T[] dd = null;
-            public T[] x1 = null;
-            public T[] x2 = null;
+            private T[] x1 = null;
+            private T[] x2 = null;
 
-            public T[] s = null;
+            public T[] results = null;
 
             private NPY_TYPES target_nptype;
             private dtype target_dtype;
@@ -153,8 +155,10 @@ namespace NumpyDotNet
                 }
 
                 offsets = NpyCoreApi.GetViewOffsets(a);
-                dd = a.Array.data.datap as T[];
-                s = new T[offsets.Length];
+                x1 = a.Array.data.datap as T[];
+                results = new T[offsets.Length];
+                expectedShape = a.shape;
+                expectedLength = offsets.Length;
             }
 
             public MathFunctionHelper(object x1, object x2)
@@ -169,9 +173,28 @@ namespace NumpyDotNet
                     throw new Exception(string.Format("operands could not be broadcast together with shapes ({0}),({1})", a.shape.ToString(), b.shape.ToString()));
                 }
 
-                if (NpyCoreApi.ArraySize(a) < NpyCoreApi.ArraySize(b))
+                long asize = NpyCoreApi.ArraySize(a);
+                long bsize = NpyCoreApi.ArraySize(b);
+
+                if (asize < bsize)
                 {
-                    a = np.upscale_to(a, b.shape);
+                    var bcastIter = NpyCoreApi.BroadcastToShape(a, b.shape.iDims, b.shape.iDims.Length);
+                    offsets = NpyCoreApi.GetViewOffsets(bcastIter, bsize);
+                    offsets2 = NpyCoreApi.GetViewOffsets(b);
+                    expectedShape = b.shape;
+                }
+                else if (bsize < asize)
+                {
+                    var bcastIter = NpyCoreApi.BroadcastToShape(b, a.shape.iDims, a.shape.iDims.Length);
+                    offsets2 = NpyCoreApi.GetViewOffsets(bcastIter, bsize);
+                    offsets = NpyCoreApi.GetViewOffsets(a);
+                    expectedShape = a.shape;
+                }
+                else
+                {
+                    offsets = NpyCoreApi.GetViewOffsets(a);
+                    offsets2 = NpyCoreApi.GetViewOffsets(b);
+                    expectedShape = a.shape;
                 }
 
                 if (a.Dtype.TypeNum != target_nptype)
@@ -183,38 +206,26 @@ namespace NumpyDotNet
                     b = b.astype(dtype: target_dtype);
                 }
 
-                offsets = NpyCoreApi.GetViewOffsets(a);
-                offsets2 = NpyCoreApi.GetViewOffsets(b);
-
                 this.x1 = a.Array.data.datap as T[];
                 this.x2 = b.Array.data.datap as T[];
 
-                s = new T[offsets.Length];
+                results = new T[offsets.Length];
+                expectedLength = offsets.Length;
             }
 
-            public long GetOffset(long index)
+
+            private long GetOffsetX1(long index)
             {
                 long j = index;
-                if (index >= this.offsets.Length)
+                if (index >= this.expectedLength)
                 {
-                    j = index % this.offsets.Length;
+                    j = index % this.expectedLength;
                 }
 
-                return j;
+                return offsets[j];
             }
 
-            public long GetOffsetX1(long index)
-            {
-                long j = index;
-                if (index >= this.offsets.Length)
-                {
-                    j = index % this.offsets.Length;
-                }
-
-                return j;
-            }
-
-            public long GetOffsetX2(long index)
+            private long GetOffsetX2(long index)
             {
                 long j = index;
                 if (index >= this.offsets2.Length)
@@ -222,7 +233,17 @@ namespace NumpyDotNet
                     j = index % this.offsets2.Length;
                 }
 
-                return j;
+                return offsets2[j];
+            }
+
+            public T X1(int i)
+            {
+                return this.x1[GetOffsetX1(i)];
+            }
+
+            public T X2(int i)
+            {
+                return this.x2[GetOffsetX2(i)];
             }
         }
         #endregion
@@ -233,12 +254,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
             
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Sin(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Sin(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -251,12 +272,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Cos(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Cos(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -269,12 +290,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Tan(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Tan(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -287,12 +308,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Asin(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Asin(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -305,12 +326,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Acos(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Acos(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -323,12 +344,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Atan(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Atan(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -344,12 +365,12 @@ namespace NumpyDotNet
 
             throw new NotImplementedException();
 
-            //for (int i = 0; i < ch.offsets.Length; i++)
+            //for (int i = 0; i < ch.expectedLength; i++)
             //{
             //    ch.s[i] = Math.Asin(ch.dd[ch.offsets[i]]);
             //}
 
-            //var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            //var ret = np.array(ch.s).reshape(new shape(ch.resShape));
             //if (where != null)
             //{
             //    ret[np.invert(where)] = np.NaN;
@@ -362,13 +383,13 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Atan2(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                ch.results[i] = Math.Atan2(ch.X1(i), ch.X2(i));
             }
 
             
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -386,12 +407,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] =  ch.dd[ch.offsets[i]] * (180 / Math.PI);
+                ch.results[i] = ch.X1(i) * (180 / Math.PI);
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -409,12 +430,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.PI * ch.dd[ch.offsets[i]] / 180;
+                ch.results[i] = Math.PI * ch.X1(i) / 180;
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -431,12 +452,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Sinh(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Sinh(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -449,12 +470,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Cosh(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Cosh(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -467,12 +488,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Tanh(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Tanh(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -485,13 +506,13 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
 
-                ch.s[i] = MathHelper.HArcsin(ch.dd[ch.offsets[i]]);
+                ch.results[i] = MathHelper.HArcsin(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -504,12 +525,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = MathHelper.HArccos(ch.dd[ch.offsets[i]]);
+                ch.results[i] = MathHelper.HArccos(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -524,12 +545,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = MathHelper.HArctan(ch.dd[ch.offsets[i]]);
+                ch.results[i] = MathHelper.HArctan(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -599,12 +620,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Exp(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Exp(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -629,12 +650,12 @@ namespace NumpyDotNet
 
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Exp(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Exp(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -647,12 +668,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Pow(2, ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Pow(2, ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -665,12 +686,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Log(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -683,12 +704,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log10(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Log10(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -701,12 +722,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(ch.dd[ch.offsets[i]], 2);
+                ch.results[i] = Math.Log(ch.X1(i), 2);
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -719,12 +740,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(ch.dd[ch.offsets[i]], n);
+                ch.results[i] = Math.Log(ch.X1(i), n);
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -749,12 +770,12 @@ namespace NumpyDotNet
 
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(ch.dd[ch.offsets[i]]);
+                ch.results[i] = Math.Log(ch.X1(i));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -767,12 +788,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(Math.Exp(ch.x1[ch.GetOffsetX1(i)]) + Math.Exp(ch.x2[ch.GetOffsetX2(i)]));
+                ch.results[i] = Math.Log(Math.Exp(ch.X1(i)) + Math.Exp(ch.X2(i)));
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -785,12 +806,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(Math.Pow(2, ch.x1[ch.GetOffsetX1(i)]) + Math.Pow(2, ch.x2[ch.GetOffsetX2(i)]), 2);
+                ch.results[i] = Math.Log(Math.Pow(2, ch.X1(i)) + Math.Pow(2, ch.X2(i)), 2);
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -803,12 +824,12 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
-            for (int i = 0; i < ch.offsets.Length; i++)
+            for (int i = 0; i < ch.expectedLength; i++)
             {
-                ch.s[i] = Math.Log(Math.Pow(n, ch.x1[ch.GetOffsetX1(i)]) + Math.Pow(n, ch.x2[ch.GetOffsetX2(i)]), 2);
+                ch.results[i] = Math.Log(Math.Pow(n, ch.X1(i)) + Math.Pow(n, ch.X2(i)), 2);
             }
 
-            var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
             {
                 ret[np.invert(where)] = np.NaN;
@@ -834,13 +855,13 @@ namespace NumpyDotNet
                 if (xa.itemsize <= sizeof(float))
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
-                    ch.s = null;
+                    ch.results = null;
 
-                    bool[] bret = new bool[ch.offsets.Length];
+                    bool[] bret = new bool[ch.expectedLength];
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        float f = ch.dd[ch.offsets[i]];
+                        float f = ch.X1(i);
                         if (float.IsNegativeInfinity(f))
                         {
                             bret[i] = true;
@@ -861,7 +882,7 @@ namespace NumpyDotNet
 
                     }
 
-                    var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                    var ret = np.array(bret).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -872,13 +893,13 @@ namespace NumpyDotNet
                 else
                 {
                     MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-                    ch.s = null;
+                    ch.results = null;
 
-                    bool[] bret = new bool[ch.offsets.Length];
+                    bool[] bret = new bool[ch.expectedLength];
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        double f = ch.dd[ch.offsets[i]];
+                        double f = ch.X1(i);
                         if (double.IsNegativeInfinity(f))
                         {
                             bret[i] = true;
@@ -899,7 +920,7 @@ namespace NumpyDotNet
 
                     }
 
-                    var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                    var ret = np.array(bret).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -911,17 +932,17 @@ namespace NumpyDotNet
             else
             {
                 MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x);
-                ch.s = null;
+                ch.results = null;
 
-                bool[] bret = new bool[ch.offsets.Length];
+                bool[] bret = new bool[ch.expectedLength];
 
-                for (int i = 0; i < ch.offsets.Length; i++)
+                for (int i = 0; i < ch.expectedLength; i++)
                 {
-                    long f = ch.dd[ch.offsets[i]];
+                    long f = ch.X1(i);
                     bret[i] = Math.Sign(f) < 0 ? true : false;
                 }
 
-                var ret = np.array(bret).reshape(new shape(ch.a.dims));
+                var ret = np.array(bret).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
                     ret[np.invert(where)] = np.NaN;
@@ -942,20 +963,20 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        var a = ch.x1[ch.GetOffsetX1(i)];
-                        var b = ch.x2[ch.GetOffsetX2(i)];
+                        var a = ch.X1(i);
+                        var b = ch.X2(i);
 
                         if (Math.Sign(a) != Math.Sign(b))
                         {
                             a = -a;
                         }
 
-                        ch.s[i] = a;
+                        ch.results[i] = a;
                     }
 
-                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -967,20 +988,20 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        var a = ch.x1[ch.GetOffsetX1(i)];
-                        var b = ch.x2[ch.GetOffsetX2(i)];
+                        var a = ch.X1(i);
+                        var b = ch.X2(i);
 
                         if (Math.Sign(a) != Math.Sign(b))
                         {
                             a = -a;
                         }
 
-                        ch.s[i] = a;
+                        ch.results[i] = a;
                     }
 
-                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -993,20 +1014,20 @@ namespace NumpyDotNet
             {
                 MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x1, x2);
 
-                for (int i = 0; i < ch.offsets.Length; i++)
+                for (int i = 0; i < ch.expectedLength; i++)
                 {
-                    var a = ch.x1[ch.GetOffsetX1(i)];
-                    var b = ch.x2[ch.GetOffsetX2(i)];
+                    var a = ch.X1(i);
+                    var b = ch.X2(i);
 
                     if (Math.Sign(a) != Math.Sign(b))
                     {
                         a = -a;
                     }
 
-                    ch.s[i] = a;
+                    ch.results[i] = a;
                 }
 
-                var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
                     ret[np.invert(where)] = np.NaN;
@@ -1066,11 +1087,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        ch.s[i] = _lcmi(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                        ch.results[i] = _lcmi(ch.X1(i), ch.X2(i));
                     }
-                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1080,11 +1101,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        ch.s[i] = _lcml(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                        ch.results[i] = _lcml(ch.X1(i), ch.X2(i));
                     }
-                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1110,11 +1131,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        ch.s[i] = _gcdi(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                        ch.results[i] = _gcdi(ch.X1(i), ch.X2(i));
                     }
-                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1124,11 +1145,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
-                        ch.s[i] = _gcdl(ch.x1[ch.GetOffsetX1(i)], ch.x2[ch.GetOffsetX2(i)]);
+                        ch.results[i] = _gcdl(ch.X1(i), ch.X2(i));
                     }
-                    ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1232,6 +1253,25 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, x2);
         }
 
+        public static ndarray float_power(object x1, object x2, object where = null)
+        {
+            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+            for (int i = 0; i < ch.expectedLength; i++)
+            {
+                ch.results[i] = Math.Pow(ch.X1(i), ch.X2(i));
+            }
+
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+            if (where != null)
+            {
+                ret[np.invert(where)] = np.NaN;
+            }
+
+            return ret;
+
+        }
+
         #region mod/remainder
 
         public static ndarray mod(object x1, object x2)
@@ -1291,11 +1331,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
                         float r = 0.0f;
 
-                        float f = ch.dd[ch.offsets[i]];
+                        float f = ch.X1(i);
                         if (float.IsNegativeInfinity(f))
                         {
                             r = -1.0f;
@@ -1320,11 +1360,11 @@ namespace NumpyDotNet
                                 r = Math.Sign(f) < 0 ? -1.0f : 1.0f;
                             }
                         }
-                        ch.s[i] = r;
+                        ch.results[i] = r;
                     }
  
 
-                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1336,11 +1376,11 @@ namespace NumpyDotNet
                 {
                     MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-                    for (int i = 0; i < ch.offsets.Length; i++)
+                    for (int i = 0; i < ch.expectedLength; i++)
                     {
                         double r = 0.0;
 
-                        double d = ch.dd[ch.offsets[i]];
+                        double d = ch.X1(i);
                         if (double.IsNegativeInfinity(d))
                         {
                             r = -1.0;
@@ -1365,11 +1405,11 @@ namespace NumpyDotNet
                                 r = Math.Sign(d) < 0 ? -1.0 : 1.0;
                             }
                         }
-                        ch.s[i] = r;
+                        ch.results[i] = r;
                     }
 
 
-                    var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                    var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                     if (where != null)
                     {
                         ret[np.invert(where)] = np.NaN;
@@ -1383,21 +1423,21 @@ namespace NumpyDotNet
                 MathFunctionHelper<long> ch = new MathFunctionHelper<long>(x);
 
 
-                for (int i = 0; i < ch.offsets.Length; i++)
+                for (int i = 0; i < ch.expectedLength; i++)
                 {
-                    long f = ch.dd[ch.offsets[i]];
+                    long f = ch.X1(i);
 
                     if (f == 0)
                     {
-                        ch.s[i] = 0;
+                        ch.results[i] = 0;
                     }
                     else
                     {
-                        ch.s[i] = Math.Sign(f) < 0 ? -1 : 1;
+                        ch.results[i] = Math.Sign(f) < 0 ? -1 : 1;
                     }
                 }
 
-                var ret = np.array(ch.s).reshape(new shape(ch.a.dims));
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
                     ret[np.invert(where)] = np.NaN;
