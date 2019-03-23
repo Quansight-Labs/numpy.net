@@ -2113,13 +2113,7 @@ namespace NumpyDotNetTests
             //print("*****");
         }
 
-        [Ignore]
-        [TestMethod]
-        public void test_cbrt_1()
-        {
-
-        }
-
+  
         [TestMethod]
         public void test_square_operations()
         {
