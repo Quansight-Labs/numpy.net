@@ -171,7 +171,7 @@ namespace NumpyDotNet
 
                 if (NpyCoreApi.ArraySize(a) < NpyCoreApi.ArraySize(b))
                 {
-                    a = np.broadcast_to(a, b.shape);
+                    a = np.upscale_to(a, b.shape);
                 }
 
                 if (a.Dtype.TypeNum != target_nptype)

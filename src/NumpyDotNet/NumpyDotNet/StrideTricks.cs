@@ -67,7 +67,7 @@ namespace NumpyDotNet
             return broadcastable(ao.dims, ao.ndim, bdims, bnd);
         }
 
-        public static ndarray broadcast_to(ndarray a, object oshape)
+        public static ndarray upscale_to(ndarray a, object oshape)
         {
             shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
             if (newshape == null)
