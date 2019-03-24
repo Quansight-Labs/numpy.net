@@ -961,7 +961,46 @@ namespace NumpyLib
             return typ1.kind == typ2.kind;
         }
 
-        internal static void NpyArray_CopyTo(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
+        internal static void NpyArray_CopyTo(NpyArray destArray, NpyArray srcArray, NPY_CASTING casting, NpyArray whereArray)
+        {
+            var destSize = NpyArray_Size(destArray);
+
+            NpyArrayIterObject SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
+            NpyArrayIterObject DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
+            NpyArrayIterObject WhereIter = null;
+            if (whereArray != null)
+            {
+                WhereIter = NpyArray_BroadcastToShape(whereArray, destArray.dimensions, destArray.nd);
+            }
+
+            bool whereValue = true;
+
+            for (long i = 0; i < destSize; i++)
+            {
+                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+
+                if (WhereIter != null)
+                {
+                    whereValue = (bool)whereArray.descr.f.getitem(WhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
+                }
+
+                if (whereValue)
+                {
+                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
+                }
+
+                NpyArray_ITER_NEXT(SrcIter);
+                NpyArray_ITER_NEXT(DestIter);
+                if (WhereIter != null)
+                {
+                    NpyArray_ITER_NEXT(WhereIter);
+                }
+            }
+
+            return;
+        }
+
+        internal static void NpyArray_CopyTo2(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
         {
             NpyArray wheremask = null;
 

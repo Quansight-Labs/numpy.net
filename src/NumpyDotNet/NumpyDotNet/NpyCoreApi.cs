@@ -865,13 +865,13 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void CopyTo(ndarray dst, ndarray src, NPY_CASTING casting, ndarray wheremask_in)
+        internal static void CopyTo(ndarray dst, ndarray src, NPY_CASTING casting, ndarray wheremask_in = null)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                numpyAPI.NpyArray_CopyTo(dst.Array, src.Array, casting, wheremask_in.Array);
+                numpyAPI.NpyArray_CopyTo(dst.Array, src.Array, casting, wheremask_in != null ? wheremask_in.Array : null);
             }
         }
 

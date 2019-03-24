@@ -1555,8 +1555,51 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-  
 
+        [TestMethod]
+        public void test_copyto_1()
+        {
+            var a = np.zeros((10, 5), dtype: np.Int64);
+            var b = new int[] { 11, 22, 33, 44, 55 };
+            np.copyto(a, b);
+
+            AssertShape(a, 10, 5);
+            Assert.AreEqual((long)1650, a.Sum().GetItem(0));
+            print(a);
+
+            a = np.zeros((10, 5), dtype: np.Int64);
+            np.copyto(a, 99);
+            AssertShape(a, 10, 5);
+            Assert.AreEqual((long)4950, a.Sum().GetItem(0));
+            print(a);
+
+            a = np.zeros((10, 5), dtype: np.Int64);
+            var c = np.arange(11, 60, 11);
+
+            try
+            {
+                np.copyto(c, a);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("not broadcastable"));
+                return;
+            }
+
+            Assert.IsTrue(false);
+ 
+        }
+
+        [TestMethod]
+        public void test_copyto_2()
+        {
+            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.Float32);
+            var b = new int[] { 1, 2 };
+            np.copyto(a, b);
+
+            AssertArray(a, new float[,,,,] { { { { { 1.0f, 2.0f } }, { { 1.0f, 2.0f } } }, { { { 1.0f, 2.0f } }, { { 1.0f, 2.0f, } } } } });
+
+        }
 
     }
 }

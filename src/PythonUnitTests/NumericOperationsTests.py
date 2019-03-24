@@ -869,5 +869,42 @@ class Test_NumericOperationsTests(unittest.TestCase):
         print(n)
 
 
+    def test_copyto_1(self):
+
+        a = np.zeros((10,5), dtype=np.int64)
+        b = [11,22,33,44,55]
+
+        np.copyto(a, b)
+        #print(a)
+        print(a.shape)
+        print(a.sum())
+
+        a = np.zeros((10,5), dtype=np.int64)
+
+        np.copyto(a, 99)
+        print(a.shape)
+        #print(a)
+        print(a.sum())
+
+        a = np.zeros((10,5), dtype=np.int64)
+        c = np.arange(11,60, 11)
+
+        try:
+            np.copyto(c, a)
+            print(c)
+        except:
+            return
+
+        assert(False)
+
+    def test_copyto_2(self):
+
+        a = np.zeros((1,2,2,1,2), dtype= np.float32);
+        b = [1,2]
+
+        np.copyto(a, b)
+        print(a)
+        
+
 if __name__ == '__main__':
     unittest.main()

@@ -435,6 +435,11 @@ namespace NumpyDotNet
             //}
             //return masked_array(a, dtype: dtype, copy: false, keep_mask: true, sub_ok: true);
 
+            if (a == null)
+            {
+                return null;
+            }
+
             if (dtype != null)
             {
                 return np.array(a, dtype, copy: false, order: order, subok: true);
