@@ -2062,10 +2062,23 @@ namespace NumpyDotNetTests
         #region Miscellaneous
 
 
-        [Ignore]
+
         [TestMethod]
-        public void xxx_test_convolve_1()
+        public void test_convolve_1()
         {
+            var a = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
+            AssertArray(a, new double[] { 0.0, 1.0, 2.5, 4.0, 1.5 });
+            print(a);
+
+            var b = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new double[] { 1.0, 2.5, 4.0 });
+            print(b);
+
+            var c = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            AssertArray(c, new double[] { 2.5 });
+            print(c);
+
+            return;
         }
 
 

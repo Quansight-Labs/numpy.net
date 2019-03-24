@@ -505,7 +505,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_correlate_1()
         {
-            var a = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            var a = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
             AssertArray(a, new double[] { 3.5 });
             print(a);
 
@@ -518,7 +518,6 @@ namespace NumpyDotNetTests
             print(c);
 
             return;
-
         }
 
         // todo: need to speed up the generation of the matrix
