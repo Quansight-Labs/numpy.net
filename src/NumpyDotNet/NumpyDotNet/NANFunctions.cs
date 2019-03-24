@@ -96,7 +96,7 @@ namespace NumpyDotNet
             if (mask != null)
             {
                 a[mask] = val;
-                np.copyto(a, val, where: mask);
+                //np.copyto(a, val, where: mask);
             }
 
             return (a: a, mask: mask);
