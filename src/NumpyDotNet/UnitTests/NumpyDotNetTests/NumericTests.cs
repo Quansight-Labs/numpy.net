@@ -520,6 +520,20 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_corrcoef_1()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_cov_1()
+        {
+
+        }
+
         // todo: need to speed up the generation of the matrix
         [TestMethod]  
         public void test_outer_1()

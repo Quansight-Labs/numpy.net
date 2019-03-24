@@ -39,6 +39,63 @@ namespace NumpyDotNetTests
             // see the NANFunctionsTest version
         }
 
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanpercentile_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanquantile_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanmedian_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanmean_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanstd_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanvar_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanmin_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
+        [Ignore] // need to implement Nanfunctions
+        [TestMethod]
+        public void test_nanmax_placeholder()
+        {
+            // see the NANFunctionsTest version
+        }
+
         [Ignore]
         [TestMethod]
         public void xxx_Test_NANFunctions_Placeholder()

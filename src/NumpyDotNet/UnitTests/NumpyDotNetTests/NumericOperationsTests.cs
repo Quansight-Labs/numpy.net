@@ -1008,7 +1008,26 @@ namespace NumpyDotNetTests
 
         }
 
- 
+        [Ignore]
+        [TestMethod]
+        public void test_mean()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_percentile()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_quantile()
+        {
+
+        }
 
 
         [TestMethod]
