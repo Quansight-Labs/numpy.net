@@ -943,8 +943,6 @@ namespace NumpyLib
             return -1;
         }
 
-  
-
         internal static NpyArray NpyArray_ArgSort(NpyArray op, int axis, NPY_SORTKIND which)
         {
             NpyArray ap = null, ret = null, op2;
@@ -1108,6 +1106,7 @@ namespace NumpyLib
         {
             throw new NotImplementedException();
         }
+
         internal static NpyArray NpyArray_SearchSorted(NpyArray op1, NpyArray op2, NPY_SEARCHSIDE side)
         {
             NpyArray ap1 = null;

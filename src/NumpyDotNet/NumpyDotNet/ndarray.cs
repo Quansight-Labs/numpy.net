@@ -889,10 +889,9 @@ namespace NumpyDotNet
         }
 
 
-
-
-        public object dot(object other) {
-            return ModuleMethods.dot(this, other);
+        public ndarray dot(object other)
+        {
+            return np.MatrixProduct(this, other);
         }
 
         public void fill(object scalar) {
