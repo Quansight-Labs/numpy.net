@@ -256,6 +256,13 @@ namespace NumpyLib
         NPY_UNSAFE_CASTING = 4
     };
 
+    public enum NPY_CONVOLE_MODE : int
+    {
+        NPY_CONVOLVE_VALID = 0,
+        NPY_CONVOLVE_SAME = 1,
+        NPY_CONVOLVE_FULL = 2,
+    };
+
 
     public enum NPY_DATETIMEUNIT : int
     {

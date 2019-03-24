@@ -104,48 +104,37 @@ namespace NumpyDotNet {
             return ndarray.ArrayReturn(np.inner(o1, o2));
         }
 
-        public static object correlate(object o1, object o2, object mode) {
-            return correlateInternal(o1, o2, mode, NpyCoreApi.Correlate);
-        }
-
-        public static object correlate2(object o1, object o2, object mode) {
-            return correlateInternal(o1, o2, mode, NpyCoreApi.Correlate2);
-        }
-
-        private static object correlateInternal(object o1, object o2, object mode, Func<ndarray, ndarray, NPY_TYPES, int, ndarray> f) {
+        public static ndarray correlate(object o1, object o2, NPY_CONVOLE_MODE mode)
+        {
             // Find a type that works for both inputs. (ie, one is int, the other is float,
             // we want float for the result).
             dtype type = np.FindArrayType(o1, null);
             type = np.FindArrayType(o2, type);
 
-            int modeNum = ModeToInt(mode);
+            ndarray arr1 = np.FromAny(o1, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
+            ndarray arr2 = np.FromAny(o2, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
+            return NpyCoreApi.Correlate(arr1, arr2, type.TypeNum, mode);
+        }
+
+        public static ndarray correlate2(object o1, object o2, NPY_CONVOLE_MODE mode)
+        {
+            // Find a type that works for both inputs. (ie, one is int, the other is float,
+            // we want float for the result).
+            dtype type = np.FindArrayType(o1, null);
+            type = np.FindArrayType(o2, type);
 
             ndarray arr1 = np.FromAny(o1, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
             ndarray arr2 = np.FromAny(o2, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
-            return f(arr1, arr2, type.TypeNum, modeNum);
-        }
-
-        private static int ModeToInt(object o) {
-            if (o is string) {
-                switch (((string)o).ToLower()[0]) {
-                    case 'v': return 0;
-                    case 's': return 1;
-                    case 'f': return 2;
-                    default:
-                        throw new NotImplementedException(String.Format("Unknown mode '{0}'", o));
-                }
-            } else if (o is int) {
-                return (int)o;
-            }
-            throw new NotImplementedException(String.Format("Unhandled mode type '{0}'", o.GetType().Name));
+            return NpyCoreApi.Correlate2(arr1, arr2, type.TypeNum, mode);
         }
 
 
-        public static object dot(object o1, object o2) {
+        public static object dot(object o1, object o2)
+        {
             return ndarray.ArrayReturn(np.MatrixProduct(o1, o2));
         }
 
-    
+
         public static object _fastCopyAndTranspose(object a) {
             ndarray arr = np.FromAny(a, flags: NPYARRAYFLAGS.NPY_CARRAY);
             return NpyCoreApi.CopyAndTranspose(arr);

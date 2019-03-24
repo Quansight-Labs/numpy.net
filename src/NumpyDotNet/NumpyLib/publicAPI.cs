@@ -1199,12 +1199,12 @@ namespace NumpyLib
             return numpyinternal.NpyArray_CopyAndTranspose(arr);
         }
 
-        public static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, int mode)
+        public static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             return numpyinternal.NpyArray_Correlate2(ap1, ap2, typenum, mode);
         }
 
-        public static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, int mode)
+        public static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             return numpyinternal.NpyArray_Correlate(ap1, ap2, typenum, mode);
         }

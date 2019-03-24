@@ -638,7 +638,7 @@ namespace NumpyLib
             return ret;
         }
 
-        internal static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, int mode)
+        internal static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             NpyArray ret = null;
             NpyArray cap2 = null;
@@ -682,14 +682,14 @@ namespace NumpyLib
             return ret;
         }
 
-        internal static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, int mode)
+        internal static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             int unused = 0;
 
             return _npyarray_correlate(ap1, ap2, typenum, mode, ref unused);
         }
 
-        static NpyArray _npyarray_correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, int mode, ref int inverted)
+        static NpyArray _npyarray_correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode, ref int inverted)
         {
             NpyArray ret;
             npy_intp[] length = new npy_intp[1];
@@ -721,15 +721,15 @@ namespace NumpyLib
             n = n2;
             switch (mode)
             {
-                case 0:
+                case NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL:
                     length[0] = length[0] - n + 1;
                     n_left = n_right = 0;
                     break;
-                case 1:
+                case NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME:
                     n_left = (npy_intp)(n / 2);
                     n_right = n - n_left - 1;
                     break;
-                case 2:
+                case NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID:
                     n_right = n - 1;
                     n_left = n - 1;
                     length[0] = length[0] + n - 1;

@@ -1235,7 +1235,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray Correlate(ndarray arr1, ndarray arr2, NPY_TYPES typenum, int mode)
+        internal static ndarray Correlate(ndarray arr1, ndarray arr2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -1245,7 +1245,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray Correlate2(ndarray arr1, ndarray arr2, NPY_TYPES typenum, int mode)
+        internal static ndarray Correlate2(ndarray arr1, ndarray arr2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
