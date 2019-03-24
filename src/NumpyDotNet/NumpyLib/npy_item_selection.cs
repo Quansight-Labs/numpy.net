@@ -551,14 +551,13 @@ namespace NumpyLib
                 return 0;
             }
 
-            npy_intp[] maskData = mask.data.datap as npy_intp[];
+            bool[] maskData = mask.data.datap as bool[];
             if (NpyDataType_REFCHK(self.descr))
             {
                 VoidPtr buf = new VoidPtr(new byte[chunk]);
                 for (i = 0; i < ni; i++)
                 {
-                    var tmp = maskData[i];
-                    if (tmp != 0)
+                    if (maskData[i])
                     {
                         src = new VoidPtr(values, chunk * (i % nv));
                         memcpy(buf, src, chunk);
@@ -578,8 +577,7 @@ namespace NumpyLib
                 {
                     for (i = 0; i < ni; i++)
                     {
-                        var tmp = maskData[i];
-                        if (tmp != 0)
+                        if (maskData[i])
                         {
                             src = new VoidPtr(values, chunk * (i % nv));
                             memmove(dest + i * chunk, src, chunk);

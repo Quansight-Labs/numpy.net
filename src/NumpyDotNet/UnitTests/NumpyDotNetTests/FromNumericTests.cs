@@ -491,12 +491,24 @@ namespace NumpyDotNetTests
         //    // not implemented.  we don't seem to have the source code
         //}
 
-        //[Ignore]
-        //[TestMethod]
-        //public void test_put_mask_1()
-        //{
-        //    // not implemented.  we don't seem to have the source code
-        //}
+        [TestMethod]
+        public void test_putmask_1()
+        {
+            var x = np.arange(6).reshape((2, 3));
+            np.putmask(x, x > 2, np.power(x,2).astype(np.Int32));
+            AssertArray(x, new Int32[,] { { 0, 1, 2, }, { 9, 16, 25 } });
+            print(x);
+
+
+            // If values is smaller than a it is repeated:
+
+            x = np.arange(5);
+            np.putmask(x, x > 1, new Int32[] { -33, -44 });
+            AssertArray(x, new Int32[] { 0, 1, -33, -44, -33 });
+            print(x);
+
+            return;
+        }
 
         [TestMethod]
         public void test_swapaxes_1()

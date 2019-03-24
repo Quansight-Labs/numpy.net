@@ -53,16 +53,6 @@ namespace NumpyDotNet
         }
 
 
-        internal void PutMask(ndarray values, ndarray mask)
-        {
-            if (NpyCoreApi.PutMask(this, values, mask) < 0)
-            {
-                NpyCoreApi.CheckError();
-            }
-        }
-
-
-
         internal static ndarray LexSort(ndarray[] arrays, int axis)
         {
             return NpyCoreApi.LexSort(arrays, axis);

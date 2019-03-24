@@ -239,6 +239,21 @@ class FromNumericTests(unittest.TestCase):
 
         raise Exception("this should have caused exception")
 
+    def test_putmask_1(self):
+
+        x = np.arange(6).reshape(2, 3)
+        np.putmask(x, x>2, x**2)
+        print(x)
+
+
+        # If values is smaller than a it is repeated:
+
+        x = np.arange(5)
+        np.putmask(x, x>1, [-33, -44])
+        print(x)
+
+        return
+
     def test_swapaxes_1(self):
 
         x = np.array([[1,2,3]])

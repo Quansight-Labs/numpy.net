@@ -1680,6 +1680,35 @@ namespace NumpyDotNet
         }
         #endregion
 
+
+
+        public static void putmask(ndarray arr, object mask, object values)
+        {
+            ndarray aMask;
+            ndarray aValues;
+
+            aMask = (mask as ndarray);
+            if (aMask == null)
+            {
+                aMask = np.FromAny(mask, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BOOL),
+                    0, 0, NPYARRAYFLAGS.NPY_CARRAY | NPYARRAYFLAGS.NPY_FORCECAST, null);
+            }
+
+            aValues = (values as ndarray);
+            if (aValues == null)
+            {
+                aValues = np.FromAny(values, arr.Dtype, 0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
+            }
+
+            if (NpyCoreApi.PutMask(arr, aValues, aMask) < 0)
+            {
+                NpyCoreApi.CheckError();
+            }
+
+        }
+
+
+
         public static void copyto(ndarray dst, object src, NPY_CASTING casting = NPY_CASTING.NPY_SAME_KIND_CASTING, object where = null)
         {
             /*

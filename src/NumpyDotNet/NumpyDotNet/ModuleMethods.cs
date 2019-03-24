@@ -61,25 +61,6 @@ namespace NumpyDotNet {
 
   
 
-        public static void putmask(ndarray arr, object mask, object values) {
-            ndarray aMask;
-            ndarray aValues;
-
-            aMask = (mask as ndarray);
-            if (aMask == null) {
-                aMask = np.FromAny(mask, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BOOL),
-                    0, 0, NPYARRAYFLAGS.NPY_CARRAY | NPYARRAYFLAGS.NPY_FORCECAST, null);
-            }
-
-            aValues = (values as ndarray);
-            if (aValues == null) {
-                aValues = np.FromAny(values, arr.Dtype, 0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
-            }
-
-            arr.PutMask(aValues, aMask);
-        }
-
-
         public static ndarray lexsort(object keysObj, int axis = -1) {
             IEnumerable<object> keys = keysObj as IEnumerable<object>;
             if (keys == null || keys.Count() == 0) {
