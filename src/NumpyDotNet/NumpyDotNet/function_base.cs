@@ -1996,7 +1996,7 @@ namespace NumpyDotNet
 
         #region median
 
-        public static ndarray median(ndarray a, int? axis, ndarray _out, bool overwrite_input, bool keepdims)
+        public static ndarray median(ndarray a, int? axis = null, ndarray _out = null, bool overwrite_input = false, bool keepdims = false)
         {
             /*
             Compute the median along the specified axis.
