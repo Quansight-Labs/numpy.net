@@ -1254,6 +1254,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
               
     def test_convolve_1(self):    
+
+        a = np.convolve([1, 2, 3], [0, 1, 0.5])
+        print(a)
+
+        # Only return the middle values of the convolution. Contains boundary effects, where zeros are taken into account:
+
+        b = np.convolve([1,2,3],[0,1,0.5], 'same')
+        print(b)
+
+        # The two arrays are of the same length, so there is only one position where they completely overlap:
+
+        c = np.convolve([1,2,3],[0,1,0.5], 'valid')
+        print(c)
+
         return
 
     def test_clip_1(self):
