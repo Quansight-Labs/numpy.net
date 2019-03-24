@@ -324,7 +324,17 @@ class NumericTests(unittest.TestCase):
 
         return
            
-    def test_correlate_1(self):    
+    def test_correlate_1(self): 
+        
+        a = np.correlate([1, 2, 3], [0, 1, 0.5], "valid")
+        print(a)
+
+        b = np.correlate([1, 2, 3], [0, 1, 0.5], "same")
+        print(b)
+
+        c = np.correlate([1, 2, 3], [0, 1, 0.5], "full")
+        print(c)
+
         return
  
            

@@ -104,30 +104,7 @@ namespace NumpyDotNet {
             return ndarray.ArrayReturn(np.inner(o1, o2));
         }
 
-        public static ndarray correlate(object o1, object o2, NPY_CONVOLE_MODE mode)
-        {
-            // Find a type that works for both inputs. (ie, one is int, the other is float,
-            // we want float for the result).
-            dtype type = np.FindArrayType(o1, null);
-            type = np.FindArrayType(o2, type);
-
-            ndarray arr1 = np.FromAny(o1, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
-            ndarray arr2 = np.FromAny(o2, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
-            return NpyCoreApi.Correlate(arr1, arr2, type.TypeNum, mode);
-        }
-
-        public static ndarray correlate2(object o1, object o2, NPY_CONVOLE_MODE mode)
-        {
-            // Find a type that works for both inputs. (ie, one is int, the other is float,
-            // we want float for the result).
-            dtype type = np.FindArrayType(o1, null);
-            type = np.FindArrayType(o2, type);
-
-            ndarray arr1 = np.FromAny(o1, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
-            ndarray arr2 = np.FromAny(o2, type, 1, 1, NPYARRAYFLAGS.NPY_DEFAULT);
-            return NpyCoreApi.Correlate2(arr1, arr2, type.TypeNum, mode);
-        }
-
+    
 
         public static object dot(object o1, object o2)
         {

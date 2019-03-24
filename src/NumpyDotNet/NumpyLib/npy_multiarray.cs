@@ -721,7 +721,7 @@ namespace NumpyLib
             n = n2;
             switch (mode)
             {
-                case NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL:
+                case NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID:
                     length[0] = length[0] - n + 1;
                     n_left = n_right = 0;
                     break;
@@ -729,7 +729,7 @@ namespace NumpyLib
                     n_left = (npy_intp)(n / 2);
                     n_right = n - n_left - 1;
                     break;
-                case NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID:
+                case NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL:
                     n_right = n - 1;
                     n_left = n - 1;
                     length[0] = length[0] + n - 1;

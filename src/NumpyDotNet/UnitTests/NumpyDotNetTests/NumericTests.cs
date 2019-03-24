@@ -502,10 +502,20 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_correlate_1()
+        public void test_correlate_1()
         {
+            var a = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            print(a);
+
+            var b = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            print(b);
+
+            var c = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            print(c);
+
+            return;
+
         }
 
         // todo: need to speed up the generation of the matrix
