@@ -961,7 +961,41 @@ namespace NumpyLib
             return typ1.kind == typ2.kind;
         }
 
-   
+        internal static void NpyArray_CopyTo(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
+        {
+            NpyArray wheremask = null;
+
+            if (wheremask_in != null)
+            {
+                /* Get the boolean where mask */
+                NpyArray_Descr dtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
+                if (dtype == null)
+                {
+                    goto fail;
+                }
+                wheremask = NpyArray_FromArray(wheremask_in, dtype, NPYARRAYFLAGS.NPY_DEFAULT);
+                if (wheremask == null)
+                {
+                    goto fail;
+                }
+            }
+
+            if (NPyArray_AssignArray(dst, src, wheremask, casting) < 0)
+            {
+                goto fail;
+            }
+
+            Npy_XDECREF(src);
+            Npy_XDECREF(wheremask);
+
+            return;
+
+            fail:
+            Npy_XDECREF(src);
+            Npy_XDECREF(wheremask);
+            return;
+        }
+
         static bool _equivalent_fields(NpyDict field1, NpyDict field2)
         {
             NpyDict_Iter pos = new NpyDict_Iter();

@@ -1214,6 +1214,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_EquivTypes(typ1, typ2);
         }
 
+        public static void NpyArray_CopyTo(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
+        {
+            numpyinternal.NpyArray_CopyTo(dst, src, casting, wheremask_in);
+        }
+
         public static bool NpyArray_EquivTypenums(NPY_TYPES typenum1, NPY_TYPES typenum2)
         {
             return numpyinternal.NpyArray_EquivTypenums(typenum1, typenum2);

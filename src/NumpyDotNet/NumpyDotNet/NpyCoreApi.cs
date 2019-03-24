@@ -865,6 +865,16 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static void CopyTo(ndarray dst, ndarray src, NPY_CASTING casting, ndarray wheremask_in)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_CopyTo(dst.Array, src.Array, casting, wheremask_in.Array);
+            }
+        }
+
         internal static bool CanCastTo(dtype d1, dtype d2)
         {
             #if ENABLELOCKING

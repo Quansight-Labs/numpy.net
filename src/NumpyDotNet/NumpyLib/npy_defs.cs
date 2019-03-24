@@ -233,14 +233,27 @@ namespace NumpyLib
         NPY_OBJECT_SCALAR
     };
 
- 
-
 
     public enum NPY_CLIPMODE : int
     {
         NPY_CLIP = 0,
         NPY_WRAP = 1,
         NPY_RAISE = 2
+    };
+
+
+    public enum NPY_CASTING : int
+    {
+        /* Only allow identical types */
+        NPY_NO_CASTING = 0,
+        /* Allow identical and byte swapped types */
+        NPY_EQUIV_CASTING = 1,
+        /* Only allow safe casts */
+        NPY_SAFE_CASTING = 2,
+        /* Allow safe casts or casts within the same kind */
+        NPY_SAME_KIND_CASTING = 3,
+        /* Allow any casts */
+        NPY_UNSAFE_CASTING = 4
     };
 
 
@@ -263,8 +276,7 @@ namespace NumpyLib
 
         NPY_DATETIME_NUMUNITS = NPY_FR_as + 1,
         NPY_DATETIME_DEFAULTUNIT = NPY_FR_us,
-
-};
+    };
 
     internal partial class numpyinternal
     {
