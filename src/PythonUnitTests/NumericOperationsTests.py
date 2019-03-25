@@ -462,21 +462,6 @@ class Test_NumericOperationsTests(unittest.TestCase):
 
 
 
-    def test_average(self):
-
-        x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)
-        x = x * 3
-        y = np.average(x);
-
-
-        print(x)
-        print(y)
-
-        return
-
-
-
-
  
     def test_min(self):
 

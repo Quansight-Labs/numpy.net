@@ -991,44 +991,7 @@ namespace NumpyDotNetTests
 
         }
 
-  
-
-        [TestMethod]
-        public void test_average()
-        {
-            UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
-            x = x * 3;
-            var y = np.average(x);
-
-            print(x);
-            print(y);
-
-            Assert.AreEqual(131.5, y.GetItem(0));
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_mean()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_percentile()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_quantile()
-        {
-
-        }
-
+ 
 
         [TestMethod]
         public void test_min()

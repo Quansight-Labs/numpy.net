@@ -2315,17 +2315,7 @@ namespace NumpyDotNetTests
         }
         #endregion
 
-        #region CopyTo placeholder
-
-        [Ignore]
-        [TestMethod]
-        public void xxx_CopyTo_Placeholder()
-        {
-
-        }
-
-        #endregion
-
+   
         private bool CompareArrays(ndarray a1, ndarray a2)
         {
             if (a1.size != a2.size)

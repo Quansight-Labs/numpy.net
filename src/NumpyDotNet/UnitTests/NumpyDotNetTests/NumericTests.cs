@@ -502,38 +502,7 @@ namespace NumpyDotNetTests
         }
 
 
-        [TestMethod]
-        public void test_correlate_1()
-        {
-            var a = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
-            AssertArray(a, new double[] { 3.5 });
-            print(a);
-
-            var b = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new double[] { 2.0, 3.5, 3.0 });
-            print(b);
-
-            var c = np.correlate(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
-            AssertArray(c, new double[] { 0.5, 2.0, 3.5, 3.0, 0.0 });
-            print(c);
-
-            return;
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_corrcoef_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_cov_1()
-        {
-
-        }
-
+ 
         // todo: need to speed up the generation of the matrix
         [TestMethod]  
         public void test_outer_1()
