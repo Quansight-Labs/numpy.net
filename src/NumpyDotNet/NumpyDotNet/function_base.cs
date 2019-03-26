@@ -2234,6 +2234,187 @@ namespace NumpyDotNet
             return true;
         }
 
+        private static ndarray _quantile_ureduce_func(ndarray a, ndarray q, int? axis = null, ndarray @out = null,
+                bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        {
+            bool zerod = false;
+            ndarray ap;
+            ndarray r;
+
+            a = asarray(a);
+            if (q.ndim == 0)
+            {
+                // Do not allow 0-d arrays because following code fails for scalar
+                zerod = true;
+                q = q[null] as ndarray;
+            }
+            else
+            {
+                zerod = false;
+            }
+
+            // prepare a for partitioning
+            if (overwrite_input)
+            {
+                if (axis == null)
+                    ap = a.ravel();
+                else
+                    ap = a;
+            }
+            else
+            {
+                if (axis == null)
+                    ap = a.flatten();
+                else
+                    ap = a.Copy();
+            }
+
+
+            if (axis == null)
+                axis = 0;
+
+            var Nx = ap.shape.iDims[axis.Value];
+            var indices = q * (Nx - 1);
+
+            // round fractional indices according to interpolation method
+
+            switch (interpolation)
+            {
+                case "lower":
+                    indices = np.floor(indices).astype(np.intp);
+                    break;
+                case "higher":
+                    indices = np.ceil(indices).astype(np.intp);
+                    break;
+                case "midpoint":
+                    indices = 0.5 * (np.floor(indices) + np.ceil(indices));
+                    break;
+                case "nearest":
+                    indices = np.around(indices).astype(np.intp);
+                    break;
+                case "linear":
+                    //pass  - keep index as fraction and interpolate
+                    break;
+                default:
+                    throw new ValueError("interpolation can only be 'linear', 'lower' 'higher', 'midpoint', or 'nearest'");
+            }
+
+
+            var n = np.array(false, dtype: np.Bool);            // check for nan's flag
+            if (indices.Dtype.TypeNum == NPY_TYPES.NPY_INTP)    // take the points along axis
+            {
+                // Check if the array contains any nan's
+                if (a.IsInexact)
+                {
+                    indices = concatenate((new ndarray[] { indices, np.array(new int[] { -1 }) }));
+                }
+
+                ap = np.partition(ap, indices.ToArray<int>(), axis: axis);
+                // ensure axis with qth is first
+                ap = np.moveaxis(ap, axis, 0);
+                axis = 0;
+
+                // Check if the array contains any nan's
+                if (a.IsInexact)
+                {
+                    indices = indices.A(":-1");
+                    n = np.isnan(ap.A("-1:", "..."));
+                }
+
+                if (zerod)
+                {
+                    indices = indices.A(0);
+                }
+                r = take(ap, indices, axis: axis, _out: @out);
+            }
+            else // weight the points above and below the indices
+            {
+                var indices_below = floor(indices).astype(intp);
+                var indices_above = indices_below + 1;
+                indices_above[indices_above > Nx - 1] = Nx - 1;
+
+                // Check if the array contains any nan's
+                if (a.IsInexact)
+                {
+                    indices = concatenate((indices, new int[] { -1 }));
+                }
+
+                var weights_above = indices - indices_below;
+                var weights_below = 1.0 - weights_above;
+
+                npy_intp[] weights_shape = new npy_intp[ap.ndim];
+                for (int i = 0; i < weights_shape.Length; i++)
+                    weights_shape[i] = 1;
+
+                weights_shape[axis.Value] = len(indices);
+                weights_below = weights_below.reshape(new shape(weights_shape));
+                weights_above = weights_above.reshape(new shape(weights_shape));
+
+                np.partition(a, concatenate(((object)indices_below, indices_above)).ToArray<int>(), axis: axis);
+
+                // ensure axis with qth is first
+                ap = np.moveaxis(ap, axis, 0);
+                weights_below = np.moveaxis(weights_below, axis, 0);
+                weights_above = np.moveaxis(weights_above, axis, 0);
+                axis = 0;
+
+                // Check if the array contains any nan's
+                if (a.IsInexact)
+                {
+                    indices_above = indices_above.A(":-1");
+                    n = np.isnan(ap.A("-1:", "..."));
+                }
+
+                var x1 = take(ap, indices_below, axis: axis) * weights_below;
+                var x2 = take(ap, indices_above, axis: axis) * weights_above;
+
+                // ensure axis with qth is first
+                x1 = np.moveaxis(x1, axis, 0);
+                x2 = np.moveaxis(x2, axis, 0);
+
+                if (zerod)
+                {
+                    x1 = np.squeeze(x1, 0);
+                    x2 = np.squeeze(x2, 0);
+                }
+
+
+                r = np.add(x1, x2);
+
+                if ((bool)np.any(n).GetItem(0) == true)
+                {
+                    //warnings.warn("Invalid value encountered in percentile", RuntimeWarning, stacklevel = 3);
+                    if (zerod)
+                    {
+                        if (ap.ndim == 1)
+                        {
+                            r = np.array(double.NaN);
+                        }
+                        else
+                        {
+                            r["...", np.squeeze(n, 0)] = double.NaN;
+                        }
+                    }
+
+                    else
+                    {
+                        if (r.ndim == 1)
+                        {
+                            r[":"] = double.NaN;
+                        }
+                        else
+                        {
+                            r["...", np.repeat(n, q.size, 0)] = double.NaN;
+                        }
+
+                    }
+
+                }
+            }
+
+            return r;
+        }
+
         #endregion
 
         #region trapz
