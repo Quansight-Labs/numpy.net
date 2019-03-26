@@ -2083,7 +2083,7 @@ namespace NumpyDotNet
 
         #region percentile
 
-        public static ndarray percentile(ndarray a, ndarray q, int? axis = null, ndarray _out = null, 
+        public static ndarray percentile(object a, object q, int? axis = null, ndarray @out = null, 
                 bool overwrite_input = false, string interpolation = "linear", bool keepdims=false)
         {
             /*
@@ -2191,7 +2191,47 @@ namespace NumpyDotNet
             >>> assert not np.all(a == b)
             */
 
-            throw new NotImplementedException();
+            
+
+            var q1 = np.true_divide(asanyarray(q), 100.0);  // handles the asarray for us too
+            if (!_quantile_is_valid(q1))
+            {
+                throw new ValueError("Percentiles must be in the range [0, 100]");
+            }
+            return _quantile_unchecked(asanyarray(a), q1, axis, @out, overwrite_input, interpolation, keepdims);
+        }
+
+        private static ndarray _quantile_unchecked(ndarray a, ndarray q, int? axis = null, ndarray @out = null, 
+                bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        {
+            return null;
+        }
+
+        private static bool _quantile_is_valid(ndarray q)
+        {
+            //# avoid expensive reductions, relevant for arrays with < O(1000) elements
+            if (q.ndim == 1 && q.size < 10)
+            {
+                for (int i = 0; i < q.size; i++)
+                {
+                    var qd = Convert.ToDouble(q[i]);
+                    if (qd < 0.0 || qd > 1.0)
+                        return false;
+                }
+            }
+            else
+            {
+                // faster than any()
+                long nz1 = (long)np.count_nonzero(q < 0.0)[0];
+                long nz2 = (long)np.count_nonzero(q > 1.0)[0];
+                if (nz1 > 0 || nz2 > 0)
+                {
+                    return false;
+                }
+            }
+
+
+            return true;
         }
 
         #endregion
