@@ -183,7 +183,33 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_percentile_1()
         {
+            var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
+            var b = np.percentile(a, 50);
+            print(b);
+
+            var c = np.percentile(a, 50, axis: 0);
+            print(c);
+
+            var d = np.percentile(a, 50, axis : 1);
+            print(d);
+
+            var e = np.percentile(a, 50, axis : 1, keepdims : true);
+            print(e);
+
+            var m = np.percentile(a, 50, axis : 0);
+            var n = np.zeros_like(m);
+            var o = np.percentile(a, 50, axis : 0, @out: n);
+            print(o);
+            print(n);
+
+            b = a.Copy();
+            c = np.percentile(b, 50, axis: 1, overwrite_input: true);
+            print(c);
+
+            Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+
+            return;
         }
 
         [Ignore]

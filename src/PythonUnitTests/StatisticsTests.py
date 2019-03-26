@@ -140,6 +140,33 @@ class StatisticsTests(unittest.TestCase):
     #region percentile/quantile
 
     def test_percentile_1(self):
+
+        a = np.array([[10, 7, 4], [3, 2, 1]])
+
+        b = np.percentile(a, 50)
+        print(b)
+
+        c = np.percentile(a, 50, axis=0)
+        print(c)
+
+        d = np.percentile(a, 50, axis=1)
+        print(d)
+
+        e = np.percentile(a, 50, axis=1, keepdims=True)
+        print(e)
+
+        m = np.percentile(a, 50, axis=0)
+        n = np.zeros_like(m)
+        o = np.percentile(a, 50, axis=0, out=n)
+        print(o)
+        print(n)
+
+        b = a.copy()
+        c = np.percentile(b, 50, axis=1, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a == b)
+
         return
 
 
