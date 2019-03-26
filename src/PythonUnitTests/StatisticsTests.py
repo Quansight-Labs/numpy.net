@@ -171,6 +171,34 @@ class StatisticsTests(unittest.TestCase):
 
 
     def test_quantile_1(self):
+
+        a = np.array([[10, 7, 4], [3, 2, 1]])
+
+        b = np.quantile(a, 0.5)
+        print(b)
+
+        c = np.quantile(a, 0.5, axis=0)
+        print(c)
+
+        d = np.quantile(a, 0.5, axis=1)
+        print(d)
+
+        e = np.quantile(a, 0.5, axis=1, keepdims=True)
+        print(e)
+
+
+        m = np.quantile(a, 0.5, axis=0)
+        out = np.zeros_like(m)
+        np.quantile(a, 0.5, axis=0, out=out)
+
+        print(out)
+        print(m)
+
+        b = a.copy()
+        c = np.quantile(b, 0.5, axis=1, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a == b)
         return
 
     #endregion
