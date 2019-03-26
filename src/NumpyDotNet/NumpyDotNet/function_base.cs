@@ -1994,6 +1994,84 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region _ureduce
+
+        private delegate ndarray _ureduce_func(ndarray a, ndarray q, int? axis = null, ndarray @out = null,
+                                                bool overwrite_input = false, string interpolation = "linear", bool keepdims = false);
+
+        private static (ndarray r, List<npy_intp> keepdims)  _ureduce(ndarray a, _ureduce_func func, ndarray q, int[] axisarray = null, 
+            ndarray @out = null, bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        {
+
+            //Internal Function.
+            //Call `func` with `a` as first argument swapping the axes to use extended
+            //axis on functions that don't support it natively.
+
+            //Returns result and a.shape with axis dims set to 1.
+
+            //Parameters
+            //----------
+            //a: array_like
+            //   Input array or object that can be converted to an array.
+            //func: callable
+            //   Reduction function capable of receiving a single axis argument.
+            //    It is called with `a` as first argument followed by `kwargs`.
+            //kwargs: keyword arguments
+            //    additional keyword arguments to pass to `func`.
+
+            //Returns
+            //------ -
+            //result : tuple
+            //    Result of func(a, ** kwargs) and a.shape with axis dims set to 1
+            //    which can be used to reshape the result to the same shape a ufunc with
+            //    keepdims = True would produce.
+
+            List<npy_intp> keepdim = null;
+            int nd;
+            int axis = 0;
+
+            a = np.asanyarray(a);
+            if (axisarray != null)
+            {
+                keepdim = a.shape.iDims.ToList();
+                nd = a.ndim;
+                axisarray = normalize_axis_tuple(axisarray, a.ndim);
+
+                foreach (var ax in axisarray)
+                    keepdim[ax] = 1;
+
+                if (len(axisarray) == 1)
+                {
+                    axis = axisarray[0];
+                }
+                else
+                {
+                    //keep = set(range(nd)) - set(axis)
+                    //nkeep = len(keep)
+                    //# swap axis that should not be reduced to front
+                    //for i, s in enumerate(sorted(keep)):
+                    //    a = a.swapaxes(i, s)
+                    //# merge reduced axis
+                    //a = a.reshape(a.shape[:nkeep] + (-1,))
+                    //kwargs['axis'] = -1
+                }
+
+            }
+            else
+            {
+                keepdim = new List<npy_intp>();
+                for (int i = 0; i < a.ndim; i++)
+                {
+                    keepdim.Add(1);
+                }
+            }
+
+            ndarray r = func(a, q, axis, @out, overwrite_input, interpolation, keepdims);
+            return (r, keepdim);
+
+        }
+        #endregion
+
         #region median
 
         public static ndarray median(ndarray a, int? axis = null, ndarray _out = null, bool overwrite_input = false, bool keepdims = false)
@@ -2204,7 +2282,29 @@ namespace NumpyDotNet
         private static ndarray _quantile_unchecked(ndarray a, ndarray q, int? axis = null, ndarray @out = null, 
                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
-            return null;
+            int[] axisarray = null;
+            if (axis != null)
+            {
+                axisarray = new int[] { axis.Value };
+            }
+
+            // Assumes that q is in [0, 1], and is an ndarray
+            var _ureduce_ret = _ureduce(a, func: _quantile_ureduce_func, q: q, 
+                    axisarray: axisarray, @out: @out,
+                    overwrite_input: overwrite_input,
+                    interpolation: interpolation);
+
+            if (keepdims)
+            {
+                List<npy_intp> newshape = new List<npy_intp>();
+                newshape.AddRange(a.shape.iDims);
+                newshape.AddRange(_ureduce_ret.keepdims);
+                return _ureduce_ret.r.reshape(new shape(newshape.ToArray()));
+            }
+            else
+            {
+                return _ureduce_ret.r;
+            }
         }
 
         private static bool _quantile_is_valid(ndarray q)
@@ -2233,6 +2333,7 @@ namespace NumpyDotNet
 
             return true;
         }
+
 
         private static ndarray _quantile_ureduce_func(ndarray a, ndarray q, int? axis = null, ndarray @out = null,
                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
@@ -2309,7 +2410,7 @@ namespace NumpyDotNet
                     indices = concatenate((new ndarray[] { indices, np.array(new int[] { -1 }) }));
                 }
 
-                ap = np.partition(ap, indices.ToArray<int>(), axis: axis);
+                ap.partition(indices.ToArray<int>(), axis: axis);
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);
                 axis = 0;
@@ -2350,7 +2451,7 @@ namespace NumpyDotNet
                 weights_below = weights_below.reshape(new shape(weights_shape));
                 weights_above = weights_above.reshape(new shape(weights_shape));
 
-                np.partition(a, concatenate(((object)indices_below, indices_above)).ToArray<int>(), axis: axis);
+                ap.partition(concatenate(((object)indices_below, indices_above)).ToArray<int>(), axis: axis);
 
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);
