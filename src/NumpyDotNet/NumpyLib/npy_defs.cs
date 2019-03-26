@@ -180,6 +180,7 @@ namespace NumpyLib
 
         internal const int NPY_MAXDIMS = 32;
         internal const int NPY_MAXARGS = 32;
+        internal const int NPY_MAX_PIVOT_STACK = 50;
 
         internal const int NPY_MAX_INTP = 2147483647;
         internal const int NPY_MIN_INTP = (-2147483647 - 1);
@@ -191,7 +192,7 @@ namespace NumpyLib
         internal const int NPY_NSEARCHSIDES = (int)(NPY_SEARCHSIDE.NPY_SEARCHRIGHT + 1);
         internal const int NPY_NSCALARKINDS = (int)(NPY_SCALARKIND.NPY_OBJECT_SCALAR + 1);
 
-   
+            
 
         internal const string NPY_STR_Y = "Y";
         internal const string NPY_STR_M = "M";
@@ -262,6 +263,11 @@ namespace NumpyLib
         NPY_CONVOLVE_SAME = 1,
         NPY_CONVOLVE_FULL = 2,
     };
+
+    public enum NPY_SELECTKIND : int
+    {
+        NPY_INTROSELECT = 0,
+    }
 
 
     public enum NPY_DATETIMEUNIT : int
@@ -640,6 +646,9 @@ namespace NumpyLib
 
     public delegate int NpyArray_SortFunc(object o1, npy_intp i1, NpyArray a);
     public delegate int NpyArray_ArgSortFunc(object o1, VoidPtr i1, npy_intp i2, NpyArray a);
+    public delegate int NpyArray_PartitionFunc(object o1, npy_intp i1, npy_intp i2, npy_intp[] i3, ref npy_intp i4, object o2);
+    public delegate int NpyArray_ArgPartitionFunc(object o1, VoidPtr i1, npy_intp i2, npy_intp i3, npy_intp[] i4, ref npy_intp i5, object o2);
+  
 
     public delegate int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray a);
 

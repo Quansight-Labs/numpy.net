@@ -858,7 +858,328 @@ namespace NumpyLib
             NpyArray_XDECREF_ERR(ret);
             return null;
         }
-  
+
+        private int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        {
+            npy_intp N = NpyArray_DIM(op, axis);
+            int elsize = NpyArray_ITEMSIZE(op);
+            npy_intp astride = NpyArray_STRIDE(op, axis);
+            bool swap = NpyArray_ISBYTESWAPPED(op);
+            bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
+            bool hasrefs = NpyDataType_REFCHK(NpyArray_DESCR(op));
+
+            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
+            VoidPtr buffer = null;
+
+            NpyArrayIterObject it;
+            npy_intp size;
+
+            int ret = 0;
+
+
+            /* Check if there is any sorting to do */
+            if (N <= 1 || NpyArray_SIZE(op) == 0)
+            {
+                return 0;
+            }
+
+            it = NpyArray_IterAllButAxis(op, ref axis);
+            if (it == null)
+            {
+                return -1;
+            }
+            size = it.size;
+
+            if (needcopy)
+            {
+                buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
+                if (buffer == null)
+                {
+                    ret = -1;
+                    goto fail;
+                }
+            }
+
+
+            while (size-- > 0)
+            {
+                VoidPtr bufptr = it.dataptr;
+
+                if (needcopy)
+                {
+                    if (hasrefs)
+                    {
+                        /*
+                         * For dtype's with objects, copyswapn Py_XINCREF's src
+                         * and Py_XDECREF's dst. This would crash if called on
+                         * an uninitialized buffer, or leak a reference to each
+                         * object if initialized.
+                         *
+                         * So, first do the copy with no refcounting...
+                         */
+                        _unaligned_strided_byte_copy(buffer, elsize, it.dataptr, astride, N, elsize, null);
+                        /* ...then swap in-place if needed */
+                        if (swap)
+                        {
+                            copyswapn(buffer, elsize, null, 0, N, swap, op);
+                        }
+                    }
+                    else
+                    {
+                        copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
+                    }
+                    bufptr = buffer;
+                }
+                /*
+                 * TODO: If the input array is byte-swapped but contiguous and
+                 * aligned, it could be swapped (and later unswapped) in-place
+                 * rather than after copying to the buffer. Care would have to
+                 * be taken to ensure that, if there is an error in the call to
+                 * sort or part, the unswapping is still done before returning.
+                 */
+
+                if (part == null)
+                {
+                    ret = sort(bufptr, N, op);
+                    if (hasrefs && NpyErr_Occurred())
+                    {
+                        ret = -1;
+                    }
+                    if (ret < 0)
+                    {
+                        goto fail;
+                    }
+                }
+                else
+                {
+                    npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
+                    npy_intp npiv = 0;
+                    npy_intp i;
+                    for (i = 0; i < nkth; ++i)
+                    {
+                        ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
+                        if (hasrefs && NpyErr_Occurred())
+                        {
+                            ret = -1;
+                        }
+                        if (ret < 0)
+                        {
+                            goto fail;
+                        }
+                    }
+                }
+
+                if (needcopy)
+                {
+                    if (hasrefs)
+                    {
+                        if (swap)
+                        {
+                            copyswapn(buffer, elsize, null, 0, N, swap, op);
+                        }
+                        _unaligned_strided_byte_copy(it.dataptr, astride, buffer, elsize, N, elsize, null);
+                    }
+                    else
+                    {
+                        copyswapn(it.dataptr, astride, buffer, elsize, N, swap, op);
+                    }
+                }
+
+                NpyArray_ITER_NEXT(it);
+            }
+
+            fail:
+            if (ret < 0 && !NpyErr_Occurred())
+            {
+                /* Out of memory during sorting or buffer creation */
+                NpyErr_NoMemory();
+            }
+            Npy_DECREF(it);
+
+            return ret;
+
+
+        }
+
+
+        private static NpyArray _new_argsortlike(NpyArray op, int axis, 
+                    NpyArray_ArgSortFunc argsort, NpyArray_ArgPartitionFunc argpart,  
+                    npy_intp[] kth, npy_intp nkth)
+        {
+            npy_intp N = NpyArray_DIM(op, axis);
+            int elsize = NpyArray_ITEMSIZE(op);
+            npy_intp astride = NpyArray_STRIDE(op, axis);
+            bool swap = NpyArray_ISBYTESWAPPED(op);
+            bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
+            bool hasrefs = NpyDataType_REFCHK(NpyArray_DESCR(op));
+            bool needidxbuffer;
+
+            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
+            VoidPtr valbuffer = null;
+            VoidPtr idxbuffer = null;
+
+            NpyArray rop;
+            npy_intp rstride;
+
+            NpyArrayIterObject it, rit;
+            npy_intp size;
+
+            int ret = 0;
+
+            rop = NpyArray_New(null, NpyArray_NDIM(op),
+                                               NpyArray_DIMS(op), NPY_TYPES.NPY_INTP,
+                                               null, null, 0, 0, op);
+            if (rop == null)
+            {
+                return null;
+            }
+            rstride = NpyArray_STRIDE(rop, axis);
+            needidxbuffer = rstride != sizeof(npy_intp);
+
+            /* Check if there is any argsorting to do */
+            if (N <= 1 || NpyArray_SIZE(op) == 0)
+            {
+                memset(NpyArray_DATA(rop), 0, NpyArray_NBYTES(rop));
+                return rop;
+            }
+
+            it = NpyArray_IterAllButAxis(op, ref axis);
+            rit = NpyArray_IterAllButAxis(rop, ref axis);
+            if (it == null || rit == null)
+            {
+                ret = -1;
+                goto fail;
+            }
+            size = it.size;
+
+            if (needcopy)
+            {
+                valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
+                if (valbuffer == null)
+                {
+                    ret = -1;
+                    goto fail;
+                }
+            }
+
+            if (needidxbuffer)
+            {
+                idxbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
+                if (idxbuffer == null)
+                {
+                    ret = -1;
+                    goto fail;
+                }
+            }
+
+            while (size-- > 0)
+            {
+                VoidPtr valptr = it.dataptr;
+                VoidPtr idxptr = rit.dataptr;
+                VoidPtr iptr;
+                int i;
+
+                if (needcopy)
+                {
+                    if (hasrefs)
+                    {
+                        /*
+                         * For dtype's with objects, copyswapn Py_XINCREF's src
+                         * and Py_XDECREF's dst. This would crash if called on
+                         * an uninitialized valbuffer, or leak a reference to
+                         * each object item if initialized.
+                         *
+                         * So, first do the copy with no refcounting...
+                         */
+                        _unaligned_strided_byte_copy(valbuffer, elsize,
+                                                     it.dataptr, astride, N, elsize, null);
+                        /* ...then swap in-place if needed */
+                        if (swap)
+                        {
+                            copyswapn(valbuffer, elsize, null, 0, N, swap, op);
+                        }
+                    }
+                    else
+                    {
+                        copyswapn(valbuffer, elsize,
+                                  it.dataptr, astride, N, swap, op);
+                    }
+                    valptr = valbuffer;
+                }
+
+                if (needidxbuffer)
+                {
+                    idxptr = idxbuffer;
+                }
+
+                iptr = idxptr;
+                for (i = 0; i < N; ++i)
+                {
+                    SetIndex(iptr, i, i);
+                }
+
+                if (argpart == null)
+                {
+                    ret = argsort(valptr, idxptr, N, op);
+
+                    if (ret < 0)
+                    {
+                        goto fail;
+                    }
+                }
+                else
+                {
+                    npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
+                    npy_intp npiv = 0;
+
+                    for (i = 0; i < nkth; ++i)
+                    {
+                        ret = argpart(valptr, idxptr, N, kth[i], pivots, ref npiv, op);
+
+                        if (ret < 0)
+                        {
+                            goto fail;
+                        }
+                    }
+                }
+
+                if (needidxbuffer)
+                {
+                    VoidPtr rptr = rit.dataptr;
+                    iptr = idxbuffer;
+
+                    for (i = 0; i < N; ++i)
+                    {
+                        SetIndex(rptr, 0, GetIndex(iptr, 0));
+                        iptr += sizeof(npy_intp);
+                        rptr += rstride;
+                    }
+                }
+
+                NpyArray_ITER_NEXT(it);
+                NpyArray_ITER_NEXT(rit);
+            }
+
+            fail:
+
+            if (ret < 0)
+            {
+                if (!NpyErr_Occurred())
+                {
+                    /* Out of memory during sorting or buffer creation */
+                    NpyErr_NoMemory();
+                }
+                Npy_XDECREF(rop);
+                rop = null;
+            }
+            Npy_XDECREF(it);
+            Npy_XDECREF(rit);
+
+            return rop;
+        }
+
+
+
         internal static int NpyArray_Sort(NpyArray op, int axis, NPY_SORTKIND which)
         {
             NpyArray ap = null;
@@ -943,6 +1264,134 @@ namespace NumpyLib
             return -1;
         }
 
+
+        /*
+        * make kth array positive, ravel and sort it
+        */
+        private static NpyArray partition_prep_kth_array(NpyArray ktharray, NpyArray op, int axis)
+        {
+            npy_intp[] shape = NpyArray_DIMS(op);
+            NpyArray kthrvl;
+            npy_intp[] kth;
+            npy_intp nkth, i;
+
+            if (!NpyArray_CanCastSafely(NpyArray_TYPE(ktharray), NPY_TYPES.NPY_INTP))
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_TypeError, "Partition index must be integer");
+                return null;
+            }
+
+            if (NpyArray_NDIM(ktharray) > 1)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "kth array must have dimension <= 1");
+                return null;
+            }
+            kthrvl = NpyArray_CastToType(ktharray, NpyArray_DescrFromType(NPY_TYPES.NPY_INTP), false);
+
+            if (kthrvl == null)
+                return null;
+
+            kth = NpyArray_DATA(kthrvl).datap as npy_intp[];
+            nkth = NpyArray_SIZE(kthrvl);
+
+            for (i = 0; i < nkth; i++)
+            {
+                if (kth[i] < 0)
+                {
+                    kth[i] += shape[axis];
+                }
+                if (NpyArray_SIZE(op) != 0 &&
+                            (kth[i] < 0 || kth[i] >= shape[axis]))
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, string.Format("kth(={0}) out of bounds ({1})", kth[i], shape[axis]));
+                    Npy_XDECREF(kthrvl);
+                    return null;
+                }
+            }
+
+
+            /*
+             * sort the array of kths so the partitions will
+             * not trample on each other
+             */
+            if (NpyArray_SIZE(kthrvl) > 1)
+            {
+                NpyArray_Sort(kthrvl, -1, NPY_SORTKIND.NPY_QUICKSORT);
+            }
+
+            return kthrvl;
+        }
+
+        private bool check_and_adjust_axis(ref int axis, int ndim)
+        {
+            if (axis < -ndim || axis >= ndim)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_TypeError, "specified axis outside range for this array");
+                return false;
+            }
+
+            if (axis < 0)
+                axis += ndim;
+
+            return true;
+        }
+
+        private NpyArray_PartitionFunc get_partition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
+        {
+            return null;
+        }
+
+        internal int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND which)
+        {
+            NpyArray kthrvl;
+            NpyArray_PartitionFunc part;
+            NpyArray_SortFunc sort = null;
+
+            int n = NpyArray_NDIM(op);
+            int ret;
+
+            if (check_and_adjust_axis(ref axis, n) == false)
+            {
+                return -1;
+            }
+
+            if (NpyArray_ISWRITEABLE(op))
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "partition array is read only");
+                return -1;
+            }
+       
+            part = get_partition_func(NpyArray_TYPE(op), which);
+            if (part == null)
+            {
+                /* Use sorting, slower but equivalent */
+                if (NpyArray_DESCR(op).f.compare != null)
+                {
+                    sort = NpyArray_SortFunc;
+                }
+                else
+                {
+                    NpyErr_SetString( npyexc_type.NpyExc_TypeError,  "type does not have compare function");
+                    return -1;
+                }
+            }
+
+            /* Process ktharray even if using sorting to do bounds checking */
+            kthrvl = partition_prep_kth_array(ktharray, op, axis);
+            if (kthrvl == null)
+            {
+                return -1;
+            }
+
+            ret = _new_sortlike(op, axis, sort, part, NpyArray_DATA(kthrvl).datap as npy_intp[], NpyArray_SIZE(kthrvl));
+
+            Npy_DECREF(kthrvl);
+
+            return ret;
+
+        }
+
+  
         internal static NpyArray NpyArray_ArgSort(NpyArray op, int axis, NPY_SORTKIND which)
         {
             NpyArray ap = null, ret = null, op2;
