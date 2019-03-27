@@ -1225,6 +1225,27 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static int Partition(ndarray op, ndarray ktharray, int axis, NPY_SELECTKIND which)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_Partition(op.Array, ktharray.Array, axis, which);
+            }
+        }
+
+
+        internal static ndarray ArgPartition(ndarray op, ndarray ktharray, int axis, NPY_SELECTKIND which)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_ArgPartition(op.Array, ktharray.Array, axis, which));
+            }
+        }
+
         internal static ndarray Conjugate(ndarray arr, ndarray ret = null)
         {
             #if ENABLELOCKING

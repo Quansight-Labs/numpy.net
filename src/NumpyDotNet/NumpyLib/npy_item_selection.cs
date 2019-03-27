@@ -859,7 +859,7 @@ namespace NumpyLib
             return null;
         }
 
-        private int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        private static int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
         {
             npy_intp N = NpyArray_DIM(op, axis);
             int elsize = NpyArray_ITEMSIZE(op);
@@ -1322,7 +1322,7 @@ namespace NumpyLib
             return kthrvl;
         }
 
-        private bool check_and_adjust_axis(ref int axis, int ndim)
+        private static bool check_and_adjust_axis(ref int axis, int ndim)
         {
             if (axis < -ndim || axis >= ndim)
             {
@@ -1336,12 +1336,17 @@ namespace NumpyLib
             return true;
         }
 
-        private NpyArray_PartitionFunc get_partition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
+        private static NpyArray_PartitionFunc get_partition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
         {
             return null;
         }
 
-        internal int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND which)
+        private static NpyArray_ArgPartitionFunc get_argpartition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
+        {
+            return null;
+        }
+
+        internal static int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND which)
         {
             NpyArray kthrvl;
             NpyArray_PartitionFunc part;
@@ -1355,7 +1360,7 @@ namespace NumpyLib
                 return -1;
             }
 
-            if (NpyArray_ISWRITEABLE(op))
+            if (!NpyArray_ISWRITEABLE(op))
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "partition array is read only");
                 return -1;
@@ -1486,6 +1491,57 @@ namespace NumpyLib
             return null;
 
         }
+
+        /*NUMPY_API
+         * ArgPartition an array
+         */
+        internal static NpyArray NpyArray_ArgPartition(NpyArray op, NpyArray ktharray, int axis, NPY_SELECTKIND which)
+        {
+            NpyArray op2, kthrvl;
+            NpyArray_ArgPartitionFunc argpart;
+            NpyArray_ArgSortFunc argsort = null;
+            NpyArray ret;
+
+  
+            argpart = get_argpartition_func(NpyArray_TYPE(op), which);
+            if (argpart == null)
+            {
+                /* Use sorting, slower but equivalent */
+                if (NpyArray_DESCR(op).f.compare != null)
+                {
+                    argsort = NpyArray_ArgSortFunc;
+                }
+                else
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_TypeError, "type does not have compare function");
+                    return null;
+                }
+            }
+
+            op2 = NpyArray_CheckAxis(op, ref axis, 0);
+            if (op2 == null)
+            {
+                return null;
+            }
+
+            /* Process ktharray even if using sorting to do bounds checking */
+            kthrvl = partition_prep_kth_array(ktharray, op2, axis);
+            if (kthrvl == null)
+            {
+                Npy_DECREF(op2);
+                return null;
+            }
+
+            ret = _new_argsortlike(op2, axis, argsort, argpart,
+                                   NpyArray_DATA(kthrvl).datap as npy_intp[], NpyArray_SIZE(kthrvl));
+
+            Npy_DECREF(kthrvl);
+            Npy_DECREF(op2);
+
+            return ret;
+        }
+
+
 
         private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, long startingIndex)
         {

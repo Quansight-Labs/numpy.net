@@ -673,7 +673,15 @@ namespace NumpyDotNet
             array([1, 2, 3, 4])
              */
 
-            throw new NotImplementedException();
+            if (axis == null)
+            {
+                a = a.flatten();
+                axis = 0;
+            }
+
+            int ret = NpyCoreApi.Partition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
+
+            return a;
         }
 
         public static ndarray partition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
@@ -749,7 +757,15 @@ namespace NumpyDotNet
             array([2, 1, 3, 4])             
             */
 
-            throw new NotImplementedException();
+
+            if (axis == null)
+            {
+                a = a.flatten();
+                axis = 0;
+            }
+
+            ndarray ret = NpyCoreApi.ArgPartition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
+            return ret;
         }
 
         public static ndarray argpartition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)

@@ -950,6 +950,14 @@ namespace NumpyLib
         {
             return numpyinternal.NpyArray_Choose(ip, mps, n, ret, clipmode);
         }
+        public static int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis, NPY_SELECTKIND which)
+        {
+            return numpyinternal.NpyArray_Partition(op, ktharray, axis, which);
+        }
+        public static NpyArray NpyArray_ArgPartition(NpyArray op, NpyArray ktharray, int axis, NPY_SELECTKIND which)
+        {
+            return numpyinternal.NpyArray_ArgPartition(op, ktharray, axis, which);
+        }
         public static int NpyArray_Sort(NpyArray op, int axis, NPY_SORTKIND which)
         {
             return numpyinternal.NpyArray_Sort(op, axis, which);
