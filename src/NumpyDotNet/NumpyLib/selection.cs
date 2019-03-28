@@ -268,17 +268,17 @@ namespace NumpyLib
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = v[i];
+                T minval = v[i+left];
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(v[k], minval))
+                    if (LT(v[k+left], minval))
                     {
                         minidx = k;
-                        minval = v[k];
+                        minval = v[k+left];
                     }
                 }
-                SWAP(v, i, minidx);
+                SWAP(v, i+left, minidx+left);
             }
 
             return 0;

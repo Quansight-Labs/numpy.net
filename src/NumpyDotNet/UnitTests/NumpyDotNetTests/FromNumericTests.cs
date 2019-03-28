@@ -805,16 +805,26 @@ namespace NumpyDotNetTests
             AssertArray(y, ExpectedDataY);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_partition_1()
+        public void test_partition_1()
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.partition(a, 3);
+            AssertArray(b, new int[] { 2, 1, 3, 4 });
+            print(a);
             print(b);
-
             print("********");
+
+            a = np.array(new int[] { 3, 4, 2, 1 });
+            b = np.partition(a, 0);
+            AssertArray(b, new int[] { 1, 4, 2, 3 });
+
+            print(a);
+            print(b);
+            print("********");
+
             ndarray c = np.partition(a, new Int32[] { 1, 3 });
+            AssertArray(c, new int[] { 1, 2, 3, 4 });
             print(c);
         }
 
