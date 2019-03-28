@@ -96,8 +96,31 @@ namespace NumpyLib
         {
             switch (v.type_num)
             {
+                case NPY_TYPES.NPY_BOOL:
+                    return partition_introselect<bool>(v.datap as bool[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_BYTE:
+                    return partition_introselect<sbyte>(v.datap as sbyte[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UBYTE:
+                    return partition_introselect<byte>(v.datap as byte[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT16:
+                    return partition_introselect<Int16>(v.datap as Int16[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT16:
+                    return partition_introselect<UInt16>(v.datap as UInt16[], num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_INT32:
-                    return partition_introselect<Int32>(v.datap as Int32[], num, kth, pivots, ref npiv, not_used);
+                    return partition_introselect<Int32>(v.datap as Int32[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT32:
+                    return partition_introselect<UInt32>(v.datap as UInt32[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT64:
+                    return partition_introselect<Int64>(v.datap as Int64[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT64:
+                    return partition_introselect<UInt64>(v.datap as UInt64[], num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_FLOAT:
+                    return partition_introselect<float>(v.datap as float[], num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_DOUBLE:
+                    return partition_introselect<double>(v.datap as double[], num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_DECIMAL:
+                    return partition_introselect<decimal>(v.datap as decimal[], num, kth, pivots, ref npiv, true);
+
             }
             return 0;
         }
@@ -108,7 +131,7 @@ namespace NumpyLib
                          npy_intp num, npy_intp kth,
                          npy_intp[] pivots,
                          ref npy_intp? npiv,
-                         object NOT_USED)
+                         bool inexact)
         {
             npy_intp low = 0;
             npy_intp high = num - 1;
@@ -147,7 +170,7 @@ namespace NumpyLib
                 store_pivot(kth, kth, pivots, ref npiv);
                 return 0;
             }
-            else if (true  && kth == num - 1)
+            else if (inexact  && kth == num - 1)
             {
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
@@ -188,7 +211,7 @@ namespace NumpyLib
                 else
                 {
                     npy_intp mid;
-                    mid = ll + median_of_median5(v, ll, hh - ll, null, null);
+                    mid = ll + median_of_median5(v, ll, hh - ll, null, null, inexact);
                     SWAP(v, mid,low);
                     /* adapt for the larger partition than med3 pivot */
                     ll--;
@@ -342,7 +365,7 @@ namespace NumpyLib
          * if used as partition pivot it splits the range into at least 30%/70%
          * allowing linear time worstcase quickselect
          */
-        static npy_intp median_of_median5<T>(T[] v, npy_intp voffset, npy_intp num, npy_intp[] pivots, npy_intp? npiv)
+        static npy_intp median_of_median5<T>(T[] v, npy_intp voffset, npy_intp num, npy_intp[] pivots, npy_intp? npiv, bool inexact)
         {
             npy_intp i, subleft;
             npy_intp right = num - 1;
@@ -355,7 +378,7 @@ namespace NumpyLib
             }
 
             if (nmed > 2)
-                partition_introselect(v, nmed, nmed / 2, pivots, ref npiv, null);
+                partition_introselect(v, nmed, nmed / 2, pivots, ref npiv, inexact);
 
             return nmed / 2;
         }
