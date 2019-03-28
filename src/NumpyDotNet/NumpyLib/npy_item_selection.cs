@@ -953,7 +953,7 @@ namespace NumpyLib
                 else
                 {
                     npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
-                    npy_intp npiv = 0;
+                    npy_intp? npiv = 0;
                     npy_intp i;
                     for (i = 0; i < nkth; ++i)
                     {
@@ -1336,15 +1336,7 @@ namespace NumpyLib
             return true;
         }
 
-        private static NpyArray_PartitionFunc get_partition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
-        {
-            return null;
-        }
-
-        private static NpyArray_ArgPartitionFunc get_argpartition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
-        {
-            return null;
-        }
+ 
 
         internal static int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND which)
         {
