@@ -676,7 +676,11 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 a = a.flatten();
-                axis = 0;
+                axis = -1;
+            }
+            else
+            {
+                a = asanyarray(a).Copy(order: "K");
             }
 
             int ret = NpyCoreApi.Partition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
@@ -761,9 +765,13 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 a = a.flatten();
-                axis = 0;
+                axis = -1;
             }
-
+            else
+            {
+                a = asanyarray(a).Copy(order : "K");
+            }
+            
             ndarray ret = NpyCoreApi.ArgPartition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
             return ret;
         }

@@ -152,13 +152,13 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = v[IDX(low)];
+                T maxval = v[low];
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(v[IDX(k)], maxval))
+                    if (!LT(v[k], maxval))
                     {
                         maxidx = k;
-                        maxval = v[IDX(k)];
+                        maxval = v[k];
                     }
                 }
                 SWAP(v, kth, maxidx);
@@ -202,7 +202,7 @@ namespace NumpyLib
                  * previous swapping removes need for bound checks
                  * pivot 3-lowest [x x x] 3-highest
                  */
-                UNGUARDED_PARTITION(v, v[IDX(low)], ref ll, ref hh);
+                UNGUARDED_PARTITION(v, v[low], ref ll, ref hh);
 
                 /* move pivot into position */
                 SWAP(v, low, hh);
@@ -222,7 +222,7 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(v[IDX(high)], v[IDX(low)]))
+                if (LT(v[high], v[low]))
                 {
                     SWAP(v, high, low);
                 }
@@ -245,25 +245,20 @@ namespace NumpyLib
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = v[IDX(i)];
+                T minval = v[i];
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(v[IDX(k)], minval))
+                    if (LT(v[k], minval))
                     {
                         minidx = k;
-                        minval = v[IDX(k)];
+                        minval = v[k];
                     }
                 }
                 SWAP(v, i, minidx);
             }
 
             return 0;
-        }
-
-        static npy_intp IDX(npy_intp X)
-        {
-            return X;
         }
 
 
@@ -287,12 +282,12 @@ namespace NumpyLib
          */
         static void MEDIAN3_SWAP<T>(T[] v, npy_intp low, npy_intp mid, npy_intp high)
         {
-            if (LT(v[IDX(high)], v[IDX(mid)]))
+            if (LT(v[high], v[mid]))
                 SWAP(v, high, mid);
-            if (LT(v[IDX(high)], v[IDX(low)]))
+            if (LT(v[high], v[low]))
                 SWAP(v, high, low);
             /* move pivot to low */
-            if (LT(v[IDX(low)], v[IDX(mid)]))
+            if (LT(v[low], v[mid]))
                 SWAP(v, low, mid);
             /* move 3-lowest element to low + 1 */
             SWAP(v, mid, low + 1);
@@ -304,29 +299,29 @@ namespace NumpyLib
         static npy_intp MEDIAN5<T>(T[] v, npy_intp voffset)
         {
             /* could be optimized as we only need the index (no swaps) */
-            if (LT(v[voffset+IDX(1)], v[voffset + IDX(0)]))
+            if (LT(v[voffset+1], v[voffset + 0]))
             {
                 SWAP(v, voffset+1, voffset + 0);
             }
-            if (LT(v[voffset + IDX(4)], v[voffset + IDX(3)]))
+            if (LT(v[voffset + 4], v[voffset + 3]))
             {
                 SWAP(v, voffset + 4, voffset + 3);
             }
-            if (LT(v[voffset + IDX(3)], v[voffset + IDX(0)]))
+            if (LT(v[voffset + 3], v[voffset + 0]))
             {
                 SWAP(v, voffset + 3, voffset + 0);
             }
-            if (LT(v[voffset + IDX(4)], v[voffset + IDX(1)]))
+            if (LT(v[voffset + 4], v[voffset + 1]))
             {
                 SWAP(v, voffset + 4, voffset + 1);
             }
-            if (LT(v[voffset + IDX(2)], v[voffset + IDX(1)]))
+            if (LT(v[voffset + 2], v[voffset + 1]))
             {
                 SWAP(v, voffset + 2, voffset + 1);
             }
-            if (LT(v[voffset + IDX(3)], v[voffset + IDX(2)]))
+            if (LT(v[voffset + 3], v[voffset + 2]))
             {
-                if (LT(v[voffset + IDX(3)], v[voffset + IDX(1)]))
+                if (LT(v[voffset + 3], v[voffset + 1]))
                 {
                     return 1;
                 }
@@ -376,8 +371,8 @@ namespace NumpyLib
         {
             for (; ; )
             {
-                do ll++; while (LT(v[IDX(ll)], pivot));
-                do hh--; while (LT(pivot, v[IDX(hh)]));
+                do ll++; while (LT(v[ll], pivot));
+                do hh--; while (LT(pivot, v[hh]));
 
                 if (hh < ll)
                     break;
