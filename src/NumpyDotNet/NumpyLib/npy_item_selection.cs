@@ -1112,10 +1112,13 @@ namespace NumpyLib
                     idxptr = new VoidPtr(idxbuffer);
                 }
 
-                iptr = idxptr;
+                iptr = new VoidPtr(idxptr);
+                iptr.data_offset /= GetTypeSize(iptr);
+
                 for (i = 0; i < N; ++i)
                 {
-                    SetIndex(iptr, i, i);
+                    SetIndex(iptr, iptr.data_offset, i);
+                    iptr.data_offset += 1;
                 }
 
                 if (argpart == null)
@@ -1146,13 +1149,16 @@ namespace NumpyLib
                 if (needidxbuffer)
                 {
                     VoidPtr rptr = new VoidPtr(rit.dataptr);
+                    var rptrSize = GetTypeSize(rptr);
+
                     iptr = new VoidPtr(idxbuffer);
+                    iptr.data_offset /= GetTypeSize(iptr);
 
                     for (i = 0; i < N; ++i)
                     {
-                        SetIndex(rptr, 0, GetIndex(iptr, 0));
-                        iptr += sizeof(npy_intp);
-                        rptr += rstride;
+                        SetIndex(rptr, rptr.data_offset / rptrSize, GetIndex(iptr, iptr.data_offset));
+                        iptr.data_offset += 1;
+                        rptr.data_offset += rstride;
                     }
                 }
 

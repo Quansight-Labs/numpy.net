@@ -955,15 +955,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            AssertArray(b, new int[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new int[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            AssertArray(c, new int[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new int[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            AssertArray(d, new int[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
@@ -986,15 +986,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1, dtype: np.Float64).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new double[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            AssertArray(b, new int[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new double[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            AssertArray(c, new int[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new double[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            AssertArray(d, new int[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
