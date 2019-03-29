@@ -169,6 +169,11 @@ namespace NumpyLib
             return vv[v.data_offset + index] = d;
         }
 
+        private static npy_intp IDX(VoidPtr vp, npy_intp index)
+        {
+            return GetItem<npy_intp>(vp, index);
+        }
+
         private static int partition_introselect<T>(VoidPtr v,
                          npy_intp num, npy_intp kth,
                          npy_intp[] pivots,
@@ -301,7 +306,7 @@ namespace NumpyLib
         }
 
 
-        private static int argpartition_introselect<T>(VoidPtr v, VoidPtr tosortvp,
+        private static int argpartition_introselect<T>(VoidPtr v, VoidPtr _tosortvp,
                     npy_intp num, npy_intp kth,
                     npy_intp[] pivots,
                     ref npy_intp? npiv,
@@ -313,6 +318,9 @@ namespace NumpyLib
 
             v = new VoidPtr(v);
             v.data_offset /= GetTypeSize(v);
+
+            VoidPtr tosortvp = new VoidPtr(_tosortvp);
+            tosortvp.data_offset /= GetTypeSize(tosortvp);
 
             if (npiv == null)
                 pivots = null;
@@ -352,13 +360,13 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = GetItem<T>(v, GetItem<npy_intp>(tosortvp, low));
+                T maxval = GetItem<T>(v, IDX(tosortvp, low));
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(GetItem<T>(v, GetItem<npy_intp>(tosortvp, k)), maxval))
+                    if (!LT(GetItem<T>(v, IDX(tosortvp, k)), maxval))
                     {
                         maxidx = k;
-                        maxval = GetItem<T>(v, GetItem<npy_intp>(tosortvp, k));
+                        maxval = GetItem<T>(v, IDX(tosortvp, k));
                     }
                 }
                 SWAP<npy_intp>(tosortvp, kth, maxidx);
@@ -402,7 +410,7 @@ namespace NumpyLib
                  * previous swapping removes need for bound checks
                  * pivot 3-lowest [x x x] 3-highest
                  */
-                UNGUARDED_PARTITION(v, tosortvp, GetItem<T>(v, GetItem<npy_intp>(tosortvp,low)), ref ll, ref hh);
+                UNGUARDED_PARTITION(v, tosortvp, GetItem<T>(v, IDX(tosortvp,low)), ref ll, ref hh);
 
                 /* move pivot into position */
                 SWAP<npy_intp>(tosortvp, low, hh);
@@ -422,7 +430,7 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(GetItem<T>(v, GetItem<npy_intp>(tosortvp, high)), GetItem<T>(v, GetItem<npy_intp>(tosortvp, low))))
+                if (LT(GetItem<T>(v, IDX(tosortvp, high)), GetItem<T>(v, IDX(tosortvp, low))))
                 {
                     SWAP<npy_intp>(tosortvp, high, low);
                 }
@@ -465,14 +473,14 @@ namespace NumpyLib
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = GetItem<T>(v, GetItem<npy_intp>(tosort,i + left));
+                T minval = GetItem<T>(v, IDX(tosort,i + left));
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, k + left)), minval))
+                    if (LT(GetItem<T>(v, IDX(tosort, k + left)), minval))
                     {
                         minidx = k;
-                        minval = GetItem<T>(v, GetItem<npy_intp>(tosort, k + left));
+                        minval = GetItem<T>(v, IDX(tosort, k + left));
                     }
                 }
                 SWAP<npy_intp>(tosort, i + left, minidx + left);
@@ -515,12 +523,12 @@ namespace NumpyLib
 
         static void MEDIAN3_SWAP<T>(VoidPtr v, VoidPtr tosort, npy_intp low, npy_intp mid, npy_intp high)
         {
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, high)), GetItem<T>(v, GetItem<npy_intp>(tosort, mid))))
+            if (LT(GetItem<T>(v, IDX(tosort, high)), GetItem<T>(v, IDX(tosort, mid))))
                 SWAP<npy_intp>(tosort, high, mid);
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, high)), GetItem<T>(v, GetItem<npy_intp>(tosort, low))))
+            if (LT(GetItem<T>(v, IDX(tosort, high)), GetItem<T>(v, IDX(tosort, low))))
                 SWAP<npy_intp>(tosort, high, low);
             /* move pivot to low */
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, low)), GetItem<T>(v, GetItem<npy_intp>(tosort, mid))))
+            if (LT(GetItem<T>(v, IDX(tosort, low)), GetItem<T>(v, IDX(tosort, mid))))
                 SWAP<npy_intp>(tosort, low, mid);
             /* move 3-lowest element to low + 1 */
             SWAP<npy_intp>(tosort, mid, low + 1);
@@ -572,29 +580,29 @@ namespace NumpyLib
         static npy_intp MEDIAN5<T>(VoidPtr v, VoidPtr tosort, npy_intp voffset)
         {
             /* could be optimized as we only need the index (no swaps) */
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 1)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 0))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 1)), GetItem<T>(v, IDX(tosort, voffset + 0))))
             {
                 SWAP<npy_intp>(tosort, voffset + 1, voffset + 0);
             }
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 4)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 3))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 4)), GetItem<T>(v, IDX(tosort, voffset + 3))))
             {
                 SWAP<npy_intp>(tosort, voffset + 4, voffset + 3);
             }
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 3)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 0))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 3)), GetItem<T>(v, IDX(tosort, voffset + 0))))
             {
                 SWAP<npy_intp>(tosort, voffset + 3, voffset + 0);
             }
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 4)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 1))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 4)), GetItem<T>(v, IDX(tosort, voffset + 1))))
             {
                 SWAP<npy_intp>(tosort, voffset + 4, voffset + 1);
             }
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 2)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 1))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 2)), GetItem<T>(v, IDX(tosort, voffset + 1))))
             {
                 SWAP<npy_intp>(tosort, voffset + 2, voffset + 1);
             }
-            if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 3)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 2))))
+            if (LT(GetItem<T>(v, IDX(tosort, voffset + 3)), GetItem<T>(v, IDX(tosort, voffset + 2))))
             {
-                if (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 3)), GetItem<T>(v, GetItem<npy_intp>(tosort, voffset + 1))))
+                if (LT(GetItem<T>(v, IDX(tosort, voffset + 3)), GetItem<T>(v, IDX(tosort, voffset + 1))))
                 {
                     return 1;
                 }
@@ -676,8 +684,8 @@ namespace NumpyLib
         {
             for (; ; )
             {
-                do ll++; while (LT(GetItem<T>(v, GetItem<npy_intp>(tosort, ll)), pivot));
-                do hh--; while (LT(pivot, GetItem<T>(v, GetItem<npy_intp>(tosort, hh))));
+                do ll++; while (LT(GetItem<T>(v, IDX(tosort, ll)), pivot));
+                do hh--; while (LT(pivot, GetItem<T>(v, IDX(tosort, hh))));
 
                 if (hh < ll)
                     break;

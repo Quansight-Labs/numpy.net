@@ -918,14 +918,99 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.argpartition(a, 3);
-            AssertArray(b, new int[] {2,3,0,1});
+            AssertArray(b, new long[] {2,3,0,1});
             print(b);
 
             print("********");
             ndarray c = np.argpartition(a, new Int32[] { 1, 3 });
-            AssertArray(b, new int[] {3, 2, 0, 1 });
+            AssertArray(c, new long[] {3, 2, 0, 1 });
             print(c);
         }
+
+        [TestMethod]
+        public void test_argpartition_2()
+        {
+            var a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
+            ndarray b = np.argpartition(a, 3);
+            AssertArray(b, new long[] { 0,3,2,1 });
+            print(a);
+            print(b);
+            print("********");
+
+            a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
+            b = np.argpartition(a, 0);
+            AssertArray(b, new long[] { 3,1,2,0 });
+
+            print(a);
+            print(b);
+            print("********");
+
+            ndarray c = np.argpartition(a, new Int32[] { 1, 3 });
+            AssertArray(c, new long[] { 3, 2, 0, 1 });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_argpartition_3()
+        {
+            var a = np.arange(22, 10, -1).reshape((3, 4, 1));
+            var b = np.argpartition(a, 1, axis: 0);
+            AssertArray(b, new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            print(b);
+
+            var c = np.argpartition(a, 2, axis: 1);
+            AssertArray(c, new int[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            print(c);
+
+            var d = np.argpartition(a, 0, axis: 2);
+            AssertArray(d, new int[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
+
+        [TestMethod]
+        public void test_argpartition_4()
+        {
+            var a = np.arange(22, 10, -1, dtype: np.Float64).reshape((3, 4, 1));
+            var b = np.argpartition(a, 1, axis: 0);
+            AssertArray(b, new double[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            print(b);
+
+            var c = np.argpartition(a, 2, axis: 1);
+            AssertArray(c, new double[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            print(c);
+
+            var d = np.argpartition(a, 0, axis: 2);
+            AssertArray(d, new double[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
 
         [TestMethod]
         public void test_sort_1()

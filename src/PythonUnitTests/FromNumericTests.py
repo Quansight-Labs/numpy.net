@@ -412,6 +412,47 @@ class FromNumericTests(unittest.TestCase):
      c = np.argpartition(a, (1, 3))
      print(c)
 
+    def test_argpartition_2(self):
+
+     a = np.array([3.1, 4.1, 2.1, 1.1])
+     b = np.argpartition(a, 3)
+     print(a)
+     print(b)
+     print("********")
+     a = np.array([3.1, 4.1, 2.1, 1.1])
+     b = np.argpartition(a, 0)
+     print(a)
+     print(b)
+ 
+     print("********")
+
+     c = np.argpartition(a, (1, 3))
+     print(c)
+
+    def test_argpartition_3(self):
+
+        a = np.arange(22, 10, -1).reshape(3,4,1)
+        b = np.argpartition(a, 1, axis=0)
+        print(b)
+        print("********")
+        c = np.argpartition(a, 2, axis=1)
+        print(c)
+        print("********")
+        d = np.argpartition(a, 0, axis=2)
+        print(d)
+
+    def test_argpartition_4(self):
+
+        a = np.arange(22, 10, -1, dtype=np.float64).reshape(3,4,1)
+        b = np.argpartition(a, 1, axis=0)
+        print(b)
+        print("********")
+        c = np.argpartition(a, 2, axis=1)
+        print(c)
+        print("********")
+        d = np.argpartition(a, 0, axis=2)
+        print(d)
+
     def test_sort_1(self):
 
         a = np.array([[1,4],[3,1]])
