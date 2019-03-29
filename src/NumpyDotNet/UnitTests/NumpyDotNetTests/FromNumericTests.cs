@@ -828,6 +828,91 @@ namespace NumpyDotNetTests
             print(c);
         }
 
+        [TestMethod]
+        public void test_partition_2()
+        {
+            var a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
+            ndarray b = np.partition(a, 3);
+            AssertArray(b, new float[] { 3.1f, 1.1f, 2.1f, 4.1f });
+            print(a);
+            print(b);
+            print("********");
+
+            a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
+            b = np.partition(a, 0);
+            AssertArray(b, new float[] { 1.1f, 4.1f, 2.1f, 3.1f });
+
+            print(a);
+            print(b);
+            print("********");
+
+            ndarray c = np.partition(a, new Int32[] { 1, 3 });
+            AssertArray(c, new float[] { 1.1f, 2.1f, 3.1f, 4.1f });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_partition_3()
+        {
+            var a = np.arange(22, 10, -1).reshape((3, 4, 1));
+            var b = np.partition(a, 1, axis: 0);
+            AssertArray(b, new int[,,] {{{14},{13},{12},{11}},{{18},{17},{16},{15}},{{22},{21},{20},{19}}});
+            print(b);
+
+            var c = np.partition(a, 2, axis : 1);
+            AssertArray(c, new int[,,] {{{19},{20},{21},{22}},{{15},{16},{17},{18}},{{11},{12},{13},{14}}});
+            print(c);
+
+            var d = np.partition(a, 0, axis : 2);
+            AssertArray(d, new int[,,] {{{22},{21},{20},{19}},{{18},{17},{16},{15}},{{14},{13},{12},{11}}});
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
+        [TestMethod]
+        public void test_partition_4()
+        {
+            var a = np.arange(22, 10, -1, dtype:np.Float64).reshape((3, 4, 1));
+            var b = np.partition(a, 1, axis: 0);
+            AssertArray(b, new double[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            print(b);
+
+            var c = np.partition(a, 2, axis: 1);
+            AssertArray(c, new double[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            print(c);
+
+            var d = np.partition(a, 0, axis: 2);
+            AssertArray(d, new double[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
+
+
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_argpartition_1()

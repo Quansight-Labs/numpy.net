@@ -347,12 +347,59 @@ class FromNumericTests(unittest.TestCase):
 
      a = np.array([3, 4, 2, 1])
      b = np.partition(a, 3)
+     print(a)
+     print(b)
+     print("********")
+     a = np.array([3, 4, 2, 1])
+     b = np.partition(a, 0)
+     print(a)
      print(b)
  
      print("********")
 
      c = np.partition(a, (1, 3))
      print(c)
+
+    def test_partition_2(self):
+
+     a = np.array([3.1, 4.1, 2.1, 1.1])
+     b = np.partition(a, 3)
+     print(a)
+     print(b)
+     print("********")
+     a = np.array([3.1, 4.1, 2.1, 1.1])
+     b = np.partition(a, 0)
+     print(a)
+     print(b)
+ 
+     print("********")
+
+     c = np.partition(a, (1, 3))
+     print(c)
+
+    def test_partition_3(self):
+
+        a = np.arange(22, 10, -1).reshape(3,4,1)
+        b = np.partition(a, 1, axis=0)
+        print(b)
+        print("********")
+        c = np.partition(a, 2, axis=1)
+        print(c)
+        print("********")
+        d = np.partition(a, 0, axis=2)
+        print(d)
+
+    def test_partition_4(self):
+
+        a = np.arange(22, 10, -1, dtype=np.float64).reshape(3,4,1)
+        b = np.partition(a, 1, axis=0)
+        print(b)
+        print("********")
+        c = np.partition(a, 2, axis=1)
+        print(c)
+        print("********")
+        d = np.partition(a, 0, axis=2)
+        print(d)
     
     def test_argpartition_1(self):
 
