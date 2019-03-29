@@ -97,37 +97,45 @@ namespace NumpyLib
             switch (v.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    return partition_introselect<bool>(v.datap as bool[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<bool>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_BYTE:
-                    return partition_introselect<sbyte>(v.datap as sbyte[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<sbyte>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_UBYTE:
-                    return partition_introselect<byte>(v.datap as byte[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<byte>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_INT16:
-                    return partition_introselect<Int16>(v.datap as Int16[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<Int16>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_UINT16:
-                    return partition_introselect<UInt16>(v.datap as UInt16[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<UInt16>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_INT32:
-                    return partition_introselect<Int32>(v.datap as Int32[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<Int32>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_UINT32:
-                    return partition_introselect<UInt32>(v.datap as UInt32[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<UInt32>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_INT64:
-                    return partition_introselect<Int64>(v.datap as Int64[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<Int64>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_UINT64:
-                    return partition_introselect<UInt64>(v.datap as UInt64[], num, kth, pivots, ref npiv, false);
+                    return partition_introselect<UInt64>(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_FLOAT:
-                    return partition_introselect<float>(v.datap as float[], num, kth, pivots, ref npiv, true);
+                    return partition_introselect<float>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DOUBLE:
-                    return partition_introselect<double>(v.datap as double[], num, kth, pivots, ref npiv, true);
+                    return partition_introselect<double>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DECIMAL:
-                    return partition_introselect<decimal>(v.datap as decimal[], num, kth, pivots, ref npiv, true);
+                    return partition_introselect<decimal>(v, num, kth, pivots, ref npiv, true);
 
             }
             return 0;
         }
 
-
-
-        private static int partition_introselect<T>(T[] v,
+        private static T GetItem<T>(VoidPtr v, npy_intp index)
+        {
+            T[] vv = v.datap as T[];
+            return vv[v.data_offset + index];
+        }
+        private static T SetItem<T>(VoidPtr v, npy_intp index, T d)
+        {
+            T[] vv = v.datap as T[];
+            return vv[v.data_offset + index] = d;
+        }
+        private static int partition_introselect<T>(VoidPtr v,
                          npy_intp num, npy_intp kth,
                          npy_intp[] pivots,
                          ref npy_intp? npiv,
@@ -136,6 +144,9 @@ namespace NumpyLib
             npy_intp low = 0;
             npy_intp high = num - 1;
             int depth_limit;
+
+            v = new VoidPtr(v);
+            v.data_offset /= GetTypeSize(v);
 
             if (npiv == null)
                 pivots = null;
@@ -166,7 +177,7 @@ namespace NumpyLib
              */
             if (kth - low < 3)
             {
-                DUMBSELECT(v, low, high - low + 1, kth - low);
+                DUMBSELECT<T>(v, low, high - low + 1, kth - low);
                 store_pivot(kth, kth, pivots, ref npiv);
                 return 0;
             }
@@ -175,16 +186,16 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = v[low];
+                T maxval = GetItem<T>(v,low);
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(v[k], maxval))
+                    if (!LT(GetItem<T>(v,k), maxval))
                     {
                         maxidx = k;
-                        maxval = v[k];
+                        maxval = GetItem<T>(v, k);
                     }
                 }
-                SWAP(v, kth, maxidx);
+                SWAP<T>(v, kth, maxidx);
                 return 0;
             }
 
@@ -206,13 +217,13 @@ namespace NumpyLib
                     npy_intp mid = low + (high - low) / 2;
                     /* median of 3 pivot strategy,
                      * swapping for efficient partition */
-                    MEDIAN3_SWAP(v, low, mid, high);
+                    MEDIAN3_SWAP<T>(v, low, mid, high);
                 }
                 else
                 {
                     npy_intp mid;
-                    mid = ll + median_of_median5(v, ll, hh - ll, null, null, inexact);
-                    SWAP(v, mid,low);
+                    mid = ll + median_of_median5<T>(v, ll, hh - ll, null, null, inexact);
+                    SWAP<T>(v, mid,low);
                     /* adapt for the larger partition than med3 pivot */
                     ll--;
                     hh++;
@@ -225,10 +236,10 @@ namespace NumpyLib
                  * previous swapping removes need for bound checks
                  * pivot 3-lowest [x x x] 3-highest
                  */
-                UNGUARDED_PARTITION(v, v[low], ref ll, ref hh);
+                UNGUARDED_PARTITION(v, GetItem<T>(v, low), ref ll, ref hh);
 
                 /* move pivot into position */
-                SWAP(v, low, hh);
+                SWAP<T>(v, low, hh);
 
                 /* kth pivot stored later */
                 if (hh != kth)
@@ -245,9 +256,9 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(v[high], v[low]))
+                if (LT(GetItem<T>(v, high), GetItem<T>(v, low)))
                 {
-                    SWAP(v, high, low);
+                    SWAP<T>(v, high, low);
                 }
             }
             store_pivot(kth, kth, pivots, ref npiv);
@@ -262,23 +273,23 @@ namespace NumpyLib
          * useful for close multiple partitions
          * (e.g. even element median, interpolating percentile)
          */
-        static int DUMBSELECT<T>(T[] v, npy_intp left,  npy_intp num, npy_intp kth)
+        static int DUMBSELECT<T>(VoidPtr v, npy_intp left,  npy_intp num, npy_intp kth)
         {
             npy_intp i;
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = v[i+left];
+                T minval = GetItem<T>(v, i+left);
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(v[k+left], minval))
+                    if (LT(GetItem<T>(v, k+left), minval))
                     {
                         minidx = k;
-                        minval = v[k+left];
+                        minval = GetItem<T>(v, k+left);
                     }
                 }
-                SWAP(v, i+left, minidx+left);
+                SWAP<T>(v, i+left, minidx+left);
             }
 
             return 0;
@@ -291,11 +302,11 @@ namespace NumpyLib
         }
  
 
-        static void SWAP<T>(T[] v, npy_intp a, npy_intp b)
+        static void SWAP<T>(VoidPtr v, npy_intp a, npy_intp b)
         {
-            T tmp = v[b];
-            v[b]= v[a];
-            v[a] = tmp;
+            T tmp = GetItem<T>(v, b);
+            SetItem<T>(v, b, GetItem<T>(v, a));
+            SetItem<T>(v, a, tmp);
         }
 
         /*
@@ -303,48 +314,48 @@ namespace NumpyLib
          * gets min and median and moves median to low and min to low + 1
          * for efficient partitioning, see unguarded_partition
          */
-        static void MEDIAN3_SWAP<T>(T[] v, npy_intp low, npy_intp mid, npy_intp high)
+        static void MEDIAN3_SWAP<T>(VoidPtr v, npy_intp low, npy_intp mid, npy_intp high)
         {
-            if (LT(v[high], v[mid]))
-                SWAP(v, high, mid);
-            if (LT(v[high], v[low]))
-                SWAP(v, high, low);
+            if (LT(GetItem<T>(v, high), GetItem<T>(v, mid)))
+                SWAP<T>(v, high, mid);
+            if (LT(GetItem<T>(v, high), GetItem<T>(v, low)))
+                SWAP<T>(v, high, low);
             /* move pivot to low */
-            if (LT(v[low], v[mid]))
-                SWAP(v, low, mid);
+            if (LT(GetItem<T>(v, low), GetItem<T>(v, mid)))
+                SWAP<T>(v, low, mid);
             /* move 3-lowest element to low + 1 */
-            SWAP(v, mid, low + 1);
+            SWAP<T>(v, mid, low + 1);
         }
 
 
 
         /* select index of median of five elements */
-        static npy_intp MEDIAN5<T>(T[] v, npy_intp voffset)
+        static npy_intp MEDIAN5<T>(VoidPtr v, npy_intp voffset)
         {
             /* could be optimized as we only need the index (no swaps) */
-            if (LT(v[voffset+1], v[voffset + 0]))
+            if (LT(GetItem<T>(v, voffset+1), GetItem<T>(v, voffset + 0)))
             {
-                SWAP(v, voffset+1, voffset + 0);
+                SWAP<T>(v, voffset+1, voffset + 0);
             }
-            if (LT(v[voffset + 4], v[voffset + 3]))
+            if (LT(GetItem<T>(v, voffset + 4), GetItem<T>(v, voffset + 3)))
             {
-                SWAP(v, voffset + 4, voffset + 3);
+                SWAP<T>(v, voffset + 4, voffset + 3);
             }
-            if (LT(v[voffset + 3], v[voffset + 0]))
+            if (LT(GetItem<T>(v, voffset + 3), GetItem<T>(v, voffset + 0)))
             {
-                SWAP(v, voffset + 3, voffset + 0);
+                SWAP<T>(v, voffset + 3, voffset + 0);
             }
-            if (LT(v[voffset + 4], v[voffset + 1]))
+            if (LT(GetItem<T>(v, voffset + 4), GetItem<T>(v, voffset + 1)))
             {
-                SWAP(v, voffset + 4, voffset + 1);
+                SWAP<T>(v, voffset + 4, voffset + 1);
             }
-            if (LT(v[voffset + 2], v[voffset + 1]))
+            if (LT(GetItem<T>(v, voffset + 2), GetItem<T>(v, voffset + 1)))
             {
-                SWAP(v, voffset + 2, voffset + 1);
+                SWAP<T>(v, voffset + 2, voffset + 1);
             }
-            if (LT(v[voffset + 3], v[voffset + 2]))
+            if (LT(GetItem<T>(v, voffset + 3), GetItem<T>(v, voffset + 2)))
             {
-                if (LT(v[voffset + 3], v[voffset + 1]))
+                if (LT(GetItem<T>(v, voffset + 3), GetItem<T>(v, voffset + 1)))
                 {
                     return 1;
                 }
@@ -365,7 +376,7 @@ namespace NumpyLib
          * if used as partition pivot it splits the range into at least 30%/70%
          * allowing linear time worstcase quickselect
          */
-        static npy_intp median_of_median5<T>(T[] v, npy_intp voffset, npy_intp num, npy_intp[] pivots, npy_intp? npiv, bool inexact)
+        static npy_intp median_of_median5<T>(VoidPtr v, npy_intp voffset, npy_intp num, npy_intp[] pivots, npy_intp? npiv, bool inexact)
         {
             npy_intp i, subleft;
             npy_intp right = num - 1;
@@ -373,12 +384,12 @@ namespace NumpyLib
 
             for (i = 0, subleft = 0; i < nmed; i++, subleft += 5)
             {
-                npy_intp m = MEDIAN5(v, subleft);
-                SWAP(v, voffset + subleft + m, voffset + i);
+                npy_intp m = MEDIAN5<T>(v, subleft);
+                SWAP<T>(v, voffset + subleft + m, voffset + i);
             }
 
             if (nmed > 2)
-                partition_introselect(v, nmed, nmed / 2, pivots, ref npiv, inexact);
+                partition_introselect<T>(v, nmed, nmed / 2, pivots, ref npiv, inexact);
 
             return nmed / 2;
         }
@@ -390,17 +401,17 @@ namespace NumpyLib
          *                  ll ... hh
          * lower-than-pivot [x x x x] larger-than-pivot
          */
-        static void UNGUARDED_PARTITION<T>(T[] v, T pivot, ref npy_intp ll, ref npy_intp hh)
+        static void UNGUARDED_PARTITION<T>(VoidPtr v, T pivot, ref npy_intp ll, ref npy_intp hh)
         {
             for (; ; )
             {
-                do ll++; while (LT(v[ll], pivot));
-                do hh--; while (LT(pivot, v[hh]));
+                do ll++; while (LT(GetItem<T>(v, ll), pivot));
+                do hh--; while (LT(pivot, GetItem<T>(v, hh)));
 
                 if (hh < ll)
                     break;
 
-                SWAP(v, ll, hh);
+                SWAP<T>(v, ll, hh);
             }
         }
 

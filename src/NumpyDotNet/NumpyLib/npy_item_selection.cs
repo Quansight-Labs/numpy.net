@@ -903,7 +903,7 @@ namespace NumpyLib
 
             while (size-- > 0)
             {
-                VoidPtr bufptr = it.dataptr;
+                VoidPtr bufptr = new VoidPtr(it.dataptr);
 
                 if (needcopy)
                 {
@@ -928,7 +928,7 @@ namespace NumpyLib
                     {
                         copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
                     }
-                    bufptr = buffer;
+                    bufptr = new VoidPtr(buffer);
                 }
                 /*
                  * TODO: If the input array is byte-swapped but contiguous and
