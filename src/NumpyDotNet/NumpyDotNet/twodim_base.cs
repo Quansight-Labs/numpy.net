@@ -186,7 +186,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Data-type of the returned array</param>
         /// <param name="order">(optional)</param>
         /// <returns>An array where all elements are equal to zero, except for the k-th diagonal, whose values are equal to one</returns>
-        public static ndarray eye(int N, int? M = null, int k = 0, dtype dtype = null, order order = order.C)
+        public static ndarray eye(int N, int? M = null, int k = 0, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             /*
                 Return a 2-D array with ones on the diagonal and zeros elsewhere.

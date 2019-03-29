@@ -239,47 +239,7 @@ namespace NumpyDotNet {
             }
         }
 
-        /// <summary>
-        /// Converts an argument to an order specification.  Argument can be a string
-        /// starting with 'c', 'f', or 'a' (case-insensitive), a bool type, something
-        /// convertable to bool, or null.
-        /// </summary>
-        /// <param name="o">Order specification</param>
-        /// <returns>Npy order type</returns>
-        internal static NPY_ORDER OrderConverter(Object o,
-            NPY_ORDER dflt = NPY_ORDER.NPY_CORDER) {
-            NPY_ORDER order;
-
-            if (o == null) order = dflt;
-            else if (o is Boolean) order = ((bool)o) ?
-                         NPY_ORDER.NPY_FORTRANORDER : NPY_ORDER.NPY_CORDER;
-            else if (o is string) {
-                string s = (string)o;
-                switch (s[0]) {
-                    case 'C':
-                    case 'c':
-                        order = NPY_ORDER.NPY_CORDER;
-                        break;
-                    case 'F':
-                    case 'f':
-                        order = NPY_ORDER.NPY_FORTRANORDER;
-                        break;
-                    case 'A':
-                    case 'a':
-                    case 'K':
-                    case 'k':
-                        order = NPY_ORDER.NPY_ANYORDER;
-                        break;
-                    default:
-                        throw new ArgumentTypeException("order not understood");
-                }
-            } else if (o is IConvertible) {
-                order = ((IConvertible)o).ToBoolean(null) ?
-                    NPY_ORDER.NPY_FORTRANORDER : NPY_ORDER.NPY_CORDER;
-            } else throw new ArgumentTypeException("order not understood");
-
-            return order;
-        }
+    
 
         internal static char ByteorderConverter(string s) {
             if (s == null) {

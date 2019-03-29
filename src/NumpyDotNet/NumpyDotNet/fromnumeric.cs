@@ -680,7 +680,7 @@ namespace NumpyDotNet
             }
             else
             {
-                a = asanyarray(a).Copy(order: "K");
+                a = asanyarray(a).Copy(order: NPY_ORDER.NPY_KORDER);
             }
 
             int ret = NpyCoreApi.Partition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
@@ -769,7 +769,7 @@ namespace NumpyDotNet
             }
             else
             {
-                a = asanyarray(a).Copy(order : "K");
+                a = asanyarray(a).Copy(order : NPY_ORDER.NPY_KORDER);
             }
             
             ndarray ret = NpyCoreApi.ArgPartition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);

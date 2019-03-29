@@ -245,8 +245,8 @@ namespace NumpyDotNetTests
             AssertArray(b, new int[] { 0, 2, 4, 1, 3, 5, 6, 8, 10, 7, 9, 11 });
             print(b);
 
-            var c = a.ravel(order: "K");
-            // AssertArray(c, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }); // todo: order K does not produce expected result
+            var c = a.ravel(order: NPY_ORDER.NPY_KORDER);
+            //AssertArray(c, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }); // todo: order K does not produce expected result
             print(c);
         }
 

@@ -879,13 +879,12 @@ namespace NumpyDotNet
             return Conjugate(@out);
         }
 
-        public object copy(object order = null) {
+        public object copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return ArrayReturn(Copy(order));
         }
 
-        public ndarray Copy(object order = null) {
-            NPY_ORDER eOrder = NpyUtil_ArgProcessing.OrderConverter(order);
-            return NpyCoreApi.NewCopy(this, eOrder);
+        public ndarray Copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+            return NpyCoreApi.NewCopy(this, order);
         }
 
 
@@ -898,10 +897,8 @@ namespace NumpyDotNet
             FillWithScalar(scalar);
         }
 
-        public ndarray flatten(object order = null) {
-            NPY_ORDER eOrder =
-                NpyUtil_ArgProcessing.OrderConverter(order);
-            return this.Flatten(eOrder);
+        public ndarray flatten(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+            return this.Flatten(order);
         }
 
 
@@ -1021,9 +1018,8 @@ namespace NumpyDotNet
             return np.put(this, indices, values, mode);
         }
 
-        public ndarray ravel(object order = null) {
-            NPY_ORDER eOrder = NpyUtil_ArgProcessing.OrderConverter(order);
-            return this.Ravel(eOrder);
+        public ndarray ravel(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+            return this.Ravel(order);
         }
 
         public ndarray reshape(IEnumerable<npy_intp> shape, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
@@ -1097,9 +1093,8 @@ namespace NumpyDotNet
 
 
 
-        public byte[] tobytes(object order = null) {
-            NPY_ORDER eOrder = NpyUtil_ArgProcessing.OrderConverter(order);
-            return ToString(eOrder);
+        public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
+            return ToString(order);
         }
 
 

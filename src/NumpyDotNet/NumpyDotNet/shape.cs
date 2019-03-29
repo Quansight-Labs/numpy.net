@@ -157,16 +157,5 @@ namespace NumpyDotNet
         }
 
     }
-
-
-    public enum order
-    {
-        C,
-        F,
-        A,
-        K,
-        DEFAULT = C,
-    }
-
  
 }

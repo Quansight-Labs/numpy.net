@@ -58,7 +58,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of zeros with the given shape, dtype, and order.</returns>
-        public static ndarray zeros(object shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray zeros(object shape, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             if (shape == null)
             {
@@ -80,7 +80,7 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if a is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of zeros with the same shape and type as a.</returns>
-        public static ndarray zeros_like(object osrc, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray zeros_like(object osrc, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER, bool subok = true)
         {
             if (osrc == null)
             {
@@ -103,7 +103,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of ones with the given shape, dtype, and order.</returns>
-        public static ndarray ones(object shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray ones(object shape, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             if (shape == null)
             {
@@ -125,7 +125,7 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if src is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of ones with the same shape and type as a.</returns>
-        public static ndarray ones_like(object osrc, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray ones_like(object osrc, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, bool subok = true)
         {
             if (osrc == null)
             {
@@ -149,7 +149,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of uninitialized (arbitrary) data of the given shape, dtype, and order. Object arrays will be initialized to None.</returns>
-        public static ndarray empty(object shape, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray empty(object shape, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             return zeros(shape, dtype, order);
         }
@@ -164,7 +164,7 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if a is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of uninitialized (arbitrary) data with the same shape and type as a.</returns>
-        public static ndarray empty_like(object src, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray empty_like(object src, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, bool subok = true)
         {
             return zeros_like(src, dtype, order, subok);
         }
@@ -179,7 +179,7 @@ namespace NumpyDotNet
         /// <param name="dtype">(optional) Desired output data-type</param>
         /// <param name="order">(optional) {‘C’, ‘F’}, Whether to store multi-dimensional data in row-major (C-style) or column-major (Fortran-style) order in memory.</param>
         /// <returns>Array of fill_value with the given shape, dtype, and order.</returns>
-        public static ndarray full(object shape, object fill_value, dtype dtype = null, order order = order.DEFAULT)
+        public static ndarray full(object shape, object fill_value, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             if (shape == null)
             {
@@ -200,7 +200,7 @@ namespace NumpyDotNet
         /// <param name="order">(optional) {‘C’, ‘F’, ‘A’, or ‘K’}, Overrides the memory layout of the result. ‘C’ means C-order, ‘F’ means F-order, ‘A’ means ‘F’ if a is Fortran contiguous, ‘C’ otherwise. ‘K’ means match the layout of a as closely as possible.</param>
         /// <param name="subok">(optional) If True, then the newly created array will use the sub-class type of ‘a’, otherwise it will be a base-class array. Defaults to True.</param>
         /// <returns>Array of fill_value with the same shape and type as a.</returns>
-        public static ndarray full_like(object osrc, object fill_value, dtype dtype = null, order order = order.DEFAULT, bool subok = true)
+        public static ndarray full_like(object osrc, object fill_value, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, bool subok = true)
         {
             if (osrc == null)
             {

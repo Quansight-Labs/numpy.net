@@ -1760,15 +1760,15 @@ namespace NumpyDotNet
             throw new Exception("new shape specification not properly formatted");
         }
 
-        private static NPY_ORDER CheckOnlyCorF(order order)
+        private static NPY_ORDER CheckOnlyCorF(NPY_ORDER order)
         {
             NPY_ORDER NpyOrder = NPY_ORDER.NPY_ANYORDER;
             switch (order)
             {
-                case order.C:
+                case NPY_ORDER.NPY_CORDER:
                     NpyOrder = NPY_ORDER.NPY_CORDER;
                     break;
-                case order.F:
+                case NPY_ORDER.NPY_FORTRANORDER:
                     NpyOrder = NPY_ORDER.NPY_FORTRANORDER;
                     break;
                 default:
@@ -1779,19 +1779,19 @@ namespace NumpyDotNet
             return NpyOrder;
         }
 
-        private static NPY_ORDER ConvertOrder(ndarray src, order order)
+        private static NPY_ORDER ConvertOrder(ndarray src, NPY_ORDER order)
         {
             NPY_ORDER NpyOrder = NPY_ORDER.NPY_ANYORDER;
             switch (order)
             {
-                case order.C:
+                case NPY_ORDER.NPY_CORDER:
                     NpyOrder = NPY_ORDER.NPY_CORDER;
                     break;
-                case order.F:
+                case NPY_ORDER.NPY_FORTRANORDER:
                     NpyOrder = NPY_ORDER.NPY_FORTRANORDER;
                     break;
-                case order.A:
-                case order.K:
+                case NPY_ORDER.NPY_ANYORDER:
+                case NPY_ORDER.NPY_KORDER:
                     if (CheckNPYARRAYFLAGS(src, NPYARRAYFLAGS.NPY_FORTRAN))
                         NpyOrder = NPY_ORDER.NPY_FORTRANORDER;
                     else

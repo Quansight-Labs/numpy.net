@@ -492,14 +492,14 @@ namespace NumpyDotNetTests
                                          10.73, 11.73, 12.73, 13.73, 14.73, 15.73, 16.73, 17.73, 18.73,
                                          19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
 
-            y = x.flatten(order : "F");
+            y = x.flatten(order : NPY_ORDER.NPY_FORTRANORDER);
             print(y);
 
             AssertArray(y, new double[] { 0.73, 5.73, 10.73, 15.73, 20.73,  1.73, 6.73, 11.73, 16.73,
                                          21.73, 2.73,  7.73, 12.73, 17.73, 22.73, 3.73, 8.73, 13.73, 18.73,
                                          23.73, 4.73,  9.73, 14.73, 19.73, 24.73 });
 
-            y = x.flatten(order: "K");
+            y = x.flatten(order: NPY_ORDER.NPY_KORDER);
             print(y);
 
             AssertArray(y, new double[] { 0.73, 1.73, 2.73, 3.73, 4.73, 5.73, 6.73, 7.73, 8.73, 9.73,

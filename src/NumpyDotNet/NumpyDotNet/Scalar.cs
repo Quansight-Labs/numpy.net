@@ -104,7 +104,7 @@ namespace NumpyDotNet
             return ToArray().conjugate(@out);
         }
 
-        public object copy(object order = null) {
+        public object copy(NPY_ORDER order = NPY_ORDER.NPY_KORDER) {
             return ToArray().copy(order);
         }
 
@@ -135,7 +135,7 @@ namespace NumpyDotNet
             }
         }
 
-        public ndarray flatten(object order = null) {
+        public ndarray flatten(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return ToArray().flatten(order);
         }
 
@@ -179,7 +179,7 @@ namespace NumpyDotNet
             return ToArray().newbyteorder(endian);
         }
 
-        public ndarray ravel(object order = null) {
+        public ndarray ravel(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return ToArray().ravel(order);
         }
 
@@ -277,7 +277,7 @@ namespace NumpyDotNet
         }
 
 
-        public byte[] tobytes(object order = null) {
+        public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
             return ToArray().tobytes(order);
         }
 

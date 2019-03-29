@@ -614,7 +614,7 @@ namespace NumpyDotNet
         #endregion
 
         #region copy
-        public static ndarray copy(ndarray a, order order = order.K)
+        public static ndarray copy(ndarray a, NPY_ORDER order = NPY_ORDER.NPY_KORDER)
         {
             /*
            Return an array copy of the given object.
@@ -3161,10 +3161,10 @@ namespace NumpyDotNet
 
             int ndim = arr.ndim;
 
-            NumpyDotNet.order arrorder = NumpyDotNet.order.C;
+            NPY_ORDER arrorder = NPY_ORDER.NPY_CORDER;
             if (arr.flags.fnc)
             {
-                arrorder = NumpyDotNet.order.F;
+                arrorder = NPY_ORDER.NPY_FORTRANORDER; 
             }
 
             if (axis == null)
@@ -3180,7 +3180,7 @@ namespace NumpyDotNet
             {
                 //2013-09-24, 1.9
                 //warnings.warn(string.Format("in the future the special handling of scalars will be removed from insert and raise an error"));
-                arr = arr.Copy(order: arrorder.ToString());
+                arr = arr.Copy(order: arrorder);
                 arr["..."] = _invalues;
                 if (wrap != null)
                 {
