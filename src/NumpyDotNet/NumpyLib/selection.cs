@@ -352,16 +352,16 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = GetItem<T>(v, low);
+                T maxval = GetItem<T>(v, GetItem<npy_intp>(tosortvp, low));
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(GetItem<T>(v, k), maxval))
+                    if (!LT(GetItem<T>(v, GetItem<npy_intp>(tosortvp, k)), maxval))
                     {
                         maxidx = k;
-                        maxval = GetItem<T>(v, k);
+                        maxval = GetItem<T>(v, GetItem<npy_intp>(tosortvp, k));
                     }
                 }
-                SWAP<T>(v, kth, maxidx);
+                SWAP<npy_intp>(tosortvp, kth, maxidx);
                 return 0;
             }
 
@@ -389,7 +389,7 @@ namespace NumpyLib
                 {
                     npy_intp mid;
                     mid = ll + median_of_median5<T>(v, tosortvp, ll, hh - ll, null, null, inexact);
-                    SWAP<T>(v, mid, low);
+                    SWAP<npy_intp>(tosortvp, mid, low);
                     /* adapt for the larger partition than med3 pivot */
                     ll--;
                     hh++;
@@ -422,9 +422,9 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(GetItem<T>(v, high), GetItem<T>(v, low)))
+                if (LT(GetItem<T>(v, GetItem<npy_intp>(tosortvp, high)), GetItem<T>(v, GetItem<npy_intp>(tosortvp, low))))
                 {
-                    SWAP<T>(v, high, low);
+                    SWAP<npy_intp>(tosortvp, high, low);
                 }
             }
             store_pivot(kth, kth, pivots, ref npiv);

@@ -913,16 +913,17 @@ namespace NumpyDotNetTests
 
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_argpartition_1()
+        public void test_argpartition_1()
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.argpartition(a, 3);
+            AssertArray(b, new int[] {2,3,0,1});
             print(b);
 
             print("********");
             ndarray c = np.argpartition(a, new Int32[] { 1, 3 });
+            AssertArray(b, new int[] {3, 2, 0, 1 });
             print(c);
         }
 
