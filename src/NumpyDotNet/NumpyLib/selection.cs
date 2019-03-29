@@ -89,7 +89,7 @@ namespace NumpyLib
 
         private static NpyArray_ArgPartitionFunc get_argpartition_func(NPY_TYPES NpyType, NPY_SELECTKIND which)
         {
-            return null;
+            return Common_ArgPartitionFunc;
         }
 
         private static int Common_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
@@ -120,6 +120,39 @@ namespace NumpyLib
                     return partition_introselect<double>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DECIMAL:
                     return partition_introselect<decimal>(v, num, kth, pivots, ref npiv, true);
+
+            }
+            return 0;
+        }
+
+        private static int Common_ArgPartitionFunc(VoidPtr v, npy_intp[] tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
+        {
+            switch (v.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return argpartition_introselect<bool>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_BYTE:
+                    return argpartition_introselect<sbyte>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UBYTE:
+                    return argpartition_introselect<byte>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT16:
+                    return argpartition_introselect<Int16>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT16:
+                    return argpartition_introselect<UInt16>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT32:
+                    return argpartition_introselect<Int32>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT32:
+                    return argpartition_introselect<UInt32>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT64:
+                    return argpartition_introselect<Int64>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT64:
+                    return argpartition_introselect<UInt64>(v, tosort, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_FLOAT:
+                    return argpartition_introselect<float>(v, tosort, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_DOUBLE:
+                    return argpartition_introselect<double>(v, tosort, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_DECIMAL:
+                    return argpartition_introselect<decimal>(v, tosort, num, kth, pivots, ref npiv, true);
 
             }
             return 0;
@@ -267,6 +300,136 @@ namespace NumpyLib
         }
 
 
+        private static int argpartition_introselect<T>(VoidPtr v, npy_intp[] tosort,
+                    npy_intp num, npy_intp kth,
+                    npy_intp[] pivots,
+                    ref npy_intp? npiv,
+                    bool inexact)
+        {
+            npy_intp low = 0;
+            npy_intp high = num - 1;
+            int depth_limit;
+
+            v = new VoidPtr(v);
+            v.data_offset /= GetTypeSize(v);
+
+            if (npiv == null)
+                pivots = null;
+
+            while (pivots != null && npiv > 0)
+            {
+                if (pivots[npiv.Value - 1] > kth)
+                {
+                    /* pivot larger than kth set it as upper bound */
+                    high = pivots[npiv.Value - 1] - 1;
+                    break;
+                }
+                else if (pivots[npiv.Value - 1] == kth)
+                {
+                    /* kth was already found in a previous iteration -> done */
+                    return 0;
+                }
+
+                low = pivots[npiv.Value - 1] + 1;
+
+                /* pop from stack */
+                npiv -= 1;
+            }
+
+            /*
+             * use a faster O(n*kth) algorithm for very small kth
+             * e.g. for interpolating percentile
+             */
+            if (kth - low < 3)
+            {
+                DUMBSELECT<T>(v, tosort, low, high - low + 1, kth - low);
+                store_pivot(kth, kth, pivots, ref npiv);
+                return 0;
+            }
+            else if (inexact && kth == num - 1)
+            {
+                /* useful to check if NaN present via partition(d, (x, -1)) */
+                npy_intp k;
+                npy_intp maxidx = low;
+                T maxval = GetItem<T>(v, low);
+                for (k = low + 1; k < num; k++)
+                {
+                    if (!LT(GetItem<T>(v, k), maxval))
+                    {
+                        maxidx = k;
+                        maxval = GetItem<T>(v, k);
+                    }
+                }
+                SWAP<T>(v, kth, maxidx);
+                return 0;
+            }
+
+            depth_limit = npy_get_msb(num) * 2;
+
+            /* guarantee three elements */
+            for (; low + 1 < high;)
+            {
+                npy_intp ll = low + 1;
+                npy_intp hh = high;
+
+                /*
+                 * if we aren't making sufficient progress with median of 3
+                 * fall back to median-of-median5 pivot for linear worst case
+                 * med3 for small sizes is required to do unguarded partition
+                 */
+                if (depth_limit > 0 || hh - ll < 5)
+                {
+                    npy_intp mid = low + (high - low) / 2;
+                    /* median of 3 pivot strategy,
+                     * swapping for efficient partition */
+                    MEDIAN3_SWAP<T>(v, tosort, low, mid, high);
+                }
+                else
+                {
+                    npy_intp mid;
+                    mid = ll + median_of_median5<T>(v, tosort, ll, hh - ll, null, null, inexact);
+                    SWAP<T>(v, mid, low);
+                    /* adapt for the larger partition than med3 pivot */
+                    ll--;
+                    hh++;
+                }
+
+                depth_limit--;
+
+                /*
+                 * find place to put pivot (in low):
+                 * previous swapping removes need for bound checks
+                 * pivot 3-lowest [x x x] 3-highest
+                 */
+                UNGUARDED_PARTITION(v, tosort, GetItem<T>(v, low), ref ll, ref hh);
+
+                /* move pivot into position */
+                SWAP<T>(v, low, hh);
+
+                /* kth pivot stored later */
+                if (hh != kth)
+                {
+                    store_pivot(hh, kth, pivots, ref npiv);
+                }
+
+                if (hh >= kth)
+                    high = hh - 1;
+                if (hh <= kth)
+                    low = ll;
+            }
+
+            /* two elements */
+            if (high == low + 1)
+            {
+                if (LT(GetItem<T>(v, high), GetItem<T>(v, low)))
+                {
+                    SWAP<T>(v, high, low);
+                }
+            }
+            store_pivot(kth, kth, pivots, ref npiv);
+
+            return 0;
+        }
 
         /*
          * N^2 selection, fast only for very small kth
@@ -290,6 +453,28 @@ namespace NumpyLib
                     }
                 }
                 SWAP<T>(v, i+left, minidx+left);
+            }
+
+            return 0;
+        }
+
+        static int DUMBSELECT<T>(VoidPtr v, npy_intp[]tosort, npy_intp left, npy_intp num, npy_intp kth)
+        {
+            npy_intp i;
+            for (i = 0; i <= kth; i++)
+            {
+                npy_intp minidx = i;
+                T minval = GetItem<T>(v, i + left);
+                npy_intp k;
+                for (k = i + 1; k < num; k++)
+                {
+                    if (LT(GetItem<T>(v, k + left), minval))
+                    {
+                        minidx = k;
+                        minval = GetItem<T>(v, k + left);
+                    }
+                }
+                SWAP<T>(v, i + left, minidx + left);
             }
 
             return 0;
@@ -327,7 +512,18 @@ namespace NumpyLib
             SWAP<T>(v, mid, low + 1);
         }
 
-
+        static void MEDIAN3_SWAP<T>(VoidPtr v, npy_intp[] tosort, npy_intp low, npy_intp mid, npy_intp high)
+        {
+            if (LT(GetItem<T>(v, high), GetItem<T>(v, mid)))
+                SWAP<T>(v, high, mid);
+            if (LT(GetItem<T>(v, high), GetItem<T>(v, low)))
+                SWAP<T>(v, high, low);
+            /* move pivot to low */
+            if (LT(GetItem<T>(v, low), GetItem<T>(v, mid)))
+                SWAP<T>(v, low, mid);
+            /* move 3-lowest element to low + 1 */
+            SWAP<T>(v, mid, low + 1);
+        }
 
         /* select index of median of five elements */
         static npy_intp MEDIAN5<T>(VoidPtr v, npy_intp voffset)
@@ -394,6 +590,24 @@ namespace NumpyLib
             return nmed / 2;
         }
 
+        static npy_intp median_of_median5<T>(VoidPtr v, npy_intp[] tosort, npy_intp voffset, npy_intp num, npy_intp[] pivots, npy_intp? npiv, bool inexact)
+        {
+            npy_intp i, subleft;
+            npy_intp right = num - 1;
+            npy_intp nmed = (right + 1) / 5;
+
+            for (i = 0, subleft = 0; i < nmed; i++, subleft += 5)
+            {
+                npy_intp m = MEDIAN5<T>(v, subleft);
+                SWAP<T>(v, voffset + subleft + m, voffset + i);
+            }
+
+            if (nmed > 2)
+                partition_introselect<T>(v, nmed, nmed / 2, pivots, ref npiv, inexact);
+
+            return nmed / 2;
+        }
+
 
         /*
          * partition and return the index were the pivot belongs
@@ -402,6 +616,20 @@ namespace NumpyLib
          * lower-than-pivot [x x x x] larger-than-pivot
          */
         static void UNGUARDED_PARTITION<T>(VoidPtr v, T pivot, ref npy_intp ll, ref npy_intp hh)
+        {
+            for (; ; )
+            {
+                do ll++; while (LT(GetItem<T>(v, ll), pivot));
+                do hh--; while (LT(pivot, GetItem<T>(v, hh)));
+
+                if (hh < ll)
+                    break;
+
+                SWAP<T>(v, ll, hh);
+            }
+        }
+
+        static void UNGUARDED_PARTITION<T>(VoidPtr v, npy_intp[] tosort, T pivot, ref npy_intp ll, ref npy_intp hh)
         {
             for (; ; )
             {

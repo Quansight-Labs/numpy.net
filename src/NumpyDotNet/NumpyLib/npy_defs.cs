@@ -647,8 +647,8 @@ namespace NumpyLib
     public delegate int NpyArray_SortFunc(object o1, npy_intp i1, NpyArray a);
     public delegate int NpyArray_ArgSortFunc(object o1, VoidPtr i1, npy_intp i2, NpyArray a);
     public delegate int NpyArray_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
-    public delegate int NpyArray_ArgPartitionFunc(object o1, VoidPtr i1, npy_intp i2, npy_intp i3, npy_intp[] i4, ref npy_intp i5, object o2);
-  
+    public delegate int NpyArray_ArgPartitionFunc(VoidPtr v, npy_intp[] tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
+
 
     public delegate int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray a);
 

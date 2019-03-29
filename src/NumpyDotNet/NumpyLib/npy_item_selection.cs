@@ -1074,8 +1074,8 @@ namespace NumpyLib
 
             while (size-- > 0)
             {
-                VoidPtr valptr = it.dataptr;
-                VoidPtr idxptr = rit.dataptr;
+                VoidPtr valptr = new VoidPtr(it.dataptr);
+                VoidPtr idxptr = new VoidPtr(rit.dataptr);
                 VoidPtr iptr;
                 int i;
 
@@ -1104,12 +1104,12 @@ namespace NumpyLib
                         copyswapn(valbuffer, elsize,
                                   it.dataptr, astride, N, swap, op);
                     }
-                    valptr = valbuffer;
+                    valptr = new VoidPtr(valbuffer);
                 }
 
                 if (needidxbuffer)
                 {
-                    idxptr = idxbuffer;
+                    idxptr = new VoidPtr(idxbuffer);
                 }
 
                 iptr = idxptr;
@@ -1130,11 +1130,11 @@ namespace NumpyLib
                 else
                 {
                     npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
-                    npy_intp npiv = 0;
+                    npy_intp? npiv = 0;
 
                     for (i = 0; i < nkth; ++i)
                     {
-                        ret = argpart(valptr, idxptr, N, kth[i], pivots, ref npiv, op);
+                        ret = argpart(valptr, idxptr.datap as npy_intp[], N, kth[i], pivots, ref npiv, op);
 
                         if (ret < 0)
                         {
@@ -1145,8 +1145,8 @@ namespace NumpyLib
 
                 if (needidxbuffer)
                 {
-                    VoidPtr rptr = rit.dataptr;
-                    iptr = idxbuffer;
+                    VoidPtr rptr = new VoidPtr(rit.dataptr);
+                    iptr = new VoidPtr(idxbuffer);
 
                     for (i = 0; i < N; ++i)
                     {
