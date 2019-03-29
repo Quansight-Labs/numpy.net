@@ -1134,7 +1134,7 @@ namespace NumpyLib
 
                     for (i = 0; i < nkth; ++i)
                     {
-                        ret = argpart(valptr, idxptr.datap as npy_intp[], N, kth[i], pivots, ref npiv, op);
+                        ret = argpart(valptr, idxptr, N, kth[i], pivots, ref npiv, op);
 
                         if (ret < 0)
                         {
