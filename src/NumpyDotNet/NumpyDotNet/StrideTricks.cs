@@ -81,7 +81,7 @@ namespace NumpyDotNet
             }
 
             ndarray ret = NpyCoreApi.NpyArray_UpscaleSourceArray(a, newshape);
-            return ret;
+            return ret.reshape(newshape);
         }
 
         public static ndarray broadcast_to(object array, object shape, bool subok = false)

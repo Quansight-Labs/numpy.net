@@ -510,6 +510,42 @@ class StatisticsTests(unittest.TestCase):
 
         return
  
+    def test_cov_1(self): 
+
+        x1 = np.array([[0, 2], [1, 1], [2, 0]]).T
+        print(x1)
+
+        # Note how  increases while  decreases. The covariance matrix shows this clearly:
+
+        a = np.cov(x1)
+        print(a)
+
+        x = [-2.1, -1,  4.3]
+        y = [3,  1.1,  0.12]
+        X = np.stack((x, y), axis=0)
+        a = np.cov(X)
+        print(a)
+
+        b = np.cov(x, y)
+        print(b)
+
+        c = np.cov(x)
+        print(c)
+
+        d = np.cov(X, rowvar=False)
+        print(d)
+
+        e = np.cov(X, rowvar=False, bias=True)
+        print(e)
+
+        f = np.cov(X, rowvar=False, bias=True, fweights = [1,2])
+        print(f)
+
+        g = np.cov(X, rowvar=False, bias=True, fweights = [1,2], aweights = [1,2])
+        print(g)
+
+
+        return
 
     #endregion
 

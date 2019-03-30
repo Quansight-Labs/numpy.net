@@ -1027,7 +1027,7 @@ namespace NumpyDotNet
         #region cov
 
         public static ndarray cov(object m, object y = null, bool rowvar = true,
-            bool bias = false, int? ddof = null, ndarray fweights = null, ndarray aweights = null)
+            bool bias = false, int? ddof = null, object fweights = null, object aweights = null)
         {
             /*
             Estimate a covariance matrix, given data and weights.
@@ -1157,7 +1157,7 @@ namespace NumpyDotNet
 
             if (y == null)
             {
-                dtype = np.result_type(m, np.Float64);
+                dtype = np.result_type(marr, np.Float64);
             }
             else
             {
@@ -1166,10 +1166,10 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("y has more than 2 dimensions");
                 }
-                dtype = np.result_type(m, y, np.Float64);
+                dtype = np.result_type(marr, yarr, np.Float64);
             }
 
-            var X = array(m, ndmin : 2, dtype : dtype);
+            var X = array(marr, ndmin : 2, dtype : dtype);
             if (!rowvar && X.shape.iDims[0] != 1)
             {
                 X = X.T;
@@ -1179,9 +1179,9 @@ namespace NumpyDotNet
                 return np.array(new int[] { }).reshape(0, 0);
             }
 
-            if (y != null)
+            if (yarr != null)
             {
-                y = array(y, copy: false, ndmin: 2, dtype: dtype);
+                yarr = array(yarr, copy: false, ndmin: 2, dtype: dtype);
                 if (!rowvar && yarr.shape.iDims[0] != 1)
                     yarr = yarr.T;
                 X = np.concatenate(X, yarr, axis : 0);
@@ -1196,55 +1196,57 @@ namespace NumpyDotNet
             }
     
             ndarray w = null;
+            ndarray afweights = null;
+            ndarray aaweights = null;
 
             if (fweights != null)
             {
-                fweights = np.asarray(fweights, dtype: np.Float32);
-                if ((bool)np.all(fweights.Equals(np.around(fweights))).GetItem(0) == false)
+                afweights = np.asarray(fweights, dtype: np.Float32);
+                if ((bool)np.all(afweights.Equals(np.around(afweights))).GetItem(0) == false)
                 {
                     throw new TypeError("fweights must be integer");
                 }
  
-                if (fweights.ndim > 1)
+                if (afweights.ndim > 1)
                 {
                     throw new RuntimeError("cannot handle multidimensional fweights");
                 }
 
-                if (fweights.shape.iDims[0] != X.shape.iDims[1])
+                if (afweights.shape.iDims[0] != X.shape.iDims[1])
                 {
                     throw new RuntimeError("incompatible numbers of samples and fweights");
 
                 }
-                if ((bool)any(fweights < 0).GetItem(0) == true)
+                if ((bool)any(afweights < 0).GetItem(0) == true)
                 {
                     throw new ValueError("fweights cannot be negative");
                 }
 
-                w = fweights;
+                w = afweights;
             }
 
             if (aweights != null)
             {
-                aweights = np.asarray(aweights, dtype : np.Float32);
-                if (aweights.ndim > 1)
+                aaweights = np.asarray(aweights, dtype : np.Float32);
+                if (aaweights.ndim > 1)
                 {
                     throw new RuntimeError("cannot handle multidimensional aweights");
                 }
    
-                if (aweights.shape.iDims[0] != X.shape.iDims[1])
+                if (aaweights.shape.iDims[0] != X.shape.iDims[1])
                 {
                     throw new RuntimeError("incompatible numbers of samples and aweights");
 
                 }
-                if ((bool)any(aweights < 0).GetItem(0) == true)
+                if ((bool)any(aaweights < 0).GetItem(0) == true)
                 {
                     throw new ValueError("aweights cannot be negative");
                 }
 
                 if (w == null)
-                    w = aweights;
+                    w = aaweights;
                 else
-                    w *= aweights;
+                    w *= aaweights;
             }
 
             var avg_result = average(X, axis: 1, weights: w, returned: true);
@@ -1260,13 +1262,13 @@ namespace NumpyDotNet
             {
                 fact = w_sum;
             }
-            else if (aweights == null)
+            else if (aaweights == null)
             {
                 fact = w_sum - ddof.Value;
             }
             else
             {
-                fact = w_sum - ddof.Value * Convert.ToDouble(np.sum(w * aweights).GetItem(0)) / w_sum;
+                fact = w_sum - ddof.Value * Convert.ToDouble(np.sum(w * aaweights).GetItem(0)) / w_sum;
             }
 
             if (fact <= 0)

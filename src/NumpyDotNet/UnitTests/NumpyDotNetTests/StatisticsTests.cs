@@ -679,11 +679,51 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
         [TestMethod]
         public void test_cov_1()
         {
+            var x1 = np.array(new int[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            print(x1);
 
+            // Note how  increases while  decreases. The covariance matrix shows this clearly:
+
+            var a = np.cov(x1);
+            AssertArray(a, new double[,] { {1,-1 }, {-1, 1 } });
+            print(a);
+
+            var x = new double[] { -2.1, -1, 4.3 };
+            var y = new double[] { 3, 1.1, 0.12 };
+            var X = np.stack(new object[] { x, y }, axis: 0);
+            a = np.cov(X);
+            AssertArray(a, new double[,] { { 11.71, -4.286 }, { -4.286, 2.14413333333333 } });
+            print(a);
+
+
+            var b = np.cov(x, y);
+            AssertArray(b, new double[,] { { 11.71, -4.286 }, { -4.286, 2.14413333333333 } });
+            print(b);
+
+            var c = np.cov(x);
+            Assert.AreEqual((double)11.709999999999999, c.GetItem(0));
+            print(c);
+
+            var d = np.cov(X, rowvar: false);
+            AssertArray(d, new double[,] { { 13.005, 5.355, -10.659 }, { 5.355, 2.205, -4.389 }, { -10.659, -4.389, 8.7362 } });
+            print(d);
+
+            var e = np.cov(X, rowvar: false, bias: true);
+            AssertArray(e, new double[,] { { 6.5025, 2.6775, -5.3295 }, { 2.6775, 1.1025, -2.1945 }, { -5.3295, -2.1945, 4.3681 } });
+            print(e);
+
+            var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
+            AssertArray(f, new double[,] { { 5.78, 2.38, -4.73733333333333 }, { 2.38, 0.98, -1.95066666666667 }, { -4.73733333333333, -1.95066666666667, 3.88275555555555 } });
+            print(f);
+
+            var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });
+            AssertArray(g, new double[,] { { 4.1616, 1.7136, -3.41088 }, { 1.7136, 0.7056, -1.40448 }, { -3.41088, -1.40448, 2.795584 } });
+            print(g);
+
+            return;
         }
 
         #endregion

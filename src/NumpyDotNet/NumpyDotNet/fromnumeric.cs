@@ -3043,11 +3043,11 @@ namespace NumpyDotNet
                     // setup wgt to broadcast along axis
 
                     List<long> newShape = new List<npy_intp>();
-                    for (int i = 0; i < arr.ndim; i++)
+                    for (int i = 0; i < arr.ndim-1; i++)
                         newShape.Add(1);
                     newShape.AddRange(wgt.shape.iDims);
   
-                    wgt = np.broadcast_to(wgt, newShape.ToArray());
+                    wgt = np.broadcast_to(wgt, new shape(newShape.ToArray()));
                     wgt = wgt.SwapAxes(-1, axis.Value);
                 }
 
