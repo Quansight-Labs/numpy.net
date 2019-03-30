@@ -46,6 +46,50 @@ using npy_intp = System.Int32;
 
 
 namespace NumpyDotNet {
+
+    public static partial class np
+    {
+        // todo: big task to reimplement this.
+        public static dtype result_type(params object []p)
+        {
+            return np.Float64;
+        }
+
+        // todo: big task to reimplement this.
+        public static dtype promote_types(object type1, object type2)
+        {
+            return np.Float64;
+        }
+
+
+        private static bool can_cast(object from_, dtype to, string casting = "safe")
+        {
+            dtype from = null;
+
+            if (from_ is dtype)
+            {
+                from = from_ as dtype;
+            }
+            else
+            {
+                try
+                {
+                    var arr = asanyarray(from_);
+                    if (arr != null)
+                        from = arr.Dtype;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+
+            return NpyCoreApi.CanCastTo(from, to);
+        }
+
+    }
+
+
     /// <summary>
     /// Package of extension methods.
     /// </summary>

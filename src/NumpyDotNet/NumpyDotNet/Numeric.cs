@@ -1560,7 +1560,7 @@ namespace NumpyDotNet
             ndarray x = asanyarray(a);
             ndarray y = asanyarray(b);
 
-            dtype dt = np.Float64; // multiarray.result_type(y, 1.0);
+            dtype dt = np.result_type(y, 1.0);
             y = array(y, dtype: dt, copy: false, subok: true);
 
             var xfin = isfinite(x);

@@ -3018,9 +3018,9 @@ namespace NumpyDotNet
                 dtype result_dtype = null;
 
                 if (arr.IsInteger || arr.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
-                    result_dtype = np.Float64;
+                    result_dtype = np.result_type(arr.Dtype, wgt.Dtype, "f8");
                 else
-                    result_dtype = np.Float64;
+                    result_dtype = np.result_type(arr.Dtype, wgt.Dtype);
 
 
                 // Sanity checks

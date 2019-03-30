@@ -1018,19 +1018,12 @@ namespace NumpyDotNet
 
         private delegate ndarray WrapDelegate(ndarray a);
 
-
-        private static bool can_cast(ndarray indices, dtype intp, string v)
-        {
-            return true;
-        }
-
         #region concatenate
         public static ndarray concatenate(ValueTuple<object, object> values)
         {
             return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2) });
         }
-
-  
+ 
         public static ndarray concatenate(IEnumerable<ndarray> seq, int? axis = null)
         {
             return np.Concatenate(seq, axis);
