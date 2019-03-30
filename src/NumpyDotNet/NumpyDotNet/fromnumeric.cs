@@ -2999,7 +2999,7 @@ namespace NumpyDotNet
             return average_result.r;
         }
 
-        public static (ndarray r, object scl) average(object a, int? axis, object weights, bool returned)
+        public static (ndarray r, ndarray scl) average(object a, int? axis, object weights, bool returned = false)
         {
             ndarray avg = null;
             ndarray scl = null;
@@ -3009,7 +3009,7 @@ namespace NumpyDotNet
             if (weights == null)
             {
                 avg =  mean(arr, axis);
-                scl = asanyarray(arr.size / avg.size);
+                scl = asanyarray((double)(arr.size / avg.size));
             }
             else
             {
@@ -3018,7 +3018,7 @@ namespace NumpyDotNet
                 dtype result_dtype = null;
 
                 if (arr.IsInteger || arr.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
-                    result_dtype = np.Float32;
+                    result_dtype = np.Float64;
                 else
                     result_dtype = np.Float64;
 
