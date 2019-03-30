@@ -966,6 +966,37 @@ namespace NumpyDotNetTests
         }
 
 
+        [Ignore]
+        [TestMethod]
+        public void test_result_type_placeholder()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_promote_type_placeholder()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_min_scalar_type_placeholder()
+        {
+
+        }
+
+
+        [Ignore]
+        [TestMethod]
+        public void test_can_cast_placeholder()
+        {
+
+        }
+
+
+
 
     }
 }
