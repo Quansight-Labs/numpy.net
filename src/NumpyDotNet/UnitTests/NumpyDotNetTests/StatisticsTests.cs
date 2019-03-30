@@ -413,13 +413,55 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
         [TestMethod]
-        public void test_average_weighed_averages_1()
+        public void test_average_2()
         {
-    
+
+            var a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            var w = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+
+            var x = np.average(a);
+            Assert.AreEqual(5.5, x.GetItem(0));
+            print(x);
+            print("********");
+
+            x = np.average(a, weights : w);
+            Assert.AreEqual(4.0, x.GetItem(0));
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((2,-1)), weights: np.array(w).reshape((2, -1)));
+            Assert.AreEqual(4.0, x.GetItem(0));
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((2, -1)), axis:0, weights: np.array(w).reshape((2, -1)));
+            AssertArray(x, new double[] { 2.66666666666667, 3.53846153846154, 4.36363636363636, 5.11111111111111, 5.71428571428571 });
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((2, -1)), axis: 1, weights: np.array(w).reshape((2, -1)));
+            AssertArray(x, new double[] { 2.75, 7.33333333333333 });
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((1, 2, -1, 1)), axis: 1, weights: np.array(w).reshape((1, 2, -1, 1)));
+            AssertArray(x, new double[,,] { { { 2.66666666666667 }, { 3.53846153846154 }, { 4.36363636363636 }, { 5.11111111111111 }, {5.71428571428571} } });
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((1, -1, 2, 1)), axis: 1, weights: np.array(w).reshape((1, -1, 2, 1)));
+            AssertArray(x, new double[,,] { { { 3.66666666666667 }, { 4.4 } } });
+            print(x);
+            print("********");
+
+            x = np.average(a.reshape((2, -1, 1, 1)), axis: 1, weights: np.array(w).reshape((2, -1, 1, 1)));
+            AssertArray(x, new double[,,] { { { 2.75 } }, { { 7.33333333333333 } } });
+            print(x);
+
         }
 
+   
 
 
         [TestMethod]

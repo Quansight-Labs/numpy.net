@@ -2993,9 +2993,89 @@ namespace NumpyDotNet
    
         }
 
-        public static ndarray average(ndarray input, int? axis = null, dtype dtype = null)
+        public static ndarray average(object a, int? axis = null, object weights = null)
         {
-            return mean(input, axis, dtype);
+            var average_result = average(a, axis, weights, false);
+            return average_result.r;
+        }
+
+        public static (ndarray r, object scl) average(object a, int? axis, object weights, bool returned)
+        {
+            ndarray avg = null;
+            ndarray scl = null;
+
+            var arr = asanyarray(a);
+
+            if (weights == null)
+            {
+                avg =  mean(arr, axis);
+                scl = asanyarray(arr.size / avg.size);
+            }
+            else
+            {
+                var wgt = np.asanyarray(weights);
+
+                dtype result_dtype = null;
+
+                if (arr.IsInteger || arr.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
+                    result_dtype = np.Float32;
+                else
+                    result_dtype = np.Float64;
+
+
+                // Sanity checks
+                if (arr.shape != wgt.shape)
+                {
+                    if (axis == null)
+                    {
+                        throw new TypeError("Axis must be specified when shapes of a and weights differ.");
+                    }
+
+                    if (wgt.ndim != 1)
+                    {
+                        throw new TypeError("1D weights expected when shapes of a and weights differ.");
+                    }
+                    if (wgt.shape.iDims[0] != arr.shape.iDims[axis.Value])
+                    {
+                        throw new ValueError("Length of weights not compatible with specified axis.");
+
+                    }
+                    // setup wgt to broadcast along axis
+
+                    List<long> newShape = new List<npy_intp>();
+                    for (int i = 0; i < arr.ndim; i++)
+                        newShape.Add(1);
+                    newShape.AddRange(wgt.shape.iDims);
+  
+                    wgt = np.broadcast_to(wgt, newShape.ToArray());
+                    wgt = wgt.SwapAxes(-1, axis.Value);
+                }
+
+                scl = wgt.Sum(axis: axis, dtype: result_dtype);
+                if ((bool)np.any(scl == 0.0).GetItem(0) == true)
+                {
+                    throw new ZeroDivisionError("Weights sum to zero, can't be normalized");
+
+                }
+
+                avg = np.divide(np.multiply(a, wgt).Sum(axis),scl);
+
+            }
+
+            if (returned)
+            {
+                if (scl.shape != avg.shape)
+                {
+                    scl = np.broadcast_to(scl, avg.shape).Copy();
+                }
+
+                return (avg, scl);
+            }
+            else
+            {
+                return (avg, null);
+            }
+
         }
 
         #endregion

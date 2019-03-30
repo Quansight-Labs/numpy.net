@@ -319,6 +319,46 @@ class StatisticsTests(unittest.TestCase):
 
         return
 
+    
+    def test_average_2(self):
+
+        a = np.array([1,2,3,4,5,6,7,8,9,10]);
+        w = [10,9,8,7,6,5,4,3,2,1]
+
+        x = np.average(a)
+        print(x)
+        print("********")
+
+        x = np.average(a, weights=w)
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(2,-1), weights=np.array(w).reshape(2,-1))
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(2,-1), axis = 0, weights=np.array(w).reshape(2,-1))
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(2,-1), axis = 1, weights=np.array(w).reshape(2,-1))
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(1,2, -1,1), axis = 1, weights=np.array(w).reshape(1,2, -1,1))
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(1,-1,2,1), axis = 1, weights=np.array(w).reshape(1,-1,2,1))
+        print(x)
+        print("********")
+
+        x = np.average(a.reshape(2,-1,1,1), axis = 1, weights=np.array(w).reshape(2,-1,1,1))
+        print(x)
+
+
+        return
+
     def test_mean_1(self):
 
         x = np.array([10,15,25,45,78,90,10,15,25,45,78,90], dtype= np.uint32).reshape(3, 2, -1)

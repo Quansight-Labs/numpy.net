@@ -84,5 +84,10 @@ namespace NumpyDotNet
             return ret;
         }
 
+        public static ndarray broadcast_to(object array, object shape, bool subok = false)
+        {
+            return upscale_to(asanyarray(array), shape);
+        }
+
     }
 }

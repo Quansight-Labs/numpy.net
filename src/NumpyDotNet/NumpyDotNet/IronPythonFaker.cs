@@ -361,6 +361,22 @@ namespace NumpyDotNet
         }
     }
 
+    public class ZeroDivisionError : Exception
+    {
+        public ZeroDivisionError(string message) : base(message)
+        {
+
+        }
+    }
+
+    
+    public class TypeError : Exception
+    {
+        public TypeError(string message) : base(message)
+        {
+
+        }
+    }
 
     public class AxisError : Exception
     {
