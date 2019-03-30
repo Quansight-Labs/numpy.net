@@ -2996,10 +2996,10 @@ namespace NumpyDotNet
         public static ndarray average(object a, int? axis = null, object weights = null)
         {
             var average_result = average(a, axis, weights, false);
-            return average_result.r;
+            return average_result.retval;
         }
 
-        public static (ndarray r, ndarray scl) average(object a, int? axis, object weights, bool returned = false)
+        public static (ndarray retval, ndarray sum_of_weights) average(object a, int? axis, object weights, bool returned = false)
         {
             ndarray avg = null;
             ndarray scl = null;

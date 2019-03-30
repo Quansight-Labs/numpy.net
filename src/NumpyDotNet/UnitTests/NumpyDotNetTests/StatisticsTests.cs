@@ -469,50 +469,50 @@ namespace NumpyDotNetTests
             var w = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
             var x1 = np.average(a, axis:null, weights: null, returned: true);
-            Assert.AreEqual(5.5, x1.r.GetItem(0));
-            Assert.AreEqual((double)10.0, x1.scl.GetItem(0));
+            Assert.AreEqual(5.5, x1.retval.GetItem(0));
+            Assert.AreEqual((double)10.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a, axis:null, weights: w, returned:true);
-            Assert.AreEqual(4.0, x1.r.GetItem(0));
-            Assert.AreEqual((double)55.0, x1.scl.GetItem(0));
+            Assert.AreEqual(4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis:null, weights: np.array(w).reshape((2, -1)), returned: true);
-            Assert.AreEqual(4.0, x1.r.GetItem(0));
-            Assert.AreEqual((double)55.0, x1.scl.GetItem(0));
+            Assert.AreEqual(4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 0, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.r, new double[] { 2.66666666666667, 3.53846153846154, 4.36363636363636, 5.11111111111111, 5.71428571428571 });
-            AssertArray(x1.scl, new double[] { 15.0, 13.0, 11.0, 9.0, 7.0 });
+            AssertArray(x1.retval, new double[] { 2.66666666666667, 3.53846153846154, 4.36363636363636, 5.11111111111111, 5.71428571428571 });
+            AssertArray(x1.sum_of_weights, new double[] { 15.0, 13.0, 11.0, 9.0, 7.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 1, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.r, new double[] { 2.75, 7.33333333333333 });
-            AssertArray(x1.scl, new double[] { 40.0, 15.0 });
+            AssertArray(x1.retval, new double[] { 2.75, 7.33333333333333 });
+            AssertArray(x1.sum_of_weights, new double[] { 40.0, 15.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, 2, -1, 1)), axis: 1, weights: np.array(w).reshape((1, 2, -1, 1)), returned: true);
-            AssertArray(x1.r, new double[,,] { { { 2.66666666666667 }, { 3.53846153846154 }, { 4.36363636363636 }, { 5.11111111111111 }, { 5.71428571428571 } } });
-            AssertArray(x1.scl, new double[,,] { { { 15.0 }, { 13.0 }, { 11.0 }, { 9.0 }, { 7.0 } } });
+            AssertArray(x1.retval, new double[,,] { { { 2.66666666666667 }, { 3.53846153846154 }, { 4.36363636363636 }, { 5.11111111111111 }, { 5.71428571428571 } } });
+            AssertArray(x1.sum_of_weights, new double[,,] { { { 15.0 }, { 13.0 }, { 11.0 }, { 9.0 }, { 7.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, -1, 2, 1)), axis: 1, weights: np.array(w).reshape((1, -1, 2, 1)), returned : true);
-            AssertArray(x1.r, new double[,,] { { { 3.66666666666667 }, { 4.4 } } });
-            AssertArray(x1.scl, new double[,,] { { { 30.0 }, { 25.0 } } });
+            AssertArray(x1.retval, new double[,,] { { { 3.66666666666667 }, { 4.4 } } });
+            AssertArray(x1.sum_of_weights, new double[,,] { { { 30.0 }, { 25.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1, 1, 1)), axis: 1, weights: np.array(w).reshape((2, -1, 1, 1)), returned: false);
-            AssertArray(x1.r, new double[,,] { { { 2.75 } }, { { 7.33333333333333 } } });
-            Assert.AreEqual(null, x1.scl);
+            AssertArray(x1.retval, new double[,,] { { { 2.75 } }, { { 7.33333333333333 } } });
+            Assert.AreEqual(null, x1.sum_of_weights);
             print(x1);
 
         }
