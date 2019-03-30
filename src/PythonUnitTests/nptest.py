@@ -830,3 +830,332 @@ class nptest(object):
         axes.remove(axis)
         axes.insert(start, axis)
         return a.transpose(axes)
+
+    @staticmethod
+    def percentile(a, q, axis=None, out=None,
+               overwrite_input=False, interpolation='linear', keepdims=False):
+        """
+        Compute the qth percentile of the data along the specified axis.
+
+        Returns the qth percentile(s) of the array elements.
+
+        Parameters
+        ----------
+        a : array_like
+            Input array or object that can be converted to an array.
+        q : array_like of float
+            Percentile or sequence of percentiles to compute, which must be between
+            0 and 100 inclusive.
+        axis : {int, tuple of int, None}, optional
+            Axis or axes along which the percentiles are computed. The
+            default is to compute the percentile(s) along a flattened
+            version of the array.
+
+            .. versionchanged:: 1.9.0
+                A tuple of axes is supported
+        out : ndarray, optional
+            Alternative output array in which to place the result. It must
+            have the same shape and buffer length as the expected output,
+            but the type (of the output) will be cast if necessary.
+        overwrite_input : bool, optional
+            If True, then allow the input array `a` to be modified by intermediate
+            calculations, to save memory. In this case, the contents of the input
+            `a` after this function completes is undefined.
+        interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+            This optional parameter specifies the interpolation method to
+            use when the desired quantile lies between two data points
+            ``i < j``:
+                * linear: ``i + (j - i) * fraction``, where ``fraction``
+                  is the fractional part of the index surrounded by ``i``
+                  and ``j``.
+                * lower: ``i``.
+                * higher: ``j``.
+                * nearest: ``i`` or ``j``, whichever is nearest.
+                * midpoint: ``(i + j) / 2``.
+
+            .. versionadded:: 1.9.0
+        keepdims : bool, optional
+            If this is set to True, the axes which are reduced are left in
+            the result as dimensions with size one. With this option, the
+            result will broadcast correctly against the original array `a`.
+
+            .. versionadded:: 1.9.0
+
+        Returns
+        -------
+        percentile : scalar or ndarray
+            If `q` is a single percentile and `axis=None`, then the result
+            is a scalar. If multiple percentiles are given, first axis of
+            the result corresponds to the percentiles. The other axes are
+            the axes that remain after the reduction of `a`. If the input
+            contains integers or floats smaller than ``float64``, the output
+            data-type is ``float64``. Otherwise, the output data-type is the
+            same as that of the input. If `out` is specified, that array is
+            returned instead.
+
+        See Also
+        --------
+        mean
+        median : equivalent to ``percentile(..., 50)``
+        nanpercentile
+
+        Notes
+        -----
+        Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+        ``V`` is the value ``q/100`` of the way from the minimum to the
+        maximum in a sorted copy of ``V``. The values and distances of
+        the two nearest neighbors as well as the `interpolation` parameter
+        will determine the percentile if the normalized ranking does not
+        match the location of ``q`` exactly. This function is the same as
+        the median if ``q=50``, the same as the minimum if ``q=0`` and the
+        same as the maximum if ``q=100``.
+
+        Examples
+        --------
+        >>> a = np.array([[10, 7, 4], [3, 2, 1]])
+        >>> a
+        array([[10,  7,  4],
+               [ 3,  2,  1]])
+        >>> np.percentile(a, 50)
+        3.5
+        >>> np.percentile(a, 50, axis=0)
+        array([[ 6.5,  4.5,  2.5]])
+        >>> np.percentile(a, 50, axis=1)
+        array([ 7.,  2.])
+        >>> np.percentile(a, 50, axis=1, keepdims=True)
+        array([[ 7.],
+               [ 2.]])
+
+        >>> m = np.percentile(a, 50, axis=0)
+        >>> out = np.zeros_like(m)
+        >>> np.percentile(a, 50, axis=0, out=out)
+        array([[ 6.5,  4.5,  2.5]])
+        >>> m
+        array([[ 6.5,  4.5,  2.5]])
+
+        >>> b = a.copy()
+        >>> np.percentile(b, 50, axis=1, overwrite_input=True)
+        array([ 7.,  2.])
+        >>> assert not np.all(a == b)
+
+        """
+        q = np.true_divide(q, 100.0)  # handles the asarray for us too
+        if not nptest._quantile_is_valid(q):
+            raise ValueError("Percentiles must be in the range [0, 100]")
+        return nptest._quantile_unchecked(
+            a, q, axis, out, overwrite_input, interpolation, keepdims)
+
+    @staticmethod
+    def _quantile_unchecked(a, q, axis=None, out=None, overwrite_input=False,
+                        interpolation='linear', keepdims=False):
+        """Assumes that q is in [0, 1], and is an ndarray"""
+        r, k = nptest._ureduce(a, func=nptest._quantile_ureduce_func, q=q, axis=axis, out=out,
+                        overwrite_input=overwrite_input,
+                        interpolation=interpolation)
+        if keepdims:
+            return r.reshape(q.shape + k)
+        else:
+            return r
+
+    @staticmethod
+    def _quantile_is_valid(q):
+        # avoid expensive reductions, relevant for arrays with < O(1000) elements
+        if q.ndim == 1 and q.size < 10:
+            for i in range(q.size):
+                if q[i] < 0.0 or q[i] > 1.0:
+                    return False
+        else:
+            # faster than any()
+            if np.count_nonzero(q < 0.0) or np.count_nonzero(q > 1.0):
+                return False
+        return True
+
+
+
+    @staticmethod
+    def _ureduce(a, func, **kwargs):
+        """
+        Internal Function.
+        Call `func` with `a` as first argument swapping the axes to use extended
+        axis on functions that don't support it natively.
+
+        Returns result and a.shape with axis dims set to 1.
+
+        Parameters
+        ----------
+        a : array_like
+            Input array or object that can be converted to an array.
+        func : callable
+            Reduction function capable of receiving a single axis argument.
+            It is called with `a` as first argument followed by `kwargs`.
+        kwargs : keyword arguments
+            additional keyword arguments to pass to `func`.
+
+        Returns
+        -------
+        result : tuple
+            Result of func(a, **kwargs) and a.shape with axis dims set to 1
+            which can be used to reshape the result to the same shape a ufunc with
+            keepdims=True would produce.
+
+        """
+        a = np.asanyarray(a)
+        axis = kwargs.get('axis', None)
+        if axis is not None:
+            keepdim = list(a.shape)
+            nd = a.ndim
+            axis = _nx.normalize_axis_tuple(axis, nd)
+
+            for ax in axis:
+                keepdim[ax] = 1
+
+            if len(axis) == 1:
+                kwargs['axis'] = axis[0]
+            else:
+                keep = set(range(nd)) - set(axis)
+                nkeep = len(keep)
+                # swap axis that should not be reduced to front
+                for i, s in enumerate(sorted(keep)):
+                    a = a.swapaxes(i, s)
+                # merge reduced axis
+                a = a.reshape(a.shape[:nkeep] + (-1,))
+                kwargs['axis'] = -1
+            keepdim = tuple(keepdim)
+        else:
+            keepdim = (1,) * a.ndim
+
+        r = func(a, **kwargs)
+        return r, keepdim
+
+
+    @staticmethod
+    def _quantile_ureduce_func(a, q, axis=None, out=None, overwrite_input=False,
+                               interpolation='linear', keepdims=False):
+        a = asarray(a)
+        if q.ndim == 0:
+            # Do not allow 0-d arrays because following code fails for scalar
+            zerod = True
+            q = q[None]
+        else:
+            zerod = False
+
+        # prepare a for partitioning
+        if overwrite_input:
+            if axis is None:
+                ap = a.ravel()
+            else:
+                ap = a
+        else:
+            if axis is None:
+                ap = a.flatten()
+            else:
+                ap = a.copy()
+
+        if axis is None:
+            axis = 0
+
+        Nx = ap.shape[axis]
+        indices = q * (Nx - 1)
+
+        # round fractional indices according to interpolation method
+        if interpolation == 'lower':
+            indices = floor(indices).astype(intp)
+        elif interpolation == 'higher':
+            indices = ceil(indices).astype(intp)
+        elif interpolation == 'midpoint':
+            indices = 0.5 * (floor(indices) + ceil(indices))
+        elif interpolation == 'nearest':
+            indices = around(indices).astype(intp)
+        elif interpolation == 'linear':
+            pass  # keep index as fraction and interpolate
+        else:
+            raise ValueError(
+                "interpolation can only be 'linear', 'lower' 'higher', "
+                "'midpoint', or 'nearest'")
+
+        n = np.array(False, dtype=bool) # check for nan's flag
+        if indices.dtype == intp:  # take the points along axis
+            # Check if the array contains any nan's
+            if np.issubdtype(a.dtype, np.inexact):
+                indices = concatenate((indices, [-1]))
+
+            ap.partition(indices, axis=axis)
+            # ensure axis with qth is first
+            ap = np.moveaxis(ap, axis, 0)
+            axis = 0
+
+            # Check if the array contains any nan's
+            if np.issubdtype(a.dtype, np.inexact):
+                indices = indices[:-1]
+                n = np.isnan(ap[-1:, ...])
+
+            if zerod:
+                indices = indices[0]
+            r = take(ap, indices, axis=axis, out=out)
+
+
+        else:  # weight the points above and below the indices
+            indices_below = floor(indices).astype(intp)
+            indices_above = indices_below + 1
+            indices_above[indices_above > Nx - 1] = Nx - 1
+
+            # Check if the array contains any nan's
+            if np.issubdtype(a.dtype, np.inexact):
+                indices_above = concatenate((indices_above, [-1]))
+
+            weights_above = indices - indices_below
+            weights_below = 1.0 - weights_above
+
+            weights_shape = [1, ] * ap.ndim
+            weights_shape[axis] = len(indices)
+            weights_below.shape = weights_shape
+            weights_above.shape = weights_shape
+
+            ap.partition(concatenate((indices_below, indices_above)), axis=axis)
+
+            # ensure axis with qth is first
+            ap = np.moveaxis(ap, axis, 0)
+            weights_below = np.moveaxis(weights_below, axis, 0)
+            weights_above = np.moveaxis(weights_above, axis, 0)
+            axis = 0
+
+            # Check if the array contains any nan's
+            if np.issubdtype(a.dtype, np.inexact):
+                indices_above = indices_above[:-1]
+                n = np.isnan(ap[-1:, ...])
+
+            x1 = take(ap, indices_below, axis=axis) * weights_below
+            x2 = take(ap, indices_above, axis=axis) * weights_above
+
+            # ensure axis with qth is first
+            x1 = np.moveaxis(x1, axis, 0)
+            x2 = np.moveaxis(x2, axis, 0)
+
+            if zerod:
+                x1 = x1.squeeze(0)
+                x2 = x2.squeeze(0)
+
+            if out is not None:
+                r = add(x1, x2, out=out)
+            else:
+                r = add(x1, x2)
+
+        if np.any(n):
+            warnings.warn("Invalid value encountered in percentile",
+                          RuntimeWarning, stacklevel=3)
+            if zerod:
+                if ap.ndim == 1:
+                    if out is not None:
+                        out[...] = a.dtype.type(np.nan)
+                        r = out
+                    else:
+                        r = a.dtype.type(np.nan)
+                else:
+                    r[..., n.squeeze(0)] = a.dtype.type(np.nan)
+            else:
+                if r.ndim == 1:
+                    r[:] = a.dtype.type(np.nan)
+                else:
+                    r[..., n.repeat(q.size, 0)] = a.dtype.type(np.nan)
+
+        return r

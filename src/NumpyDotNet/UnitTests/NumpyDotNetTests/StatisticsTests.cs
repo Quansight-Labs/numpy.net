@@ -179,35 +179,76 @@ namespace NumpyDotNetTests
 
         #region percentile/quantile
 
-        [Ignore]
         [TestMethod]
         public void test_percentile_1()
         {
             var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
             var b = np.percentile(a, 50);
+            Assert.AreEqual((double)3.5, b.GetItem(0));
             print(b);
 
             var c = np.percentile(a, 50, axis: 0);
+            AssertArray(c, new double[] { 6.5, 4.5, 2.5 });
             print(c);
 
             var d = np.percentile(a, 50, axis : 1);
+            AssertArray(d, new double[] {7.0, 2.0});
             print(d);
 
             var e = np.percentile(a, 50, axis : 1, keepdims : true);
+            AssertArray(e, new double[,] { { 7.0 }, { 2.0 } });
             print(e);
 
-            var m = np.percentile(a, 50, axis : 0);
-            var n = np.zeros_like(m);
-            var o = np.percentile(a, 50, axis : 0, @out: n);
-            print(o);
-            print(n);
+            // note: we dont support the out parameter
+            //var m = np.percentile(a, 50, axis : 0);
+            //var n = np.zeros_like(m);
+            //var o = np.percentile(a, 50, axis : 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
+            //b = a.Copy();
+            //c = np.percentile(b, 50, axis: 1, overwrite_input: true);
+            //print(c);
 
-            b = a.Copy();
-            c = np.percentile(b, 50, axis: 1, overwrite_input: true);
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_percentile_2()
+        {
+            var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+
+            var b = np.percentile(a, new int[] { 50, 75 });
+            AssertArray(b, new double[] { 3.5, 6.25  });
+            print(b);
+
+            var c = np.percentile(a, new int[] { 50, 75 }, axis: 0);
+            AssertArray(c, new double[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+            var d = np.percentile(a, new int[] { 50, 75 }, axis: 1);
+            AssertArray(d, new double[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
+            print(d);
+
+            var e = np.percentile(a, new int[] { 50, 75 }, axis: 1, keepdims: true);
+            AssertArray(e, new double[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
+            print(e);
+
+            // note: we dont support the out parameter
+            //var m = np.percentile(a, 50, axis : 0);
+            //var n = np.zeros_like(m);
+            //var o = np.percentile(a, 50, axis : 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
+            //b = a.Copy();
+            //c = np.percentile(b, 50, axis: 1, overwrite_input: true);
+            //print(c);
+
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
 
             return;
         }
@@ -232,15 +273,15 @@ namespace NumpyDotNetTests
 
             var m = np.quantile(a, 0.5, axis: 0);
             var n = np.zeros_like(m);
-            var o = np.quantile(a, 0.5, axis: 0, @out: n);
+            var o = np.quantile(a, 0.5, axis: 0);
             print(o);
             print(n);
 
-            b = a.Copy();
-            c = np.quantile(b, 0.5, axis: 1, overwrite_input: true);
-            print(c);
+            //b = a.Copy();
+            //c = np.quantile(b, 0.5, axis: 1, overwrite_input: true);
+            //print(c);
 
-            Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
 
             return;
         }
