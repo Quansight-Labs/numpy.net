@@ -591,7 +591,7 @@ namespace NumpyDotNet
 
         #region partition
 
-        public static ndarray partition(ndarray a, IEnumerable<int> kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
+        public static ndarray partition(ndarray a, IEnumerable<npy_intp> kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             /*
             Return a partitioned copy of an array.
@@ -690,7 +690,7 @@ namespace NumpyDotNet
 
         public static ndarray partition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
-            return partition(a, new Int32[1] { kth }, axis, kind, order);
+            return partition(a, new long[1] { kth }, axis, kind, order);
         }
 
         #endregion

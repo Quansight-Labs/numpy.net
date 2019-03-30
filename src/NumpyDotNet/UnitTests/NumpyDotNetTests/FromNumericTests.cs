@@ -823,7 +823,7 @@ namespace NumpyDotNetTests
             print(b);
             print("********");
 
-            ndarray c = np.partition(a, new Int32[] { 1, 3 });
+            ndarray c = np.partition(a, new long[] { 1, 3 });
             AssertArray(c, new int[] { 1, 2, 3, 4 });
             print(c);
         }
@@ -846,7 +846,7 @@ namespace NumpyDotNetTests
             print(b);
             print("********");
 
-            ndarray c = np.partition(a, new Int32[] { 1, 3 });
+            ndarray c = np.partition(a, new long[] { 1, 3 });
             AssertArray(c, new float[] { 1.1f, 2.1f, 3.1f, 4.1f });
             print(c);
         }

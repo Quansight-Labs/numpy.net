@@ -2609,7 +2609,7 @@ namespace NumpyDotNet
                     indices = concatenate((new ndarray[] { indices, np.array(new int[] { -1 }) }));
                 }
 
-                ap.partition(indices.ToArray<int>(), axis: axis);
+                ap.partition(indices.ToArray<npy_intp>(), axis: axis);
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);
                 axis = 0;
@@ -2650,7 +2650,7 @@ namespace NumpyDotNet
                 weights_below = weights_below.reshape(new shape(weights_shape));
                 weights_above = weights_above.reshape(new shape(weights_shape));
 
-                ap.partition(concatenate(((object)indices_below, indices_above)).ToArray<int>(), axis: axis);
+                ap.partition(concatenate(((object)indices_below, indices_above)).ToArray<npy_intp>(), axis: axis);
 
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);

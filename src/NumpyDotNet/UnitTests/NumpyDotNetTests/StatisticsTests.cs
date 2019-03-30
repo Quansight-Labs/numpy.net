@@ -218,26 +218,26 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.percentile(a, 0.5);
+            var b = np.quantile(a, 0.5);
             print(b);
 
-            var c = np.percentile(a, 0.5, axis: 0);
+            var c = np.quantile(a, 0.5, axis: 0);
             print(c);
 
-            var d = np.percentile(a, 0.5, axis: 1);
+            var d = np.quantile(a, 0.5, axis: 1);
             print(d);
 
-            var e = np.percentile(a, 0.5, axis: 1, keepdims: true);
+            var e = np.quantile(a, 0.5, axis: 1, keepdims: true);
             print(e);
 
-            var m = np.percentile(a, 0.5, axis: 0);
+            var m = np.quantile(a, 0.5, axis: 0);
             var n = np.zeros_like(m);
-            var o = np.percentile(a, 0.5, axis: 0, @out: n);
+            var o = np.quantile(a, 0.5, axis: 0, @out: n);
             print(o);
             print(n);
 
             b = a.Copy();
-            c = np.percentile(b, 0.5, axis: 1, overwrite_input: true);
+            c = np.quantile(b, 0.5, axis: 1, overwrite_input: true);
             print(c);
 
             Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
