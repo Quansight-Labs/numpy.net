@@ -253,30 +253,73 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]
         [TestMethod]
         public void test_quantile_1()
         {
             var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
             var b = np.quantile(a, 0.5);
+            Assert.AreEqual((double)3.5, b.GetItem(0));
             print(b);
 
             var c = np.quantile(a, 0.5, axis: 0);
+            AssertArray(c, new double[] { 6.5, 4.5, 2.5 });
             print(c);
 
             var d = np.quantile(a, 0.5, axis: 1);
+            AssertArray(d, new double[] { 7.0, 2.0 });
             print(d);
 
             var e = np.quantile(a, 0.5, axis: 1, keepdims: true);
+            AssertArray(e, new double[,] { { 7.0 }, { 2.0 } });
             print(e);
 
-            var m = np.quantile(a, 0.5, axis: 0);
-            var n = np.zeros_like(m);
-            var o = np.quantile(a, 0.5, axis: 0);
-            print(o);
-            print(n);
+            // note: we dont support the out parameter
 
+            //var m = np.quantile(a, 0.5, axis: 0);
+            //var n = np.zeros_like(m);
+            //var o = np.quantile(a, 0.5, axis: 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
+            //b = a.Copy();
+            //c = np.quantile(b, 0.5, axis: 1, overwrite_input: true);
+            //print(c);
+
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_quantile_2()
+        {
+            var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+
+            var b = np.quantile(a, new double[] { 0.5, 0.75 });
+            AssertArray(b, new double[] { 3.5, 6.25 });
+            print(b);
+
+            var c = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 0);
+            AssertArray(c, new double[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
+            print(c);
+
+            var d = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 1);
+            AssertArray(d, new double[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
+            print(d);
+
+            var e = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 1, keepdims: true);
+            AssertArray(e, new double[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
+            print(e);
+
+            // note: we dont support the out parameter
+
+            //var m = np.quantile(a, 0.5, axis: 0);
+            //var n = np.zeros_like(m);
+            //var o = np.quantile(a, 0.5, axis: 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
             //b = a.Copy();
             //c = np.quantile(b, 0.5, axis: 1, overwrite_input: true);
             //print(c);
