@@ -1112,7 +1112,7 @@ namespace NumpyDotNet
 
         #region cov
 
-        public static ndarray cov(ndarray m, ndarray y = null, bool rowvar = true,
+        public static ndarray cov(object m, object y = null, bool rowvar = true,
             bool bias = false, int? ddof = null, ndarray fweights = null, ndarray aweights = null)
         {
             /*
@@ -1224,7 +1224,158 @@ namespace NumpyDotNet
              [ -4.286        2.14413333]]
             >>> print(np.cov(x))
             11.71             */
-            throw new NotImplementedException();
+
+            dtype dtype = null;
+            ndarray yarr = null;
+
+            if (ddof != null && ddof != Convert.ToInt32(ddof))
+            {
+                throw new ValueError("ddof must be integer");
+            }
+
+
+            // Handles complex arrays too
+            var marr = np.asarray(m);
+            if (marr.ndim > 2)
+            {
+                throw new ValueError("m has more than 2 dimensions");
+            }
+
+            if (y == null)
+            {
+                dtype = np.result_type(m, np.Float64);
+            }
+            else
+            {
+                yarr = np.asarray(y);
+                if (yarr.ndim > 2)
+                {
+                    throw new ValueError("y has more than 2 dimensions");
+                }
+                dtype = np.result_type(m, y, np.Float64);
+            }
+
+            var X = array(m, ndmin : 2, dtype : dtype);
+            if (!rowvar && X.shape.iDims[0] != 1)
+            {
+                X = X.T;
+            }
+            if (X.shape.iDims[0] == 0)
+            {
+                return np.array(new int[] { }).reshape(0, 0);
+            }
+
+            if (y != null)
+            {
+                y = array(y, copy: false, ndmin: 2, dtype: dtype);
+                if (!rowvar && yarr.shape.iDims[0] != 1)
+                    yarr = yarr.T;
+                X = np.concatenate(X, yarr, axis : 0);
+            }
+
+            if (ddof == null)
+            {
+                if (bias == false)
+                    ddof = 1;
+                else
+                    ddof = 0;
+            }
+    
+            ndarray w = null;
+
+            if (fweights != null)
+            {
+                fweights = np.asarray(fweights, dtype: np.Float32);
+                if ((bool)np.all(fweights.Equals(np.around(fweights))).GetItem(0) == false)
+                {
+                    throw new TypeError("fweights must be integer");
+                }
+ 
+                if (fweights.ndim > 1)
+                {
+                    throw new RuntimeError("cannot handle multidimensional fweights");
+                }
+
+                if (fweights.shape.iDims[0] != X.shape.iDims[1])
+                {
+                    throw new RuntimeError("incompatible numbers of samples and fweights");
+
+                }
+                if ((bool)any(fweights < 0).GetItem(0) == true)
+                {
+                    throw new ValueError("fweights cannot be negative");
+                }
+
+                w = fweights;
+            }
+
+            if (aweights != null)
+            {
+                aweights = np.asarray(aweights, dtype : np.Float32);
+                if (aweights.ndim > 1)
+                {
+                    throw new RuntimeError("cannot handle multidimensional aweights");
+                }
+   
+                if (aweights.shape.iDims[0] != X.shape.iDims[1])
+                {
+                    throw new RuntimeError("incompatible numbers of samples and aweights");
+
+                }
+                if ((bool)any(aweights < 0).GetItem(0) == true)
+                {
+                    throw new ValueError("aweights cannot be negative");
+                }
+
+                if (w == null)
+                    w = aweights;
+                else
+                    w *= aweights;
+            }
+
+            var avg_result = average(X, axis: 1, weights: w, returned: true);
+            double w_sum = (double)avg_result.scl[0];
+
+            // Determine the normalization
+            double fact;
+            if (w == null)
+            {
+                fact = X.shape.iDims[1] - ddof.Value;
+            }
+            else if (ddof == 0)
+            {
+                fact = w_sum;
+            }
+            else if (aweights == null)
+            {
+                fact = w_sum - ddof.Value;
+            }
+            else
+            {
+                fact = w_sum - ddof.Value * Convert.ToDouble(np.sum(w * aweights).GetItem(0)) / w_sum;
+            }
+
+            if (fact <= 0)
+            {
+                //warnings.warn("Degrees of freedom <= 0 for slice", RuntimeWarning, stacklevel = 2);
+                fact = 0.0;
+            }
+
+
+            ndarray X_T = null;
+            X -= avg_result.r.A(":", null);
+            if (w == null)
+            {
+                X_T = X.T;
+            }
+            else
+            {
+                X_T = (X * w).T;
+            }
+            var c = np.dot(X, X_T.conj());
+            c *= 1.0 / fact;
+            return c.Squeeze();
+
         }
         #endregion
 
