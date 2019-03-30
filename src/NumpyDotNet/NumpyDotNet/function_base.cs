@@ -1996,10 +1996,10 @@ namespace NumpyDotNet
 
         #region _ureduce
 
-        private delegate ndarray _ureduce_func(ndarray a, ndarray q, int? axis = null, ndarray @out = null,
+        private delegate ndarray _ureduce_func(ndarray a, ndarray q, bool IsQArray, int? axis = null, ndarray @out = null,
                                                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false);
 
-        private static (ndarray r, List<npy_intp> keepdims)  _ureduce(ndarray a, _ureduce_func func, ndarray q, int[] axisarray = null, 
+        private static (ndarray r, List<npy_intp> keepdims)  _ureduce(ndarray a, _ureduce_func func, ndarray q, bool IsQarray, int[] axisarray = null, 
             ndarray @out = null, bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
 
@@ -2066,7 +2066,7 @@ namespace NumpyDotNet
                 }
             }
 
-            ndarray r = func(a, q, axis, @out, overwrite_input, interpolation, keepdims);
+            ndarray r = func(a, q, IsQarray, axis, @out, overwrite_input, interpolation, keepdims);
             return (r, keepdim);
 
         }
@@ -2161,8 +2161,8 @@ namespace NumpyDotNet
 
         #region percentile
 
-        public static ndarray percentile(object a, object q, int? axis = null, ndarray @out = null, 
-                bool overwrite_input = false, string interpolation = "linear", bool keepdims=false)
+        public static ndarray percentile(object a, object q, int? axis = null,  
+                string interpolation = "linear", bool keepdims=false)
         {
             /*
             Compute the qth percentile of the data along the specified axis.
@@ -2183,10 +2183,7 @@ namespace NumpyDotNet
 
                 .. versionchanged:: 1.9.0
                     A tuple of axes is supported
-            out : ndarray, optional
-                Alternative output array in which to place the result. It must
-                have the same shape and buffer length as the expected output,
-                but the type (of the output) will be cast if necessary.
+          
             overwrite_input : bool, optional
                 If True, then allow the input array `a` to be modified by intermediate
                 calculations, to save memory. In this case, the contents of the input
@@ -2269,18 +2266,24 @@ namespace NumpyDotNet
             >>> assert not np.all(a == b)
             */
 
-            
+            bool overwrite_input = false;
+
+            bool IsQArray = false;
+            if (q.GetType().IsArray)
+            {
+                IsQArray = true;
+            }
 
             var q1 = np.true_divide(asanyarray(q), 100.0);  // handles the asarray for us too
             if (!_quantile_is_valid(q1))
             {
                 throw new ValueError("Percentiles must be in the range [0, 100]");
             }
-            return _quantile_unchecked(asanyarray(a), q1, axis, @out, overwrite_input, interpolation, keepdims);
+            return _quantile_unchecked(asanyarray(a), q1,IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
-        public static ndarray quantile(object a, object q, int? axis = null, ndarray @out = null,
-            bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        public static ndarray quantile(object a, object q, int? axis = null,
+            string interpolation = "linear", bool keepdims = false)
         {
             /*
             Compute the q-th quantile of the data along the specified axis.
@@ -2468,6 +2471,15 @@ namespace NumpyDotNet
             >>> assert not np.all(a == b)        
 
              */
+
+            bool overwrite_input = false;
+
+            bool IsQArray = false;
+            if (q.GetType().IsArray)
+            {
+                IsQArray = true;
+            }
+
             var qa = np.asanyarray(q);
 
             if (!_quantile_is_valid(qa))
@@ -2475,10 +2487,10 @@ namespace NumpyDotNet
                 throw new ValueError("Quantiles must be in the range [0, 1]");
             }
 
-            return _quantile_unchecked(asanyarray(a), qa, axis, @out, overwrite_input, interpolation, keepdims);
+            return _quantile_unchecked(asanyarray(a), qa, IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
-        private static ndarray _quantile_unchecked(ndarray a, ndarray q, int? axis = null, ndarray @out = null, 
+        private static ndarray _quantile_unchecked(ndarray a, ndarray q, bool IsQArray, int? axis = null,
                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
             int[] axisarray = null;
@@ -2488,15 +2500,18 @@ namespace NumpyDotNet
             }
 
             // Assumes that q is in [0, 1], and is an ndarray
-            var _ureduce_ret = _ureduce(a, func: _quantile_ureduce_func, q: q, 
-                    axisarray: axisarray, @out: @out,
+            var _ureduce_ret = _ureduce(a, func: _quantile_ureduce_func, q: q, IsQarray : IsQArray,
+                    axisarray: axisarray, 
                     overwrite_input: overwrite_input,
                     interpolation: interpolation);
 
             if (keepdims)
             {
                 List<npy_intp> newshape = new List<npy_intp>();
-                newshape.AddRange(a.shape.iDims);
+                if (IsQArray)
+                {
+                    newshape.AddRange(q.shape.iDims);
+                }
                 newshape.AddRange(_ureduce_ret.keepdims);
                 return _ureduce_ret.r.reshape(new shape(newshape.ToArray()));
             }
@@ -2534,7 +2549,7 @@ namespace NumpyDotNet
         }
 
 
-        private static ndarray _quantile_ureduce_func(ndarray a, ndarray q, int? axis = null, ndarray @out = null,
+        private static ndarray _quantile_ureduce_func(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null,
                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
             bool zerod = false;
@@ -2542,11 +2557,11 @@ namespace NumpyDotNet
             ndarray r;
 
             a = asarray(a);
-            if (q.ndim == 0)
+            if (!IsQarray)
             {
                 // Do not allow 0-d arrays because following code fails for scalar
                 zerod = true;
-                q = q[null] as ndarray;
+                //q = q[null] as ndarray;
             }
             else
             {
