@@ -2024,5 +2024,33 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_blackman_placeholder()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_bartlett_placeholder()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_hanning_placeholder()
+        {
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_hamming_placeholder()
+        {
+
+        }
+
     }
 }
