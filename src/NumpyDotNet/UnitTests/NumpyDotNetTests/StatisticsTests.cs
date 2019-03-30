@@ -338,11 +338,62 @@ namespace NumpyDotNetTests
         #region median/average/mean
 
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_median_placeholder()
+        public void test_median_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+
+            var b = np.median(a);
+            Assert.AreEqual((double)3.5, b.GetItem(0));
+            print(b);
+
+            var c = np.median(a, axis: 0);
+            AssertArray(c, new double[] { 6.5, 4.5, 2.5 });
+            print(c);
+
+            var d = np.median(a, axis: 1);
+            AssertArray(d, new double[] { 7.0, 2.0 });
+            print(d);
+
+            var e = np.median(a, axis: 1, keepdims: true);
+            AssertArray(e, new double[,] { { 7.0 }, { 2.0 } });
+            print(e);
+
+            // note: we dont support the out parameter
+
+            //var m = np.median(a, 0.5, axis: 0);
+            //var n = np.zeros_like(m);
+            //var o = np.median(a, 0.5, axis: 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
+            //b = a.Copy();
+            //c = np.median(b, 0.5, axis: 1, overwrite_input: true);
+            //print(c);
+
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_median_2()
+        {
+            var a = np.arange(0, 64, 1).reshape((4, 4, 4));
+
+            var b = np.median(a, axis : new int[] { 0, 2 }, keepdims: true);
+            AssertArray(b, new double[,,] { { { 25.5 }, { 29.5 }, { 33.5 }, { 37.5 } } });
+            print(b);
+
+            var c = np.median(a, new int[] { 0, 1 }, keepdims: true);
+            AssertArray(c, new double[,,] { { { 30, 31, 32, 33} } });
+            print(c);
+
+            var d = np.median(a, new int[] { 1, 2 }, keepdims: true);
+            AssertArray(d, new double[,,] { { { 7.5 } }, { { 23.5 } }, { { 39.5 } }, { { 55.5 } } });
+            print(d);
+
+            return;
         }
 
 
@@ -361,6 +412,14 @@ namespace NumpyDotNetTests
             Assert.AreEqual(131.5, y.GetItem(0));
 
         }
+
+        [Ignore]
+        [TestMethod]
+        public void test_average_weighed_averages_1()
+        {
+    
+        }
+
 
 
         [TestMethod]

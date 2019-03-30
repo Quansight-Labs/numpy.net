@@ -240,9 +240,71 @@ class StatisticsTests(unittest.TestCase):
 
     #region median/average/mean
 
-    def test_median_placeholder(self):
+    def test_median_1(self):
+
+        a = np.array([[10, 7, 4], [3, 2, 1]])
+
+        b = np.median(a)
+        print(b)
+
+        c = np.median(a, axis=0)
+        print(c)
+
+        d = np.median(a, axis=1)
+        print(d)
+
+        m = np.median(a, axis=0)
+        out = np.zeros_like(m)
+        n = np.median(a, axis=0, out=m)
+        print(n)
+        print(m)
+
+        b = a.copy()
+        c = np.median(b, axis=1, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a==b)
+
+        b = a.copy()
+        c = np.median(b, axis=None, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a==b)
+
         return
 
+    def test_median_2(self):
+
+        shape = [1,2,3,4,5,6,7,8]
+        shape2 = shape[:4]
+
+
+        a = np.arange(0,64,1).reshape(4,4,4)
+        #nd = a.ndim
+        #axis = [0,2]
+
+        #keep = set(range(nd)) - set(axis)
+        #nkeep = len(keep)
+        ## swap axis that should not be reduced to front
+        #for i, s in enumerate(sorted(keep)):
+        #    a = a.swapaxes(i, s);
+        ## merge reduced axis
+        #a = a.reshape(a.shape[:nkeep] + (-1,))
+     
+        #keepdim = tuple(keepdim)
+
+
+        b = np.median(a,axis= [0,2], keepdims = True)
+        print(b)
+
+        c = np.median(a, axis= [0,1], keepdims = True)
+        print(c)
+
+        d = np.median(a, axis=[1,2], keepdims = True)
+        print(d)
+
+  
+        return
 
 
     def test_average_1(self):

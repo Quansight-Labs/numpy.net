@@ -139,7 +139,7 @@ namespace NumpyDotNet
                 return flip(flip(m, axes[0]), axes[1]);
             }
 
-            npy_intp []axes_list = arange(0, m.ndim);
+            npy_intp[] axes_list = arange(0, m.ndim);
             npy_intp temp = axes_list[axes[0]];
             axes_list[axes[0]] = axes_list[axes[1]];
             axes_list[axes[1]] = temp;
@@ -365,7 +365,7 @@ namespace NumpyDotNet
         #endregion
 
         #region asarray_chkfinite
-        public static ndarray asarray_chkfinite(ndarray a, dtype dtype= null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        public static ndarray asarray_chkfinite(ndarray a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             /*
             Convert the input to an array, checking for NaNs or Infs.
@@ -432,7 +432,7 @@ namespace NumpyDotNet
         #endregion
 
         #region piecewise
-        public static ndarray piecewise(ndarray x, bool []condlist, object []funclist, string[] args, string [] kw)
+        public static ndarray piecewise(ndarray x, bool[] condlist, object[] funclist, string[] args, string[] kw)
         {
             /*
             Evaluate a piecewise-defined function.
@@ -580,7 +580,7 @@ namespace NumpyDotNet
 
             ndarray S = array(new int[] { 0 });
             ndarray pfac = array(new int[] { 1 });
-            for (int k = 1; k < n+1; k++)
+            for (int k = 1; k < n + 1; k++)
             {
                 S += k * pfac * asarray(condlist[k - 1]);
                 if (k < n)
@@ -595,7 +595,7 @@ namespace NumpyDotNet
             if (S.size == 1 || np.max(asanyarray(S.shape.iDims)) == 1)
             {
                 pfac = asarray(1);
-                for (int k = 0; k < n2+1; k++)
+                for (int k = 0; k < n2 + 1; k++)
                 {
                     pfac = pfac + asarray(choicelist[k]);
                 }
@@ -664,7 +664,7 @@ namespace NumpyDotNet
         #endregion
 
         #region gradient
-        public static ndarray gradient(ndarray f, string[] varargs, string []kwargs)
+        public static ndarray gradient(ndarray f, string[] varargs, string[] kwargs)
         {
             throw new NotImplementedException();
         }
@@ -787,7 +787,7 @@ namespace NumpyDotNet
         #endregion
 
         #region interp
-        public static ndarray interp(ndarray x, float []xp, float[]fp, float? left = null, float? right = null, float? period = null)
+        public static ndarray interp(ndarray x, float[] xp, float[] fp, float? left = null, float? right = null, float? period = null)
         {
             /*
             One-dimensional linear interpolation.
@@ -925,7 +925,7 @@ namespace NumpyDotNet
         #endregion
 
         #region trim_zero
-        public static ndarray trim_zeros(ndarray filt, string trim="fb")
+        public static ndarray trim_zeros(ndarray filt, string trim = "fb")
         {
             /*
             Trim the leading and/or trailing zeros from a 1-D array or sequence.
@@ -971,7 +971,7 @@ namespace NumpyDotNet
                     else
                         first = first + 1;
                 }
-   
+
             }
 
             int last = len(filt);
@@ -1099,7 +1099,7 @@ namespace NumpyDotNet
         #endregion
 
         #region disp
-        public static void disp(string  mesg, object device = null, bool linefeed = true)
+        public static void disp(string mesg, object device = null, bool linefeed = true)
         {
             if (linefeed)
                 Console.WriteLine(mesg);
@@ -1112,8 +1112,8 @@ namespace NumpyDotNet
 
         #region cov
 
-        public static ndarray cov(ndarray m, ndarray y = null, bool rowvar = true, 
-            bool bias = false, int?ddof = null, ndarray fweights = null, ndarray aweights = null)
+        public static ndarray cov(ndarray m, ndarray y = null, bool rowvar = true,
+            bool bias = false, int? ddof = null, ndarray fweights = null, ndarray aweights = null)
         {
             /*
             Estimate a covariance matrix, given data and weights.
@@ -1230,7 +1230,7 @@ namespace NumpyDotNet
 
         #region corrcoef
 
-        public static ndarray corrcoef(ndarray x, ndarray y= null, bool rowvar= true,  object bias= null, object ddof= null)
+        public static ndarray corrcoef(ndarray x, ndarray y = null, bool rowvar = true, object bias = null, object ddof = null)
         {
             /*
             Return Pearson product-moment correlation coefficients.
@@ -1396,102 +1396,102 @@ namespace NumpyDotNet
 
         public static ndarray bartlett(ndarray M)
         {
-        /*
-           Return the Bartlett window.
+            /*
+               Return the Bartlett window.
 
-            The Bartlett window is very similar to a triangular window, except
-            that the end points are at zero.  It is often used in signal
-            processing for tapering a signal, without generating too much
-            ripple in the frequency domain.
+                The Bartlett window is very similar to a triangular window, except
+                that the end points are at zero.  It is often used in signal
+                processing for tapering a signal, without generating too much
+                ripple in the frequency domain.
 
-            Parameters
-            ----------
-            M : int
-                Number of points in the output window. If zero or less, an
-                empty array is returned.
+                Parameters
+                ----------
+                M : int
+                    Number of points in the output window. If zero or less, an
+                    empty array is returned.
 
-            Returns
-            -------
-            out : array
-                The triangular window, with the maximum value normalized to one
-                (the value one appears only if the number of samples is odd), with
-                the first and last samples equal to zero.
+                Returns
+                -------
+                out : array
+                    The triangular window, with the maximum value normalized to one
+                    (the value one appears only if the number of samples is odd), with
+                    the first and last samples equal to zero.
 
-            See Also
-            --------
-            blackman, hamming, hanning, kaiser
+                See Also
+                --------
+                blackman, hamming, hanning, kaiser
 
-            Notes
-            -----
-            The Bartlett window is defined as
+                Notes
+                -----
+                The Bartlett window is defined as
 
-            .. math:: w(n) = \\frac{2}{M-1} \\left(
-                      \\frac{M-1}{2} - \\left|n - \\frac{M-1}{2}\\right|
-                      \\right)
+                .. math:: w(n) = \\frac{2}{M-1} \\left(
+                          \\frac{M-1}{2} - \\left|n - \\frac{M-1}{2}\\right|
+                          \\right)
 
-            Most references to the Bartlett window come from the signal
-            processing literature, where it is used as one of many windowing
-            functions for smoothing values.  Note that convolution with this
-            window produces linear interpolation.  It is also known as an
-            apodization (which means"removing the foot", i.e. smoothing
-            discontinuities at the beginning and end of the sampled signal) or
-            tapering function. The fourier transform of the Bartlett is the product
-            of two sinc functions.
-            Note the excellent discussion in Kanasewich.
+                Most references to the Bartlett window come from the signal
+                processing literature, where it is used as one of many windowing
+                functions for smoothing values.  Note that convolution with this
+                window produces linear interpolation.  It is also known as an
+                apodization (which means"removing the foot", i.e. smoothing
+                discontinuities at the beginning and end of the sampled signal) or
+                tapering function. The fourier transform of the Bartlett is the product
+                of two sinc functions.
+                Note the excellent discussion in Kanasewich.
 
-            References
-            ----------
-            .. [1] M.S. Bartlett, "Periodogram Analysis and Continuous Spectra",
-                   Biometrika 37, 1-16, 1950.
-            .. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
-                   The University of Alberta Press, 1975, pp. 109-110.
-            .. [3] A.V. Oppenheim and R.W. Schafer, "Discrete-Time Signal
-                   Processing", Prentice-Hall, 1999, pp. 468-471.
-            .. [4] Wikipedia, "Window function",
-                   http://en.wikipedia.org/wiki/Window_function
-            .. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
-                   "Numerical Recipes", Cambridge University Press, 1986, page 429.
+                References
+                ----------
+                .. [1] M.S. Bartlett, "Periodogram Analysis and Continuous Spectra",
+                       Biometrika 37, 1-16, 1950.
+                .. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
+                       The University of Alberta Press, 1975, pp. 109-110.
+                .. [3] A.V. Oppenheim and R.W. Schafer, "Discrete-Time Signal
+                       Processing", Prentice-Hall, 1999, pp. 468-471.
+                .. [4] Wikipedia, "Window function",
+                       http://en.wikipedia.org/wiki/Window_function
+                .. [5] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
+                       "Numerical Recipes", Cambridge University Press, 1986, page 429.
 
-            Examples
-            --------
-            >>> np.bartlett(12)
-            array([ 0.        ,  0.18181818,  0.36363636,  0.54545455,  0.72727273,
-                    0.90909091,  0.90909091,  0.72727273,  0.54545455,  0.36363636,
-                    0.18181818,  0.        ])
+                Examples
+                --------
+                >>> np.bartlett(12)
+                array([ 0.        ,  0.18181818,  0.36363636,  0.54545455,  0.72727273,
+                        0.90909091,  0.90909091,  0.72727273,  0.54545455,  0.36363636,
+                        0.18181818,  0.        ])
 
-            Plot the window and its frequency response (requires SciPy and matplotlib):
+                Plot the window and its frequency response (requires SciPy and matplotlib):
 
-            >>> from numpy.fft import fft, fftshift
-            >>> window = np.bartlett(51)
-            >>> plt.plot(window)
-            [<matplotlib.lines.Line2D object at 0x...>]
-            >>> plt.title("Bartlett window")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.ylabel("Amplitude")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.xlabel("Sample")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.show()
+                >>> from numpy.fft import fft, fftshift
+                >>> window = np.bartlett(51)
+                >>> plt.plot(window)
+                [<matplotlib.lines.Line2D object at 0x...>]
+                >>> plt.title("Bartlett window")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.ylabel("Amplitude")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.xlabel("Sample")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.show()
 
-            >>> plt.figure()
-            <matplotlib.figure.Figure object at 0x...>
-            >>> A = fft(window, 2048) / 25.5
-            >>> mag = np.abs(fftshift(A))
-            >>> freq = np.linspace(-0.5, 0.5, len(A))
-            >>> response = 20 * np.log10(mag)
-            >>> response = np.clip(response, -100, 100)
-            >>> plt.plot(freq, response)
-            [<matplotlib.lines.Line2D object at 0x...>]
-            >>> plt.title("Frequency response of Bartlett window")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.ylabel("Magnitude [dB]")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.xlabel("Normalized frequency [cycles per sample]")
-            <matplotlib.text.Text object at 0x...>
-            >>> plt.axis('tight')
-            (-0.5, 0.5, -100.0, ...)
-            >>> plt.show()             
-         */
+                >>> plt.figure()
+                <matplotlib.figure.Figure object at 0x...>
+                >>> A = fft(window, 2048) / 25.5
+                >>> mag = np.abs(fftshift(A))
+                >>> freq = np.linspace(-0.5, 0.5, len(A))
+                >>> response = 20 * np.log10(mag)
+                >>> response = np.clip(response, -100, 100)
+                >>> plt.plot(freq, response)
+                [<matplotlib.lines.Line2D object at 0x...>]
+                >>> plt.title("Frequency response of Bartlett window")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.ylabel("Magnitude [dB]")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.xlabel("Normalized frequency [cycles per sample]")
+                <matplotlib.text.Text object at 0x...>
+                >>> plt.axis('tight')
+                (-0.5, 0.5, -100.0, ...)
+                >>> plt.show()             
+             */
             throw new NotImplementedException();
         }
         #endregion
@@ -1999,7 +1999,7 @@ namespace NumpyDotNet
         private delegate ndarray _ureduce_func(ndarray a, ndarray q, bool IsQArray, int? axis = null, ndarray @out = null,
                                                 bool overwrite_input = false, string interpolation = "linear", bool keepdims = false);
 
-        private static (ndarray r, List<npy_intp> keepdims)  _ureduce(ndarray a, _ureduce_func func, ndarray q, bool IsQarray, int[] axisarray = null, 
+        private static (ndarray r, List<npy_intp> keepdims) _ureduce(ndarray a, _ureduce_func func, ndarray q, bool IsQarray, int[] axisarray = null,
             ndarray @out = null, bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
 
@@ -2046,14 +2046,39 @@ namespace NumpyDotNet
                 }
                 else
                 {
-                    //keep = set(range(nd)) - set(axis)
-                    //nkeep = len(keep)
-                    //# swap axis that should not be reduced to front
-                    //for i, s in enumerate(sorted(keep)):
-                    //    a = a.swapaxes(i, s)
-                    //# merge reduced axis
-                    //a = a.reshape(a.shape[:nkeep] + (-1,))
-                    //kwargs['axis'] = -1
+                    // keep = set(range(nd)) - set(axis)
+
+                    List<int> keep = new List<int>();
+                    for (int i = 0; i < nd; i++)
+                        keep.Add(i);
+
+                    foreach (var aa in axisarray)
+                    {
+                        if (keep.Contains(aa))
+                        {
+                            keep.Remove(aa);
+                        }
+                    }
+
+                    var nkeep = keep.Count;
+
+                    // swap axis that should not be reduced to front
+                    keep.Sort();
+                    for (int i = 0; i < keep.Count; i++)
+                    {
+                        a = a.SwapAxes(i, keep[i]);
+                    }
+
+                    // merge reduced axis
+
+                    var newShape = new long[nkeep + 1];
+                    for (int i = 0; i < nkeep; i++)
+                    {
+                        newShape[i] = a.shape.iDims[i];
+                    }
+                    newShape[nkeep] = -1;
+                    a = a.reshape(new shape(newShape));
+                    axis = -1;
                 }
 
             }
@@ -2074,7 +2099,7 @@ namespace NumpyDotNet
 
         #region median
 
-        public static ndarray median(ndarray a, int? axis = null, ndarray _out = null, bool overwrite_input = false, bool keepdims = false)
+        public static ndarray median(ndarray a, int[] axis = null, bool keepdims = false)
         {
             /*
             Compute the median along the specified axis.
@@ -2155,8 +2180,167 @@ namespace NumpyDotNet
             3.5
             >>> assert not np.all(a==b)
              */
-            throw new NotImplementedException();
+
+            var _ureduce_ret = _ureduce(a, func: _median, q: null, IsQarray: false, axisarray: axis);
+
+            if (keepdims)
+                return _ureduce_ret.r.reshape(_ureduce_ret.keepdims);
+            else
+                return _ureduce_ret.r;
+
         }
+
+        public static ndarray median(ndarray a, int axis, bool keepdims = false)
+        {
+            return median(a, new int[] { axis }, keepdims);
+        }
+
+        private static ndarray _median(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null,
+           bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        {
+            // can't be reasonably be implemented in terms of percentile as we have to
+            // call mean to not break astropy
+            a = np.asanyarray(a);
+
+            npy_intp sz;
+            List<npy_intp> kth = new List<npy_intp>();
+            npy_intp szh;
+            ndarray part;
+
+            //Set the partition indexes
+            if (axis == null)
+            {
+                sz = a.size;
+            }
+            else
+            {
+                if (axis.Value < 0)
+                    axis += a.shape.iDims.Length;
+
+                sz = a.shape.iDims[axis.Value];
+            }
+
+            if (sz % 2 == 0)
+            {
+                szh = sz / 2;
+                kth.AddRange(new npy_intp[] { szh - 1, szh });
+            }
+            else
+            {
+                kth.AddRange(new npy_intp[] { (sz - 1) / 2 });
+            }
+
+            // Check if the array contains any nan's
+            if (a.IsInexact)
+            {
+                kth.Add(-1);
+            }
+
+
+            if (overwrite_input)
+            {
+                if (axis == null)
+                {
+                    part = a.ravel();
+                    part = part.partition(kth);
+                }
+                else
+                {
+                    part = a.partition(kth, axis: axis);
+                }
+            }
+            else
+            {
+                part = partition(a, kth.ToArray(), axis: axis);
+            }
+
+            if (part.ndim == 0)
+            {
+                //make 0 - D arrays work
+                return asanyarray(part.GetItem(0));
+            }
+
+            if (axis == null)
+            {
+                axis = 0;
+            }
+
+            var indexer = BuildSliceArray(new Slice(null), part.ndim);
+
+            var index = part.shape.iDims[axis.Value] / 2;
+            if (part.shape.iDims[axis.Value] % 2 == 1)
+            {
+                // index with slice to allow mean (below) to work
+                indexer[axis.Value] = new Slice(index, index + 1);
+            }
+            else
+            {
+                indexer[axis.Value] = new Slice(index - 1, index + 1);
+            }
+
+            // Check if the array contains any nan's
+            if (a.IsInexact && sz > 0)
+            {
+                // warn and return nans like mean would
+                var rout = mean(part[indexer], axis: axis);
+                return _median_nancheck(part, rout, axis);
+            }
+            else
+            {
+                // if there are no nans
+                // Use mean in odd and even case to coerce data type
+                // and check, use out array.
+                return mean(part[indexer], axis: axis);
+            }
+
+        }
+
+        private static ndarray _median_nancheck(ndarray data, ndarray result, int? axis = null)
+        {
+            // Utility function to check median result from data for NaN values at the end
+            // and return NaN in that case. Input result can also be a MaskedArray.
+
+            // Parameters
+            // ----------
+            // data: array
+            //    Input data to median function
+            // result: Array or MaskedArray
+            //    Result of median function
+            //axis : { int, sequence of int, None}, optional
+            //     Axis or axes along which the median was computed.
+            // out : ndarray, optional
+            //     Output array in which to place the result.
+            // Returns
+            // ------ -
+            // median : scalar or ndarray
+            //     Median or NaN in axes which contained NaN in the input.
+
+            if (data.size == 0)
+                return result;
+            data = np.moveaxis(data, axis, -1);
+            var n = np.isnan(data.A("...", -1));
+            // masked NaN values are ok
+            //if (np.ma.isMaskedArray(n))
+            //    n = n.filled(false);
+
+            if (result.ndim == 0)
+            {
+                if ((bool)n.GetItem(0) == true)
+                {
+                    //warnings.warn("Invalid value encountered in median",  RuntimeWarning, stacklevel = 3)
+
+                    result = array(np.NaN, dtype: data.Dtype);
+                }
+   
+            }
+            else if ((long)np.count_nonzero(n.ravel())[0] > 0)
+            {
+                // warnings.warn("Invalid value encountered in median for" + " %d results" % np.count_nonzero(n.ravel()), RuntimeWarning, stacklevel=3)
+                result[n] = np.NaN;
+            }
+            return result;
+        }
+
         #endregion
 
         #region percentile
@@ -2730,9 +2914,9 @@ namespace NumpyDotNet
             return r;
         }
 
-        #endregion
+#endregion
 
-        #region trapz
+#region trapz
 
         public static float trapz(ndarray y, double dx=1.0, int axis= -1)
         {
@@ -2800,18 +2984,18 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        #endregion
+#endregion
 
-        #region add_newdoc
+#region add_newdoc
 
         public static void add_newdoc(object place, object obj, object doc)
         {
 
         }
 
-        #endregion
+#endregion
 
-        #region meshgrid
+#region meshgrid
 
         public static ndarray[] meshgrid(ndarray []xi, string[] kwargs)
         {
@@ -2872,12 +3056,12 @@ namespace NumpyDotNet
                 xv, yv = np.meshgrid(x, y, sparse=False, indexing='ij')
                 for i in range(nx):
                     for j in range(ny):
-                        # treat xv[i,j], yv[i,j]
+# treat xv[i,j], yv[i,j]
 
                 xv, yv = np.meshgrid(x, y, sparse=False, indexing='xy')
                 for i in range(nx):
                     for j in range(ny):
-                        # treat xv[j,i], yv[j,i]
+# treat xv[j,i], yv[j,i]
 
             In the 1-D and 0-D case, the indexing and sparse keywords have no effect.
 
@@ -2919,9 +3103,9 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        #endregion
+#endregion
 
-        #region delete
+#region delete
 
 
         public static ndarray delete(ndarray srcArray, Slice slice, int axis)
@@ -3079,9 +3263,9 @@ namespace NumpyDotNet
             return retArray;
         }
 
-        #endregion
+#endregion
 
-        #region insert
+#region insert
 
         public static ndarray insert(ndarray arr, object obj, dynamic _invalues, int? axis = null)
         {
@@ -3331,9 +3515,9 @@ namespace NumpyDotNet
             return newarray;
         }
 
-        #endregion
+#endregion
 
-        #region append
+#region append
 
         public static ndarray append(ndarray arr, dynamic values, int? axis = null)
         {
@@ -3395,7 +3579,7 @@ namespace NumpyDotNet
 
         }
 
-        #endregion
+#endregion
     }
 
 

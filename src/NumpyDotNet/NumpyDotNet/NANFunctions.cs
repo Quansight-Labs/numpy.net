@@ -385,7 +385,7 @@ namespace NumpyDotNet
             if (removed.a.size == 0)
                 return float.NaN;
 
-            return Convert.ToSingle(np.median(arr1d, overwrite_input: removed.overwrite_input)[0]);
+            return Convert.ToSingle(np.median(arr1d)[0]);
         }
 
 
