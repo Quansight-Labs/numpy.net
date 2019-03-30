@@ -2028,7 +2028,7 @@ namespace NumpyDotNet
 
             List<npy_intp> keepdim = null;
             int nd;
-            int axis = 0;
+            int? axis = null;
 
             a = np.asanyarray(a);
             if (axisarray != null)
@@ -2609,7 +2609,7 @@ namespace NumpyDotNet
                     indices = concatenate((new ndarray[] { indices, np.array(new int[] { -1 }) }));
                 }
 
-                ap.partition(indices.ToArray<npy_intp>(), axis: axis);
+                ap = ap.partition(indices.ToArray<npy_intp>(), axis: axis);
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);
                 axis = 0;
@@ -2640,7 +2640,7 @@ namespace NumpyDotNet
                 }
 
                 var weights_above = indices - indices_below;
-                var weights_below = 1.0 - weights_above;
+                var weights_below = asanyarray(1.0) - weights_above;
 
                 npy_intp[] weights_shape = new npy_intp[ap.ndim];
                 for (int i = 0; i < weights_shape.Length; i++)
@@ -2650,7 +2650,7 @@ namespace NumpyDotNet
                 weights_below = weights_below.reshape(new shape(weights_shape));
                 weights_above = weights_above.reshape(new shape(weights_shape));
 
-                ap.partition(concatenate(((object)indices_below, indices_above)).ToArray<npy_intp>(), axis: axis);
+                ap = ap.partition(concatenate(((object)indices_below, indices_above)).ToArray<npy_intp>(), axis: axis);
 
                 // ensure axis with qth is first
                 ap = np.moveaxis(ap, axis, 0);
