@@ -1603,7 +1603,7 @@ namespace NumpyDotNet
         #endregion
 
         #region hanning
-        public static ndarray hanning(ndarray M)
+        public static ndarray hanning(int M)
         {
             /*
             Return the Hanning window.
@@ -1696,14 +1696,21 @@ namespace NumpyDotNet
             >>> plt.show()             
             */
 
-            throw new NotImplementedException();
+            if (M < 1)
+                return array(new int[] { });
+            if (M == 1)
+                return ones(1, np.Float32);
+
+            var n = np.arange(0, M);
+
+            return asanyarray(0.5) - asanyarray(0.5) * cos(asanyarray(2.0) * asanyarray(Math.PI) * n / (M - 1));
         }
 
         #endregion
 
         #region hamming
 
-        public static ndarray hamming(ndarray M)
+        public static ndarray hamming(int M)
         {
             /*
             Return the Hamming window.
@@ -1793,7 +1800,15 @@ namespace NumpyDotNet
             (-0.5, 0.5, -100.0, ...)
             >>> plt.show()             
             */
-            throw new NotImplementedException();
+
+            if (M < 1)
+                return array(new int[] { });
+            if (M == 1)
+                return ones(1, np.Float32);
+
+            var n = np.arange(0, M);
+
+            return asanyarray(0.54) - asanyarray(0.46) * cos(asanyarray(2.0) * asanyarray(Math.PI) * n / (M - 1));
         }
         #endregion
 

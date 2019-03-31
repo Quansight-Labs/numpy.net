@@ -51,20 +51,44 @@ namespace NumpyDotNetTests
             print(b);
         }
 
-   
-        [Ignore]
-        [TestMethod]
-        public void test_hanning_placeholder()
-        {
 
+        [TestMethod]
+        public void test_hamming_1()
+        {
+            var b = np.hamming(5);
+            AssertArray(b, new double[] { 0.08, 0.54, 1.0, 0.54, 0.08 });
+            print(b);
+
+            b = np.hamming(10);
+            AssertArray(b, new double[] { 0.08, 0.18761955616527, 0.460121838273212, 0.77, 0.972258605561518,
+                                          0.972258605561518, 0.77, 0.460121838273212, 0.18761955616527, 0.08 });
+            print(b);
+
+            b = np.hamming(12);
+            AssertArray(b, new double[] { 0.08, 0.153023374897657, 0.348909094019132, 0.605464825605711, 0.841235937614831, 0.981366767862669,
+                                          0.981366767862669, 0.841235937614831, 0.605464825605711, 0.348909094019132, 0.153023374897657, 0.08 });
+            print(b);
         }
 
-        [Ignore]
-        [TestMethod]
-        public void test_hamming_placeholder()
-        {
 
+        [TestMethod]
+        public void test_hanning_1()
+        {
+            var b = np.hanning(5);
+            AssertArray(b, new double[] { 0.0, 0.5, 1.0, 0.5, 0.0 });
+            print(b);
+
+            b = np.hanning(10);
+            AssertArray(b, new double[] { 0.0, 0.116977778440511, 0.413175911166535, 0.75, 0.969846310392954, 0.969846310392954,
+                                          0.75, 0.413175911166535, 0.116977778440511, 0.0 });
+            print(b);
+
+            b = np.hanning(12);
+            AssertArray(b, new double[] { 0.0, 0.0793732335844094, 0.292292493499057, 0.571157419136643, 0.827430366972642, 0.979746486807249,
+                                          0.979746486807249, 0.827430366972643, 0.571157419136643, 0.292292493499057, 0.0793732335844094, 0.0 });
+            print(b);
         }
+
 
     }
 }

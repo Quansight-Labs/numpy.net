@@ -31,5 +31,31 @@ class WindowTests(unittest.TestCase):
 
         return
 
+    def test_hamming_1(self):
+
+        b = np.hamming(5)
+        print(b)
+
+        b = np.hamming(10)
+        print(b)
+
+        b = np.hamming(12)
+        print(b)
+
+        return
+
+    def test_hanning_1(self):
+
+        b = np.hanning(5)
+        print(b)
+
+        b = np.hanning(10)
+        print(b)
+
+        b = np.hanning(12)
+        print(b)
+
+        return
+
 if __name__ == '__main__':
     unittest.main()
