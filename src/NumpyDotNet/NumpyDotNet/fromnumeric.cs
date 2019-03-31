@@ -2105,6 +2105,20 @@ namespace NumpyDotNet
 
         #region any
 
+        public static bool anyb(object a, object axis = null, ndarray @out = null, bool keepdims = false)
+        {
+            var any = np.any(a, axis, @out, keepdims);
+            if (any != null)
+            {
+                if (any.size > 1)
+                {
+                    throw new ValueError("Attempt to take boolean from array");
+                }
+                bool b = (bool)any.GetItem(0);
+            }
+            return false;
+        }
+
         public static ndarray any(object a, object axis = null, ndarray @out=null, bool keepdims = false)
         {
             /*
@@ -3052,7 +3066,7 @@ namespace NumpyDotNet
                 }
 
                 scl = wgt.Sum(axis: axis, dtype: result_dtype);
-                if ((bool)np.any(scl == 0.0).GetItem(0) == true)
+                if (np.anyb(scl == 0.0))
                 {
                     throw new ZeroDivisionError("Weights sum to zero, can't be normalized");
 

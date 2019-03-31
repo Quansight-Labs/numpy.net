@@ -1217,7 +1217,7 @@ namespace NumpyDotNet
                     throw new RuntimeError("incompatible numbers of samples and fweights");
 
                 }
-                if ((bool)any(afweights < 0).GetItem(0) == true)
+                if (anyb(afweights < 0))
                 {
                     throw new ValueError("fweights cannot be negative");
                 }
@@ -1238,7 +1238,7 @@ namespace NumpyDotNet
                     throw new RuntimeError("incompatible numbers of samples and aweights");
 
                 }
-                if ((bool)any(aaweights < 0).GetItem(0) == true)
+                if (np.anyb(aaweights < 0))
                 {
                     throw new ValueError("aweights cannot be negative");
                 }
@@ -3109,7 +3109,7 @@ namespace NumpyDotNet
 
                 r = np.add(x1, x2);
 
-                if ((bool)np.any(n).GetItem(0) == true)
+                if (np.anyb(n))
                 {
                     //warnings.warn("Invalid value encountered in percentile", RuntimeWarning, stacklevel = 3);
                     if (zerod)

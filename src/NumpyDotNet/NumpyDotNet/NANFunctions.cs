@@ -84,7 +84,7 @@ namespace NumpyDotNet
                 // object arrays do not support `isnan` (gh-9009), so make a guess
                 mask = a.NotEquals(a);
             }
-            else if (a.IsFloatingPoint)
+            else if (a.IsInexact)
             {
                 mask = np.isnan(a);
             }
@@ -96,7 +96,7 @@ namespace NumpyDotNet
             if (mask != null)
             {
                 a[mask] = val;
-                //np.copyto(a, val, where: mask);
+                np.copyto(a, val, where: mask);
             }
 
             return (a: a, mask: mask);
@@ -219,7 +219,7 @@ namespace NumpyDotNet
                 // Fast, but not safe for subclasses of ndarray, or object arrays,
                 // which do not implement isnan (gh-9009), or fmin correctly (gh-8975)
                 res = null; // np.fmin.reduce(a, axis = axis, out=out, **kwargs)
-                if ((bool)np.any(np.isnan(res).GetItem(0)) == true)
+                if (np.anyb(np.isnan(res)))
                 {
                     //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 2)
                 }
@@ -235,7 +235,7 @@ namespace NumpyDotNet
 
                 // Check for all-NaN axis
                 replaced.mask = np.all(replaced.mask, axis: axis);
-                if ((bool)np.any(replaced.mask).GetItem(0) == true)
+                if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, float.NaN, replaced.mask);
                     //warnings.warn("All-NaN axis encountered", RuntimeWarning, stacklevel = 2)
@@ -256,7 +256,7 @@ namespace NumpyDotNet
                 // Fast, but not safe for subclasses of ndarray, or object arrays,
                 // which do not implement isnan (gh-9009), or fmin correctly (gh-8975)
                 res = null; // np.fmax.reduce(a, axis = axis, out=out, **kwargs)
-                if ((bool)np.any(np.isnan(res).GetItem(0)) == true)
+                if (np.anyb(np.isnan(res)))
                 {
                     //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 2)
                 }
@@ -272,7 +272,7 @@ namespace NumpyDotNet
 
                 // Check for all-NaN axis
                 replaced.mask = np.all(replaced.mask, axis: axis);
-                if ((bool)np.any(replaced.mask).GetItem(0) == true)
+                if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, float.NaN, replaced.mask);
                     //warnings.warn("All-NaN axis encountered", RuntimeWarning, stacklevel = 2)
@@ -291,7 +291,7 @@ namespace NumpyDotNet
             if (replaced.mask != null)
             {
                 replaced.mask = np.all(replaced.mask, axis: axis);
-                if ((bool)np.any(replaced.mask).GetItem(0) == true)
+                if (np.anyb(replaced.mask))
                 {
                     throw new ValueError("All-NaN slice encountered");
                 }
@@ -309,7 +309,7 @@ namespace NumpyDotNet
             if (replaced.mask != null)
             {
                 replaced.mask = np.all(replaced.mask, axis: axis);
-                if ((bool)np.any(replaced.mask).GetItem(0) == true)
+                if (np.anyb(replaced.mask))
                 {
                     throw new ValueError("All-NaN slice encountered");
                 }
@@ -367,7 +367,7 @@ namespace NumpyDotNet
             var avg = _divide_by_count(tot, cnt, null);
 
             var isbad = (cnt == 0);
-            if ((bool)np.any(isbad).GetItem(0) == true)
+            if (np.anyb(isbad))
             {
                 //warnings.warn("Mean of empty slice", RuntimeWarning, stacklevel = 2)
                 // NaN is the only possible bad value, so no further

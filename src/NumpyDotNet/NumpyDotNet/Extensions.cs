@@ -305,6 +305,10 @@ namespace NumpyDotNet
         {
             return np.any(a, axis, @out, keepdims);
         }
+        public static bool Anyb(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
+        {
+            return np.anyb(a, axis, @out, keepdims);
+        }
 
         public static ndarray All(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
