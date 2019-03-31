@@ -2101,8 +2101,8 @@ namespace NumpyDotNet
 
             var n = arange(0, M);
             double alpha = (M - 1) / 2.0;
-
-            return i0(beta * sqrt(np.power(asanyarray(1) - ((n - alpha) / alpha), 2.0))) / i0(asanyarray(beta)) as ndarray;
+ 
+            return i0(asanyarray(beta) * sqrt(asanyarray(1) - np.power(np.divide(n - asanyarray(alpha), alpha), 2.0))) / i0(asanyarray(beta)) as ndarray;
         }
 
         #endregion

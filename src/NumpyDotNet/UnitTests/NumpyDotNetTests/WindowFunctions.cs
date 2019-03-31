@@ -89,11 +89,17 @@ namespace NumpyDotNetTests
             print(b);
         }
 
-        [Ignore] // depends on implementation of the np.i0 function
         [TestMethod]
         public void test_kaiser_1()
         {
+            var a = np.kaiser(12, 14);
+            AssertArray(a, new double[] {7.72686684e-06, 3.46009194e-03, 4.65200189e-02, 2.29737120e-01, 5.99885316e-01, 9.45674898e-01,
+                                         9.45674898e-01, 5.99885316e-01, 2.29737120e-01, 4.65200189e-02, 3.46009194e-03, 7.72686684e-06 });
+            print(a);
 
+            a = np.kaiser(3, 5);
+            AssertArray(a, new double[] { 0.03671089, 1.0, 0.03671089 });
+            print(a);
         }
 
     }

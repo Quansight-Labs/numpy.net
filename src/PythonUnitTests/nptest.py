@@ -1307,3 +1307,19 @@ class nptest(object):
         ind2 = ~ind
         y[ind2] = nptest._i0_2(x[ind2])
         return y.squeeze()
+
+    @staticmethod
+    def kaiser(M, beta):
+
+        if M == 1:
+            return np.array([1.])
+        n = arange(0, M)
+        alpha = (M-1)/2.0
+
+        div = nptest.i0(float(beta))
+
+        a2 = n-alpha
+        a1 = a2/alpha
+        s = sqrt(1-a1**2.0)
+
+        return nptest.i0(beta * s)/div

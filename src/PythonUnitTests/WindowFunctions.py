@@ -57,5 +57,15 @@ class WindowTests(unittest.TestCase):
 
         return
 
+    def test_kaiser_1(self):
+
+        a = np.kaiser(12, 14)
+        print(a)
+
+        a = np.kaiser(3, 5)
+        print(a)
+
+        return
+
 if __name__ == '__main__':
     unittest.main()
