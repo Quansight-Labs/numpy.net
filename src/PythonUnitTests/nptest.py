@@ -1159,3 +1159,35 @@ class nptest(object):
                     r[..., n.repeat(q.size, 0)] = a.dtype.type(np.nan)
 
         return r
+
+
+    @staticmethod
+    def corrcoef(x, y=None, rowvar=True, bias=np._NoValue, ddof=np._NoValue):
+
+        if bias is not np._NoValue or ddof is not np._NoValue:
+            # 2015-03-15, 1.10
+            warnings.warn('bias and ddof have no effect and are deprecated',
+                          DeprecationWarning, stacklevel=2)
+        c = np.cov(x, y, rowvar)
+        try:
+            d = diag(c)
+        except ValueError:
+            # scalar covariance
+            # nan if incorrect value (nan, inf, 0), 1 otherwise
+            return c / c
+        stddev = sqrt(d.real)
+
+        s1 = stddev[:, None, None, None]
+        s2 = stddev[None, :]
+
+        c /= stddev[:, None]
+        c /= stddev[None, :]
+
+        # Clip real and imaginary parts to [-1, 1].  This does not guarantee
+        # abs(a[i,j]) <= 1 for complex arrays, but is the best we can do without
+        # excessive work.
+        np.clip(c.real, -1, 1, out=c.real)
+        if np.iscomplexobj(c):
+            np.clip(c.imag, -1, 1, out=c.imag)
+
+        return c

@@ -652,11 +652,36 @@ namespace NumpyDotNetTests
         #endregion
 
         #region Correlating
-        [Ignore]
         [TestMethod]
         public void test_corrcoef_1()
         {
+            var x1 = np.array(new int[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            print(x1);
 
+            // Note how  increases while  decreases. The covariance matrix shows this clearly:
+
+            var a = np.corrcoef(x1);
+            AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
+            print(a);
+
+            var x = new double[] { -2.1, -1, 4.3 };
+            var y = new double[] { 3, 1.1, 0.12 };
+            var X = np.stack(new object[] { x, y }, axis: 0);
+            a = np.corrcoef(X);
+            AssertArray(a, new double[,] { { 1.0, -0.855357809522795 }, { -0.855357809522795, 1.0 } });
+            print(a);
+
+
+            var b = np.corrcoef(x, y);
+            AssertArray(b, new double[,] { { 1.0, -0.855357809522795 }, { -0.855357809522795, 1.0 } });
+            print(b);
+
+            var c = np.corrcoef(x, y, rowvar:false);
+            AssertArray(a, new double[,] { { 1.0, -0.855357809522795 }, { -0.855357809522795, 1.0 } });
+            print(c);
+    
+
+            return;
         }
 
 

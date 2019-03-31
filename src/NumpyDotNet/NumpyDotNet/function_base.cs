@@ -1297,7 +1297,7 @@ namespace NumpyDotNet
 
         #region corrcoef
 
-        public static ndarray corrcoef(ndarray x, ndarray y = null, bool rowvar = true, object bias = null, object ddof = null)
+        public static ndarray corrcoef(object x, object y = null, bool rowvar = true)
         {
             /*
             Return Pearson product-moment correlation coefficients.
@@ -1354,9 +1354,31 @@ namespace NumpyDotNet
             for backwards compatibility with previous versions of this function.  These
             arguments had no effect on the return values of the function and can be
             safely ignored in this and previous versions of numpy.
-             */
+            */
 
-            throw new NotImplementedException();
+            ndarray d = null;
+
+            var c = np.cov(x, y, rowvar);
+            try
+            {
+                d = diag(c);
+            }
+            catch (Exception ex)
+            {
+                // scalar covariance
+                // nan if incorrect value (nan, inf, 0), 1 otherwise
+                return np.divide(c , c);
+            }
+
+            var stddev = np.sqrt(d.real);
+
+            //var s1 = stddev[":", null, null, null];
+            //var s2 = stddev[null, ":"];
+
+            c = np.divide(c, stddev.A(":", null));
+            c = np.divide(c, stddev.A(null, ":"));
+
+            return c;
         }
 
         #endregion
