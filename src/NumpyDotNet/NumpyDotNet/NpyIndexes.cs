@@ -56,6 +56,7 @@ namespace NumpyDotNet
                 indexes[i] = new NpyIndex();
             }
             num_indexes = 0;
+            num_newindexes = 0;
         }
 
         ~NpyIndexes()
@@ -260,7 +261,7 @@ namespace NumpyDotNet
 
         public void AddIndex(ndarray arr, string s, int index)
         {
-
+            index -= num_newindexes;
             if (arr != null)
             {
                 Slice Slice = ParseIndexString(arr, index, s, false);
@@ -553,6 +554,7 @@ namespace NumpyDotNet
         {
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_NEWAXIS;
             ++num_indexes;
+            ++num_newindexes;
         }
 
         public void AddEllipsis()
@@ -578,6 +580,7 @@ namespace NumpyDotNet
 
         public bool IsAdvancedIndexing = false;
         private int num_indexes;
+        private int num_newindexes = 0;
         private NpyIndex[]indexes;
         private List<string> strings;
     }
