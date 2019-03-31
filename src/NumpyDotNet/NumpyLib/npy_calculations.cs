@@ -1310,6 +1310,12 @@ namespace NumpyLib
         {
             var destSize = NpyArray_Size(destArray);
 
+            if (NpyArray_SIZE(operArray) == 0 || NpyArray_SIZE(srcArray) == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
+
             var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
             var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
