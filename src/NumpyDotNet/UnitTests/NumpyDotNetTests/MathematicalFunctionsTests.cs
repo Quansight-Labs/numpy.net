@@ -1332,6 +1332,7 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
         [TestMethod]
         public void xxx_test_gradient_placeholder()
         {
