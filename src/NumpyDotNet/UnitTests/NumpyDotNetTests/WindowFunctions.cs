@@ -89,6 +89,12 @@ namespace NumpyDotNetTests
             print(b);
         }
 
+        [Ignore] // depends on implementation of the np.i0 function
+        [TestMethod]
+        public void test_kaiser_1()
+        {
+
+        }
 
     }
 }

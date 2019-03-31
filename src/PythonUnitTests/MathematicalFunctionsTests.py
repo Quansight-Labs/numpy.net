@@ -978,6 +978,18 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     #region Other special Functions
 
+    def test_sinc_1(self):
+
+        x = np.linspace(-4, 4, 10)
+        a = np.sinc(x)
+        print(a)
+
+        print("********")
+
+        xx = np.outer(x, x)
+        b = np.sinc(xx)
+        print(b)
+
 
     #endregion
 

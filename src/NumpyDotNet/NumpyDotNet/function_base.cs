@@ -1996,8 +1996,13 @@ namespace NumpyDotNet
             >>> plt.show()             
             */
 
+            if (M == 1)
+                return np.array(new double[] { 1.0 });
 
-            throw new NotImplementedException();
+            var n = arange(0, M);
+            double alpha = (M - 1) / 2.0;
+
+            return i0(beta * sqrt(np.power(asanyarray(1) - ((n - alpha) / alpha), 2.0))) / i0(asanyarray(beta)) as ndarray;
         }
 
         #endregion
@@ -2079,7 +2084,10 @@ namespace NumpyDotNet
             <matplotlib.image.AxesImage object at 0x...>             
             */
 
-            throw new NotImplementedException();
+            var xa = np.asanyarray(x);
+            var y = asanyarray(Math.PI) * (ndarray)np.where(xa == 0, 1.0e-20, xa);
+            return sin(y) / y as ndarray;
+
         }
 
         #endregion
