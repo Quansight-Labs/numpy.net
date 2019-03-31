@@ -279,6 +279,32 @@ namespace NumpyDotNet {
         }
 
 
+        internal bool IsComplex
+        {
+            get { return NpyDefs.IsComplex(this.TypeNum); }
+        }
+
+        internal bool IsInteger
+        {
+            get { return NpyDefs.IsInteger(this.TypeNum); }
+        }
+
+        internal bool IsFloatingPoint
+        {
+            get { return NpyDefs.IsFloat(this.TypeNum); }
+        }
+
+        internal bool IsInexact
+        {
+            get { return IsFloatingPoint || IsComplex; }
+        }
+
+        public bool IsFlexible
+        {
+            get { return NpyDefs.IsFlexible(this.TypeNum); }
+        }
+
+
         public object fields { get { return this.GetFieldsDict(); } }
 
         public Dictionary<string, object> Fields { get { return this.GetFieldsDict(); } }

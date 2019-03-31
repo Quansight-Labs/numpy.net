@@ -354,13 +354,14 @@ namespace NumpyDotNet
                 return np.mean(replaced.a, axis: axis, dtype: dtype);
             }
 
-            //if (dtype != null)
-            //{
-            //    if dtype is not None and not issubclass(dtype.type, np.inexact):
-            //        raise TypeError("If a is inexact, then dtype must be inexact")
-            //    if out is not None and not issubclass(out.dtype.type, np.inexact):
-            //        raise TypeError("If a is inexact, then out must be inexact")
-            //}
+            if (dtype != null && replaced.a.IsInexact)
+            {
+                if (!dtype.IsInexact)
+                {
+                    throw new TypeError("If a is inexact, then dtype must be inexact");
+                }
+ 
+            }
 
             var cnt = np.sum(~replaced.mask, axis: axis, dtype: np.intp);
             var tot = np.sum(replaced.a, axis: axis, dtype: dtype);
