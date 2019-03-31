@@ -1570,10 +1570,26 @@ namespace NumpyDotNetTests
 
         #region Other special Functions
 
-        [Ignore]
         [TestMethod]
-        public void xxx_iO_Placeholder()
+        public void test_i0_1()
         {
+            var a = np.i0(5);
+            Assert.AreEqual(27, a.GetItem(0));
+            print(a);
+
+            a = np.i0(5.0);
+            Assert.AreEqual(27.239871823604442, a.GetItem(0));
+            print(a);
+
+            a = np.i0(new double[] { 5.0, 6.0 } );
+            AssertArray(a, new double[] { 27.2398718236044, 67.234406976478 });
+            print(a);
+
+            a = np.i0(new double[,] { { 27.2398718236044, 67.234406976478 }, { 389.40628328, 427.56411572 } });
+            print(a);
+
+            return;
+
         }
 
         [TestMethod]

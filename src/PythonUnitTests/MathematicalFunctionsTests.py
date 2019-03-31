@@ -853,8 +853,7 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(np.ediff1d(y))
 
 
-    #endregion
-       
+    #endregion       
     #region Exponents and logarithms
 
     def test_exp_1(self):
@@ -977,6 +976,22 @@ class MathematicalFunctionsTests(unittest.TestCase):
     #endregion    
 
     #region Other special Functions
+
+    def test_i0_1(self):
+
+        a = np.i0(5)
+        print(a)
+
+        a = np.i0(5.0)
+        print(a)
+
+        a = np.i0([5.0, 6.0])
+        print(a)
+
+        a = np.i0([[5.0, 6.0],[7.9, 8.0]])
+        print(a)
+
+        return;
 
     def test_sinc_1(self):
 
