@@ -965,6 +965,7 @@ namespace NumpyDotNetTests
             print(e);
         }
 
+        #if NOT_PLANNING_TODO
 
         [Ignore]
         [TestMethod]
@@ -995,7 +996,7 @@ namespace NumpyDotNetTests
 
         }
 
-
+        #endif
 
 
     }
