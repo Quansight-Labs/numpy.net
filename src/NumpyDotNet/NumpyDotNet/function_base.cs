@@ -1483,7 +1483,7 @@ namespace NumpyDotNet
 
         #region bartlett
 
-        public static ndarray bartlett(ndarray M)
+        public static ndarray bartlett(int M)
         {
             /*
                Return the Bartlett window.
@@ -1581,7 +1581,15 @@ namespace NumpyDotNet
                 (-0.5, 0.5, -100.0, ...)
                 >>> plt.show()             
              */
-            throw new NotImplementedException();
+
+            if (M < 1)
+                return array(new int[] { });
+            if (M == 1)
+                return ones(1, np.Float32);
+
+            var n = asanyarray(np.arange(0, M));
+            return where(less_equal(n, (M - 1) / 2.0), asanyarray(2.0) * n / (M - 1), asanyarray(2.0) - asanyarray(2.0) * n / (M - 1)) as ndarray;
+
         }
         #endregion
 

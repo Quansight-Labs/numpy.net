@@ -59,6 +59,9 @@
     <Compile Include="StatisticsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WindowFunctions.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TwoDimBaseTests.py">
       <SubType>Code</SubType>
     </Compile>
