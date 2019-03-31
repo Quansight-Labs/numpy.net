@@ -33,11 +33,22 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
         [TestMethod]
-        public void test_blackman_placeholder()
+        public void test_blackman_1()
         {
+            var b = np.blackman(5);
+            AssertArray(b, new double[] { -1.38777878078145E-17, 3.40000000e-01, 1.00000000e+00, 3.40000000e-01, -1.38777878078145E-17 });
+            print(b);
 
+            b = np.blackman(10);
+            AssertArray(b, new double[] { -1.38777878e-17,  5.08696327e-02,  2.58000502e-01,  6.30000000e-01, 9.51129866e-01,
+                                           9.51129866e-01,  6.30000000e-01,  2.58000502e-01,  5.08696327e-02, -1.38777878e-17});
+            print(b);
+
+            b = np.blackman(12);
+            AssertArray(b, new double[] { -1.38777878e-17,  3.26064346e-02,  1.59903635e-01,  4.14397981e-01,  7.36045180e-01,  9.67046769e-01,
+                                           9.67046769e-01,  7.36045180e-01,  4.14397981e-01,  1.59903635e-01,  3.26064346e-02, -1.38777878e-17});
+            print(b);
         }
 
    

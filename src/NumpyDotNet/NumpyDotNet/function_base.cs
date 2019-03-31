@@ -139,7 +139,7 @@ namespace NumpyDotNet
                 return flip(flip(m, axes[0]), axes[1]);
             }
 
-            npy_intp[] axes_list = arange(0, m.ndim);
+            npy_intp[] axes_list = array_range(0, m.ndim);
             npy_intp temp = axes_list[axes[0]];
             axes_list[axes[0]] = axes_list[axes[1]];
             axes_list[axes[1]] = temp;
@@ -1385,7 +1385,7 @@ namespace NumpyDotNet
 
         #region blackman
 
-        public static ndarray blackman(ndarray M)
+        public static ndarray blackman(int M)
         {
             /*
             Return the Blackman window.
@@ -1476,7 +1476,15 @@ namespace NumpyDotNet
             >>> plt.show()
              */
 
-            throw new NotImplementedException();
+            if (M < 1)
+                return array(new int[] { });
+            if (M == 1)
+                return ones(1, np.Float32);
+
+            var n = np.arange(0, M);
+
+            return asanyarray(0.42) - asanyarray(0.5) * cos(asanyarray(2.0) * asanyarray(Math.PI) * n / (M - 1)) + 0.08 * cos(asanyarray(4.0) * asanyarray(Math.PI) * n / (M - 1));
+
         }
 
         #endregion
@@ -1587,7 +1595,8 @@ namespace NumpyDotNet
             if (M == 1)
                 return ones(1, np.Float32);
 
-            var n = asanyarray(np.arange(0, M));
+            var n = np.arange(0, M);
+
             return where(less_equal(n, (M - 1) / 2.0), asanyarray(2.0) * n / (M - 1), asanyarray(2.0) - asanyarray(2.0) * n / (M - 1)) as ndarray;
 
         }
