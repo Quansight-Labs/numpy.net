@@ -234,14 +234,6 @@ namespace NumpyDotNetTests
             // waiting for multiply.accumulate to be implemented
         }
 
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_histogram2d()
-        {
-            // waiting for histogramdd to be implemented
-        }
-
         [TestMethod]
         public void test_mask_indices()
         {

@@ -755,48 +755,8 @@ namespace NumpyDotNetTests
 
         #region Histograms
 
-        [Ignore]
-        [TestMethod]
-        public void test_histogram_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_histogram2d_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_histogramdd_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void test_bincount_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void histogram_bin_edges_1()
-        {
-
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void digitize_1()
-        {
-
-        }
-
+        // see HistogramTests.cs
+        
         #endregion
 
     }

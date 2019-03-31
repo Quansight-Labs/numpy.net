@@ -79,6 +79,7 @@
     <Compile Include="ComplexNumbersTests.cs" />
     <Compile Include="BigIntegerTests.cs" />
     <Compile Include="StatisticsTests.cs" />
+    <Compile Include="HistogramTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
