@@ -547,6 +547,30 @@ class StatisticsTests(unittest.TestCase):
 
         return
 
+    def test_corrcoef_1(self): 
+
+        x1 = np.array([[0, 2], [1, 1], [2, 0]]).T
+        print(x1)
+
+        # Note how  increases while  decreases. The covariance matrix shows this clearly:
+
+        a = np.corrcoef(x1)
+        print(a)
+
+        x = [-2.1, -1,  4.3]
+        y = [3,  1.1,  0.12]
+        X = np.stack((x, y), axis=0)
+        a = np.corrcoef(X)
+        print(a)
+
+        b = np.corrcoef(x, y)
+        print(b)
+
+        c = np.corrcoef(x,y, rowvar=False)
+        print(c)
+
+        return
+
     #endregion
 
     #region Histograms
