@@ -3746,8 +3746,7 @@ namespace NumpyLib
             PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operation);
 
 
-            Npy_DECREF(outPtr);
-            return NpyArray_Flatten(outPtr, NPY_ORDER.NPY_ANYORDER);
+            return outPtr;
         }
 
  
