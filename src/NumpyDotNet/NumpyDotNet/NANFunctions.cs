@@ -45,8 +45,30 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        private static object _get_infinity_value(ndarray arr, bool positiveInfinity)
+        {
+            switch (arr.Dtype.TypeNum)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                    if (positiveInfinity)
+                        return float.PositiveInfinity;
+                    else
+                        return float.NegativeInfinity;
 
-        private static (ndarray a, ndarray mask) _replace_nan(ndarray a, float val)
+                case NPY_TYPES.NPY_DOUBLE:
+                    if (positiveInfinity)
+                        return double.PositiveInfinity;
+                    else
+                        return double.NegativeInfinity;
+
+                default:
+                    break;
+            }
+
+            return 0;
+        }
+
+        private static (ndarray a, ndarray mask) _replace_nan(ndarray a, object val)
         {
             /*
              If `a` is of inexact type, make a copy of `a`, replace NaNs with
@@ -311,7 +333,7 @@ namespace NumpyDotNet
             else
             {
                 // Slow, but safe for subclasses of ndarray
-                var replaced = _replace_nan(arr, float.PositiveInfinity);
+                var replaced = _replace_nan(arr, _get_infinity_value(arr, true));
                 res = np.amin(replaced.a, axis: axis);
                 if (replaced.mask == null)
                     return res;
@@ -435,7 +457,7 @@ namespace NumpyDotNet
             else
             {
                 // Slow, but safe for subclasses of ndarray
-                var replaced = _replace_nan(arr, float.NegativeInfinity);
+                var replaced = _replace_nan(arr, _get_infinity_value(arr, false));
                 res = np.amax(replaced.a, axis: axis);
                 if (replaced.mask == null)
                     return res;
@@ -490,7 +512,7 @@ namespace NumpyDotNet
 
             var arr = asanyarray(a);
 
-            var replaced = _replace_nan(arr, float.PositiveInfinity);
+            var replaced = _replace_nan(arr, _get_infinity_value(arr, true));
             ndarray res = np.argmin(replaced.a, axis: axis);
             if (replaced.mask != null)
             {
@@ -506,9 +528,44 @@ namespace NumpyDotNet
 
         public static ndarray nanargmax(object a, int? axis = null)
         {
+            /*
+            Return the indices of the maximum values in the specified axis ignoring
+            NaNs.For all-NaN slices ``ValueError`` is raised.Warning: the
+            results cannot be trusted if a slice contains only NaNs and - Infs.
+
+
+            Parameters
+            ----------
+            a: array_like
+               Input data.
+           axis : int, optional
+                Axis along which to operate.By default flattened input is used.
+
+            Returns
+            -------
+            index_array : ndarray
+                An array of indices or a single index value.
+
+            See Also
+            --------
+            argmax, nanargmin
+
+            Examples
+            --------
+            >>> a = np.array([[np.nan, 4], [2, 3]])
+            >>> np.argmax(a)
+            0
+            >>> np.nanargmax(a)
+            1
+            >>> np.nanargmax(a, axis=0)
+            array([1, 0])
+            >>> np.nanargmax(a, axis=1)
+            array([1, 1])
+            */
+
             var arr = asanyarray(a);
 
-            var replaced = _replace_nan(arr, float.PositiveInfinity);
+            var replaced = _replace_nan(arr, _get_infinity_value(arr, false));
             ndarray res = np.argmax(replaced.a, axis: axis);
             if (replaced.mask != null)
             {
