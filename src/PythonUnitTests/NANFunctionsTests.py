@@ -135,7 +135,34 @@ class NANFunctionsTests(unittest.TestCase):
         except:
            return
 
+    def test_nanargmax_1(self):
 
+        a = np.array([[np.nan, 4], [2, 3]], dtype=np.float64)
+        b = np.argmax(a)
+        print(b)
+
+        c = np.nanargmax(a)
+        print(c)
+
+        d = np.argmax(a, axis=0)
+        print(d)
+
+        e = np.nanargmax(a, axis=0)
+        print(e)
+
+        f = np.argmax(a, axis=1)
+        print(f)
+
+        g = np.nanargmax(a, axis=1)
+        print(g)
+
+        try:
+
+            a = np.array([[np.nan, np.nan], [np.nan, np.nan]])
+            h = np.nanargmax(a, axis=1)
+            print(h)
+        except:
+           return
 
 if __name__ == '__main__':
     unittest.main()

@@ -68,6 +68,23 @@ namespace NumpyDotNet
             return 0;
         }
 
+        private static object _get_NAN_value(ndarray arr)
+        {
+            switch (arr.Dtype.TypeNum)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                    return float.NaN;
+  
+                case NPY_TYPES.NPY_DOUBLE:
+                    return double.NaN;
+ 
+                default:
+                    break;
+            }
+
+            return 0;
+        }
+
         private static (ndarray a, ndarray mask) _replace_nan(ndarray a, object val)
         {
             /*
@@ -342,7 +359,7 @@ namespace NumpyDotNet
                 replaced.mask = np.all(replaced.mask, axis: axis);
                 if (np.anyb(replaced.mask))
                 {
-                    res = _copyto(res, float.NaN, replaced.mask);
+                    res = _copyto(res, _get_NAN_value(res), replaced.mask);
                     Console.WriteLine("All-NaN axis encountered");
                 }
             }
@@ -466,7 +483,7 @@ namespace NumpyDotNet
                 replaced.mask = np.all(replaced.mask, axis: axis);
                 if (np.anyb(replaced.mask))
                 {
-                    res = _copyto(res, float.NaN, replaced.mask);
+                    res = _copyto(res, _get_NAN_value(res), replaced.mask);
                     Console.WriteLine("All-NaN axis encountered");
                 }
             }
@@ -639,15 +656,15 @@ namespace NumpyDotNet
             return avg;
         }
 
-        private static float _nanmedian1d(ndarray arr1d, bool ow_input= false)
+        private static object _nanmedian1d(ndarray arr1d, bool ow_input= false)
         {
             // Private function for rank 1 arrays.Compute the median ignoring NaNs.
             // See nanmedian for parameter usage
             var removed = _remove_nan_1d(arr1d, overwrite_input: ow_input);
             if (removed.a.size == 0)
-                return float.NaN;
+                return _get_NAN_value(removed.a);
 
-            return Convert.ToSingle(np.median(arr1d)[0]);
+            return np.median(arr1d)[0];
         }
 
 

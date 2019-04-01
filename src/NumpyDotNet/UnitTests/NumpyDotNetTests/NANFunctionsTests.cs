@@ -261,6 +261,49 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_nanargmax_1()
+        {
+            var a = np.array(new double[,] { { double.NaN, 4 }, { 2, 3 } });
+            var b = np.argmax(a);
+            Assert.AreEqual((Int64)1, b.GetItem(0));  // note: different result than python due to how .NET compares NaN numbers
+            print(b);
+
+            var c = np.nanargmax(a);
+            Assert.AreEqual((Int64)1, c.GetItem(0));
+            print(c);
+
+            var d = np.argmax(a, axis: 0);          
+            AssertArray(d, new Int64[] { 1, 0 });    // note: different result than python due to how .NET compares NaN numbers
+            print(d);
+
+            var e = np.nanargmax(a, axis: 0);
+            AssertArray(e, new Int64[] { 1, 0 });
+            print(e);
+
+            var f = np.argmax(a, axis: 1);          // note: different result than python due to how .NET compares NaN numbers
+            AssertArray(f, new Int64[] { 1, 1 });
+            print(f);
+
+            var g = np.nanargmax(a, axis: 1);
+            AssertArray(g, new Int64[] { 1, 1 });
+            print(g);
+
+            try
+            {
+                a = np.array(new double[,] { { double.NaN, double.NaN }, { double.NaN, double.NaN } });
+                var h = np.nanargmax(a, axis: 1);
+                print(h);
+                Assert.Fail("should have caught the exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return;
+        }
+
 
 
     }
