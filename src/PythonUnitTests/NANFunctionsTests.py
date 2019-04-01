@@ -106,5 +106,36 @@ class NANFunctionsTests(unittest.TestCase):
         print(g)
 
 
+    def test_nanargmin_1(self):
+
+        a = np.array([[np.nan, 4], [2, 3]])
+        b = np.argmin(a)
+        print(b)
+
+        c = np.nanargmin(a)
+        print(c)
+
+        d = np.argmin(a, axis=0)
+        print(d)
+
+        e = np.nanargmin(a, axis=0)
+        print(e)
+
+        f = np.argmin(a, axis=1)
+        print(f)
+
+        g = np.nanargmin(a, axis=1)
+        print(g)
+
+        try:
+
+            a = np.array([[np.nan, np.nan], [np.nan, np.nan]])
+            h = np.nanargmin(a, axis=1)
+            print(h)
+        except:
+           return
+
+
+
 if __name__ == '__main__':
     unittest.main()

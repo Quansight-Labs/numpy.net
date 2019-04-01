@@ -218,10 +218,50 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_Test_NANFunctions_Placeholder()
+        public void test_nanargmin_1()
         {
+            var a = np.array(new float[,] { { float.NaN, 4 }, { 2, 3 } });
+            var b = np.argmin(a);
+            Assert.AreEqual((Int64)0, b.GetItem(0));
+            print(b);
+
+            var c = np.nanargmin(a);
+            Assert.AreEqual((Int64)2, c.GetItem(0));
+            print(c);
+
+            var d = np.argmin(a, axis : 0);
+            AssertArray(d, new Int64[] { 0, 1 });
+            print(d);
+
+            var e = np.nanargmin(a, axis: 0);
+            AssertArray(e, new Int64[] { 1, 1 });
+            print(e);
+
+            var f = np.argmin(a, axis : 1);
+            AssertArray(f, new Int64[] { 0, 0 });
+            print(f);
+
+            var g = np.nanargmin(a, axis: 1);
+            AssertArray(g, new Int64[] { 1, 0 });
+            print(g);
+
+            try
+            {
+                a = np.array(new float[,] { { float.NaN, float.NaN }, { float.NaN, float.NaN } });
+                var h = np.nanargmin(a, axis: 1);
+                print(h);
+                Assert.Fail("should have caught the exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return;
         }
+
+
+
     }
 }
