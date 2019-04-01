@@ -2442,7 +2442,7 @@ namespace NumpyDotNet
 
         #region amax
 
-        public static ndarray amax(ndarray a, int? axis = null, ndarray @out = null, bool keepdims = false)
+        public static ndarray amax(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
 
             /*
@@ -2529,18 +2529,20 @@ namespace NumpyDotNet
             4.0             
             */
 
+            var arr = asanyarray(a);
+
             if (axis == null)
             {
-                a = a.flatten();
+                arr = arr.flatten();
                 axis = 0;
                 
             }
 
-            var resultArray = NpyCoreApi.ArrayMax(a, axis.Value, @out);
+            var resultArray = NpyCoreApi.ArrayMax(arr, axis.Value, @out);
             return resultArray;
         }
 
-        public static double max(ndarray arr)
+        public static double max(object arr)
         {
             var resultArray = np.amax(arr);
             return Convert.ToDouble(resultArray.GetItem(0));
@@ -2550,7 +2552,7 @@ namespace NumpyDotNet
 
         #region amin
 
-        public static ndarray amin(ndarray a, int? axis = null, ndarray @out = null, bool keepdims = false)
+        public static ndarray amin(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
             Return the minimum of an array or minimum along an axis.
@@ -2636,18 +2638,20 @@ namespace NumpyDotNet
             0.0             
             */
 
+            var arr = asanyarray(a);
+
             if (axis == null)
             {
-                a = a.flatten();
+                arr = arr.flatten();
                 axis = 0;
 
             }
 
-            var resultArray = NpyCoreApi.ArrayMin(a, axis.Value, @out);
+            var resultArray = NpyCoreApi.ArrayMin(arr, axis.Value, @out);
             return resultArray;
         }
 
-        public static double min(ndarray arr)
+        public static double min(object arr)
         {
             var resultArray = np.amin(arr);
             return Convert.ToDouble(resultArray.GetItem(0));
