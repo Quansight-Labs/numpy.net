@@ -10,7 +10,7 @@ using NumpyLib;
 namespace NumpyDotNetTests
 {
     [TestClass]
-    public class NANFunctionsTest : TestBaseClass
+    public class NANFunctionsTests : TestBaseClass
     {
         [Ignore] // need to implement Nanfunctions
         [TestMethod]
@@ -82,11 +82,30 @@ namespace NumpyDotNetTests
             // see the NANFunctionsTest version
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nanmin_placeholder()
+        public void test_nanmin_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new float[,] { { 1, 2 }, { 3, float.NaN } });
+            var b = np.nanmin(a);
+            print(b);
+
+
+            var c = np.nanmin(a, axis: 0);
+            print(c);
+
+            var d = np.nanmin(a, axis: 1);
+            print(d);
+
+            // When positive infinity and negative infinity are present:
+
+            var e = np.nanmin(new float[] { 1, 2, float.NaN, float.PositiveInfinity });
+            print(e);
+
+            var f = np.nanmin(new float[] { 1, 2, float.NaN, float.NegativeInfinity });
+            print(f);
+
+            var g = np.amin(new float[] { 1, 2, -3, float.NegativeInfinity });
+            print(g);
         }
 
         [Ignore] // need to implement Nanfunctions
