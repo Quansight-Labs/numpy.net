@@ -304,7 +304,7 @@ namespace NumpyDotNet
                 res = null; // np.fmin.reduce(a, axis = axis, out=out, **kwargs)
                 if (np.anyb(np.isnan(res)))
                 {
-                    //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 2)
+                    Console.WriteLine("All-NaN slice encountered");
                 }
             }
 
@@ -321,7 +321,7 @@ namespace NumpyDotNet
                 if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, float.NaN, replaced.mask);
-                    //warnings.warn("All-NaN axis encountered", RuntimeWarning, stacklevel = 2)
+                    Console.WriteLine("All-NaN axis encountered");
                 }
             }
 
@@ -330,6 +330,93 @@ namespace NumpyDotNet
 
         public static ndarray nanmax(object a, int? axis = null)
         {
+          /*
+          Return the maximum of an array or maximum along an axis, ignoring any
+              NaNs.When all-NaN slices are encountered a ``RuntimeWarning`` is
+             raised and NaN is returned for that slice.
+
+
+          Parameters
+          ----------
+
+          a : array_like
+
+              Array containing numbers whose maximum is desired.If `a` is not an
+
+              array, a conversion is attempted.
+          axis : { int, tuple of int, None}, optional
+               Axis or axes along which the maximum is computed.The default is to compute
+                the maximum of the flattened array.
+            out : ndarray, optional
+                Alternate output array in which to place the result.The default
+              is ``None``; if provided, it must have the same shape as the
+                expected output, but the type will be cast if necessary.See
+                `doc.ufuncs` for details.
+
+                ..versionadded:: 1.8.0
+            keepdims : bool, optional
+                If this is set to True, the axes which are reduced are left
+                in the result as dimensions with size one.With this option,
+                the result will broadcast correctly against the original `a`.
+
+                If the value is anything but the default, then
+                `keepdims` will be passed through to the `max` method
+                of sub - classes of `ndarray`.  If the sub - classes methods
+                does not implement `keepdims` any exceptions will be raised.
+
+                ..versionadded:: 1.8.0
+
+            Returns
+            ------ -
+            nanmax : ndarray
+                An array with the same shape as `a`, with the specified axis removed.
+                If `a` is a 0 - d array, or if axis is None, an ndarray scalar is
+                  returned.The same dtype as `a` is returned.
+
+            See Also
+            --------
+            nanmin :
+                The minimum value of an array along a given axis, ignoring any NaNs.
+            amax:
+                    The maximum value of an array along a given axis, propagating any NaNs.
+            fmax:
+                    Element - wise maximum of two arrays, ignoring any NaNs.
+            maximum:
+                    Element - wise maximum of two arrays, propagating any NaNs.
+            isnan:
+                    Shows which elements are Not a Number(NaN).
+                isfinite:
+                Shows which elements are neither NaN nor infinity.
+
+            amin, fmin, minimum
+
+            Notes
+            -----
+            NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+            (IEEE 754).This means that Not a Number is not equivalent to infinity.
+            Positive infinity is treated as a very large number and negative
+            infinity is treated as a very small(i.e.negative) number.
+
+            If the input has a integer type the function is equivalent to np.max.
+
+            Examples
+            --------
+            >>> a = np.array([[1, 2], [3, np.nan]])
+            >>> np.nanmax(a)
+            3.0
+            >>> np.nanmax(a, axis = 0)
+            array([3., 2.])
+            >>> np.nanmax(a, axis = 1)
+            array([2., 3.])
+
+            When positive infinity and negative infinity are present:
+
+            >>> np.nanmax([1, 2, np.nan, np.NINF])
+            2.0
+            >>> np.nanmax([1, 2, np.nan, np.inf])
+            inf
+            */
+
             ndarray res = null;
 
             var arr = asanyarray(a);
@@ -341,7 +428,7 @@ namespace NumpyDotNet
                 res = null; // np.fmax.reduce(a, axis = axis, out=out, **kwargs)
                 if (np.anyb(np.isnan(res)))
                 {
-                    //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 2)
+                    Console.WriteLine("All-NaN slice encountered");
                 }
             }
 
@@ -358,7 +445,7 @@ namespace NumpyDotNet
                 if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, float.NaN, replaced.mask);
-                    //warnings.warn("All-NaN axis encountered", RuntimeWarning, stacklevel = 2)
+                    Console.WriteLine("All-NaN axis encountered");
                 }
             }
 

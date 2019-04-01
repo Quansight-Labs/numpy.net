@@ -165,11 +165,57 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // need to implement Nanfunctions
+
         [TestMethod]
-        public void test_nanmax_placeholder()
+        public void test_nanmin_4()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new float[,] { { float.NaN, float.NaN }, { float.NaN, float.NaN } });
+            var b = np.nanmin(a);
+            Assert.AreEqual(float.NaN, b.GetItem(0));
+            print(b);
+
+
+            var c = np.nanmin(a, axis: 0);
+            AssertArray(c, new float[] { float.NaN, float.NaN });
+            print(c);
+
+            var d = np.nanmin(a, axis: 1);
+            AssertArray(d, new float[] { float.NaN, float.NaN });
+            print(d);
+
+        }
+
+
+        [TestMethod]
+        public void test_nanmax_1()
+        {
+            var a = np.array(new float[,] { { 1, 2 }, { 3, float.NaN } });
+            var b = np.nanmax(a);
+            Assert.AreEqual(3.0f, b.GetItem(0));
+            print(b);
+
+
+            var c = np.nanmax(a, axis: 0);
+            AssertArray(c, new float[] { 3.0f, 2.0f });
+            print(c);
+
+            var d = np.nanmax(a, axis: 1);
+            AssertArray(d, new float[] { 2.0f, 3.0f });
+            print(d);
+
+            // When positive infinity and negative infinity are present:
+
+            var e = np.nanmax(new float[] { 1, 2, float.NaN, float.NegativeInfinity });
+            Assert.AreEqual(2.0f, e.GetItem(0));
+            print(e);
+
+            var f = np.nanmax(new float[] { 1, 2, float.NaN, float.PositiveInfinity });
+            Assert.AreEqual(float.PositiveInfinity, f.GetItem(0));
+            print(f);
+
+            var g = np.amax(new float[] { 1, 2, -3, float.PositiveInfinity });
+            Assert.AreEqual(float.PositiveInfinity, g.GetItem(0));
+            print(g);
         }
 
         [Ignore]

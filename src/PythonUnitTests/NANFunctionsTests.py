@@ -67,6 +67,18 @@ class NANFunctionsTests(unittest.TestCase):
         d = np.nanmin(a, axis=1)
         print(d)
 
+    def test_nanmin_4(self):
+
+        a = np.array([[np.nan, np.nan], [np.nan, np.nan]])
+
+        b = np.nanmin(a)
+        print(b)
+    
+        c = np.nanmin(a, axis=0)
+        print(c)
+
+        d = np.nanmin(a, axis=1)
+        print(d)
      
 
     def test_nanmax_1(self):
