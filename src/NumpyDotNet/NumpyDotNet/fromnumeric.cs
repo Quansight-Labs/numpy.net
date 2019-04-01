@@ -2115,6 +2115,7 @@ namespace NumpyDotNet
                     throw new ValueError("Attempt to take boolean from array");
                 }
                 bool b = (bool)any.GetItem(0);
+                return b;
             }
             return false;
         }
