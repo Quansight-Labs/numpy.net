@@ -18,11 +18,45 @@ namespace NumpyDotNetTests
         {
 
         }
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
         public void test_nansum_1()
         {
 
+            var a = np.nansum(1);
+            Assert.AreEqual(1, a.GetItem(0));
+            print(a);
+
+            var b = np.nansum(new int[] { 1 });
+            Assert.AreEqual(1, b.GetItem(0));
+            print(b);
+
+            var c = np.nansum(new float[] { 1, float.NaN });
+            Assert.AreEqual(1.0f, c.GetItem(0));
+            print(c);
+
+            a = np.array(new float[,] { { 1, 1 }, { 1, float.NaN } });
+            var d = np.nansum(a);
+            Assert.AreEqual(3.0f, d.GetItem(0));
+            print(d);
+
+
+            var e = np.nansum(a, axis : 0);
+            AssertArray(e, new float[] {2.0f, 1.0f });
+            print(e);
+
+            var f = np.nansum(new double[] { 1, double.NaN, double.PositiveInfinity });
+            Assert.AreEqual(double.PositiveInfinity, f.GetItem(0));
+            print(f);
+
+            var g = np.nansum(new double[] { 1, double.NaN, double.NegativeInfinity });
+            Assert.AreEqual(double.NegativeInfinity, g.GetItem(0));
+            print(g);
+
+            var h = np.nansum(new double [] { 1, double.NaN, double.PositiveInfinity, double.PositiveInfinity });        // both +/- infinity present
+            Assert.AreEqual(double.PositiveInfinity, h.GetItem(0));  // note: python code generates an error and returns NAN.
+            print(h);
+
+            return;
         }
 
         [Ignore] // need to implement Nanfunctions

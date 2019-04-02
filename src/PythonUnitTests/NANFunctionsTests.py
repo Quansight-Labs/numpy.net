@@ -5,6 +5,36 @@ from nptest import nptest
 
 class NANFunctionsTests(unittest.TestCase):
 
+    def test_nansum_1(self):
+
+        a = np.nansum(1)
+        print(a)
+
+        b = np.nansum([1])
+        print(b)
+
+        c = np.nansum([1, np.nan])
+        print(c)
+
+        a = np.array([[1, 1], [1, np.nan]])
+        d = np.nansum(a)
+        print(d)
+
+
+        e = np.nansum(a, axis=0)
+        print(e)
+
+        f = np.nansum([1, np.nan, np.inf])
+        print(f)
+
+        g = np.nansum([1, np.nan, np.NINF])
+        print(g)
+
+        h = np.nansum([1, np.nan, np.inf, -np.inf]) # both +/- infinity present
+        print(h)
+
+        return
+
     def test_nanmin_1(self):
 
         a = np.array([[1, 2], [3, np.nan]])
