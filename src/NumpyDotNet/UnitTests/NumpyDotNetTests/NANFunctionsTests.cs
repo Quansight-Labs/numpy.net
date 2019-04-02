@@ -47,7 +47,6 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_nansum_1()
         {
-
             var a = np.nansum(1);
             Assert.AreEqual(1, a.GetItem(0));
             print(a);
@@ -78,8 +77,8 @@ namespace NumpyDotNetTests
             Assert.AreEqual(double.NegativeInfinity, g.GetItem(0));
             print(g);
 
-            var h = np.nansum(new double [] { 1, double.NaN, double.PositiveInfinity, double.PositiveInfinity });        // both +/- infinity present
-            Assert.AreEqual(double.PositiveInfinity, h.GetItem(0));  // note: python code generates an error and returns NAN.
+            var h = np.nansum(new double [] { 1, double.NaN, double.PositiveInfinity, double.NegativeInfinity });        // both +/- infinity present
+            Assert.AreEqual(double.NaN, h.GetItem(0));
             print(h);
 
             return;
@@ -118,9 +117,43 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nancumsum_placeholder()
+        public void test_nancumsum_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.nancumsum(1);
+            AssertArray(a, new double[] { 1 });
+            print(a);
+
+            var b = np.nancumsum(new int[] { 1 });
+            AssertArray(b, new double[] { 1 });
+            print(b);
+
+            var c = np.nancumsum(new float[] { 1, float.NaN });
+            AssertArray(c, new double[] { 1, 1 });
+            print(c);
+
+            a = np.array(new float[,] { { 1, 2 }, { 3, float.NaN } });
+            var d = np.nancumsum(a);
+            AssertArray(d, new double[] { 1, 3, 6, 6 });
+            print(d);
+
+
+            var e = np.nancumsum(a, axis: 0);
+            AssertArray(e, new double[,] { {1, 2 }, {4, 2 } });
+            print(e);
+
+            var f = np.nancumsum(new double[] { 1, double.NaN, double.PositiveInfinity });
+            AssertArray(f, new double[] { 1, 1, double.PositiveInfinity });
+            print(f);
+
+            var g = np.nancumsum(new double[] { 1, double.NaN, double.NegativeInfinity });
+            AssertArray(g, new double[] { 1, 1, double.NegativeInfinity });
+            print(g);
+
+            var h = np.nancumsum(new double[] { 1, double.NaN, double.PositiveInfinity, double.NegativeInfinity });        // both +/- infinity present
+            AssertArray(h, new double[] { 1, 1, double.PositiveInfinity, double.NaN });
+            print(h);
+
+            return;
         }
 
         [Ignore] // need to implement Nanfunctions

@@ -82,7 +82,34 @@ class NANFunctionsTests(unittest.TestCase):
         return
 
     def test_nancumsum_1(self):
-         return
+
+        a = np.nancumsum(1)
+        print(a)
+
+        b = np.nancumsum([1])
+        print(b)
+
+        c = np.nancumsum([1, np.nan])
+        print(c)
+
+        a = np.array([[1, 2], [3, np.nan]])
+        d = np.nancumsum(a)
+        print(d)
+
+
+        e = np.nancumsum(a, axis=0)
+        print(e)
+
+        f = np.nancumsum([1, np.nan, np.inf])
+        print(f)
+
+        g = np.nancumsum([1, np.nan, np.NINF])
+        print(g)
+
+        h = np.nancumsum([1, np.nan, np.inf, -np.inf]) # both +/- infinity present
+        print(h)
+
+        return
 
     def test_nanmin_1(self):
 
