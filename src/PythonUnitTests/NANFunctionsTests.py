@@ -58,6 +58,32 @@ class NANFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_nancumproduct_1(self):
+
+        x = np.nancumprod(1)
+        print(x)
+
+        y = np.nancumprod([1])
+        print(y)
+
+        z = np.nancumprod([1, np.nan])
+        print(z)
+
+        a = np.array([[1, 2], [3, np.nan]])
+        b = np.nancumprod(a)
+        print(b)
+
+        c = np.nancumprod(a, axis=0)
+        print(c)
+
+        d = np.nancumprod(a, axis=1)
+        print(d)
+
+        return
+
+    def test_nancumsum_1(self):
+         return
+
     def test_nanmin_1(self):
 
         a = np.array([[1, 2], [3, np.nan]])

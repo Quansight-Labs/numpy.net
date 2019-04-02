@@ -43,6 +43,7 @@ namespace NumpyDotNetTests
 
             return;
         }
+
         [TestMethod]
         public void test_nansum_1()
         {
@@ -84,14 +85,38 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nancumproduct_placeholder()
+        public void test_nancumproduct_1()
         {
-            // see the NANFunctionsTest version
+
+            var x = np.nancumprod(1);
+            AssertArray(x, new double[] { 1 });
+            print(x);
+
+            var y = np.nancumprod(new int[] { 1 });
+            AssertArray(y, new double[] { 1 });
+            print(y);
+
+            var z = np.nancumprod(new float[] { 1, float.NaN });
+            AssertArray(z, new double[] { 1, 1 });
+            print(z);
+
+            var a = np.array(new double[,] { { 1, 2 }, { 3, double.NaN } });
+            var b = np.nancumprod(a);
+            AssertArray(b, new double[] { 1, 2, 6, 6 });
+            print(b);
+
+            var c = np.nancumprod(a, axis: 0);
+            AssertArray(c, new double[,] { { 1, 2 }, {3, 2 } });
+            print(c);
+
+            var d = np.nancumprod(a, axis: 1);
+            AssertArray(d, new double[,] { { 1, 2 }, { 3, 3 } });
+            print(d);
+
+            return;
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
         public void test_nancumsum_placeholder()
         {
