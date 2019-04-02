@@ -5,6 +5,29 @@ from nptest import nptest
 
 class NANFunctionsTests(unittest.TestCase):
 
+    def test_nanprod_1(self):
+
+        x = np.nanprod(1)
+        print(x)
+
+        y = np.nanprod([1])
+        print(y)
+
+        z = np.nanprod([1, np.nan])
+        print(z)
+
+        a = np.array([[1, 2], [3, np.nan]])
+        b = np.nanprod(a)
+        print(b)
+
+        c = np.nanprod(a, axis=0)
+        print(c)
+
+        d = np.nanprod(a, axis=1)
+        print(d)
+
+        return
+
     def test_nansum_1(self):
 
         a = np.nansum(1)

@@ -12,11 +12,36 @@ namespace NumpyDotNetTests
     [TestClass]
     public class NANFunctionsTests : TestBaseClass
     {
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
         public void test_nanprod_1()
         {
 
+            var x = np.nanprod(1);
+            Assert.AreEqual((ulong)1, x.GetItem(0));
+            print(x);
+
+            var y = np.nanprod(new int[] { 1 });
+            Assert.AreEqual((ulong)1, y.GetItem(0));
+            print(y);
+
+            var z = np.nanprod(new float[] { 1, float.NaN});
+            Assert.AreEqual((double)1.0, z.GetItem(0));
+            print(z);
+
+            var a = np.array(new double[,] { { 1, 2 }, { 3, double.NaN } });
+            var b = np.nanprod(a);
+            Assert.AreEqual(6.0, b.GetItem(0));
+            print(b);
+
+            var c = np.nanprod(a, axis : 0);
+            AssertArray(c, new double[] { 3, 2 });
+            print(c);
+
+            var d = np.nanprod(a, axis : 1);
+            AssertArray(d, new double[] { 2, 3 });
+            print(d);
+
+            return;
         }
         [TestMethod]
         public void test_nansum_1()
