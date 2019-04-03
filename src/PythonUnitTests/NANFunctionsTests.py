@@ -113,15 +113,6 @@ class NANFunctionsTests(unittest.TestCase):
 
     def test_nanmedian_1(self):
 
-
-        z = np.array([10.0, 7, 4, 3, 2, 1])
-        z1 = np.median(z)
-
-        data = np.moveaxis(z, 0, -1)
-        n = np.isnan(data[..., -1])
-
-        n = np.isnan(data[:, -1])
-
         a = np.array([[10.0, 7, 4], [3, 2, 1]])
         a[0, 1] = np.nan
         print(a)
