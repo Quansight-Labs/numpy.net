@@ -111,6 +111,23 @@ class NANFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_nanmean_1(self):
+
+        a = np.array([[1, np.nan], [3, 4]])
+        b = np.mean(a)
+        print(b)
+
+        c = np.nanmean(a)
+        print(c)
+
+        d = np.nanmean(a, axis=0)
+        print(d)
+
+        e = np.nanmean(a, axis=1)
+        print(e)
+
+        return
+
     def test_nanmin_1(self):
 
         a = np.array([[1, 2], [3, np.nan]])

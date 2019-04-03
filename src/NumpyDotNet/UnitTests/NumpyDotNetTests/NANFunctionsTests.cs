@@ -178,11 +178,27 @@ namespace NumpyDotNetTests
             // see the NANFunctionsTest version
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nanmean_placeholder()
+        public void test_nanmean_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new float[,] { { 1, float.NaN }, { 3, 4 } });
+            var b = np.mean(a);
+            Assert.AreEqual(double.NaN, b.GetItem(0));
+            print(b);
+
+            var c = np.nanmean(a);
+            Assert.AreEqual(2.66666675f, c.GetItem(0));
+            print(c);
+
+            var d = np.nanmean(a, axis : 0);
+            AssertArray(d, new float[] { 2.0f, 4.0f });
+            print(d);
+
+            var e = np.nanmean(a, axis : 1);
+            AssertArray(e, new float[] { 1.0f, 3.5f });
+            print(e);
+
+            return;
         }
 
         [Ignore] // need to implement Nanfunctions
