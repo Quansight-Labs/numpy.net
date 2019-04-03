@@ -30,15 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using NumpyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
 using System.Text;
-using NumpyLib;
+using System.Threading.Tasks;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
 using npy_intp = System.Int32;
+#endif
+
 
 
 namespace NumpyDotNet
@@ -195,6 +198,7 @@ namespace NumpyDotNet
             var s = np.nonzero(c)[0];
             if (s.size == arr1d.size)
             {
+                Console.WriteLine("All-NaN slice encountered");
                 //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 4)
                 return  (a: arr1d[":0"] as ndarray, overwrite_input: true);
             }
@@ -991,17 +995,281 @@ namespace NumpyDotNet
             return avg;
         }
 
-        private static object _nanmedian1d(ndarray arr1d, bool ow_input= false)
+        private static ndarray _nanmedian1d(ndarray arr1d, bool ow_input= false)
         {
             // Private function for rank 1 arrays.Compute the median ignoring NaNs.
             // See nanmedian for parameter usage
             var removed = _remove_nan_1d(arr1d, overwrite_input: ow_input);
             if (removed.a.size == 0)
-                return _get_NAN_value(removed.a);
+                return asanyarray(_get_NAN_value(removed.a));
 
-            return np.median(arr1d)[0];
+            return asanyarray(np.median(arr1d)[0]);
         }
 
+        private static ndarray _nanmedian(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false)
+        {
+            //Private function that doesn't support extended axis or keepdims.
+            //These methods are extended to this function using _ureduce
+            //See nanmedian for parameter usage
+
+            if (axis == null || a.ndim == 1)
+            {
+                ndarray part = a.ravel();
+                if (@out == null)
+                {
+                    return _nanmedian1d(part, overwrite_input);
+                }
+                else
+                {
+                    @out["..."] = _nanmedian1d(part, overwrite_input);
+                    return @out;
+                }
+            }
+            else
+            {
+                // for small medians use sort + indexing which is still faster than
+                // apply_along_axis
+                // benchmarked with shuffled (50, 50, x) containing a few NaN
+                //if (a.shape.iDims[axis.Value] < 600)
+                //{
+                //    return _nanmedian_small(a, axis, @out, overwrite_input);
+                //}
+
+                var result = np.apply_along_axis(_nanmedian1d, axis.Value, a, overwrite_input);
+                if (@out != null)
+                {
+                    @out["..."] = result;
+                }
+                return result;
+            }
+
+        }
+
+        private static ndarray _nanmedian_small(ndarray a, int? axis= null, ndarray @out= null, bool overwrite_input=false)
+        {
+            //sort + indexing median, faster for small medians along multiple
+            //dimensions due to the high overhead of apply_along_axis
+
+            //see nanmedian for parameter usage
+
+            //a = np.ma.masked_array(a, np.isnan(a))
+            //m = np.ma.median(a, axis = axis, overwrite_input = overwrite_input)
+            //for i in range(np.count_nonzero(m.mask.ravel())):
+            //    warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 3)
+            //if out is not None:
+            //    out[...] = m.filled(np.nan)
+            //    return out
+            //return m.filled(np.nan)
+
+            throw new NotImplementedException();
+        }
+
+        public static ndarray nanmedian(object a, int? axis = null, ndarray @out= null, bool overwrite_input = false, bool? keepdims = null)
+        {
+            /*
+            Compute the median along the specified axis, while ignoring NaNs.
+
+            Returns the median of the array elements.
+
+            .. versionadded:: 1.9.0
+
+            Parameters
+            ----------
+            a : array_like
+                Input array or object that can be converted to an array.
+            axis : {int, sequence of int, None}, optional
+                Axis or axes along which the medians are computed. The default
+                is to compute the median along a flattened version of the array.
+                A sequence of axes is supported since version 1.9.0.
+            out : ndarray, optional
+                Alternative output array in which to place the result. It must
+                have the same shape and buffer length as the expected output,
+                but the type (of the output) will be cast if necessary.
+            overwrite_input : bool, optional
+               If True, then allow use of memory of input array `a` for
+               calculations. The input array will be modified by the call to
+               `median`. This will save memory when you do not need to preserve
+               the contents of the input array. Treat the input as undefined,
+               but it will probably be fully or partially sorted. Default is
+               False. If `overwrite_input` is ``True`` and `a` is not already an
+               `ndarray`, an error will be raised.
+            keepdims : bool, optional
+                If this is set to True, the axes which are reduced are left
+                in the result as dimensions with size one. With this option,
+                the result will broadcast correctly against the original `a`.
+
+                If this is anything but the default value it will be passed
+                through (in the special case of an empty array) to the
+                `mean` function of the underlying array.  If the array is
+                a sub-class and `mean` does not have the kwarg `keepdims` this
+                will raise a RuntimeError.
+
+            Returns
+            -------
+            median : ndarray
+                A new array holding the result. If the input contains integers
+                or floats smaller than ``float64``, then the output data-type is
+                ``np.float64``.  Otherwise, the data-type of the output is the
+                same as that of the input. If `out` is specified, that array is
+                returned instead.
+
+            See Also
+            --------
+            mean, median, percentile
+
+            Notes
+            -----
+            Given a vector ``V`` of length ``N``, the median of ``V`` is the
+            middle value of a sorted copy of ``V``, ``V_sorted`` - i.e.,
+            ``V_sorted[(N-1)/2]``, when ``N`` is odd and the average of the two
+            middle values of ``V_sorted`` when ``N`` is even.
+
+            Examples
+            --------
+            >>> a = np.array([[10.0, 7, 4], [3, 2, 1]])
+            >>> a[0, 1] = np.nan
+            >>> a
+            array([[ 10.,  nan,   4.],
+               [  3.,   2.,   1.]])
+            >>> np.median(a)
+            nan
+            >>> np.nanmedian(a)
+            3.0
+            >>> np.nanmedian(a, axis=0)
+            array([ 6.5,  2.,  2.5])
+            >>> np.median(a, axis=1)
+            array([ 7.,  2.])
+            >>> b = a.copy()
+            >>> np.nanmedian(b, axis=1, overwrite_input=True)
+            array([ 7.,  2.])
+            >>> assert not np.all(a==b)
+            >>> b = a.copy()
+            >>> np.nanmedian(b, axis=None, overwrite_input=True)
+            3.0
+            >>> assert not np.all(a==b)             
+            */
+
+            ndarray arr = asanyarray(a);
+            //apply_along_axis in _nanmedian doesn't handle empty arrays well,
+            // so deal them upfront
+            if (arr.size == 0)
+            {
+                return nanmean(a, axis);
+            }
+
+            var _ureduce_ret = _nan_ureduce(arr, func: _nanmedian, axisarray: new int[] { axis.Value }, @out: @out, overwrite_input: overwrite_input);
+            if (keepdims != null && keepdims.Value == true)
+            {
+                return _ureduce_ret.r.reshape(_ureduce_ret.keepdims);
+            }
+            else
+            {
+                return _ureduce_ret.r;
+            }
+
+        }
+
+        #region _nan_ureduce
+
+        private delegate ndarray _nan_ureduce_func(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false);
+
+        private static (ndarray r, List<npy_intp> keepdims) _nan_ureduce(ndarray a, _nan_ureduce_func func, int[] axisarray = null,
+            ndarray @out = null, bool overwrite_input = false, bool keepdims = false)
+        {
+
+            //Internal Function.
+            //Call `func` with `a` as first argument swapping the axes to use extended
+            //axis on functions that don't support it natively.
+
+            //Returns result and a.shape with axis dims set to 1.
+
+            //Parameters
+            //----------
+            //a: array_like
+            //   Input array or object that can be converted to an array.
+            //func: callable
+            //   Reduction function capable of receiving a single axis argument.
+            //    It is called with `a` as first argument followed by `kwargs`.
+            //kwargs: keyword arguments
+            //    additional keyword arguments to pass to `func`.
+
+            //Returns
+            //------ -
+            //result : tuple
+            //    Result of func(a, ** kwargs) and a.shape with axis dims set to 1
+            //    which can be used to reshape the result to the same shape a ufunc with
+            //    keepdims = True would produce.
+
+            List<npy_intp> keepdim = null;
+            int nd;
+            int? axis = null;
+
+            a = np.asanyarray(a);
+            if (axisarray != null)
+            {
+                keepdim = a.shape.iDims.ToList();
+                nd = a.ndim;
+                axisarray = normalize_axis_tuple(axisarray, a.ndim);
+
+                foreach (var ax in axisarray)
+                    keepdim[ax] = 1;
+
+                if (len(axisarray) == 1)
+                {
+                    axis = axisarray[0];
+                }
+                else
+                {
+                    // keep = set(range(nd)) - set(axis)
+
+                    List<int> keep = new List<int>();
+                    for (int i = 0; i < nd; i++)
+                        keep.Add(i);
+
+                    foreach (var aa in axisarray)
+                    {
+                        if (keep.Contains(aa))
+                        {
+                            keep.Remove(aa);
+                        }
+                    }
+
+                    var nkeep = keep.Count;
+
+                    // swap axis that should not be reduced to front
+                    keep.Sort();
+                    for (int i = 0; i < keep.Count; i++)
+                    {
+                        a = a.SwapAxes(i, keep[i]);
+                    }
+
+                    // merge reduced axis
+
+                    var newShape = new long[nkeep + 1];
+                    for (int i = 0; i < nkeep; i++)
+                    {
+                        newShape[i] = a.shape.iDims[i];
+                    }
+                    newShape[nkeep] = -1;
+                    a = a.reshape(new shape(newShape));
+                    axis = -1;
+                }
+
+            }
+            else
+            {
+                keepdim = new List<npy_intp>();
+                for (int i = 0; i < a.ndim; i++)
+                {
+                    keepdim.Add(1);
+                }
+            }
+
+            ndarray r = func(a, axis, @out, overwrite_input);
+            return (r, keepdim);
+
+        }
+        #endregion
 
     }
 }

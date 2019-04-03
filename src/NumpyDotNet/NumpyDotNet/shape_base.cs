@@ -237,6 +237,7 @@ namespace NumpyDotNet
 
         public delegate ndarray apply_along_axis_view(ndarray a, ndarray view);
         public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
+        public delegate ndarray apply_along_axis_noindices(ndarray a, bool overwrite_input);
 
         public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
         {
@@ -269,6 +270,25 @@ namespace NumpyDotNet
             try
             {
                 var ret = fn(arr, view);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public static ndarray apply_along_axis(apply_along_axis_noindices fn, int axis, ndarray arr, bool overwrite_input)
+        {
+            if (fn == null)
+            {
+                throw new Exception("function can't be null");
+            }
+            var view = ViewFromAxis(arr, axis);
+
+            try
+            {
+                var ret = fn(arr, overwrite_input);
                 return ret;
             }
             catch (Exception ex)
