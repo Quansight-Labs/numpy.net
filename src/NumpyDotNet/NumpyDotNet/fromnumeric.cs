@@ -2210,7 +2210,22 @@ namespace NumpyDotNet
 
         #region all
 
-        public static ndarray all(ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
+        public static bool allb(object a, object axis = null, ndarray @out = null, bool keepdims = false)
+        {
+            var all = np.all(a, axis, @out, keepdims);
+            if (all != null)
+            {
+                if (all.size > 1)
+                {
+                    throw new ValueError("Attempt to take boolean from array");
+                }
+                bool b = (bool)all.GetItem(0);
+                return b;
+            }
+            return false;
+        }
+
+        public static ndarray all(object a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
             Test whether all array elements along a given axis evaluate to True.
@@ -2284,9 +2299,11 @@ namespace NumpyDotNet
             (28293632, 28293632, array([ True]))             
             */
 
+            ndarray aa = np.FromAny(a, null, 0, 0, 0, null);
+
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
 
-            return NpyCoreApi.ArrayAll(a, iAxis, @out);
+            return NpyCoreApi.ArrayAll(aa, iAxis, @out);
         }
 
         #endregion
