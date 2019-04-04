@@ -496,6 +496,10 @@ namespace NumpyDotNet {
             {
                 indexes.AddNewAxis();
             }
+            else if (arg is string && (string)arg == "...")
+            {
+                indexes.AddEllipsis();
+            }
             else if (arg is Ellipsis)
             {
                 indexes.AddEllipsis();

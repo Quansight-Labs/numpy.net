@@ -227,7 +227,9 @@ namespace NumpyLib
                         {
                             /* Expand the ellipsis. */
                             int j, n2;
-                            n2 = nd + n_new - count_non_new(indexes, i + 1, n - i - 1) - result;
+
+                            int non_new_indices = count_non_new(indexes, i+1, n);
+                            n2 = nd + n_new - non_new_indices - result;
                             if (n2 < 0)
                             {
                                 NpyErr_SetString(npyexc_type.NpyExc_IndexError,
