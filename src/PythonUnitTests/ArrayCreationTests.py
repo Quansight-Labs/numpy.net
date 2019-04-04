@@ -815,6 +815,43 @@ class ArrayCreationTests(unittest.TestCase):
         print(a)
  
 
+    def test_Ellipsis_indexing_1(self):
+        
+        a = np.array([10.0, 7, 4, 3, 2, 1])
+        b = a[..., -1]
+        print(b)
+        print("********")
+
+        a = np.array([[10.0, 7, 4], [3, 2, 1]])
+        c = a[..., -1]
+        print(c)
+        print("********")
+
+        TestData = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+        a = np.array(TestData, dtype= np.uint32).reshape((1, 3, 2, -1, 1));
+        d = a[..., -1]
+        print(d)
+        print("********")
+
+        e = a[0, ..., -1]
+        print(e)
+        print("********")
+
+        f = a[0, :,:,:, -1]
+        print(f)
+        print("********")
+
+        g = a[0, 1, ..., -1]
+        print(g)
+        print("********")
+
+        h = a[0, 2, 1, ..., -1]
+        print(h)
+        print("********")
+        
+        i = a[:, 2, 1, 1, ...]
+        print(i)
+
 
 if __name__ == '__main__':
     unittest.main()

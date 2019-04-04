@@ -2025,5 +2025,104 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_Ellipsis_indexing_1()
+        {
+            var a = np.array(new double[] { 10.0, 7, 4, 3, 2, 1 });
+
+            var b = a.A("...", -1);
+            Assert.AreEqual((double)1.0, b.GetItem(0));
+            print(b);
+            print("********");
+
+
+            a = np.array(new double[,] { { 10.0, 7, 4 }, { 3, 2, 1 } });
+            var c = a.A("...", -1);
+            AssertArray(c, new double[] { 4.0, 1.0 });
+            print(c);
+            print("********");
+
+            var TestData = new UInt32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            a = np.array(TestData, dtype: np.UInt32).reshape((1, 3, 2, -1, 1));
+            var d = a["...", -1] as ndarray;
+            AssertArray(d, new UInt32[,,,] { { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } } });
+            print(d);
+            print("********");
+
+            var e = a[0, "...", -1] as ndarray;
+            AssertArray(e, new UInt32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(e);
+            print("********");
+
+            var f = a[0, ":", ":", ":", -1] as ndarray;
+            AssertArray(f, new UInt32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(f);
+            print("********");
+
+            var g = a.A(0, 1, "...", -1);
+            AssertArray(g, new UInt32[,] { { 5, 6 }, { 7, 8 } });
+            print(g);
+            print("********");
+
+            var h = a.A(0, 2, 1, "...", -1);
+            AssertArray(h, new UInt32[] { 11, 12 });
+            print(h);
+            print("********");
+
+            var i = a[":", 2, 1, 1, "..."] as ndarray;
+            AssertArray(i, new UInt32[,] { { 12 } });
+            print(i);
+        }
+
+        [TestMethod]
+        public void test_Ellipsis_indexing_2()
+        {
+            var a = np.array(new double[] { 10.0, 7, 4, 3, 2, 1 });
+
+            var b = a.A(new Ellipsis(), -1);
+            Assert.AreEqual((double)1.0, b.GetItem(0));
+            print(b);
+            print("********");
+
+
+            a = np.array(new double[,] { { 10.0, 7, 4 }, { 3, 2, 1 } });
+            var c = a.A(new Ellipsis(), -1);
+            AssertArray(c, new double[] { 4.0, 1.0 });
+            print(c);
+            print("********");
+
+            var TestData = new UInt32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            a = np.array(TestData, dtype: np.UInt32).reshape((1, 3, 2, -1, 1));
+            var d = a[new Ellipsis(), -1] as ndarray;
+            AssertArray(d, new UInt32[,,,] { { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } } });
+            print(d);
+            print("********");
+
+            var e = a[0, new Ellipsis(), -1] as ndarray;
+            AssertArray(e, new UInt32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(e);
+            print("********");
+
+            var f = a[0, ":", ":", ":", -1] as ndarray;
+            AssertArray(f, new UInt32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(f);
+            print("********");
+
+            var g = a.A(0, 1, new Ellipsis(), -1);
+            AssertArray(g, new UInt32[,] { { 5, 6 }, { 7, 8 } });
+            print(g);
+            print("********");
+
+            var h = a.A(0, 2, 1, new Ellipsis(), -1);
+            AssertArray(h, new UInt32[] { 11, 12 });
+            print(h);
+            print("********");
+
+            var i = a[":", 2, 1, 1, new Ellipsis()] as ndarray;
+            AssertArray(i, new UInt32[,] { { 12 } });
+            print(i);
+        }
+
+
     }
 }
