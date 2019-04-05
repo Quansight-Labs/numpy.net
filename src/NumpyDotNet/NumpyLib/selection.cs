@@ -493,6 +493,8 @@ namespace NumpyLib
         static bool LT(dynamic a, dynamic b)
         {
             if (double.IsNaN(a))
+                return false;
+            if (double.IsNaN(b))
                 return true;
 
             return a < b;
