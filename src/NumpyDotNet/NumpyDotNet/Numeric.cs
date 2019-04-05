@@ -258,6 +258,14 @@ namespace NumpyDotNet
 
         #region count_nonzero
 
+        public static int count_nonzero_i(object a, int? axis = null)
+        {
+            ndarray arr = count_nonzero(a, axis);
+
+            int result = (int)arr.GetItem(0);
+            return result;
+        }
+
         public static ndarray count_nonzero(object a, int? axis = null)
         {
             //  Counts the number of non - zero values in the array ``a``.

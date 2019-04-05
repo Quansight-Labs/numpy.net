@@ -2562,7 +2562,7 @@ namespace NumpyDotNet
                 }
    
             }
-            else if ((long)np.count_nonzero(n.ravel())[0] > 0)
+            else if (np.count_nonzero_i(n.ravel()) > 0)
             {
                 // warnings.warn("Invalid value encountered in median for" + " %d results" % np.count_nonzero(n.ravel()), RuntimeWarning, stacklevel=3)
                 result[n] = np.NaN;
@@ -2949,8 +2949,8 @@ namespace NumpyDotNet
             else
             {
                 // faster than any()
-                long nz1 = (long)np.count_nonzero(q < 0.0)[0];
-                long nz2 = (long)np.count_nonzero(q > 1.0)[0];
+                int nz1 = np.count_nonzero_i(q < 0.0);
+                int nz2 = np.count_nonzero_i(q > 1.0);
                 if (nz1 > 0 || nz2 > 0)
                 {
                     return false;
