@@ -288,7 +288,7 @@ namespace NumpyDotNet
 
             try
             {
-                var ret = fn(arr, overwrite_input);
+                var ret = fn(view, overwrite_input);
                 return ret;
             }
             catch (Exception ex)

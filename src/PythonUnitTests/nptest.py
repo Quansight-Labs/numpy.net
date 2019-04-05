@@ -1323,3 +1323,149 @@ class nptest(object):
         s = sqrt(1-a1**2.0)
 
         return nptest.i0(beta * s)/div
+
+    @staticmethod
+    def median(a, axis=None, out=None, overwrite_input=False, keepdims=False):
+
+        r, k = nptest._ureduce(a, func=nptest._median, axis=axis, out=out,
+                        overwrite_input=overwrite_input)
+        if keepdims:
+            return r.reshape(k)
+        else:
+            return r
+
+    @staticmethod
+    def _median(a, axis=None, out=None, overwrite_input=False):
+        # can't be reasonably be implemented in terms of percentile as we have to
+        # call mean to not break astropy
+        a = np.asanyarray(a)
+
+        # Set the partition indexes
+        if axis is None:
+            sz = a.size
+        else:
+            sz = a.shape[axis]
+        if sz % 2 == 0:
+            szh = sz // 2
+            kth = [szh - 1, szh]
+        else:
+            kth = [(sz - 1) // 2]
+        # Check if the array contains any nan's
+        if np.issubdtype(a.dtype, np.inexact):
+            kth.append(-1)
+
+        if overwrite_input:
+            if axis is None:
+                part = a.ravel()
+                part.partition(kth)
+            else:
+                a.partition(kth, axis=axis)
+                part = a
+        else:
+            part = partition(a, kth, axis=axis)
+
+        if part.shape == ():
+            # make 0-D arrays work
+            return part.item()
+        if axis is None:
+            axis = 0
+
+        indexer = [slice(None)] * part.ndim
+        index = part.shape[axis] // 2
+        if part.shape[axis] % 2 == 1:
+            # index with slice to allow mean (below) to work
+            indexer[axis] = slice(index, index+1)
+        else:
+            indexer[axis] = slice(index-1, index+1)
+
+        # Check if the array contains any nan's
+        if np.issubdtype(a.dtype, np.inexact) and sz > 0:
+            # warn and return nans like mean would
+            rout = mean(part[indexer], axis=axis, out=out)
+            return np.lib.utils._median_nancheck(part, rout, axis, out)
+        else:
+            # if there are no nans
+            # Use mean in odd and even case to coerce data type
+            # and check, use out array.
+            return np.mean(part[indexer], axis=axis, out=out)
+
+    @staticmethod
+    def nanmedian(a, axis=None, out=None, overwrite_input=False, keepdims=np._NoValue):
+
+        a = np.asanyarray(a)
+        # apply_along_axis in _nanmedian doesn't handle empty arrays well,
+        # so deal them upfront
+        if a.size == 0:
+            return np.nanmean(a, axis, out=out, keepdims=keepdims)
+
+        r, k = nptest._ureduce(a, func=nptest._nanmedian, axis=axis, out=out,
+                                      overwrite_input=overwrite_input)
+        if keepdims and keepdims is not np._NoValue:
+            return r.reshape(k)
+        else:
+            return r
+
+    @staticmethod
+    def _nanmedian1d(arr1d, overwrite_input=False):
+
+        arr1d, overwrite_input = nptest._remove_nan_1d(arr1d,
+            overwrite_input=overwrite_input)
+        if arr1d.size == 0:
+            return np.nan
+
+        return np.median(arr1d, overwrite_input=overwrite_input)
+
+    @staticmethod
+    def _nanmedian(a, axis=None, out=None, overwrite_input=False):
+ 
+        if axis is None or a.ndim == 1:
+            part = a.ravel()
+            if out is None:
+                return nptest._nanmedian1d(part, overwrite_input)
+            else:
+                out[...] = nptest._nanmedian1d(part, overwrite_input)
+                return out
+        else:
+            # for small medians use sort + indexing which is still faster than
+            # apply_along_axis
+            # benchmarked with shuffled (50, 50, x) containing a few NaN
+            #if a.shape[axis] < 600:
+            #    return nptest._nanmedian_small(a, axis, out, overwrite_input)
+            result = np.apply_along_axis(nptest._nanmedian1d, axis, a, overwrite_input)
+            if out is not None:
+                out[...] = result
+            return result
+
+    @staticmethod
+    def _nanmedian_small(a, axis=None, out=None, overwrite_input=False):
+
+        a = np.ma.masked_array(a, np.isnan(a))
+        m = np.ma.median(a, axis=axis, overwrite_input=overwrite_input)
+        for i in range(np.count_nonzero(m.mask.ravel())):
+            warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel=3)
+        if out is not None:
+            out[...] = m.filled(np.nan)
+            return out
+        return m.filled(np.nan)
+
+
+
+    @staticmethod
+    def _remove_nan_1d(arr1d, overwrite_input=False):
+        
+        c = np.isnan(arr1d)
+        s = np.nonzero(c)[0]
+        if s.size == arr1d.size:
+            warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel=4)
+            return arr1d[:0], True
+        elif s.size == 0:
+            return arr1d, overwrite_input
+        else:
+            if not overwrite_input:
+                arr1d = arr1d.copy()
+            # select non-nans at end of array
+            enonan = arr1d[-s.size:][~c[-s.size:]]
+            # fill nans in beginning of array with non-nans of end
+            arr1d[s[:enonan.size]] = enonan
+
+            return arr1d[:-s.size], True

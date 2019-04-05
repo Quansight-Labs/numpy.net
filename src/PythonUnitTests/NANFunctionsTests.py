@@ -116,14 +116,15 @@ class NANFunctionsTests(unittest.TestCase):
         a = np.array([[10.0, 7, 4], [3, 2, 1]])
         a[0, 1] = np.nan
         print(a)
+
  
-        b = np.median(a)
+        b = nptest.median(a)
         print(b)
 
-        c = np.nanmedian(a)
+        c = nptest.nanmedian(a)
         print(c)
 
-        d = np.nanmedian(a, axis=0)
+        d = nptest.nanmedian(a, axis=0)
         print(d)
 
         e = np.median(a, axis=1)

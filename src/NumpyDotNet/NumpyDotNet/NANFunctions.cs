@@ -1003,7 +1003,7 @@ namespace NumpyDotNet
             if (removed.a.size == 0)
                 return asanyarray(_get_NAN_value(removed.a));
 
-            return asanyarray(np.median(arr1d)[0]);
+            return asanyarray(np.median(removed.a));
         }
 
         private static ndarray _nanmedian(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false)
@@ -1157,7 +1157,14 @@ namespace NumpyDotNet
                 return nanmean(a, axis);
             }
 
-            var _ureduce_ret = _nan_ureduce(arr, func: _nanmedian, axisarray: new int[] { axis.Value }, @out: @out, overwrite_input: overwrite_input);
+            int[] axisarray = null;
+            if (axis != null)
+            {
+                axisarray = new[] { axis.Value };
+            }
+       
+
+            var _ureduce_ret = _nan_ureduce(arr, func: _nanmedian, axisarray: axisarray, @out: @out, overwrite_input: overwrite_input);
             if (keepdims != null && keepdims.Value == true)
             {
                 return _ureduce_ret.r.reshape(_ureduce_ret.keepdims);

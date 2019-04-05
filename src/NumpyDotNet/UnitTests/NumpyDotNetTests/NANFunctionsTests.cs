@@ -171,12 +171,47 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
+        [Ignore] // need to rework apply_along_axis first
         [TestMethod]
         public void test_nanmedian_1()
         {
             var a = np.array(new double[,] { { 10.0, 7, 4 }, { 3, 2, 1 } });
             a[0, 1] = double.NaN;
+            print(a);
+
+
+            var b = np.median(a);
+            print(b);
+
+            var c = np.nanmedian(a);
+            print(c);
+
+            var d = np.nanmedian(a, axis: 0);
+            print(d);
+
+            var e = np.median(a, axis: 1);
+            print(e);
+
+            var f = a.Copy();
+            var g = np.nanmedian(f, axis: 1, overwrite_input: true);
+            print(g);
+
+            Assert.IsFalse(np.allb(a == f));
+
+            var h = a.Copy();
+            var i = np.nanmedian(h, axis: null, overwrite_input: true);
+            print(i);
+            Assert.IsFalse(np.allb(a == h));
+
+            return;
+        }
+
+        [Ignore] // need to rework apply_along_axis first
+        [TestMethod]
+        public void test_nanmedian_2()
+        {
+            var a = np.array(new float[,] { { 10.0f, 7, 4 }, { 3, 2, 1 } });
+            a[0, 1] = float.NaN;
             print(a);
 
 
