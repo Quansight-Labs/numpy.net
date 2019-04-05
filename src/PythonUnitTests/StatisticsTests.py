@@ -306,6 +306,38 @@ class StatisticsTests(unittest.TestCase):
   
         return
 
+    def test_median_3(self):
+
+        a = np.array([[10.0, 7.2, 4.2], [3.2, 2.2, 1.2]])
+
+        b = np.median(a)
+        print(b)
+
+        c = np.median(a, axis=0)
+        print(c)
+
+        d = np.median(a, axis=1)
+        print(d)
+
+        m = np.median(a, axis=0)
+        out = np.zeros_like(m)
+        n = np.median(a, axis=0, out=m)
+        print(n)
+        print(m)
+
+        b = a.copy()
+        c = np.median(b, axis=1, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a==b)
+
+        b = a.copy()
+        c = np.median(b, axis=None, overwrite_input=True)
+        print(c)
+
+        assert not np.all(a==b)
+
+        return
 
     def test_average_1(self):
 

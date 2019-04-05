@@ -396,6 +396,43 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_median_3()
+        {
+            var a = np.array(new double[,] { { 10.0, 7.2, 4.2 }, { 3.2, 2.2, 1.2 } });
+
+            var b = np.median(a);
+            Assert.AreEqual((double)3.7, b.GetItem(0));
+            print(b);
+
+            var c = np.median(a, axis: 0);
+            AssertArray(c, new double[] { 6.6, 4.7, 2.7 });
+            print(c);
+
+            var d = np.median(a, axis: 1);
+            AssertArray(d, new double[] { 7.2, 2.2 });
+            print(d);
+
+            var e = np.median(a, axis: 1, keepdims: true);
+            AssertArray(e, new double[,] { { 7.2 }, { 2.2 } });
+            print(e);
+
+            // note: we dont support the out parameter
+
+            //var m = np.median(a, 0.5, axis: 0);
+            //var n = np.zeros_like(m);
+            //var o = np.median(a, 0.5, axis: 0);
+            //print(o);
+            //print(n);
+            // note: we don't support the overwrite_input flag
+            //b = a.Copy();
+            //c = np.median(b, 0.5, axis: 1, overwrite_input: true);
+            //print(c);
+
+            //Assert.IsFalse((bool)np.all(a.Equals(b)).GetItem(0));
+
+            return;
+        }
 
 
         [TestMethod]
