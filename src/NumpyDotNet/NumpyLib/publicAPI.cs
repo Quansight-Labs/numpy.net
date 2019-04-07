@@ -1062,7 +1062,7 @@ namespace NumpyLib
 
 #region npy_mapping
 
-        internal static NpyArrayMapIterObject NpyArray_MapIterNew(NpyIndex[] indexes, int n)
+        public static NpyArrayMapIterObject NpyArray_MapIterNew(NpyIndex[] indexes, int n)
         {
             return numpyinternal.NpyArray_MapIterNew(indexes, n);
         }

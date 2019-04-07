@@ -1767,6 +1767,28 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static NpyArrayMapIterObject IterGetNewMap(NpyIndex[] indexes, int n)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_MapIterNew(indexes, n);
+            }
+        }
+
+
+        internal static int IterBindMap(NpyArrayMapIterObject mit, ndarray arr, NpyArray true_array)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_MapIterBind(mit, arr.Array, true_array);
+            }
+        }
+
+
         internal static void IterGetMap(NpyArrayMapIterObject iter)
         {
             #if ENABLELOCKING
@@ -1776,6 +1798,28 @@ namespace NumpyDotNet {
                 numpyAPI.NpyArray_GetMap(iter);
             }
         }
+
+        internal static void IterMapReset(NpyArrayMapIterObject iter)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_MapIterReset(iter);
+            }
+        }
+
+
+        internal static void IterMapNext(NpyArrayMapIterObject iter)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_MapIterNext(iter);
+            }
+        }
+
 
 
         internal static VoidPtr IterGoto1D(flatiter iter, npy_intp index)

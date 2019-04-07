@@ -419,7 +419,11 @@ namespace NumpyLib
                 it.nd_m1 = mit.nd - 1;
                 it.size = tmp;
                 nd = it.ao.nd;
-                it.factors[mit.nd - 1] = 1;
+
+                if (mit.nd != 0)
+                {
+                    it.factors[mit.nd - 1] = 1;
+                }
                 for (j = 0; j < mit.nd; j++)
                 {
                     it.dims_m1[j] = mit.dimensions[j] - 1;
@@ -761,7 +765,11 @@ namespace NumpyLib
             it.ao = ao;
             it.size = NpyArray_SIZE(ao);
             it.nd_m1 = nd - 1;
-            it.factors[nd - 1] = 1;
+
+            if (nd != 0)
+            {
+                it.factors[nd - 1] = 1;
+            }
             for (i = 0; i < nd; i++)
             {
                 it.dims_m1[i] = ao.dimensions[i] - 1;

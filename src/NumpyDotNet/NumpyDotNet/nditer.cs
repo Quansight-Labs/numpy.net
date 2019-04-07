@@ -142,4 +142,107 @@ namespace NumpyDotNet
 
 
     }
+
+
+    public class ndindex : IEnumerable, IEnumerator, IEnumerator<object>
+    {
+        NpyArrayMapIterObject core = null;
+        private NpyArrayMapIterObject current;
+        private int creationCount = 0;
+
+        public ndindex(object oshape)
+        {
+
+            shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
+  
+            creationCount = 1;
+            core = NpyCoreApi.IterGetNewMap(GetIndexes(newshape.iDims), newshape.iDims.Length);
+
+            ndarray temp = np.zeros(newshape, dtype: np.intp);
+
+            var kk = NpyCoreApi.IterBindMap(core, temp, null);
+        }
+
+        private NpyIndex[] GetIndexes(npy_intp []dims)
+        {
+            object[] args = new object[1];
+            args[0] = dims;
+     
+
+            NpyIndexes indexes = new NpyIndexes();
+  
+            NpyUtil_IndexProcessing.IndexConverter(null, args, indexes);
+
+            return indexes.Indexes;
+        }
+
+
+        internal long Length
+        {
+            get { return core.size; }
+        }
+
+        public object index
+        {
+            get
+            {
+                return core.index;
+            }
+        }
+
+        #region IEnumerator<object>
+
+        public IEnumerator GetEnumerator()
+        {
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                ndarray[] retArrays = new ndarray[creationCount];
+                for (int i = 0; i < creationCount; i++)
+                    retArrays[i] = SingleElementArray(current.iters[i]);
+
+                return retArrays;
+            }
+        }
+
+        private ndarray SingleElementArray(NpyArrayIterObject IterObject)
+        {
+            return np.array(IterObject.dataptr, 1);
+        }
+
+        public bool MoveNext()
+        {
+            if (current == null)
+            {
+                current = core;
+            }
+            else
+            {
+                NpyCoreApi.IterMapNext(core);
+            }
+            return (NpyCoreApi.MultiIterDone(core));
+        }
+
+        public void Reset()
+        {
+            current = null;
+            NpyCoreApi.IterMapReset(core);
+        }
+
+        #endregion
+
+
+
+        public void Dispose()
+        {
+        }
+
+
+
+    }
+
 }
