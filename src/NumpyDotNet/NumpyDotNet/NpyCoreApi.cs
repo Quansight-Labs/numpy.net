@@ -402,6 +402,36 @@ namespace NumpyDotNet {
             return result;
         }
 
+        internal static void MultiIterReset(NpyArrayMultiIterObject multi)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_Reset(multi);
+            }
+        }
+
+        internal static void MultiIterNext(NpyArrayMultiIterObject multi)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_Next(multi);
+            }
+        }
+
+        internal static bool MultiIterDone(NpyArrayMultiIterObject multi)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.NpyArray_NotDone(multi);
+            }
+        }
+
         internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, double operand, bool UseSrcAsDest = false)
         {
             #if ENABLELOCKING
@@ -1736,6 +1766,17 @@ namespace NumpyDotNet {
                 numpyAPI.NpyArray_IterReset(iter);
             }
         }
+
+        internal static void IterGetMap(NpyArrayMapIterObject iter)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_GetMap(iter);
+            }
+        }
+
 
         internal static VoidPtr IterGoto1D(flatiter iter, npy_intp index)
         {

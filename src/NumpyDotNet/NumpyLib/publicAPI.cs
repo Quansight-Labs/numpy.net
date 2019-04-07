@@ -1030,6 +1030,22 @@ namespace NumpyLib
         {
             return numpyinternal.NpyArray_RemoveSmallest(multi);
         }
+
+        public static void NpyArray_Reset(NpyArrayMultiIterObject multi)
+        {
+            numpyinternal.NpyArray_MultiIter_RESET(multi);
+        }
+
+        public static void NpyArray_Next(NpyArrayMultiIterObject multi)
+        {
+            numpyinternal.NpyArray_MultiIter_NEXT(multi);
+        }
+
+        public static bool NpyArray_NotDone(NpyArrayMultiIterObject multi)
+        {
+            return numpyinternal.NpyArray_MultiIter_NOTDONE(multi);
+        }
+
         public static int NpyArray_Broadcast(NpyArrayMultiIterObject mit)
         {
             return numpyinternal.NpyArray_Broadcast(mit);
