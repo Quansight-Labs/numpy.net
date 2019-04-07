@@ -55,11 +55,7 @@ class Test_test1(unittest.TestCase):
     def test_ix_1(self):
         return
     
-    def test_ndenumerate_1(self):
-        return
-
-    def test_ndindex_1(self):
-        return
+ 
 
     def test_fill_diagonal_1(self):
         return

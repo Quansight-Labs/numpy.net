@@ -62,6 +62,9 @@
     <Compile Include="NANFunctionsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IteratorTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WindowFunctions.py">
       <SubType>Code</SubType>
     </Compile>
