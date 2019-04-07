@@ -65,7 +65,7 @@ namespace NumpyDotNetTests
             {
                 foreach (var o in (Array)obj)
                 {
-                    Console.Write(o.ToString());
+                    Console.Write(o.ToString() + ",");
                 }
                 Console.WriteLine("");
             }

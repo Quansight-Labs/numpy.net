@@ -44,6 +44,13 @@ namespace NumpyDotNetTests
             {
                 print(aa);
             }
+
+
+            foreach (var aa in new ndindex((2, 3, 2)))
+            {
+                print(aa);
+            }
+
         }
 
     }

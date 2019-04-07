@@ -32,6 +32,9 @@ class IteratorTests(unittest.TestCase):
         for aa in np.ndindex((2,3)):
             print(aa)
 
+        for aa in np.ndindex((2,3,2)):
+            print(aa)
+
     def test_ndenumerate_1(self):
 
         a = np.arange(0, 6).reshape(2,3)

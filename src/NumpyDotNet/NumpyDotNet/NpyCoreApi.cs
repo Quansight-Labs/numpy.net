@@ -280,6 +280,27 @@ namespace NumpyDotNet {
             return retArr;
         }
 
+        /// <summary>
+        /// sets an array with the size or stride of each dimension in the given array.
+        /// </summary>
+        /// <param name="arr">The array</param>
+        /// <param name="setDims">True returns size of each dimension, false returns stride of each dimension</param>
+        /// <returns>Array w/ an array size or stride for each dimension</returns>
+        internal static void SetArrayDimsOrStrides(ndarray arr, npy_intp[] dim_or_strides, int len, bool setDims)
+        {
+            if (setDims)
+            {
+                arr.Array.dimensions = dim_or_strides;
+                arr.Array.nd = len;
+            }
+            else
+            {
+                arr.Array.strides = dim_or_strides;
+                arr.Array.nd = len;
+            }
+ 
+        }
+
 
         internal static void Incref(NpyArray_Descr obj)
         {

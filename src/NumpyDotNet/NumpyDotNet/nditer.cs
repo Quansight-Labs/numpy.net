@@ -75,17 +75,14 @@ namespace NumpyDotNet
         }
 
 
-        internal long Length
+        internal long ndim
         {
-            get { return core.size; }
+            get { return core.nd; }
         }
 
-        public object index
+        public npy_intp[] coordinates(int index)
         {
-            get
-            {
-                return core.index;
-            }
+            return core.iters[index].coordinates;
         }
 
         #region IEnumerator<object>
@@ -146,49 +143,19 @@ namespace NumpyDotNet
 
     public class ndindex : IEnumerable, IEnumerator, IEnumerator<object>
     {
-        NpyArrayMapIterObject core = null;
-        private NpyArrayMapIterObject current;
-        private int creationCount = 0;
+        nditer core;
+        private nditer current;
 
         public ndindex(object oshape)
         {
 
             shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
-  
-            creationCount = 1;
-            core = NpyCoreApi.IterGetNewMap(GetIndexes(newshape.iDims), newshape.iDims.Length);
 
-            ndarray temp = np.zeros(newshape, dtype: np.intp);
+            var x = np.as_strided(np.zeros(1), shape: newshape.iDims, strides: np.zeros_like(newshape.iDims, dtype:np.intp).ToArray<npy_intp>());
 
-            var kk = NpyCoreApi.IterBindMap(core, temp, null);
+            core = new nditer(x);
         }
 
-        private NpyIndex[] GetIndexes(npy_intp []dims)
-        {
-            object[] args = new object[1];
-            args[0] = dims;
-     
-
-            NpyIndexes indexes = new NpyIndexes();
-  
-            NpyUtil_IndexProcessing.IndexConverter(null, args, indexes);
-
-            return indexes.Indexes;
-        }
-
-
-        internal long Length
-        {
-            get { return core.size; }
-        }
-
-        public object index
-        {
-            get
-            {
-                return core.index;
-            }
-        }
 
         #region IEnumerator<object>
 
@@ -201,18 +168,17 @@ namespace NumpyDotNet
         {
             get
             {
-                ndarray[] retArrays = new ndarray[creationCount];
-                for (int i = 0; i < creationCount; i++)
-                    retArrays[i] = SingleElementArray(current.iters[i]);
+                npy_intp[] coords = new npy_intp[current.ndim];
+                
+                for (int i = 0; i < current.ndim; i++)
+                {
+                    coords[i] = current.coordinates(0)[i];
+                }
 
-                return retArrays;
+                return coords;
             }
         }
 
-        private ndarray SingleElementArray(NpyArrayIterObject IterObject)
-        {
-            return np.array(IterObject.dataptr, 1);
-        }
 
         public bool MoveNext()
         {
@@ -220,17 +186,13 @@ namespace NumpyDotNet
             {
                 current = core;
             }
-            else
-            {
-                NpyCoreApi.IterMapNext(core);
-            }
-            return (NpyCoreApi.MultiIterDone(core));
+ 
+            return (core.MoveNext());
         }
 
         public void Reset()
         {
-            current = null;
-            NpyCoreApi.IterMapReset(core);
+            core.Reset();
         }
 
         #endregion

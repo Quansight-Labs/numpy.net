@@ -47,6 +47,21 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        public static ndarray as_strided(ndarray x, npy_intp[] shape = null, npy_intp[] strides = null, bool subok = false, bool writeable = false)
+        {
+            var view = np.array(x, copy: false, subok: subok);
+
+            if (shape != null)
+                NpyCoreApi.SetArrayDimsOrStrides(view, shape, shape.Length, true);
+            if (strides != null)
+                NpyCoreApi.SetArrayDimsOrStrides(view, strides, strides.Length, false);
+
+            if (view.flags.writeable && !writeable)
+                view.flags.writeable = false;
+
+            return view;
+    }
+
 
         private static bool broadcastable(npy_intp[] adims, int and, npy_intp[] bdims, int bnd)
         {
