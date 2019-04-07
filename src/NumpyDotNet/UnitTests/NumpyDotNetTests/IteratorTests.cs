@@ -40,7 +40,7 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(0, 6).reshape((2, 3));  // force numpy to be initialized
 
-            foreach (var aa in new ndindex((2,3)))
+            foreach (var aa in new ndindex((2, 3)))
             {
                 print(aa);
             }
@@ -53,5 +53,16 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_ndenumerate_1()
+        {
+            var a = np.arange(0, 6).reshape((2, 3));
+
+            foreach (ValueTuple<long[], object> aa in new ndenumerate(a))
+            {
+                print(aa.Item1);
+                print(aa.Item2);
+            }
+        }
     }
 }

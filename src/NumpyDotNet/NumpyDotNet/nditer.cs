@@ -207,4 +207,58 @@ namespace NumpyDotNet
 
     }
 
+
+    public class ndenumerate : IEnumerable, IEnumerator, IEnumerator<object>
+    {
+        flatiter core;
+        private flatiter current;
+
+        public ndenumerate(ndarray a)
+        {
+            core = np.asarray(a).Flat;
+        }
+
+
+        #region IEnumerator<object>
+
+        public IEnumerator GetEnumerator()
+        {
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                return (current.coords, core.Current);
+            }
+        }
+
+
+        public bool MoveNext()
+        {
+            if (current == null)
+            {
+                current = core;
+            }
+
+            return (core.MoveNext());
+        }
+
+        public void Reset()
+        {
+            core.Reset();
+        }
+
+        #endregion
+
+
+
+        public void Dispose()
+        {
+        }
+
+
+
+    }
 }

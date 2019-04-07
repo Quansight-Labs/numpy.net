@@ -76,19 +76,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void xxx_test_ndenumerate_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void xxx_test_ndindex_1()
-        {
-
-        }
         #endif
 
         [Ignore] // not implemented yet.  Too much work

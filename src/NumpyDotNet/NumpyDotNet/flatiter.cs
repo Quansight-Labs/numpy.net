@@ -167,7 +167,7 @@ namespace NumpyDotNet
             }
         }
 
-        public PythonTuple coords
+        public npy_intp[] coords
         {
             get
             {
@@ -178,7 +178,7 @@ namespace NumpyDotNet
                 {
                     result[i] = coords[i];
                 }
-                return new PythonTuple(result);
+                return result;
             }
         }
 
