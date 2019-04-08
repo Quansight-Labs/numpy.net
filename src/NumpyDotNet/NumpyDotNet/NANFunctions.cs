@@ -995,8 +995,15 @@ namespace NumpyDotNet
             return avg;
         }
 
-        private static ndarray _nanmedian1d(ndarray arr1d, bool ow_input= false)
+        private static ndarray _nanmedian1d(ndarray arr1d, params object[] args)
         {
+            bool ow_input = false;
+            if (args != null && args[0] is bool)
+            {
+                ow_input = (bool)args[0];
+            }
+
+
             // Private function for rank 1 arrays.Compute the median ignoring NaNs.
             // See nanmedian for parameter usage
             var removed = _remove_nan_1d(arr1d, overwrite_input: ow_input);
@@ -1035,7 +1042,7 @@ namespace NumpyDotNet
                 //    return _nanmedian_small(a, axis, @out, overwrite_input);
                 //}
 
-                var result = np.apply_along_axis(_nanmedian1d, axis.Value, a, overwrite_input);
+                var result = np.apply_along_axis(_nanmedian1d, axis.Value, a, (object)overwrite_input);
                 if (@out != null)
                 {
                     @out["..."] = result;
