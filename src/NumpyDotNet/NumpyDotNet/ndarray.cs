@@ -1293,6 +1293,11 @@ namespace NumpyDotNet
             get { return NpyDefs.IsFlexible(Dtype.TypeNum); }
         }
 
+        internal bool IsMatrix
+        {
+            get { return false; }
+        }
+
         public bool IsWriteable {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_WRITEABLE); }
         }
