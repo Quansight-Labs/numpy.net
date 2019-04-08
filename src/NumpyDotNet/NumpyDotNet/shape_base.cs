@@ -237,7 +237,7 @@ namespace NumpyDotNet
 
         public delegate ndarray apply_along_axis_view(ndarray a, ndarray view);
         public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
-        public delegate ndarray apply_along_axis_noindices(ndarray a, bool overwrite_input);
+        public delegate object apply_along_axis_fn(ndarray a, params object[] args);
 
         public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
         {
@@ -278,23 +278,101 @@ namespace NumpyDotNet
             }
         }
 
-        public static ndarray apply_along_axis(apply_along_axis_noindices fn, int axis, ndarray arr, bool overwrite_input)
+        public static ndarray apply_along_axis(apply_along_axis_fn func1d, int axis, ndarray arr, params object[] args)
         {
-            if (fn == null)
+            if (func1d == null)
             {
                 throw new Exception("function can't be null");
             }
-            var view = ViewFromAxis(arr, axis);
 
-            try
+            // handle negative axes
+            arr = asanyarray(arr);
+            var nd = arr.ndim;
+            axis = normalize_axis_index(axis, nd);
+
+            // arr, with the iteration axis at the end
+            var in_dims = PytonFunction.range(0, nd);
+            List<npy_intp> in_dims2 = new List<npy_intp>();
+            for (int i = 0; i < axis; i++)
+                in_dims2.Add(in_dims[i]);
+            for (int i = axis+1; i < in_dims.Length; i++)
+                in_dims2.Add(in_dims[i]);
+            in_dims2.Add(axis);
+            in_dims = in_dims2.ToArray();
+
+            var inarr_view = transpose(arr, in_dims);
+
+            // compute indices for the iteration axes, and append a trailing ellipsis to
+            // prevent 0d arrays decaying to scalars, which fixes gh-8642
+
+            npy_intp[] newshape = new npy_intp[inarr_view.shape.iDims.Length - 1];
+            Array.Copy(inarr_view.shape.iDims, 0, newshape, 0, inarr_view.shape.iDims.Length - 1);
+            var indices = new ndindex(new shape(newshape));
+
+            List<object> inds = new List<object>();
+            foreach (var ind in indices)
             {
-                var ret = fn(view, overwrite_input);
-                return ret;
+                inds.Add(new object[] { ind, new Ellipsis() });
             }
-            catch (Exception ex)
+
+            object ind0 = null;
+            ndarray res = null;
+            foreach (var _ind0 in inds)
             {
-                throw;
+                ind0 = _ind0;
+                res = asanyarray(func1d(inarr_view[_ind0] as ndarray,  args));
+                break;
             }
+
+
+            // build a buffer for storing evaluations of func1d.
+            // remove the requested axis, and add the new ones on the end.
+            // laid out so that each write is contiguous.
+            // for a tuple index inds, buff[inds] = func1d(inarr_view[inds])
+
+            List<npy_intp> buffShape = new List<npy_intp>();
+            for (int i = 0; i < inarr_view.shape.iDims.Length - 1; i++)
+                buffShape.Add(inarr_view.shape.iDims[i]);
+            for (int i = 0; i < res.shape.iDims.Length; i++)
+                buffShape.Add(res.shape.iDims[i]);
+            var buff = zeros(new shape(buffShape), dtype: res.Dtype);
+
+
+            // permutation of axes such that out = buff.transpose(buff_permute)
+            var buff_dims = PytonFunction.range(0, buff.ndim);
+            List<npy_intp> buff_permute = new List<npy_intp>();
+            for (int i = 0; i < axis; i++)
+                buff_permute.Add(buff_dims[i]);
+            for (int i = buff.ndim - res.ndim; i < buff.ndim; i++)
+                buff_permute.Add(buff_dims[i]);
+            for (int i = axis; i < buff.ndim - res.ndim; i++)
+                buff_permute.Add(buff_dims[i]);
+
+            // matrices have a nasty __array_prepare__ and __array_wrap__
+            //if not isinstance(res, matrix):
+            //    buff = res.__array_prepare__(buff)
+
+            buff[ind0] = res;
+            foreach (var ind in inds)
+            {
+                buff[ind] = asanyarray(func1d(inarr_view[ind] as ndarray, args));
+            }
+
+            if (!res.IsMatrix)
+            {
+                // wrap the array, to preserve subclasses
+                buff = res.__array_wrap__(buff);
+
+                // finally, rotate the inserted axes back to where they belong
+                return transpose(buff, buff_permute.ToArray());
+            }
+            else
+            {
+                // matrices have to be transposed first, because they collapse dimensions!
+                var out_arr = transpose(buff, buff_permute.ToArray());
+                return res.__array_wrap__(out_arr);
+            }
+
         }
 
         #endregion

@@ -620,6 +620,32 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_apply_along_axis_1()
         {
+            object my_func(ndarray a, params object[] args)
+            {
+                // Average first and last element of a 1-D array"""
+                return (a.A(0) + a.A(-1)) * 0.5;
+            }
+
+            object my_func2(ndarray a, params object[] args)
+            {
+                // Average first and last element of a 1-D array"""
+                return ((int)a[0] * 10);
+            }
+
+            var b = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            var c = np.apply_along_axis(my_func2, 0, b);
+            AssertArray(c, new Int32[] { 10, 20, 30 });
+            print(c);
+
+            var d = np.apply_along_axis(my_func, 1, b);
+            AssertArray(c, new double[] { 2, 5, 8 });
+            print(d);
+            print(b);
+        }
+
+        [TestMethod]
+        public void test_apply_along_axis_1a()
+        {
             ndarray my_func(ndarray a, ndarray view)
             {
                 int v1 = (int)view[0];
