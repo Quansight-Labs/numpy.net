@@ -178,20 +178,6 @@ namespace NumpyDotNet
 
 
 
-        private static npy_intp[] array_range(int start, int end)
-        {
-            npy_intp[] a = new npy_intp[end - start];
-
-            int index = 0;
-            for (int i = start; i < end; i++)
-            {
-                a[index] = i;
-                index++;
-            }
-
-            return a;
-        }
-
 
 
     }

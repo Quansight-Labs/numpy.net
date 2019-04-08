@@ -39,6 +39,13 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using NumpyDotNet;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+using npy_ucs4 = System.Int64;
+#else
+using npy_intp = System.Int32;
+using npy_ucs4 = System.Int32;
+#endif
 
 namespace NumpyDotNet
 {
@@ -385,6 +392,7 @@ namespace NumpyDotNet
 
         }
     }
+
     public class RuntimeError : Exception
     {
         public RuntimeError(string message) : base(message)
@@ -394,5 +402,23 @@ namespace NumpyDotNet
     }
 
     
+    public static class PytonFunction
+    {
+
+        public static npy_intp[] range(int start, int end)
+        {
+            npy_intp[] a = new npy_intp[end - start];
+
+            int index = 0;
+            for (int i = start; i < end; i++)
+            {
+                a[index] = i;
+                index++;
+            }
+
+            return a;
+        }
+
+    }
 
 }
