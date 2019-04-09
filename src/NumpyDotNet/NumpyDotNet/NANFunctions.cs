@@ -1013,7 +1013,8 @@ namespace NumpyDotNet
             return asanyarray(np.median(removed.a));
         }
 
-        private static ndarray _nanmedian(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false)
+        private static ndarray _nanmedian(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null, 
+            bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
             //Private function that doesn't support extended axis or keepdims.
             //These methods are extended to this function using _ureduce
@@ -1173,7 +1174,7 @@ namespace NumpyDotNet
             }
        
 
-            var _ureduce_ret = _nan_ureduce(arr, func: _nanmedian, axisarray: axisarray, @out: @out, overwrite_input: overwrite_input);
+            var _ureduce_ret = _ureduce(arr, func: _nanmedian, q: null, IsQarray: false, axisarray: axisarray, @out: @out, overwrite_input: overwrite_input);
             if (keepdims != null && keepdims.Value == true)
             {
                 return _ureduce_ret.r.reshape(_ureduce_ret.keepdims);
@@ -1184,108 +1185,6 @@ namespace NumpyDotNet
             }
 
         }
-
-        #region _nan_ureduce
-
-        private delegate ndarray _nan_ureduce_func(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false);
-
-        private static (ndarray r, List<npy_intp> keepdims) _nan_ureduce(ndarray a, _nan_ureduce_func func, int[] axisarray = null,
-            ndarray @out = null, bool overwrite_input = false, bool keepdims = false)
-        {
-
-            //Internal Function.
-            //Call `func` with `a` as first argument swapping the axes to use extended
-            //axis on functions that don't support it natively.
-
-            //Returns result and a.shape with axis dims set to 1.
-
-            //Parameters
-            //----------
-            //a: array_like
-            //   Input array or object that can be converted to an array.
-            //func: callable
-            //   Reduction function capable of receiving a single axis argument.
-            //    It is called with `a` as first argument followed by `kwargs`.
-            //kwargs: keyword arguments
-            //    additional keyword arguments to pass to `func`.
-
-            //Returns
-            //------ -
-            //result : tuple
-            //    Result of func(a, ** kwargs) and a.shape with axis dims set to 1
-            //    which can be used to reshape the result to the same shape a ufunc with
-            //    keepdims = True would produce.
-
-            List<npy_intp> keepdim = null;
-            int nd;
-            int? axis = null;
-
-            a = np.asanyarray(a);
-            if (axisarray != null)
-            {
-                keepdim = a.shape.iDims.ToList();
-                nd = a.ndim;
-                axisarray = normalize_axis_tuple(axisarray, a.ndim);
-
-                foreach (var ax in axisarray)
-                    keepdim[ax] = 1;
-
-                if (len(axisarray) == 1)
-                {
-                    axis = axisarray[0];
-                }
-                else
-                {
-                    // keep = set(range(nd)) - set(axis)
-
-                    List<int> keep = new List<int>();
-                    for (int i = 0; i < nd; i++)
-                        keep.Add(i);
-
-                    foreach (var aa in axisarray)
-                    {
-                        if (keep.Contains(aa))
-                        {
-                            keep.Remove(aa);
-                        }
-                    }
-
-                    var nkeep = keep.Count;
-
-                    // swap axis that should not be reduced to front
-                    keep.Sort();
-                    for (int i = 0; i < keep.Count; i++)
-                    {
-                        a = a.SwapAxes(i, keep[i]);
-                    }
-
-                    // merge reduced axis
-
-                    var newShape = new long[nkeep + 1];
-                    for (int i = 0; i < nkeep; i++)
-                    {
-                        newShape[i] = a.shape.iDims[i];
-                    }
-                    newShape[nkeep] = -1;
-                    a = a.reshape(new shape(newShape));
-                    axis = -1;
-                }
-
-            }
-            else
-            {
-                keepdim = new List<npy_intp>();
-                for (int i = 0; i < a.ndim; i++)
-                {
-                    keepdim.Add(1);
-                }
-            }
-
-            ndarray r = func(a, axis, @out, overwrite_input);
-            return (r, keepdim);
-
-        }
-        #endregion
 
     }
 }
