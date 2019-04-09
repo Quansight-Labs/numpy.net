@@ -2471,11 +2471,11 @@ namespace NumpyDotNet
                 if (axis == null)
                 {
                     part = a.ravel();
-                    part = part.partition(kth);
+                    part = part.partition(kth.ToArray());
                 }
                 else
                 {
-                    part = a.partition(kth, axis: axis);
+                    part = a.partition(kth.ToArray(), axis: axis);
                 }
             }
             else

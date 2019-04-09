@@ -356,7 +356,7 @@ namespace NumpyDotNet
             return np.std(a, axis, dtype);
         }
 
-        public static ndarray partition(this ndarray a, IEnumerable<long> kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
+        public static ndarray partition(this ndarray a, long[] kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             return np.partition(a, kth, axis, kind, order);
         }
