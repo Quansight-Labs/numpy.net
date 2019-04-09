@@ -620,7 +620,7 @@ namespace NumpyDotNet
 
                     // Special case for single assignment.
                     long single_offset = indexes.SingleAssignOffset(this);
-                    if (single_offset >= 0)
+                    if (single_offset >= 0 && np.IsNumericType(value))
                     {
                         // This is a single item assignment. Use SetItem.
                         SetItem(value, single_offset / this.itemsize);
