@@ -213,11 +213,11 @@ namespace NumpyDotNet
                     arr1d = arr1d.Copy();
                 }
                 // select non-nans at end of array
-                ndarray enonan = arr1d.A(string.Format("{0}:",-s.size)).A(~c.A(string.Format("{0}:", -s.size)));
+                ndarray enonan = arr1d.A(string.Format("-{0}:",s.size)).A(~c.A(string.Format("-{0}:", s.size)));
                 // fill nans in beginning of array with non-nans of end
                 arr1d[s.A(string.Format(":{0}", enonan.size))] = enonan;
 
-                return (a: arr1d.A(string.Format(":{0}",-s.size)), overwrite_input: true);
+                return (a: arr1d.A(string.Format(":-{0}",s.size)), overwrite_input: true);
             }
         }
 
@@ -1071,7 +1071,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        public static ndarray nanmedian(object a, int? axis = null, ndarray @out= null, bool overwrite_input = false, bool? keepdims = null)
+        public static ndarray nanmedian(object a, int? axis = null, ndarray @out= null,  bool? keepdims = null)
         {
             /*
             Compute the median along the specified axis, while ignoring NaNs.
@@ -1155,6 +1155,8 @@ namespace NumpyDotNet
             3.0
             >>> assert not np.all(a==b)             
             */
+
+            bool overwrite_input = false;
 
             ndarray arr = asanyarray(a);
             //apply_along_axis in _nanmedian doesn't handle empty arrays well,

@@ -131,7 +131,7 @@ class NANFunctionsTests(unittest.TestCase):
         print(e)
 
         f = a.copy()
-        g = np.nanmedian(f, axis=1, overwrite_input=True)
+        g = nptest.nanmedian(f, axis=1, overwrite_input=True)
         print(g)
 
         assert not np.all(a==f)
