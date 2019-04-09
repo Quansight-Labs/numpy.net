@@ -310,17 +310,24 @@ namespace NumpyDotNet
             var indices = new ndindex(new shape(newshape));
 
             List<object> inds = new List<object>();
-            foreach (var ind in indices)
+            foreach (var _ind in indices)
             {
-                inds.Add(new object[] { ind, new Ellipsis() });
+                npy_intp[] ind = _ind as npy_intp[];
+                inds.Add(new object[] { ind[0], new Ellipsis() });
             }
 
             object ind0 = null;
             ndarray res = null;
+            int res_dimadjust = 0;
             foreach (var _ind0 in inds)
             {
                 ind0 = _ind0;
-                res = asanyarray(func1d(inarr_view[_ind0] as ndarray,  args));
+                var f1 = func1d(inarr_view.A(ind0), args);
+                if (np.IsNumericType(f1))
+                {
+                    res_dimadjust = 1;
+                }
+                res = asanyarray(f1);
                 break;
             }
 
@@ -333,7 +340,7 @@ namespace NumpyDotNet
             List<npy_intp> buffShape = new List<npy_intp>();
             for (int i = 0; i < inarr_view.shape.iDims.Length - 1; i++)
                 buffShape.Add(inarr_view.shape.iDims[i]);
-            for (int i = 0; i < res.shape.iDims.Length; i++)
+            for (int i = 0; i < (res.shape.iDims.Length-res_dimadjust); i++)
                 buffShape.Add(res.shape.iDims[i]);
             var buff = zeros(new shape(buffShape), dtype: res.Dtype);
 
@@ -343,19 +350,19 @@ namespace NumpyDotNet
             List<npy_intp> buff_permute = new List<npy_intp>();
             for (int i = 0; i < axis; i++)
                 buff_permute.Add(buff_dims[i]);
-            for (int i = buff.ndim - res.ndim; i < buff.ndim; i++)
+            for (int i = buff.ndim - (res.ndim-res_dimadjust); i < buff.ndim; i++)
                 buff_permute.Add(buff_dims[i]);
-            for (int i = axis; i < buff.ndim - res.ndim; i++)
+            for (int i = axis; i < buff.ndim - (res.ndim-res_dimadjust); i++)
                 buff_permute.Add(buff_dims[i]);
 
             // matrices have a nasty __array_prepare__ and __array_wrap__
             //if not isinstance(res, matrix):
             //    buff = res.__array_prepare__(buff)
 
-            buff[ind0] = res;
+            buff[ind0] =  res;
             foreach (var ind in inds)
             {
-                buff[ind] = asanyarray(func1d(inarr_view[ind] as ndarray, args));
+                buff[ind] = asanyarray(func1d(inarr_view.A(ind), args));
             }
 
             if (!res.IsMatrix)

@@ -51,6 +51,11 @@ namespace NumpyDotNetTests
                 print(aa);
             }
 
+            foreach (var aa in new ndindex((3)))
+            {
+                print(aa);
+            }
+
         }
 
         [TestMethod]

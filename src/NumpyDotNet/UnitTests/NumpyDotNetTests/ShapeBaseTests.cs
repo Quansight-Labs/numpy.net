@@ -623,7 +623,7 @@ namespace NumpyDotNetTests
             object my_func(ndarray a, params object[] args)
             {
                 // Average first and last element of a 1-D array"""
-                return (a.A(0) + a.A(-1)) * 0.5;
+                return ((int)a[0] + (int)a[-1]) * 0.5;
             }
 
             object my_func2(ndarray a, params object[] args)
@@ -638,7 +638,7 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.apply_along_axis(my_func, 1, b);
-            AssertArray(c, new double[] { 2, 5, 8 });
+            AssertArray(d, new double[] { 2, 5, 8 });
             print(d);
             print(b);
         }
