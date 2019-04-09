@@ -77,10 +77,10 @@ namespace NumpyDotNet
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return float.NaN;
-  
+
                 case NPY_TYPES.NPY_DOUBLE:
                     return double.NaN;
- 
+
                 default:
                     break;
             }
@@ -171,7 +171,7 @@ namespace NumpyDotNet
             return a;
         }
 
-        private static (ndarray a, bool overwrite_input) _remove_nan_1d(ndarray arr1d,bool overwrite_input = false)
+        private static (ndarray a, bool overwrite_input) _remove_nan_1d(ndarray arr1d, bool overwrite_input = false)
         {
             /*
             Equivalent to arr1d[~arr1d.isnan()], but in a different order
@@ -200,7 +200,7 @@ namespace NumpyDotNet
             {
                 Console.WriteLine("All-NaN slice encountered");
                 //warnings.warn("All-NaN slice encountered", RuntimeWarning, stacklevel = 4)
-                return  (a: arr1d[":0"] as ndarray, overwrite_input: true);
+                return (a: arr1d[":0"] as ndarray, overwrite_input: true);
             }
             else if (s.size == 0)
             {
@@ -213,11 +213,11 @@ namespace NumpyDotNet
                     arr1d = arr1d.Copy();
                 }
                 // select non-nans at end of array
-                ndarray enonan = arr1d.A(string.Format("-{0}:",s.size)).A(~c.A(string.Format("-{0}:", s.size)));
+                ndarray enonan = arr1d.A(string.Format("-{0}:", s.size)).A(~c.A(string.Format("-{0}:", s.size)));
                 // fill nans in beginning of array with non-nans of end
                 arr1d[s.A(string.Format(":{0}", enonan.size))] = enonan;
 
-                return (a: arr1d.A(string.Format(":-{0}",s.size)), overwrite_input: true);
+                return (a: arr1d.A(string.Format(":-{0}", s.size)), overwrite_input: true);
             }
         }
 
@@ -373,92 +373,92 @@ namespace NumpyDotNet
 
         public static ndarray nanmax(object a, int? axis = null)
         {
-          /*
-          Return the maximum of an array or maximum along an axis, ignoring any
-              NaNs.When all-NaN slices are encountered a ``RuntimeWarning`` is
-             raised and NaN is returned for that slice.
+            /*
+            Return the maximum of an array or maximum along an axis, ignoring any
+                NaNs.When all-NaN slices are encountered a ``RuntimeWarning`` is
+               raised and NaN is returned for that slice.
 
 
-          Parameters
-          ----------
+            Parameters
+            ----------
 
-          a : array_like
+            a : array_like
 
-              Array containing numbers whose maximum is desired.If `a` is not an
+                Array containing numbers whose maximum is desired.If `a` is not an
 
-              array, a conversion is attempted.
-          axis : { int, tuple of int, None}, optional
-               Axis or axes along which the maximum is computed.The default is to compute
-                the maximum of the flattened array.
-            out : ndarray, optional
-                Alternate output array in which to place the result.The default
-              is ``None``; if provided, it must have the same shape as the
-                expected output, but the type will be cast if necessary.See
-                `doc.ufuncs` for details.
+                array, a conversion is attempted.
+            axis : { int, tuple of int, None}, optional
+                 Axis or axes along which the maximum is computed.The default is to compute
+                  the maximum of the flattened array.
+              out : ndarray, optional
+                  Alternate output array in which to place the result.The default
+                is ``None``; if provided, it must have the same shape as the
+                  expected output, but the type will be cast if necessary.See
+                  `doc.ufuncs` for details.
 
-                ..versionadded:: 1.8.0
-            keepdims : bool, optional
-                If this is set to True, the axes which are reduced are left
-                in the result as dimensions with size one.With this option,
-                the result will broadcast correctly against the original `a`.
+                  ..versionadded:: 1.8.0
+              keepdims : bool, optional
+                  If this is set to True, the axes which are reduced are left
+                  in the result as dimensions with size one.With this option,
+                  the result will broadcast correctly against the original `a`.
 
-                If the value is anything but the default, then
-                `keepdims` will be passed through to the `max` method
-                of sub - classes of `ndarray`.  If the sub - classes methods
-                does not implement `keepdims` any exceptions will be raised.
+                  If the value is anything but the default, then
+                  `keepdims` will be passed through to the `max` method
+                  of sub - classes of `ndarray`.  If the sub - classes methods
+                  does not implement `keepdims` any exceptions will be raised.
 
-                ..versionadded:: 1.8.0
+                  ..versionadded:: 1.8.0
 
-            Returns
-            ------ -
-            nanmax : ndarray
-                An array with the same shape as `a`, with the specified axis removed.
-                If `a` is a 0 - d array, or if axis is None, an ndarray scalar is
-                  returned.The same dtype as `a` is returned.
+              Returns
+              ------ -
+              nanmax : ndarray
+                  An array with the same shape as `a`, with the specified axis removed.
+                  If `a` is a 0 - d array, or if axis is None, an ndarray scalar is
+                    returned.The same dtype as `a` is returned.
 
-            See Also
-            --------
-            nanmin :
-                The minimum value of an array along a given axis, ignoring any NaNs.
-            amax:
-                    The maximum value of an array along a given axis, propagating any NaNs.
-            fmax:
-                    Element - wise maximum of two arrays, ignoring any NaNs.
-            maximum:
-                    Element - wise maximum of two arrays, propagating any NaNs.
-            isnan:
-                    Shows which elements are Not a Number(NaN).
-                isfinite:
-                Shows which elements are neither NaN nor infinity.
+              See Also
+              --------
+              nanmin :
+                  The minimum value of an array along a given axis, ignoring any NaNs.
+              amax:
+                      The maximum value of an array along a given axis, propagating any NaNs.
+              fmax:
+                      Element - wise maximum of two arrays, ignoring any NaNs.
+              maximum:
+                      Element - wise maximum of two arrays, propagating any NaNs.
+              isnan:
+                      Shows which elements are Not a Number(NaN).
+                  isfinite:
+                  Shows which elements are neither NaN nor infinity.
 
-            amin, fmin, minimum
+              amin, fmin, minimum
 
-            Notes
-            -----
-            NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
-            (IEEE 754).This means that Not a Number is not equivalent to infinity.
-            Positive infinity is treated as a very large number and negative
-            infinity is treated as a very small(i.e.negative) number.
+              Notes
+              -----
+              NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+              (IEEE 754).This means that Not a Number is not equivalent to infinity.
+              Positive infinity is treated as a very large number and negative
+              infinity is treated as a very small(i.e.negative) number.
 
-            If the input has a integer type the function is equivalent to np.max.
+              If the input has a integer type the function is equivalent to np.max.
 
-            Examples
-            --------
-            >>> a = np.array([[1, 2], [3, np.nan]])
-            >>> np.nanmax(a)
-            3.0
-            >>> np.nanmax(a, axis = 0)
-            array([3., 2.])
-            >>> np.nanmax(a, axis = 1)
-            array([2., 3.])
+              Examples
+              --------
+              >>> a = np.array([[1, 2], [3, np.nan]])
+              >>> np.nanmax(a)
+              3.0
+              >>> np.nanmax(a, axis = 0)
+              array([3., 2.])
+              >>> np.nanmax(a, axis = 1)
+              array([2., 3.])
 
-            When positive infinity and negative infinity are present:
+              When positive infinity and negative infinity are present:
 
-            >>> np.nanmax([1, 2, np.nan, np.NINF])
-            2.0
-            >>> np.nanmax([1, 2, np.nan, np.inf])
-            inf
-            */
+              >>> np.nanmax([1, 2, np.nan, np.NINF])
+              2.0
+              >>> np.nanmax([1, 2, np.nan, np.inf])
+              inf
+              */
 
             ndarray res = null;
 
@@ -689,7 +689,7 @@ namespace NumpyDotNet
 
 
             var replaced = _replace_nan(asanyarray(a), 0);
-            return np.sum(replaced.a, axis: axis, dtype: dtype, ret : @out);
+            return np.sum(replaced.a, axis: axis, dtype: dtype, ret: @out);
         }
 
         public static ndarray nanprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
@@ -976,7 +976,7 @@ namespace NumpyDotNet
                 {
                     throw new TypeError("If a is inexact, then dtype must be inexact");
                 }
- 
+
             }
 
             var cnt = np.sum(~replaced.mask, axis: axis, dtype: np.intp);
@@ -1013,7 +1013,7 @@ namespace NumpyDotNet
             return asanyarray(np.median(removed.a));
         }
 
-        private static ndarray _nanmedian(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null, 
+        private static ndarray _nanmedian(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null,
             bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
         {
             //Private function that doesn't support extended axis or keepdims.
@@ -1053,7 +1053,7 @@ namespace NumpyDotNet
 
         }
 
-        private static ndarray _nanmedian_small(ndarray a, int? axis= null, ndarray @out= null, bool overwrite_input=false)
+        private static ndarray _nanmedian_small(ndarray a, int? axis = null, ndarray @out = null, bool overwrite_input = false)
         {
             //sort + indexing median, faster for small medians along multiple
             //dimensions due to the high overhead of apply_along_axis
@@ -1072,7 +1072,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        public static ndarray nanmedian(object a, int? axis = null, ndarray @out= null,  bool? keepdims = null)
+        public static ndarray nanmedian(object a, int? axis = null, ndarray @out = null, bool? keepdims = null)
         {
             /*
             Compute the median along the specified axis, while ignoring NaNs.
@@ -1172,7 +1172,7 @@ namespace NumpyDotNet
             {
                 axisarray = new[] { axis.Value };
             }
-       
+
 
             var _ureduce_ret = _ureduce(arr, func: _nanmedian, q: null, IsQarray: false, axisarray: axisarray, @out: @out, overwrite_input: overwrite_input);
             if (keepdims != null && keepdims.Value == true)
@@ -1186,5 +1186,235 @@ namespace NumpyDotNet
 
         }
 
+        public static ndarray nanpercentile(object a, object q, int? axis = null, bool overwrite_input = false,
+                  string interpolation = "linear", bool keepdims = false)
+        {
+            /*
+            Compute the qth percentile of the data along the specified axis,
+            while ignoring nan values.
+
+            Returns the qth percentile(s) of the array elements.
+
+            .. versionadded:: 1.9.0
+
+            Parameters
+            ----------
+            a : array_like
+                Input array or object that can be converted to an array, containing
+                nan values to be ignored.
+            q : array_like of float
+                Percentile or sequence of percentiles to compute, which must be between
+                0 and 100 inclusive.
+            axis : {int, tuple of int, None}, optional
+                Axis or axes along which the percentiles are computed. The
+                default is to compute the percentile(s) along a flattened
+                version of the array.
+            out : ndarray, optional
+                Alternative output array in which to place the result. It must
+                have the same shape and buffer length as the expected output,
+                but the type (of the output) will be cast if necessary.
+            overwrite_input : bool, optional
+                If True, then allow the input array `a` to be modified by intermediate
+                calculations, to save memory. In this case, the contents of the input
+                `a` after this function completes is undefined.
+            interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+                This optional parameter specifies the interpolation method to
+                use when the desired quantile lies between two data points
+                ``i < j``:
+                    * linear: ``i + (j - i) * fraction``, where ``fraction``
+                      is the fractional part of the index surrounded by ``i``
+                      and ``j``.
+                    * lower: ``i``.
+                    * higher: ``j``.
+                    * nearest: ``i`` or ``j``, whichever is nearest.
+                    * midpoint: ``(i + j) / 2``.
+            keepdims : bool, optional
+                If this is set to True, the axes which are reduced are left in
+                the result as dimensions with size one. With this option, the
+                result will broadcast correctly against the original array `a`.
+
+                If this is anything but the default value it will be passed
+                through (in the special case of an empty array) to the
+                `mean` function of the underlying array.  If the array is
+                a sub-class and `mean` does not have the kwarg `keepdims` this
+                will raise a RuntimeError.
+
+            Returns
+            -------
+            percentile : scalar or ndarray
+                If `q` is a single percentile and `axis=None`, then the result
+                is a scalar. If multiple percentiles are given, first axis of
+                the result corresponds to the percentiles. The other axes are
+                the axes that remain after the reduction of `a`. If the input
+                contains integers or floats smaller than ``float64``, the output
+                data-type is ``float64``. Otherwise, the output data-type is the
+                same as that of the input. If `out` is specified, that array is
+                returned instead.
+
+            See Also
+            --------
+            nanmean
+            nanmedian : equivalent to ``nanpercentile(..., 50)``
+            percentile, median, mean
+
+            Notes
+            -----
+            Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+            ``V`` is the value ``q/100`` of the way from the minimum to the
+            maximum in a sorted copy of ``V``. The values and distances of
+            the two nearest neighbors as well as the `interpolation` parameter
+            will determine the percentile if the normalized ranking does not
+            match the location of ``q`` exactly. This function is the same as
+            the median if ``q=50``, the same as the minimum if ``q=0`` and the
+            same as the maximum if ``q=100``.
+
+            Examples
+            --------
+            >>> a = np.array([[10., 7., 4.], [3., 2., 1.]])
+            >>> a[0][1] = np.nan
+            >>> a
+            array([[ 10.,  nan,   4.],
+                  [  3.,   2.,   1.]])
+            >>> np.percentile(a, 50)
+            nan
+            >>> np.nanpercentile(a, 50)
+            3.5
+            >>> np.nanpercentile(a, 50, axis=0)
+            array([ 6.5,  2.,   2.5])
+            >>> np.nanpercentile(a, 50, axis=1, keepdims=True)
+            array([[ 7.],
+                   [ 2.]])
+            >>> m = np.nanpercentile(a, 50, axis=0)
+            >>> out = np.zeros_like(m)
+            >>> np.nanpercentile(a, 50, axis=0, out=out)
+            array([ 6.5,  2.,   2.5])
+            >>> m
+            array([ 6.5,  2. ,  2.5])
+
+            >>> b = a.copy()
+            >>> np.nanpercentile(b, 50, axis=1, overwrite_input=True)
+            array([  7.,  2.])
+            >>> assert not np.all(a==b)
+            */
+
+            var arr = np.asanyarray(a);
+            var qarr = np.true_divide(q, 100.0);  // handles the asarray for us too
+            if (!_quantile_is_valid(qarr))
+            {
+                throw new ValueError("Percentiles must be in the range [0, 100]");
+            }
+
+            return _nanquantile_unchecked(arr, qarr, axis, overwrite_input, interpolation, keepdims);
+        }
+
+
+
+        private static ndarray _nanquantile_unchecked(ndarray a, ndarray q, int? axis = null, bool overwrite_input = false,
+                                   string interpolation = "linear", bool keepdims = false)
+        {
+            // Assumes that q is in [0, 1], and is an ndarray
+
+            // apply_along_axis in _nanpercentile doesn't handle empty arrays well,
+            // so deal them upfront
+            if (a.size == 0)
+            {
+                return np.nanmean(a, axis);
+            }
+
+            int[] axisarray = null;
+            if (axis != null)
+            {
+                axisarray = new[] { axis.Value };
+            }
+
+            var _ureduce_ret = _ureduce(a, func: _nanquantile_ureduce_func, q: q, IsQarray: true, axisarray: axisarray, overwrite_input: overwrite_input,
+                interpolation: interpolation);
+
+            if (keepdims)
+            {
+                List<npy_intp> newshape = new List<npy_intp>();
+                foreach (var dim in q.shape.iDims)
+                {
+                    newshape.Add(dim);
+                }
+                foreach (var dim in _ureduce_ret.keepdims)
+                {
+                    newshape.Add(dim);
+                }
+
+                return _ureduce_ret.r.reshape(new shape(newshape));
+            }
+            else
+            {
+                return _ureduce_ret.r;
+            }
+        }
+
+        private static ndarray _nanquantile_ureduce_func(ndarray a, ndarray q, bool IsQarray, int? axis = null, ndarray @out = null,
+                                        bool overwrite_input = false, string interpolation = "linear", bool keepdims = false)
+        {
+            // Private function that doesn't support extended axis or keepdims.
+            // These methods are extended to this function using _ureduce
+            // See nanpercentile for parameter usage
+
+            ndarray result;
+
+            if (axis == null || a.ndim == 1)
+            {
+                var part = a.ravel();
+                result = _nanquantile_1d(part, q, overwrite_input, interpolation);
+            }
+
+            else
+            {
+                result = np.apply_along_axis(_nanquantile_1d, axis.Value, a, q, overwrite_input, interpolation);
+                // apply_along_axis fills in collapsed axis with results.
+                // Move that axis to the beginning to match percentile's
+                // convention.
+                if (q.ndim != 0)
+                {
+                    result = np.moveaxis(result, axis, 0);
+                }
+            }
+
+
+            if (@out != null)
+                @out["..."] = result;
+            return result;
+        }
+
+        private static ndarray _nanquantile_1d(ndarray arr1d, params object[] args)
+        {
+            ndarray q = null;
+            bool ow_input = false;
+            string interpolation = "linear";
+
+
+            if (args != null && args[0] is ndarray)
+            {
+                q = (ndarray)args[0];
+            }
+            if (args != null && args[1] is bool)
+            {
+                ow_input = (bool)args[1];
+            }
+            if (args != null && args[2] is string)
+            {
+                interpolation = (string)args[2];
+            }
+
+            // Private function for rank 1 arrays.Compute the median ignoring NaNs.
+            // See nanmedian for parameter usage
+            var removed = _remove_nan_1d(arr1d, overwrite_input: ow_input);
+            if (removed.a.size == 0)
+                return np.full(q.shape, _get_NAN_value(q));  // convert to scalar
+
+            return _quantile_unchecked(arr1d, q, IsQArray: true, overwrite_input: ow_input, interpolation: interpolation);
+
+        }
+
+   
     }
+
+
 }
