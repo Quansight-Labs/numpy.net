@@ -225,6 +225,19 @@ class NANFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_nanstd_1(self):
+
+        a = np.array([[1, np.nan], [3, 4]])
+
+        b = np.nanstd(a)
+        print(b)
+
+        c = np.nanstd(a, axis=0)
+        print(c)
+
+        d = np.nanstd(a, axis=1)
+        print(d)
+
     def test_nanvar_1(self):
 
         a = np.array([[1, np.nan], [3, 4]])

@@ -339,11 +339,22 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nanstd_placeholder()
+        public void test_nanstd_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new double[,] { { 1, double.NaN }, { 3, 4 } });
+
+            var b = np.nanstd(a);
+            Assert.AreEqual((double)1.247219128924647, b.GetItem(0));
+            print(b);
+
+            var c = np.nanstd(a, axis : 0);
+            AssertArray(c, new double[] { 1, 0 });
+            print(c);
+
+            var d = np.nanstd(a, axis : 1);
+            AssertArray(d, new double[] { 0, 0.5 });
+            print(d);
         }
 
         [TestMethod]
