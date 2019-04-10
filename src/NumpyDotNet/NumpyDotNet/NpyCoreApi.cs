@@ -1176,23 +1176,23 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray ArrayAll(ndarray arr, int axis, ndarray ret = null)
+        internal static ndarray ArrayAll(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_All(arr.Array, axis, (ret == null ? null : ret.Array)));
+                return new ndarray(numpyAPI.NpyArray_All(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
         }
 
-        internal static ndarray ArrayAny(ndarray arr, int axis, ndarray ret = null)
+        internal static ndarray ArrayAny(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_Any(arr.Array, axis, (ret == null ? null : ret.Array)));
+                return new ndarray(numpyAPI.NpyArray_Any(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
         }
 
@@ -1443,23 +1443,23 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray ArrayMax(ndarray arr, int axis, ndarray ret = null)
+        internal static ndarray ArrayMax(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_Max(arr.Array, axis, (ret == null ? null : ret.Array)));
+                return new ndarray(numpyAPI.NpyArray_Max(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
         }
 
-        internal static ndarray ArrayMin(ndarray arr, int axis, ndarray ret = null)
+        internal static ndarray ArrayMin(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_Min(arr.Array, axis, (ret == null ? null : ret.Array)));
+                return new ndarray(numpyAPI.NpyArray_Min(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
         }
 
@@ -1481,7 +1481,7 @@ namespace NumpyDotNet {
             return coreArrays.Select(x => new ndarray(x)).ToArray();
         }
 
-        internal static ndarray Prod(ndarray arr, int axis, dtype rtype, ndarray ret = null)
+        internal static ndarray Prod(ndarray arr, int axis, dtype rtype, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -1489,7 +1489,7 @@ namespace NumpyDotNet {
             {
                 return new ndarray(numpyAPI.NpyArray_Prod(arr.Array, axis,
                         (rtype == null ? ScaleTypeUp(arr.Dtype.TypeNum) : rtype.TypeNum),
-                        (ret == null ? null : ret.Array)));
+                        (ret == null ? null : ret.Array), keepdims));
             }
         }
 

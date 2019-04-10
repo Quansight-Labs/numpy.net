@@ -355,14 +355,14 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Conjugate(self, _out);
         }
 
-        public static NpyArray NpyArray_Max(NpyArray self, int axis, NpyArray _out)
+        public static NpyArray NpyArray_Max(NpyArray self, int axis, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_Max(self, axis, _out);
+            return numpyinternal.NpyArray_Max(self, axis, _out, keepdims);
         }
 
-        public static NpyArray NpyArray_Min(NpyArray self, int axis, NpyArray _out)
+        public static NpyArray NpyArray_Min(NpyArray self, int axis, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_Min(self, axis, _out);
+            return numpyinternal.NpyArray_Min(self, axis, _out, keepdims);
         }
 
         public static NpyArray NpyArray_Sum(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out, bool keepdims)
@@ -370,9 +370,9 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Sum(self, axis, rtype, _out, keepdims);
         }
 
-        public static NpyArray NpyArray_Prod(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out)
+        public static NpyArray NpyArray_Prod(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_Prod(self, axis, rtype, _out);
+            return numpyinternal.NpyArray_Prod(self, axis, rtype, _out, keepdims);
         }
 
         public static NpyArray NpyArray_CumSum(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out)
@@ -395,14 +395,14 @@ namespace NumpyLib
             return numpyinternal.NpyArray_IsNaN(self);
         }
 
-        public static NpyArray NpyArray_Any(NpyArray self, int axis, NpyArray _out)
+        public static NpyArray NpyArray_Any(NpyArray self, int axis, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_Any(self, axis, _out);
+            return numpyinternal.NpyArray_Any(self, axis, _out, keepdims);
         }
 
-        public static NpyArray NpyArray_All(NpyArray self, int axis, NpyArray _out)
+        public static NpyArray NpyArray_All(NpyArray self, int axis, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_All(self, axis, _out);
+            return numpyinternal.NpyArray_All(self, axis, _out, keepdims);
         }
 
         public static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
