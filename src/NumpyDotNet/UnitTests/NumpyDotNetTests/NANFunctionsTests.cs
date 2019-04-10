@@ -353,15 +353,19 @@ namespace NumpyDotNetTests
             print(a);
 
             var b = np.var(a);
+            Assert.AreEqual(double.NaN, b.GetItem(0));
             print(b);
 
             b = np.nanvar(a);
+            Assert.AreEqual((double)1.5555555555555554, b.GetItem(0));
             print(b);
 
             var c = np.nanvar(a, axis: 0);
+            AssertArray(c, new double[] { 1, 0 });
             print(c);
 
             var d = np.nanvar(a, axis: 1);
+            AssertArray(d, new double[] { 0, 0.25 });
             print(d);
         }
 
