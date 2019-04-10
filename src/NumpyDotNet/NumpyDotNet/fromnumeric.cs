@@ -2001,7 +2001,7 @@ namespace NumpyDotNet
 
         #region sum
 
-        public static ndarray sum(ndarray srcArray, int? axis = null, dtype dtype = null, ndarray ret = null)
+        public static ndarray sum(ndarray srcArray, int? axis = null, dtype dtype = null, ndarray ret = null, bool keepdims = false)
         {
             /*
             Sum of array elements over a given axis.
@@ -2089,6 +2089,11 @@ namespace NumpyDotNet
             -128             
             */
 
+            if (axis != null && keepdims)
+            {
+                srcArray = np.expand_dims(srcArray, axis.Value);
+            }
+
             if (axis == null)
             {
                 srcArray = srcArray.flatten();
@@ -2096,7 +2101,9 @@ namespace NumpyDotNet
             }
 
             if (dtype == null)
+            {
                 dtype = srcArray.Dtype;
+            }
 
             return NpyCoreApi.Sum(srcArray, axis.Value, dtype, ret);
         }

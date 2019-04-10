@@ -1537,6 +1537,167 @@ namespace NumpyDotNet
         }
 
    
+        public static ndarray nanvar(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
+        {
+            /*
+            Compute the variance along the specified axis, while ignoring NaNs.
+
+            Returns the variance of the array elements, a measure of the spread of
+            a distribution.  The variance is computed for the flattened array by
+            default, otherwise over the specified axis.
+
+            For all-NaN slices or slices with zero degrees of freedom, NaN is
+            returned and a `RuntimeWarning` is raised.
+
+            .. versionadded:: 1.8.0
+
+            Parameters
+            ----------
+            a : array_like
+                Array containing numbers whose variance is desired.  If `a` is not an
+                array, a conversion is attempted.
+            axis : {int, tuple of int, None}, optional
+                Axis or axes along which the variance is computed.  The default is to compute
+                the variance of the flattened array.
+            dtype : data-type, optional
+                Type to use in computing the variance.  For arrays of integer type
+                the default is `float32`; for arrays of float types it is the same as
+                the array type.
+            out : ndarray, optional
+                Alternate output array in which to place the result.  It must have
+                the same shape as the expected output, but the type is cast if
+                necessary.
+            ddof : int, optional
+                "Delta Degrees of Freedom": the divisor used in the calculation is
+                ``N - ddof``, where ``N`` represents the number of non-NaN
+                elements. By default `ddof` is zero.
+            keepdims : bool, optional
+                If this is set to True, the axes which are reduced are left
+                in the result as dimensions with size one. With this option,
+                the result will broadcast correctly against the original `a`.
+
+
+            Returns
+            -------
+            variance : ndarray, see dtype parameter above
+                If `out` is None, return a new array containing the variance,
+                otherwise return a reference to the output array. If ddof is >= the
+                number of non-NaN elements in a slice or the slice contains only
+                NaNs, then the result for that slice is NaN.
+
+            See Also
+            --------
+            std : Standard deviation
+            mean : Average
+            var : Variance while not ignoring NaNs
+            nanstd, nanmean
+            numpy.doc.ufuncs : Section "Output arguments"
+
+            Notes
+            -----
+            The variance is the average of the squared deviations from the mean,
+            i.e.,  ``var = mean(abs(x - x.mean())**2)``.
+
+            The mean is normally calculated as ``x.sum() / N``, where ``N = len(x)``.
+            If, however, `ddof` is specified, the divisor ``N - ddof`` is used
+            instead.  In standard statistical practice, ``ddof=1`` provides an
+            unbiased estimator of the variance of a hypothetical infinite
+            population.  ``ddof=0`` provides a maximum likelihood estimate of the
+            variance for normally distributed variables.
+
+            Note that for complex numbers, the absolute value is taken before
+            squaring, so that the result is always real and nonnegative.
+
+            For floating-point input, the variance is computed using the same
+            precision the input has.  Depending on the input data, this can cause
+            the results to be inaccurate, especially for `float32` (see example
+            below).  Specifying a higher-accuracy accumulator using the ``dtype``
+            keyword can alleviate this issue.
+
+            For this function to work on sub-classes of ndarray, they must define
+            `sum` with the kwarg `keepdims`
+
+            Examples
+            --------
+            >>> a = np.array([[1, np.nan], [3, 4]])
+            >>> np.var(a)
+            1.5555555555555554
+            >>> np.nanvar(a, axis=0)
+            array([ 1.,  0.])
+            >>> np.nanvar(a, axis=1)
+            array([ 0.,  0.25])
+            */
+
+            bool _keepdims = false;
+            ndarray sqr = null;
+
+            var replaced = _replace_nan(asanyarray(a), 0);
+            var arr = replaced.a;
+            var mask = replaced.mask;
+
+            if (mask == null)
+            {
+                return np.var(arr, axis: axis, dtype: dtype, ddof: ddof, keep_dims: keep_dims);
+            }
+
+            if (dtype != null && arr.IsInexact)
+            {
+                if (!dtype.IsInexact)
+                {
+                    throw new TypeError("If a is inexact, then dtype must be inexact");
+                }
+
+            }
+
+            // Compute mean
+            if (arr.IsMatrix)
+                _keepdims = false;
+            else
+                _keepdims = true;
+
+
+            // we need to special case matrix for reverse compatibility
+            // in order for this to work, these sums need to be called with
+            // keepdims=True, however matrix now raises an error in this case, but
+            // the reason that it drops the keepdims kwarg is to force keepdims=True
+            // so this used to work by serendipity.
+
+            var cnt = np.sum(~mask, axis: axis, dtype: np.intp, keepdims: _keepdims);
+            var avg = np.sum(arr, axis: axis, dtype: dtype, keepdims: _keepdims);
+  
+
+            avg = _divide_by_count(avg, cnt);
+
+            // Compute squared deviation from mean.
+            arr = np.subtract(arr, avg);
+            arr = _copyto(arr, 0, mask);
+            if (arr.IsComplex)
+                sqr = np.multiply(arr, arr.conj()).real as ndarray;
+            else
+                sqr = np.multiply(arr, arr);
+
+            // Compute variance.
+            var var = np.sum(sqr, axis: axis, dtype: dtype);
+            if (var.ndim < cnt.ndim)
+            {
+                // Subclasses of ndarray may ignore keepdims, so check here.
+                cnt = np.squeeze(cnt, axis);
+            }
+            var dof = cnt - ddof;
+            var = _divide_by_count(var, dof);
+
+
+            var isbad = (dof <= 0);
+            if (np.anyb(isbad))
+            {
+                Console.WriteLine("Degrees of freedom <= 0 for slice.");
+                // NaN, inf, or negative numbers are all possible bad
+                // values, so explicitly replace them with NaN.
+                var = _copyto(var, _get_NAN_value(var), isbad);
+            }
+            return var;
+        }
+
     }
 
 

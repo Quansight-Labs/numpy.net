@@ -1596,3 +1596,173 @@ class nptest(object):
 
         return nptest._quantile_unchecked(
             arr1d, q, overwrite_input=overwrite_input, interpolation=interpolation)
+
+    
+    @staticmethod
+    def _replace_nan(a, val):
+        """
+        If `a` is of inexact type, make a copy of `a`, replace NaNs with
+        the `val` value, and return the copy together with a boolean mask
+        marking the locations where NaNs were present. If `a` is not of
+        inexact type, do nothing and return `a` together with a mask of None.
+
+        Note that scalars will end up as array scalars, which is important
+        for using the result as the value of the out argument in some
+        operations.
+
+        Parameters
+        ----------
+        a : array-like
+            Input array.
+        val : float
+            NaN values are set to val before doing the operation.
+
+        Returns
+        -------
+        y : ndarray
+            If `a` is of inexact type, return a copy of `a` with the NaNs
+            replaced by the fill value, otherwise return `a`.
+        mask: {bool, None}
+            If `a` is of inexact type, return a boolean mask marking locations of
+            NaNs, otherwise return None.
+
+        """
+        a = np.array(a, subok=True, copy=True)
+
+        if a.dtype == np.object_:
+            # object arrays do not support `isnan` (gh-9009), so make a guess
+            mask = a != a
+        elif issubclass(a.dtype.type, np.inexact):
+            mask = np.isnan(a)
+        else:
+            mask = None
+
+        if mask is not None:
+            np.copyto(a, val, where=mask)
+
+        return a, mask
+
+
+    @staticmethod
+    def _copyto(a, val, mask):
+        """
+        Replace values in `a` with NaN where `mask` is True.  This differs from
+        copyto in that it will deal with the case where `a` is a numpy scalar.
+
+        Parameters
+        ----------
+        a : ndarray or numpy scalar
+            Array or numpy scalar some of whose values are to be replaced
+            by val.
+        val : numpy scalar
+            Value used a replacement.
+        mask : ndarray, scalar
+            Boolean array. Where True the corresponding element of `a` is
+            replaced by `val`. Broadcasts.
+
+        Returns
+        -------
+        res : ndarray, scalar
+            Array with elements replaced or scalar `val`.
+
+        """
+        if isinstance(a, np.ndarray):
+            np.copyto(a, val, where=mask, casting='unsafe')
+        else:
+            a = a.dtype.type(val)
+        return a
+
+    @staticmethod
+    def _divide_by_count(a, b, out=None):
+        """
+        Compute a/b ignoring invalid results. If `a` is an array the division
+        is done in place. If `a` is a scalar, then its type is preserved in the
+        output. If out is None, then then a is used instead so that the
+        division is in place. Note that this is only called with `a` an inexact
+        type.
+
+        Parameters
+        ----------
+        a : {ndarray, numpy scalar}
+            Numerator. Expected to be of inexact type but not checked.
+        b : {ndarray, numpy scalar}
+            Denominator.
+        out : ndarray, optional
+            Alternate output array in which to place the result.  The default
+            is ``None``; if provided, it must have the same shape as the
+            expected output, but the type will be cast if necessary.
+
+        Returns
+        -------
+        ret : {ndarray, numpy scalar}
+            The return value is a/b. If `a` was an ndarray the division is done
+            in place. If `a` is a numpy scalar, the division preserves its type.
+
+        """
+        with np.errstate(invalid='ignore', divide='ignore'):
+            if isinstance(a, np.ndarray):
+                if out is None:
+                    return np.divide(a, b, out=a, casting='unsafe')
+                else:
+                    return np.divide(a, b, out=out, casting='unsafe')
+            else:
+                if out is None:
+                    return a.dtype.type(a / b)
+                else:
+                    # This is questionable, but currently a numpy scalar can
+                    # be output to a zero dimensional array.
+                    return np.divide(a, b, out=out, casting='unsafe')
+
+
+    @staticmethod
+    def nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=np._NoValue):
+
+        arr, mask = nptest._replace_nan(a, 0)
+        if mask is None:
+            return np.var(arr, axis=axis, dtype=dtype, out=out, ddof=ddof,
+                      keepdims=keepdims)
+
+        if dtype is not None:
+            dtype = np.dtype(dtype)
+        if dtype is not None and not issubclass(dtype.type, np.inexact):
+            raise TypeError("If a is inexact, then dtype must be inexact")
+        if out is not None and not issubclass(out.dtype.type, np.inexact):
+            raise TypeError("If a is inexact, then out must be inexact")
+
+        # Compute mean
+        if type(arr) is np.matrix:
+            _keepdims = np._NoValue
+        else:
+            _keepdims = True
+        # we need to special case matrix for reverse compatibility
+        # in order for this to work, these sums need to be called with
+        # keepdims=True, however matrix now raises an error in this case, but
+        # the reason that it drops the keepdims kwarg is to force keepdims=True
+        # so this used to work by serendipity.
+        cnt = np.sum(~mask, axis=axis, dtype=np.intp, keepdims=_keepdims)
+        avg = np.sum(arr, axis=axis, dtype=dtype, keepdims=_keepdims)
+        avg = nptest._divide_by_count(avg, cnt)
+
+        # Compute squared deviation from mean.
+        np.subtract(arr, avg, out=arr, casting='unsafe')
+        arr = nptest._copyto(arr, 0, mask)
+        if issubclass(arr.dtype.type, np.complexfloating):
+            sqr = np.multiply(arr, arr.conj(), out=arr).real
+        else:
+            sqr = np.multiply(arr, arr, out=arr)
+
+        # Compute variance.
+        var = np.sum(sqr, axis=axis, dtype=dtype, out=out, keepdims=keepdims)
+        if var.ndim < cnt.ndim:
+            # Subclasses of ndarray may ignore keepdims, so check here.
+            cnt = cnt.squeeze(axis)
+        dof = cnt - ddof
+        var = nptest._divide_by_count(var, dof)
+
+        isbad = (dof <= 0)
+        if np.any(isbad):
+            warnings.warn("Degrees of freedom <= 0 for slice.", RuntimeWarning, stacklevel=2)
+            # NaN, inf, or negative numbers are all possible bad
+            # values, so explicitly replace them with NaN.
+            var = nptest._copyto(var, np.nan, isbad)
+        return var

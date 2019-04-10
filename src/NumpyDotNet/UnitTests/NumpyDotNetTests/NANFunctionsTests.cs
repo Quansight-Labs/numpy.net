@@ -346,11 +346,23 @@ namespace NumpyDotNetTests
             // see the NANFunctionsTest version
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nanvar_placeholder()
+        public void test_nanvar_1()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new double[,] { { 1, double.NaN }, { 3, 4 } });
+            print(a);
+
+            var b = np.var(a);
+            print(b);
+
+            b = np.nanvar(a);
+            print(b);
+
+            var c = np.nanvar(a, axis: 0);
+            print(c);
+
+            var d = np.nanvar(a, axis: 1);
+            print(d);
         }
 
         [TestMethod]

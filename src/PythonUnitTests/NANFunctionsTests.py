@@ -197,7 +197,7 @@ class NANFunctionsTests(unittest.TestCase):
         print(e)
 
         f = a.copy()
-        g = nptest.nanmedian(f, axis=1, overwrite_input=True)
+        g = np.nanmedian(f, axis=1, overwrite_input=True)
         print(g)
 
         assert not np.all(a==f)
@@ -224,6 +224,23 @@ class NANFunctionsTests(unittest.TestCase):
         print(e)
 
         return
+
+    def test_nanvar_1(self):
+
+        a = np.array([[1, np.nan], [3, 4]])
+        print(a)
+    
+        b = np.var(a)
+        print(b)
+
+        b = np.nanvar(a)
+        print(b)
+
+        c = np.nanvar(a, axis=0)
+        print(c)
+
+        d = np.nanvar(a, axis=1)
+        print(d)
 
     def test_nanmin_1(self):
 
