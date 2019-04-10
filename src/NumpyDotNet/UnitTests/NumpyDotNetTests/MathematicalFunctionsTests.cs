@@ -998,6 +998,56 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_sum_keepdims()
+        {
+            double[] TestData = new double[] { 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Float64);
+
+            var y = np.sum(x);
+            Assert.AreEqual(263.0, y.GetItem(0));
+            print(y);
+            print(y.shape);
+            print("*****");
+
+            print("keepdims");
+            y = np.sum(x, keepdims:true);
+            AssertArray(y, new double[] { 263 });
+            print(y);
+            print(y.shape);
+            print("*****");
+
+            x = np.array(TestData, dtype: np.Float64).reshape((3, 2, -1));
+            y = np.sum(x, axis: 1);
+            AssertArray(y, new double[,] { { 25 }, { 70 }, { 168 } });
+            print(y);
+            print(y.shape);
+            print("*****");
+
+            print("keepdims");
+            y = np.sum(x, axis: 1, keepdims: true);
+            AssertArray(y, new double[,,] { { { 25 } }, { { 70 } }, { { 168 } } });
+            print(y);
+            print(y.shape);
+            print("*****");
+
+            x = np.array(TestData, dtype: np.Float64).reshape((-1, 3, 2));
+            y = np.sum(x, axis: 2);
+            AssertArray(y, new double[,] {{ 25 , 70 , 168 } });
+            print(y);
+            print(y.shape);
+            print("*****");
+
+            print("keepdims");
+            y = np.sum(x, axis: 2, keepdims: true);
+            AssertArray(y, new double[,,] { { { 25 }, { 70 }, { 168 } } });
+            print(y);
+            print(y.shape);
+            print("*****");
+
+        }
+
+
+        [TestMethod]
         public void test_nanprod_placeholder()
         {
             // see the NANFunctionsTest version

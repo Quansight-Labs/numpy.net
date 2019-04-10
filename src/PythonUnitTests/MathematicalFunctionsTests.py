@@ -662,6 +662,47 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_sum_keepdims(self):
+
+        x = np.array([10,15,25,45,78,90], dtype= np.float64)
+
+        y = np.sum(x);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        print("keepdims")
+        y = np.sum(x, keepdims = True);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        x = np.array([10,15,25,45,78,90], dtype= np.float64).reshape(3, 2, -1)
+        y = np.sum(x, axis=1);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        print("keepdims")
+        y = np.sum(x, axis=1, keepdims = True);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        x = np.array([10,15,25,45,78,90], dtype= np.float64).reshape(-1, 3, 2)
+        y = np.sum(x, axis=2);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        print("keepdims")
+        y = np.sum(x, axis=2, keepdims = True);
+        print(y)
+        print(y.shape)
+        print("*****")
+
+        return
+
 
     def test_cumprod_1(self):
 

@@ -1590,13 +1590,13 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray Sum(ndarray arr, int axis, dtype rtype, ndarray ret = null)
+        internal static ndarray Sum(ndarray arr, int axis, dtype rtype, ndarray ret = null, bool keepdims = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_Sum(arr.Array, axis, (rtype == null ? NPY_TYPES.NPY_NOTYPE : rtype.TypeNum), (ret == null ? null : ret.Array)));
+                return new ndarray(numpyAPI.NpyArray_Sum(arr.Array, axis, (rtype == null ? NPY_TYPES.NPY_NOTYPE : rtype.TypeNum), (ret == null ? null : ret.Array), keepdims));
             }
         }
 

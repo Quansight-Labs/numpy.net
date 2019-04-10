@@ -2089,11 +2089,6 @@ namespace NumpyDotNet
             -128             
             */
 
-            if (axis != null && keepdims)
-            {
-                srcArray = np.expand_dims(srcArray, axis.Value);
-            }
-
             if (axis == null)
             {
                 srcArray = srcArray.flatten();
@@ -2105,7 +2100,7 @@ namespace NumpyDotNet
                 dtype = srcArray.Dtype;
             }
 
-            return NpyCoreApi.Sum(srcArray, axis.Value, dtype, ret);
+            return NpyCoreApi.Sum(srcArray, axis.Value, dtype, ret, keepdims);
         }
 
         #endregion

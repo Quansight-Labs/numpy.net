@@ -3637,7 +3637,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_maximum),
                                             newArray, null, outPtr, axis,
                                             newArray.descr,
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, false);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3654,12 +3654,12 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_minimum),
                                             newArray, null, outPtr, axis,
                                             newArray.descr,
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, false);
             Npy_DECREF(newArray);
             return ret;
         }
 
-        internal static NpyArray NpyArray_Sum(NpyArray srcArray, int axis, NPY_TYPES rtype, NpyArray outPtr)
+        internal static NpyArray NpyArray_Sum(NpyArray srcArray, int axis, NPY_TYPES rtype, NpyArray outPtr, bool keepdims)
         {
             NpyArray ret = null;
             NpyArray newArray = null;
@@ -3671,7 +3671,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_add),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3689,7 +3689,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_multiply),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, false);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3709,7 +3709,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_add),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
-                                            GenericReductionOp.NPY_UFUNC_ACCUMULATE);
+                                            GenericReductionOp.NPY_UFUNC_ACCUMULATE, false);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3762,7 +3762,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_multiply),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
-                                            GenericReductionOp.NPY_UFUNC_ACCUMULATE);
+                                            GenericReductionOp.NPY_UFUNC_ACCUMULATE, false);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3779,7 +3779,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_logical_or),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, false);
             Npy_DECREF(newArray);
             return ret;
         }
@@ -3796,7 +3796,7 @@ namespace NumpyLib
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(NpyArray_Ops.npy_op_logical_and),
                                             newPtr, null, outPtr, axis,
                                             NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
-                                            GenericReductionOp.NPY_UFUNC_REDUCE);
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, false);
             Npy_DECREF(newPtr);
             return ret;
         }

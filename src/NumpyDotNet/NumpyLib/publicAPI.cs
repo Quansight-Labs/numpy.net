@@ -365,9 +365,9 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Min(self, axis, _out);
         }
 
-        public static NpyArray NpyArray_Sum(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out)
+        public static NpyArray NpyArray_Sum(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out, bool keepdims)
         {
-            return numpyinternal.NpyArray_Sum(self, axis, rtype, _out);
+            return numpyinternal.NpyArray_Sum(self, axis, rtype, _out, keepdims);
         }
 
         public static NpyArray NpyArray_Prod(NpyArray self, int axis, NPY_TYPES rtype, NpyArray _out)
@@ -1363,7 +1363,7 @@ namespace NumpyLib
         public static NpyArray NpyUFunc_GenericReduction(NpyUFuncObject self, NpyArray arr, NpyArray indices,
                           NpyArray _out, int axis, NpyArray_Descr otype, GenericReductionOp operation)
         {
-            return numpyinternal.NpyUFunc_GenericReduction(self, arr, indices, _out, axis, otype, operation);
+            return numpyinternal.NpyUFunc_GenericReduction(self, arr, indices, _out, axis, otype, operation, false);
         }
 
 #endregion

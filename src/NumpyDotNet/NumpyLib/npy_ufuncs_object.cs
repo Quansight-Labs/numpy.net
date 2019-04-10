@@ -814,7 +814,7 @@ namespace NumpyLib
    
 
         internal static NpyArray NpyUFunc_GenericReduction(NpyUFuncObject self, NpyArray arr, NpyArray indices,
-                         NpyArray _out, int axis, NpyArray_Descr otype, GenericReductionOp operation)
+                         NpyArray _out, int axis, NpyArray_Descr otype, GenericReductionOp operation, bool keepdims)
         {
             string[] _reduce_type = new string[] { "reduce", "accumulate", "reduceat", null };
 
@@ -938,6 +938,37 @@ namespace NumpyLib
                     Debug.Assert(false, "unexpected GenericReductionOp value");
                     break;
             }
+
+            if (keepdims)
+            {
+                npy_intp[] ExpandedDims = null;
+                if (ret.dimensions == null)
+                {
+                    ExpandedDims = new npy_intp[1] { 1 };
+                }
+                else
+                {
+                    ExpandedDims = new npy_intp[ret.dimensions.Length + 1];
+                }
+
+
+                int j = 0;
+                for (int i = 0; i < ExpandedDims.Length; i++)
+                {
+                    if (i == axis)
+                    {
+                        ExpandedDims[i] = 1;
+                    }
+                    else
+                    {
+                        ExpandedDims[i] = ret.dimensions[j];
+                        j++;
+                    }
+                }
+
+                ret = NpyArray_Newshape(ret, new NpyArray_Dims() { len = ExpandedDims.Length, ptr = ExpandedDims }, NPY_ORDER.NPY_ANYORDER);
+            }
+
             return ret;
         }
 
