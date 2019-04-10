@@ -3064,7 +3064,7 @@ namespace NumpyDotNet
                 // Check if the array contains any nan's
                 if (a.IsInexact)
                 {
-                    indices = concatenate((indices, new int[] { -1 }));
+                    indices_above = concatenate((indices_above, new int[] { -1 }));
                 }
 
                 var weights_above = indices - indices_below;

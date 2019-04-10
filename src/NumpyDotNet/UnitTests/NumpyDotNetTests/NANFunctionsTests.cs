@@ -156,18 +156,85 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
-        public void test_nanpercentile_placeholder()
+        public void test_nanpercentile_1()
         {
-            // see the NANFunctionsTest version
+
+            var a = np.array(new double[,] { { 10.0, 7.0, 4.0}, { 3.0, 2.0, 1.0} });
+            a[0,1] = double.NaN;
+            print(a);
+
+            var b = np.percentile(a, 50);
+            Assert.AreEqual(double.NaN, b.GetItem(0));
+            print(b);
+
+            var c = np.nanpercentile(a, 50);
+            Assert.AreEqual((double)3.0, c.GetItem(0));
+            print(c);
+
+            var d = np.nanpercentile(a, 50, axis : 0);
+            AssertArray(d, new double[] { 6.5, 2.0, 2.5 });
+            print(d);
+
+            var e = np.nanpercentile(a, 50, axis : 1, keepdims : true);
+            AssertArray(e, new double[,] { {7.0 }, {2.0 } });
+            print(e);
+
+
+            //var m = np.nanpercentile(a, 50, axis : 0);
+            //var @out = np.zeros_like(m);
+            //var f = np.nanpercentile(a, 50, axis : 0, @out: @out);
+            //print(f);
+            //print(m);
+
+
+
+            //var g = a.Copy();
+            //var h = np.nanpercentile(g, 50, axis: 1, overwrite_input: true);
+            //print(h);
+            //Assert.IsFalse(np.allb(a == g));
+
+            return;
         }
 
-        [Ignore] // need to implement Nanfunctions
         [TestMethod]
         public void test_nanquantile_placeholder()
         {
-            // see the NANFunctionsTest version
+            var a = np.array(new double[,] { { 10.0, 7.0, 4.0 }, { 3.0, 2.0, 1.0 } });
+            a[0, 1] = double.NaN;
+            print(a);
+
+            var b = np.quantile(a, 0.5);
+            Assert.AreEqual(double.NaN, b.GetItem(0));
+            print(b);
+
+            var c = np.nanquantile(a, 0.5);
+            Assert.AreEqual((double)3.0, c.GetItem(0));
+            print(c);
+
+            var d = np.nanquantile(a, 0.5, axis: 0);
+            AssertArray(d, new double[] { 6.5, 2.0, 2.5 });
+            print(d);
+
+            var e = np.nanquantile(a, 0.5, axis: 1, keepdims: true);
+            AssertArray(e, new double[,] { { 7.0 }, { 2.0 } });
+            print(e);
+
+
+            //var m = np.nanquantile(a, 0.5, axis : 0);
+            //var @out = np.zeros_like(m);
+            //var f = np.nanquantile(a, 0.5, axis : 0, @out: @out);
+            //print(f);
+            //print(m);
+
+
+
+            //var g = a.Copy();
+            //var h = np.nanquantile(g, 0.5, axis: 1, overwrite_input: true);
+            //print(h);
+            //Assert.IsFalse(np.allb(a == g));
+
+            return;
         }
 
 

@@ -1530,3 +1530,69 @@ class nptest(object):
             # matrices have to be transposed first, because they collapse dimensions!
             out_arr = transpose(buff, buff_permute)
             return res.__array_wrap__(out_arr)
+
+    @staticmethod
+    def nanpercentile(a, q, axis=None, out=None, overwrite_input=False,
+                  interpolation='linear', keepdims=np._NoValue):
+
+        a = np.asanyarray(a)
+        q = np.true_divide(q, 100.0)  # handles the asarray for us too
+ 
+        return nptest._nanquantile_unchecked(
+            a, q, axis, out, overwrite_input, interpolation, keepdims)
+
+    @staticmethod
+    def _nanquantile_unchecked(a, q, axis=None, out=None, overwrite_input=False,
+                           interpolation='linear', keepdims=np._NoValue):
+        """Assumes that q is in [0, 1], and is an ndarray"""
+        # apply_along_axis in _nanpercentile doesn't handle empty arrays well,
+        # so deal them upfront
+        if a.size == 0:
+            return np.nanmean(a, axis, out=out, keepdims=keepdims)
+
+        r, k = nptest._ureduce(
+            a, func=nptest._nanquantile_ureduce_func, q=q, axis=axis, out=out,
+            overwrite_input=overwrite_input, interpolation=interpolation
+        )
+        if keepdims and keepdims is not np._NoValue:
+            return r.reshape(q.shape + k)
+        else:
+            return r
+
+    @staticmethod
+    def _nanquantile_ureduce_func(a, q, axis=None, out=None, overwrite_input=False,
+                              interpolation='linear'):
+        """
+        Private function that doesn't support extended axis or keepdims.
+        These methods are extended to this function using _ureduce
+        See nanpercentile for parameter usage
+        """
+        if axis is None or a.ndim == 1:
+            part = a.ravel()
+            result = nptest._nanquantile_1d(part, q, overwrite_input, interpolation)
+        else:
+            result = np.apply_along_axis( nptest._nanquantile_1d, axis, a, q,
+                                         overwrite_input, interpolation)
+            # apply_along_axis fills in collapsed axis with results.
+            # Move that axis to the beginning to match percentile's
+            # convention.
+            if q.ndim != 0:
+                result = np.moveaxis(result, axis, 0)
+
+        if out is not None:
+            out[...] = result
+        return result
+
+    @staticmethod
+    def _nanquantile_1d(arr1d, q, overwrite_input=False, interpolation='linear'):
+        """
+        Private function for rank 1 arrays. Compute quantile ignoring NaNs.
+        See nanpercentile for parameter usage
+        """
+        arr1d, overwrite_input = nptest._remove_nan_1d(arr1d,
+            overwrite_input=overwrite_input)
+        if arr1d.size == 0:
+            return np.full(q.shape, np.nan)[()]  # convert to scalar
+
+        return nptest._quantile_unchecked(
+            arr1d, q, overwrite_input=overwrite_input, interpolation=interpolation)

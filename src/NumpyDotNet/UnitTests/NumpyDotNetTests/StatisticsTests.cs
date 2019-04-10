@@ -182,7 +182,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_percentile_1()
         {
-            var a = np.array(new int[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new double[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
             var b = np.percentile(a, 50);
             Assert.AreEqual((double)3.5, b.GetItem(0));

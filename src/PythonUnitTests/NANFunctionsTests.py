@@ -111,6 +111,72 @@ class NANFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_nanpercentile_1(self):
+
+        a = np.array([[10., 7., 4.], [3., 2., 1.]])
+        a[0][1] = np.nan
+        print(a)
+        
+        b = np.percentile(a, 50)
+        print(b)
+
+        c = np.nanpercentile(a, 50)
+        print(c)
+
+        d = np.nanpercentile(a, 50, axis=0)
+        print(d)
+
+        e = np.nanpercentile(a, 50, axis=1, keepdims=True)
+        print(e)
+        
+        m = np.nanpercentile(a, 50, axis=0)
+        out = np.zeros_like(m)
+        f = np.nanpercentile(a, 50, axis=0, out=out)
+        print(f)
+        print(m)
+ 
+
+        g = a.copy()
+        h = np.nanpercentile(g, 50, axis=1, overwrite_input=True)
+        print(h)
+        assert not np.all(a==g)
+
+        return
+
+    def test_nanquantile_1(self):
+
+        a = np.array([[10., 7., 4.], [3., 2., 1.]])
+        a[0][1] = np.nan
+        print(a)
+        
+        b = np.quantile(a, 0.5)
+        print(b)
+
+        print(np.source(np.nanquantile))
+
+        c = np.nanquantile(a,  0.5)
+        print(c)
+
+        d = np.nanquantile(a,  0.5, axis=0)
+        print(d)
+
+        e = np.nanquantile(a,  0.5, axis=1, keepdims=True)
+        print(e)
+        
+        m = np.nanquantile(a,  0.5, axis=0)
+        out = np.zeros_like(m)
+        f = np.nanquantile(a,  0.5, axis=0, out=out)
+        print(f)
+        print(m)
+ 
+
+        g = a.copy()
+        h = np.nanquantile(g,  0.5, axis=1, overwrite_input=True)
+        print(h)
+        assert not np.all(a==g)
+
+        return
+
     def test_nanmedian_1(self):
 
         a = np.array([[10.0, 7, 4], [3, 2, 1]])
@@ -118,13 +184,13 @@ class NANFunctionsTests(unittest.TestCase):
         print(a)
 
  
-        b = nptest.median(a)
+        b = np.median(a)
         print(b)
 
-        c = nptest.nanmedian(a)
+        c = np.nanmedian(a)
         print(c)
 
-        d = nptest.nanmedian(a, axis=0)
+        d = np.nanmedian(a, axis=0)
         print(d)
 
         e = np.median(a, axis=1)

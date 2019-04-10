@@ -1297,6 +1297,12 @@ namespace NumpyDotNet
             >>> assert not np.all(a==b)
             */
 
+            bool IsQArray = false;
+            if (q.GetType().IsArray)
+            {
+                IsQArray = true;
+            }
+
             var arr = np.asanyarray(a);
             var qarr = np.true_divide(q, 100.0);  // handles the asarray for us too
             if (!_quantile_is_valid(qarr))
@@ -1304,12 +1310,128 @@ namespace NumpyDotNet
                 throw new ValueError("Percentiles must be in the range [0, 100]");
             }
 
-            return _nanquantile_unchecked(arr, qarr, axis, overwrite_input, interpolation, keepdims);
+            return _nanquantile_unchecked(arr, qarr,IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
 
 
-        private static ndarray _nanquantile_unchecked(ndarray a, ndarray q, int? axis = null, bool overwrite_input = false,
+        public static ndarray nanquantile(object a, object q, int? axis = null, bool overwrite_input = false,
+                  string interpolation = "linear", bool keepdims = false)
+        {
+
+            /*
+            Compute the qth quantile of the data along the specified axis,
+            while ignoring nan values.
+            Returns the qth quantile(s) of the array elements.
+            .. versionadded:: 1.15.0
+
+            Parameters
+            ----------
+            a : array_like
+                Input array or object that can be converted to an array, containing
+                nan values to be ignored
+            q : array_like of float
+                Quantile or sequence of quantiles to compute, which must be between
+                0 and 1 inclusive.
+            axis : {int, tuple of int, None}, optional
+                Axis or axes along which the quantiles are computed. The
+                default is to compute the quantile(s) along a flattened
+                version of the array.
+            out : ndarray, optional
+                Alternative output array in which to place the result. It must
+                have the same shape and buffer length as the expected output,
+                but the type (of the output) will be cast if necessary.
+            overwrite_input : bool, optional
+                If True, then allow the input array `a` to be modified by intermediate
+                calculations, to save memory. In this case, the contents of the input
+                `a` after this function completes is undefined.
+            interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+                This optional parameter specifies the interpolation method to
+                use when the desired quantile lies between two data points
+                ``i < j``:
+                    * linear: ``i + (j - i) * fraction``, where ``fraction``
+                      is the fractional part of the index surrounded by ``i``
+                      and ``j``.
+                    * lower: ``i``.
+                    * higher: ``j``.
+                    * nearest: ``i`` or ``j``, whichever is nearest.
+                    * midpoint: ``(i + j) / 2``.
+            keepdims : bool, optional
+                If this is set to True, the axes which are reduced are left in
+                the result as dimensions with size one. With this option, the
+                result will broadcast correctly against the original array `a`.
+
+                If this is anything but the default value it will be passed
+                through (in the special case of an empty array) to the
+                `mean` function of the underlying array.  If the array is
+                a sub-class and `mean` does not have the kwarg `keepdims` this
+                will raise a RuntimeError.
+
+            Returns
+            -------
+            quantile : scalar or ndarray
+                If `q` is a single percentile and `axis=None`, then the result
+                is a scalar. If multiple quantiles are given, first axis of
+                the result corresponds to the quantiles. The other axes are
+                the axes that remain after the reduction of `a`. If the input
+                contains integers or floats smaller than ``float64``, the output
+                data-type is ``float64``. Otherwise, the output data-type is the
+                same as that of the input. If `out` is specified, that array is
+                returned instead.
+
+            See Also
+            --------
+            quantile
+            nanmean, nanmedian
+            nanmedian : equivalent to ``nanquantile(..., 0.5)``
+            nanpercentile : same as nanquantile, but with q in the range [0, 100].
+
+            Examples
+            --------
+            >>> a = np.array([[10., 7., 4.], [3., 2., 1.]])
+            >>> a[0][1] = np.nan
+            >>> a
+            array([[ 10.,  nan,   4.],
+                  [  3.,   2.,   1.]])
+            >>> np.quantile(a, 0.5)
+            nan
+            >>> np.nanquantile(a, 0.5)
+            3.5
+            >>> np.nanquantile(a, 0.5, axis=0)
+            array([ 6.5,  2.,   2.5])
+            >>> np.nanquantile(a, 0.5, axis=1, keepdims=True)
+            array([[ 7.],
+                   [ 2.]])
+            >>> m = np.nanquantile(a, 0.5, axis=0)
+            >>> out = np.zeros_like(m)
+            >>> np.nanquantile(a, 0.5, axis=0, out=out)
+            array([ 6.5,  2.,   2.5])
+            >>> m
+            array([ 6.5,  2. ,  2.5])
+            >>> b = a.copy()
+            >>> np.nanquantile(b, 0.5, axis=1, overwrite_input=True)
+            array([  7.,  2.])
+            >>> assert not np.all(a==b)
+            */
+
+            bool IsQArray = false;
+            if (q.GetType().IsArray)
+            {
+                IsQArray = true;
+            }
+
+            var arr = np.asanyarray(a);
+            var qarr = np.asanyarray(q);
+            if (!_quantile_is_valid(qarr))
+            {
+                throw new ValueError("Percentiles must be in the range [0, 1]");
+            }
+
+            return _nanquantile_unchecked(arr, qarr, IsQArray, axis, overwrite_input, interpolation, keepdims);
+        }
+
+
+        private static ndarray _nanquantile_unchecked(ndarray a, ndarray q, bool IsQArray, int? axis = null, bool overwrite_input = false,
                                    string interpolation = "linear", bool keepdims = false)
         {
             // Assumes that q is in [0, 1], and is an ndarray
@@ -1327,22 +1449,18 @@ namespace NumpyDotNet
                 axisarray = new[] { axis.Value };
             }
 
-            var _ureduce_ret = _ureduce(a, func: _nanquantile_ureduce_func, q: q, IsQarray: true, axisarray: axisarray, overwrite_input: overwrite_input,
+            var _ureduce_ret = _ureduce(a, func: _nanquantile_ureduce_func, q: q, IsQarray: IsQArray, axisarray: axisarray, overwrite_input: overwrite_input,
                 interpolation: interpolation);
 
             if (keepdims)
             {
                 List<npy_intp> newshape = new List<npy_intp>();
-                foreach (var dim in q.shape.iDims)
+                if (IsQArray)
                 {
-                    newshape.Add(dim);
+                    newshape.AddRange(q.shape.iDims);
                 }
-                foreach (var dim in _ureduce_ret.keepdims)
-                {
-                    newshape.Add(dim);
-                }
-
-                return _ureduce_ret.r.reshape(new shape(newshape));
+                newshape.AddRange(_ureduce_ret.keepdims);
+                return _ureduce_ret.r.reshape(new shape(newshape.ToArray()));
             }
             else
             {
@@ -1362,16 +1480,16 @@ namespace NumpyDotNet
             if (axis == null || a.ndim == 1)
             {
                 var part = a.ravel();
-                result = _nanquantile_1d(part, q, overwrite_input, interpolation);
+                result = _nanquantile_1d(part, q, IsQarray, overwrite_input, interpolation);
             }
 
             else
             {
-                result = np.apply_along_axis(_nanquantile_1d, axis.Value, a, q, overwrite_input, interpolation);
+                result = np.apply_along_axis(_nanquantile_1d, axis.Value, a, q, IsQarray, overwrite_input, interpolation);
                 // apply_along_axis fills in collapsed axis with results.
                 // Move that axis to the beginning to match percentile's
                 // convention.
-                if (q.ndim != 0)
+                if (IsQarray && q.ndim != 0)
                 {
                     result = np.moveaxis(result, axis, 0);
                 }
@@ -1386,6 +1504,7 @@ namespace NumpyDotNet
         private static ndarray _nanquantile_1d(ndarray arr1d, params object[] args)
         {
             ndarray q = null;
+            bool IsQArray = false;
             bool ow_input = false;
             string interpolation = "linear";
 
@@ -1396,11 +1515,15 @@ namespace NumpyDotNet
             }
             if (args != null && args[1] is bool)
             {
-                ow_input = (bool)args[1];
+                IsQArray = (bool)args[1];
             }
-            if (args != null && args[2] is string)
+            if (args != null && args[2] is bool)
             {
-                interpolation = (string)args[2];
+                ow_input = (bool)args[2];
+            }
+            if (args != null && args[3] is string)
+            {
+                interpolation = (string)args[3];
             }
 
             // Private function for rank 1 arrays.Compute the median ignoring NaNs.
@@ -1409,7 +1532,7 @@ namespace NumpyDotNet
             if (removed.a.size == 0)
                 return np.full(q.shape, _get_NAN_value(q));  // convert to scalar
 
-            return _quantile_unchecked(arr1d, q, IsQArray: true, overwrite_input: ow_input, interpolation: interpolation);
+            return _quantile_unchecked(removed.a, q, IsQArray: IsQArray, overwrite_input: removed.overwrite_input, interpolation: interpolation);
 
         }
 

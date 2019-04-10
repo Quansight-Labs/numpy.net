@@ -142,9 +142,9 @@ class StatisticsTests(unittest.TestCase):
     def test_percentile_1(self):
   
 
-        a = np.array([[10, 7, 4], [3, 2, 1]])
+        a = np.array([[10.0, 7.0, 4.0], [3.0, 2.0, 1.0]])
 
-        b = np.percentile(a, 50)
+        b = nptest.percentile(a, 50)
         print(b)
 
         c = np.percentile(a, 50, axis=0)
