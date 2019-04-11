@@ -248,7 +248,7 @@ namespace NumpyDotNet
             return np.divide(a, b);
         }
 
-        public static ndarray nanmin(object a, int? axis = null)
+        public static ndarray nanmin(object a, int? axis = null, bool keepdims = false)
         {
             /*
             Return minimum of an array or minimum along an axis, ignoring any NaNs.
@@ -352,12 +352,12 @@ namespace NumpyDotNet
             {
                 // Slow, but safe for subclasses of ndarray
                 var replaced = _replace_nan(arr, _get_infinity_value(arr, true));
-                res = np.amin(replaced.a, axis: axis);
+                res = np.amin(replaced.a, axis: axis, keepdims:keepdims);
                 if (replaced.mask == null)
                     return res;
 
                 // Check for all-NaN axis
-                replaced.mask = np.all(replaced.mask, axis: axis);
+                replaced.mask = np.all(replaced.mask, axis: axis, keepdims:keepdims);
                 if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, _get_NAN_value(res), replaced.mask);
@@ -368,7 +368,7 @@ namespace NumpyDotNet
             return res;
         }
 
-        public static ndarray nanmax(object a, int? axis = null)
+        public static ndarray nanmax(object a, int? axis = null, bool keepdims = false)
         {
             /*
             Return the maximum of an array or maximum along an axis, ignoring any
@@ -476,12 +476,12 @@ namespace NumpyDotNet
             {
                 // Slow, but safe for subclasses of ndarray
                 var replaced = _replace_nan(arr, _get_infinity_value(arr, false));
-                res = np.amax(replaced.a, axis: axis);
+                res = np.amax(replaced.a, axis: axis, keepdims:keepdims);
                 if (replaced.mask == null)
                     return res;
 
                 // Check for all-NaN axis
-                replaced.mask = np.all(replaced.mask, axis: axis);
+                replaced.mask = np.all(replaced.mask, axis: axis, keepdims:keepdims);
                 if (np.anyb(replaced.mask))
                 {
                     res = _copyto(res, _get_NAN_value(res), replaced.mask);
@@ -597,7 +597,7 @@ namespace NumpyDotNet
             return res;
         }
 
-        public static ndarray nansum(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
+        public static ndarray nansum(object a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             /*
             Return the sum of array elements over a given axis treating Not a
@@ -686,10 +686,10 @@ namespace NumpyDotNet
 
 
             var replaced = _replace_nan(asanyarray(a), 0);
-            return np.sum(replaced.a, axis: axis, dtype: dtype, ret: @out);
+            return np.sum(replaced.a, axis: axis, dtype: dtype, ret: @out, keepdims: keepdims);
         }
 
-        public static ndarray nanprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
+        public static ndarray nanprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             /*
             Return the product of array elements over a given axis treating Not a
@@ -752,7 +752,7 @@ namespace NumpyDotNet
             */
 
             var replaced = _replace_nan(asanyarray(a), 1);
-            return np.prod(replaced.a, axis: axis, dtype: dtype, @out: @out);
+            return np.prod(replaced.a, axis: axis, dtype: dtype, @out: @out, keepdims:keepdims);
         }
 
         public static ndarray nancumsum(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
@@ -886,7 +886,7 @@ namespace NumpyDotNet
         }
 
 
-        public static ndarray nanmean(object a, int? axis = null, dtype dtype = null)
+        public static ndarray nanmean(object a, int? axis = null, dtype dtype = null, bool keepdims = false)
         {
             /*
             Compute the arithmetic mean along the specified axis, ignoring NaNs.
@@ -964,7 +964,7 @@ namespace NumpyDotNet
             var replaced = _replace_nan(asanyarray(a), 0);
             if (replaced.mask == null)
             {
-                return np.mean(replaced.a, axis: axis, dtype: dtype);
+                return np.mean(replaced.a, axis: axis, dtype: dtype, keepdims: keepdims);
             }
 
             if (dtype != null && replaced.a.IsInexact)
@@ -976,8 +976,8 @@ namespace NumpyDotNet
 
             }
 
-            var cnt = np.sum(~replaced.mask, axis: axis, dtype: np.intp);
-            var tot = np.sum(replaced.a, axis: axis, dtype: dtype);
+            var cnt = np.sum(~replaced.mask, axis: axis, dtype: np.intp, keepdims:keepdims);
+            var tot = np.sum(replaced.a, axis: axis, dtype: dtype, keepdims:keepdims);
             var avg = _divide_by_count(tot, cnt, null);
 
             var isbad = (cnt == 0);
@@ -1069,7 +1069,7 @@ namespace NumpyDotNet
             throw new NotImplementedException();
         }
 
-        public static ndarray nanmedian(object a, int? axis = null, ndarray @out = null, bool? keepdims = null)
+        public static ndarray nanmedian(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
             Compute the median along the specified axis, while ignoring NaNs.
@@ -1161,7 +1161,7 @@ namespace NumpyDotNet
             // so deal them upfront
             if (arr.size == 0)
             {
-                return nanmean(a, axis);
+                return np.nanmean(a, axis, keepdims:keepdims);
             }
 
             int[] axisarray = null;
@@ -1172,7 +1172,7 @@ namespace NumpyDotNet
 
 
             var _ureduce_ret = _ureduce(arr, func: _nanmedian, q: null, IsQarray: false, axisarray: axisarray, @out: @out, overwrite_input: overwrite_input);
-            if (keepdims != null && keepdims.Value == true)
+            if (keepdims == true)
             {
                 return _ureduce_ret.r.reshape(_ureduce_ret.keepdims);
             }
@@ -1437,7 +1437,7 @@ namespace NumpyDotNet
             // so deal them upfront
             if (a.size == 0)
             {
-                return np.nanmean(a, axis);
+                return np.nanmean(a, axis, keepdims:keepdims);
             }
 
             int[] axisarray = null;
@@ -1674,7 +1674,7 @@ namespace NumpyDotNet
                 sqr = np.multiply(arr, arr);
 
             // Compute variance.
-            var var = np.sum(sqr, axis: axis, dtype: dtype);
+            var var = np.sum(sqr, axis: axis, dtype: dtype, keepdims:keepdims);
             if (var.ndim < cnt.ndim)
             {
                 // Subclasses of ndarray may ignore keepdims, so check here.

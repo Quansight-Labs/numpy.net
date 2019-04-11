@@ -2449,8 +2449,8 @@ namespace NumpyDotNet
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
 
             ndarray arr = NpyCoreApi.CheckAxis(a, ref iAxis, 0);
-            ndarray a1 = np.amax(arr, iAxis, null);
-            ndarray a2 = np.amin(arr, iAxis, null);
+            ndarray a1 = np.amax(arr, iAxis, null, keepdims:keepdims);
+            ndarray a2 = np.amin(arr, iAxis, null, keepdims:keepdims);
 
             ndarray ret = NpyCoreApi.PerformNumericOp(a1, NpyArray_Ops.npy_op_subtract, a2);
             if (@out != null)
@@ -2558,7 +2558,7 @@ namespace NumpyDotNet
                 
             }
 
-            var resultArray = NpyCoreApi.ArrayMax(arr, axis.Value, @out);
+            var resultArray = NpyCoreApi.ArrayMax(arr, axis.Value, @out, keepdims);
             return resultArray;
         }
 
@@ -2667,7 +2667,7 @@ namespace NumpyDotNet
 
             }
 
-            var resultArray = NpyCoreApi.ArrayMin(arr, axis.Value, @out);
+            var resultArray = NpyCoreApi.ArrayMin(arr, axis.Value, @out, keepdims);
             return resultArray;
         }
 
@@ -2719,7 +2719,7 @@ namespace NumpyDotNet
         public static ndarray prod(ndarray a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
-            return NpyCoreApi.Prod(a, iAxis, dtype, @out);
+            return NpyCoreApi.Prod(a, iAxis, dtype, @out, keepdims);
         }
 
         #endregion
@@ -3025,7 +3025,7 @@ namespace NumpyDotNet
                 }
             }
 
-            var ret = np.sum(arr, axis, dtype);
+            var ret = np.sum(arr, axis, dtype, keepdims: keepdims);
             ret = np.true_divide(ret, rcount);
             return ret;
    
@@ -3430,7 +3430,7 @@ namespace NumpyDotNet
             }
 
             // Compute the mean.
-            var arrmean = np.sum(arr, axis, dtype);
+            var arrmean = np.sum(arr, axis, dtype, keepdims: keep_dims);
             arrmean = np.true_divide(arrmean, rcount);
 
             // Compute sum of squared deviations from mean
@@ -3438,7 +3438,7 @@ namespace NumpyDotNet
             var x = asanyarray(arr - arrmean);
             x = np.multiply(x, x);
 
-            var ret = np.sum(x, axis, dtype);
+            var ret = np.sum(x, axis, dtype, keepdims: keep_dims);
 
             // Compute degrees of freedom and make sure it is not negative.
             rcount = Math.Max(rcount - ddof, 0);
