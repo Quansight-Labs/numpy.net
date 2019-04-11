@@ -122,7 +122,8 @@ namespace NumpyLib
             }
 
             same = NpyArray_SAMESHAPE(dest, src);
-            simple = same && ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
+            simple = same && (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
+                             ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                               (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
 
             if (simple)
@@ -241,7 +242,8 @@ namespace NumpyLib
             {
                 return -1;
             }
-            simple = ((NpyArray_ISCARRAY_RO(mp) && NpyArray_ISCARRAY(dst)) ||
+            simple = (NpyArray_ISWRITEABLE(mp) && NpyArray_ISWRITEABLE(dst)) &&
+                     ((NpyArray_ISCARRAY_RO(mp) && NpyArray_ISCARRAY(dst)) ||
                       (NpyArray_ISFARRAY_RO(mp) && NpyArray_ISFARRAY(dst)));
             if (simple)
             {

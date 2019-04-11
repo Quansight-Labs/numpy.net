@@ -285,6 +285,7 @@ namespace NumpyLib
             }
             same = NpyArray_SAMESHAPE(dest,src);
             simple = same && !NpyDataType_REFCHK(dest.descr) &&
+                (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
                 ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
 
@@ -1019,6 +1020,7 @@ namespace NumpyLib
             }
 
             simple = !NpyDataType_REFCHK(dest.descr) &&
+                 (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
                 ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
             if (simple)
