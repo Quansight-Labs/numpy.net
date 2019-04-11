@@ -196,36 +196,48 @@ namespace NumpyDotNet
         public bool farray { get { return ChkFlags(NPYARRAYFLAGS.NPY_FARRAY) && !c_contiguous; } }
 
         // get/set flags
-        public bool aligned {
-            get {
+        public bool aligned
+        {
+            get
+            {
                 return ChkFlags(NPYARRAYFLAGS.NPY_ALIGNED);
             }
-            set {
-                if (array == null) {
-                    throw new ArgumentException("Cannet set flags on array scalars");
+            set
+            {
+                if (array == null)
+                {
+                    throw new ArgumentException("Cannot set flags on array scalars");
                 }
                 array.setflags(null, value, null);
             }
         }
 
-        public bool updateifcopy {
-            get {
+        public bool updateifcopy
+        {
+            get
+            {
                 return ChkFlags(NPYARRAYFLAGS.NPY_UPDATEIFCOPY);
             }
-            set {
-                if (array == null) {
+            set
+            {
+                if (array == null)
+                {
                     throw new ArgumentException("Cannot set flags on array scalars");
                 }
                 array.setflags(null, null, value);
             }
         }
 
-        public bool writeable {
-            get {
+        public bool writeable
+        {
+            get
+            {
                 return ChkFlags(NPYARRAYFLAGS.NPY_WRITEABLE);
             }
-            set {
-                if (array == null) {
+            set
+            {
+                if (array == null)
+                {
                     throw new ArgumentException("Cannot set flags on array scalars");
                 }
                 array.setflags(value, null, null);

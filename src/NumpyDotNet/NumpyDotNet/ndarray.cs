@@ -1038,35 +1038,50 @@ namespace NumpyDotNet
         private static string[] resizeKeywords = { "refcheck" };
 
 
-        public void setflags(object write = null, object align = null, object uic = null) {
+        public void setflags(object write = null, object align = null, object uic = null)
+        {
             NPYARRAYFLAGS flags = RawFlags;
-            if (align != null) {
+            if (align != null)
+            {
                 bool bAlign = NpyUtil_ArgProcessing.BoolConverter(align);
-                if (bAlign) {
+                if (bAlign)
+                {
                     flags |= NPYARRAYFLAGS.NPY_ALIGNED;
-                } else {
-                    if (!NpyCoreApi.IsAligned(this)) {
+                }
+                else
+                {
+                    if (!NpyCoreApi.IsAligned(this))
+                    {
                         throw new ArgumentException("cannot set aligned flag of mis-aligned array to True");
                     }
                     flags &= ~NPYARRAYFLAGS.NPY_ALIGNED;
                 }
             }
-            if (uic != null) {
+            if (uic != null)
+            {
                 bool bUic = NpyUtil_ArgProcessing.BoolConverter(uic);
-                if (bUic) {
+                if (bUic)
+                {
                     throw new ArgumentException("cannot set UPDATEIFCOPY flag to True");
-                } else {
+                }
+                else
+                {
                     NpyCoreApi.ClearUPDATEIFCOPY(this);
                 }
             }
-            if (write != null) {
+            if (write != null)
+            {
                 bool bWrite = NpyUtil_ArgProcessing.BoolConverter(write);
-                if (bWrite) {
-                    if (!NpyCoreApi.IsWriteable(this)) {
+                if (bWrite)
+                {
+                    if (!NpyCoreApi.IsWriteable(this))
+                    {
                         throw new ArgumentException("cannot set WRITEABLE flag to true on this array");
                     }
                     flags |= NPYARRAYFLAGS.NPY_WRITEABLE;
-                } else {
+                }
+                else
+                {
                     flags &= ~NPYARRAYFLAGS.NPY_WRITEABLE;
                 }
             }
@@ -1447,13 +1462,18 @@ namespace NumpyDotNet
             }
         }
 
-        internal static dtype GetTypeDouble(dtype dtype1, dtype dtype2) {
-            if (dtype2 != null) {
+        internal static dtype GetTypeDouble(dtype dtype1, dtype dtype2)
+        {
+            if (dtype2 != null)
+            {
                 return dtype2;
             }
-            if (dtype1.TypeNum < NPY_TYPES.NPY_FLOAT) {
+            if (dtype1.TypeNum < NPY_TYPES.NPY_FLOAT)
+            {
                 return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE);
-            } else {
+            }
+            else
+            {
                 return dtype1;
             }
         }
