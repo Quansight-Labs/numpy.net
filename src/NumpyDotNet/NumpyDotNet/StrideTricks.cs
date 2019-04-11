@@ -47,6 +47,29 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        private static ndarray _maybe_view_as_subclass(object original_array, object new_array)
+        {
+            ndarray array = null;
+            if (original_array.GetType() != new_array.GetType())
+            {
+                // if input was an ndarray subclass and subclasses were OK,
+                // then view the result as that subclass.
+                array = asanyarray(new_array).view(asanyarray(original_array).Dtype);
+                // Since we have done something akin to a view from original_array, we
+                // should let the subclass finalize (if it has it implemented, i.e., is
+                // not None).
+
+                //if (array.__array_finalize__)
+                //    array.__array_finalize__(original_array)
+            }
+            else
+            {
+                array = asanyarray(new_array);
+            }
+
+            return array;
+        }
+
         public static ndarray as_strided(ndarray x, npy_intp[] shape = null, npy_intp[] strides = null, bool subok = false, bool writeable = false)
         {
             var view = np.array(x, copy: false, subok: subok);
@@ -60,7 +83,7 @@ namespace NumpyDotNet
                 view.flags.writeable = false;
 
             return view;
-    }
+        }
 
 
         private static bool broadcastable(npy_intp[] adims, int and, npy_intp[] bdims, int bnd)
@@ -99,9 +122,77 @@ namespace NumpyDotNet
             return ret.reshape(newshape);
         }
 
+        private static ndarray _broadcast_to(object oarray, object oshape, bool subok, bool _readonly)
+        {
+            shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
+            if (newshape == null)
+            {
+                throw new Exception("Unable to convert shape object");
+            }
+
+            ndarray array = np.array(asanyarray(oarray), copy: false, subok: subok);
+
+            if (array.dims == null)
+            {
+                throw new ValueError("cannot broadcast a non-scalar to a scalar array");
+            }
+
+            if (np.anyb(np.array(newshape.iDims) < 0))
+            {
+                throw new ValueError("all elements of broadcast shape must be non-negative");
+            }
+
+            var toshape = NpyCoreApi.BroadcastToShape(array, newshape.iDims, newshape.iDims.Length);
+
+            var newStrides = new npy_intp[toshape.nd_m1 + 1];
+            Array.Copy(toshape.strides, 0, newStrides, 0, newStrides.Length);
+            var result = np.as_strided(array, shape: newshape.iDims, strides: newStrides);
+ 
+            return result;
+        }
+
         public static ndarray broadcast_to(object array, object shape, bool subok = false)
         {
-            return upscale_to(asanyarray(array), shape);
+            /*
+
+            Parameters
+            ----------
+            array : array_like
+                The array to broadcast.
+            shape : tuple
+                The shape of the desired array.
+            subok : bool, optional
+                If True, then sub-classes will be passed-through, otherwise
+                the returned array will be forced to be a base-class array (default).
+
+            Returns
+            -------
+            broadcast : array
+                A readonly view on the original array with the given shape. It is
+                typically not contiguous. Furthermore, more than one element of a
+                broadcasted array may refer to a single memory location.
+
+            Raises
+            ------
+            ValueError
+                If the array is not compatible with the new shape according to NumPy's
+                broadcasting rules.
+
+            Notes
+            -----
+            .. versionadded:: 1.10.0
+
+            Examples
+            --------
+            >>> x = np.array([1, 2, 3])
+            >>> np.broadcast_to(x, (3, 3))
+            array([[1, 2, 3],
+                   [1, 2, 3],
+                   [1, 2, 3]])             
+            */
+
+            //return upscale_to(asanyarray(array), shape);
+            return _broadcast_to(array, shape, subok : subok, _readonly : true);
         }
 
     }

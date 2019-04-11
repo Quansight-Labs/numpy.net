@@ -46,10 +46,64 @@ namespace NumpyDotNetTests
         {
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_broadcast_to_1()
         {
+            var a = np.broadcast_to(5, (4, 4));
+            AssertArray(a, new int[,] { { 5,5,5,5}, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }});
+            AssertStrides(a, 0, 0);
+            print(a);
+            print(a.shape);
+            print(a.strides);
+            print("*************");
+ 
+
+            var b = np.broadcast_to(new int[] { 1, 2, 3 }, (3, 3));
+            AssertArray(b, new int[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            AssertStrides(b, 0, 4);
+            print(b);
+            print(b.shape);
+            print(b.strides);
+            print("*************");
+
+
+        }
+
+
+        [TestMethod]
+        public void test_broadcast_to_2()
+        {
+            var x = np.array(new int[,] { { 1, 2, 3 } });
+            //print(x);
+            //print(x.shape);
+            //print(x.strides);
+            //print("*************");
+
+            var b = np.broadcast_to(x, (4, 3));
+            AssertArray(b, new int[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            AssertStrides(b, 0, 4);
+            print(b);
+            print(b.shape);
+            print(b.strides);
+            print("*************");
+        }
+
+
+        [TestMethod]
+        public void test_broadcast_to_3()
+        {
+            try
+            {
+                var a = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape((2, 2, 3));
+                var b = np.broadcast_to(a, (4, 2, 3));
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught an exception");
+     
         }
 
         [Ignore] // not implemented yet
