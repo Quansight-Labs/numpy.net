@@ -130,6 +130,11 @@ namespace NumpyDotNet
                 throw new Exception("Unable to convert shape object");
             }
 
+            if (newshape.iDims == null || newshape.iDims.Length == 0)
+            {
+                newshape = new shape(asanyarray(oarray).shape);
+            }
+
             ndarray array = np.array(asanyarray(oarray), copy: false, subok: subok);
 
             if (array.dims == null)
