@@ -48,7 +48,7 @@ namespace NumpyDotNet
 {
     public class nditer : IEnumerable, IEnumerator, IEnumerator<object>
     {
-        NpyArrayMultiIterObject core = null;
+        private NpyArrayMultiIterObject core = null;
         private NpyArrayMultiIterObject current;
         private int creationCount = 0;
 
@@ -60,7 +60,7 @@ namespace NumpyDotNet
 
         public nditer(ValueTuple<ndarray, ndarray> arr)
         {
-            core = NpyCoreApi.MultiIterFromArrays(new ndarray[] {arr.Item1, arr.Item2 });
+            core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2 });
             creationCount = core.numiter;
         }
         public nditer(ValueTuple<ndarray, ndarray, ndarray> arr)
@@ -73,15 +73,36 @@ namespace NumpyDotNet
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2, arr.Item3, arr.Item4 });
             creationCount = core.numiter;
         }
-        public nditer(ndarray [] arrays)
+        public nditer(ndarray[] arrays)
         {
             core = NpyCoreApi.MultiIterFromArrays(arrays);
             creationCount = core.numiter;
         }
 
-        internal long ndim
+        public NpyArrayMultiIterObject iter
+        {
+            get { return core; }
+        }
+
+        public int ndim
         {
             get { return core.nd; }
+        }
+        public npy_intp index
+        {
+            get { return core.index; }
+        }
+        public int numiter
+        {
+            get { return core.numiter; }
+        }
+        public npy_intp size
+        {
+            get { return core.size; }
+        }
+        public npy_intp[] dimensions
+        {
+            get { return core.dimensions; }
         }
 
         public npy_intp[] coordinates(int index)
@@ -274,7 +295,7 @@ namespace NumpyDotNet
         }
         public int ndim
         {
-            get { return core.nd; }
+            get { return core.ndim; }
         }
         public int nd
         {
@@ -287,7 +308,7 @@ namespace NumpyDotNet
 
         public shape shape
         {
-            get { return new shape(core.dimensions, core.nd); }
+            get { return new shape(core.dimensions, core.ndim); }
         }
 
         public npy_intp size
@@ -296,14 +317,13 @@ namespace NumpyDotNet
         }
 
 
-        NpyArrayMultiIterObject core = null;
-        private NpyArrayMultiIterObject current;
-        private int creationCount = 0;
+        private nditer core = null;
+        private nditer current;
 
-        public broadcast(NpyArrayMultiIterObject iter)
+
+        public broadcast(nditer iter)
         {
             core = iter;
-            creationCount = core.numiter;
         }
 
 
@@ -318,36 +338,23 @@ namespace NumpyDotNet
         {
             get
             {
-                ndarray[] retArrays = new ndarray[creationCount];
-                for (int i = 0; i < creationCount; i++)
-                    retArrays[i] = SingleElementArray(current.iters[i]);
-
-                return retArrays;
+                return core.Current;
             }
         }
-
-        private ndarray SingleElementArray(NpyArrayIterObject IterObject)
-        {
-            return np.array(IterObject.dataptr, 1);
-        }
-
+     
         public bool MoveNext()
         {
             if (current == null)
             {
                 current = core;
             }
-            else
-            {
-                NpyCoreApi.MultiIterNext(core);
-            }
-            return (NpyCoreApi.MultiIterDone(core));
+
+            return (core.MoveNext());
         }
 
         public void Reset()
         {
-            current = null;
-            NpyCoreApi.MultiIterReset(core);
+            core.Reset();
         }
 
         #endregion
@@ -369,15 +376,13 @@ namespace NumpyDotNet
                 arrays[i] = asanyarray(aobjects[i]);
             }
 
-            var iterator = new nditer(arrays);
+            var nditer = new nditer(arrays);
 
-            NpyArrayMultiIterObject iter = NpyCoreApi.MultiIterFromArrays(arrays);
-
-            int result = NpyCoreApi.MultiIterBroadcast(iter);
+            int result = NpyCoreApi.MultiIterBroadcast(nditer.iter);
             if (result < 0)
                 return null;
 
-            broadcast bcast = new broadcast(iter);
+            broadcast bcast = new broadcast(nditer);
             return bcast;
         }
     }
