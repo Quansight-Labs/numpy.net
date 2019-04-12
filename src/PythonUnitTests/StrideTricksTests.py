@@ -8,14 +8,19 @@ class Test_StrideTricksTests(unittest.TestCase):
 
     def test_broadcast_1(self):
 
-        x = np.array([[1], [2], [3]])
+        x = np.array([[11], [2], [3]])
         y = np.array([4, 5, 6])
         b = np.broadcast(x, y)
-        print(b)
+        print(b.shape)
 
-        c = np.empty(b.shape)
-        c.flat = [u+v for (u,v) in b]
-        print(c)
+        print(b.index)
+        for u,v in b:
+            print(u, v)
+        print(b.index)
+
+        #c = np.empty(b.shape)
+        #c.flat = [u+v for (u,v) in b]
+        #print(c)
 
     def test_broadcast_to_1(self):
 

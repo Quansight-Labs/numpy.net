@@ -453,6 +453,17 @@ namespace NumpyDotNet {
             }
         }
 
+
+        internal static int MultiIterBroadcast(NpyArrayMultiIterObject multi)
+        {
+#if ENABLELOCKING
+            lock (GlobalIterpLock)
+#endif
+            {
+                return numpyAPI.NpyArray_Broadcast(multi);
+            }
+        }
+
         internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, double operand, bool UseSrcAsDest = false)
         {
             #if ENABLELOCKING

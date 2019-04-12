@@ -73,7 +73,11 @@ namespace NumpyDotNet
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2, arr.Item3, arr.Item4 });
             creationCount = core.numiter;
         }
-
+        public nditer(ndarray [] arrays)
+        {
+            core = NpyCoreApi.MultiIterFromArrays(arrays);
+            creationCount = core.numiter;
+        }
 
         internal long ndim
         {
@@ -260,5 +264,121 @@ namespace NumpyDotNet
 
 
 
+    }
+
+    public class broadcast : IEnumerable, IEnumerator, IEnumerator<object>
+    {
+        public npy_intp index
+        {
+            get { return core.index; }
+        }
+        public int ndim
+        {
+            get { return core.nd; }
+        }
+        public int nd
+        {
+            get { return ndim; }
+        }
+        public int numiter
+        {
+            get { return core.numiter; }
+        }
+
+        public shape shape
+        {
+            get { return new shape(core.dimensions, core.nd); }
+        }
+
+        public npy_intp size
+        {
+            get { return core.size; }
+        }
+
+
+        NpyArrayMultiIterObject core = null;
+        private NpyArrayMultiIterObject current;
+        private int creationCount = 0;
+
+        public broadcast(NpyArrayMultiIterObject iter)
+        {
+            core = iter;
+            creationCount = core.numiter;
+        }
+
+
+        #region IEnumerator<object>
+
+        public IEnumerator GetEnumerator()
+        {
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                ndarray[] retArrays = new ndarray[creationCount];
+                for (int i = 0; i < creationCount; i++)
+                    retArrays[i] = SingleElementArray(current.iters[i]);
+
+                return retArrays;
+            }
+        }
+
+        private ndarray SingleElementArray(NpyArrayIterObject IterObject)
+        {
+            return np.array(IterObject.dataptr, 1);
+        }
+
+        public bool MoveNext()
+        {
+            if (current == null)
+            {
+                current = core;
+            }
+            else
+            {
+                NpyCoreApi.MultiIterNext(core);
+            }
+            return (NpyCoreApi.MultiIterDone(core));
+        }
+
+        public void Reset()
+        {
+            current = null;
+            NpyCoreApi.MultiIterReset(core);
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+        }
+
+    }
+
+    public static partial class np
+    {
+        public static broadcast broadcast(params object[] aobjects)
+        {
+            ndarray[] arrays = new ndarray[aobjects.Length];
+
+            for (int i = 0; i < aobjects.Length; i++)
+            {
+                arrays[i] = asanyarray(aobjects[i]);
+            }
+
+            var iterator = new nditer(arrays);
+
+            NpyArrayMultiIterObject iter = NpyCoreApi.MultiIterFromArrays(arrays);
+
+            int result = NpyCoreApi.MultiIterBroadcast(iter);
+            if (result < 0)
+                return null;
+
+            broadcast bcast = new broadcast(iter);
+            return bcast;
+        }
     }
 }

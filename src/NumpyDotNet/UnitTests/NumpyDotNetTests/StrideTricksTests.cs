@@ -40,10 +40,22 @@ namespace NumpyDotNetTests
     [TestClass]
     public class StrideTricksTests : TestBaseClass
     {
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_broadcast_1()
         {
+            var x = np.array(new int[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new int[] { 4, 5, 6 });
+            var b = np.broadcast(x, y);
+            print(b.shape);
+
+            print(b.index);
+
+            foreach (var uv in b)
+            {
+                print(uv);
+            }
+            print(b.index);
+
         }
 
         [TestMethod]
