@@ -230,5 +230,59 @@ namespace NumpyDotNet
             return _broadcast_to(array, shape, subok : subok, _readonly : true);
         }
 
+        private static shape _broadcast_shape(ndarray [] args)
+        {
+            if (args == null)
+            {
+                return new shape(0);
+            }
+
+            var b = np.broadcast(args);
+
+            ndarray b1 = np.broadcast_to(0, b.shape);
+            for (int pos = 1; pos < args.Length; pos++)
+            {
+                b1 = np.broadcast_to(0, b1.shape);
+            }
+
+            return b1.shape;
+        }
+
+        public static IEnumerable<ndarray> broadcast_arrays(bool subok, params object[] args)
+        {
+            ndarray[] arrays = new ndarray[args.Length];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                arrays[i] = np.array(args[i], copy: false,subok:subok);
+            }
+
+            var shape = _broadcast_shape(arrays);
+
+            bool allsame = true;
+            for (int i = 0; i < arrays.Length; i++)
+            {
+                if (shape != arrays[i].shape)
+                {
+                    allsame = false;
+                    break;
+                }
+
+            }
+            if (allsame)
+            {
+                return arrays;
+            }
+
+            ndarray[] broadcastedto = new ndarray[args.Length];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                broadcastedto[i] = _broadcast_to(args[i], shape, subok: subok, _readonly: false);
+            }
+
+            return broadcastedto;
+        }
+
     }
 }

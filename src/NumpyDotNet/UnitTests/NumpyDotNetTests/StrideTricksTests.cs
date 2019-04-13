@@ -175,10 +175,15 @@ namespace NumpyDotNetTests
      
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_broadcast_arrays_1()
         {
+            var x = np.array(new int[,] { { 1, 2, 3 } });
+            var y = np.array(new int[,] { { 4 }, { 5 } });
+            var z = np.broadcast_arrays(false, x, y);
+
+            print(z);
+
         }
 
 
