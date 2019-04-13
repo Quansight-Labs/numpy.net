@@ -22,6 +22,44 @@ class Test_StrideTricksTests(unittest.TestCase):
         #c.flat = [u+v for (u,v) in b]
         #print(c)
 
+    def test_broadcast_2(self):
+
+        x = np.array([[11], [2], [3]])
+        y = np.array([4, 5, 6, 7, 8, 9])
+        b = np.broadcast(x, y)
+        print(b.shape)
+        print(b.size)
+
+        print(b.index)
+        for u,v in b:
+            print(u, v)
+        print(b.index)
+
+        #c = np.empty(b.shape)
+        #c.flat = [u+v for (u,v) in b]
+        #print(c)
+
+    def test_broadcast_3(self):
+
+        x = np.array([[11], [2], [3]])
+        y = np.array([4, 5, 6, 7, 8, 9])
+        z = np.array([[21], [22], [23]])
+        b = np.broadcast(x, y, z)
+        print(b.numiter)
+        print(b.shape)
+        print(b.size)
+
+        print(b.index)
+        for u,v,w in b:
+            if True:
+                print(u, v, w)
+        print(b.index)
+
+        #c = np.empty(b.shape)
+        #c.flat = [u+v for (u,v) in b]
+        #print(c)
+
+
     def test_broadcast_to_1(self):
 
         a = np.broadcast_to(5, (4,4))

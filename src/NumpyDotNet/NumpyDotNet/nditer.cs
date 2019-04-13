@@ -378,10 +378,6 @@ namespace NumpyDotNet
 
             var nditer = new nditer(arrays);
 
-            int result = NpyCoreApi.MultiIterBroadcast(nditer.iter);
-            if (result < 0)
-                return null;
-
             broadcast bcast = new broadcast(nditer);
             return bcast;
         }

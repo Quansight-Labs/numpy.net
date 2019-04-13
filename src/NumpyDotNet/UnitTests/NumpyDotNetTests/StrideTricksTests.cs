@@ -46,14 +46,71 @@ namespace NumpyDotNetTests
             var x = np.array(new int[,] { { 11 }, { 2 }, { 3 } });
             var y = np.array(new int[] { 4, 5, 6 });
             var b = np.broadcast(x, y);
+            Assert.AreEqual(b.shape.iDims.Length, 2);
+            Assert.AreEqual(b.shape.iDims[0], 3);
+            Assert.AreEqual(b.shape.iDims[1], 3);
             print(b.shape);
 
+            Assert.AreEqual(b.index, 0);
             print(b.index);
 
             foreach (var uv in b)
             {
                 print(uv);
             }
+            Assert.AreEqual(b.index, 9);
+            print(b.index);
+
+        }
+
+        [TestMethod]
+        public void test_broadcast_2()
+        {
+            var x = np.array(new int[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new int[] { 4, 5, 6, 7,8, 9 });
+            var b = np.broadcast(x, y);
+            Assert.AreEqual(b.shape.iDims.Length, 2);
+            Assert.AreEqual(b.shape.iDims[0], 3);
+            Assert.AreEqual(b.shape.iDims[1], 6);
+            print(b.shape);
+            Assert.AreEqual(b.size, 18);
+            print(b.size);
+
+            Assert.AreEqual(b.index, 0);
+            print(b.index);
+
+            foreach (var uv in b)
+            {
+                print(uv);
+            }
+            Assert.AreEqual(b.index, 18);
+            print(b.index);
+
+        }
+
+
+        [TestMethod]
+        public void test_broadcast_3()
+        {
+            var x = np.array(new int[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new int[] { 4, 5, 6, 7, 8, 9 });
+            var z = np.array(new int[,] { { 21 }, { 22 }, { 23 } });
+            var b = np.broadcast(x, y, z);
+            Assert.AreEqual(b.shape.iDims.Length, 2);
+            Assert.AreEqual(b.shape.iDims[0], 3);
+            Assert.AreEqual(b.shape.iDims[1], 6);
+            print(b.shape);
+            Assert.AreEqual(b.size, 18);
+            print(b.size);
+
+            Assert.AreEqual(b.index, 0);
+            print(b.index);
+
+            foreach (var uv in b)
+            {
+                print(uv);
+            }
+            Assert.AreEqual(b.index, 18);
             print(b.index);
 
         }
