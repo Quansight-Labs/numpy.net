@@ -1047,6 +1047,85 @@ namespace NumpyDotNet
             }
         }
 
+        private static ndarray roll_needs_work(object a, int shift, object axis = null)
+        {
+            // Roll array elements along a given axis.
+
+            // Elements that roll beyond the last position are re - introduced at
+            //   the first.
+
+            //   Parameters
+            //   ----------
+            // a: array_like
+            //    Input array.
+            //shift : int or tuple of ints
+            //    The number of places by which elements are shifted.  If a tuple,
+            //     then `axis` must be a tuple of the same size, and each of the
+            //     given axes is shifted by the corresponding number.If an int
+            //     while `axis` is a tuple of ints, then the same value is used for
+            //     all given axes.
+            // axis : int or tuple of ints, optional
+            //     Axis or axes along which elements are shifted.By default, the
+            //     array is flattened before shifting, after which the original
+            //     shape is restored.
+
+            // Returns
+            // -------
+            // res : ndarray
+            //     Output array, with the same shape as `a`.
+
+            // See Also
+            // --------
+            // rollaxis : Roll the specified axis backwards, until it lies in a
+            //            given position.
+
+            // Notes
+            // ---- -
+            // ..versionadded:: 1.12.0
+
+            // Supports rolling over multiple dimensions simultaneously.
+
+
+            var arr = asanyarray(a);
+            if (axis == null)
+            {
+                return roll(arr.ravel(), shift, 0).reshape(arr.shape);
+            }
+            else
+            {
+                int[] axisarray = normalize_axis_tuple(axis, arr.ndim, allow_duplicates: true);
+                var broadcasted = broadcast(shift, axisarray);
+
+                if (broadcasted.ndim > 1)
+                {
+                    throw new ValueError("'shift' and 'axis' should be scalars or 1D sequences");
+                }
+
+                Dictionary<int, int> shifts = new Dictionary<int, int>();
+                for (int i = 0; i < arr.ndim; i++)
+                {
+                    shifts.Add(i, 0);
+                }
+                foreach (var _b in broadcasted)
+                {
+                    ndarray[] ss = _b as ndarray[];
+                    shifts[(int)ss[1].GetItem(0)] = (int)ss[0].GetItem(0);
+                }
+
+                //object[] rolls = new object[arr.ndim];
+                //for (int i = 0; i < arr.ndim; i++)
+                //{
+                //    rolls[i] = new Slice()
+                //}
+
+                //var rolls = BuildSliceArray()
+                return null;
+            }
+
+            return null;
+        }
+
+
         #endregion
 
         #region rollaxis
