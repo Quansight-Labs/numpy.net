@@ -227,11 +227,24 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_vander_1()
+        public void test_vander_1()
         {
-            // waiting for multiply.accumulate to be implemented
+            var x = np.array(new int[] { 1, 2, 3, 5 });
+            int N = 3;
+            var y = np.vander(x, N);
+            AssertArray(y, new int[,] { { 1, 1, 1 }, { 4, 2, 1 }, { 9, 3, 1 }, { 25, 5, 1 } });
+            print(y);
+
+            y = np.vander(x);
+            AssertArray(y, new int[,] { { 1, 1, 1, 1 }, { 8, 4, 2, 1 }, { 27, 9, 3, 1 }, { 125, 25, 5, 1 } });
+            print(y);
+
+            y = np.vander(x, increasing:true);
+            AssertArray(y, new int[,] { { 1, 1, 1, 1 }, { 1, 2, 4, 8 }, { 1, 3, 9, 27 }, { 1, 5, 25, 125 } });
+            print(y);
+
+            return;
         }
 
         [TestMethod]

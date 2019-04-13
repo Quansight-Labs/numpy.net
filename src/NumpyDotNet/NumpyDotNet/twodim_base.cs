@@ -552,7 +552,7 @@ namespace NumpyDotNet
 
         #region vander
 
-        public static ndarray vander(ndarray x, int? N = null, bool increasing = false)
+        public static ndarray vander(object x, int? N = null, bool increasing = false)
         {
             /*
             Generate a Vandermonde matrix.
@@ -625,9 +625,42 @@ namespace NumpyDotNet
             48             
             */
 
-            throw new NotImplementedException();
+
+            var array = asanyarray(x);
+            if (array.ndim != 1)
+            {
+                throw new ValueError("x must be a one-dimensional array or sequence.");
+            }
+
+            if (N == null)
+            {
+                N = len(array);
+            }
+
+            ndarray tmp = null;
+            var v = empty((len(array), N.Value), dtype: promote_types(array.Dtype, np.Int32));
+            if (!increasing)
+                tmp = v[":", "::-1"] as ndarray;
+            else
+                tmp = v;
+
+            if (N > 0)
+            {
+                tmp[":", 0] = 1;
+            }
+            if (N > 1)
+            {
+                tmp[":", "1:"] = array[":", null];
+                ufuncmultiply.accumulate(tmp[":", "1:"] as ndarray, @out : tmp[":", "1:"] as ndarray, axis : 1);
+            }
+
+
+            return v;
+
         }
 
+
+   
         #endregion
 
         #region histogram2d

@@ -92,6 +92,20 @@ class Test_test1(unittest.TestCase):
 
     def test_vander_1(self):
 
+        x = np.array([1, 2, 3, 5])
+        N = 3
+
+        v = np.empty((len(x), N), dtype=np.promote_types(x.dtype, int))
+
+        y = np.vander(x, N)
+        print(y)
+
+        y = np.vander(x)
+        print(y)
+
+        y = np.vander(x, increasing=True)
+        print(y)
+
         return
     
     def test_histogram2d(self):

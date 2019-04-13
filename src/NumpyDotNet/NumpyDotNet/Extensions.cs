@@ -504,6 +504,15 @@ namespace NumpyDotNet
         }
     }
 
+
+    public static class ufuncmultiply
+    {
+        public static void accumulate(ndarray a, ndarray @out, int? axis = null)
+        {
+            np.cumprod(a, axis, a.Dtype, @out);
+        }
+    }
+
     public static partial class np
     {
         #region as(.NET System.Array)
