@@ -1784,7 +1784,19 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_unwrap_1()
+        {
+            double retstep = 0;
 
+            var phase = np.linspace(0, Math.PI, ref retstep, num : 5);
+            phase["3:"] = phase.A("3:") + Math.PI;
+            print(phase);
+
+            var x = np.unwrap(phase);
+            AssertArray(x, new double[] { 0.0, 0.785398163397448, 1.5707963267949, -0.785398163397448, 0.0 });
+            print(x);
+        }
 
 #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet

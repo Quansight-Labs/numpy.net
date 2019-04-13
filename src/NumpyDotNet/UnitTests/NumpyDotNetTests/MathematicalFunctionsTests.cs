@@ -377,12 +377,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]  // too much work.
-        [TestMethod]
-        public void test_unwrap_1()
-        {
-
-        }
 
         [TestMethod]
         public void test_rad2deg_1()

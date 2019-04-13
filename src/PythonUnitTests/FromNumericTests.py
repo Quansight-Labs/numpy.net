@@ -917,5 +917,16 @@ class FromNumericTests(unittest.TestCase):
         print(np.sum(a))
 
 
+    def test_unwrap_1(self):
+
+        phase = np.linspace(0, np.pi, num=5)
+        phase[3:] += np.pi
+        print(phase)
+
+        x = np.unwrap(phase)
+        print(x)
+
+
+
 if __name__ == '__main__':
     unittest.main()

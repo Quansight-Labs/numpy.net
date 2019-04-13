@@ -838,6 +838,69 @@ namespace NumpyDotNet
 
         #endregion
 
+        public static ndarray unwrap(object p, double discont = Math.PI, int axis = -1)
+        {
+            /*
+            Unwrap by changing deltas between values to 2*pi complement.
+
+            Unwrap radian phase `p` by changing absolute jumps greater than
+            `discont` to their 2*pi complement along the given axis.
+
+            Parameters
+            ----------
+            p : array_like
+                Input array.
+            discont : float, optional
+                Maximum discontinuity between values, default is ``pi``.
+            axis : int, optional
+                Axis along which unwrap will operate, default is the last axis.
+
+            Returns
+            -------
+            out : ndarray
+                Output array.
+
+            See Also
+            --------
+            rad2deg, deg2rad
+
+            Notes
+            -----
+            If the discontinuity in `p` is smaller than ``pi``, but larger than
+            `discont`, no unwrapping is done because taking the 2*pi complement
+            would only make the discontinuity larger.
+
+            Examples
+            --------
+            >>> phase = np.linspace(0, np.pi, num=5)
+            >>> phase[3:] += np.pi
+            >>> phase
+            array([ 0.        ,  0.78539816,  1.57079633,  5.49778714,  6.28318531])
+            >>> np.unwrap(phase)
+            array([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ])
+            */
+
+     
+
+            var arrp = asanyarray(p);
+            var nd = arrp.ndim;
+
+            if (axis < 0)
+                axis += nd;
+
+            var dd = diff(arrp, axis: axis);
+            var slice1 = BuildSliceArray(new Slice(null, null), nd);    // full slices
+            slice1[axis] = new Slice(1, null);
+            var ddmod = mod(dd + Math.PI, 2 * Math.PI) - Math.PI;
+            copyto(ddmod, Math.PI, where : (ddmod == -Math.PI) & (dd > 0));
+            var ph_correct = ddmod - dd;
+            copyto(ph_correct, 0, where: absolute(dd) < discont);
+            var up = array(p, copy: true, dtype: np.Float64);
+
+            up[slice1] = arrp.A(slice1) + ph_correct.cumsum(axis);
+            return up;
+        }
+
         #region trim_zero
         public static ndarray trim_zeros(ndarray filt, string trim = "fb")
         {
