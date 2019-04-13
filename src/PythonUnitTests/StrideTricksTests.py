@@ -124,16 +124,51 @@ class Test_StrideTricksTests(unittest.TestCase):
         n = 1000
         a = np.arange(n)
 
+        b = np.lib.stride_tricks.as_strided(a, (n, n), (0, 4))
+
+        print(b)
+
+        print(b.size)
+        print(b.shape)
+        print(b.strides)
+        print(b.nbytes)
+
+
+    def test_as_strided_1(self):
+
+        y = np.zeros((10, 10))
+        print(y.strides)
+
+        n = 1000
+        a = np.arange(n, dtype=np.int64)
+
         b = np.lib.stride_tricks.as_strided(a, (n, n), (0, 8))
 
         print(b)
 
         print(b.size)
         print(b.shape)
+        print(b.strides)
         print(b.nbytes)
 
 
+    def test_as_strided_2(self):
 
+        y = np.zeros((2, 2))
+        print(y.strides)
+
+        n = 4
+        a = np.arange(n)
+        print(a)
+
+        b = np.lib.stride_tricks.as_strided(a, (n, n), (0, 4))
+
+        print(b)
+
+        print(b.size)
+        print(b.shape)
+        print(b.strides)
+        print(b.nbytes)
 
 if __name__ == '__main__':
     unittest.main()

@@ -70,6 +70,36 @@ namespace NumpyDotNet
             return array;
         }
 
+        public static ndarray as_strided(ndarray x, object oshape = null, object ostrides = null, bool subok = false, bool writeable = false)
+        {
+            npy_intp[] shape = null;
+            npy_intp[] strides = null;
+
+            if (oshape != null)
+            {
+                shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
+                if (newshape == null)
+                {
+                    throw new Exception("Unable to convert shape object");
+                }
+                shape = newshape.iDims;
+            }
+
+            if (ostrides != null)
+            {
+                shape newstrides = NumpyExtensions.ConvertTupleToShape(ostrides);
+                if (newstrides == null)
+                {
+                    throw new Exception("Unable to convert strides object");
+                }
+                strides = newstrides.iDims;
+            }
+
+            return as_strided(x, shape, strides, subok, writeable);
+
+        }
+
+
         public static ndarray as_strided(ndarray x, npy_intp[] shape = null, npy_intp[] strides = null, bool subok = false, bool writeable = false)
         {
             var view = np.array(x, copy: false, subok: subok);

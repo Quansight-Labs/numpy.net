@@ -182,10 +182,56 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_as_strided_1()
+        public void test_as_strided_1()
         {
+            var y = np.zeros((10, 10));
+            AssertStrides(y, 80, 8);
+            print(y.strides);
+
+            var n = 1000;
+            var a = np.arange(n, dtype: np.UInt64);
+
+            var b = np.as_strided(a, (n, n), (0, 8));
+
+            //print(b);
+
+            Assert.AreEqual(1000000, b.size);
+            print(b.size);
+            AssertShape(b, 1000, 1000);
+            print(b.shape);
+            AssertStrides(b, 0, 8);
+            print(b.strides);
+            Assert.AreEqual(8000000, b.nbytes);
+            print(b.nbytes);
+
+        }
+
+        [TestMethod]
+        public void test_as_strided_2()
+        {
+            var y = np.zeros((2, 2));
+            AssertStrides(y, 16, 8);
+            print(y.strides);
+
+            var n = 4;
+            var a = np.arange(n);
+            AssertArray(a, new int[] { 0, 1, 2, 3 });
+            print(a);
+
+            var b = np.as_strided(a, (n, n), (0, 4));
+            AssertArray(b, new int[,] { { 0, 1, 2, 3 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } });
+            print(b);
+
+            Assert.AreEqual(16, b.size);
+            print(b.size);
+            AssertShape(b, 4, 4);
+            print(b.shape);
+            AssertStrides(b, 0, 4);
+            print(b.strides);
+            Assert.AreEqual(64, b.nbytes);
+            print(b.nbytes);
+
         }
 
     }
