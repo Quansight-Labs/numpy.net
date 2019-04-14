@@ -586,7 +586,7 @@ namespace NumpyDotNet
 
         #region diff
 
-        public static ndarray diff(ndarray srcArray, int n = 1, int axis = -1)
+        public static ndarray diff(object a, int n = 1, int axis = -1)
         {
             //    Calculate the n - th discrete difference along the given axis.
 
@@ -660,6 +660,8 @@ namespace NumpyDotNet
             //    >>> x = np.arange('1066-10-13', '1066-10-16', dtype=np.datetime64)
             //    >>> np.diff(x)
             //    array([1, 1], dtype='timedelta64[D]')
+
+            var srcArray = asanyarray(a);
 
             if (n == 0)
             {

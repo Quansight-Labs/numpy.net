@@ -2726,11 +2726,11 @@ namespace NumpyDotNet
 
         #region cumprod
 
-        public static ndarray cumprod(ndarray a, int? axis = null, dtype dtype = null, ndarray @out = null)
+        public static ndarray cumprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
         {
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
 
-            return NpyCoreApi.CumProd(a, iAxis, dtype, @out);
+            return NpyCoreApi.CumProd(asanyarray(a), iAxis, dtype, @out);
         }
         #endregion
 
