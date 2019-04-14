@@ -760,7 +760,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_indices_1()
+        public void test_indices_1()
         {
 
         }

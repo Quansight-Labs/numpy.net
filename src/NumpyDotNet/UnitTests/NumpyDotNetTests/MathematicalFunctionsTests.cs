@@ -1378,14 +1378,14 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void xxx_test_gradient_placeholder()
+        public void test_gradient_placeholder()
         {
 
         }
 
         [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void xxx_test_cross_placeholder()
+        public void test_cross_placeholder()
         {
 
         }

@@ -32,7 +32,7 @@ namespace NumpyDotNetTests
             var cc = new System.Numerics.Complex(d2, 0);
         }
 
-
+        #if NOT_PLANNING_TODO
         [Ignore]
         [TestMethod]
         public void xxx_test_angle_1()
@@ -61,7 +61,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
+        #endif
 
     }
 }
