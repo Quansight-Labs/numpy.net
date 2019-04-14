@@ -47,6 +47,68 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        #region fill_diagonal
+
+        public static void fill_diagonal(ndarray a, object val, bool wrap = false)
+        {
+            /*
+            Fill the main diagonal of the given array of any dimensionality.
+
+            For an array `a` with ``a.ndim >= 2``, the diagonal is the list of
+            locations with indices ``a[i, ..., i]`` all identical. This function
+            modifies the input array in-place, it does not return a value.
+
+            Parameters
+            ----------
+            a : array, at least 2-D.
+              Array whose diagonal is to be filled, it gets modified in-place.
+
+            val : scalar
+              Value to be written on the diagonal, its type must be compatible with
+              that of the array a.
+
+            wrap : bool
+              For tall matrices in NumPy version up to 1.6.2, the
+              diagonal "wrapped" after N columns. You can have this behavior
+              with this option. This affects only tall matrices.
+            */
+
+            if (a.ndim < 2)
+            {
+                throw new ValueError("array must be at least 2-d");
+            }
+
+            npy_intp? end = null;
+            npy_intp? step = null;
+
+            if (a.ndim == 2)
+            {
+                // Explicit, fast formula for the common case.  For 2-d arrays, we
+                // accept rectangular ones.
+                step = a.shape.iDims[1] + 1;
+                // This is needed to don't have tall matrix have the diagonal wrap.
+                if (!wrap)
+                {
+                    end = a.shape.iDims[1] * a.shape.iDims[1];
+                }
+            }
+            else
+            {
+                // For more than d=2, the strided formula is only valid for arrays with
+                // all dimensions equal, so we check first.
+                if (!allb(diff(a.shape.iDims) == 0))
+                {
+                    throw new ValueError("All dimensions of input must be of equal length");
+                }
+                step = 1 + (npy_intp)(cumprod(a.shape.iDims).A(":-1")).Sum().GetItem(0);
+            }
+
+            // Write the value out into the diagonal.
+            a.Flat[":" + end.ToString()  + ":" + step.ToString()] = val;
+        }
+
+        #endregion
+
         #region diag_indices
         public static ndarray[] diag_indices(int n, int ndim = 2)
         {

@@ -58,6 +58,32 @@ class Test_test1(unittest.TestCase):
  
 
     def test_fill_diagonal_1(self):
+
+        a = np.zeros((3, 3), int)
+        np.fill_diagonal(a, 5)
+        print(a)
+
+        a = np.zeros((3, 3, 3, 3), int)
+        np.fill_diagonal(a, 4)
+        print(a[0,0])
+        print(a[1,1])
+        print(a[2,2])
+
+        # tall matrices no wrap
+        a = np.zeros((5, 3),int)
+        np.fill_diagonal(a, 4)
+        print(a)
+
+        # tall matrices wrap
+        a = np.zeros((5, 3),int)
+        np.fill_diagonal(a, 4, wrap = True)
+        print(a)
+
+        # wide matrices wrap
+        a = np.zeros((3, 5),int)
+        np.fill_diagonal(a, 4, wrap = True)
+        print(a)
+
         return
 
     def test_diag_indices_1(self):
