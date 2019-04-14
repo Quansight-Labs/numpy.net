@@ -2098,10 +2098,7 @@ namespace NumpyDotNet
             return new MaskedArray(a);
         }
 
-        private static void broadcast(ndarray arr1, ndarray arr2)
-        {
-            throw new NotImplementedException();
-        }
+   
 
         class zip2IntArrays
         {

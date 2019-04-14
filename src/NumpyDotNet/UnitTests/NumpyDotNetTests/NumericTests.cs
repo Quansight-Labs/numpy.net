@@ -583,7 +583,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_tensordot_1()
+        public void test_tensordot_1()
         {
 
         }
@@ -681,7 +681,7 @@ namespace NumpyDotNetTests
 
         [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void xxx_test_roll_backward_1()
+        public void test_roll_backward_1()
         {
             var a = np.arange(10, dtype: np.UInt16).reshape((4,4));
 
@@ -940,9 +940,8 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void xxx_test_array_equiv_1()
+        public void test_array_equiv_1()
         {
             var a = np.array_equiv(new int[] { 1, 2 }, new int[] { 1, 2 });
             Assert.AreEqual(true, a);

@@ -1751,7 +1751,7 @@ namespace NumpyDotNet
                 return false;
             }
 
-            return (bool)(arr1.Equals(arr2).All().GetItem(0));
+            return np.allb(arr1.Equals(arr2));
         }
         #endregion
 
@@ -1807,19 +1807,15 @@ namespace NumpyDotNet
 
             try
             {
-                //multiarray.broadcast(arr1, arr2);
-                broadcast(arr1, arr2);
+                np.broadcast(arr1, arr2);
             }
             catch
             {
                 return false;
             }
-            //if (!broadcastable(arr1,arr2.dims, arr2.ndim))
-            //{
-            //    return false;
-            //}
 
-            return (bool)(arr1.Equals(arr2).All().GetItem(0));
+
+            return np.allb(arr1.Equals(arr2));
         }
         #endregion
 
