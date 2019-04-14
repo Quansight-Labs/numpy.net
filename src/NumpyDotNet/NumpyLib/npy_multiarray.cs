@@ -1000,6 +1000,44 @@ namespace NumpyLib
             return;
         }
 
+        internal static void NpyArray_Place(NpyArray arr,  NpyArray mask, NpyArray vals)
+        {
+            var arrSize = NpyArray_Size(arr);
+            var maskSize = NpyArray_Size(mask);
+
+            if (arrSize != maskSize)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "size of mask must be same size as src arr");
+                return;
+            }
+
+            NpyArrayIterObject valsIter = NpyArray_IterNew(vals);
+            NpyArrayIterObject arrIter = NpyArray_IterNew(arr);
+            NpyArrayIterObject maskIter = NpyArray_IterNew(mask);
+      
+            for (long i = 0; i < arrSize; i++)
+            {
+                bool whereValue = (bool)mask.descr.f.getitem(maskIter.dataptr.data_offset - mask.data.data_offset, mask);
+
+                if (whereValue)
+                {
+                    var valValue = vals.descr.f.getitem(valsIter.dataptr.data_offset - vals.data.data_offset, vals);
+                    arr.descr.f.setitem(arrIter.dataptr.data_offset - arr.data.data_offset, valValue, arr);
+                    NpyArray_ITER_NEXT(valsIter);
+                }
+
+                if (!NpyArray_ITER_NOTDONE(valsIter))
+                {
+                    NpyArray_ITER_RESET(valsIter);
+                }
+
+                NpyArray_ITER_NEXT(arrIter);
+                NpyArray_ITER_NEXT(maskIter);
+            }
+
+            return;
+        }
+
         internal static void NpyArray_CopyTo2(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
         {
             NpyArray wheremask = null;

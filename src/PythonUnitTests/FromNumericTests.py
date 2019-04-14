@@ -877,6 +877,14 @@ class FromNumericTests(unittest.TestCase):
         np.place(arr, arr>2, [44, 55])
         print(arr)
 
+        arr = np.arange(16).reshape(2,4,2)
+        np.place(arr, arr>12, [33])
+        print(arr)
+
+        arr = np.arange(6).reshape(2, 3)
+        np.place(arr, arr>2, [44, 55, 66,77,88,99,11,22,33])
+        print(arr)
+
 
     def test_extract_1(self):
 

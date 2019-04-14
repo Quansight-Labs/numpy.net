@@ -1244,6 +1244,11 @@ namespace NumpyLib
             numpyinternal.NpyArray_CopyTo(dst, src, casting, wheremask_in);
         }
 
+        public static void NpyArray_Place(NpyArray arr, NpyArray mask,  NpyArray vals)
+        {
+            numpyinternal.NpyArray_Place(arr, mask, vals);
+        }
+
         public static bool NpyArray_EquivTypenums(NPY_TYPES typenum1, NPY_TYPES typenum2)
         {
             return numpyinternal.NpyArray_EquivTypenums(typenum1, typenum2);

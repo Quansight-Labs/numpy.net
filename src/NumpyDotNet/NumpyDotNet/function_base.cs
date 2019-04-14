@@ -1032,7 +1032,7 @@ namespace NumpyDotNet
         #endregion
 
         #region place
-        public static void place(ndarray arr, ndarray mask, Int32[] vals)
+        public static void place(object arr, object mask, object vals)
         {
             /*
             Change elements of an array based on conditional and input values.
@@ -1069,8 +1069,21 @@ namespace NumpyDotNet
                    [44, 55, 44]])             
             */
 
-            throw new NotImplementedException("need to implement _compiled_base.c version of _insert first");
-            // _insert(arr.ravel(), mask, vals);
+            ndarray array = asanyarray(arr);
+            if (array == null)
+                throw new Exception("arr must not be null");
+
+            ndarray maskarray = asanyarray(mask);
+            if (maskarray == null)
+                throw new Exception("mask must not be null");
+
+            ndarray valsarray = asanyarray(vals);
+            if (valsarray == null)
+                throw new Exception("vals must not be null");
+
+
+            NpyCoreApi.Place(array, maskarray, valsarray);
+     
             return;
         }
         #endregion

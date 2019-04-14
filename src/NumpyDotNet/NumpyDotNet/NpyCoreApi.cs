@@ -937,6 +937,18 @@ namespace NumpyDotNet {
             }
         }
 
+
+        internal static void Place(ndarray arr, ndarray mask, ndarray vals)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.NpyArray_Place(arr.Array, mask.Array, vals.Array);
+            }
+
+        }
+
         internal static bool CanCastTo(dtype d1, dtype d2)
         {
             #if ENABLELOCKING

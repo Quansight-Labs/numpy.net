@@ -1697,13 +1697,24 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_place_1()
+        public void test_place_1()
         {
             var arr = np.arange(6).reshape((2, 3));
             np.place(arr, arr > 2, new Int32[] { 44, 55 });
+            AssertArray(arr, new int[,] { { 0, 1, 2 }, { 44, 55, 44 } });
             print(arr);
+
+            arr = np.arange(16).reshape((2, 4, 2));
+            np.place(arr, arr > 12, new Int32[] { 33 });
+            AssertArray(arr, new int[,,] { { { 0, 1 }, { 2, 3 }, { 4, 5 }, { 6, 7 } }, { { 8, 9}, { 10, 11}, { 12, 33}, { 33, 33} } });
+            print(arr);
+
+            arr = np.arange(6).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55, 66, 77, 88, 99, 11, 22, 33 });
+            AssertArray(arr, new int[,] { { 0, 1, 2 }, { 44, 55, 66 } });
+            print(arr);
+
         }
 
 
