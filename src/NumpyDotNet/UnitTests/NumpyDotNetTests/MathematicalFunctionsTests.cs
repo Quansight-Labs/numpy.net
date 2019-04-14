@@ -1390,11 +1390,29 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
         [TestMethod]
-        public void test_trapz_placeholder()
+        public void test_trapz_1()
         {
+            var a = np.trapz(new int[] { 1, 2, 3 });
+            Assert.AreEqual((double)4.0, a.GetItem(0));
+            print(a);
 
+            var b = np.trapz(new int[] { 1, 2, 3 }, x : new int[] { 4, 6, 8 });
+            Assert.AreEqual((int)8.0, b.GetItem(0));
+            print(b);
+
+            var c = np.trapz(new int[] { 1, 2, 3 }, dx: 2);
+            Assert.AreEqual(8.0, c.GetItem(0));
+            print(c);
+
+            a = np.arange(6).reshape((2, 3));
+            b = np.trapz(a, axis: 0);
+            AssertArray(b, new double[] { 1.5, 2.5, 3.5 });
+            print(b);
+
+            c = np.trapz(a, axis: 1);
+            AssertArray(c, new double[] { 2.0, 8.0 });
+            print(c);
         }
 
         #endregion

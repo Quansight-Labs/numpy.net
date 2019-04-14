@@ -894,6 +894,25 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(np.ediff1d(y))
 
 
+    def test_trapz_1(self):
+
+        a = np.trapz([1,2,3])
+        print(a)
+
+        b = np.trapz([1,2,3], x=[4,6,8])
+        print(b)
+
+        c = np.trapz([1,2,3], dx=2)
+        print(c)
+
+        a = np.arange(6).reshape(2, 3)
+        b = np.trapz(a, axis=0)
+        print(b)
+
+        c = np.trapz(a, axis=1)
+        print(c)
+
+
     #endregion       
     #region Exponents and logarithms
 

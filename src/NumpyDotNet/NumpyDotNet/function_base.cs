@@ -3223,7 +3223,7 @@ namespace NumpyDotNet
 
 #region trapz
 
-        public static float trapz(ndarray y, double dx=1.0, int axis= -1)
+        public static ndarray trapz(object y, object x = null, double dx=1.0, int axis= -1)
         {
             /*
             Integrate along the given axis using the composite trapezoidal rule.
@@ -3286,7 +3286,65 @@ namespace NumpyDotNet
             array([ 2.,  8.])             
             */
 
-            throw new NotImplementedException();
+            ndarray d;
+            ndarray yarr;
+            ndarray xarr;
+
+     
+            yarr = asanyarray(y);
+
+            if (axis < 0)
+                axis += yarr.ndim;
+
+            if (x is null)
+            {
+                d = asanyarray(dx);
+            }
+            else
+            {
+                xarr = asanyarray(x);
+                if (xarr.ndim == 1)
+                {
+                    d = diff(xarr);
+                    // reshape to correct shape
+                    List<npy_intp> shape = new List<npy_intp>();
+                    for (int i = 0; i < yarr.ndim; i++)
+                        shape.Add(1);
+
+                    shape[axis] = d.shape.iDims[0];
+                    d = d.reshape(shape);
+                }
+                else
+                {
+                    d = diff(xarr, axis: axis);
+                }
+            }
+
+            var nd = yarr.ndim;
+            var slice1 = BuildSliceArray(new Slice(null), nd);
+            var slice2 = BuildSliceArray(new Slice(null), nd);
+
+ 
+
+            slice1[axis] = new Slice(1, null);
+            slice2[axis] = new Slice(null, -1);
+
+            ndarray ret = null;
+
+            try
+            {
+                ret = (d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0).Sum(axis);
+            }
+            catch (Exception ex)
+            {
+                // Operations didn't work, cast to ndarray
+                d = np.asarray(d);
+                yarr = np.asarray(yarr);
+                ret = ufuncadd.reduce(d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0, axis: axis);
+            }
+
+            return ret;
+
         }
 
 #endregion
