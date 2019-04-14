@@ -386,17 +386,60 @@ namespace NumpyDotNet
 
         #region apply_over_axis
 
-        public delegate ndarray apply_over_axis_view(ndarray a, ndarray view);
-        public delegate ndarray apply_over_axis_indices(ndarray a, IList<npy_intp> indices);
+        public delegate ndarray apply_over_axes_fn(ndarray a, params object[] args);
 
-        public static ndarray apply_over_axis(apply_over_axis_indices fn, object axis, ndarray arr)
+        public static ndarray apply_over_axes(apply_over_axes_fn func, object a, object axes)
         {
-            throw new NotImplementedException("This can be achieved by calling apply_along_axis for each axis you want and them combining them");
-        }
+            var val = asarray(a);
+            var N = val.ndim;
 
-        public static ndarray apply_over_axis(apply_over_axis_view fn, int axis, ndarray arr)
-        {
-            throw new NotImplementedException("This can be achieved by calling apply_along_axis for each axis you want and them combining them");
+            int[] _axes = null;
+
+            var axesarr = asanyarray(axes);
+            if (axesarr.ndim == 0)
+            {
+                _axes = axesarr.AsInt32Array();
+                if (_axes == null)
+                {
+                    throw new Exception("axes must be in int[]");
+                }
+            }
+            else
+            {
+                _axes = axesarr.AsInt32Array();
+            }
+
+            for (int i= 0; i < _axes.Length; i++)
+            {
+                int axis = _axes[i];
+
+                if (axis < 0)
+                {
+                    axis = N + axis;
+                }
+
+                var res = func(val, axis);
+                if (res.ndim == val.ndim)
+                {
+                    val = res;
+                }
+                else
+                {
+                    res = expand_dims(res, axis);
+                    if (res.ndim == val.ndim)
+                    {
+                        val = res;
+                    }
+                    else
+                    {
+                        throw new ValueError("function is not returning an array of the correct shape");
+                    }
+ 
+                }
+  
+            }
+
+            return val;
         }
 
         #endregion

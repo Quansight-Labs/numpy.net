@@ -390,7 +390,7 @@ class Test_ShapeBaseTests(unittest.TestCase):
         c = np.apply_along_axis(np.diag, 1, b)
         print(c)
 
-    def test_apply_over_axis_1(self):
+    def test_apply_over_axes_1(self):
 
         a = np.arange(24).reshape(2,3,4)
         # print(a)

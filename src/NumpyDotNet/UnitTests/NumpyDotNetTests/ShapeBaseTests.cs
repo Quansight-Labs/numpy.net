@@ -720,36 +720,31 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [Ignore] // This can be achieved by calling apply_along_axis for each axis you want and them combining them
         [TestMethod]
-        public void test_apply_over_axis_1()
+        public void test_apply_over_axes_1()
         {
-            ndarray sortedFull(ndarray a, ndarray view)
+            ndarray localSum(ndarray arr, params object[] args)
             {
-                return np.sort(a);
+                int? axis = null;
+                if (args != null && args.Length > 0)
+                {
+                    axis = (int)args[0];
+                }
+                return np.sum(arr, axis);
             }
 
-            ndarray sortedView(ndarray a, ndarray view)
-            {
-                return np.sort(view);
-            }
+            var a = np.arange(24).reshape((2, 3, 4));
+            // print(a)
 
-            var b = np.array(new int[,,] { { { 8, 1, 7 }, { 4, 3, 9 }, { 5, 2, 6 } } });
-            var c = np.apply_over_axis(sortedFull, 1, b);
-            AssertArray(c, new int[,,] { { { 1, 7, 8 }, { 3, 4, 9 }, { 2, 5, 6 } } });
-            print(c);
+            // Sum over axes 0 and 2. The result has same number of dimensions as the original array:
 
-            c = np.apply_over_axis(sortedView, 0, b);
-            AssertArray(c, new int[] { 8 });
-            print(c);
+            var b = np.apply_over_axes(localSum, a, new int[] { 0, 2});
+            AssertArray(b, new int[,,] { { { 60 }, { 92 }, { 124 } } });
 
-            c = np.apply_over_axis(sortedView, 1, b);
-            AssertArray(c, new int[] { 4, 5, 8 });
-            print(c);
+                
+            print(b);
 
-            c = np.apply_over_axis(sortedView, 2, b);
-            AssertArray(c, new int[] { 1, 7, 8 });
-            print(c);
+        
         }
 
     }
