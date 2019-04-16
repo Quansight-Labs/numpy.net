@@ -648,7 +648,143 @@ namespace NumpyDotNet
             return np.concatenate(expanded_arrays, axis: axis);
         }
 
-        public static ndarray block(ICollection<object> tup)
+        private static (object[] bottom_index, int arr_ndim) _block_check_depths_match(object arrays, List<object> parent_index = null)
+        {
+           // Recursive function checking that the depths of nested lists in `arrays`
+           // all match. Mismatch raises a ValueError as described in the block
+           // docstring below.
+
+           // The entire index(rather than just the depth) needs to be calculated
+           // for each innermost list, in case an error needs to be raised, so that
+           // the index of the offending list can be printed as part of the error.
+
+           // The parameter `parent_index` is the full index of `arrays` within the
+           // nested lists passed to _block_check_depths_match at the top of the
+           // recursion.
+           // The return value is a pair. The first item returned is the full index
+           // of an element(specifically the first element) from the bottom of the
+           //nesting in `arrays`. An empty list at the bottom of the nesting is
+           //represented by a `None` index.
+           // The second item is the maximum of the ndims of the arrays nested in
+           // `arrays`.
+
+            if (arrays is Tuple)
+            {
+                // not strictly necessary, but saves us from:
+                //  - more than one way to do things - no point treating tuples like
+                // lists
+                // - horribly confusing behaviour that results when tuples are
+                // treated like ndarray
+                throw new TypeError("{} is a tuple. Only lists can be used to arrange blocks, and np.block does not allow implicit conversion from tuple to ndarray.");
+            }
+
+            if (parent_index == null)
+                parent_index = new List<object>();
+
+            if (arrays is object[])
+            {
+                object[] _arrays = (object[])arrays;
+                if (_arrays.Length > 0)
+                {
+                    List<(object[], int)> idxs_ndims = new List<(object[], int)>();
+
+
+                    for (int i = 0; i < _arrays.Length; i++)
+                    {
+                        parent_index.Add(i);
+                        idxs_ndims.Add(_block_check_depths_match(_arrays[i], parent_index));
+                    }
+
+                    object[] first_index = (object[])idxs_ndims[0].Item1;
+                    int max_arr_ndim = idxs_ndims[0].Item2;
+
+                    for (int i = 1; i < idxs_ndims.Count; i++)
+                    {
+                        object[] index = idxs_ndims[i].Item1;
+                        int ndim = idxs_ndims[i].Item2;
+
+                        if (ndim > max_arr_ndim)
+                            max_arr_ndim = ndim;
+
+                        if (index.Length != first_index.Length)
+                        {
+                            throw new ValueError("List depths are mismatched. First element was at depth {}, but there is an element at depth {}");
+                        }
+
+                    }
+
+                    return (first_index, max_arr_ndim);
+                }
+                else
+                {
+                    // We've 'bottomed out' on an empty list
+                    parent_index.Add(null);
+                    return (parent_index.ToArray(), 0);
+                }
+      
+            }
+            else
+            {
+                // We've 'bottomed out' - arrays is either a scalar or an array
+                return (parent_index.ToArray(), np.ndim(asanyarray(arrays)));
+            }
+        }
+
+        private static ndarray _block(ICollection<object> arrays, int max_depth, int result_ndim)
+        {
+            //Internal implementation of block. `arrays` is the argument passed to
+            //block. `max_depth` is the depth of nested lists within `arrays` and
+            //`result_ndim` is the greatest of the dimensions of the arrays in
+            //`arrays` and the depth of the lists in `arrays` (see block docstring
+            //for details).
+
+            ndarray atleast_nd(object a, int ndim)
+            {
+                // Ensures `a` has at least `ndim` dimensions by prepending
+                // ones to `a.shape` as necessary
+                return array(a, ndmin: ndim, copy:false, subok: true);
+            }
+
+            ndarray block_recursion(ICollection<object> _arrays, int depth = 0)
+            {
+                if (depth < max_depth)
+                {
+                    if (_arrays.Count == 0)
+                    {
+                        throw new ValueError("Lists cannot be empty");
+                    }
+
+                    List<ndarray> arrs = new List<ndarray>();
+                    foreach (var arr in _arrays)
+                    {
+                        arrs.Add(block_recursion(new object[] { arr }, depth + 1));
+                    }
+
+                    return np.concatenate(arrs, axis: -(max_depth - depth));
+
+                }
+                else
+                {
+                    // We've 'bottomed out' - arrays is either a scalar or an array
+                    // type(arrays) is not list
+                    return atleast_nd(arrays, result_ndim);
+                }
+
+            }
+
+
+            try
+            {
+                return block_recursion(arrays, result_ndim);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+  
+        }
+
+        public static ndarray block(object[] arrays)
         {
             //Assemble an nd - array from nested lists of blocks.
 
@@ -794,9 +930,13 @@ namespace NumpyDotNet
             //>>> np.block([[b]])                  # atleast_2d(b)
             //array([[1]])
 
-            throw new NotImplementedException();
 
+            var bcdm_return = _block_check_depths_match(arrays);
+            object[] list_ndim = bcdm_return.bottom_index;
+            return _block(arrays, list_ndim.Length, Math.Max(bcdm_return.arr_ndim, list_ndim.Length));
         }
+
+   
 
         public static ndarray expand_dims(ndarray a, int axis)
         {
