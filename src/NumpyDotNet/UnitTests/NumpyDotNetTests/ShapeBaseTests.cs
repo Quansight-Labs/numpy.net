@@ -176,7 +176,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet.  Too much work
         [TestMethod]
         public void test_block_1()
         {
@@ -196,7 +195,6 @@ namespace NumpyDotNetTests
             print(C);
         }
 
-        [Ignore] // not implemented yet.  Too much work
         [TestMethod]
         public void test_block_2()
         {

@@ -689,10 +689,13 @@ namespace NumpyDotNet
                     List<(object[], int)> idxs_ndims = new List<(object[], int)>();
 
 
+ 
                     for (int i = 0; i < _arrays.Length; i++)
                     {
-                        parent_index.Add(i);
-                        idxs_ndims.Add(_block_check_depths_match(_arrays[i], parent_index));
+                        List<object> temp_parent_index = new List<object>();
+                        temp_parent_index.AddRange(parent_index);
+                        temp_parent_index.Add(i);
+                        idxs_ndims.Add(_block_check_depths_match(_arrays[i], temp_parent_index));
                     }
 
                     object[] first_index = (object[])idxs_ndims[0].Item1;
@@ -730,7 +733,7 @@ namespace NumpyDotNet
             }
         }
 
-        private static ndarray _block(ICollection<object> arrays, int max_depth, int result_ndim)
+        private static ndarray _block(object[] arrays, int max_depth, int result_ndim)
         {
             //Internal implementation of block. `arrays` is the argument passed to
             //block. `max_depth` is the depth of nested lists within `arrays` and
@@ -745,11 +748,11 @@ namespace NumpyDotNet
                 return array(a, ndmin: ndim, copy:false, subok: true);
             }
 
-            ndarray block_recursion(ICollection<object> _arrays, int depth = 0)
+            ndarray block_recursion(object[] _arrays, int depth = 0)
             {
                 if (depth < max_depth)
                 {
-                    if (_arrays.Count == 0)
+                    if (_arrays.Length == 0)
                     {
                         throw new ValueError("Lists cannot be empty");
                     }
@@ -757,7 +760,14 @@ namespace NumpyDotNet
                     List<ndarray> arrs = new List<ndarray>();
                     foreach (var arr in _arrays)
                     {
-                        arrs.Add(block_recursion(new object[] { arr }, depth + 1));
+                        if (arr.GetType().IsArray)
+                        {
+                            arrs.Add(block_recursion( arr as object[], depth + 1));
+                        }
+                        else
+                        {
+                            arrs.Add(block_recursion(new object[] { arr }, depth + 1));
+                        }
                     }
 
                     return np.concatenate(arrs, axis: -(max_depth - depth));
@@ -767,7 +777,7 @@ namespace NumpyDotNet
                 {
                     // We've 'bottomed out' - arrays is either a scalar or an array
                     // type(arrays) is not list
-                    return atleast_nd(arrays, result_ndim);
+                    return atleast_nd(_arrays[0], result_ndim);
                 }
 
             }
@@ -775,9 +785,9 @@ namespace NumpyDotNet
 
             try
             {
-                return block_recursion(arrays, result_ndim);
+                return block_recursion(arrays);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

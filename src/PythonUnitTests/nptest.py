@@ -1,13 +1,13 @@
 import numpy as np
 import numpy.core.numeric as _nx
 from numpy.core import linspace, atleast_1d, atleast_2d, transpose
-from numpy.core.numeric import (
-    ones, zeros, arange, concatenate, array, asarray, asanyarray, empty,
-    empty_like, ndarray, around, floor, ceil, take, dot, where, intp,
-    integer, isscalar, absolute, AxisError
-    )
+#from numpy.core.numeric import (
+#    ones, zeros, arange, concatenate, array, asarray, asanyarray, empty,
+#    empty_like, ndarray, around, floor, ceil, take, dot, where, intp, multiply,
+#    integer, isscalar, absolute, AxisError
+#    )
 from numpy.core.umath import (
-    pi, multiply, add, arctan2, frompyfunc, cos, less_equal, sqrt, sin,
+    pi, add, arctan2, frompyfunc, cos, less_equal, sqrt, sin,
     mod, exp, log10, not_equal, subtract
     )
 from numpy.core.fromnumeric import (
@@ -1766,3 +1766,113 @@ class nptest(object):
             # values, so explicitly replace them with NaN.
             var = nptest._copyto(var, np.nan, isbad)
         return var
+
+
+    @staticmethod
+    def test_multiply(a, b, axis):
+
+        multiply.accumulate(a, out=b, axis=axis)
+
+        return
+
+    @staticmethod
+    def block(arrays):
+
+        bottom_index, arr_ndim = nptest._block_check_depths_match(arrays)
+        list_ndim = len(bottom_index)
+        return nptest._block(arrays, list_ndim, max(arr_ndim, list_ndim))
+
+    @staticmethod
+    def _block(arrays, max_depth, result_ndim):
+        """
+        Internal implementation of block. `arrays` is the argument passed to
+        block. `max_depth` is the depth of nested lists within `arrays` and
+        `result_ndim` is the greatest of the dimensions of the arrays in
+        `arrays` and the depth of the lists in `arrays` (see block docstring
+        for details).
+        """
+        def atleast_nd(a, ndim):
+            # Ensures `a` has at least `ndim` dimensions by prepending
+            # ones to `a.shape` as necessary
+            return np.array(a, ndmin=ndim, copy=False, subok=True)
+
+        def block_recursion(arrays, depth=0):
+            if depth < max_depth:
+                if len(arrays) == 0:
+                    raise ValueError('Lists cannot be empty')
+                arrs = [block_recursion(arr, depth+1) for arr in arrays]
+                return _nx.concatenate(arrs, axis=-(max_depth-depth))
+            else:
+                # We've 'bottomed out' - arrays is either a scalar or an array
+                # type(arrays) is not list
+                return atleast_nd(arrays, result_ndim)
+
+        try:
+            return block_recursion(arrays)
+        finally:
+            # recursive closures have a cyclic reference to themselves, which
+            # requires gc to collect (gh-10620). To avoid this problem, for
+            # performance and PyPy friendliness, we break the cycle:
+            block_recursion = None
+
+    @staticmethod
+    def _block_check_depths_match(arrays, parent_index=[]):
+        """
+        Recursive function checking that the depths of nested lists in `arrays`
+        all match. Mismatch raises a ValueError as described in the block
+        docstring below.
+
+        The entire index (rather than just the depth) needs to be calculated
+        for each innermost list, in case an error needs to be raised, so that
+        the index of the offending list can be printed as part of the error.
+
+        The parameter `parent_index` is the full index of `arrays` within the
+        nested lists passed to _block_check_depths_match at the top of the
+        recursion.
+        The return value is a pair. The first item returned is the full index
+        of an element (specifically the first element) from the bottom of the
+        nesting in `arrays`. An empty list at the bottom of the nesting is
+        represented by a `None` index.
+        The second item is the maximum of the ndims of the arrays nested in
+        `arrays`.
+        """
+        def format_index(index):
+            idx_str = ''.join('[{}]'.format(i) for i in index if i is not None)
+            return 'arrays' + idx_str
+        if type(arrays) is tuple:
+            # not strictly necessary, but saves us from:
+            #  - more than one way to do things - no point treating tuples like
+            #    lists
+            #  - horribly confusing behaviour that results when tuples are
+            #    treated like ndarray
+            raise TypeError(
+                '{} is a tuple. '
+                'Only lists can be used to arrange blocks, and np.block does '
+                'not allow implicit conversion from tuple to ndarray.'.format(
+                    format_index(parent_index)
+                )
+            )
+        elif type(arrays) is list and len(arrays) > 0:
+            idxs_ndims = (nptest._block_check_depths_match(arr, parent_index + [i])
+                          for i, arr in enumerate(arrays))
+
+            first_index, max_arr_ndim = next(idxs_ndims)
+            for index, ndim in idxs_ndims:
+                if ndim > max_arr_ndim:
+                    max_arr_ndim = ndim
+                if len(index) != len(first_index):
+                    raise ValueError(
+                        "List depths are mismatched. First element was at depth "
+                        "{}, but there is an element at depth {} ({})".format(
+                            len(first_index),
+                            len(index),
+                            format_index(index)
+                        )
+                    )
+            return first_index, max_arr_ndim
+        elif type(arrays) is list and len(arrays) == 0:
+            # We've 'bottomed out' on an empty list
+            return parent_index + [None], 0
+        else:
+            # We've 'bottomed out' - arrays is either a scalar or an array
+            return parent_index, _nx.ndim(arrays)
