@@ -1419,8 +1419,6 @@ namespace NumpyDotNet
 
         #endregion
 
- 
-
         #region right_shift
         public static ndarray right_shift(object input, int shiftvalue)
         {
@@ -1645,7 +1643,7 @@ namespace NumpyDotNet
         }
         #endregion
 
-        #region
+        #region correlate
         public static ndarray correlate(object o1, object o2, NPY_CONVOLE_MODE mode = NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID)
         {
             //Cross - correlation of two 1 - dimensional sequences.
@@ -1730,7 +1728,62 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region maximum/minimum/fmax/fmin
 
+        public static ndarray maximum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        {
+            return _maxmin(0, x1, x2, @out, order, dtype, subok);
+        }
+        public static ndarray minimum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        {
+            return _maxmin(1, x1, x2, @out, order, dtype, subok);
+        }
+        public static ndarray fmax(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        {
+            return _maxmin(2, x1, x2, @out, order, dtype, subok);
+        }
+        public static ndarray fmin(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        {
+            return _maxmin(3, x1, x2, @out, order, dtype, subok);
+        }
+
+        private static ndarray _maxmin(int optype, object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER,  dtype dtype = null, bool subok = true)
+        {
+            var x1array = asanyarray(x1);
+            if (x1array == null)
+                throw new ValueError("cant convert x1 to ndarray");
+
+            var x2array = asanyarray(x2);
+            if (x1array == null)
+                throw new ValueError("cant convert x2 to ndarray");
+        
+            if (@out == null)
+            {
+                @out = np.zeros_like(x1array, dtype: dtype, order: order, subok: subok);
+            }
+            else
+            {
+                if (!x1array.shape.Equals(@out.shape))
+                {
+                    throw new ValueError("@out shape is not compatible with x1");
+                }
+            }
+
+            switch (optype)
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    return NpyCoreApi.MinMax(optype, x1array, x2array, @out);
+                default:
+                    throw new Exception("Unexpected optype passed to _maxmin");
+            }
+
+
+        }
+
+        #endregion
 
         public static void putmask(ndarray arr, object mask, object values)
         {

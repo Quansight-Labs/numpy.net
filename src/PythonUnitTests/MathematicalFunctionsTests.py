@@ -1469,6 +1469,37 @@ class MathematicalFunctionsTests(unittest.TestCase):
         f = np.sign(np.array([-1, 0, 1]))
         print(f)
 
+
+    def test_maximum_1(self):
+
+        a = np.maximum([2, 3, 4], [1, 5, 2])
+        print(a)
+
+        b = np.maximum(np.eye(2), [0.5, 2]) # broadcasting
+        print(b)
+
+        c = np.maximum([np.nan, 0, np.nan], [0, np.nan, np.nan])
+        print(c)
+
+        d = np.maximum(np.Inf, 1)
+        print(d)
+
+
+    def test_minimum_1(self):
+
+        a = np.minimum([2, 3, 4], [1, 5, 2])
+        print(a)
+
+        b = np.minimum(np.eye(2), [0.5, 2]) # broadcasting
+        print(b)
+
+        c = np.minimum([np.nan, 0, np.nan], [0, np.nan, np.nan])
+        print(c)
+
+        d = np.minimum(np.Inf, 1)
+        print(d)
+
+
     #endregion
 
 if __name__ == '__main__':

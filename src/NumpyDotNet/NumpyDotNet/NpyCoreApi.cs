@@ -949,6 +949,18 @@ namespace NumpyDotNet {
 
         }
 
+        internal static ndarray MinMax(int opType, ndarray x1, ndarray x2, ndarray @out)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_MinMax(opType, x1.Array, x2.Array, @out.Array));
+            }
+
+        }
+
+
         internal static bool CanCastTo(dtype d1, dtype d2)
         {
             #if ENABLELOCKING
