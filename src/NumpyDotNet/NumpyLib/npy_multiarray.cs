@@ -1052,8 +1052,10 @@ namespace NumpyLib
                     operation = GetOperation(ref x1, NpyArray_Ops.npy_op_minimum);
                     break;
                 case 2:
+                    operation = GetOperation(ref x1, NpyArray_Ops.npy_op_fmax);
                     break;
                 case 3:
+                    operation = GetOperation(ref x1, NpyArray_Ops.npy_op_fmin);
                     break;
             }
 

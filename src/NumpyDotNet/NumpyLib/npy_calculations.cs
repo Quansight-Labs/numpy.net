@@ -911,9 +911,33 @@ namespace NumpyLib
                     {
                         return MaximumOperation;
                     }
+                case NpyArray_Ops.npy_op_fmax:
+                    {
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_FLOAT:
+                                return FLOAT_FMaxOperation;
+                            case NPY_TYPES.NPY_DOUBLE:
+                                return DOUBLE_FMaxOperation;
+                            default:
+                                return MaximumOperation;
+                        }
+                    }
                 case NpyArray_Ops.npy_op_minimum:
                     {
                         return MinimumOperation;
+                    }
+                case NpyArray_Ops.npy_op_fmin:
+                    {
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_FLOAT:
+                                return FLOAT_FMinOperation;
+                            case NPY_TYPES.NPY_DOUBLE:
+                                return DOUBLE_FMinOperation;
+                            default:
+                                return MinimumOperation;
+                        }
                     }
                 case NpyArray_Ops.npy_op_rint:
                     {
@@ -3319,6 +3343,31 @@ namespace NumpyLib
             }
 
         }
+
+        private static object FLOAT_FMaxOperation(object bValue, dynamic operand)
+        {
+
+            if (float.IsNaN(Convert.ToSingle(operand)))
+                return bValue;
+            if (float.IsNaN(Convert.ToSingle(bValue)))
+                return operand;
+
+            return Math.Max(Convert.ToSingle(bValue), Convert.ToSingle(operand));
+      
+        }
+
+        private static object DOUBLE_FMaxOperation(object bValue, dynamic operand)
+        {
+
+            if (double.IsNaN(Convert.ToDouble(operand)))
+                return bValue;
+            if (double.IsNaN(Convert.ToDouble(bValue)))
+                return operand;
+
+            return Math.Max(Convert.ToDouble(bValue), Convert.ToDouble(operand));
+
+        }
+   
         private static T MinimumOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
@@ -3333,6 +3382,32 @@ namespace NumpyLib
             }
 
         }
+
+        private static object FLOAT_FMinOperation(object bValue, dynamic operand)
+        {
+
+            if (float.IsNaN(Convert.ToSingle(operand)))
+                return bValue;
+            if (float.IsNaN(Convert.ToSingle(bValue)))
+                return operand;
+
+            return Math.Min(Convert.ToSingle(bValue), Convert.ToSingle(operand));
+
+        }
+
+        private static object DOUBLE_FMinOperation(object bValue, dynamic operand)
+        {
+
+            if (double.IsNaN(Convert.ToDouble(operand)))
+                return bValue;
+            if (double.IsNaN(Convert.ToDouble(bValue)))
+                return operand;
+
+            return Math.Min(Convert.ToDouble(bValue), Convert.ToDouble(operand));
+
+        }
+
+
         private static T RintOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;

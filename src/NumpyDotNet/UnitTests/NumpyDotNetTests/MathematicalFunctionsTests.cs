@@ -2394,18 +2394,44 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_fmax_1()
         {
+            var a = np.fmax(new int[] { 2, 3, 4 }, new int[] { 1, 5, 2 });
+            AssertArray(a, new int[] { 2, 5, 4 });
+            print(a);
 
+            var b = np.fmax(np.eye(2), new double[] { 0.5, 2 }); // broadcasting
+            AssertArray(b, new double[,] { { 1, 2 }, { 0.5, 2.0 } });
+            print(b);
+
+            var c = np.fmax(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
+            print(c);
+
+            var d = np.fmax(double.PositiveInfinity, 1);
+            Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
+            print(d);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_fmin_1()
         {
+            var a = np.fmin(new int[] { 2, 3, 4 }, new int[] { 1, 5, 2 });
+            AssertArray(a, new int[] { 1, 3, 2 });
+            print(a);
 
+            var b = np.fmin(np.eye(2), new double[] { 0.5, 2 }); // broadcasting
+            AssertArray(b, new double[,] { { 0.5, 0.0 }, { 0.0, 1.0 } });
+            print(b);
+
+            var c = np.fmin(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
+            print(c);
+
+            var d = np.fmin(double.PositiveInfinity, 1);
+            Assert.AreEqual((double)1, d.GetItem(0));
+            print(d);
         }
 
         [Ignore]

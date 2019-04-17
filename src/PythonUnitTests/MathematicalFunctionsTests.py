@@ -1500,6 +1500,34 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(d)
 
 
+    def test_fmax_1(self):
+
+        a = np.fmax([2, 3, 4], [1, 5, 2])
+        print(a)
+
+        b = np.fmax(np.eye(2), [0.5, 2]) # broadcasting
+        print(b)
+
+        c = np.fmax([np.nan, 0, np.nan], [0, np.nan, np.nan])
+        print(c)
+
+        d = np.fmax(np.Inf, 1)
+        print(d)
+
+    def test_fmin_1(self):
+
+        a = np.fmin([2, 3, 4], [1, 5, 2])
+        print(a)
+
+        b = np.fmin(np.eye(2), [0.5, 2]) # broadcasting
+        print(b)
+
+        c = np.fmin([np.nan, 0, np.nan], [0, np.nan, np.nan])
+        print(c)
+
+        d = np.fmin(np.Inf, 1)
+        print(d)
+
     #endregion
 
 if __name__ == '__main__':
