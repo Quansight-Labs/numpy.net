@@ -209,6 +209,7 @@ namespace NumpyLib
         npy_op_multiply,
         npy_op_divide,
         npy_op_remainder,
+        npy_op_fmod,
         npy_op_power,
         npy_op_square,
         npy_op_reciprocal,

@@ -1299,6 +1299,26 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_fmod_1(self):
+
+        x = np.fmod([4, 7], [2, 3])
+        print(x)
+
+        y = np.fmod(np.arange(7), 5)
+        print(y)
+
+        return
+
+    def test_fmod_2(self):
+
+        x = np.fmod([-4, -7], [2, 3])
+        print(x)
+
+        y = np.fmod(np.arange(7), -5)
+        print(y)
+
+        return   
+
     def test_mod_1(self):
 
         x = np.mod([4, 7], [2, 3])
@@ -1319,7 +1339,15 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
-   
+    def test_remainder_2(self):
+
+        x = np.remainder([-4, -7], [2, 3])
+        print(x)
+
+        y = np.remainder(np.arange(7), -5)
+        print(y)
+
+        return   
 
     def test_divmod_1(self):
 

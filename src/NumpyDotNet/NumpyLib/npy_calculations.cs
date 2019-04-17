@@ -253,6 +253,42 @@ namespace NumpyLib
                         }
                         #endregion
                     }
+
+                case NpyArray_Ops.npy_op_fmod:
+                    {
+                        #region FModOperation
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_BOOL:
+                                return BOOL_FModOperation;
+                            case NPY_TYPES.NPY_BYTE:
+                                return BYTE_FModOperation;
+                            case NPY_TYPES.NPY_UBYTE:
+                                return UBYTE_FModOperation;
+                            case NPY_TYPES.NPY_INT16:
+                                return INT16_FModOperation;
+                            case NPY_TYPES.NPY_UINT16:
+                                return UINT16_FModOperation;
+                            case NPY_TYPES.NPY_INT32:
+                                return INT32_FModOperation;
+                            case NPY_TYPES.NPY_UINT32:
+                                return UINT32_FModOperation;
+                            case NPY_TYPES.NPY_INT64:
+                                return INT64_FModOperation;
+                            case NPY_TYPES.NPY_UINT64:
+                                return UINT64_FModOperation;
+                            case NPY_TYPES.NPY_FLOAT:
+                                return FLOAT_FModOperation;
+                            case NPY_TYPES.NPY_DOUBLE:
+                                return DOUBLE_FModOperation;
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_FModOperation;
+                            default:
+                                return FModOperation;
+                        }
+                        #endregion
+                    }
+
                 case NpyArray_Ops.npy_op_power:
                     {
                         #region PowerOperation
@@ -1085,6 +1121,10 @@ namespace NumpyLib
                         break;
                     }
                 case NpyArray_Ops.npy_op_remainder:
+                    {
+                        break;
+                    }
+                case NpyArray_Ops.npy_op_fmod:
                     {
                         break;
                     }
@@ -2021,6 +2061,146 @@ namespace NumpyLib
         }
 
         private static T RemainderOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            if (operand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % operand;
+        }
+        #endregion
+
+        #region FModOperation
+        private static object BOOL_FModOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ (bool)operand;
+        }
+        private static object BYTE_FModOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object UBYTE_FModOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object INT16_FModOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object UINT16_FModOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object INT32_FModOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object UINT32_FModOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object INT64_FModOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object UINT64_FModOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object FLOAT_FModOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object DOUBLE_FModOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        private static object DECIMAL_FModOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            decimal doperand = (decimal)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+
+        private static T FModOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             if (operand == 0)

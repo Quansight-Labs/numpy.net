@@ -2097,11 +2097,33 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]
+
         [TestMethod]
-        public void xxx_test_fmod_Placeholder()
+        public void test_fmod_1()
         {
- 
+            var x = np.fmod(new int[] { 4, 7 }, new int[] { 2, 3 });
+            AssertArray(x, new int[] { 0, 1 });
+            print(x);
+
+            var y = np.fmod(np.arange(7), 5);
+            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_fmod_2()
+        {
+            var x = np.fmod(new int[] { -4, -7 }, new int[] { 2, 3 });
+            AssertArray(x, new int[] { 0, -1 });
+            print(x);
+
+            var y = np.fmod(np.arange(7), -5);
+            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
         }
 
 
@@ -2136,6 +2158,20 @@ namespace NumpyDotNetTests
 
             var y = np.remainder(np.arange(7), 5);
             AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_remainder_2()
+        {
+            var x = np.remainder(new int[] { -4, -7 }, new int[] { 2, 3 });
+            AssertArray(x, new int[] { 0, 2 });
+            print(x);
+
+            var y = np.remainder(np.arange(7), -5);
+            AssertArray(y, new int[] { 0, -4, -3, -2, -1, 0, -4 });
             print(y);
 
             return;

@@ -188,6 +188,8 @@ namespace NumpyLib
                     return DefaultOpControl(op, UFuncDivide);
                 case NpyArray_Ops.npy_op_remainder:
                     return DefaultOpControl(op, UFuncRemainder);
+                case NpyArray_Ops.npy_op_fmod:
+                    return DefaultOpControl(op, UFuncFMod);
                 case NpyArray_Ops.npy_op_power:
                     return DefaultOpControl(op, UFuncPower);
                 case NpyArray_Ops.npy_op_square:
@@ -359,6 +361,12 @@ namespace NumpyLib
         internal static void UFuncRemainder(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
         {
             UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_remainder));
+            return;
+        }
+
+        internal static void UFuncFMod(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        {
+            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_fmod));
             return;
         }
 
