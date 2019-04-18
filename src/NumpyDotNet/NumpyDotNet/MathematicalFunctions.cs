@@ -1292,11 +1292,11 @@ namespace NumpyDotNet
         }
         public static ndarray fmod(object x1, object x2)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, asanyarray(x2));
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_fmod, asanyarray(x2));
         }
         public static ndarray fmod(object x1, int x2)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
+            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_fmod, x2);
         }
 
         #endregion

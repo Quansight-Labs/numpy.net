@@ -1947,7 +1947,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object UBYTE_RemainderOperation(object bValue, object operand)
         {
@@ -1958,7 +1966,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object INT16_RemainderOperation(object bValue, object operand)
         {
@@ -1969,7 +1985,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object UINT16_RemainderOperation(object bValue, object operand)
         {
@@ -1980,7 +2004,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object INT32_RemainderOperation(object bValue, object operand)
         {
@@ -1991,7 +2023,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object UINT32_RemainderOperation(object bValue, object operand)
         {
@@ -2002,7 +2042,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object INT64_RemainderOperation(object bValue, object operand)
         {
@@ -2013,7 +2061,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object UINT64_RemainderOperation(object bValue, object operand)
         {
@@ -2024,7 +2080,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object FLOAT_RemainderOperation(object bValue, object operand)
         {
@@ -2035,7 +2099,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object DOUBLE_RemainderOperation(object bValue, object operand)
         {
@@ -2046,7 +2118,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
         private static object DECIMAL_RemainderOperation(object bValue, object operand)
         {
@@ -2057,7 +2137,15 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % doperand;
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
 
         private static T RemainderOperation<T>(T bValue, dynamic operand)
@@ -2068,7 +2156,16 @@ namespace NumpyLib
                 dValue = 0;
                 return dValue;
             }
-            return dValue % operand;
+            var rem = dValue % operand;
+            if ((dValue > 0) == (operand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + operand;
+            }
+
         }
         #endregion
 
