@@ -1732,22 +1732,22 @@ namespace NumpyDotNet
 
         public static ndarray maximum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
         {
-            return _maxmin(0, x1, x2, @out, order, dtype, subok);
+            return _maxmin(NpyArray_Ops.npy_op_maximum , x1, x2, @out, order, dtype, subok);
         }
         public static ndarray minimum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
         {
-            return _maxmin(1, x1, x2, @out, order, dtype, subok);
+            return _maxmin(NpyArray_Ops.npy_op_minimum, x1, x2, @out, order, dtype, subok);
         }
         public static ndarray fmax(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
         {
-            return _maxmin(2, x1, x2, @out, order, dtype, subok);
+            return _maxmin(NpyArray_Ops.npy_op_fmax, x1, x2, @out, order, dtype, subok);
         }
         public static ndarray fmin(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
         {
-            return _maxmin(3, x1, x2, @out, order, dtype, subok);
+            return _maxmin(NpyArray_Ops.npy_op_fmin, x1, x2, @out, order, dtype, subok);
         }
 
-        private static ndarray _maxmin(int optype, object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER,  dtype dtype = null, bool subok = true)
+        private static ndarray _maxmin(NpyArray_Ops optype, object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER,  dtype dtype = null, bool subok = true)
         {
             var x1array = asanyarray(x1);
             if (x1array == null)
@@ -1769,18 +1769,7 @@ namespace NumpyDotNet
                 }
             }
 
-            switch (optype)
-            {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                    return NpyCoreApi.MinMax(optype, x1array, x2array, @out);
-                default:
-                    throw new Exception("Unexpected optype passed to _maxmin");
-            }
-
-
+            return NpyCoreApi.MinMax(optype, x1array, x2array, @out);
         }
 
         #endregion

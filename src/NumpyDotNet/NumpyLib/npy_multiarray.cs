@@ -1039,25 +1039,9 @@ namespace NumpyLib
         }
 
 
-        internal static NpyArray NpyArray_MinMax(int opType, NpyArray x1, NpyArray x2, NpyArray @out)
+        internal static NpyArray NpyArray_MinMax(NpyArray_Ops opType, NpyArray x1, NpyArray x2, NpyArray @out)
         {
-            NumericOperation operation =  null;
-
-            switch (opType)
-            {
-                case 0:
-                   operation = GetOperation(ref x1, NpyArray_Ops.npy_op_maximum);
-                   break;
-                case 1:
-                    operation = GetOperation(ref x1, NpyArray_Ops.npy_op_minimum);
-                    break;
-                case 2:
-                    operation = GetOperation(ref x1, NpyArray_Ops.npy_op_fmax);
-                    break;
-                case 3:
-                    operation = GetOperation(ref x1, NpyArray_Ops.npy_op_fmin);
-                    break;
-            }
+            NumericOperation operation = GetOperation(ref x1, opType);
 
             PerformNumericOpScalarIter(x1, @out, x2, operation);
             return @out;

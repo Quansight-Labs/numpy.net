@@ -949,7 +949,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray MinMax(int opType, ndarray x1, ndarray x2, ndarray @out)
+        internal static ndarray MinMax(NpyArray_Ops opType, ndarray x1, ndarray x2, ndarray @out)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
