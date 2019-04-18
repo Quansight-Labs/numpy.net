@@ -2430,6 +2430,14 @@ namespace NumpyDotNetTests
             print(d);
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_UFUNC_CLEANUP()
+        {
+            // this is a placeholder to rework all of the ufunc operations to operate like np.fmax where an 
+            // output is pass and so is a where clause
+        }
+
         [TestMethod]
         public void test_fmax_1()
         {
