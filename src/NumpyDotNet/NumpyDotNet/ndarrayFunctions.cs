@@ -1065,6 +1065,11 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_absolute, 0);
         }
+        public static ndarray fabs(object a)
+        {
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_absolute, 0);
+        }
+
 
         #endregion
 

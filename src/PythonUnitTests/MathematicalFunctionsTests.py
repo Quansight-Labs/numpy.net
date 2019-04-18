@@ -1476,6 +1476,13 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.absolute(a)
         print(b)
 
+    def test_fabs_1(self):
+        a =  np.arange(-32, 32, 1, dtype = np.int16)
+        print(a)
+
+        b = np.fabs(a)
+        print(b)
+
     def test_sign_1(self):
 
         a =np.sign(-1.2)
