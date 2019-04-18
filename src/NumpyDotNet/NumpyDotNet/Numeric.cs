@@ -944,8 +944,29 @@ namespace NumpyDotNet
 
         #region tensordot
 
-        public static ndarray tensordot(ndarray a, ndarray b, int axis = 2)
+        public static ndarray tensordot(ndarray a, ndarray b, object axes = null)
         {
+
+            var _axes = asanyarray(axes);
+            ndarray axes_a = null;
+            ndarray axes_b = null;
+
+            if (axes.GetType().IsArray == false)
+            {
+                if (axes.GetType().IsPrimitive)
+                {
+                    var axis = Convert.ToInt32(axes);
+                    axes_a = asanyarray(PytonFunction.range(-axis, 0));
+                    axes_b = asanyarray(PytonFunction.range(0, axis));
+                }
+   
+            }
+            else
+            {
+                axes_a = _axes;
+                axes_b = _axes;
+            }
+
 
             throw new NotImplementedException();
         }

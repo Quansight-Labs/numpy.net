@@ -376,7 +376,15 @@ class NumericTests(unittest.TestCase):
 
         return
            
-    def test_tensordot_1(self):    
+    def test_tensordot_1(self):  
+        
+        a = np.arange(60.).reshape(3,4,5)
+        b = np.arange(24.).reshape(4,3,2)
+        c = nptest.tensordot(a,b, axes=([1,0],[0,1]))
+        print(c.shape)
+        print(c)
+ 
+
         return
 
     def test_dot_1(self):
