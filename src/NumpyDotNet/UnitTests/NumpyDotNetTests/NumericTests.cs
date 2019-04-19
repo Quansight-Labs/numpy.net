@@ -581,12 +581,39 @@ namespace NumpyDotNetTests
         }
 
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_tensordot_1()
         {
-
+            var a = np.arange(60.0).reshape((3, 4, 5));
+            var b = np.arange(24.0).reshape((4, 3, 2));
+            var c = np.tensordot(a, b, axes: (new long[] { 1, 0 },new long[] { 0, 1 }));
+            AssertShape(c, 5, 2);
+            print(c.shape);
+            AssertArray(c, new double[,] { { 4400.0, 4730.0 }, { 4532.0, 4874.0 }, { 4664.0, 5018.0 }, { 4796.0, 5162.0 }, { 4928.0, 5306.0 } });
+            print(c);
         }
+
+
+        [TestMethod]
+        public void test_tensordot_2()
+        {
+            var a = np.arange(12.0).reshape((3, 4));
+            var b = np.arange(24.0).reshape((4, 3, 2));
+            var c = np.tensordot(a, b, axis: 1);
+            AssertShape(c, 3, 3, 2);
+            print(c.shape);
+            AssertArray(c, new double[,,] {{{84,90},{96,102},{108,114}},{{228,250},{272,294},{316,338}},{{372,410},{448,486},{524,562}}});
+
+
+            c = np.tensordot(a, b, axis: 0);
+            AssertShape(c, 3, 4,4,3, 2);
+            print(c.shape);
+
+            print(c);
+        }
+
+
+
 
         [TestMethod]
         public void test_dot_1()

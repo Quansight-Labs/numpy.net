@@ -507,9 +507,14 @@ namespace NumpyDotNet
 
     public static class ufuncmultiply
     {
-        public static void accumulate(ndarray a, ndarray @out = null, int? axis = null)
+        public static ndarray accumulate(ndarray a, ndarray @out = null, int? axis = null)
         {
-            np.cumprod(a, axis, a.Dtype, @out);
+            return np.cumprod(a, axis, a.Dtype, @out);
+        }
+
+        public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+        {
+            return np.prod(a, axis, a.Dtype, @out);
         }
     }
 

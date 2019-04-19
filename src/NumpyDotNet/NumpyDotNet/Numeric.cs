@@ -938,37 +938,151 @@ namespace NumpyDotNet
 
             return multiply_outer(a1, b1);
         }
-        
+
 
         #endregion
 
         #region tensordot
 
-        public static ndarray tensordot(ndarray a, ndarray b, object axes = null)
+        public static ndarray tensordot(object a, object b, int axis = 2)
+        {
+            return tensordot(a, b, (PythonFunction.range(-axis, 0), PythonFunction.range(0, axis)));
+        }
+
+        public static ndarray tensordot(object a, object b, (long[], long[]) axes)
         {
 
-            var _axes = asanyarray(axes);
-            ndarray axes_a = null;
-            ndarray axes_b = null;
+            long[] axes_a = axes.Item1;
+            long[] axes_b = axes.Item2;
 
-            if (axes.GetType().IsArray == false)
+            int na = axes_a.Length;
+            int nb = axes_b.Length;
+
+            var aa = asanyarray(a);
+            var bb = asanyarray(b);
+
+            var as_ = aa.shape;
+            var nda = aa.ndim;
+            var bs = bb.shape;
+            var ndb = bb.ndim;
+            bool equal = true;
+
+            if (na != nb)
             {
-                if (axes.GetType().IsPrimitive)
-                {
-                    var axis = Convert.ToInt32(axes);
-                    axes_a = asanyarray(PytonFunction.range(-axis, 0));
-                    axes_b = asanyarray(PytonFunction.range(0, axis));
-                }
-   
+                equal = false;
             }
             else
             {
-                axes_a = _axes;
-                axes_b = _axes;
+                for (int k = 0; k < na; k++)
+                {
+                    long asindex = axes_a[k];
+                    asindex = asindex >= 0 ? asindex : asindex += as_.iDims.Length;
+
+                    long bsindex = axes_b[k];
+                    bsindex = bsindex >= 0 ? bsindex : bsindex += bs.iDims.Length;
+
+                    if (as_.iDims[asindex] != bs.iDims[bsindex])
+                    {
+                        equal = false;
+                        break;
+                    }
+                    if (axes_a[k] < 0)
+                    {
+                        axes_a[k] += nda;
+                    }
+                    if (axes_b[k] < 0)
+                    {
+                        axes_b[k] += ndb;
+                    }
+                }
             }
 
+            if (!equal)
+            {
+                throw new ValueError("shape-mismatch for sum");
+            }
 
-            throw new NotImplementedException();
+            /**********************************/
+
+            List<int> notin = new List<int>();
+            for (int k = 0; k < nda; k++)
+            {
+                if (!axes_a.Contains(k))
+                {
+                    notin.Add(k);
+                }
+            }
+
+            List<long> newaxes_a = new List<long>();
+            foreach (var k in notin)
+                newaxes_a.Add(k);
+            foreach (var k in axes_a)
+                newaxes_a.Add(k);
+ 
+            long N2 = 1;
+            foreach (var axis in axes_a)
+            {
+                N2 *= as_.iDims[axis];
+            }
+
+            List<long> asax = new List<long>();
+            foreach (var ax in notin)
+            {
+                asax.Add(as_.iDims[ax]);
+            }
+
+            var multreduce = ufuncmultiply.reduce(asanyarray(asax.ToArray()));
+            var newshape_a = new shape((long)multreduce.GetItem(0), N2);
+
+            List<long> olda = new List<npy_intp>();
+            foreach (var axis in notin)
+            {
+                olda.Add(as_.iDims[axis]);
+            }
+
+            /**********************************/
+
+            notin = new List<int>();
+            for (int k = 0; k < ndb; k++)
+            {
+                if (!axes_b.Contains(k))
+                {
+                    notin.Add(k);
+                }
+            }
+            List<long> newaxes_b = new List<long>();
+            foreach (var k in axes_b)
+                newaxes_b.Add(k);
+            foreach (var k in notin)
+                newaxes_b.Add(k);
+
+            N2 = 1;
+            foreach (var axis in axes_b)
+            {
+                N2 *= bs.iDims[axis];
+            }
+
+            List<long> bsax = new List<long>();
+            foreach (var ax in notin)
+            {
+                bsax.Add(bs.iDims[ax]);
+            }
+
+            multreduce = ufuncmultiply.reduce(asanyarray(bsax.ToArray()));
+            var newshape_b = new shape(N2, (long)multreduce.GetItem(0));
+
+            List<long> oldb = new List<npy_intp>();
+            foreach (var axis in notin)
+            {
+                oldb.Add(bs.iDims[axis]);
+            }
+
+            var at = aa.Transpose(newaxes_a.ToArray()).reshape(newshape_a);
+            var bt = bb.Transpose(newaxes_b.ToArray()).reshape(newshape_b);
+            var res = np.dot(at, bt);
+
+            olda.AddRange(oldb);
+            return res.reshape(olda);
         }
 
         #endregion

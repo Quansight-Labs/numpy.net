@@ -380,12 +380,25 @@ class NumericTests(unittest.TestCase):
         
         a = np.arange(60.).reshape(3,4,5)
         b = np.arange(24.).reshape(4,3,2)
-        c = nptest.tensordot(a,b, axes=([1,0],[0,1]))
+        c = np.tensordot(a,b, axes=([1,0],[0,1]))
         print(c.shape)
         print(c)
- 
+        return
+
+    def test_tensordot_2(self):  
+        
+        a = np.arange(12).reshape(3,4)
+        b = np.arange(24).reshape(4,3,2)
+        c = nptest.tensordot(a,b, axes=1)
+        print(c.shape)
+        print(c)
+
+        c = np.tensordot(a,b, axes=0)
+        print(c.shape)
+        #print(c)
 
         return
+
 
     def test_dot_1(self):
 

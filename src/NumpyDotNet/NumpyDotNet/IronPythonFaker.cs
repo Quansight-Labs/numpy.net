@@ -402,7 +402,7 @@ namespace NumpyDotNet
     }
 
     
-    public static class PytonFunction
+    public static class PythonFunction
     {
 
         public static npy_intp[] range(int start, int end)

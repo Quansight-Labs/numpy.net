@@ -139,7 +139,7 @@ namespace NumpyDotNet
                 return flip(flip(m, axes[0]), axes[1]);
             }
 
-            npy_intp[] axes_list = PytonFunction.range(0, m.ndim);
+            npy_intp[] axes_list = PythonFunction.range(0, m.ndim);
             npy_intp temp = axes_list[axes[0]];
             axes_list[axes[0]] = axes_list[axes[1]];
             axes_list[axes[1]] = temp;

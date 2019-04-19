@@ -291,7 +291,7 @@ namespace NumpyDotNet
             axis = normalize_axis_index(axis, nd);
 
             // arr, with the iteration axis at the end
-            var in_dims = PytonFunction.range(0, nd);
+            var in_dims = PythonFunction.range(0, nd);
             List<npy_intp> in_dims2 = new List<npy_intp>();
             for (int i = 0; i < axis; i++)
                 in_dims2.Add(in_dims[i]);
@@ -346,7 +346,7 @@ namespace NumpyDotNet
 
 
             // permutation of axes such that out = buff.transpose(buff_permute)
-            var buff_dims = PytonFunction.range(0, buff.ndim);
+            var buff_dims = PythonFunction.range(0, buff.ndim);
             List<npy_intp> buff_permute = new List<npy_intp>();
             for (int i = 0; i < axis; i++)
                 buff_permute.Add(buff_dims[i]);
