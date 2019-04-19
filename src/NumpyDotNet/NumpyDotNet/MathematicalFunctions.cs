@@ -362,21 +362,9 @@ namespace NumpyDotNet
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
 
+            var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
 
-            throw new NotImplementedException();
-
-            //for (int i = 0; i < ch.expectedLength; i++)
-            //{
-            //    ch.s[i] = Math.Asin(ch.dd[ch.offsets[i]]);
-            //}
-
-            //var ret = np.array(ch.s).reshape(new shape(ch.resShape));
-            //if (where != null)
-            //{
-            //    ret[np.invert(where)] = np.NaN;
-            //}
-
-            //return ret;
+            return hypot;
         }
 
         public static ndarray arctan2(object x1, object x2, object where = null)

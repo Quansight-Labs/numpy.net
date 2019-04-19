@@ -321,10 +321,15 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]  // too much work.
         [TestMethod]
         public void test_hypot_1()
         {
+
+            var a = np.hypot(np.ones((3, 3)) * 3, np.ones((3, 3)) * 4);
+            print(a);
+
+            var b = np.hypot(np.ones((3, 3)) * 3, new int[] { 4 });
+            print(b);
 
         }
 

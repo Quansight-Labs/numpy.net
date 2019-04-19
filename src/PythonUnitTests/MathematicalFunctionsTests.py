@@ -198,6 +198,14 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.arctan(a, where= x, out = out )
         print(b)
 
+    def test_hypot_1(self):
+
+        a = np.hypot(np.ones((3, 3)) * 3, np.ones((3, 3)) * 4)
+        print(a)
+
+        b = np.hypot(np.ones((3, 3)) * 3, [4])
+        print(b)
+
     def test_arctan2_1(self):
 
         x = np.array([-1, +1, +1, -1])
