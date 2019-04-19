@@ -459,8 +459,8 @@ namespace NumpyDotNet
                 M = N;
 
 
-            ndarray m = UFunc_Outer(arange(N, dtype: _min_int(0, N)),
-                            arange(-k, M - k, dtype: _min_int(-k, (int)M - k)), bgreater_equal);
+            ndarray m = ufunc.greater_equal.outer(arange(N, dtype: _min_int(0, N)),
+                                                  arange(-k, M-k, dtype: _min_int(-k, (int)M - k)));
 
             // Avoid making a copy if the requested type is already bool
             m = m.astype(dtype,  copy : false);

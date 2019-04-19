@@ -831,69 +831,6 @@ namespace NumpyDotNet
    
         #region outer
 
-        public static ndarray UFunc_Outer(object a, object b, numericOp op)
-        {
-           // Compute the outer product of two vectors.
-
-           // Given two vectors, ``a = [a0, a1, ..., aM]`` and
-           // ``b = [b0, b1, ..., bN]``,
-           // the outer product[1]_ is::
-
-
-           //  [[a0 * b0  a0 * b1...a0 * bN]
-           //   [a1 * b0.
-
-           //   [ ...          .
-
-           //   [aM * b0            aM * bN]]
-
-           // Parameters
-           // ----------
-           // a: (M,) array_like
-           //    First input vector.  Input is flattened if
-
-           //    not already 1 - dimensional.
-           //b : (N,) array_like
-           //    Second input vector.  Input is flattened if
-
-           //    not already 1 - dimensional.
-           // out : (M, N) ndarray, optional
-           //     A location where the result is stored
-
-           //     ..versionadded:: 1.9.0
-
-           // Returns
-           // ------ -
-           // out : (M, N) ndarray
-           //     ``out[i, j] = a[i] * b[j]``
-
-           // See also
-           // --------
-           // inner
-           // einsum : ``einsum('i,j->ij', a.ravel(), b.ravel())`` is the equivalent.
-           // ufunc.outer : A generalization to N dimensions and other operations.
-           //               ``np.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.
-
-
-            var a1 = asanyarray(a).ravel();
-            var b1 = asanyarray(b).ravel();
-
-            int alen = len(a1);
-            int blen = len(b1);
-
-            ndarray r = empty(new shape(alen, blen), dtype: np.Float64);
-            for (int i = 0; i < alen; i++)
-            {
-                for (int j = 0; j < blen; j++)
-                {
-                    r[i, j] = Convert.ToDouble(op(a1[i], b1[j]));     // op = ufunc in question
-                }
-
-            }
-
-            return r;
-        }
-
         public static ndarray outer(object a, object b)
         {
             // Compute the outer product of two vectors.

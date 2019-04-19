@@ -507,6 +507,8 @@ namespace NumpyDotNet
 
     public partial class ufunc
     {
+  
+
         public static class multiply
         {
             public static ndarray accumulate(ndarray a, ndarray @out = null, int? axis = null)
@@ -532,6 +534,23 @@ namespace NumpyDotNet
 
                 return NpyCoreApi.PerformOuterOp(a1, b1, dest, NpyArray_Ops.npy_op_multiply);
             }
+        }
+
+        public static class greater_equal
+        {
+            public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+            {
+                var a1 = np.asanyarray(a).ravel();
+                var b1 = np.asanyarray(b).ravel();
+
+                long alen = a1.shape.iDims[0];
+                long blen = b1.shape.iDims[0];
+
+                ndarray dest = np.empty(new shape(alen, blen), dtype: np.Bool);
+
+                return NpyCoreApi.PerformOuterOp(a1, b1, dest, NpyArray_Ops.npy_op_greater_equal);
+            }
+
         }
 
         public static class add
