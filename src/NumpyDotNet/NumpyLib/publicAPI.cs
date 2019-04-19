@@ -340,6 +340,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_PerformNumericOpArray(self, operationType, operand, UseSrcAsDest);
         }
 
+        public static NpyArray NpyArray_PerformOuterOp(NpyArray a, NpyArray b, NpyArray dest, NpyArray_Ops operationType)
+        {
+            return numpyinternal.PerformOuterOpArray(a, b, dest, operationType);
+        }
+
         public static NpyArray NpyArray_ArgMax(NpyArray op, int axis, NpyArray _out)
         {
             return numpyinternal.NpyArray_ArgMax(op, axis, _out);

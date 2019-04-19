@@ -46,30 +46,7 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-        // todo: need to speed this up
-        private static ndarray multiply_outer(ndarray a, ndarray b)
-        {
-            ndarray a1 = a.ravel();
-            ndarray b1 = b.ravel();
-
-            npy_intp[] newDims = new npy_intp[] { a1.size * b1.size };
-            ndarray res = np.zeros(new shape(newDims), dtype: a.Dtype);
-
-
-            npy_intp index = 0;
-            foreach (var av in a1.Flat)
-            {
-                foreach (var bv in b1.Flat)
-                {
-                    res.SetItem(Convert.ToDouble(av) * Convert.ToDouble(bv), index);
-                    index++;
-                }
-            }
-
-            return res.reshape(new shape((int)a1.size, (int)b1.size));
-
-        }
-
+    
         private static ndarray ndArrayFromMD(Array ssrc, NPY_TYPES type_num, int ndim)
         {
             npy_intp []newshape = new npy_intp[ndim];

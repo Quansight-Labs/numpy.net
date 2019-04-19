@@ -1422,6 +1422,49 @@ namespace NumpyLib
             }
         }
 
+        private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperation operation)
+        {
+            var destSize = NpyArray_Size(destArray);
+            var aSize = NpyArray_Size(a);
+            var bSize = NpyArray_Size(b);
+
+            if (bSize == 0 || aSize == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
+
+            var aIter = NpyArray_IterNew(a);
+            var DestIter = NpyArray_IterNew(destArray);
+
+            for (long i = 0; i < aSize; i++)
+            {
+                var aValue = a.descr.f.getitem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                var bIter = NpyArray_IterNew(b);
+
+                for (long j = 0; j < bSize; j++)
+                {
+                    var bValue = b.descr.f.getitem(bIter.dataptr.data_offset - b.data.data_offset, b);
+
+                    object destValue = operation(aValue, Convert.ToDouble(bValue));
+
+                    try
+                    {
+                        destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                    }
+                    catch
+                    {
+                        destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                    }
+                    NpyArray_ITER_NEXT(bIter);
+                    NpyArray_ITER_NEXT(DestIter);
+                }
+
+                NpyArray_ITER_NEXT(aIter);
+            }
+        }
+
+
 
         internal static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
         {
@@ -1499,6 +1542,13 @@ namespace NumpyLib
             //PerformNumericOpArray(srcArray, destArray, operandWrapper, destArray.dimensions, 0, 0, 0, 0, operation);
 
             PerformNumericOpScalarIter(srcArray, destArray, operandArray, operation);
+        }
+
+        public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, NpyArray_Ops operationType)
+        {
+            NumericOperation operation = GetOperation(ref srcArray, operationType);
+            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operation);
+            return destArray;
         }
 
         /// <summary>

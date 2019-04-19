@@ -46,25 +46,28 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet
 {
-    public class ufunc
+    public partial class ufunc
     {
         private static String[] ufuncArgNames = { "extobj", "sig" };
         protected NpyUFuncObject core;
 
-        internal ufunc(NpyUFuncObject corePtr) {
+        internal ufunc(NpyUFuncObject corePtr)
+        {
             core = corePtr;
         }
 
 
-        ~ufunc() {
-       
+        ~ufunc()
+        {
+
         }
 
-        internal NpyUFuncObject UFunc {
+        internal NpyUFuncObject UFunc
+        {
             get { return core; }
         }
 
-   
+
 
 
         /// <summary>
@@ -73,64 +76,78 @@ namespace NumpyDotNet
         private static string[] ReduceArgNames = new String[] {
             "array", "axis", "dtype", "out" };
 
-     
+
         private static string[] ReduceAtArgNames = new String[] {
             "array", "indices", "axis", "dtype", "out" };
 
         #region Python interface
 
- 
-        public int nin {
-            get {
+
+        public int nin
+        {
+            get
+            {
                 CheckValid();
                 return core.nin;
             }
         }
 
-        public int nout {
-            get {
+        public int nout
+        {
+            get
+            {
                 CheckValid();
                 return core.nout;
             }
         }
 
-        public int nargs {
-            get {
+        public int nargs
+        {
+            get
+            {
                 CheckValid();
                 return core.nargs;
             }
         }
 
-        public int ntypes {
-            get {
+        public int ntypes
+        {
+            get
+            {
                 CheckValid();
                 return core.ntypes;
             }
         }
 
-        public bool CoreEnabled {
-            get {
+        public bool CoreEnabled
+        {
+            get
+            {
                 CheckValid();
                 return core.core_enabled != 0;
             }
         }
 
         // TODO: Implement 'types'
-        public override string ToString() {
+        public override string ToString()
+        {
             return __name__;
         }
 
-        public string __name__ {
-            get {
+        public string __name__
+        {
+            get
+            {
                 CheckValid();
                 return core.name;
             }
         }
 
-        public string signature() {
+        public string signature()
+        {
             CheckValid();
             return core.core_signature;
-         }
+        }
 
 
         #endregion
@@ -140,7 +157,8 @@ namespace NumpyDotNet
         /// Simply checks to verify that the object was correctly initialized and hasn't
         /// already been disposed before we go accessing native memory.
         /// </summary>
-        private void CheckValid() {
+        private void CheckValid()
+        {
             if (core == null)
                 throw new InvalidOperationException("UFunc object is invalid or already disposed.");
         }
@@ -161,23 +179,29 @@ namespace NumpyDotNet
         /// <param name="operation">Reduce/accumulate operation to perform</param>
         /// <returns>Resulting array, either outArr or a new array</returns>
         private Object GenericReduce(ndarray arr, ndarray indices, int axis,
-            dtype otype, ndarray outArr, GenericReductionOp operation) {
+            dtype otype, ndarray outArr, GenericReductionOp operation)
+        {
 
-            if (signature() != null) {
+            if (signature() != null)
+            {
                 throw new RuntimeException("Reduction is not defined on ufunc's with signatures");
             }
-            if (nin != 2) {
+            if (nin != 2)
+            {
                 throw new ArgumentException("Reduce/accumulate only supported for binary functions");
             }
-            if (nout != 1) {
+            if (nout != 1)
+            {
                 throw new ArgumentException("Reduce/accumulate only supported for functions returning a single value");
             }
 
-            if (arr.ndim == 0) {
+            if (arr.ndim == 0)
+            {
                 throw new ArgumentTypeException("Cannot reduce/accumulate a scalar");
             }
 
-            if (arr.IsFlexible || (otype != null && NpyDefs.IsFlexible(otype.TypeNum))) {
+            if (arr.IsFlexible || (otype != null && NpyDefs.IsFlexible(otype.TypeNum)))
+            {
                 throw new ArgumentTypeException("Cannot perform reduce/accumulate with flexible type");
             }
 
@@ -191,16 +215,21 @@ namespace NumpyDotNet
             public object func;
         }
 
-  
-  
 
-        private bool IsStringType(string sig) {
+
+
+        private bool IsStringType(string sig)
+        {
             int pos = sig.IndexOf("->");
-            if (pos == -1) {
+            if (pos == -1)
+            {
                 return false;
-            } else {
+            }
+            else
+            {
                 int n = sig.Length - 2;
-                if (pos != nin || n - 2 != nout) {
+                if (pos != nin || n - 2 != nout)
+                {
                     throw new ArgumentException(
                         String.Format("a type-string for {0}, requires {1} typecode(s) before and {2} after the -> sign",
                                       this, nin, nout));
@@ -215,16 +244,20 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private ndarray[] ConvertArgs(object[] args) {
-            if (args.Length < nin || args.Length > nargs) {
+        private ndarray[] ConvertArgs(object[] args)
+        {
+            if (args.Length < nin || args.Length > nargs)
+            {
                 throw new ArgumentException("invalid number of arguments");
             }
             ndarray[] result = new ndarray[nargs];
-            for (int i = 0; i < nin; i++) {
+            for (int i = 0; i < nin; i++)
+            {
                 // TODO: Add check for scalars
                 object arg = args[i];
                 object context = null;
-                if (!(arg is ndarray) && !(arg is ScalarGeneric)) {
+                if (!(arg is ndarray) && !(arg is ScalarGeneric))
+                {
                     object[] contextArray = null;
                     contextArray = new object[] { this, new PythonTuple(args), i };
                     context = new PythonTuple(contextArray);
@@ -232,12 +265,18 @@ namespace NumpyDotNet
                 result[i] = np.FromAny(arg, context: context);
             }
 
-            for (int i = nin; i < nargs; i++) {
-                if (i >= args.Length || args[i] == null) {
+            for (int i = nin; i < nargs; i++)
+            {
+                if (i >= args.Length || args[i] == null)
+                {
                     result[i] = null;
-                } else if (args[i] is ndarray) {
+                }
+                else if (args[i] is ndarray)
+                {
                     result[i] = (ndarray)args[i];
-                } else if (args[i] is flatiter) {
+                }
+                else if (args[i] is flatiter)
+                {
                     // TODO What this code needs to do... Is flatiter the right equiv to PyArrayIter?
                     //PyObject *new = PyObject_CallMethod(obj, "__array__", NULL);
                     //if (new == NULL) {
@@ -253,7 +292,9 @@ namespace NumpyDotNet
                     //    mps[i] = (PyArrayObject *)new;
                     //}
                     throw new NotImplementedException("Calling __array__ method on flatiter (PyArrayIter) is not yet implemented.");
-                } else {
+                }
+                else
+                {
                     throw new ArgumentTypeException("return arrays must be of array type");
                 }
             }

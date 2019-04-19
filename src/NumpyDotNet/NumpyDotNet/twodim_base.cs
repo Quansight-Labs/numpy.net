@@ -651,7 +651,7 @@ namespace NumpyDotNet
             if (N > 1)
             {
                 tmp[":", "1:"] = array[":", null];
-                ufuncmultiply.accumulate(tmp[":", "1:"] as ndarray, @out : tmp[":", "1:"] as ndarray, axis : 1);
+                ufunc.multiply.accumulate(tmp[":", "1:"] as ndarray, @out : tmp[":", "1:"] as ndarray, axis : 1);
             }
 
 

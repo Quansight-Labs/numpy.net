@@ -486,6 +486,18 @@ namespace NumpyDotNet {
 
         }
 
+
+        internal static ndarray PerformOuterOp(ndarray a, ndarray b, ndarray dest, NpyArray_Ops ops)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_PerformOuterOp(a.Array, b.Array, dest.Array, ops));
+            }
+
+        }
+
         internal static ufunc GetNumericOp(NpyArray_Ops op)
         {
             NpyUFuncObject ufuncPtr;

@@ -505,26 +505,46 @@ namespace NumpyDotNet
     }
 
 
-    public static class ufuncmultiply
+    public partial class ufunc
     {
-        public static ndarray accumulate(ndarray a, ndarray @out = null, int? axis = null)
+        public static class multiply
         {
-            return np.cumprod(a, axis, a.Dtype, @out);
+            public static ndarray accumulate(ndarray a, ndarray @out = null, int? axis = null)
+            {
+                return np.cumprod(a, axis, a.Dtype, @out);
+            }
+
+            public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+            {
+                return np.prod(a, axis, a.Dtype, @out);
+            }
+
+            public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+            {
+
+                var a1 = np.asanyarray(a).ravel();
+                var b1 = np.asanyarray(b).ravel();
+
+                long alen = a1.shape.iDims[0];
+                long blen = b1.shape.iDims[0];
+
+                ndarray dest = np.empty(new shape(alen, blen), dtype: a1.Dtype);
+
+                return NpyCoreApi.PerformOuterOp(a1, b1, dest, NpyArray_Ops.npy_op_multiply);
+            }
         }
 
-        public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+        public static class add
         {
-            return np.prod(a, axis, a.Dtype, @out);
+            public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+            {
+                return np.sum(a, axis, a.Dtype, @out);
+            }
         }
+
     }
 
-    public static class ufuncadd
-    {
-        public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
-        {
-            return np.sum(a, axis, a.Dtype, @out);
-        }
-    }
+  
 
     public static partial class np
     {
