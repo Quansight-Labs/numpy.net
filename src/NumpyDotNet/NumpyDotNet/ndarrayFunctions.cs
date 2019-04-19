@@ -79,6 +79,8 @@ namespace NumpyDotNet
         public static readonly dtype Decimal = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
         public static readonly dtype None = null;
+        public static readonly object newaxis = null;
+
 
         public static readonly bool initialized = true;
 

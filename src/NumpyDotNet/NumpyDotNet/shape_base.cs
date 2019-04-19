@@ -132,7 +132,7 @@ namespace NumpyDotNet
                 }
                 else if (array.ndim == 1)
                 {
-                    result = array.reshape(new shape(1, (int)array.Dim(0)));
+                    result = array.A(newaxis, ":");
                 }
                 else
                 {
@@ -212,11 +212,11 @@ namespace NumpyDotNet
                 }
                 else if (array.ndim == 1)
                 {
-                    result = array.reshape(new shape(1, (int)array.Dim(0), 1));
+                    result = array.A(newaxis, ":", newaxis);
                 }
                 else if (array.ndim == 2)
                 {
-                    result = array.reshape(new shape((int)array.Dim(0), (int)array.Dim(1), 1));
+                    result = array.A(":", ":", newaxis);
                 }
                 else
                 {
