@@ -157,7 +157,6 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_meshgrid_1()
@@ -178,7 +177,6 @@ namespace NumpyDotNetTests
         {
 
         }
-        #endif
 
         [TestMethod]
         public void test_OneDimensionalArray()

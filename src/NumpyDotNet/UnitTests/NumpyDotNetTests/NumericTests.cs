@@ -641,14 +641,12 @@ namespace NumpyDotNetTests
 
         }
 
-        #if NOT_PLANNING_TODO
         [Ignore] // not implemented yet
         [TestMethod]
         public void xxx_test_einsum_1()
         {
 
         }
-        #endif
 
 
         [TestMethod]
