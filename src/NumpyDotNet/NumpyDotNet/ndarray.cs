@@ -1429,14 +1429,10 @@ namespace NumpyDotNet
                 {
                     try
                     {
-                        if (value is IConvertible)
-                        {
-                            double fill_value = Convert.ToDouble(value);
-                            foreach (var offset in item.Array.ViewOffsets)
-                            {
-                                item.Array.descr.f.setitem(offset * item.itemsize, value, item.Array);
-                            }
-                        }
+                        ndarray itemarr = item as ndarray;
+
+                        np.copyto(itemarr, value);
+
                     }
                     catch (Exception ex)
                     {
