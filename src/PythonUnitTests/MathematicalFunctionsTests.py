@@ -1512,6 +1512,17 @@ class MathematicalFunctionsTests(unittest.TestCase):
         f = np.sign(np.array([-1, 0, 1]))
         print(f)
 
+    def test_heaviside_1(self):
+
+        a = np.heaviside([-1.5, 0, 2.0], 0.5)
+        print(a)
+
+        b = np.heaviside([-1.5, 0, 2.0], 1)
+        print(b)
+
+        c = np.heaviside([-1, 0, 2], 1)
+        print(c)
+
 
     def test_maximum_1(self):
 

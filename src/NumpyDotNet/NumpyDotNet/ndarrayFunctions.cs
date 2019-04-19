@@ -1779,6 +1779,15 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region heaviside
+
+        public static ndarray heaviside(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        {
+            return _maxmin(NpyArray_Ops.npy_op_heaviside, x1, x2, @out, order, dtype, subok);
+        }
+
+        #endregion
+
         public static void putmask(ndarray arr, object mask, object values)
         {
             ndarray aMask;

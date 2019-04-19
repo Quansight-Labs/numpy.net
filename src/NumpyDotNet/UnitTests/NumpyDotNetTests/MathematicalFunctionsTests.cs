@@ -2400,12 +2400,22 @@ namespace NumpyDotNetTests
             print(f);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_heaviside_1()
         {
+            var a = np.heaviside(new float[] { -1.5f, 0.0f, 2.0f }, 0.5f);
+            AssertArray(a, new float[] {0.0f, 0.5f, 1.0f });
+            print(a);
 
-        }
+            var b = np.heaviside(new double[] { -1.5, 0, 2.0 }, 1);
+            AssertArray(b, new double[] { 0.0, 1.0, 1.0 });
+            print(b);
+
+            var c = np.heaviside(new int[] { -1, 0, 2 }, 1);
+            AssertArray(c, new double[] { 0.0, 1.0, 1.0 });
+            print(c);
+
+       }
 
         [TestMethod]
         public void test_maximum_1()

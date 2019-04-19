@@ -975,6 +975,20 @@ namespace NumpyLib
                                 return MinimumOperation;
                         }
                     }
+
+                case NpyArray_Ops.npy_op_heaviside:
+                    {
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_FLOAT:
+                                return FLOAT_HeavisideOperation;
+                            case NPY_TYPES.NPY_DOUBLE:
+                                return DOUBLE_HeavisideOperation;
+                            default:
+                                return DOUBLE_HeavisideOperation;
+                        }
+                    }
+
                 case NpyArray_Ops.npy_op_rint:
                     {
                         return RintOperation;
@@ -3683,6 +3697,41 @@ namespace NumpyLib
             return Math.Min(Convert.ToDouble(bValue), Convert.ToDouble(operand));
 
         }
+
+        private static object FLOAT_HeavisideOperation(object bValue, dynamic operand)
+        {
+            float x = Convert.ToSingle(bValue);
+
+            if (float.IsNaN(x))
+                return float.NaN;
+
+            if (x == 0.0f)
+                return Convert.ToSingle(operand);
+
+            if (x < 0.0f)
+                return 0.0f;
+
+            return 1.0f;
+        }
+
+        private static object DOUBLE_HeavisideOperation(object bValue, dynamic operand)
+        {
+
+            double x = Convert.ToDouble(bValue);
+
+            if (double.IsNaN(x))
+                return double.NaN;
+
+            if (x == 0.0)
+                return Convert.ToDouble(operand);
+
+            if (x < 0.0)
+                return 0.0;
+
+            return 1.0;
+
+        }
+
 
 
         private static T RintOperation<T>(T bValue, dynamic operand)

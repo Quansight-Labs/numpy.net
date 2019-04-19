@@ -242,6 +242,7 @@ namespace NumpyLib
         npy_op_isnan,
         npy_op_fmax,
         npy_op_fmin,
+        npy_op_heaviside,
         npy_op_end_of_ops       // Must be the last entry
     };
 
