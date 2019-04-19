@@ -496,7 +496,18 @@ class NumericTests(unittest.TestCase):
     def test_cross_1(self):    
         return
 
-    def test_indices_1(self):    
+    def test_indices_1(self):  
+        
+        grid = np.indices((2, 3))
+        print(grid.shape)
+        print(grid[0])
+        print(grid[1])
+
+        x = np.arange(20).reshape(5, 4)
+        y = x[grid[0], grid[1]]
+        print(y)
+
+
         return
 
     def test_fromfunction_1(self):    

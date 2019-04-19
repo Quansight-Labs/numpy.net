@@ -785,11 +785,23 @@ namespace NumpyDotNetTests
 
   
 
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_indices_1()
         {
+            var grid = np.indices((2, 3));
+            AssertShape(grid, 2, 2, 3);
+            print(grid.shape);
+            AssertArray(grid[0] as ndarray, new long[,] { {0,0,0}, {1,1,1} });
+            print(grid[0]);
+            AssertArray(grid[1] as ndarray, new long[,] { { 0, 1, 2 }, { 0, 1, 2 } });
+            print(grid[1]);
 
+            var x = np.arange(20).reshape((5, 4));
+            var y = x[grid[0], grid[1]];
+            AssertArray(y as ndarray, new long[,] { { 0, 1, 2 }, { 4, 5, 6 } });
+            print(y);
+
+            return;
         }
 
 #if NOT_PLANNING_TODO

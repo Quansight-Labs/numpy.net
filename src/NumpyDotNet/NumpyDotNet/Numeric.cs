@@ -1524,9 +1524,107 @@ namespace NumpyDotNet
 
         #region indices
 
-        public static ndarray indices(ndarray a, object source, object destination)
+        public static ndarray indices(object dimensions, dtype dtype = null)
         {
-            throw new NotImplementedException();
+            /*
+            Return an array representing the indices of a grid.
+
+            Compute an array where the subarrays contain index values 0,1,...
+            varying only along the corresponding axis.
+
+            Parameters
+            ----------
+            dimensions : sequence of ints
+                The shape of the grid.
+            dtype : dtype, optional
+                Data type of the result.
+
+            Returns
+            -------
+            grid : ndarray
+                The array of grid indices,
+                ``grid.shape = (len(dimensions),) + tuple(dimensions)``.
+
+            See Also
+            --------
+            mgrid, meshgrid
+
+            Notes
+            -----
+            The output shape is obtained by prepending the number of dimensions
+            in front of the tuple of dimensions, i.e. if `dimensions` is a tuple
+            ``(r0, ..., rN-1)`` of length ``N``, the output shape is
+            ``(N,r0,...,rN-1)``.
+
+            The subarrays ``grid[k]`` contains the N-D array of indices along the
+            ``k-th`` axis. Explicitly::
+
+                grid[k,i0,i1,...,iN-1] = ik
+
+            Examples
+            --------
+            >>> grid = np.indices((2, 3))
+            >>> grid.shape
+            (2, 2, 3)
+            >>> grid[0]        # row indices
+            array([[0, 0, 0],
+                   [1, 1, 1]])
+            >>> grid[1]        # column indices
+            array([[0, 1, 2],
+                   [0, 1, 2]])
+
+            The indices can be used as an index into an array.
+
+            >>> x = np.arange(20).reshape(5, 4)
+            >>> row, col = np.indices((2, 3))
+            >>> x[row, col]
+            array([[0, 1, 2],
+                   [4, 5, 6]])
+
+            Note that it would be more straightforward in the above example to
+            extract the required elements directly with ``x[:2, :3]``.
+            */
+
+            shape _dimensions = NumpyExtensions.ConvertTupleToShape(dimensions);
+            if (_dimensions == null)
+            {
+                throw new Exception("Unable to convert shape object");
+            }
+
+            if (dtype == null)
+                dtype = np.Int32;
+
+            int N = _dimensions.iDims.Length;
+
+            npy_intp[] shape = new npy_intp[N];
+            for (int i = 0; i < N; i++)
+                shape[i] = 1;
+
+
+            List<npy_intp> res_shape = new List<npy_intp>();
+            res_shape.Add(N);
+            foreach (var dim in _dimensions.iDims)
+                res_shape.Add(dim);
+            var res = np.empty(new shape(res_shape), dtype: dtype);
+
+            for (int i = 0; i < _dimensions.iDims.Length; i++)
+            {
+                var dim = _dimensions.iDims[i];
+
+                List<npy_intp> adjustedshape = new List<npy_intp>();
+                int j;
+                for (j = 0; j < i; j++)
+                    adjustedshape.Add(shape[j]);
+                adjustedshape.Add(dim);
+                for (j = i + 1; j < shape.Length; j++)
+                    adjustedshape.Add(shape[j]);
+
+
+                var kevin = np.arange(dim, dtype: dtype).reshape(adjustedshape);
+                res[i] = kevin;
+            }
+            return res;
+
         }
 
         #endregion
