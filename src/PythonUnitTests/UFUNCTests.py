@@ -1,0 +1,59 @@
+import unittest
+import numpy as np
+from nptest import nptest
+
+class Test_UFUNCTests(unittest.TestCase):
+
+    def test_UFUNC_AddReduce_1(self):
+
+        x = np.arange(8);
+
+        a = np.add.reduce(x)
+        print(a)
+
+        x = np.arange(8).reshape((2,2,2))
+        b = np.add.reduce(x)
+        print(b)
+
+        c = np.add.reduce(x, 0)
+        print(c)
+
+        d = np.add.reduce(x, 1)
+        print(d)
+
+        e = np.add.reduce(x, 2)
+        print(e)
+
+    def test_UFUNC_AddReduce_2(self):
+
+  
+        x = np.arange(8).reshape((2,2,2))
+        b = np.add.reduce(x)
+        print(b)
+
+        c = np.add.reduce(x, (0,1))
+        print(c)
+
+        d = np.add.reduce(x, (1,2))
+        print(d)
+
+        e = np.add.reduce(x, (2,1))
+        print(e)
+
+
+    def test_UFUNC_AddOuter_1(self):
+
+        x = np.arange(4);
+
+        a = np.add.outer(x, x)
+        print(a)
+
+        x = np.arange(6).reshape((2,3))
+        b = np.add.outer(x, x)
+        print(b.shape)
+        print(b)
+
+   
+
+if __name__ == '__main__':
+    unittest.main()

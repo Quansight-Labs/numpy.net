@@ -82,6 +82,7 @@
     <Compile Include="HistogramTests.cs" />
     <Compile Include="NOT_PLANNING_TODO_Tests.cs" />
     <Compile Include="IteratorTests.cs" />
+    <Compile Include="UFUNCTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>

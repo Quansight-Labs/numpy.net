@@ -498,6 +498,28 @@ namespace NumpyDotNet {
 
         }
 
+        internal static ndarray PerformReduceOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null, bool keepdims = false)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_PerformReduceOp(a.Array, axis, ops, rtype, @out == null ? null : @out.Array, keepdims));
+            }
+
+        }
+
+        internal static ndarray PerformAccumulateOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_PerformAccumulateOp(a.Array, axis, ops, rtype, @out == null ? null : @out.Array));
+            }
+
+        }
+
         internal static ufunc GetNumericOp(NpyArray_Ops op)
         {
             NpyUFuncObject ufuncPtr;

@@ -1551,6 +1551,41 @@ namespace NumpyLib
             return destArray;
         }
 
+
+        internal static NpyArray PerformReduceOpArray(NpyArray srcArray, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray outPtr, bool keepdims)
+        {
+            NpyArray ret = null;
+            NpyArray newArray = null;
+
+            if (null == (newArray = NpyArray_CheckAxis(srcArray, ref axis, 0)))
+            {
+                return null;
+            }
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(ops),
+                                            newArray, null, outPtr, axis,
+                                            NpyArray_DescrFromType(rtype),
+                                            GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
+            Npy_DECREF(newArray);
+            return ret;
+        }
+
+        internal static NpyArray PerformAccumulateOpArray(NpyArray srcArray, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray outPtr)
+        {
+            NpyArray ret = null;
+            NpyArray newArray = null;
+
+            if (null == (newArray = NpyArray_CheckAxis(srcArray, ref axis, 0)))
+            {
+                return null;
+            }
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(ops),
+                                            newArray, null, outPtr, axis,
+                                            NpyArray_DescrFromType(rtype),
+                                            GenericReductionOp.NPY_UFUNC_ACCUMULATE, false);
+            Npy_DECREF(newArray);
+            return ret;
+        }
+
         /// <summary>
         /// Recursively walks the array and appends a representation of each element
         /// to the passed string builder.  Square brackets delimit each array dimension.

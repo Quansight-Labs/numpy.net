@@ -504,66 +504,115 @@ namespace NumpyDotNet
         }
     }
 
-
-    public partial class ufunc
+    public partial class np
     {
-  
-
-        public static class multiply
+        internal class ufuncbase
         {
-            public static ndarray accumulate(ndarray a, ndarray @out = null, int? axis = null)
+
+            internal static ndarray reduce(NpyArray_Ops ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null, bool keepdims = false)
             {
-                return np.cumprod(a, axis, a.Dtype, @out);
+                ndarray arr = asanyarray(a);
+                if (arr == null)
+                {
+                    throw new ValueError("unable to convert a to ndarray");
+                }
+
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                return NpyCoreApi.PerformReduceOp(arr, axis, ops, rtype, @out, keepdims);
             }
 
-            public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+            internal static ndarray accumulate(NpyArray_Ops ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null)
             {
-                return np.prod(a, axis, a.Dtype, @out);
+                ndarray arr = asanyarray(a);
+                if (arr == null)
+                {
+                    throw new ValueError("unable to convert a to ndarray");
+                }
+
+
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                return NpyCoreApi.PerformAccumulateOp(arr, axis, ops, rtype, @out);
             }
 
-            public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+            public static ndarray outer(NpyArray_Ops ops, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
             {
 
                 var a1 = np.asanyarray(a).ravel();
                 var b1 = np.asanyarray(b).ravel();
 
-                long alen = a1.shape.iDims[0];
-                long blen = b1.shape.iDims[0];
-
-                ndarray dest = np.empty(new shape(alen, blen), dtype: a1.Dtype);
-
-                return NpyCoreApi.PerformOuterOp(a1, b1, dest, NpyArray_Ops.npy_op_multiply);
-            }
-        }
-
-        public static class greater_equal
-        {
-            public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
-            {
-                var a1 = np.asanyarray(a).ravel();
-                var b1 = np.asanyarray(b).ravel();
 
                 long alen = a1.shape.iDims[0];
                 long blen = b1.shape.iDims[0];
 
-                ndarray dest = np.empty(new shape(alen, blen), dtype: np.Bool);
+                ndarray dest = np.empty(new shape(alen, blen), dtype: dtype != null ? dtype : a1.Dtype);
 
-                return NpyCoreApi.PerformOuterOp(a1, b1, dest, NpyArray_Ops.npy_op_greater_equal);
+                return NpyCoreApi.PerformOuterOp(a1, b1, dest, ops);
             }
 
         }
 
-        public static class add
+        public class ufunc 
         {
-            public static ndarray reduce(ndarray a, ndarray @out = null, int? axis = null)
+            public class add
             {
-                return np.sum(a, axis, a.Dtype, @out);
+                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
+                {
+                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_add, a, axis, null, @out);
+                }
+
+                public static ndarray reduce(object a, int axis = 0, ndarray @out = null, bool keepdims = false)
+                {
+                    return ufuncbase.reduce(NpyArray_Ops.npy_op_add, a, axis, null, @out, keepdims);
+                }
+
+                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+                {
+                    return ufuncbase.outer(NpyArray_Ops.npy_op_add, null, a, b, @out, axis);
+                }
+
             }
+
+            public static class multiply
+            {
+                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
+                {
+                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_multiply, a, axis, null, @out);
+                }
+
+                public static ndarray reduce(object a, ndarray @out = null, int axis = 0, bool keepdims = false)
+                {
+                    return ufuncbase.reduce(NpyArray_Ops.npy_op_multiply, a, axis, null, @out, keepdims);
+                }
+
+                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+                {
+                    return ufuncbase.outer(NpyArray_Ops.npy_op_multiply, null, a, b, @out, axis);
+                }
+            }
+
+            public static class greater_equal
+            {
+                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
+                {
+                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_greater_equal, a, axis, np.Bool, @out);
+                }
+
+                public static ndarray reduce(object a, int axis = 0, ndarray @out = null, bool keepdims = false)
+                {
+                    return ufuncbase.reduce(NpyArray_Ops.npy_op_greater_equal, a, axis, np.Bool, @out, keepdims);
+                }
+
+                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
+                {
+                    return ufuncbase.outer(NpyArray_Ops.npy_op_greater_equal, np.Bool, a, b, @out, axis);
+                }
+
+            }
+
         }
 
     }
 
-  
 
     public static partial class np
     {

@@ -345,6 +345,16 @@ namespace NumpyLib
             return numpyinternal.PerformOuterOpArray(a, b, dest, operationType);
         }
 
+        public static NpyArray NpyArray_PerformReduceOp(NpyArray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out, bool keepdims)
+        {
+            return numpyinternal.PerformReduceOpArray(a, axis, ops, rtype, @out, keepdims);
+        }
+
+        public static NpyArray NpyArray_PerformAccumulateOp(NpyArray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out)
+        {
+            return numpyinternal.PerformAccumulateOpArray(a, axis, ops, rtype, @out);
+        }
+
         public static NpyArray NpyArray_ArgMax(NpyArray op, int axis, NpyArray _out)
         {
             return numpyinternal.NpyArray_ArgMax(op, axis, _out);
