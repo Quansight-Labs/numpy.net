@@ -509,6 +509,17 @@ namespace NumpyDotNet {
 
         }
 
+        internal static ndarray PerformReduceAtOp(ndarray a, ndarray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_PerformReduceAtOp(a.Array, indices.Array, axis, ops, rtype, @out == null ? null : @out.Array));
+            }
+
+        }
+
         internal static ndarray PerformAccumulateOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
         {
             #if ENABLELOCKING

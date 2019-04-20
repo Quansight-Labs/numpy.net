@@ -40,6 +40,18 @@ class Test_UFUNCTests(unittest.TestCase):
         e = np.add.reduce(x, (2,1))
         print(e)
 
+    def test_UFUNC_AddReduceAt_1(self):
+
+        a =np.add.reduceat(np.arange(8),[0,4, 1,5, 2,6, 3,7])[::2]
+        print(a)
+
+
+        x = np.linspace(0, 15, 16).reshape(4,4)
+        b = np.add.reduceat(x, [0, 3, 1, 2, 0])
+        print(b)
+
+        c = np.multiply.reduceat(x, [0, 3], axis = 1)
+        print(c)
 
     def test_UFUNC_AddOuter_1(self):
 
@@ -53,7 +65,7 @@ class Test_UFUNCTests(unittest.TestCase):
         print(b.shape)
         print(b)
 
-   
+ 
 
 if __name__ == '__main__':
     unittest.main()

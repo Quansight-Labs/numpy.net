@@ -521,6 +521,24 @@ namespace NumpyDotNet
                 return NpyCoreApi.PerformReduceOp(arr, axis, ops, rtype, @out, keepdims);
             }
 
+            internal static ndarray reduceat(NpyArray_Ops ops, object a, object indices, int axis = 0, dtype dtype = null, ndarray @out = null)
+            {
+                ndarray arr = asanyarray(a);
+                if (arr == null)
+                {
+                    throw new ValueError("unable to convert a to ndarray");
+                }
+
+                ndarray indicesarr = asanyarray(indices);
+                if (indicesarr == null)
+                {
+                    throw new ValueError("unable to convert indices to ndarray");
+                }
+
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                return NpyCoreApi.PerformReduceAtOp(arr, indicesarr, axis, ops, rtype, @out);
+            }
+
             internal static ndarray accumulate(NpyArray_Ops ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null)
             {
                 ndarray arr = asanyarray(a);
@@ -565,6 +583,11 @@ namespace NumpyDotNet
                     return ufuncbase.reduce(NpyArray_Ops.npy_op_add, a, axis, null, @out, keepdims);
                 }
 
+                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
+                {
+                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_add, a, indices, axis, null, @out);
+                }
+
                 public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
                 {
                     return ufuncbase.outer(NpyArray_Ops.npy_op_add, null, a, b, @out, axis);
@@ -584,6 +607,11 @@ namespace NumpyDotNet
                     return ufuncbase.reduce(NpyArray_Ops.npy_op_multiply, a, axis, null, @out, keepdims);
                 }
 
+                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
+                {
+                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_multiply, a, indices, axis, null, @out);
+                }
+
                 public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
                 {
                     return ufuncbase.outer(NpyArray_Ops.npy_op_multiply, null, a, b, @out, axis);
@@ -600,6 +628,11 @@ namespace NumpyDotNet
                 public static ndarray reduce(object a, int axis = 0, ndarray @out = null, bool keepdims = false)
                 {
                     return ufuncbase.reduce(NpyArray_Ops.npy_op_greater_equal, a, axis, np.Bool, @out, keepdims);
+                }
+
+                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
+                {
+                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_greater_equal, a, indices, axis, np.Bool, @out);
                 }
 
                 public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)

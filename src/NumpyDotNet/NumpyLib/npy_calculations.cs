@@ -1569,6 +1569,23 @@ namespace NumpyLib
             return ret;
         }
 
+        internal static NpyArray PerformReduceAtOpArray(NpyArray srcArray, NpyArray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray outPtr)
+        {
+            NpyArray ret = null;
+            NpyArray newArray = null;
+
+            if (null == (newArray = NpyArray_CheckAxis(srcArray, ref axis, 0)))
+            {
+                return null;
+            }
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(ops),
+                                            newArray, indices, outPtr, axis,
+                                            NpyArray_DescrFromType(rtype),
+                                            GenericReductionOp.NPY_UFUNC_REDUCEAT, false);
+            Npy_DECREF(newArray);
+            return ret;
+        }
+
         internal static NpyArray PerformAccumulateOpArray(NpyArray srcArray, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray outPtr)
         {
             NpyArray ret = null;

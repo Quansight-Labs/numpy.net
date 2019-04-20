@@ -350,6 +350,11 @@ namespace NumpyLib
             return numpyinternal.PerformReduceOpArray(a, axis, ops, rtype, @out, keepdims);
         }
 
+        public static NpyArray NpyArray_PerformReduceAtOp(NpyArray a, NpyArray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out)
+        {
+            return numpyinternal.PerformReduceAtOpArray(a, indices, axis, ops, rtype, @out);
+        }
+
         public static NpyArray NpyArray_PerformAccumulateOp(NpyArray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out)
         {
             return numpyinternal.PerformAccumulateOpArray(a, axis, ops, rtype, @out);
