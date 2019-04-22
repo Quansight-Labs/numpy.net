@@ -555,14 +555,18 @@ namespace NumpyDotNet
             public static ndarray outer(NpyArray_Ops ops, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
             {
 
-                var a1 = np.asanyarray(a).ravel();
-                var b1 = np.asanyarray(b).ravel();
+                var a1 = np.asanyarray(a);
+                var b1 = np.asanyarray(b);
 
 
-                long alen = a1.shape.iDims[0];
-                long blen = b1.shape.iDims[0];
+                List<npy_intp> destdims = new List<npy_intp>();
+                foreach (var dim in a1.shape.iDims)
+                    destdims.Add(dim);
+                foreach (var dim in b1.shape.iDims)
+                    destdims.Add(dim);
+                      
 
-                ndarray dest = np.empty(new shape(alen, blen), dtype: dtype != null ? dtype : a1.Dtype);
+                ndarray dest = np.empty(new shape(destdims), dtype: dtype != null ? dtype : a1.Dtype);
 
                 return NpyCoreApi.PerformOuterOp(a1, b1, dest, ops);
             }

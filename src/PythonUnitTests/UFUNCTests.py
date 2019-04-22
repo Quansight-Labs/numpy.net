@@ -44,11 +44,12 @@ class Test_UFUNCTests(unittest.TestCase):
 
         a =np.add.reduceat(np.arange(8),[0,4, 1,5, 2,6, 3,7])[::2]
         print(a)
-
+        print("**********")
 
         x = np.linspace(0, 15, 16).reshape(4,4)
         b = np.add.reduceat(x, [0, 3, 1, 2, 0])
         print(b)
+        print("**********")
 
         c = np.multiply.reduceat(x, [0, 3], axis = 1)
         print(c)
@@ -58,10 +59,12 @@ class Test_UFUNCTests(unittest.TestCase):
         x = np.arange(4);
 
         a = np.add.outer(x, x)
+        print(a.shape)
         print(a)
 
-        x = np.arange(6).reshape((2,3))
-        b = np.add.outer(x, x)
+        x = np.arange(6).reshape((3,2))
+        y = np.arange(6).reshape((2,3))
+        b = np.add.outer(x, y)
         print(b.shape)
         print(b)
 
