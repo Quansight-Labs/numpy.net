@@ -493,7 +493,60 @@ class NumericTests(unittest.TestCase):
         print(g)
 
 
-    def test_cross_1(self):    
+    def test_cross_1(self): 
+        
+        # Vector cross-product.
+        x = [1, 2, 3]
+        y = [4, 5, 6]
+        a = np.cross(x, y)
+        print(a)
+
+        # One vector with dimension 2.
+        x = [1, 2]
+        y = [4, 5, 6]
+        b = np.cross(x, y)
+        print(b)
+
+        # Equivalently:
+        x = [1, 2]
+        y = [4, 5, 6]
+        b = np.cross(x, y)
+        print(b)
+
+       # Both vectors with dimension 2.
+        x = [1,2]
+        y = [4,5]
+        c = np.cross(x, y)
+        print(c)
+
+        return
+
+    def test_cross_2(self): 
+
+        # Multiple vector cross-products. Note that the direction of the cross
+        # product vector is defined by the `right-hand rule`.
+
+        x = np.array([[1,2,3], [4,5,6]])
+        y = np.array([[4,5,6], [1,2,3]])
+        a = np.cross(x, y)
+        print(a)
+ 
+
+        # The orientation of `c` can be changed using the `axisc` keyword.
+
+        b = np.cross(x, y, axisc=0)
+        print(b)
+
+        # Change the vector definition of `x` and `y` using `axisa` and `axisb`.
+
+        x = np.array([[1,2,3], [4,5,6], [7, 8, 9]])
+        y = np.array([[7, 8, 9], [4,5,6], [1,2,3]])
+        a = np.cross(x, y)
+        print(a)
+  
+        b = np.cross(x, y, axisa=0, axisb=0)
+        print(b)
+ 
         return
 
     def test_indices_1(self):  

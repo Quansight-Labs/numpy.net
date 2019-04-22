@@ -1388,12 +1388,76 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // waiting for broadcast to be implemented
+        [Ignore] 
         [TestMethod]
-        public void test_cross_placeholder()
+        public void test_cross_1()
         {
+            // Vector cross-product.
+            var x = new int[] { 1, 2, 3 };
+            var y = new int[] { 4, 5, 6 };
+            var a = np.cross(x, y);
+            AssertArray(a, new int[] { -3, 6, -3 });
+            print(a);
 
+            // One vector with dimension 2.
+            x = new int[] { 1, 2 };
+            y = new int[] { 4, 5, 6 };
+            var b = np.cross(x, y);
+            AssertArray(b, new int[] { 12, -6, -3 });
+            print(b);
+
+            // Equivalently:
+            x = new int[] { 1, 2, 0 };
+            y = new int[] { 4, 5, 6 };
+            b = np.cross(x, y);
+            AssertArray(b, new int[] { 12, -6, -3 });
+            print(b);
+
+            // Both vectors with dimension 2.
+            x = new int[] { 1, 2 };
+            y = new int[] { 4, 5 };
+            var c = np.cross(x, y);
+            Assert.AreEqual(-3, c.GetItem(0));
+            print(c);
+
+            return;
         }
+
+        [Ignore]
+        [TestMethod]
+        public void test_cross_2()
+        {
+            // Multiple vector cross-products. Note that the direction of the cross
+            // product vector is defined by the `right-hand rule`.
+
+            var x = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var y = np.array(new int[,] { { 4, 5, 6 }, { 1, 2, 3 } });
+            var a = np.cross(x, y);
+            AssertArray(a, new int[,] { { -3, 6, -3 }, { 3, -6, 3 } });
+            print(a);
+
+
+            // The orientation of `c` can be changed using the `axisc` keyword.
+
+            var b = np.cross(x, y, axisc : 0);
+            AssertArray(b, new int[,]{{-3,3}, {6,-6}, {-3,3}});
+            print(b);
+
+            // Change the vector definition of `x` and `y` using `axisa` and `axisb`.
+
+            x = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            y = np.array(new int[,] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } });
+            a = np.cross(x, y);
+            AssertArray(a, new int[,]{{-6,12, -6}, {0,0,0}, {6,-12, 6}});
+            print(a);
+
+            b = np.cross(x, y, axisa: 0, axisb: 0);
+            AssertArray(b, new int[,]{{-6,12, -6},{0, 0, 0}, {6,-12, 6}});
+            print(b);
+
+            return;
+        }
+
 
         [TestMethod]
         public void test_trapz_1()

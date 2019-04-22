@@ -532,7 +532,7 @@ namespace NumpyDotNetTests
             print(y);
         }
 
-        [Ignore] // need faster np.outer and need to reimplement np.concatenate as in multiarraymodule.c
+        [Ignore] // need to reimplement np.concatenate as in multiarraymodule.c
         [TestMethod] 
         public void test_kron_1()
         {
@@ -553,7 +553,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // need faster np.outer and need to reimplement np.concatenate  as in multiarraymodule.c
+        [Ignore] //need to reimplement np.concatenate  as in multiarraymodule.c
         [TestMethod]
         public void test_kron_2()
         {
