@@ -564,10 +564,13 @@ namespace NumpyDotNet
                     destdims.Add(dim);
                 foreach (var dim in b1.shape.iDims)
                     destdims.Add(dim);
-                      
 
-                ndarray dest = np.empty(new shape(destdims), dtype: dtype != null ? dtype : a1.Dtype);
 
+
+                ndarray dest = @out;
+                if (dest == null)
+                    dest = np.empty(new shape(destdims), dtype: dtype != null ? dtype : a1.Dtype);
+                
                 return NpyCoreApi.PerformOuterOp(a1, b1, dest, ops);
             }
 
