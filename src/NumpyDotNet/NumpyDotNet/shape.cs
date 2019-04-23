@@ -48,6 +48,17 @@ namespace NumpyDotNet
     {
         public npy_intp[] iDims = null;
 
+        public npy_intp lastDim
+        {
+            get
+            {
+                if (iDims == null)
+                    return 0;
+
+                return iDims[iDims.Length - 1];
+            }
+        }
+
         public override bool Equals(object o2)
         {
             shape s2 = o2 as shape;
