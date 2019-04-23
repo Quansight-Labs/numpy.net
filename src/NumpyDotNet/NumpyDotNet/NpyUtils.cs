@@ -56,9 +56,12 @@ namespace NumpyDotNet {
         }
 
         // todo: big task to reimplement this.
-        public static dtype promote_types(object type1, object type2)
+        public static dtype promote_types(dtype type1, dtype type2)
         {
-            return np.Float64;
+            if (type1.TypeNum < type2.TypeNum)
+                return type1;
+            else
+                return type2;
         }
 
 
