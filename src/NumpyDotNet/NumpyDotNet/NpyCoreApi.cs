@@ -486,6 +486,17 @@ namespace NumpyDotNet {
 
         }
 
+        internal static ndarray PerformUFUNC(NpyArray_Ops ops, ndarray x1, ndarray x2, ndarray @out, ndarray where)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, x1.Array, x2 != null ? x2.Array : null, @out != null ? @out.Array : null, where != null ? where.Array : null));
+            }
+
+        }
+
 
         internal static ndarray PerformOuterOp(ndarray a, ndarray b, ndarray dest, NpyArray_Ops ops)
         {

@@ -1043,6 +1043,19 @@ namespace NumpyLib
             return destArray;
         }
 
+        internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType,  NpyArray x1Array,  NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+        {
+            if (outArray == null)
+            {
+                outArray = NpyArray_NumericOpArraySelection(x1Array, x2Array, operationType);
+            }
+
+            PerformNumericOpArray(x1Array, outArray, x2Array, operationType);
+
+            return outArray;
+        }
+
+
         private static void CompareArrays(NpyArray a1, NpyArray a2)
         {
             if (a1.nd != a2.nd)

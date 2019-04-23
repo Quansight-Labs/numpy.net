@@ -340,6 +340,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_PerformNumericOpArray(self, operationType, operand, UseSrcAsDest);
         }
 
+        public static NpyArray NpyArray_PerformUFUNC(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+        {
+            return numpyinternal.NpyArray_PerformUFUNCOperation(operationType, x1Array, x2Array, outArray, whereFilter);
+        }
+
         public static NpyArray NpyArray_PerformOuterOp(NpyArray a, NpyArray b, NpyArray dest, NpyArray_Ops operationType)
         {
             return numpyinternal.PerformOuterOpArray(a, b, dest, operationType);

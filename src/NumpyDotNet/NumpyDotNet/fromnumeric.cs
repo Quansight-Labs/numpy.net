@@ -2452,9 +2452,7 @@ namespace NumpyDotNet
             ndarray a1 = np.amax(arr, iAxis, null, keepdims:keepdims);
             ndarray a2 = np.amin(arr, iAxis, null, keepdims:keepdims);
 
-            ndarray ret = NpyCoreApi.PerformNumericOp(a1, NpyArray_Ops.npy_op_subtract, a2);
-            if (@out != null)
-                @out = ret;
+            ndarray ret = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_subtract, a1, a2, @out, null);
             return ret;
         }
 
