@@ -499,6 +499,7 @@ class NumericTests(unittest.TestCase):
         x = [1, 2, 3]
         y = [4, 5, 6]
         a = np.cross(x, y)
+
         print(a)
 
         # One vector with dimension 2.
@@ -508,7 +509,7 @@ class NumericTests(unittest.TestCase):
         print(b)
 
         # Equivalently:
-        x = [1, 2]
+        x = [1, 2, 0]
         y = [4, 5, 6]
         b = np.cross(x, y)
         print(b)
@@ -530,12 +531,13 @@ class NumericTests(unittest.TestCase):
         y = np.array([[4,5,6], [1,2,3]])
         a = np.cross(x, y)
         print(a)
- 
+        print("*********")
 
         # The orientation of `c` can be changed using the `axisc` keyword.
 
         b = np.cross(x, y, axisc=0)
         print(b)
+        print("*********")
 
         # Change the vector definition of `x` and `y` using `axisa` and `axisb`.
 
@@ -543,7 +545,8 @@ class NumericTests(unittest.TestCase):
         y = np.array([[7, 8, 9], [4,5,6], [1,2,3]])
         a = np.cross(x, y)
         print(a)
-  
+        print("*********")
+
         b = np.cross(x, y, axisa=0, axisb=0)
         print(b)
  

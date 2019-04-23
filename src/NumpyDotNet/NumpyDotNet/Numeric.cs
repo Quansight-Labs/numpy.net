@@ -33,6 +33,7 @@
 using NumpyLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1508,8 +1509,136 @@ namespace NumpyDotNet
             Supports full broadcasting of the inputs.
             */
 
-            throw new NotImplementedException();
+            if (axis != null)
+            {
+                axisa = axis.Value;
+                axisb = axis.Value;
+                axisc = axis.Value;
+            }
+            var aa = asarray(a);
+            var bb = asarray(b);
+
+            // Check axisa and axisb are within bounds
+            axisa = normalize_axis_index(axisa, aa.ndim);
+            axisb = normalize_axis_index(axisb, bb.ndim);
+
+            // Move working axis to the end of the shape
+            aa = moveaxis(aa, axisa, -1);
+            bb = moveaxis(bb, axisb, -1);
+
+            npy_intp[] acceptableDims = new npy_intp[] { 2, 3 };
+            if (!acceptableDims.Contains(aa.shape.lastDim) || 
+                !acceptableDims.Contains(bb.shape.lastDim))
+            {
+                throw new ValueError("incompatible dimensions for cross product (dimension must be 2 or 3)");
+            }
+
+            // Create the output array
+            var shape = np.broadcast(aa["...", 0], bb["...", 0]).shape;
+            if (aa.shape.lastDim == 3 || bb.shape.lastDim == 3)
+            {
+                List<npy_intp> newshape = new List<npy_intp>();
+                newshape.AddRange(shape.iDims);
+                newshape.Add(3);
+                shape = new shape(newshape);
+
+                // Check axisc is within bounds
+                axisc = normalize_axis_index(axisc, shape.iDims.Length);
+            }
+
+            var dtype = promote_types(aa.Dtype, bb.Dtype);
+            ndarray cp = empty(shape, dtype);
+
+
+            // create local aliases for readability
+            ndarray a0 = aa["...", 0] as ndarray;
+            ndarray a1 = aa["...", 1] as ndarray;
+            ndarray a2 = null;
+            if (aa.shape.lastDim == 3)
+            {
+                a2 = aa["...", 2] as ndarray;
+            }
+
+            ndarray b0 = bb["...", 0] as ndarray;
+            ndarray b1 = bb["...", 1] as ndarray;
+            ndarray b2 = null;
+            if (bb.shape.lastDim == 3)
+            {
+                b2 = bb["...", 2] as ndarray;
+            }
+
+            ndarray cp0 = null;
+            ndarray cp1 = null;
+            ndarray cp2 = null;
+            if (cp.ndim != 0 && cp.shape.lastDim == 3)
+            {
+                cp0 = cp["...", 0] as ndarray;
+                cp1 = cp["...", 1] as ndarray;
+                cp2 = cp["...", 2] as ndarray;
+            }
+
+
+            if (aa.shape.lastDim == 2)
+            {
+                if (bb.shape.lastDim == 2)
+                {
+                    // a0 * b1 - a1 * b0
+                    np.multiply(a0, b1, @out: cp);
+                    cp.InPlaceSubtract(a1 * b0);
+                    return cp;
+                }
+                else
+                {
+                    Debug.Assert(bb.shape.lastDim == 3);
+                    // cp0 = a1 * b2 - 0  (a2 = 0)
+                    // cp1 = 0 - a0 * b2  (a2 = 0)
+                    // cp2 = a0 * b1 - a1 * b0
+                    np.multiply(a1, b2, @out: cp0);
+                    np.multiply(a0, b2, @out: cp1);
+                    np.negative(cp1, @out: cp1);
+                    np.multiply(a0, b1, @out: cp2);
+                    cp2.InPlaceSubtract(a1 * b0);
+                }
+
+            }
+            else
+            {
+                Debug.Assert(aa.shape.lastDim == 3);
+                if (bb.shape.lastDim == 3)
+                {
+                    // cp0 = a1 * b2 - a2 * b1
+                    // cp1 = a2 * b0 - a0 * b2
+                    // cp2 = a0 * b1 - a1 * b0
+                    np.multiply(a1, b2, @out: cp0);
+                    var tmp = array(a2 * b1);
+                    cp0.InPlaceSubtract(tmp);
+                    np.multiply(a2, b0, @out: cp1);
+                    np.multiply(a0, b2, @out: tmp);
+                    cp1.InPlaceSubtract(tmp);
+                    np.multiply(a0, b1, @out: cp2);
+                    np.multiply(a1, b0, @out: tmp);
+                    cp2.InPlaceSubtract(tmp);
+                }
+                else
+                {
+                    Debug.Assert(bb.shape.lastDim == 2);
+                    // cp0 = 0 - a2 * b1  (b2 = 0)
+                    // cp1 = a2 * b0 - 0  (b2 = 0)
+                    // cp2 = a0 * b1 - a1 * b0
+                    np.multiply(a2, b1, @out: cp0);
+                    np.negative(cp0, @out: cp0);
+                    np.multiply(a2, b0, @out: cp1);
+                    np.multiply(a0, b1, @out: cp2);
+                    cp2.InPlaceSubtract(a1 * b0);
+                }
+            }
+
+
+            return moveaxis(cp, -1, axisc);
         }
+
+   
+
         #endregion
 
         #region indices

@@ -1388,7 +1388,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] 
         [TestMethod]
         public void test_cross_1()
         {
@@ -1423,7 +1422,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]
         [TestMethod]
         public void test_cross_2()
         {
@@ -1452,7 +1450,7 @@ namespace NumpyDotNetTests
             print(a);
 
             b = np.cross(x, y, axisa: 0, axisb: 0);
-            AssertArray(b, new int[,]{{-6,12, -6},{0, 0, 0}, {6,-12, 6}});
+            AssertArray(b, new int[,]{{-24, 48, -24},{-30, 60, -30}, {-36,72, -36}});
             print(b);
 
             return;
