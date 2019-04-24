@@ -481,7 +481,11 @@ namespace NumpyDotNet {
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_PerformNumericOp(a.Array, ops, b.Array, UseSrcAsDest));
+                ndarray @out = null;
+                if (UseSrcAsDest)
+                    @out = a;
+
+                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
             }
 
         }

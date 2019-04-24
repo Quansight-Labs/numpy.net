@@ -1018,30 +1018,7 @@ namespace NumpyLib
             PerformNumericOpScalar(srcArray, destArray, operand, operationType);
             return destArray;
         }
-        internal static NpyArray NpyArray_PerformNumericOpArray(NpyArray srcArray, NpyArray_Ops operationType, NpyArray operandArray, bool UseSrcAsDest)
-        {
-            // why doesn't this function work?
-            //var A1 = NpyArray_PerformNumericOpArray_NpyArray_GenericBinaryFunction(srcArray, operationType, operandArray, UseSrcAsDest);
-
-            NpyArray destArray = null;
-            if (UseSrcAsDest)
-            {
-                destArray = srcArray;
-            }
-            else
-            {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
-
-                //srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray);
-                //destArray = NpyArray_NumericOpUpscaleSourceArray(destArray, operandArray);
-            }
-                
-            PerformNumericOpArray(srcArray, destArray, operandArray, operationType);
-
-            //CompareArrays(A1, destArray);
   
-            return destArray;
-        }
 
         internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType,  NpyArray x1Array,  NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
