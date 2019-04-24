@@ -1550,10 +1550,6 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(ref srcArray, operationType);
 
-            NpyArrayWrapper operandWrapper = new NpyArrayWrapper(operandArray);
-
-            //PerformNumericOpArray(srcArray, destArray, operandWrapper, destArray.dimensions, 0, 0, 0, 0, operation);
-
             PerformNumericOpScalarIter(srcArray, destArray, operandArray, operation);
         }
 

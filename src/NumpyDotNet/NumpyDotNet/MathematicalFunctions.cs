@@ -1162,11 +1162,6 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_add, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
-        public static ndarray add(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_add, x2);
-        }
-
         public static ndarray reciprocal(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_reciprocal, 0);
@@ -1193,25 +1188,11 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_multiply, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
-        public static ndarray multiply(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_multiply, x2);
-        }
-
         public static ndarray divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
-        public static ndarray divide(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_divide, x2);
-        }
-
-        public static ndarray power(object a, double operand)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_power, operand);
-        }
         public static ndarray power(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_power, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -1222,30 +1203,17 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_subtract, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
-        public static ndarray subtract(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_subtract, x2);
-        }
-
+ 
         public static ndarray true_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_true_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-
-        public static ndarray true_divide(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_true_divide, x2);
-        }
-
+          
         public static ndarray floor_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray floor_divide(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, x2);
-        }
-
+ 
         public static ndarray float_power(object x1, object x2, object where = null)
         {
             MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
@@ -1279,18 +1247,12 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray remainder(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
-        }
+ 
         public static ndarray fmod(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_fmod, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray fmod(object x1, int x2)
-        {
-            return NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_fmod, x2);
-        }
+ 
 
         #endregion
 
@@ -1306,16 +1268,7 @@ namespace NumpyDotNet
 
             return results;
         }
-        public static ndarray[] divmod(object x1, int x2)
-        {
-            ndarray[] results = new ndarray[2];
 
-            results[0] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_floor_divide, x2);
-            results[1] = NpyCoreApi.PerformNumericOp(asanyarray(x1), NpyArray_Ops.npy_op_remainder, x2);
-
-            return results;
-
-        }
 
         #endregion
 
