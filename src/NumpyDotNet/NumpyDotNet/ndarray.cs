@@ -103,29 +103,12 @@ namespace NumpyDotNet
 
         internal static ndarray BinaryOp(ndarray a, object b, ufunc f)
         {
-            if (b is ndarray)
-            {
-                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, b as ndarray, false);
-            }
-            else
-            {
-                return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), false);
-            }
+            return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, np.asanyarray(b), false);
         }
 
         internal static object BinaryOpInPlace(ndarray a, object b, ufunc f, ndarray ret)
         {
-            ndarray numericOpResult = null;
-
-            if (b is ndarray)
-            {
-                numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, b as ndarray, true);
-            }
-            else
-            {
-                numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, Convert.ToDouble(b), true);
-            }
-
+            ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, np.asanyarray(b), true);
             if (numericOpResult != null && ret != null)
             {
                 NpyCoreApi.CopyAnyInto(ret, numericOpResult);
