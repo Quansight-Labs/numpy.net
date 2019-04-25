@@ -153,12 +153,12 @@ namespace NumpyDotNet
             return a;
         }
 
-        public static ndarray operator +(ndarray a, double operand)
+        public static ndarray operator +(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_add, operand);
         }
 
-        public static ndarray operator +(double operand, ndarray a)
+        public static ndarray operator +(object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_add, operand);
         }
@@ -174,10 +174,10 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_add, b, true);
         }
 
-        public static ndarray operator -(ndarray a, double operand) {
+        public static ndarray operator -(ndarray a, object operand) {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_subtract, operand);
         }
-        public static ndarray operator -(double operand, ndarray a)
+        public static ndarray operator -(object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_subtract, operand);
         }
@@ -197,12 +197,12 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_negative, 0);
         }
 
-        public static ndarray operator *(ndarray a, double operand)
+        public static ndarray operator *(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_multiply, operand);
         }
 
-        public static ndarray operator *(double operand, ndarray a)
+        public static ndarray operator *(object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_multiply, operand);
         }
@@ -218,11 +218,11 @@ namespace NumpyDotNet
         }
 
 
-        public static ndarray operator /(ndarray a, double operand)
+        public static ndarray operator /(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
         }
-        public static ndarray operator /(double operand, ndarray a)
+        public static ndarray operator /(object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
         }
@@ -250,11 +250,11 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_floor_divide, b, true);
         }
 
-        public static ndarray operator %(ndarray a, double operand)
+        public static ndarray operator %(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, operand);
         }
-        public static ndarray operator %(double operand, ndarray a)
+        public static ndarray operator %(object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, operand);
         }
@@ -324,19 +324,19 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_right_shift, shift);
         }
 
-        public static ndarray operator <(ndarray a, double operand)
+        public static ndarray operator <(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_less, operand);
         }
-        public static ndarray operator <=(ndarray a, double operand)
+        public static ndarray operator <=(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_less_equal, operand);
         }
-        public static ndarray operator >(ndarray a, double operand)
+        public static ndarray operator >(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_greater, operand);
         }
-        public static ndarray operator >=(ndarray a, double operand)
+        public static ndarray operator >=(ndarray a, object operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_greater_equal, operand);
         }

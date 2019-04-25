@@ -1465,7 +1465,7 @@ namespace NumpyDotNetTests
             print(a);
 
             var b = np.trapz(new int[] { 1, 2, 3 }, x : new int[] { 4, 6, 8 });
-            Assert.AreEqual((int)8.0, b.GetItem(0));
+            Assert.AreEqual(8.0, b.GetItem(0));
             print(b);
 
             var c = np.trapz(new int[] { 1, 2, 3 }, dx: 2);

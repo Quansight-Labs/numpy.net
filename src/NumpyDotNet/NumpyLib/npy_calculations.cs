@@ -1003,21 +1003,6 @@ namespace NumpyLib
             }
         }
 
-        internal static NpyArray NpyArray_PerformNumericOpScalar(NpyArray srcArray, NpyArray_Ops operationType, double operand, bool UseSrcAsDest)
-        {
-            NpyArray destArray = null;
-            if (UseSrcAsDest)
-            {
-                destArray = srcArray;
-            }
-            else
-            {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, null, operationType);
-            }
-
-            PerformNumericOpScalar(srcArray, destArray, operand, operationType);
-            return destArray;
-        }
   
 
         internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType,  NpyArray x1Array,  NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)

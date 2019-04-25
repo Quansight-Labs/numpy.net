@@ -78,7 +78,7 @@ namespace NumpyLib
 
     public class numpyAPI
     {
-#region npy_arrayobject
+        #region npy_arrayobject
         public static npy_intp NpyArray_Size(NpyArray op)
         {
             return numpyinternal.NpyArray_Size(op);
@@ -282,14 +282,14 @@ namespace NumpyLib
 
 #endregion
 
-#region npy_arraytypes
+        #region npy_arraytypes
         public static NpyArray_Descr NpyArray_DescrFromType(NPY_TYPES type)
         {
             return numpyinternal.NpyArray_DescrFromType(type);
         }
-#endregion
+        #endregion
 
-#region npy_buffer
+        #region npy_buffer
 
         public static int npy_buffer_format_string(NpyArray_Descr descr, npy_tmp_string_t str, NpyArray arr, ref size_t offset,  ref char active_byteorder)
         {
@@ -330,11 +330,7 @@ namespace NumpyLib
 
         #region npy_calculation
 
-        public static NpyArray NpyArray_PerformNumericOp(NpyArray self, NpyArray_Ops operationType, double operand, bool UseSrcAsDest)
-        {
-            return numpyinternal.NpyArray_PerformNumericOpScalar(self, operationType, operand, UseSrcAsDest);
-        }
-
+ 
         public static NpyArray NpyArray_PerformUFUNC(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
             return numpyinternal.NpyArray_PerformUFUNCOperation(operationType, x1Array, x2Array, outArray, whereFilter);

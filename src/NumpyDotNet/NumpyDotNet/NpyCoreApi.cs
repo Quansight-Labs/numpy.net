@@ -464,13 +464,19 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, double operand, bool UseSrcAsDest = false)
+        internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, object operand, bool UseSrcAsDest = false)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return new ndarray(numpyAPI.NpyArray_PerformNumericOp(a.Array, ops, operand, UseSrcAsDest));
+                ndarray @out = null;
+                if (UseSrcAsDest)
+                    @out = a;
+
+                var b = np.asanyarray(operand);
+
+                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
             }
 
         }
