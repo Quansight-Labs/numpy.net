@@ -1704,55 +1704,32 @@ namespace NumpyDotNet
 
         #region maximum/minimum/fmax/fmin
 
-        public static ndarray maximum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        public static ndarray maximum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return _maxmin(NpyArray_Ops.npy_op_maximum , x1, x2, @out, order, dtype, subok);
+            return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_maximum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
-        public static ndarray minimum(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        public static ndarray minimum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return _maxmin(NpyArray_Ops.npy_op_minimum, x1, x2, @out, order, dtype, subok);
+            return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_minimum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
-        public static ndarray fmax(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        public static ndarray fmax(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return _maxmin(NpyArray_Ops.npy_op_fmax, x1, x2, @out, order, dtype, subok);
+            return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_fmax, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
-        public static ndarray fmin(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+        public static ndarray fmin(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return _maxmin(NpyArray_Ops.npy_op_fmin, x1, x2, @out, order, dtype, subok);
+            return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_fmin, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
 
-        private static ndarray _maxmin(NpyArray_Ops optype, object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER,  dtype dtype = null, bool subok = true)
-        {
-            var x1array = asanyarray(x1);
-            if (x1array == null)
-                throw new ValueError("cant convert x1 to ndarray");
-
-            var x2array = asanyarray(x2);
-            if (x1array == null)
-                throw new ValueError("cant convert x2 to ndarray");
-        
-            if (@out == null)
-            {
-                @out = np.zeros_like(x1array, dtype: dtype, order: order, subok: subok);
-            }
-            else
-            {
-                if (!x1array.shape.Equals(@out.shape))
-                {
-                    throw new ValueError("@out shape is not compatible with x1");
-                }
-            }
-
-            return NpyCoreApi.MinMax(optype, x1array, x2array, @out);
-        }
 
         #endregion
 
         #region heaviside
 
-        public static ndarray heaviside(object x1, object x2, ndarray @out = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, dtype dtype = null, bool subok = true)
+
+        public static ndarray heaviside(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return _maxmin(NpyArray_Ops.npy_op_heaviside, x1, x2, @out, order, dtype, subok);
+            return NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_heaviside, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
 
         #endregion

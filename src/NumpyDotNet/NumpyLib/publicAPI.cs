@@ -1269,11 +1269,6 @@ namespace NumpyLib
             numpyinternal.NpyArray_Place(arr, mask, vals);
         }
 
-        public static NpyArray NpyArray_MinMax(NpyArray_Ops opType, NpyArray x1, NpyArray x2, NpyArray @out)
-        {
-            return numpyinternal.NpyArray_MinMax(opType, x1, x2, @out);
-        }
-
         public static bool NpyArray_EquivTypenums(NPY_TYPES typenum1, NPY_TYPES typenum2)
         {
             return numpyinternal.NpyArray_EquivTypenums(typenum1, typenum2);

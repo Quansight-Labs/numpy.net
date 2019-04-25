@@ -1039,15 +1039,6 @@ namespace NumpyLib
         }
 
 
-        internal static NpyArray NpyArray_MinMax(NpyArray_Ops opType, NpyArray x1, NpyArray x2, NpyArray @out)
-        {
-            NumericOperation operation = GetOperation(ref x1, opType);
-
-            PerformNumericOpScalarIter(x1, @out, x2, operation);
-            return @out;
-    
-        }
-
         internal static void NpyArray_CopyTo2(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
         {
             NpyArray wheremask = null;

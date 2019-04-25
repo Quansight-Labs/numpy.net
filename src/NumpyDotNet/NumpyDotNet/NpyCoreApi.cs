@@ -456,9 +456,9 @@ namespace NumpyDotNet {
 
         internal static int MultiIterBroadcast(NpyArrayMultiIterObject multi)
         {
-#if ENABLELOCKING
+            #if ENABLELOCKING
             lock (GlobalIterpLock)
-#endif
+            #endif
             {
                 return numpyAPI.NpyArray_Broadcast(multi);
             }
@@ -1005,17 +1005,6 @@ namespace NumpyDotNet {
             #endif
             {
                 numpyAPI.NpyArray_Place(arr.Array, mask.Array, vals.Array);
-            }
-
-        }
-
-        internal static ndarray MinMax(NpyArray_Ops opType, ndarray x1, ndarray x2, ndarray @out)
-        {
-            #if ENABLELOCKING
-            lock (GlobalIterpLock)
-            #endif
-            {
-                return new ndarray(numpyAPI.NpyArray_MinMax(opType, x1.Array, x2.Array, @out.Array));
             }
 
         }
