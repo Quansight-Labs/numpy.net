@@ -344,12 +344,44 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
         }
+        public static ndarray operator ==(ndarray a, float operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+        }
+        public static ndarray operator ==(ndarray a, Int64 operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+        }
+        public static ndarray operator ==(ndarray a, Int32 operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+        }
+        public static ndarray operator ==(ndarray a, bool operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+        }
         [SpecialName]
         public ndarray Equals(ndarray b)
         {
             return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_equal, b);
         }
         public static ndarray operator !=(ndarray a, double operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+        }
+        public static ndarray operator !=(ndarray a, float operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+        }
+        public static ndarray operator !=(ndarray a, Int64 operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+        }
+        public static ndarray operator !=(ndarray a, Int32 operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+        }
+        public static ndarray operator !=(ndarray a, bool operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
         }
