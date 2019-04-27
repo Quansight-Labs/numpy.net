@@ -2183,6 +2183,14 @@ namespace NumpyDotNetTests
             AssertArray(d, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
             print(d);
 
+            c = np.concatenate((a,a,a), axis: -1);
+            AssertArray(c, new int[,,,] { { { { 1, 2, 1, 2, 1, 2 }, { 3, 4, 3, 4, 3, 4 }, { 5, 6, 5, 6, 5, 6 } } } });
+            print(c);
+
+            d = np.concatenate((a,a,a), axis: -2);
+            AssertArray(d, new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            print(d);
+
 
         }
 

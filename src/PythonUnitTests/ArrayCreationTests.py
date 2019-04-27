@@ -893,6 +893,12 @@ class ArrayCreationTests(unittest.TestCase):
         d = np.concatenate(a, axis=-2)
         print(d)
 
+        c = np.concatenate((a,a,a), axis=-1)
+        print(c)
+
+        d = np.concatenate((a,a,a), axis=-2)
+        print(d)
+
 
 
 if __name__ == '__main__':
