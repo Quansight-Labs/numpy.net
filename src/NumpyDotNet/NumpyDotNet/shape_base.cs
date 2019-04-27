@@ -1600,15 +1600,9 @@ namespace NumpyDotNet
             var axis = nd - 1;
             for (int i = 0; i < nd; i++)
             {
-                //result = np.concatenate(new ndarray[] { result }, axis : axis);
-
-                npy_intp[] oldDims = new npy_intp[result.ndim];
-                Array.Copy(result.dims, oldDims, result.ndim);
-                npy_intp[] newDims = new npy_intp[oldDims.Length - 1];
-                Array.Copy(oldDims, 1, newDims, 0, newDims.Length);
-                newDims[axis] *= oldDims[0];
-
-                result = result.reshape(new shape(newDims));
+                //Console.WriteLine("input = {0}", result);
+                result = np.concatenate( result , axis : axis);
+                //Console.WriteLine("output = {0}", result);
             }
             var wrapper = get_array_prepare(a1, b1);
             if (wrapper != null)

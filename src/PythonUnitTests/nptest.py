@@ -725,8 +725,8 @@ class nptest(object):
     @staticmethod
     def kron(a, b):
 
-        b = asanyarray(b)
-        a = array(a, copy=False, subok=True, ndmin=b.ndim)
+        b = np.asanyarray(b)
+        a = np.array(a, copy=False, subok=True, ndmin=b.ndim)
         ndb, nda = b.ndim, a.ndim
         if (nda == 0 or ndb == 0):
             return _nx.multiply(a, b)
@@ -746,10 +746,11 @@ class nptest(object):
         result = np.outer(a, b).reshape(as_+bs)
         axis = nd-1
         for _ in range(nd):
+            print("input = ", result)
             result = np.concatenate(result, axis=axis)
+            print("output = ", result)
             kk = 1
 
-        np.source(np.concatenate)
         #wrapper = get_array_prepare(a, b)
         #if wrapper is not None:
         #    result = wrapper(result)
