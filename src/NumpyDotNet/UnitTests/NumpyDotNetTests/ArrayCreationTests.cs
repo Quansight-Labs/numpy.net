@@ -2121,6 +2121,71 @@ namespace NumpyDotNetTests
             print(i);
         }
 
+        [TestMethod]
+        public void test_concatenate_1()
+        {
+
+            var a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
+            var b = np.array(new int[,] { { 5, 6 } });
+            var c = np.concatenate((a, b), axis : 0);
+            AssertArray(c, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
+            print(c);
+
+            var d = np.concatenate((a, b.T), axis: 1);
+            AssertArray(d, new int[,] { { 1, 2, 5 }, { 3, 4, 6 } });
+            print(d);
+
+            var e = np.concatenate((a, b), axis : null);
+            AssertArray(e, new int[] { 1, 2, 3, 4, 5, 6 });
+            print(e);
+
+            var f = np.concatenate((np.eye(2), np.ones((2, 2))), axis : 0);
+            AssertArray(f, new double[,] { { 1,0 }, {0,1 }, {1,1 }, {1,1 }, });
+            print(f);
+
+            var g = np.concatenate((np.eye(2), np.ones((2, 2))), axis : 1);
+            AssertArray(g, new double[,] { { 1, 0, 1,1 }, { 0, 1, 1,1 } });
+            print(g);
+
+
+
+        }
+
+        [TestMethod]
+        public void test_concatenate_2()
+        {
+
+            var a = np.array(new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            var c = np.concatenate(a, axis : 0);
+            AssertArray(c, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(c);
+
+            var d = np.concatenate(a, axis: 1);
+            AssertArray(d, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(d);
+
+            var e = np.concatenate(a, axis : null);
+            AssertArray(e, new int[] { 1, 2, 3, 4, 5, 6 });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_concatenate_3()
+        {
+
+            var a = np.array(new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            var c = np.concatenate(a, axis: -1);
+            AssertArray(c, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(c);
+
+            var d = np.concatenate(a, axis: -2);
+            AssertArray(d, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(d);
+
+
+        }
+
 
     }
 }

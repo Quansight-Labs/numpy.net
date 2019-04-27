@@ -1078,17 +1078,33 @@ namespace NumpyDotNet
         private delegate ndarray WrapDelegate(ndarray a);
 
         #region concatenate
-        public static ndarray concatenate(ValueTuple<object, object> values)
+
+        public static ndarray concatenate(object value, int? axis = 0)
         {
-            return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2) });
+            return concatenate(new ndarray[] { asanyarray(value)}, axis: axis);
         }
- 
-        public static ndarray concatenate(IEnumerable<ndarray> seq, int? axis = null)
+
+        public static ndarray concatenate(ValueTuple<object, object> values, int? axis = 0)
+        {
+            return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2) }, axis: axis);
+        }
+
+        public static ndarray concatenate(ValueTuple<object, object, object> values, int? axis = 0)
+        {
+            return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2), asanyarray(values.Item3) }, axis: axis);
+        }
+
+        public static ndarray concatenate(ValueTuple<object, object, object, object> values, int? axis = 0)
+        {
+            return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2), asanyarray(values.Item3), asanyarray(values.Item4) }, axis: axis);
+        }
+
+        public static ndarray concatenate(IEnumerable<ndarray> seq, int? axis = 0)
         {
             return np.Concatenate(seq, axis);
         }
 
-        public static ndarray concatenate(ndarray a, ndarray b, int? axis = null)
+        public static ndarray concatenate(ndarray a, ndarray b, int? axis = 0)
         {
             ndarray[] seq = new ndarray[] { a, b };
             return np.Concatenate(seq, axis);

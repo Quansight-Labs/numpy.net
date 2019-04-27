@@ -853,6 +853,48 @@ class ArrayCreationTests(unittest.TestCase):
         print(i)
 
 
+    def test_concatenate_1(self):
+
+        a = np.array([[1, 2], [3, 4]])
+        b = np.array([[5, 6]])
+        c = np.concatenate((a, b), axis=0)
+        print(c)
+
+        d = np.concatenate((a, b.T), axis=1)
+        print(d)
+
+        e = np.concatenate((a, b), axis=None)
+        print(e)
+
+        f = np.concatenate((np.eye(2), np.ones((2, 2))), axis = 0)
+        print(f)
+
+        g = np.concatenate((np.eye(2), np.ones((2, 2))), axis = 1)
+        print(g)
+
+    def test_concatenate_2(self):
+
+        a = np.array([[[[1, 2], [3, 4], [5,6]]]])
+        c = np.concatenate(a, axis=0)
+        print(c)
+
+        d = np.concatenate(a, axis=1)
+        print(d)
+
+        e = np.concatenate(a, axis=None)
+        print(e)
+
+    def test_concatenate_3(self):
+
+        a = np.array([[[[1, 2], [3, 4], [5,6]]]])
+        c = np.concatenate(a, axis=-1)
+        print(c)
+
+        d = np.concatenate(a, axis=-2)
+        print(d)
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
