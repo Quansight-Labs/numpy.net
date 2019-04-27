@@ -536,6 +536,7 @@ namespace NumpyDotNetTests
         [TestMethod] 
         public void test_kron_1()
         {
+
             var a = np.kron(new int[] { 1, 10, 100 }, new int[] { 5, 6, 7 });
             AssertArray(a, new int[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
             print(a);
@@ -544,8 +545,32 @@ namespace NumpyDotNetTests
             AssertArray(b, new int[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
             print(b);
 
-            var c = np.kron(np.eye(2), np.ones(new shape(2, 2)));
+            var x = np.array(new int[,] { { 2, 3 }, { 4, 5 } });
+            var y = np.array(new int[,] { { 5, 6 }, { 7, 8 } });
+
+
+            var z = new int[,,,] { { { { 10, 12 }, { 14, 16 } }, { { 15, 18 }, { 21, 24 } } }, { { { 20, 24 }, { 28, 32 } }, { { 25, 30 }, { 35, 40 } } } };
+            var z1 = np.concatenate(z, axis : 1);
+            print(z1);
+
+            //var c1 = np.outer(x, y);
+            //print(c1);
+
+            var c = np.kron(x, y);
+            print(c);
+            print(c.shape);
+
+            c = np.kron(np.eye(2), np.ones(new shape(2, 2)));
             AssertArray(c, new int[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
+
+
+            x = np.array(new int[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
+            y = np.array(new int[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
+
+            c = np.kron(x, y);
+            print(c);
+            print(c.shape);
+
 
             var d = np.kron(np.ones((5, 7, 9, 11), dtype: np.Int32), np.ones((3, 4, 6, 8), dtype: np.Int32));
             AssertShape(d, 15, 28, 54, 88);
@@ -553,7 +578,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] //need to reimplement np.concatenate  as in multiarraymodule.c
+        [Ignore] // need to reimplement np.concatenate as in multiarraymodule.c
         [TestMethod]
         public void test_kron_2()
         {

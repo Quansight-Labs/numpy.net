@@ -1040,24 +1040,24 @@ namespace NumpyDotNet {
                 result = result.SwapAxes(axis, 0);
             }
 
-            if (n == 1 && result.dims.Length > 1)
-            {
-                dims = new npy_intp[result.dims.Length - 1];
+            //if (n == 1 && result.dims.Length > 1)
+            //{
+            //    dims = new npy_intp[result.dims.Length - 1];
 
-                Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
+            //    Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
 
-                if (axis < 0)
-                    axis += dims.Length;
+            //    if (axis < 0)
+            //        axis += dims.Length;
 
-                if (axis >= dims.Length)
-                {
-                    throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
-                }
+            //    if (axis >= dims.Length)
+            //    {
+            //        throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
+            //    }
 
-                dims[axis] *= result.dims[0];
+            //    dims[axis] *= result.dims[0];
 
-                result = result.reshape(dims);
-            }
+            //    result = result.reshape(dims);
+            //}
 
             return result;
 
