@@ -1215,6 +1215,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Free(ap, ptr);
         }
 
+        public static NpyArray NpyArray_Concatenate(NpyArray[] arrays, int axis, NpyArray ret)
+        {
+            return numpyinternal.NpyArray_Concatenate(arrays, axis, ret);
+        }
+
         public static NPY_SCALARKIND NpyArray_ScalarKind(NPY_TYPES typenum, ref NpyArray arr)
         {
             return numpyinternal.NpyArray_ScalarKind(typenum, arr);

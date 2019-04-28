@@ -1818,7 +1818,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2,6);
-            AssertStrides(c, 4, 8); 
+            AssertStrides(c, 24, 4); 
 
         }
 
@@ -2127,7 +2127,7 @@ namespace NumpyDotNetTests
 
             var a = np.array(new int[,] { { 1, 2 }, { 3, 4 } });
             var b = np.array(new int[,] { { 5, 6 } });
-            var c = np.concatenate((a, b), axis : 0);
+            var c = np.concatenate((a, b), axis: 0);
             AssertArray(c, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
             print(c);
 
@@ -2158,6 +2158,8 @@ namespace NumpyDotNetTests
             var a = np.array(new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
             var c = np.concatenate(a, axis : 0);
             AssertArray(c, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+
+ 
             print(c);
 
             var d = np.concatenate(a, axis: 1);

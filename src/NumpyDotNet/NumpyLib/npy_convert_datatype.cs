@@ -715,5 +715,31 @@ namespace NumpyLib
             }
             return;
         }
+
+
+        static NpyArray_Descr NpyArray_ResultType(npy_intp narrs, NpyArray[] arr, npy_intp ndtypes, NpyArray_Descr[] dtypes)
+        {
+            npy_intp i;
+            int use_min_scalar;
+
+            /* If there's just one type, pass it through */
+            if (narrs + ndtypes == 1)
+            {
+                NpyArray_Descr ret = null;
+                if (narrs == 1)
+                {
+                    ret = NpyArray_DESCR(arr[0]);
+                }
+                else
+                {
+                    ret = dtypes[0];
+                }
+                Npy_INCREF(ret);
+                return ret;
+            }
+
+            // todo
+            return arr[0].descr;
+        }
     }
 }

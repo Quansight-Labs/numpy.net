@@ -267,7 +267,7 @@ namespace NumpyLib
            They can be different sizes and have different types however.
         */
 
-        internal static int _array_copy_into(NpyArray dest, NpyArray src, bool usecopy)
+        internal static int _array_copy_into(NpyArray dest, NpyArray src, bool usecopy, bool alwaysstrided)
         {
             bool swap;
             strided_copy_func_t myfunc;
@@ -289,7 +289,7 @@ namespace NumpyLib
                 ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
 
-            if (simple)
+            if (simple && !alwaysstrided)
             {
                 if (usecopy)
                 {
@@ -330,7 +330,7 @@ namespace NumpyLib
          */
         internal static int NpyArray_MoveInto(NpyArray dest, NpyArray src)
         {
-            return _array_copy_into(dest, src, false);
+            return _array_copy_into(dest, src, false, false);
         }
 
         /*
@@ -1078,10 +1078,14 @@ namespace NumpyLib
 
         internal static int NpyArray_CopyInto(NpyArray dest, NpyArray src)
         {
-            return _array_copy_into(dest, src, true);
+            return _array_copy_into(dest, src, true, false);
         }
 
-   
+
+        internal static int NpyArray_StridedCopyInto(NpyArray dest, NpyArray src)
+        {
+            return _array_copy_into(dest, src, true, true);
+        }
 
         internal static void npy_byte_swap_vector(VoidPtr p, npy_intp n, int size)
         {

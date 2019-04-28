@@ -423,6 +423,7 @@ namespace NumpyDotNet {
             return result;
         }
 
+  
         internal static void MultiIterReset(NpyArrayMultiIterObject multi)
         {
             #if ENABLELOCKING
@@ -1344,6 +1345,21 @@ namespace NumpyDotNet {
                 return numpyAPI.NpyArray_Bool(arr.Array);
             }
         }
+
+        internal static ndarray NpyArray_Concatenate(IEnumerable<ndarray> arrays, int axis, ndarray ret)
+        {
+            NpyArray[] coreArrays = arrays.Select(x => { Incref(x.Array); return x.Array; }).ToArray();
+            NpyArray result;
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                result = numpyAPI.NpyArray_Concatenate(coreArrays, axis, ret != null ? ret.Array: null);
+            }
+            CheckError();
+            return new ndarray(result);
+        }
+
 
         internal static NPY_SCALARKIND ScalarKind(NPY_TYPES typenum, ref NpyArray arr)
         {

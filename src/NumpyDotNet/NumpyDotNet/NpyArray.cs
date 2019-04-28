@@ -981,6 +981,52 @@ namespace NumpyDotNet {
                 }
                 axis = 0;
             }
+    
+
+
+            npy_intp[] dims = mps[0].dims;
+            if (dims.Length == 0)
+            {
+                throw new ArgumentException("0-d arrays can't be concatenated");
+            }
+
+
+            var ret = NpyCoreApi.NpyArray_Concatenate(mps, axis, null);
+            return ret;
+
+#if OLD_WAY
+            int i;
+
+            bool MustFlatten = false;
+            if (_axis == null)
+            {
+                MustFlatten = true;
+                _axis = 0;
+            }
+
+            int axis = _axis.Value;
+
+            try
+            {
+                arrays.First();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException("concatenation of zero-length sequence is impossible");
+            }
+
+            ndarray[] mps = NpyUtil_ArgProcessing.ConvertToCommonType(arrays);
+            int n = mps.Length;
+
+            if (MustFlatten)
+            {
+                // Flatten the arrays
+                for (i = 0; i < n; i++)
+                {
+                    mps[i] = mps[i].Ravel(NPY_ORDER.NPY_CORDER);
+                }
+                axis = 0;
+            }
             else if (axis != 0)
             {
                 // Swap to make the axis 0
@@ -1060,6 +1106,7 @@ namespace NumpyDotNet {
             //}
 
             return result;
+#endif
 
         }
 

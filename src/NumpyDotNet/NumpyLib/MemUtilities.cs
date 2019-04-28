@@ -604,9 +604,19 @@ namespace NumpyLib
         #region memmove
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
-            VoidPtr Temp = new VoidPtr(new byte[len]);
-            MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-            MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+            if (dest.type_num == NPY_TYPES.NPY_DECIMAL)
+            {
+                VoidPtr Temp = new VoidPtr(new decimal[len/sizeof(decimal)]);
+                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+            }
+            else
+            {
+                VoidPtr Temp = new VoidPtr(new byte[len]);
+                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+            }
+
         }
         internal static void memmove(VoidPtr dest, VoidPtr src, long len)
         {

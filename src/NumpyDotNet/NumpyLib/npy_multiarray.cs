@@ -280,6 +280,232 @@ namespace NumpyLib
             return 0;
         }
 
+        internal static NpyArray NpyArray_Concatenate(NpyArray [] op, int axis, NpyArray ret)
+        {
+            return NpyArray_ConcatenateInto(op, axis, ret);
+        }
+
+        private static NpyArray NpyArray_ConcatenateInto(NpyArray[] op, int axis, NpyArray ret)
+        {
+            int iarrays, narrays;
+            NpyArray [] arrays;
+
+            /* Convert the input list into arrays */
+            narrays = op.Length;
+            if (narrays < 0)
+            {
+                return null;
+            }
+            arrays = new NpyArray[narrays];
+            if (arrays == null)
+            {
+                NpyErr_NoMemory();
+                return null;
+            }
+
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                NpyArray item = NpyArray_FromArray(op[iarrays], null, 0);
+                if (item == null)
+                {
+                    narrays = iarrays;
+                    goto fail;
+                }
+                arrays[iarrays] = item;
+                Npy_DECREF(item);
+                if (arrays[iarrays] == null)
+                {
+                    narrays = iarrays;
+                    goto fail;
+                }
+            }
+
+
+            if (axis >= npy_defs.NPY_MAXDIMS)
+            {
+                ret = PyArray_ConcatenateFlattenedArrays(narrays, arrays, NPY_ORDER.NPY_CORDER, ret);
+            }
+            else
+            {
+                ret = PyArray_ConcatenateArrays(narrays, arrays, axis, ret);
+            }
+
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                Npy_DECREF(arrays[iarrays]);
+            }
+            NpyArray_free(arrays);
+
+            return ret;
+
+            fail:
+            /* 'narrays' was set to how far we got in the conversion */
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                Npy_DECREF(arrays[iarrays]);
+            }
+            NpyArray_free(arrays);
+
+            return null;
+
+        }
+
+        private static NpyArray PyArray_ConcatenateArrays(int narrays, NpyArray[] arrays, int axis, NpyArray ret)
+        {
+            int iarrays, idim, ndim;
+            npy_intp []shape = new npy_intp[npy_defs.NPY_MAXDIMS];
+            NpyArray sliding_view = null;
+
+            if (narrays <= 0)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_TypeError, "need at least one array to concatenate");
+                return null;
+            }
+
+            /* All the arrays must have the same 'ndim' */
+            ndim = NpyArray_NDIM(arrays[0]);
+
+            if (ndim == 0)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "zero-dimensional arrays cannot be concatenated");
+                return null;
+            }
+
+            /* Handle standard Python negative indexing */
+            if (check_and_adjust_axis(ref axis, ndim) == false)
+            {
+                return null;
+            }
+
+            /*
+            * Figure out the final concatenated shape starting from the first
+            * array's shape.
+            */
+            memcpy(shape, arrays[0].dimensions, ndim * sizeof(npy_intp));
+            for (iarrays = 1; iarrays < narrays; ++iarrays)
+            {
+                npy_intp[] arr_shape;
+
+                if (NpyArray_NDIM(arrays[iarrays]) != ndim)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "all the input arrays must have same number of dimensions");
+                    return null;
+                }
+                arr_shape = arrays[iarrays].dimensions;
+
+                for (idim = 0; idim < ndim; ++idim)
+                {
+                    /* Build up the size of the concatenation axis */
+                    if (idim == axis)
+                    {
+                        shape[idim] += arr_shape[idim];
+                    }
+                    /* Validate that the rest of the dimensions match */
+                    else if (shape[idim] != arr_shape[idim])
+                    {
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, "all the input array dimensions except for the concatenation axis must match exactly");
+                        return null;
+                    }
+                }
+            }
+
+
+            if (ret != null)
+            {
+                if (NpyArray_NDIM(ret) != ndim)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Output array has wrong dimensionality");
+                    return null;
+                }
+                if (!NpyArray_CompareLists(shape, ret.dimensions, ndim))
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Output array is the wrong shape");
+                    return null;
+                }
+                Npy_INCREF(ret);
+            }
+            else
+            {
+                npy_intp s;
+                npy_intp []strides = new npy_intp[npy_defs.NPY_MAXDIMS];
+                int []strideperm = new int[npy_defs.NPY_MAXDIMS];
+
+                /* Get the priority subtype for the array */
+                object subtype = NpyArray_GetSubType(narrays, arrays);
+
+
+                /* Get the resulting dtype from combining all the arrays */
+                NpyArray_Descr dtype = NpyArray_ResultType(narrays, arrays, 0, null);
+                if (dtype == null)
+                {
+                    return null;
+                }
+
+                /*
+                 * Figure out the permutation to apply to the strides to match
+                 * the memory layout of the input arrays, using ambiguity
+                 * resolution rules matching that of the NpyIter.
+                */
+
+                NpyArray_CreateMultiSortedStridePerm(narrays, arrays, ndim, strideperm);
+                s = dtype.elsize;
+                for (idim = ndim - 1; idim >= 0; --idim)
+                {
+                    int iperm = strideperm[idim];
+                    strides[iperm] = s;
+                    s *= shape[iperm];
+                }
+
+                /* Allocate the array for the result. This steals the 'dtype' reference. */
+                ret = NpyArray_NewFromDescr(dtype, ndim,  shape,  strides, null, 0, false, subtype, null);
+
+ 
+                if (ret == null)
+                {
+                    return null;
+                }
+            }
+
+            /*
+            * Create a view which slides through ret for assigning the
+            * successive input arrays.
+            */
+
+            sliding_view = NpyArray_View(ret, null, PyArray_Type);
+            if (sliding_view == null)
+            {
+                Npy_DECREF(ret);
+                return null;
+            }
+
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                /* Set the dimension to match the input array's */
+                sliding_view.dimensions[axis] = arrays[iarrays].dimensions[axis];
+
+                /* Copy the data for this array */
+                if (NpyArray_StridedCopyInto(sliding_view, arrays[iarrays]) < 0)
+                {
+                    Npy_DECREF(sliding_view);
+                    Npy_DECREF(ret);
+                    return null;
+                }
+
+                /* Slide to the start of the next window */
+                sliding_view.data += sliding_view.dimensions[axis] * sliding_view.strides[axis];
+            }
+
+
+            Npy_DECREF(sliding_view);
+            return ret;
+
+        }
+
+        private static NpyArray PyArray_ConcatenateFlattenedArrays(int narrays, NpyArray[] arrays, NPY_ORDER nPY_CORDER, NpyArray ret)
+        {
+            throw new NotImplementedException();
+        }
+
         internal static NPY_SCALARKIND NpyArray_ScalarKind(NPY_TYPES typenum, NpyArray arr)
         {
             if (NpyTypeNum_ISSIGNED(typenum))
@@ -1177,6 +1403,13 @@ namespace NumpyLib
 
             dynamic data = GetIndex(ptr, ptr_index);
             return ((data & bitmask) != 0);
+        }
+
+
+        private static object PyArray_Type = null;
+        private static object NpyArray_GetSubType(int narrays, NpyArray[] arrays)
+        {
+            return null;
         }
 
 
