@@ -947,7 +947,7 @@ namespace NumpyDotNet {
             }
         }
 
-        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? _axis = 0)
+        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? _axis = 0, bool shrinkOnSingle = true)
         {
             int i;
 
@@ -981,7 +981,14 @@ namespace NumpyDotNet {
                 }
                 axis = 0;
             }
-    
+            //else if (axis != 0)
+            //{
+            //    // Swap to make the axis 0
+            //    for (i = 0; i < n; i++)
+            //    {
+            //        mps[i] = NpyCoreApi.FromArray(mps[i].SwapAxes(axis, 0), null, NPYARRAYFLAGS.NPY_C_CONTIGUOUS);
+            //    }
+            //}
 
 
             npy_intp[] dims = mps[0].dims;
@@ -991,8 +998,29 @@ namespace NumpyDotNet {
             }
 
 
-            var ret = NpyCoreApi.NpyArray_Concatenate(mps, axis, null);
-            return ret;
+            var result = NpyCoreApi.NpyArray_Concatenate(mps, axis, null);
+
+            if (shrinkOnSingle && n == 1 && result.dims.Length > 1)
+            {
+                dims = new npy_intp[result.dims.Length - 1];
+
+                Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
+
+                if (axis < 0)
+                    axis += dims.Length;
+
+                if (axis >= dims.Length)
+                {
+                    throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
+                }
+
+                dims[axis] *= result.dims[0];
+
+                result = result.reshape(dims);
+            }
+
+
+            return result;
 
 #if OLD_WAY
             int i;

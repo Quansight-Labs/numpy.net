@@ -294,17 +294,43 @@ class Test_ShapeBaseTests(unittest.TestCase):
 
     def test_kron_1(self):
 
-        a =  np.kron([1,10,100], [5,6,7])
-        print(a)
+        #a =  nptest.kron([1,10,100], [5,6,7])
+        #print(a)
+        #print("*******")
+        #b = nptest.kron([5,6,7], [1,10,100])
+        #print(b)
+        #print("*******")
 
-        b = np.kron([5,6,7], [1,10,100])
-        print(b)
+        x = np.array([[2,3],[4,5]])
+        y = np.array([[5,6],[7,8]])
 
-        c = np.kron(np.eye(2, dtype=np.int32), np.ones((2,2), dtype=np.int32))
-        print(c)
+        #c = np.outer(x,y)
+        #print(c)
 
-        d = np.kron(np.ones((5,7,9, 11), dtype=np.int32), np.ones((3,4, 6, 8), dtype=np.int32))
-        print(d.shape)
+        z = [[[[10, 12], [14, 16]], [[15, 18], [21, 24]]], [[[20, 24], [28, 32]], [[25, 30], [35, 40]]]]
+        z1 = np.concatenate(z, axis = 1)
+        print(z1)
+
+        c = nptest.kron(x,y)
+        #print(c)
+        #print(c.shape)
+        #print("*******")
+
+        #c = nptest.kron(np.eye(2, dtype=np.int32), np.ones((2,2), dtype=np.int32))
+        #print(c)
+        #print(c.shape)
+        #print("*******")
+
+        #x = np.array([[[2,3,3],[4,5,3]]])
+        #y = np.array([[[5,6,6,6],[7,8,6,6]]])
+
+        #c = nptest.kron(x,y)
+        #print(c)
+        #print(c.shape)
+        #print("*******")
+    
+        #d = nptest.kron(np.ones((5,7,9, 11), dtype=np.int32), np.ones((3,4, 6, 8), dtype=np.int32))
+        #print(d.shape)
 
     def test_kron_2(self):
         a = np.arange(100).reshape((2,5,2,5))
