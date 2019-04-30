@@ -103,15 +103,15 @@ namespace NumpyLib
                                 src_strides_it[0], dst_strides_it[0],
                                 src_dtype, dst_dtype,
                                 0,
-                                &stransfer, &transferdata,
-                                &needs_api) != NPY_SUCCEED)
+                                ref stransfer, ref transferdata,
+                                ref needs_api) != npy_defs.NPY_SUCCEED)
             {
                 return -1;
             }
 
             if (!needs_api)
             {
-                NPY_BEGIN_THREADS;
+               // NPY_BEGIN_THREADS;
             }
 
             NPY_RAW_ITER_START(idim, ndim, coord, shape_it) {
@@ -123,7 +123,7 @@ namespace NumpyLib
                                   dst_data, dst_strides_it,
                                   src_data, src_strides_it);
 
-            NPY_END_THREADS;
+            //NPY_END_THREADS;
 
             NPY_AUXDATA_FREE(transferdata);
 
@@ -149,12 +149,12 @@ namespace NumpyLib
             npy_intp []wheremask_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp []coord = new npy_intp[npy_defs.NPY_MAXDIMS];
 
-            PyArray_MaskedStridedUnaryOp* stransfer = null;
-            NpyAuxData* transferdata = null;
+            PyArray_MaskedStridedUnaryOp stransfer = null;
+            NpyAuxData transferdata = null;
             bool aligned, needs_api = false;
             npy_intp src_itemsize = src_dtype.elsize;
 
-            NPY_BEGIN_THREADS_DEF;
+            //NPY_BEGIN_THREADS_DEF;
 
             /* Check alignment */
             aligned = raw_array_is_aligned(ndim,
@@ -197,15 +197,15 @@ namespace NumpyLib
                                 wheremask_strides_it[0],
                                 src_dtype, dst_dtype, wheremask_dtype,
                                 0,
-                                &stransfer, &transferdata,
-                                &needs_api) != NPY_SUCCEED)
+                                ref stransfer, ref transferdata,
+                                ref needs_api) != npy_defs.NPY_SUCCEED)
             {
                 return -1;
             }
 
             if (!needs_api)
             {
-                NPY_BEGIN_THREADS;
+                //NPY_BEGIN_THREADS;
             }
 
             NPY_RAW_ITER_START(idim, ndim, coord, shape_it) {
@@ -219,7 +219,7 @@ namespace NumpyLib
                                   src_data, src_strides_it,
                                   wheremask_data, wheremask_strides_it);
 
-            NPY_END_THREADS;
+            //NPY_END_THREADS;
 
             NPY_AUXDATA_FREE(transferdata);
 
@@ -318,7 +318,7 @@ namespace NumpyLib
                 /*
                  * Allocate a temporary copy array.
                  */
-                tmp = NpyArray_NewLikeArray(dst, NPY_KEEPORDER, null, 0);
+                tmp = NpyArray_NewLikeArray(dst, NPY_ORDER.NPY_KEEPORDER, null, 0);
                 if (tmp == null)
                 {
                     goto fail;

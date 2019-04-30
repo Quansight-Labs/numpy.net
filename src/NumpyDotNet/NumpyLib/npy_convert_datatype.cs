@@ -423,6 +423,16 @@ namespace NumpyLib
             }
         }
 
+        /*NUMPY_API
+        * Returns true if data of type 'from' may be cast to data of type
+        * 'to' according to the rule 'casting'.
+        */
+        internal static bool NpyArray_CanCastTypeTo(NpyArray_Descr from, NpyArray_Descr to, NPY_CASTING casting)
+        {
+            return NpyArray_CanCastTo(from, to);
+        }
+
+
         internal static bool NpyArray_CanCastTo(NpyArray_Descr from, NpyArray_Descr to)
         {
             NPY_TYPES fromtype = from.type_num;

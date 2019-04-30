@@ -58,6 +58,7 @@ namespace NumpyLib
         NPY_CORDER = 0,
         NPY_FORTRANORDER = 1,
         NPY_KORDER = 2,
+        NPY_KEEPORDER = 2,
     };
 
     public class npy_buffer_info_t

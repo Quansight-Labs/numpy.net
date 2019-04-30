@@ -40,51 +40,34 @@ using npy_intp = System.Int64;
 #else
 using npy_intp = System.Int32;
 #endif
-using size_t = System.UInt64;
-
-
 
 namespace NumpyLib
 {
     internal partial class numpyinternal
     {
-
         /*
-         * This function pointer is for unary operations that input an
-         * arbitrarily strided one-dimensional array segment and output
-         * an arbitrarily strided array segment of the same size.
-         * It may be a fully general function, or a specialized function
-         * when the strides or item size have particular known values.
+         * Assigns a scalar value specified by 'src_dtype' and 'src_data'
+         * to elements of 'dst'.
          *
-         * Examples of unary operations are a straight copy, a byte-swap,
-         * and a casting operation,
+         * dst: The destination array.
+         * src_dtype: The data type of the source scalar.
+         * src_data: The memory element of the source scalar.
+         * wheremask: If non-NULL, a boolean mask specifying where to copy.
+         * casting: An exception is raised if the assignment violates this
+         *          casting rule.
          *
-         * The 'transferdata' parameter is slightly special, following a
-         * generic auxiliary data pattern defined in ndarraytypes.h
-         * Use NPY_AUXDATA_CLONE and NPY_AUXDATA_FREE to deal with this data.
+         * This function is implemented in array_assign_scalar.c.
          *
+         * Returns 0 on success, -1 on failure.
          */
 
-         delegate void PyArray_StridedUnaryOp(VoidPtr dst, npy_intp dst_stride,
-                                             VoidPtr src, npy_intp src_stride,
-                                             npy_intp N, npy_intp src_itemsize,
-                                             NpyAuxData transferdata);
-
-        /*
-         * This is for pointers to functions which behave exactly as
-         * for PyArray_StridedUnaryOp, but with an additional mask controlling
-         * which values are transformed.
-         *
-         * In particular, the 'i'-th element is operated on if and only if
-         * mask[i*mask_stride] is true.
-         */
-        delegate void PyArray_MaskedStridedUnaryOp(VoidPtr dst, npy_intp dst_stride,
-                                             VoidPtr src, npy_intp src_stride,
-                                             ref bool mask, npy_intp mask_stride,
-                                             npy_intp N, npy_intp src_itemsize,
-                                             NpyAuxData transferdata);
-
-
+        private static int NpyArray_AssignRawScalar(NpyArray dst,
+                    NpyArray_Descr src_dtype, VoidPtr src_data,
+                    NpyArray wheremask,
+                    NPY_CASTING casting)
+        {
+            return 0;
+        }
 
     }
 }

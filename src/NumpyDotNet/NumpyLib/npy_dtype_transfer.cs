@@ -471,5 +471,31 @@ namespace NumpyLib
             return 0;
         }
 
+        private static int PyArray_GetDTypeTransferFunction(bool aligned,
+                            npy_intp src_stride, npy_intp dst_stride,
+                            NpyArray_Descr src_dtype, NpyArray_Descr dst_dtype,
+                            int move_references,
+                            ref PyArray_StridedUnaryOp out_stransfer,
+                            ref NpyAuxData out_transferdata,
+                            ref bool out_needs_api)
+        {
+            return npy_defs.NPY_SUCCEED;
+        }
+
+        private static int PyArray_GetMaskedDTypeTransferFunction(bool aligned,
+                            npy_intp src_stride,
+                            npy_intp dst_stride,
+                            npy_intp mask_stride,
+                            NpyArray_Descr src_dtype,
+                            NpyArray_Descr dst_dtype,
+                            NpyArray_Descr mask_dtype,
+                            int move_references,
+                            ref PyArray_MaskedStridedUnaryOp out_stransfer,
+                            ref NpyAuxData out_transferdata,
+                            ref bool out_needs_api)
+        {
+            return npy_defs.NPY_SUCCEED;
+        }
+
     }
 }

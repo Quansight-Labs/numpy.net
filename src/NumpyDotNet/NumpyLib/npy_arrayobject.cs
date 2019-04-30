@@ -317,6 +317,14 @@ namespace NumpyLib
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_ALIGNED);
         }
+        internal static bool NpyArray_IS_C_CONTIGUOUS(NpyArray arr)
+        {
+            return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_C_CONTIGUOUS);
+        }
+        internal static bool NpyArray_IS_F_CONTIGUOUS(NpyArray arr)
+        {
+            return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_F_CONTIGUOUS);
+        }
 
         internal static int NpyArray_NDIM(NpyArray arr)
         {
@@ -939,6 +947,31 @@ namespace NumpyLib
             //        NpyErr_SetString(npyexc_type.NpyExc_RuntimeError, "bad comparison operator");
             //        return -1;
             //}
+            return 0;
+        }
+
+
+        /*NUMPY_API
+         *
+         * This function does nothing if obj is writeable, and raises an exception
+         * (and returns -1) if obj is not writeable. It may also do other
+         * house-keeping, such as issuing warnings on arrays which are transitioning
+         * to become views. Always call this function at some point before writing to
+         * an array.
+         *
+         * 'name' is a name for the array, used to give better error
+         * messages. Something like "assignment destination", "output array", or even
+         * just "array".
+         */
+        private static int NpyArray_FailUnlessWriteable(NpyArray obj, string name)
+        {
+            if (!NpyArray_ISWRITEABLE(obj))
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, string.Format("{0} is read-only", name));
+
+                return -1;
+            }
+
             return 0;
         }
 

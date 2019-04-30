@@ -178,5 +178,24 @@ namespace NumpyLib
 #endif
             return NPY_TYPES.NPY_VOID;
         }
+
+        static string npy_casting_to_string(NPY_CASTING casting)
+        {
+            switch (casting)
+            {
+                case NPY_CASTING.NPY_NO_CASTING:
+                    return "'no'";
+                case NPY_CASTING.NPY_EQUIV_CASTING:
+                    return "'equiv'";
+                case NPY_CASTING.NPY_SAFE_CASTING:
+                    return "'safe'";
+                case NPY_CASTING.NPY_SAME_KIND_CASTING:
+                    return "'same_kind'";
+                case NPY_CASTING.NPY_UNSAFE_CASTING:
+                    return "'unsafe'";
+                default:
+                    return "<unknown>";
+            }
+        }
     }
 }

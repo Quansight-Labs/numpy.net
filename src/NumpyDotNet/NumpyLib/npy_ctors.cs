@@ -746,6 +746,108 @@ namespace NumpyLib
             return null;
         }
 
+        /*NUMPY_API
+         * Creates a new array with the same shape as the provided one,
+         * with possible memory layout order and data type changes.
+         *
+         * prototype - The array the new one should be like.
+         * order     - NPY_CORDER - C-contiguous result.
+         *             NPY_FORTRANORDER - Fortran-contiguous result.
+         *             NPY_ANYORDER - Fortran if prototype is Fortran, C otherwise.
+         *             NPY_KEEPORDER - Keeps the axis ordering of prototype.
+         * dtype     - If not NULL, overrides the data type of the result.
+         * subok     - If 1, use the prototype's array subtype, otherwise
+         *             always create a base-class array.
+         *
+         * NOTE: If dtype is not NULL, steals the dtype reference.  On failure or when
+         * dtype->subarray is true, dtype will be decrefed.
+         */
+        internal static NpyArray NpyArray_NewLikeArray(NpyArray prototype, NPY_ORDER order,  NpyArray_Descr dtype, bool subok)
+        {
+            NpyArray ret = null;
+            int ndim = NpyArray_NDIM(prototype);
+
+            /* If no override data type, use the one from the prototype */
+            if (dtype == null)
+            {
+                dtype = NpyArray_DESCR(prototype);
+                Npy_INCREF(dtype);
+            }
+
+            NPYARRAYFLAGS flags = NPYARRAYFLAGS.NPY_DEFAULT;
+
+            /* Handle ANYORDER and simple KEEPORDER cases */
+            switch (order)
+            {
+                case NPY_ORDER.NPY_ANYORDER:
+                    flags = NpyArray_ISFORTRAN(prototype) ?
+                                            NPYARRAYFLAGS.NPY_FARRAY_RO : NPYARRAYFLAGS.NPY_CARRAY_RO;
+                    break;
+                case NPY_ORDER.NPY_KEEPORDER:
+                    if (NpyArray_IS_C_CONTIGUOUS(prototype) || ndim <= 1)
+                    {
+                        flags = NPYARRAYFLAGS.NPY_CARRAY_RO;
+                        break;
+                    }
+                    else if (NpyArray_IS_F_CONTIGUOUS(prototype))
+                    {
+                        flags = NPYARRAYFLAGS.NPY_FARRAY_RO;
+                        break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            /* If it's not KEEPORDER, this is simple */
+            if (order != NPY_ORDER.NPY_KEEPORDER)
+            {
+                ret = NpyArray_NewFromDescr(    dtype,
+                                                ndim,
+                                                NpyArray_DIMS(prototype),
+                                                null,
+                                                null,
+                                                flags,
+                                                true,
+                                                null, null);
+
+
+            }
+            /* KEEPORDER needs some analysis of the strides */
+            else
+            {
+                npy_intp[] strides = new npy_intp[npy_defs.NPY_MAXDIMS];
+                npy_intp stride;
+                npy_intp []shape = NpyArray_DIMS(prototype);
+                npy_stride_sort_item []strideperm = new npy_stride_sort_item[npy_defs.NPY_MAXDIMS];
+                int idim;
+
+                PyArray_CreateSortedStridePerm(NpyArray_NDIM(prototype),
+                                                NpyArray_STRIDES(prototype),
+                                                strideperm);
+
+                /* Build the new strides */
+                stride = dtype.elsize;
+                for (idim = ndim - 1; idim >= 0; --idim)
+                {
+                    npy_intp i_perm = strideperm[idim].perm;
+                    strides[i_perm] = stride;
+                    stride *= shape[i_perm];
+                }
+
+                /* Finally, allocate the array */
+                ret = NpyArray_NewFromDescr(dtype,
+                                                ndim,
+                                                shape,
+                                                strides,
+                                                null,
+                                                flags,
+                                                true,
+                                                null, null);
+            }
+
+            return ret;
+        }
 
 
         /*

@@ -1406,7 +1406,7 @@ namespace NumpyLib
         }
 
 
-        private static object PyArray_Type = null;
+        private static NpyArray_Descr PyArray_Type = null;
         private static object NpyArray_GetSubType(int narrays, NpyArray[] arrays)
         {
             return null;

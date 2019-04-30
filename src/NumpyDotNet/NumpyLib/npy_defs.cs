@@ -208,6 +208,9 @@ namespace NumpyLib
         internal const string NPY_STR_ps = "ps";
         internal const string NPY_STR_fs = "fs";
         internal const string NPY_STR_as = "as";
+
+        internal const int NPY_FAIL = 0;
+        internal const int NPY_SUCCEED = 1;
     }
 
     public enum NPY_SORTKIND : int
