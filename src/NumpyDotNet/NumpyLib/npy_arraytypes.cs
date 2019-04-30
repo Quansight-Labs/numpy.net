@@ -35,6 +35,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
+using size_t = System.UInt64;
+
 
 namespace NumpyLib
 {
@@ -189,6 +196,38 @@ namespace NumpyLib
              */
             descr.dtinfo = dt_data;
         }
+
+        /************************************************************
+        * A struct used by PyArray_CreateSortedStridePerm, new in 1.7.
+        ************************************************************/
+
+        class npy_stride_sort_item
+        {
+            public npy_intp perm;
+            public npy_intp stride;
+        }
+
+        /*
+         * When creating an auxiliary data struct, this should always appear
+         * as the first member, like this:
+         *
+         * typedef struct {
+         *     NpyAuxData base;
+         *     double constant;
+         * } constant_multiplier_aux_data;
+         */
+
+        /* Function pointers for freeing or cloning auxiliary data */
+        delegate void NpyAuxData_FreeFunc(NpyAuxData);
+        delegate NpyAuxData NpyAuxData_CloneFunc(NpyAuxData);
+
+        class NpyAuxData
+        {
+            NpyAuxData_FreeFunc free;
+            NpyAuxData_CloneFunc clone;
+
+        };
+
 
     }
 }

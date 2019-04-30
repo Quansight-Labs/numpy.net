@@ -508,6 +508,67 @@ namespace NumpyLib
             return ret;
         }
 
+        /*
+         * Sorts items so stride is descending, because C-order
+         * is the default in the face of ambiguity.
+         */
+        static int _npy_stride_sort_item_comparator(npy_stride_sort_item a, npy_stride_sort_item b)
+        {
+            npy_intp astride = a.stride;
+            npy_intp bstride = b.stride;
+
+            /* Sort the absolute value of the strides */
+            if (astride < 0)
+            {
+                astride = -astride;
+            }
+            if (bstride < 0)
+            {
+                bstride = -bstride;
+            }
+
+            if (astride == bstride)
+            {
+                /*
+                 * Make the qsort stable by next comparing the perm order.
+                 * (Note that two perm entries will never be equal)
+                 */
+                npy_intp aperm = a.perm;
+                npy_intp bperm = b.perm;
+                return (aperm < bperm) ? -1 : 1;
+            }
+            if (astride > bstride)
+            {
+                return -1;
+            }
+            return 1;
+        }
+
+
+        /*NUMPY_API
+         *
+         * This function populates the first ndim elements
+         * of strideperm with sorted descending by their absolute values.
+         * For example, the stride array (4, -2, 12) becomes
+         * [(2, 12), (0, 4), (1, -2)].
+         */
+        private static void  PyArray_CreateSortedStridePerm(int ndim, npy_intp[] strides,
+                                npy_stride_sort_item[] out_strideperm)
+        {
+            int i;
+
+            /* Set up the strideperm values */
+            for (i = 0; i < ndim; ++i)
+            {
+                out_strideperm[i].perm = i;
+                out_strideperm[i].stride = strides[i];
+            }
+
+            /* Sort them */
+            qsort(out_strideperm, ndim, sizeof(npy_stride_sort_item),
+                                            _npy_stride_sort_item_comparator);
+        }
+
 
         private static void NpyArray_CreateMultiSortedStridePerm(int narrays, NpyArray[] arrays, int ndim, int[] out_strideperm)
         {
@@ -768,6 +829,64 @@ namespace NumpyLib
                 Npy_DECREF(ret);
                 return null;
             }
+            return ret;
+        }
+
+
+        /* See shape.h for parameters documentation */
+        internal static string build_shape_string(npy_intp n, npy_intp[] vals)
+        {
+            npy_intp i;
+            string ret, tmp;
+
+            /*
+             * Negative dimension indicates "newaxis", which can
+             * be discarded for printing if it's a leading dimension.
+             * Find the first non-"newaxis" dimension.
+             */
+            i = 0;
+            while (i < n && vals[i] < 0)
+            {
+                ++i;
+            }
+
+            if (i == n)
+            {
+                return "()";
+            }
+            else
+            {
+                ret = string.Format("({0}", vals[i++]);
+                if (ret == null)
+                {
+                    return null;
+                }
+            }
+
+            for (; i < n; ++i)
+            {
+                if (vals[i] < 0)
+                {
+                    tmp = string.Format(",newaxis");
+                }
+                else
+                {
+                    tmp = string.Format(",{0}", vals[i]);
+                }
+                if (tmp == null)
+                {
+                    return null;
+                }
+
+                ret += tmp;
+                if (ret == null)
+                {
+                    return null;
+                }
+            }
+
+            tmp = string.Format(")");
+            ret += tmp;
             return ret;
         }
 

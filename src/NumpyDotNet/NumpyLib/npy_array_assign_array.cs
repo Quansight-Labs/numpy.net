@@ -62,8 +62,8 @@ namespace NumpyLib
             npy_intp []src_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp []coord = new npy_intp[npy_defs.NPY_MAXDIMS];
 
-            PyArray_StridedUnaryOp* stransfer = null;
-            NpyAuxData* transferdata = null;
+            PyArray_StridedUnaryOp stransfer = null;
+            NpyAuxData transferdata = null;
             bool aligned, needs_api = false;
             npy_intp src_itemsize = src_dtype.elsize;
 
@@ -79,9 +79,9 @@ namespace NumpyLib
                             ndim, shape,
                             dst_data, dst_strides,
                             src_data, src_strides,
-                            &ndim, shape_it,
-                            &dst_data, dst_strides_it,
-                            &src_data, src_strides_it) < 0)
+                            ref ndim, shape_it,
+                            ref dst_data, dst_strides_it,
+                            ref src_data, src_strides_it) < 0)
             {
                 return -1;
             }
@@ -90,8 +90,7 @@ namespace NumpyLib
              * Overlap check for the 1D case. Higher dimensional arrays and
              * opposite strides cause a temporary copy before getting here.
              */
-            if (ndim == 1 && src_data < dst_data &&
-                        src_data + shape_it[0] * src_strides_it[0] > dst_data)
+            if (ndim == 1 && arrays_overlap(src_data, dst_data))
             {
                 src_data += (shape_it[0] - 1) * src_strides_it[0];
                 dst_data += (shape_it[0] - 1) * dst_strides_it[0];
@@ -169,10 +168,10 @@ namespace NumpyLib
                             dst_data, dst_strides,
                             src_data, src_strides,
                             wheremask_data, wheremask_strides,
-                            &ndim, shape_it,
-                            &dst_data, dst_strides_it,
-                            &src_data, src_strides_it,
-                            &wheremask_data, wheremask_strides_it) < 0)
+                            ref ndim, shape_it,
+                            ref dst_data, dst_strides_it,
+                            ref src_data, src_strides_it,
+                            ref wheremask_data, wheremask_strides_it) < 0)
             {
                 return -1;
             }
@@ -181,8 +180,7 @@ namespace NumpyLib
              * Overlap check for the 1D case. Higher dimensional arrays cause
              * a temporary copy before getting here.
              */
-            if (ndim == 1 && src_data < dst_data &&
-                        src_data + shape_it[0] * src_strides_it[0] > dst_data)
+            if (ndim == 1 && arrays_overlap(src_data, dst_data))
             {
                 src_data += (shape_it[0] - 1) * src_strides_it[0];
                 dst_data += (shape_it[0] - 1) * dst_strides_it[0];
@@ -377,7 +375,8 @@ namespace NumpyLib
                     NpyArray_NDIM(wheremask) == 0 &&
                     NpyArray_DESCR(wheremask).type_num == NPY_TYPES.NPY_BOOL)
             {
-                bool value = *(npy_bool*)PyArray_DATA(wheremask);
+                bool[] values = NpyArray_DATA(wheremask).datap as bool[];
+                bool value = values[0];
                 if (value)
                 {
                     /* where=True is the same as no where at all */

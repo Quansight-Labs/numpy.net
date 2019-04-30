@@ -1,11 +1,47 @@
-﻿using System;
+﻿/*
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2018-2019
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 #if NPY_INTP_64
 using npy_intp = System.Int64;
 #else
 using npy_intp = System.Int32;
 #endif
+using size_t = System.UInt64;
+
 
 namespace NumpyLib
 {
@@ -71,41 +107,37 @@ namespace NumpyLib
         /* See array_assign.h for parameter documentation */
         private static bool raw_array_is_aligned(int ndim, VoidPtr data, npy_intp[] strides, int alignment)
         {
-            if (alignment > 1)
-            {
-                npy_intp align_check = (npy_intp)data;
-                int idim;
+            return true;
 
-                for (idim = 0; idim < ndim; ++idim)
-                {
-                    align_check |= strides[idim];
-                }
+            //if (alignment > 1)
+            //{
+            //    npy_intp []align_check = data.datap as npy_intp[];
+            //    int idim;
 
-                return npy_is_aligned((void*)align_check, alignment);
-            }
-            else
-            {
-                return true;
-            }
+            //    for (idim = 0; idim < ndim; ++idim)
+            //    {
+            //        align_check[0] |= strides[idim];
+            //    }
+
+            //    return true; // npy_is_aligned(align_check[0], alignment);
+            //}
+            //else
+            //{
+            //    return true;
+            //}
         }
 
 
         /* Returns 1 if the arrays have overlapping data, 0 otherwise */
         private static bool arrays_overlap(NpyArray arr1, NpyArray arr2)
         {
-            mem_overlap_t result;
-
-            result = solve_may_share_memory(arr1, arr2, NPY_MAY_SHARE_BOUNDS);
-            if (result == MEM_OVERLAP_NO)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return (Object.ReferenceEquals(arr1.data.datap, arr2.data.datap));
         }
-
+        /* Returns 1 if the arrays have overlapping data, 0 otherwise */
+        private static bool arrays_overlap(VoidPtr arr1, VoidPtr arr2)
+        {
+            return (Object.ReferenceEquals(arr1.datap, arr2.datap));
+        }
 
     }
 }
