@@ -56,7 +56,7 @@ namespace NumpyLib
                 NpyArray_Descr dst_dtype, VoidPtr dst_data, npy_intp[] dst_strides,
                 NpyArray_Descr src_dtype, VoidPtr src_data, npy_intp[] src_strides)
         {
-            int idim;
+            int idim = 0;
             npy_intp [] shape_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp [] dst_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp []src_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
@@ -114,14 +114,15 @@ namespace NumpyLib
                // NPY_BEGIN_THREADS;
             }
 
-            NPY_RAW_ITER_START(idim, ndim, coord, shape_it) {
+            NPY_RAW_ITER_START(idim, ndim, coord, shape_it);
+            do {
                 /* Process the innermost dimension */
                 stransfer(dst_data, dst_strides_it[0], src_data, src_strides_it[0],
                             shape_it[0], src_itemsize, transferdata);
-            }
-            NPY_RAW_ITER_TWO_NEXT(idim, ndim, coord, shape_it,
+
+            } while (NPY_RAW_ITER_TWO_NEXT(idim, ndim, coord, shape_it,
                                   dst_data, dst_strides_it,
-                                  src_data, src_strides_it);
+                                  src_data, src_strides_it));
 
             //NPY_END_THREADS;
 
@@ -129,6 +130,7 @@ namespace NumpyLib
 
             return (needs_api && NpyErr_Occurred()) ? -1 : 0;
         }
+
 
         /*
          * Assigns the array from 'src' to 'dst, wherever the 'wheremask'
@@ -142,7 +144,7 @@ namespace NumpyLib
                 NpyArray_Descr wheremask_dtype, VoidPtr wheremask_data,
                 npy_intp[] wheremask_strides)
         {
-            int idim;
+            int idim = 0;
             npy_intp []shape_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp []dst_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
             npy_intp []src_strides_it = new npy_intp[npy_defs.NPY_MAXDIMS];
@@ -208,16 +210,16 @@ namespace NumpyLib
                 //NPY_BEGIN_THREADS;
             }
 
-            NPY_RAW_ITER_START(idim, ndim, coord, shape_it) {
+            NPY_RAW_ITER_START(idim, ndim, coord, shape_it);
+            do {
                 /* Process the innermost dimension */
                 stransfer(dst_data, dst_strides_it[0], src_data, src_strides_it[0],
-                            (npy_bool*)wheremask_data, wheremask_strides_it[0],
+                            (bool [])wheremask_data.datap, wheremask_strides_it[0],
                             shape_it[0], src_itemsize, transferdata);
-            }
-            NPY_RAW_ITER_THREE_NEXT(idim, ndim, coord, shape_it,
+            } while (NPY_RAW_ITER_THREE_NEXT(idim, ndim, coord, shape_it,
                                   dst_data, dst_strides_it,
                                   src_data, src_strides_it,
-                                  wheremask_data, wheremask_strides_it);
+                                  wheremask_data, wheremask_strides_it));
 
             //NPY_END_THREADS;
 
@@ -225,6 +227,8 @@ namespace NumpyLib
 
             return (needs_api && NpyErr_Occurred()) ? -1 : 0;
         }
+
+
 
         /*
          * An array assignment function for copying arrays, broadcasting 'src' into
@@ -318,7 +322,7 @@ namespace NumpyLib
                 /*
                  * Allocate a temporary copy array.
                  */
-                tmp = NpyArray_NewLikeArray(dst, NPY_ORDER.NPY_KEEPORDER, null, 0);
+                tmp = NpyArray_NewLikeArray(dst, NPY_ORDER.NPY_KEEPORDER, null, false);
                 if (tmp == null)
                 {
                     goto fail;
@@ -347,8 +351,14 @@ namespace NumpyLib
                 while (ndim_tmp > NpyArray_NDIM(dst) && src_shape_tmp[0] == 1)
                 {
                     --ndim_tmp;
-                    ++src_shape_tmp;
-                    ++src_strides_tmp;
+
+                    var tmp = src_shape_tmp;
+                    src_shape_tmp = new npy_intp[src_shape_tmp.Length - 1];
+                    Array.Copy(tmp, 1, src_shape_tmp, 0, src_shape_tmp.Length);
+
+                    tmp = src_strides_tmp;
+                    src_strides_tmp = new npy_intp[src_strides_tmp.Length - 1];
+                    Array.Copy(tmp, 1, src_strides_tmp, 0, src_strides_tmp.Length);
                 }
 
                 if (broadcast_strides(NpyArray_NDIM(dst), NpyArray_DIMS(dst),

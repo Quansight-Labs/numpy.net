@@ -80,10 +80,61 @@ namespace NumpyLib
          */
         delegate void PyArray_MaskedStridedUnaryOp(VoidPtr dst, npy_intp dst_stride,
                                              VoidPtr src, npy_intp src_stride,
-                                             ref bool mask, npy_intp mask_stride,
+                                             bool[] mask, npy_intp mask_stride,
                                              npy_intp N, npy_intp src_itemsize,
                                              NpyAuxData transferdata);
 
+        private static void NPY_RAW_ITER_START(int idim, int ndim, long[] coord, long[] shape_it)
+        {
+            memset(new VoidPtr(coord), 0, ndim * sizeof(long));
+        }
+
+
+        private static bool NPY_RAW_ITER_TWO_NEXT(int idim, int ndim, long[] coord, long[] shape, VoidPtr dataA, long[] stridesA, VoidPtr dataB, long[] stridesB)
+        {
+            for (idim = 1; idim < ndim; ++idim)
+            {
+                if (++coord[idim] == shape[idim])
+                {
+                    coord[idim] = 0;
+                    dataA -= (shape[idim] - 1) * stridesA[idim];
+                    dataB -= (shape[idim] - 1) * stridesB[idim];
+                }
+                else
+                {
+                    dataA += stridesA[idim];
+                    dataB += stridesB[idim];
+                    break;
+                }
+            }
+            return (idim < ndim);
+        }
+
+
+        private static bool NPY_RAW_ITER_THREE_NEXT(int idim, int ndim, long[] coord, long[] shape, 
+                                                VoidPtr dataA, long[] stridesA, 
+                                                VoidPtr dataB, long[] stridesB, 
+                                                VoidPtr dataC, long[] stridesC)
+        {
+            for (idim = 1; idim < ndim; ++idim)
+            { 
+                if (++coord[idim] == shape[idim])
+                { 
+                    coord[idim] = 0; 
+                    dataA -= (shape[idim] - 1) * stridesA[idim]; 
+                    dataB -= (shape[idim] - 1) * stridesB[idim]; 
+                    dataC -= (shape[idim] - 1) * stridesC[idim]; 
+                } 
+                else
+                { 
+                    dataA += (stridesA)[idim]; 
+                    dataB += (stridesB)[idim]; 
+                    dataC += (stridesC)[idim]; 
+                    break; 
+                } 
+            } 
+            return (idim < ndim);
+        }
 
 
     }

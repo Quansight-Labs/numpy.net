@@ -264,10 +264,18 @@ namespace NumpyLib
 
         class NpyAuxData
         {
-            NpyAuxData_FreeFunc free;
-            NpyAuxData_CloneFunc clone;
+            public NpyAuxData_FreeFunc free;
+            public NpyAuxData_CloneFunc clone;
 
         };
+
+        private static void NPY_AUXDATA_FREE(NpyAuxData auxdata)
+        {
+            if (auxdata != null)
+            {
+                auxdata.free(auxdata);
+            }
+        }
 
 
     }
