@@ -201,10 +201,51 @@ namespace NumpyLib
         * A struct used by PyArray_CreateSortedStridePerm, new in 1.7.
         ************************************************************/
 
-        class npy_stride_sort_item
+        class npy_stride_sort_item  : IComparable
         {
             public npy_intp perm;
             public npy_intp stride;
+
+            /*
+            * Sorts items so stride is descending, because C-order
+            * is the default in the face of ambiguity.
+            */
+            public int CompareTo(object obj)
+            {
+                npy_stride_sort_item a = this;
+                npy_stride_sort_item b = obj as npy_stride_sort_item;
+
+                npy_intp astride = a.stride;
+                npy_intp bstride = b.stride;
+
+                /* Sort the absolute value of the strides */
+                if (astride < 0)
+                {
+                    astride = -astride;
+                }
+                if (bstride < 0)
+                {
+                    bstride = -bstride;
+                }
+
+                if (astride == bstride)
+                {
+                    /*
+                     * Make the qsort stable by next comparing the perm order.
+                     * (Note that two perm entries will never be equal)
+                     */
+                    npy_intp aperm = a.perm;
+                    npy_intp bperm = b.perm;
+                    return (aperm < bperm) ? -1 : 1;
+                }
+                if (astride > bstride)
+                {
+                    return -1;
+                }
+                return 1;
+            }
+
+
         }
 
         /*

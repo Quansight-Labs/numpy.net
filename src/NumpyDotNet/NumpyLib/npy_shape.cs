@@ -508,42 +508,7 @@ namespace NumpyLib
             return ret;
         }
 
-        /*
-         * Sorts items so stride is descending, because C-order
-         * is the default in the face of ambiguity.
-         */
-        static int _npy_stride_sort_item_comparator(npy_stride_sort_item a, npy_stride_sort_item b)
-        {
-            npy_intp astride = a.stride;
-            npy_intp bstride = b.stride;
-
-            /* Sort the absolute value of the strides */
-            if (astride < 0)
-            {
-                astride = -astride;
-            }
-            if (bstride < 0)
-            {
-                bstride = -bstride;
-            }
-
-            if (astride == bstride)
-            {
-                /*
-                 * Make the qsort stable by next comparing the perm order.
-                 * (Note that two perm entries will never be equal)
-                 */
-                npy_intp aperm = a.perm;
-                npy_intp bperm = b.perm;
-                return (aperm < bperm) ? -1 : 1;
-            }
-            if (astride > bstride)
-            {
-                return -1;
-            }
-            return 1;
-        }
-
+     
 
         /*NUMPY_API
          *
@@ -565,8 +530,8 @@ namespace NumpyLib
             }
 
             /* Sort them */
-            qsort(out_strideperm, ndim, sizeof(npy_stride_sort_item),
-                                            _npy_stride_sort_item_comparator);
+            Array.Sort(out_strideperm);
+ 
         }
 
 

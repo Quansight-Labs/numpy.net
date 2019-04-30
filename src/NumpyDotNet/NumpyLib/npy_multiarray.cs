@@ -1284,7 +1284,7 @@ namespace NumpyLib
                 }
             }
 
-            if (NPyArray_AssignArray(dst, src, wheremask, casting) < 0)
+            if (NpyArray_AssignArray(dst, src, wheremask, casting) < 0)
             {
                 goto fail;
             }
