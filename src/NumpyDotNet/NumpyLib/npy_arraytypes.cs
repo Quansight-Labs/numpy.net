@@ -218,8 +218,8 @@ namespace NumpyLib
          */
 
         /* Function pointers for freeing or cloning auxiliary data */
-        delegate void NpyAuxData_FreeFunc(NpyAuxData);
-        delegate NpyAuxData NpyAuxData_CloneFunc(NpyAuxData);
+        delegate void NpyAuxData_FreeFunc(NpyAuxData x);
+        delegate NpyAuxData NpyAuxData_CloneFunc(NpyAuxData x);
 
         class NpyAuxData
         {
