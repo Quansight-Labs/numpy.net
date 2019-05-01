@@ -97,13 +97,13 @@ namespace NumpyLib
                 if (++coord[idim] == shape[idim])
                 {
                     coord[idim] = 0;
-                    dataA -= (shape[idim] - 1) * stridesA[idim];
-                    dataB -= (shape[idim] - 1) * stridesB[idim];
+                    dataA.data_offset -= (shape[idim] - 1) * stridesA[idim];
+                    dataB.data_offset -= (shape[idim] - 1) * stridesB[idim];
                 }
                 else
                 {
-                    dataA += stridesA[idim];
-                    dataB += stridesB[idim];
+                    dataA.data_offset += stridesA[idim];
+                    dataB.data_offset += stridesB[idim];
                     break;
                 }
             }
@@ -121,15 +121,15 @@ namespace NumpyLib
                 if (++coord[idim] == shape[idim])
                 { 
                     coord[idim] = 0; 
-                    dataA -= (shape[idim] - 1) * stridesA[idim]; 
-                    dataB -= (shape[idim] - 1) * stridesB[idim]; 
-                    dataC -= (shape[idim] - 1) * stridesC[idim]; 
+                    dataA.data_offset -= (shape[idim] - 1) * stridesA[idim]; 
+                    dataB.data_offset -= (shape[idim] - 1) * stridesB[idim]; 
+                    dataC.data_offset -= (shape[idim] - 1) * stridesC[idim]; 
                 } 
                 else
                 { 
-                    dataA += (stridesA)[idim]; 
-                    dataB += (stridesB)[idim]; 
-                    dataC += (stridesC)[idim]; 
+                    dataA.data_offset += (stridesA)[idim]; 
+                    dataB.data_offset += (stridesB)[idim]; 
+                    dataC.data_offset += (stridesC)[idim]; 
                     break; 
                 } 
             } 
