@@ -137,5 +137,21 @@ namespace NumpyLib
         }
 
 
+
+        static void _strided_to_strided(VoidPtr dst, npy_intp dst_stride,
+                                VoidPtr src, npy_intp src_stride,
+                                npy_intp N, npy_intp src_itemsize,
+                                NpyAuxData data)
+        {
+            while (N > 0)
+            {
+                memmove(dst, src, src_itemsize);
+                dst += dst_stride;
+                src += src_stride;
+                --N;
+            }
+        }
+
+
     }
 }

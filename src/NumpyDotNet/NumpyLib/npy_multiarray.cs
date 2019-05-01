@@ -280,12 +280,12 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static NpyArray NpyArray_Concatenate(NpyArray [] op, int axis, NpyArray ret)
+        internal static NpyArray NpyArray_Concatenate(NpyArray [] op, int? axis, NpyArray ret)
         {
             return NpyArray_ConcatenateInto(op, axis, ret);
         }
 
-        private static NpyArray NpyArray_ConcatenateInto(NpyArray[] op, int axis, NpyArray ret)
+        private static NpyArray NpyArray_ConcatenateInto(NpyArray[] op, int? axis, NpyArray ret)
         {
             int iarrays, narrays;
             NpyArray [] arrays;
@@ -321,13 +321,13 @@ namespace NumpyLib
             }
 
 
-            if (axis >= npy_defs.NPY_MAXDIMS)
+            if (axis == null)
             {
                 ret = PyArray_ConcatenateFlattenedArrays(narrays, arrays, NPY_ORDER.NPY_CORDER, ret);
             }
             else
             {
-                ret = PyArray_ConcatenateArrays(narrays, arrays, axis, ret);
+                ret = PyArray_ConcatenateArrays(narrays, arrays, axis.Value, ret);
             }
 
             for (iarrays = 0; iarrays < narrays; ++iarrays)
@@ -483,13 +483,23 @@ namespace NumpyLib
                 /* Set the dimension to match the input array's */
                 sliding_view.dimensions[axis] = arrays[iarrays].dimensions[axis];
 
+                ///* Copy the data for this array */
+                //if (NpyArray_StridedCopyInto(sliding_view, arrays[iarrays]) < 0)
+                //{
+                //    Npy_DECREF(sliding_view);
+                //    Npy_DECREF(ret);
+                //    return null;
+                //}
+
                 /* Copy the data for this array */
-                if (NpyArray_StridedCopyInto(sliding_view, arrays[iarrays]) < 0)
+                if (NpyArray_AssignArray(sliding_view, arrays[iarrays],
+                                    null, NPY_CASTING.NPY_SAME_KIND_CASTING) < 0)
                 {
                     Npy_DECREF(sliding_view);
                     Npy_DECREF(ret);
                     return null;
                 }
+
 
                 /* Slide to the start of the next window */
                 sliding_view.data += sliding_view.dimensions[axis] * sliding_view.strides[axis];
@@ -501,9 +511,112 @@ namespace NumpyLib
 
         }
 
-        private static NpyArray PyArray_ConcatenateFlattenedArrays(int narrays, NpyArray[] arrays, NPY_ORDER nPY_CORDER, NpyArray ret)
+        private static NpyArray PyArray_ConcatenateFlattenedArrays(int narrays, NpyArray[] arrays, NPY_ORDER order, NpyArray ret)
         {
-            throw new NotImplementedException();
+            int iarrays;
+            npy_intp shape = 0;
+            NpyArray sliding_view = null;
+
+            if (narrays <= 0)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "need at least one array to concatenate");
+                return null;
+            }
+
+            /*
+             * Figure out the final concatenated shape starting from the first
+             * array's shape.
+             */
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                shape += NpyArray_SIZE(arrays[iarrays]);
+                /* Check for overflow */
+                if (shape < 0)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "total number of elements too large to concatenate");
+                    return null;
+                }
+            }
+
+            if (ret != null)
+            {
+                if (NpyArray_NDIM(ret) != 1)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Output array must be 1D");
+                    return null;
+                }
+                if (shape != NpyArray_SIZE(ret))
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Output array is the wrong size");
+                    return null;
+                }
+                Npy_INCREF(ret);
+            }
+            else
+            {
+                npy_intp stride;
+
+                /* Get the priority subtype for the array */
+                object subtype = NpyArray_GetSubType(narrays, arrays);
+
+                /* Get the resulting dtype from combining all the arrays */
+                NpyArray_Descr dtype = NpyArray_ResultType(narrays, arrays, 0, null);
+                if (dtype == null)
+                {
+                    return null;
+                }
+
+                stride = dtype.elsize;
+
+                /* Allocate the array for the result. This steals the 'dtype' reference. */
+                ret = NpyArray_NewFromDescr(dtype,
+                                           1,
+                                           new npy_intp[] { shape },
+                                           new npy_intp[] { stride },
+                                           null,
+                                           0,
+                                           false,
+                                           null, null);
+
+                if (ret == null)
+                {
+                    return null;
+                }
+            }
+
+            /*
+            * Create a view which slides through ret for assigning the
+            * successive input arrays.
+            */
+            sliding_view =  NpyArray_View(ret, null, PyArray_Type);
+            if (sliding_view == null)
+            {
+                Npy_DECREF(ret);
+                return null;
+            }
+
+            for (iarrays = 0; iarrays < narrays; ++iarrays)
+            {
+                /* Adjust the window dimensions for this array */
+                sliding_view.dimensions[0] = NpyArray_SIZE(arrays[iarrays]);
+
+                /* Copy the data for this array */
+                if (PyArray_CopyAsFlat(sliding_view, arrays[iarrays],
+                                    order) < 0)
+                {
+                    Npy_DECREF(sliding_view);
+                    Npy_DECREF(ret);
+                    return null;
+                }
+
+                /* Slide to the start of the next window */
+                sliding_view.data.data_offset += sliding_view.strides[0] * NpyArray_SIZE(arrays[iarrays]);
+            }
+
+            Npy_DECREF(sliding_view);
+            return ret;
+
+
         }
 
         internal static NPY_SCALARKIND NpyArray_ScalarKind(NPY_TYPES typenum, NpyArray arr)

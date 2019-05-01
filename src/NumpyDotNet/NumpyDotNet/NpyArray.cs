@@ -947,8 +947,13 @@ namespace NumpyDotNet {
             }
         }
 
-        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? _axis = 0, bool shrinkOnSingle = true)
+        private static ndarray ConcatenateNEW(IEnumerable<ndarray> arrays, int? axis = 0, bool shrinkOnSingle = true)
         {
+            var result = NpyCoreApi.NpyArray_Concatenate(arrays, axis, null);
+
+            return result;
+
+#if OLD_WAY
             int i;
 
             bool MustFlatten = false;
@@ -981,6 +986,124 @@ namespace NumpyDotNet {
                 }
                 axis = 0;
             }
+            else if (axis != 0)
+            {
+                // Swap to make the axis 0
+                for (i = 0; i < n; i++)
+                {
+                    mps[i] = NpyCoreApi.FromArray(mps[i].SwapAxes(axis, 0), null, NPYARRAYFLAGS.NPY_C_CONTIGUOUS);
+                }
+            }
+
+
+            npy_intp[] dims = mps[0].dims;
+            if (dims.Length == 0)
+            {
+                throw new ArgumentException("0-d arrays can't be concatenated");
+            }
+
+            npy_intp new_dim = dims[0];
+            for (i = 1; i < n; i++)
+            {
+                npy_intp[] dims2 = mps[i].dims;
+                if (dims.Length != dims2.Length)
+                {
+                    throw new ArgumentException("arrays must have same number of dimensions");
+                }
+                bool eq = Enumerable.Zip(dims.Skip(1), dims2.Skip(1), (a1, b) => (a1 == b)).All(x => x);
+                if (!eq)
+                {
+                    throw new ArgumentException("array dimensions do not agree");
+                }
+                new_dim += dims2[0];
+            }
+            dims[0] = new_dim;
+
+
+            ndarray result = NpyCoreApi.AllocArray(mps[0].Dtype, dims.Length, dims, false);
+            if (!result.Dtype.IsObject)
+            {
+                if (NpyCoreApi.CombineInto(result, mps) < 0)
+                {
+                    throw new ArgumentException("unable to concatenate these arrays");
+                }
+            }
+            else
+            {
+                // Do a high-level copy to get the references right.
+                long j = 0;
+                flatiter flat = result.Flat;
+                foreach (ndarray a1 in mps)
+                {
+                    long size = a1.Size;
+                    flat[new Slice(j, j + size)] = a1.flat;
+                    j += size;
+                }
+            }
+            if (0 < axis && axis < NpyDefs.NPY_MAXDIMS || axis < 0)
+            {
+                result = result.SwapAxes(axis, 0);
+            }
+
+            //if (n == 1 && result.dims.Length > 1)
+            //{
+            //    dims = new npy_intp[result.dims.Length - 1];
+
+            //    Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
+
+            //    if (axis < 0)
+            //        axis += dims.Length;
+
+            //    if (axis >= dims.Length)
+            //    {
+            //        throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
+            //    }
+
+            //    dims[axis] *= result.dims[0];
+
+            //    result = result.reshape(dims);
+            //}
+
+            return result;
+#endif
+
+        }
+
+
+        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? axis = 0, bool shrinkOnSingle = true)
+        {
+            int i;
+
+            bool MustFlatten = false;
+            if (axis == null)
+            {
+                MustFlatten = true;
+                axis = 0;
+            }
+
+            int adjustedAxis = axis.Value;
+
+            try
+            {
+                arrays.First();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException("concatenation of zero-length sequence is impossible");
+            }
+
+            ndarray[] mps = NpyUtil_ArgProcessing.ConvertToCommonType(arrays);
+            int n = mps.Length;
+
+            if (MustFlatten)
+            {
+                // Flatten the arrays
+                for (i = 0; i < n; i++)
+                {
+                    mps[i] = mps[i].Ravel(NPY_ORDER.NPY_CORDER);
+                }
+                adjustedAxis = 0;
+            }
             //else if (axis != 0)
             //{
             //    // Swap to make the axis 0
@@ -998,7 +1121,7 @@ namespace NumpyDotNet {
             }
 
 
-            var result = NpyCoreApi.NpyArray_Concatenate(mps, axis, null);
+            var result = NpyCoreApi.NpyArray_Concatenate(mps, adjustedAxis, null);
 
             if (shrinkOnSingle && n == 1 && result.dims.Length > 1)
             {
@@ -1006,15 +1129,15 @@ namespace NumpyDotNet {
 
                 Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
 
-                if (axis < 0)
-                    axis += dims.Length;
+                if (adjustedAxis < 0)
+                    adjustedAxis += dims.Length;
 
-                if (axis >= dims.Length)
+                if (adjustedAxis >= dims.Length)
                 {
-                    throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
+                    throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", adjustedAxis, dims.Length));
                 }
 
-                dims[axis] *= result.dims[0];
+                dims[adjustedAxis] *= result.dims[0];
 
                 result = result.reshape(dims);
             }

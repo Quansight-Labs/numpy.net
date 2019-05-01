@@ -102,7 +102,7 @@ namespace NumpyLib
             if (PyArray_GetDTypeTransferFunction(aligned,
                                 src_strides_it[0], dst_strides_it[0],
                                 src_dtype, dst_dtype,
-                                0,
+                                false,
                                 ref stransfer, ref transferdata,
                                 ref needs_api) != npy_defs.NPY_SUCCEED)
             {

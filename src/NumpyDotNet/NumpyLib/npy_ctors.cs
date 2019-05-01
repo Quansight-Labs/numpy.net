@@ -1177,6 +1177,195 @@ namespace NumpyLib
             return 0;
         }
 
+        /* TODO: Put the order parameter in PyArray_CopyAnyInto and remove this */
+        internal static int PyArray_CopyAsFlat(NpyArray dst, NpyArray src, NPY_ORDER order)
+        {
+#if false
+            PyArray_StridedUnaryOp stransfer = null;
+            NpyAuxData transferdata = null;
+            NpyIter dst_iter, src_iter;
+
+            NpyIter_IterNextFunc dst_iternext, src_iternext;
+            VoidPtr[] dst_dataptr, src_dataptr;
+            npy_intp dst_stride, src_stride;
+            VoidPtr dst_countptr, src_countptr;
+            UInt32 baseflags;
+
+            VoidPtr dst_data, src_data;
+            npy_intp dst_count, src_count, count;
+            npy_intp src_itemsize;
+            npy_intp dst_size, src_size;
+            bool needs_api;
+#endif
+
+            if (NpyArray_FailUnlessWriteable(dst, "destination array") < 0)
+            {
+                return -1;
+            }
+
+            /*
+             * If the shapes match and a particular order is forced
+             * for both, use the more efficient CopyInto
+             */
+            if (order != NPY_ORDER.NPY_ANYORDER && order != NPY_ORDER.NPY_KEEPORDER &&
+                    NpyArray_NDIM(dst) == NpyArray_NDIM(src) &&
+                    NpyArray_CompareLists(NpyArray_DIMS(dst), NpyArray_DIMS(src),
+                                        NpyArray_NDIM(dst)))
+            {
+                return NpyArray_CopyInto(dst, src);
+            }
+            else
+            {
+                return NpyArray_StridedCopyInto(dst, src);
+            }
+
+#if false
+
+            dst_size = NpyArray_SIZE(dst);
+            src_size = NpyArray_SIZE(src);
+            if (dst_size != src_size)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_RuntimeError,
+                   string.Format("cannot copy from array of size {0} into an array of size {0}", src_size, dst_size));
+                return -1;
+            }
+
+            /* Zero-sized arrays require nothing be done */
+            if (dst_size == 0)
+            {
+                return 0;
+            }
+
+            baseflags = NPY_ITER_EXTERNAL_LOOP |
+                        NPY_ITER_DONT_NEGATE_STRIDES |
+                        NPY_ITER_REFS_OK;
+
+            /*
+             * This copy is based on matching C-order traversals of src and dst.
+             * By using two iterators, we can find maximal sub-chunks that
+             * can be processed at once.
+             */
+            dst_iter = NpyIter_New(dst, NPY_ITER_WRITEONLY | baseflags,
+                                        order,
+                                        NPY_NO_CASTING,
+                                        null);
+            if (dst_iter == null)
+            {
+                return -1;
+            }
+            src_iter = NpyIter_New(src, NPY_ITER_READONLY | baseflags,
+                                        order,
+                                        NPY_NO_CASTING,
+                                        null);
+            if (src_iter == null)
+            {
+                NpyIter_Deallocate(dst_iter);
+                return -1;
+            }
+
+            /* Get all the values needed for the inner loop */
+            dst_iternext = NpyIter_GetIterNext(dst_iter, null);
+            dst_dataptr = NpyIter_GetDataPtrArray(dst_iter);
+            /* Since buffering is disabled, we can cache the stride */
+            dst_stride = NpyIter_GetInnerStrideArray(dst_iter)[0];
+            dst_countptr = NpyIter_GetInnerLoopSizePtr(dst_iter);
+
+            src_iternext = NpyIter_GetIterNext(src_iter, null);
+            src_dataptr = NpyIter_GetDataPtrArray(src_iter);
+            /* Since buffering is disabled, we can cache the stride */
+            src_stride = NpyIter_GetInnerStrideArray(src_iter)[0];
+            src_countptr = NpyIter_GetInnerLoopSizePtr(src_iter);
+            src_itemsize = PyArray_DESCR(src).elsize;
+
+            if (dst_iternext == null || src_iternext == null)
+            {
+                NpyIter_Deallocate(dst_iter);
+                NpyIter_Deallocate(src_iter);
+                return -1;
+            }
+
+            needs_api = NpyIter_IterationNeedsAPI(dst_iter) ||
+                        NpyIter_IterationNeedsAPI(src_iter);
+
+            /*
+             * Because buffering is disabled in the iterator, the inner loop
+             * strides will be the same throughout the iteration loop.  Thus,
+             * we can pass them to this function to take advantage of
+             * contiguous strides, etc.
+             */
+            if (PyArray_GetDTypeTransferFunction(
+                            NpyArray_ISALIGNED(src) && NpyArray_ISALIGNED(dst),
+                            src_stride, dst_stride,
+                            NpyArray_DESCR(src), NpyArray_DESCR(dst),
+                            false,
+                            ref stransfer, ref transferdata,
+                            ref needs_api) != npy_defs.NPY_SUCCEED)
+            {
+                NpyIter_Deallocate(dst_iter);
+                NpyIter_Deallocate(src_iter);
+                return -1;
+            }
+
+            if (!needs_api)
+            {
+                //NPY_BEGIN_THREADS;
+            }
+
+            dst_count = *dst_countptr;
+            src_count = *src_countptr;
+            dst_data = dst_dataptr[0];
+            src_data = src_dataptr[0];
+            for (; ; )
+            {
+                /* Transfer the biggest amount that fits both */
+                count = (src_count < dst_count) ? src_count : dst_count;
+                stransfer(dst_data, dst_stride,
+                            src_data, src_stride,
+                            count, src_itemsize, transferdata);
+
+                /* If we exhausted the dst block, refresh it */
+                if (dst_count == count)
+                {
+                    if (!dst_iternext(dst_iter))
+                    {
+                        break;
+                    }
+                    dst_count = *dst_countptr;
+                    dst_data = dst_dataptr[0];
+                }
+                else
+                {
+                    dst_count -= count;
+                    dst_data += count * dst_stride;
+                }
+
+                /* If we exhausted the src block, refresh it */
+                if (src_count == count)
+                {
+                    if (!src_iternext(src_iter))
+                    {
+                        break;
+                    }
+                    src_count = *src_countptr;
+                    src_data = src_dataptr[0];
+                }
+                else
+                {
+                    src_count -= count;
+                    src_data += count * src_stride;
+                }
+            }
+
+            //NPY_END_THREADS;
+
+            NPY_AUXDATA_FREE(transferdata);
+            NpyIter_Deallocate(dst_iter);
+            NpyIter_Deallocate(src_iter);
+
+            return NpyErr_Occurred() ? -1 : 0;
+#endif
+        }
+
 
         internal static int NpyArray_CopyInto(NpyArray dest, NpyArray src)
         {

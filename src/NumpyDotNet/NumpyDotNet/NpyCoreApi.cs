@@ -1346,7 +1346,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray NpyArray_Concatenate(IEnumerable<ndarray> arrays, int axis, ndarray ret)
+        internal static ndarray NpyArray_Concatenate(IEnumerable<ndarray> arrays, int? axis, ndarray ret)
         {
             NpyArray[] coreArrays = arrays.Select(x => { Incref(x.Array); return x.Array; }).ToArray();
             NpyArray result;

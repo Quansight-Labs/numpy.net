@@ -1216,7 +1216,7 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Free(ap, ptr);
         }
 
-        public static NpyArray NpyArray_Concatenate(NpyArray[] arrays, int axis, NpyArray ret)
+        public static NpyArray NpyArray_Concatenate(NpyArray[] arrays, int? axis, NpyArray ret)
         {
             return numpyinternal.NpyArray_Concatenate(arrays, axis, ret);
         }

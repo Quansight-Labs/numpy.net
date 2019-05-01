@@ -770,7 +770,7 @@ namespace NumpyDotNet
                         }
                     }
 
-                    return np.Concatenate(arrs, _axis: -(max_depth - depth), shrinkOnSingle: false);
+                    return np.Concatenate(arrs, axis: -(max_depth - depth), shrinkOnSingle: false);
 
                 }
                 else

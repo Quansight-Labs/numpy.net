@@ -203,6 +203,11 @@ namespace NumpyLib
                                     ref VoidPtr out_dataB, npy_intp[] out_stridesB)
         {
             npy_stride_sort_item []strideperm = new npy_stride_sort_item[npy_defs.NPY_MAXDIMS];
+            for (int ii = 0; ii < npy_defs.NPY_MAXDIMS; ii++)
+            {
+                strideperm[ii] = new npy_stride_sort_item();
+            }
+
             int i, j;
 
             /* Special case 0 and 1 dimensions */
@@ -474,12 +479,142 @@ namespace NumpyLib
         private static int PyArray_GetDTypeTransferFunction(bool aligned,
                             npy_intp src_stride, npy_intp dst_stride,
                             NpyArray_Descr src_dtype, NpyArray_Descr dst_dtype,
-                            int move_references,
+                            bool move_references,
                             ref PyArray_StridedUnaryOp out_stransfer,
                             ref NpyAuxData out_transferdata,
                             ref bool out_needs_api)
         {
+            npy_intp src_itemsize, dst_itemsize;
+            NPY_TYPES src_type_num, dst_type_num;
+
+#if NPY_DT_DBG_TRACING
+            string traceMsg = string.Format("Calculating dtype transfer from {0} to {1}", src_dtype.type_num, dst_dtype.type_num);
+            Console.WriteLine(traceMsg);
+#endif
+
+            /*
+             * If one of the dtypes is NULL, we give back either a src decref
+             * function or a dst setzero function
+             */
+            if (dst_dtype == null)
+            {
+                if (move_references)
+                {
+                    return get_decsrcref_transfer_function(aligned,
+                                        src_dtype.elsize,
+                                        src_dtype,
+                                        out_stransfer, out_transferdata,
+                                        out_needs_api);
+                }
+                else
+                {
+                    out_stransfer = _dec_src_ref_nop;
+                    out_transferdata = null;
+                    return npy_defs.NPY_SUCCEED;
+                }
+            }
+            else if (src_dtype == null)
+            {
+                return get_setdstzero_transfer_function(aligned,
+                                        dst_dtype.elsize,
+                                        dst_dtype,
+                                        out_stransfer, out_transferdata,
+                                        out_needs_api);
+            }
+
+
+            src_itemsize = src_dtype.elsize;
+            dst_itemsize = dst_dtype.elsize;
+            src_type_num = src_dtype.type_num;
+            dst_type_num = dst_dtype.type_num;
+
+            /* Common special case - number -> number NBO cast */
+            if (NpyTypeNum_ISNUMBER(src_type_num) &&
+                            NpyTypeNum_ISNUMBER(dst_type_num) &&
+                            NpyArray_ISNBO(src_dtype.byteorder) &&
+                            NpyArray_ISNBO(dst_dtype.byteorder))
+            {
+
+                if (NpyArray_EquivTypenums(src_type_num, dst_type_num))
+                {
+                    out_stransfer = PyArray_GetStridedCopyFn(aligned,
+                                                src_stride, dst_stride,
+                                                src_itemsize);
+                    out_transferdata = null;
+                    return (out_stransfer == null) ? npy_defs.NPY_FAIL : npy_defs.NPY_SUCCEED;
+                }
+                else
+                {
+                    return get_nbo_cast_numeric_transfer_function(aligned,
+                                                src_stride, dst_stride,
+                                                src_type_num, dst_type_num,
+                                                out_stransfer, out_transferdata);
+                }
+            }
+
+            /*
+            * If there are no references and the data types are equivalent,
+            * return a simple copy
+            */
+            if (NpyArray_EquivTypes(src_dtype, dst_dtype) &&
+                    !NpyDataType_REFCHK(src_dtype) && !NpyDataType_REFCHK(dst_dtype) &&
+                    (!NpyDataType_HASFIELDS(dst_dtype) ||
+                      is_dtype_struct_simple_unaligned_layout(dst_dtype)))
+            {
+                /*
+                 * We can't pass through the aligned flag because it's not
+                 * appropriate. Consider a size-8 string, it will say it's
+                 * aligned because strings only need alignment 1, but the
+                 * copy function wants to know if it's alignment 8.
+                 *
+                 * TODO: Change align from a flag to a "best power of 2 alignment"
+                 *       which holds the strongest alignment value for all
+                 *       the data which will be used.
+                 */
+                out_stransfer = PyArray_GetStridedCopyFn(false,
+                                                src_stride, dst_stride,
+                                                src_dtype.elsize);
+                out_transferdata = null;
+                return npy_defs.NPY_SUCCEED;
+            }
+
+            throw new NotImplementedException();
             return npy_defs.NPY_SUCCEED;
+        }
+
+        private static bool is_dtype_struct_simple_unaligned_layout(NpyArray_Descr dst_dtype)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool NpyDataType_HASFIELDS(NpyArray_Descr dst_dtype)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void _dec_src_ref_nop(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int get_nbo_cast_numeric_transfer_function(bool aligned, long src_stride, long dst_stride, NPY_TYPES src_type_num, NPY_TYPES dst_type_num, PyArray_StridedUnaryOp out_stransfer, NpyAuxData out_transferdata)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PyArray_StridedUnaryOp PyArray_GetStridedCopyFn(bool aligned, long src_stride, long dst_stride, long src_itemsize)
+        {
+            return _strided_to_strided;
+        }
+
+        private static int get_setdstzero_transfer_function(bool aligned, int elsize, NpyArray_Descr dst_dtype, PyArray_StridedUnaryOp out_stransfer, NpyAuxData out_transferdata, bool out_needs_api)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int get_decsrcref_transfer_function(bool aligned, int elsize, NpyArray_Descr src_dtype, PyArray_StridedUnaryOp out_stransfer, NpyAuxData out_transferdata, bool out_needs_api)
+        {
+            throw new NotImplementedException();
         }
 
         private static int PyArray_GetMaskedDTypeTransferFunction(bool aligned,
