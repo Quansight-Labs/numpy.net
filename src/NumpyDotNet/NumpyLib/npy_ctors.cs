@@ -1183,13 +1183,14 @@ namespace NumpyLib
             PyArray_StridedUnaryOp stransfer = null;
             NpyAuxData transferdata = null;
             NpyArrayIterObject dst_iter, src_iter;
-
-
+            VoidPtr dst_dataptr, src_dataptr;
+            npy_intp dst_stride, src_stride;
             VoidPtr dst_data, src_data;
             npy_intp dst_count, src_count, count;
             npy_intp src_itemsize;
             npy_intp dst_size, src_size;
             bool needs_api = false;
+            npy_intp dst_countptr, src_countptr;
 
 
             if (NpyArray_FailUnlessWriteable(dst, "destination array") < 0)
@@ -1209,9 +1210,7 @@ namespace NumpyLib
                 return NpyArray_CopyInto(dst, src);
             }
 
-            throw new NotImplementedException();
 
-        #if false
             dst_size = NpyArray_SIZE(dst);
             src_size = NpyArray_SIZE(src);
             if (dst_size != src_size)
@@ -1248,7 +1247,20 @@ namespace NumpyLib
             }
 
 
+            /* Get all the values needed for the inner loop */
+            dst_dataptr = dst_iter.dataptr;
+            /* Since buffering is disabled, we can cache the stride */
+            dst_stride = dst_iter.strides[0];
+            dst_countptr = dst_iter.size;
+
+            src_dataptr = src_iter.dataptr;
+            /* Since buffering is disabled, we can cache the stride */
+            src_stride = src_iter.strides[0];
+            src_countptr = src_iter.size;
             src_itemsize = NpyArray_DESCR(src).elsize;
+
+
+
 
 
             /*
@@ -1273,39 +1285,29 @@ namespace NumpyLib
                 //NPY_BEGIN_THREADS;
             }
 
-            dst_count = (npy_intp)GetIndex(dst_countptr, 0);
-            src_count = (npy_intp)GetIndex(src_countptr, 0);
-            dst_data = dst_dataptr[0];
-            src_data = src_dataptr[0];
-            for (; ; )
+            dst_count = dst_countptr;
+            src_count = src_countptr;
+            dst_data = new VoidPtr(dst_dataptr);
+            src_data = new VoidPtr(src_dataptr);
+
+            /* Transfer the biggest amount that fits both */
+            count = (src_count < dst_count) ? src_count : dst_count;
+
+            for (long j = 0; j < count; j++)
             {
-                /* Transfer the biggest amount that fits both */
-                count = (src_count < dst_count) ? src_count : dst_count;
-                stransfer(dst_data, dst_iter.strides[0],
-                            src_data, src_iter.strides[0],
-                            count, src_itemsize, transferdata);
+                var bValue = src.descr.f.getitem(src_iter.dataptr.data_offset - src.data.data_offset, src);
 
-                /* If we exhausted the dst block, refresh it */
-                if (dst_count == count)
-                {
-                    NpyArray_ITER_NEXT(dst_iter);
-                }
-                else
-                {
-                    dst_count -= count;
-                    dst_data.data_offset += count * dst_stride;
-                }
 
-                /* If we exhausted the src block, refresh it */
-                if (src_count == count)
+                try
                 {
-                    NpyArray_ITER_NEXT(src_iter);
-                 }
-                else
-                {
-                    src_count -= count;
-                    src_data.data_offset += count * src_stride;
+                    dst.descr.f.setitem(dst_iter.dataptr.data_offset - dst.data.data_offset, bValue, dst);
                 }
+                catch
+                {
+                    dst.descr.f.setitem(dst_iter.dataptr.data_offset - dst.data.data_offset, 0, dst);
+                }
+                NpyArray_ITER_NEXT(src_iter);
+                NpyArray_ITER_NEXT(dst_iter);
             }
 
             //NPY_END_THREADS;
@@ -1313,7 +1315,7 @@ namespace NumpyLib
             NPY_AUXDATA_FREE(transferdata);
 
             return NpyErr_Occurred() ? -1 : 0;
-#endif
+
         }
 
  

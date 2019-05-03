@@ -164,64 +164,64 @@ namespace NumpyLib
         */
         internal static int NpyIter_Deallocate(NpyIter iter)
         {
-            ITERFLAGS itflags;
-            /*int ndim = NIT_NDIM(iter);*/
-            int iop, nop;
-            NpyArray_Descr[] dtype;
-            NpyArray[] _object;
+            //ITERFLAGS itflags;
+            ///*int ndim = NIT_NDIM(iter);*/
+            //int iop, nop;
+            //NpyArray_Descr[] dtype;
+            //NpyArray[] _object;
 
-            if (iter == null)
-            {
-                return npy_defs.NPY_SUCCEED;
-            }
+            //if (iter == null)
+            //{
+            //    return npy_defs.NPY_SUCCEED;
+            //}
 
-            itflags = NIT_ITFLAGS(iter);
-            nop = NIT_NOP(iter);
-            dtype = NIT_DTYPES(iter);
-            _object = NIT_OPERANDS(iter);
+            //itflags = NIT_ITFLAGS(iter);
+            //nop = NIT_NOP(iter);
+            //dtype = NIT_DTYPES(iter);
+            //_object = NIT_OPERANDS(iter);
 
-            /* Deallocate any buffers and buffering data */
-            if (itflags & ITERFLAGS.NPY_ITFLAG_BUFFER)
-            {
-                NpyIter_BufferData* bufferdata = NIT_BUFFERDATA(iter);
-                VoidPtr[] buffers;
-                NpyAuxData[] transferdata;
+            ///* Deallocate any buffers and buffering data */
+            //if (itflags & ITERFLAGS.NPY_ITFLAG_BUFFER)
+            //{
+            //    NpyIter_BufferData* bufferdata = NIT_BUFFERDATA(iter);
+            //    VoidPtr[] buffers;
+            //    NpyAuxData[] transferdata;
 
-                /* buffers */
-                buffers = NBF_BUFFERS(bufferdata);
-                for (iop = 0; iop < nop; ++iop)
-                {
-                    NpyArray_free(buffers[iop]);
-                }
-                /* read bufferdata */
-                transferdata = NBF_READTRANSFERDATA(bufferdata);
-                for (iop = 0; iop < nop; ++iop)
-                {
-                    if (transferdata[iop]!= null)
-                    {
-                        NPY_AUXDATA_FREE(transferdata[iop]);
-                    }
-                }
-                /* write bufferdata */
-                transferdata = NBF_WRITETRANSFERDATA(bufferdata);
-                for (iop = 0; iop < nop; ++iop)
-                {
-                    if (transferdata[iop] != null)
-                    {
-                        NPY_AUXDATA_FREE(transferdata[iop]);
-                    }
-                }
-            }
+            //    /* buffers */
+            //    buffers = NBF_BUFFERS(bufferdata);
+            //    for (iop = 0; iop < nop; ++iop)
+            //    {
+            //        NpyArray_free(buffers[iop]);
+            //    }
+            //    /* read bufferdata */
+            //    transferdata = NBF_READTRANSFERDATA(bufferdata);
+            //    for (iop = 0; iop < nop; ++iop)
+            //    {
+            //        if (transferdata[iop]!= null)
+            //        {
+            //            NPY_AUXDATA_FREE(transferdata[iop]);
+            //        }
+            //    }
+            //    /* write bufferdata */
+            //    transferdata = NBF_WRITETRANSFERDATA(bufferdata);
+            //    for (iop = 0; iop < nop; ++iop)
+            //    {
+            //        if (transferdata[iop] != null)
+            //        {
+            //            NPY_AUXDATA_FREE(transferdata[iop]);
+            //        }
+            //    }
+            //}
 
-            /* Deallocate all the dtypes and objects that were iterated */
-            for (iop = 0; iop < nop; ++iop)
-            {
-                Npy_XDECREF(dtype[iop]);
-                Npy_XDECREF(_object[iop]);
-            }
+            ///* Deallocate all the dtypes and objects that were iterated */
+            //for (iop = 0; iop < nop; ++iop)
+            //{
+            //    Npy_XDECREF(dtype[iop]);
+            //    Npy_XDECREF(_object[iop]);
+            //}
 
-            /* Deallocate the iterator memory */
-            NpyObject_Free(iter);
+            ///* Deallocate the iterator memory */
+            //NpyObject_Free(iter);
 
             return npy_defs.NPY_SUCCEED;
         }
