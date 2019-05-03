@@ -120,7 +120,7 @@ namespace NumpyLib
                 stransfer(dst_data, dst_strides_it[0], src_data, src_strides_it[0],
                             shape_it[0], src_itemsize, transferdata);
 
-            } while (NPY_RAW_ITER_TWO_NEXT(idim, ndim, coord, shape_it,
+            } while (NPY_RAW_ITER_TWO_NEXT(ref idim, ndim, coord, shape_it,
                                   dst_data, dst_strides_it,
                                   src_data, src_strides_it));
 
@@ -216,7 +216,7 @@ namespace NumpyLib
                 stransfer(dst_data, dst_strides_it[0], src_data, src_strides_it[0],
                             (bool [])wheremask_data.datap, wheremask_strides_it[0],
                             shape_it[0], src_itemsize, transferdata);
-            } while (NPY_RAW_ITER_THREE_NEXT(idim, ndim, coord, shape_it,
+            } while (NPY_RAW_ITER_THREE_NEXT(ref idim, ndim, coord, shape_it,
                                   dst_data, dst_strides_it,
                                   src_data, src_strides_it,
                                   wheremask_data, wheremask_strides_it));

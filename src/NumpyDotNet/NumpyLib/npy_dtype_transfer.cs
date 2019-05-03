@@ -602,10 +602,246 @@ namespace NumpyLib
             throw new NotImplementedException();
         }
 
-        private static PyArray_StridedUnaryOp PyArray_GetStridedCopyFn(bool aligned, long src_stride, long dst_stride, long src_itemsize)
+        private static PyArray_StridedUnaryOp PyArray_GetStridedCopyFn(bool aligned, long src_stride, long dst_stride, long itemsize)
         {
+            /*
+            * Skip the "unaligned" versions on CPUs which support unaligned
+            * memory accesses.
+            */
+            #if !NPY_USE_UNALIGNED_ACCESS
+            if (aligned)
+            {
+            #endif //!NPY_USE_UNALIGNED_ACCESS*/
+
+                /* contiguous dst */
+                if (itemsize != 0 && dst_stride == itemsize)
+                {
+                    /* constant src */
+                    if (src_stride == 0)
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return
+                                  _aligned_strided_to_contig_size1_srcstride0;
+
+                            case 2:
+                                return
+                                  _aligned_strided_to_contig_size2_srcstride0;
+
+                            case 4:
+                                return
+                                  _aligned_strided_to_contig_size4_srcstride0;
+
+                            case 8:
+                                return
+                                  _aligned_strided_to_contig_size8_srcstride0;
+
+                            case 16:
+                                return
+                                  _aligned_strided_to_contig_size16_srcstride0;
+
+                        }
+                    }
+                    /* contiguous src */
+                    else if (src_stride == itemsize)
+                    {
+                        return _contig_to_contig;
+                    }
+                    /* general src */
+                    else
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_strided_to_contig_size1;
+
+                            case 2:
+                                return _aligned_strided_to_contig_size2;
+
+                            case 4:
+                                return _aligned_strided_to_contig_size4;
+
+                            case 8:
+                                return _aligned_strided_to_contig_size8;
+
+                            case 16:
+                                return _aligned_strided_to_contig_size16;
+
+                        }
+                    }
+
+                    return _strided_to_strided;
+                }
+                /* general dst */
+                else
+                {
+                    /* constant src */
+                    if (src_stride == 0)
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return
+                                  _aligned_strided_to_strided_size1_srcstride0;
+
+                            case 2:
+                                return
+                                  _aligned_strided_to_strided_size2_srcstride0;
+
+                            case 4:
+                                return
+                                  _aligned_strided_to_strided_size4_srcstride0;
+
+                            case 8:
+                                return
+                                  _aligned_strided_to_strided_size8_srcstride0;
+
+                            case 16:
+                                return
+                                  _aligned_strided_to_strided_size16_srcstride0;
+
+                        }
+                    }
+                    /* contiguous src */
+                    else if (src_stride == itemsize)
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_contig_to_strided_size1;
+
+                            case 2:
+                                return _aligned_contig_to_strided_size2;
+
+                            case 4:
+                                return _aligned_contig_to_strided_size4;
+
+                            case 8:
+                                return _aligned_contig_to_strided_size8;
+
+                            case 16:
+                                return _aligned_contig_to_strided_size16;
+
+                        }
+
+                        return _strided_to_strided;
+                    }
+                    else
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_strided_to_strided_size1;
+
+                            case 2:
+                                return _aligned_strided_to_strided_size2;
+
+                            case 4:
+                                return _aligned_strided_to_strided_size4;
+
+                            case 8:
+                                return _aligned_strided_to_strided_size8;
+
+                            case 16:
+                                return _aligned_strided_to_strided_size16;
+
+                        }
+                    }
+                }
+
+            #if !NPY_USE_UNALIGNED_ACCESS
+            }
+            else
+            {
+                /* contiguous dst */
+                if (itemsize != 0 && dst_stride == itemsize)
+                {
+                    /* contiguous src */
+                    if (itemsize != 0 && src_stride == itemsize)
+                    {
+                        return _contig_to_contig;
+                    }
+                    /* general src */
+                    else
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_strided_to_contig_size1;
+                            case 2:
+                                return _strided_to_contig_size2;
+
+                            case 4:
+                                return _strided_to_contig_size4;
+
+                            case 8:
+                                return _strided_to_contig_size8;
+
+                            case 16:
+                                return _strided_to_contig_size16;
+
+                        }
+                    }
+
+                    return _strided_to_strided;
+                }
+                /* general dst */
+                else
+                {
+                    /* contiguous src */
+                    if (itemsize != 0 && src_stride == itemsize)
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_contig_to_strided_size1;
+                            case 2:
+                                return _contig_to_strided_size2;
+
+                            case 4:
+                                return _contig_to_strided_size4;
+
+                            case 8:
+                                return _contig_to_strided_size8;
+
+                            case 16:
+                                return _contig_to_strided_size16;
+
+                        }
+
+                        return _strided_to_strided;
+                    }
+                    /* general src */
+                    else
+                    {
+                        switch (itemsize)
+                        {
+                            case 1:
+                                return _aligned_strided_to_strided_size1;
+                            case 2:
+                                return _strided_to_strided_size2;
+
+                            case 4:
+                                return _strided_to_strided_size4;
+
+                            case 8:
+                                return _strided_to_strided_size8;
+
+                            case 16:
+                                return _strided_to_strided_size16;
+
+                        }
+                    }
+                }
+            }
+            #endif //!NPY_USE_UNALIGNED_ACCESS*/
+
             return _strided_to_strided;
         }
+
+  
+
 
         private static int get_setdstzero_transfer_function(bool aligned, int elsize, NpyArray_Descr dst_dtype, PyArray_StridedUnaryOp out_stransfer, NpyAuxData out_transferdata, bool out_needs_api)
         {
