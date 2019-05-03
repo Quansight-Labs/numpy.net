@@ -502,7 +502,7 @@ namespace NumpyLib
 
 
                 /* Slide to the start of the next window */
-                sliding_view.data += sliding_view.dimensions[axis] * sliding_view.strides[axis];
+                sliding_view.data.data_offset += sliding_view.dimensions[axis] * sliding_view.strides[axis];
             }
 
 
