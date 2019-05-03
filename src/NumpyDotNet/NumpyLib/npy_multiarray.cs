@@ -483,22 +483,22 @@ namespace NumpyLib
                 /* Set the dimension to match the input array's */
                 sliding_view.dimensions[axis] = arrays[iarrays].dimensions[axis];
 
-                ///* Copy the data for this array */
-                //if (NpyArray_StridedCopyInto(sliding_view, arrays[iarrays]) < 0)
-                //{
-                //    Npy_DECREF(sliding_view);
-                //    Npy_DECREF(ret);
-                //    return null;
-                //}
-
                 /* Copy the data for this array */
-                if (NpyArray_AssignArray(sliding_view, arrays[iarrays],
-                                    null, NPY_CASTING.NPY_SAME_KIND_CASTING) < 0)
+                if (NpyArray_StridedCopyInto(sliding_view, arrays[iarrays]) < 0)
                 {
                     Npy_DECREF(sliding_view);
                     Npy_DECREF(ret);
                     return null;
                 }
+
+                /* Copy the data for this array */
+                ////if (NpyArray_AssignArray(sliding_view, arrays[iarrays],
+                ////                    null, NPY_CASTING.NPY_SAME_KIND_CASTING) < 0)
+                ////{
+                ////    Npy_DECREF(sliding_view);
+                ////    Npy_DECREF(ret);
+                ////    return null;
+                ////}
 
 
                 /* Slide to the start of the next window */
