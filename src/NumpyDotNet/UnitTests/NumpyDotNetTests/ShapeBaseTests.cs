@@ -531,7 +531,6 @@ namespace NumpyDotNetTests
 
             print(y);
         }
-        [Ignore]
         [TestMethod] 
         public void test_kron_1()
         {
@@ -547,15 +546,8 @@ namespace NumpyDotNetTests
             var x = np.array(new int[,] { { 2, 3 }, { 4, 5 } });
             var y = np.array(new int[,] { { 5, 6 }, { 7, 8 } });
 
-
-            var z = new int[,,,] { { { { 10, 12 }, { 14, 16 } }, { { 15, 18 }, { 21, 24 } } }, { { { 20, 24 }, { 28, 32 } }, { { 25, 30 }, { 35, 40 } } } };
-            var z1 = np.concatenate(z, axis : 1);
-            print(z1);
-
-            //var c1 = np.outer(x, y);
-            //print(c1);
-
             var c = np.kron(x, y);
+            AssertArray(c, new int[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
             print(c);
             print(c.shape);
 
@@ -567,6 +559,10 @@ namespace NumpyDotNetTests
             y = np.array(new int[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
 
             c = np.kron(x, y);
+            AssertArray(c, new int[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 }, 
+                                           { 14, 16, 12, 12, 21, 24, 18, 18, 21, 24, 18, 18 }, 
+                                           { 20, 24, 24, 24, 25, 30, 30, 30, 15, 18, 18, 18 }, 
+                                           { 28, 32, 24, 24, 35, 40, 30, 30, 21, 24, 18, 18 } } });
             print(c);
             print(c.shape);
 

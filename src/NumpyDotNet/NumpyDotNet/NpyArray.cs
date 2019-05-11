@@ -958,7 +958,7 @@ namespace NumpyDotNet {
         }
 
 
-        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? axis = 0, bool shrinkOnSingle = true)
+        private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? axis = 0)
         {
 
             int i;
@@ -1048,28 +1048,6 @@ namespace NumpyDotNet {
             if (0 < axis && axis < NpyDefs.NPY_MAXDIMS || axis < 0)
             {
                 result = result.SwapAxes(axis.Value, 0);
-            }
-
-            if (shrinkOnSingle)
-            {
-                if (n == 1 && result.dims.Length > 1)
-                {
-                    dims = new npy_intp[result.dims.Length - 1];
-
-                    Array.Copy(result.dims, 1, dims, 0, result.dims.Length - 1);
-
-                    if (axis < 0)
-                        axis += dims.Length;
-
-                    if (axis >= dims.Length)
-                    {
-                        throw new Exception(string.Format("Message: axis {0} is out of bounds for array of dimension {1}", axis, dims.Length));
-                    }
-
-                    dims[axis.Value] *= result.dims[0];
-
-                    result = result.reshape(dims);
-                }
             }
   
 

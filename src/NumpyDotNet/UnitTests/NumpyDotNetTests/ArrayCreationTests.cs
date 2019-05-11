@@ -2154,12 +2154,12 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_concatenate_2()
         {
+            //var aa = np.array(new int[]  { 1, 2 ,  3, 4 ,  5, 6 });
+            //var ca = np.concatenate(aa, axis: 0);
 
             var a = np.array(new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
             var c = np.concatenate(a, axis : 0);
             AssertArray(c, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
-
- 
             print(c);
 
             var d = np.concatenate(a, axis: 1);

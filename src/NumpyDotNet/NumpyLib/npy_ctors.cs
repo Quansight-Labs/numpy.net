@@ -381,7 +381,7 @@ namespace NumpyLib
                 npy_intp destoffset = 0;
                 foreach (var array in ArraysToCombine)
                 {
-                    npy_intp BytesToCopy = (NpyArray_Array_Length(array) - array.data.data_offset/array.ItemSize) * array.ItemSize;
+                    npy_intp BytesToCopy = NpyArray_SIZE(array) * array.ItemSize;
                     MemCopy.MemCpy(dest.data, destoffset, array.data, 0, BytesToCopy);
                     destoffset += BytesToCopy;
                 }

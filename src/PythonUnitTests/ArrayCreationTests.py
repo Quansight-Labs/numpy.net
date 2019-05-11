@@ -9,7 +9,13 @@ class ArrayCreationTests(unittest.TestCase):
         print(np.__version__)
 
 
- 
+    def test_Slice3x2x2_1(self):
+
+        x = np.arange(12).reshape(3, 2, 2);
+        y = x[1:];
+        y *= 99;
+        print(x)
+
 
     def test_asfarray_1(self):
 
@@ -874,15 +880,51 @@ class ArrayCreationTests(unittest.TestCase):
 
     def test_concatenate_2(self):
 
+        #a = np.array([1, 2, 3, 4, 5,6])
+        #c = np.concatenate(a, axis=0)
+        #d = np.concatenate((a), axis=0)
+        #print(a.shape)
+        #print(c.shape)
+        #print(d.shape)
+        #print("**********")
+
         a = np.array([[[[1, 2], [3, 4], [5,6]]]])
         c = np.concatenate(a, axis=0)
-        print(c)
+        d = np.concatenate((a), axis=0);
+        print(a.shape)
+        print(c.shape)
+        print(d.shape)
+        print("**********")
 
-        d = np.concatenate(a, axis=1)
-        print(d)
+        a = np.array([[[[1, 2], [3, 4], [5,6]]]]).reshape((2,3,1,1))
+        c = np.concatenate(a, axis=0)
+        d = np.concatenate((a[0], a[1]), axis=0)
 
-        e = np.concatenate(a, axis=None)
-        print(e)
+        print(a.shape)
+        print(c.shape)
+        print(d.shape)
+        print("**********")
+
+        a = np.array([[[[1, 2], [3, 4], [5,6]]]])
+        c = np.concatenate(a, axis=1)
+        d = np.concatenate((a[0]), axis=0);
+        print(a.shape)
+        print(c.shape)
+        print(d.shape)
+        print("**********")
+
+        a = np.array([[[[1, 2], [3, 4], [5,6]]]]).reshape((3,2,1,1))
+        c = np.concatenate(a, axis=1)
+        d = np.concatenate((a[0], a[1], a[2]), axis=1)
+        print(a.shape)
+        print(c.shape)
+        print(d.shape)
+
+        #d = np.concatenate(a, axis=1)
+        #print(d)
+
+        #e = np.concatenate(a, axis=None)
+        #print(e)
 
     def test_concatenate_3(self):
 

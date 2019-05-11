@@ -770,7 +770,7 @@ namespace NumpyDotNet
                         }
                     }
 
-                    return np.Concatenate(arrs, axis: -(max_depth - depth), shrinkOnSingle: false);
+                    return np.Concatenate(arrs, axis: -(max_depth - depth));
 
                 }
                 else
@@ -1600,9 +1600,9 @@ namespace NumpyDotNet
             var axis = nd - 1;
             for (int i = 0; i < nd; i++)
             {
-                Console.WriteLine("input = {0}", result);
+               // Console.WriteLine("input = {0}", result);
                 result = np.concatenate( result , axis : axis);
-                Console.WriteLine("output = {0}", result);
+               // Console.WriteLine("output = {0}", result);
             }
             var wrapper = get_array_prepare(a1, b1);
             if (wrapper != null)

@@ -1081,7 +1081,24 @@ namespace NumpyDotNet
 
         public static ndarray concatenate(object value, int? axis = 0)
         {
-            return concatenate(new ndarray[] { asanyarray(value)}, axis: axis);
+            return concatenate( asanyarray(value), axis: axis);
+        }
+        public static ndarray concatenate(ndarray array, int? axis = 0)
+        {
+            if (array.ndim <= 2)
+            {
+                throw new Exception("zero and one dimensional arrays cannot be concatenated");
+            }
+
+            var numSequence = array.shape.iDims[0];
+
+            ndarray[] sequenceArray = new ndarray[numSequence];
+            for (int i = 0; i < numSequence; i++)
+            {
+                sequenceArray[i] = array[i] as ndarray;
+            }
+
+            return concatenate(sequenceArray, axis: axis);
         }
 
         public static ndarray concatenate(ValueTuple<object, object> values, int? axis = 0)
