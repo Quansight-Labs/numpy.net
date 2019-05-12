@@ -1085,7 +1085,7 @@ namespace NumpyDotNet
         }
         public static ndarray concatenate(ndarray array, int? axis = 0)
         {
-            if (array.ndim <= 2)
+            if (array.ndim <= 1)
             {
                 throw new Exception("zero and one dimensional arrays cannot be concatenated");
             }

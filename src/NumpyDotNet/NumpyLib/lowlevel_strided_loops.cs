@@ -143,11 +143,14 @@ namespace NumpyLib
                                 npy_intp N, npy_intp src_itemsize,
                                 NpyAuxData data)
         {
+            VoidPtr _dst = new VoidPtr(dst);
+            VoidPtr _src = new VoidPtr(src);
+
             while (N > 0)
             {
-                memmove(dst, src, src_itemsize);
-                dst.data_offset += dst_stride;
-                src.data_offset += src_stride;
+                memmove(_dst, _src, src_itemsize);
+                _dst.data_offset += dst_stride;
+                _src.data_offset += src_stride;
                 --N;
             }
         }
