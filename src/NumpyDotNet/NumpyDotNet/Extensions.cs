@@ -578,76 +578,27 @@ namespace NumpyDotNet
 
         public class ufunc 
         {
-            public class add
+            public static ndarray accumulate(NpyArray_Ops operation, object a, ndarray @out = null, int axis = 0)
             {
-                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
-                {
-                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_add, a, axis, null, @out);
-                }
-
-                public static ndarray reduce(object a, int axis = 0, ndarray @out = null, bool keepdims = false)
-                {
-                    return ufuncbase.reduce(NpyArray_Ops.npy_op_add, a, axis, null, @out, keepdims);
-                }
-
-                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
-                {
-                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_add, a, indices, axis, null, @out);
-                }
-
-                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
-                {
-                    return ufuncbase.outer(NpyArray_Ops.npy_op_add, null, a, b, @out, axis);
-                }
-
+                return ufuncbase.accumulate(operation, a, axis, null, @out);
             }
 
-            public static class multiply
+            public static ndarray reduce(NpyArray_Ops operation, object a, int axis = 0, ndarray @out = null, bool keepdims = false)
             {
-                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
-                {
-                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_multiply, a, axis, null, @out);
-                }
-
-                public static ndarray reduce(object a, ndarray @out = null, int axis = 0, bool keepdims = false)
-                {
-                    return ufuncbase.reduce(NpyArray_Ops.npy_op_multiply, a, axis, null, @out, keepdims);
-                }
-
-                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
-                {
-                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_multiply, a, indices, axis, null, @out);
-                }
-
-                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
-                {
-                    return ufuncbase.outer(NpyArray_Ops.npy_op_multiply, null, a, b, @out, axis);
-                }
+                return ufuncbase.reduce(operation, a, axis, null, @out, keepdims);
             }
 
-            public static class greater_equal
+            public static ndarray reduceat(NpyArray_Ops operation, object a, object indices, int axis = 0, ndarray @out = null)
             {
-                public static ndarray accumulate(object a, ndarray @out = null, int axis = 0)
-                {
-                    return ufuncbase.accumulate(NpyArray_Ops.npy_op_greater_equal, a, axis, np.Bool, @out);
-                }
-
-                public static ndarray reduce(object a, int axis = 0, ndarray @out = null, bool keepdims = false)
-                {
-                    return ufuncbase.reduce(NpyArray_Ops.npy_op_greater_equal, a, axis, np.Bool, @out, keepdims);
-                }
-
-                public static ndarray reduceat(object a, object indices, int axis = 0, ndarray @out = null)
-                {
-                    return ufuncbase.reduceat(NpyArray_Ops.npy_op_greater_equal, a, indices, axis, np.Bool, @out);
-                }
-
-                public static ndarray outer(object a, object b, ndarray @out = null, int? axis = null)
-                {
-                    return ufuncbase.outer(NpyArray_Ops.npy_op_greater_equal, np.Bool, a, b, @out, axis);
-                }
-
+                return ufuncbase.reduceat(operation, a, indices, axis, null, @out);
             }
+
+            public static ndarray outer(NpyArray_Ops operation, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
+            {
+                return ufuncbase.outer(operation, dtype, a, b, @out, axis);
+            }
+
+
 
         }
 

@@ -874,7 +874,7 @@ namespace NumpyDotNet
             var a1 = asarray(a);
             var b1 = asarray(b);
 
-            return ufunc.multiply.outer(a1.ravel(), b1.ravel());
+            return ufunc.outer(NpyArray_Ops.npy_op_multiply, null, a1.ravel(), b1.ravel());
         }
 
 
@@ -969,7 +969,7 @@ namespace NumpyDotNet
                 asax.Add(as_.iDims[ax]);
             }
 
-            var multreduce = ufunc.multiply.reduce(asanyarray(asax.ToArray()));
+            var multreduce = ufunc.reduce(NpyArray_Ops.npy_op_multiply, asanyarray(asax.ToArray()));
             var newshape_a = new shape((long)multreduce.GetItem(0), N2);
 
             List<long> olda = new List<npy_intp>();
@@ -1006,7 +1006,7 @@ namespace NumpyDotNet
                 bsax.Add(bs.iDims[ax]);
             }
 
-            multreduce = ufunc.multiply.reduce(asanyarray(bsax.ToArray()));
+            multreduce = ufunc.reduce(NpyArray_Ops.npy_op_multiply, asanyarray(bsax.ToArray()));
             var newshape_b = new shape(N2, (long)multreduce.GetItem(0));
 
             List<long> oldb = new List<npy_intp>();

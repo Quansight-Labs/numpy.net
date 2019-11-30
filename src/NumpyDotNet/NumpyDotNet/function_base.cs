@@ -3342,7 +3342,7 @@ namespace NumpyDotNet
                 // Operations didn't work, cast to ndarray
                 d = np.asarray(d);
                 yarr = np.asarray(yarr);
-                ret = ufunc.add.reduce(d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0, axis: axis);
+                ret = ufunc.reduce(NpyArray_Ops.npy_op_add, d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0, axis: axis);
             }
 
             return ret;
