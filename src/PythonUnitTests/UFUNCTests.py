@@ -4,6 +4,7 @@ from nptest import nptest
 
 class Test_UFUNCTests(unittest.TestCase):
 
+    #region UFUNC ADD tests
     def test_UFUNC_AddReduce_1(self):
 
         x = np.arange(8);
@@ -67,6 +68,10 @@ class Test_UFUNCTests(unittest.TestCase):
         b = np.add.outer(x, y)
         print(b.shape)
         print(b)
+    
+    #endregion
+
+    #region UFUNC SUBTRACT tests
 
     def test_UFUNC_SubtractReduce_1(self):
 
@@ -117,6 +122,7 @@ class Test_UFUNCTests(unittest.TestCase):
         print(b.shape)
         print(b)
 
+    #endregion
  
 
 if __name__ == '__main__':
