@@ -578,7 +578,7 @@ namespace NumpyDotNet
 
         public class ufunc 
         {
-            public static ndarray accumulate(NpyArray_Ops operation, object a, ndarray @out = null, int axis = 0)
+            public static ndarray accumulate(NpyArray_Ops operation, object a, int axis = 0, ndarray @out = null)
             {
                 return ufuncbase.accumulate(operation, a, axis, null, @out);
             }

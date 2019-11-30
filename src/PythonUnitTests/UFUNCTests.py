@@ -5,6 +5,26 @@ from nptest import nptest
 class Test_UFUNCTests(unittest.TestCase):
 
     #region UFUNC ADD tests
+    def test_UFUNC_AddAccumlate_1(self):
+
+        x = np.arange(8);
+
+        a = np.add.accumulate(x)
+        print(a)
+
+        x = np.arange(8).reshape((2,2,2))
+        b = np.add.accumulate(x)
+        print(b)
+
+        c = np.add.accumulate(x, 0)
+        print(c)
+
+        d = np.add.accumulate(x, 1)
+        print(d)
+
+        e = np.add.accumulate(x, 2)
+        print(e)
+
     def test_UFUNC_AddReduce_1(self):
 
         x = np.arange(8);
@@ -73,6 +93,26 @@ class Test_UFUNCTests(unittest.TestCase):
 
     #region UFUNC SUBTRACT tests
 
+    def test_UFUNC_SubtractAccumulate_1(self):
+
+        x = np.arange(8);
+
+        a = np.subtract.accumulate(x)
+        print(a)
+
+        x = np.arange(8).reshape((2,2,2))
+        b = np.subtract.accumulate(x)
+        print(b)
+
+        c = np.subtract.accumulate(x, 0)
+        print(c)
+
+        d = np.subtract.accumulate(x, 1)
+        print(d)
+
+        e = np.subtract.accumulate(x, 2)
+        print(e)
+
     def test_UFUNC_SubtractReduce_1(self):
 
         x = np.arange(8);
@@ -126,6 +166,26 @@ class Test_UFUNCTests(unittest.TestCase):
 
 
     #region UFUNC MULTIPLY tests
+
+    def test_UFUNC_MultiplyAccumulate_1(self):
+
+        x = np.arange(8);
+
+        a = np.multiply.accumulate(x)
+        print(a)
+
+        x = np.arange(8).reshape((2,2,2))
+        b = np.multiply.accumulate(x)
+        print(b)
+
+        c = np.multiply.accumulate(x, 0)
+        print(c)
+
+        d = np.multiply.accumulate(x, 1)
+        print(d)
+
+        e = np.multiply.accumulate(x, 2)
+        print(e)
 
     def test_UFUNC_MultiplyReduce_1(self):
 

@@ -14,6 +14,34 @@ namespace NumpyDotNetTests
     {
         #region UFUNC ADD tests
         [TestMethod]
+        public void test_UFUNC_AddAccumulate_1()
+        {
+            var x = np.arange(8);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            AssertArray(a, new int[] { 0, 1, 3, 6, 10, 15, 21, 28 });
+            print(a);
+
+            x = np.arange(8).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, {{ 4, 6 }, { 8, 10 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
+            AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
+            AssertArray(d, new int[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
+            AssertArray(e, new int[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
+            print(e);
+
+        }
+
+        [TestMethod]
         public void test_UFUNC_AddReduce_1()
         {
             var x = np.arange(8);
@@ -24,7 +52,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(8).reshape((2, 2, 2));
             var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
-            AssertArray(b, new int[,] { {4,6}, {8,10} });
+            AssertArray(b, new int[,] { { 4, 6 }, { 8, 10 } });
             print(b);
 
             var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
@@ -41,7 +69,8 @@ namespace NumpyDotNetTests
 
         }
 
-        #if NOT_PLANNING_TODO
+
+#if NOT_PLANNING_TODO
         [Ignore]  // don't currently support reduce on multiple axis
         [TestMethod]
         public void test_UFUNC_AddReduce_2()
@@ -60,7 +89,7 @@ namespace NumpyDotNetTests
             print(e);
 
         }
-        #endif
+#endif
 
         [TestMethod]
         public void test_UFUNC_AddReduceAt_1()
@@ -113,6 +142,34 @@ namespace NumpyDotNetTests
 
 
         #region UFUNC SUBTRACT tests
+        [TestMethod]
+        public void test_UFUNC_SubtractAccumulate_1()
+        {
+            var x = np.arange(8);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x);
+            AssertArray(a, new int[] { 0, -1, -3, -6, -10, -15, -21, -28 });
+            print(a);
+
+            x = np.arange(8).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x);
+            AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { -4, -4 }, { -4, -4 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 0);
+            AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { -4, -4 }, { -4, -4 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 1);
+            AssertArray(d, new int[,,] { { { 0, 1 }, { -2, -2 } }, { { 4, 5 }, { -2, -2 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 2);
+            AssertArray(e, new int[,,] { { { 0, -1 }, { 2, -1 } }, { { 4, -1 }, { 6, -1 } } });
+            print(e);
+
+        }
+
         [TestMethod]
         public void test_UFUNC_SubtractReduce_1()
         {
@@ -192,6 +249,34 @@ namespace NumpyDotNetTests
 
         #region UFUNC MULTIPLY tests
         [TestMethod]
+        public void test_UFUNC_MultiplyAccumulate_1()
+        {
+            var x = np.arange(8);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x);
+            AssertArray(a, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+            print(a);
+
+            x = np.arange(8).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x);
+            AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 0, 5 }, { 12, 21 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 0);
+            AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 0, 5 }, { 12, 21 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 1);
+            AssertArray(d, new int[,,] { { { 0, 1 }, { 0, 3 } }, { { 4, 5 }, { 24, 35 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 2);
+            AssertArray(e, new int[,,] { { { 0, 0 }, { 2, 6 } }, { { 4, 20 }, { 6, 42 } } });
+            print(e);
+
+        }
+
+        [TestMethod]
         public void test_UFUNC_MultiplyReduce_1()
         {
             var x = np.arange(8);
@@ -206,7 +291,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x, 0);
-            AssertArray(c, new int[,] { {0, 5 }, { 12, 21 } });
+            AssertArray(c, new int[,] { { 0, 5 }, { 12, 21 } });
             print(c);
 
             var d = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x, 1);
