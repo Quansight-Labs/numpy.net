@@ -353,5 +353,117 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region UFUNC DIVIDE tests
+        [TestMethod]
+        public void test_UFUNC_DivideAccumulate_1()
+        {
+            var x = np.arange(8, 16, dtype : np.Float64);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x);
+            AssertArray(a, new double[] { 8.00000000e+00, 8.88888889e-01, 8.88888889e-02, 8.08080808e-03, 6.73400673e-04, 5.18000518e-05, 3.70000370e-06, 2.46666913e-07 });
+            print(a);
+
+            x = np.arange(8, 16, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x);
+            AssertArray(b, new double[,,] { { { 8, 9 }, { 10, 11 } }, { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 0);
+            AssertArray(c, new double[,,] { { { 8, 9 }, { 10, 11 } }, { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 1);
+            AssertArray(d, new double[,,] { { { 8, 9 }, { 0.8, 0.81818182 } }, { { 12, 13 }, { 0.85714286, 0.86666667 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 2);
+            AssertArray(e, new double[,,] { { { 8.0, 0.88888889 }, { 10.0, 0.90909091 } }, { { 12.0, 0.92307692 }, { 14.0, 0.93333333 } } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_DivideReduce_1()
+        {
+            var x = np.arange(8, 16, dtype: np.Float64);
+
+            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x);
+            Assert.AreEqual(2.4666691333357994e-07, a.GetItem(0));
+            print(a);
+
+            x = np.arange(8, 16, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x);
+            AssertArray(b, new double[,] { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } });
+            print(b);
+
+            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 0);
+            AssertArray(c, new double[,] { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } });
+            print(c);
+
+            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 1);
+            AssertArray(d, new double[,] { { 0.8, 0.81818182 }, { 0.85714286, 0.86666667 } });
+            print(d);
+
+            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 2);
+            AssertArray(e, new double[,] { { 0.88888889, 0.90909091 }, { 0.92307692, 0.93333333 } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_DivideReduceAt_1()
+        {
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, np.arange(8, 16, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            AssertArray(a, new double[] { 0.00808081, 0.00681818, 0.00582751, 0.00503663 });
+            print(a);
+
+            double retstep = 0;
+            var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new long[] { 0, 3, 1, 2, 0 });
+            AssertArray(b, new double[,] {{0.00000000e+00, 2.22222222e-02, 3.33333333e-02, 3.89610390e-02},
+                                          {1.20000000e+01, 1.30000000e+01, 1.40000000e+01, 1.50000000e+01}, 
+                                          {4.00000000e+00, 5.00000000e+00, 6.00000000e+00, 7.00000000e+00},
+                                          {8.00000000e+00, 9.00000000e+00, 1.00000000e+01, 1.10000000e+01}, 
+                                          {0.00000000e+00, 1.70940171e-03, 2.38095238e-03, 2.59740260e-03}});
+            print(b);
+
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new long[] { 0, 3 }, axis: 1);
+            AssertArray(c, new double[,] { { 0.0, 3.0 }, { 0.13333333,  7.0  }, { 0.08888889, 11.0  }, { 0.06593407, 15.0  } });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_UFUNC_DivideOuter_1()
+        {
+            var x = np.arange(4, 8, dtype: np.Float64);
+
+            var a = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, x, x);
+            AssertShape(a, 4, 4);
+            print(a.shape);
+            AssertArray(a, new double[,] { { 1.0, 0.8, 0.66666667, 0.57142857 },
+                                        {1.25, 1.0, 0.83333333, 0.71428571 },
+                                        { 1.5, 1.2, 1.0, 0.85714286 },
+                                        { 1.75,1.4, 1.16666667, 1.0 } });
+            print(a);
+
+            x = np.arange(8,14, dtype:np.Float64).reshape((3, 2));
+            var y = np.arange(8, 14, dtype: np.Float64).reshape((2, 3));
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, x, y);
+            AssertShape(b, 3, 2, 2, 3);
+            print(b.shape);
+
+            var ExpectedDataB = new double[,,,]
+
+                {{{{1.0, 0.88888889, 0.8 }, {0.72727273, 0.66666667, 0.61538462}}, {{1.125, 1.0, 0.9},        {0.81818182, 0.75, 0.69230769}}},
+                 {{{1.25, 1.11111111, 1.0}, {0.90909091, 0.83333333, 0.76923077}}, {{1.375, 1.22222222, 1.1}, {1.0, 0.91666667, 0.84615385}}},
+                 {{{1.5, 1.33333333, 1.2 }, {1.09090909, 1.0,  0.92307692}},       {{1.625, 1.44444444, 1.3}, {1.18181818, 1.08333333, 1.0}}}};
+
+            //AssertArray(b, ExpectedDataB);
+
+            print(b);
+        }
+
+        #endregion
+
     }
 }

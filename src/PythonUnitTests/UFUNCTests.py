@@ -237,6 +237,85 @@ class Test_UFUNCTests(unittest.TestCase):
         print(b)
 
     #endregion
+
+
+    #region UFUNC DIVIDE tests
+
+    def test_UFUNC_DivideAccumulate_1(self):
+
+        x = np.arange(8, 16, dtype=np.float64);
+
+        a = np.divide.accumulate(x)
+        print(a)
+        x = np.arange(8, 16, dtype=np.float64).reshape((2,2,2))
+        b = np.divide.accumulate(x)
+        print(b)
+
+        c = np.divide.accumulate(x, 0)
+        print(c)
+
+        d = np.divide.accumulate(x, 1)
+        print(d)
+
+        e = np.divide.accumulate(x, 2)
+        print(e)
+
+    def test_UFUNC_DivideReduce_1(self):
+
+        x = np.arange(8, 16, dtype=np.float64);
+
+        a = np.divide.reduce(x)
+        print(a)
+        print("*****")
+
+
+        x = np.arange(8, 16, dtype=np.float64).reshape((2,2,2))
+        b = np.divide.reduce(x)
+        print(b)
+        print("*****")
+
+        c = np.divide.reduce(x, 0)
+        print(c)
+        print("*****")
+
+        d = np.divide.reduce(x, 1)
+        print(d)
+        print("*****")
+
+        e = np.divide.reduce(x, 2)
+        print(e)
+
+
+    def test_UFUNC_DivideReduceAt_1(self):
+
+        a =np.divide.reduceat(np.arange(8, 16, dtype=np.float64),[0,4, 1,5, 2,6, 3,7])[::2]
+        print(a)
+        print("**********")
+
+        x = np.linspace(0, 15, 16).reshape(4,4)
+        b = np.divide.reduceat(x, [0, 3, 1, 2, 0])
+        print(b)
+        print("**********")
+
+        c = np.divide.reduceat(x, [0, 3], axis = 1)
+        print(c)
+
+    def test_UFUNC_DivideOuter_1(self):
+
+        x = np.arange(4, 8, dtype=np.float64);
+
+        a = np.divide.outer(x, x)
+        print(a.shape)
+        print(a)
+
+        x = np.arange(8,14, dtype=np.float64).reshape((3,2))
+        y = np.arange(8,14, dtype=np.float64).reshape((2,3))
+        b = np.divide.outer(x, y)
+        print(b.shape)
+        print(b)
+
+    #endregion
+ 
  
 
 if __name__ == '__main__':
