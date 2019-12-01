@@ -316,7 +316,82 @@ class Test_UFUNCTests(unittest.TestCase):
 
     #endregion
  
- 
+     #region UFUNC REMAINDER tests
+
+    def test_UFUNC_RemainderAccumulate_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.remainder.accumulate(x)
+        print(a)
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.remainder.accumulate(x)
+        print(b)
+
+        c = np.remainder.accumulate(x, 0)
+        print(c)
+
+        d = np.remainder.accumulate(x, 1)
+        print(d)
+
+        e = np.remainder.accumulate(x, 2)
+        print(e)
+
+    def test_UFUNC_RemainderReduce_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.remainder.reduce(x)
+        print(a)
+        print("*****")
+
+
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.remainder.reduce(x)
+        print(b)
+        print("*****")
+
+        c = np.remainder.reduce(x, 0)
+        print(c)
+        print("*****")
+
+        d = np.remainder.reduce(x, 1)
+        print(d)
+        print("*****")
+
+        e = np.remainder.reduce(x, 2)
+        print(e)
+
+
+    def test_UFUNC_RemainderReduceAt_1(self):
+
+        a =np.remainder.reduceat(np.arange(16,8,-1, dtype=np.float64),[0,4, 1,5, 2,6, 3,7])[::2]
+        print(a)
+        print("**********")
+
+        x = np.linspace(0, 15, 16).reshape(4,4)
+        b = np.remainder.reduceat(x, [0, 3, 1, 2, 0])
+        print(b)
+        print("**********")
+
+        c = np.remainder.reduceat(x, [0, 3], axis = 1)
+        print(c)
+
+    def test_UFUNC_RemainderOuter_1(self):
+
+        x = np.arange(4, 8, dtype=np.float64);
+
+        a = np.remainder.outer(x, x)
+        print(a.shape)
+        print(a)
+
+        x = np.arange(14,8,-1, dtype=np.float64).reshape((3,2))
+        y = np.arange(14,8,-1, dtype=np.float64).reshape((2,3))
+        b = np.remainder.outer(x, y)
+        print(b.shape)
+        print(b)
+
+    #endregion
 
 if __name__ == '__main__':
     unittest.main()

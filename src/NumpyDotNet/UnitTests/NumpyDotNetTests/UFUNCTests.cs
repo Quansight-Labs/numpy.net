@@ -465,5 +465,117 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region UFUNC REMAINDER tests
+        [TestMethod]
+        public void test_UFUNC_RemainderAccumulate_1()
+        {
+            var x = np.arange(16, 8, -1, dtype: np.Float64);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x);
+            AssertArray(a, new double[] { 16,  1,  1,  1,  1,  1,  1,  1 });
+            print(a);
+
+            x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x);
+            AssertArray(b, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4,4 }, { 4,4 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 0);
+            AssertArray(c, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4, 4 }, { 4, 4 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 1);
+            AssertArray(d, new double[,,] { { { 16, 15 }, { 2, 2 } }, { { 12, 11 }, { 2, 2 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 2);
+            AssertArray(e, new double[,,] { { { 16, 1 }, { 14, 1 } }, { { 12, 1 }, { 10, 1 } } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_RemainderReduce_1()
+        {
+            var x = np.arange(16,8,-1, dtype: np.Float64);
+
+            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x);
+            Assert.AreEqual(1.0, a.GetItem(0));
+            print(a);
+
+            x = np.arange(16,8,-1, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x);
+            AssertArray(b, new double[,] { { 4, 4 }, { 4, 4 } });
+            print(b);
+
+            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 0);
+            AssertArray(c, new double[,] { { 4, 4 }, { 4, 4 } });
+            print(c);
+
+            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 1);
+            AssertArray(d, new double[,] { { 2, 2 }, { 2, 2 } });
+            print(d);
+
+            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 2);
+            AssertArray(e, new double[,] { { 1, 1 }, { 1, 1 } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_RemainderReduceAt_1()
+        {
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, np.arange(16, 8, -1, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            AssertArray(a, new double[] { 1,1,1,1 });
+            print(a);
+
+            double retstep = 0;
+            var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new long[] { 0, 3, 1, 2, 0 });
+            AssertArray(b, new double[,] {{0,1,2,3},
+                                          {12,13,14,15},
+                                          {4,5,6,7},
+                                          {8,9,10,11},
+                                          {0,1,2,3}});
+            print(b);
+
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new long[] { 0, 3 }, axis: 1);
+            AssertArray(c, new double[,] { { 0, 3 }, { 4, 7 }, { 8, 11 }, { 12, 15 } });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_UFUNC_RemainderOuter_1()
+        {
+            var x = np.arange(4, 8, dtype: np.Float64);
+
+            var a = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, x, x);
+            AssertShape(a, 4, 4);
+            print(a.shape);
+            AssertArray(a, new double[,] { { 0,4,4,4 },
+                                           { 1,0,5,5 },
+                                           { 2,1,0,6 },
+                                           { 3,2,1,0 } });
+            print(a);
+
+            x = np.arange(8, 14, dtype: np.Float64).reshape((3, 2));
+            var y = np.arange(8, 14, dtype: np.Float64).reshape((2, 3));
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, x, y);
+            AssertShape(b, 3, 2, 2, 3);
+            print(b.shape);
+
+            var ExpectedDataB = new double[,,,]
+
+                {{{{0,1,2 },    {3,4,5}},   {{13,0,1},   {2,3,4}}},
+                 {{{12,12,0},   {1,2,3}},   {{11,11,11}, {0,1,2}}},
+                 {{{10,10,10 }, {10,0,1}},  {{9,9,9},    {9,9,0}}}};
+
+            //AssertArray(b, ExpectedDataB);
+
+            print(b);
+        }
+
+        #endregion
+
     }
 }
