@@ -521,6 +521,8 @@ class Test_UFUNCTests(unittest.TestCase):
 
     def test_UFUNC_PowerReduceAt_1(self):
 
+        np.set_printoptions(precision=20, floatmode = "maxprec")
+
         a =np.power.reduceat(np.arange(16,8,-1, dtype=np.float64),[0,4, 1,5, 2,6, 3,7])[::2]
         print(a)
         print("**********")
@@ -535,17 +537,22 @@ class Test_UFUNCTests(unittest.TestCase):
 
     def test_UFUNC_PowerOuter_1(self):
 
+        np.set_printoptions(precision=20, floatmode = "maxprec")
+
         x = np.arange(4, 8, dtype=np.float64);
 
         a = np.power.outer(x, x)
         print(a.shape)
         print(a)
-
+        print("**********")
+        
         x = np.arange(14,8,-1, dtype=np.float64).reshape((3,2))
         y = np.arange(14,8,-1, dtype=np.float64).reshape((2,3))
         b = np.power.outer(x, y)
         print(b.shape)
         print(b)
+        print("**********")
+        
 
     #endregion
 if __name__ == '__main__':
