@@ -689,5 +689,130 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region UFUNC POWER tests
+        [TestMethod]
+        public void test_UFUNC_PowerAccumulate_1()
+        {
+            var x = np.arange(16, 8, -1, dtype: np.Float64);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x);
+            AssertArray(a, new double[] {1.6000000e+001, 1.152921504606847E+18, 7.33155940312959E+252, double.PositiveInfinity,
+                                        double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity });
+            print(a);
+
+            x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x);
+            AssertArray(b, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 1.40000000e+01, 1.30000000e+01 } }, 
+                                            { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } } });
+
+            
+
+
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 0);
+            AssertArray(c, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 1.40000000e+01, 1.30000000e+01 } },
+                                            { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 1);
+            AssertArray(d, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 72057594037927936, 1946195068359375 } }, 
+                                            { { 1.20000000e+01, 1.10000000e+01 }, { 61917364224, 2357947691 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 2);
+            AssertArray(e, new double[,,] { { { 1.60000000e+01, 1.152921504606847E+18 }, { 1.40000000e+01, 793714773254144 } }, 
+                                            { { 1.20000000e+01, 743008370688 }, { 1.00000000e+01, 1.00000000e+09} } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_PowerReduce_1()
+        {
+            var x = np.arange(16, 8, -1, dtype: np.Float64);
+
+            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x);
+            Assert.AreEqual(double.PositiveInfinity, a.GetItem(0));
+            print(a);
+
+            x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
+            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x);
+            AssertArray(b, new double[,] { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } });
+            print(b);
+
+            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 0);
+            AssertArray(c, new double[,] { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } });
+            print(c);
+
+            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 1);
+            AssertArray(d, new double[,] { { 72057594037927936, 1946195068359375 }, { 61917364224, 2357947691 } });
+            print(d);
+
+            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 2);
+            AssertArray(e, new double[,] { { 1.152921504606847E+18, 793714773254144 }, { 743008370688, 1.00000000e+09 } });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_UFUNC_PowerReduceAt_1()
+        {
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, np.arange(16, 8, -1, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            AssertArray(a, new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity });
+            print(a);
+
+            double retstep = 0;
+            var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new long[] { 0, 3, 1, 2, 0 });
+            AssertArray(b, new double[,] {{0.00000000e+000, 1.00000000e+000, 1.152921504606847E+18, 5.4744010894202194E+36},
+                                          {1.20000000e+001, 1.30000000e+001, 1.40000000e+001, 1.50000000e+001},
+                                          {4.00000000e+000, 5.00000000e+000, 6.00000000e+000, 7.00000000e+000},
+                                          {8.00000000e+000, 9.00000000e+000, 1.00000000e+001, 1.10000000e+001},
+                                          {0.00000000e+000, 1.00000000e+000, 7.33155940312959E+252, double.PositiveInfinity}});
+            print(b);
+
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new long[] { 0, 3 }, axis: 1);
+            AssertArray(c, new double[,] { { 0.00000000e+000, 3.00000000e+000 }, { 1.152921504606847E+18, 7.00000000e+000 }, 
+                                           { 1.8971375900641885E+81, 1.10000000e+001 }, { 2.5762427384904039E+196, 1.50000000e+001 } });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_UFUNC_PowerOuter_1()
+        {
+            var x = np.arange(4, 8, dtype: np.Float64);
+
+            var a = np.ufunc.outer(NpyArray_Ops.npy_op_power, null, x, x);
+            AssertShape(a, 4, 4);
+            print(a.shape);
+            AssertArray(a, new double[,] { { 2.56000e+02, 1.02400e+03, 4.09600e+03, 1.63840e+04 },
+                                           { 6.25000e+02, 3.12500e+03, 1.56250e+04, 7.81250e+04 },
+                                           { 1.29600e+03, 7.77600e+03, 4.66560e+04, 2.79936e+05 },
+                                           { 2.40100e+03, 1.68070e+04, 1.17649e+05, 8.23543e+05} });
+            print(a);
+
+            x = np.arange(14, 8, -1, dtype: np.Float64).reshape((3, 2));
+            var y = np.arange(14, 8, -1, dtype: np.Float64).reshape((2, 3));
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_power, null, x, y);
+            AssertShape(b, 3, 2, 2, 3);
+            print(b.shape);
+
+            var ExpectedDataB = new double[,,,]
+
+                {{{{11112006825558016, 793714773254144, 56693912375296 },  {4049565169664, 289254654976, 20661046784}},   
+                  {{3937376385699289, 302875106592253, 23298085122481},  {1792160394037, 137858491849, 10604499373}}},
+                 {{{1283918464548864, 106993205379072, 8916100448256},   {743008370688, 61917364224, 5159780352}},   
+                  {{379749833583241, 34522712143931, 3138428376721},         {285311670611, 25937424601, 2357947691}}},
+                 {{{100000000000000, 10000000000000, 1000000000000 },        {100000000000, 10000000000, 1000000000}},  
+                  {{22876792454961, 2541865828329, 282429536481},            {31381059609, 3486784401, 387420489}}}};
+
+            AssertArray(b, ExpectedDataB);
+
+            print(b);
+        }
+
+        #endregion
+
     }
 }

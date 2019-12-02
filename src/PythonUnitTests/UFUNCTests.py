@@ -469,5 +469,84 @@ class Test_UFUNCTests(unittest.TestCase):
         print(b)
 
     #endregion
+
+    #region UFUNC POWER tests
+
+    def test_UFUNC_PowerAccumulate_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.power.accumulate(x)
+        print(a)
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.power.accumulate(x)
+        print(b)
+
+        c = np.power.accumulate(x, 0)
+        print(c)
+        print("*******")
+
+        d = np.power.accumulate(x, 1)
+        print(d)
+        print("*******")
+
+        e = np.power.accumulate(x, 2)
+        print(e)
+
+    def test_UFUNC_PowerReduce_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.power.reduce(x)
+        print(a)
+        print("*****")
+
+
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.power.reduce(x)
+        print(b)
+        print("*****")
+
+        c = np.power.reduce(x, 0)
+        print(c)
+        print("*****")
+
+        d = np.power.reduce(x, 1)
+        print(d)
+        print("*****")
+
+        e = np.power.reduce(x, 2)
+        print(e)
+
+
+    def test_UFUNC_PowerReduceAt_1(self):
+
+        a =np.power.reduceat(np.arange(16,8,-1, dtype=np.float64),[0,4, 1,5, 2,6, 3,7])[::2]
+        print(a)
+        print("**********")
+
+        x = np.linspace(0, 15, 16).reshape(4,4)
+        b = np.power.reduceat(x, [0, 3, 1, 2, 0])
+        print(b)
+        print("**********")
+
+        c = np.power.reduceat(x, [0, 3], axis = 1)
+        print(c)
+
+    def test_UFUNC_PowerOuter_1(self):
+
+        x = np.arange(4, 8, dtype=np.float64);
+
+        a = np.power.outer(x, x)
+        print(a.shape)
+        print(a)
+
+        x = np.arange(14,8,-1, dtype=np.float64).reshape((3,2))
+        y = np.arange(14,8,-1, dtype=np.float64).reshape((2,3))
+        b = np.power.outer(x, y)
+        print(b.shape)
+        print(b)
+
+    #endregion
 if __name__ == '__main__':
     unittest.main()
