@@ -393,5 +393,81 @@ class Test_UFUNCTests(unittest.TestCase):
 
     #endregion
 
+    #region UFUNC FMOD tests
+
+    def test_UFUNC_FModAccumulate_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.fmod.accumulate(x)
+        print(a)
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.fmod.accumulate(x)
+        print(b)
+
+        c = np.fmod.accumulate(x, 0)
+        print(c)
+
+        d = np.fmod.accumulate(x, 1)
+        print(d)
+
+        e = np.fmod.accumulate(x, 2)
+        print(e)
+
+    def test_UFUNC_FModReduce_1(self):
+
+        x = np.arange(16, 8, -1, dtype=np.float64);
+
+        a = np.fmod.reduce(x)
+        print(a)
+        print("*****")
+
+
+        x = np.arange(16, 8, -1, dtype=np.float64).reshape((2,2,2))
+        b = np.fmod.reduce(x)
+        print(b)
+        print("*****")
+
+        c = np.fmod.reduce(x, 0)
+        print(c)
+        print("*****")
+
+        d = np.fmod.reduce(x, 1)
+        print(d)
+        print("*****")
+
+        e = np.fmod.reduce(x, 2)
+        print(e)
+
+
+    def test_UFUNC_FModReduceAt_1(self):
+
+        a =np.fmod.reduceat(np.arange(16,8,-1, dtype=np.float64),[0,4, 1,5, 2,6, 3,7])[::2]
+        print(a)
+        print("**********")
+
+        x = np.linspace(0, 15, 16).reshape(4,4)
+        b = np.fmod.reduceat(x, [0, 3, 1, 2, 0])
+        print(b)
+        print("**********")
+
+        c = np.fmod.reduceat(x, [0, 3], axis = 1)
+        print(c)
+
+    def test_UFUNC_FModOuter_1(self):
+
+        x = np.arange(4, 8, dtype=np.float64);
+
+        a = np.fmod.outer(x, x)
+        print(a.shape)
+        print(a)
+
+        x = np.arange(14,8,-1, dtype=np.float64).reshape((3,2))
+        y = np.arange(14,8,-1, dtype=np.float64).reshape((2,3))
+        b = np.fmod.outer(x, y)
+        print(b.shape)
+        print(b)
+
+    #endregion
 if __name__ == '__main__':
     unittest.main()
