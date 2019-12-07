@@ -2578,30 +2578,7 @@ namespace NumpyDotNetTests
         #endregion
 
         #region UFunc Special Calls
-        [Ignore]
-        [TestMethod]
-        public void xxx_UFunc_Reduce_Placeholder()
-        {
 
-        }
-        [Ignore]
-        [TestMethod]
-        public void xxx_UFunc_Accumlate_Placeholder()
-        {
-
-        }
-        [Ignore]
-        [TestMethod]
-        public void xxx_UFunc_ReduceAt_Placeholder()
-        {
-
-        }
-        [Ignore]
-        [TestMethod]
-        public void xxx_UFunc_Outer_Placeholder()
-        {
-
-        }
         [Ignore]
         [TestMethod]
         public void xxx_UFunc_At_Placeholder()
