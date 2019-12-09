@@ -1582,6 +1582,35 @@ class MathematicalFunctionsTests(unittest.TestCase):
         d = np.fmin(np.Inf, 1)
         print(d)
 
+
+    def test_nan_to_num_1(self):
+
+        a = np.nan_to_num(np.inf)
+        print(a)
+
+        b = np.nan_to_num(-np.inf)
+        print(b)
+
+        c = np.nan_to_num(np.nan)
+        print(c)
+
+        x = np.array([np.inf, -np.inf, np.nan, -128, 128])
+        d = np.nan_to_num(x)
+        print(d)
+
+        #e = np.nan_to_num(x, nan=-9999, posinf=33333333, neginf=33333333)
+        #print(e)
+
+        y = np.array([complex(np.inf, np.nan), np.nan, complex(np.nan, np.inf)])
+        print(y)
+
+        f = np.nan_to_num(y)
+        print(f)
+
+        #g = np.nan_to_num(y, nan=111111, posinf=222222)
+        #print(g)
+
+
     #endregion
 
 if __name__ == '__main__':

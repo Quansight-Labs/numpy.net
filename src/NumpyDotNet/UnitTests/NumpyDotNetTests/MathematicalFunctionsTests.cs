@@ -2560,11 +2560,49 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_nan_to_num_1()
         {
+            double a1 = (double)np.nan_to_num(double.PositiveInfinity);
+            Assert.AreEqual(a1, 1.7976931348623157e+308);
+            print(a1);
 
+            double b1 = (double)np.nan_to_num(double.NegativeInfinity);
+            Assert.AreEqual(b1, -1.7976931348623157e+308);
+            print(b1);
+
+            double c1 = (double)np.nan_to_num(double.NaN);
+            Assert.AreEqual(c1, 0.0);
+            print(c1);
+
+            double a2 = (float)np.nan_to_num(float.PositiveInfinity);
+            Assert.AreEqual(a2, 3.40282346638529E+38f);
+            print(a2);
+
+            double b2 = (float)np.nan_to_num(float.NegativeInfinity);
+            Assert.AreEqual(b2, -3.40282346638529E+38f);
+            print(b2);
+
+            double c2 = (float)np.nan_to_num(float.NaN);
+            Assert.AreEqual(c2, 0.0f);
+            print(c2);
+
+            ndarray x = np.array(new double[] { double.PositiveInfinity, double.NegativeInfinity, double.NaN, -128, 128 });
+            ndarray d = np.nan_to_num(x);
+            AssertArray(d, new double[] { 1.7976931348623157E+308, -1.7976931348623157E+308,  0.00000000e+000, -1.28000000e+002, 1.28000000e+002 });
+            print(d);
+
+            //e = np.nan_to_num(x, nan=-9999, posinf=33333333, neginf=33333333);
+            //print(e);
+
+            //y = np.array([complex(np.inf, np.nan), np.nan, complex(np.nan, np.inf)]);
+            //print(y);
+
+            //f = np.nan_to_num(y);
+            //print(f);
+
+            //g = np.nan_to_num(y, nan=111111, posinf=222222);
+            //print(g);
         }
 
         [Ignore]
