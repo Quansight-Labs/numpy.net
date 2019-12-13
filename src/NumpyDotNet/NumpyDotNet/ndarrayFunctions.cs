@@ -500,16 +500,16 @@ namespace NumpyDotNet
                 start = 0;
             }
 
-            npy_intp len = 0;
+            double len = 0;
             try
             {
-                npy_intp ArrayLen = (npy_intp)(stop - start);
+                double ArrayLen = (double)(stop - start);
 
                 if ((ArrayLen % step) > 0)
                 {
-                    ArrayLen += (npy_intp)(ArrayLen % step);
+                    ArrayLen += (double)(ArrayLen % step);
                 }
-                ArrayLen = (npy_intp)(ArrayLen / step);
+                ArrayLen = (double)(ArrayLen / step);
 
                 len = ArrayLen;
             }
@@ -538,7 +538,7 @@ namespace NumpyDotNet
                 swap = false;
             }
 
-            dims = new npy_intp[] { len };
+            dims = new npy_intp[] { (npy_intp)len };
             ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
 
             // populate the array
