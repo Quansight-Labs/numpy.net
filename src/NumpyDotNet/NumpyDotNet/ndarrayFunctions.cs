@@ -544,7 +544,7 @@ namespace NumpyDotNet
             // populate the array
             double _step = (double)step;
             double _start = (double)start;
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < (int)len; i++)
             {
                 double value = _start + (i * _step);
                 numpyAPI.SetIndex(result.Array.data, i, value);
