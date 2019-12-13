@@ -12,7 +12,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class IndexTricksTests : TestBaseClass
     {
-        #if NOT_PLANNING_TODO
+#if NOT_PLANNING_TODO
         [Ignore] // not implemented yet.  Too much work
         [TestMethod]
         public void xxx_test_ravel_multi_index_1()
@@ -23,20 +23,6 @@ namespace NumpyDotNetTests
         [Ignore] // not implemented yet.  Too much work
         [TestMethod]
         public void xxx_test_unravel_index_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void xxx_test_mgrid_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet.  Too much work
-        [TestMethod]
-        public void xxx_test_ogrid_1()
         {
 
         }
@@ -76,7 +62,22 @@ namespace NumpyDotNetTests
 
         }
 
-        #endif
+#endif
+
+
+        [TestMethod]
+        public void test_mgrid_1()
+        {
+            var a = np.mgrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
+            print(a);
+        }
+
+        [TestMethod]
+        public void test_ogrid_1()
+        {
+            var a = np.ogrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
+            print(a);
+        }
 
         [TestMethod]
         public void test_fill_diagonal_1()

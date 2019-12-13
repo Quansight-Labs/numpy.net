@@ -47,6 +47,25 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        #region mgrid/ogrid
+
+        public static ndarray mgrid(Slice[] key)
+        {
+            return nd_grid(key, false);
+        }
+
+        public static ndarray ogrid(Slice[] key)
+        {
+            return nd_grid(key, true);
+        }
+
+        private static ndarray nd_grid(Slice[] key, bool Sparse)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region fill_diagonal
 
         public static void fill_diagonal(ndarray a, object val, bool wrap = false)

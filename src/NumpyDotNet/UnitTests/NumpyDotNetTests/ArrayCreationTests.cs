@@ -164,19 +164,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_mgrid_1()
-        {
-
-        }
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_ogrid_1()
-        {
-
-        }
 
         [TestMethod]
         public void test_OneDimensionalArray()
