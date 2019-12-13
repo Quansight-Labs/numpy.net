@@ -13,14 +13,30 @@ class Test_test1(unittest.TestCase):
           return
 
     def test_mgrid_1(self):
-
-         a = np.mgrid[0:5,0:5]
+        
+         a = nptest.mgrid[0:5]
          print(a)
 
          print("************")
 
-         b = nptest.mgrid[0:5,0:5]
+         b = nptest.mgrid[0.0:5.5]
          print(b)
+
+         print("************")
+
+
+         c = np.mgrid[0:5,0:5]
+         print(c)
+
+         print("************")
+
+         d = np.mgrid[0:5.5,0:5.5]
+         print(d)
+
+         print("************")
+
+         e = nptest.mgrid[3:5,4:6, 2:4.2]
+         print(e)
 
          return;
 

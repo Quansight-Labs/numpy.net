@@ -59,9 +59,204 @@ namespace NumpyDotNet
             return nd_grid(key, true);
         }
 
+        // Construct a multi-dimensional "meshgrid".
+
+        // ``grid = nd_grid()`` creates an instance which will return a mesh-grid
+        // when indexed.The dimension and number of the output arrays are equal
+        // to the number of indexing dimensions.If the step length is not a
+        // complex number, then the stop is not inclusive.
+
+        // However, if the step length is a** complex number** (e.g. 5j), then the
+        // integer part of its magnitude is interpreted as specifying the
+        // number of points to create between the start and stop values, where
+        // the stop value **is inclusive**.
+
+        // If instantiated with an argument of ``sparse=True``, the mesh-grid is
+        // open(or not fleshed out) so that only one-dimension of each returned
+        // argument is greater than 1.
+
+        // Parameters
+        // ----------
+        // sparse : bool, optional
+        //     Whether the grid is sparse or not.Default is False.
+
+        //Notes
+        // -----
+        // Two instances of `nd_grid` are made available in the NumPy namespace,
+        // `mgrid` and `ogrid`::
+
+        //     mgrid = nd_grid(sparse= False)
+        //     ogrid = nd_grid(sparse= True)
+
+        // Users should use these pre-defined instances instead of using `nd_grid`
+        // directly.
+
+        // Examples
+        // --------
+        // >>> mgrid = np.lib.index_tricks.nd_grid()
+        // >>> mgrid[0:5, 0:5]
+        // array([[[0, 0, 0, 0, 0],
+        //         [1, 1, 1, 1, 1],
+        //         [2, 2, 2, 2, 2],
+        //         [3, 3, 3, 3, 3],
+        //         [4, 4, 4, 4, 4]],
+        //        [[0, 1, 2, 3, 4],
+        //         [0, 1, 2, 3, 4],
+        //         [0, 1, 2, 3, 4],
+        //         [0, 1, 2, 3, 4],
+        //         [0, 1, 2, 3, 4]]])
+        // >>> mgrid[-1:1:5j]
+        // array([-1. , -0.5,  0. ,  0.5,  1. ])
+
+        // >>> ogrid = np.lib.index_tricks.nd_grid(sparse=True)
+        // >>> ogrid[0:5, 0:5]
+        // [array([[0],
+        //         [1],
+        //         [2],
+        //         [3],
+        //         [4]]), array([[0, 1, 2, 3, 4]])]
+
         private static ndarray nd_grid(Slice[] key, bool Sparse)
         {
-            throw new NotImplementedException();
+            if (key.Length > 1)
+            {
+                List<npy_intp> size = new List<npy_intp>();
+                dtype typ = np.Int32;
+
+                for (int k = 0; k < key.Length; k++)
+                {
+                    var step = key[k].step;
+                    var start = key[k].start;
+                    if (start == null)
+                        start = 0;
+                    if (step == null)
+                        step = 1;
+
+                    if (IsComplex(step))
+                    {
+                        size.Add(Convert.ToInt32(Math.Abs(Convert.ToDouble(step))));
+                        typ = np.Float64;
+                    }
+                    else
+                    {
+                        size.Add(Convert.ToInt32(Math.Ceiling((Convert.ToDouble(key[k].stop) - Convert.ToDouble(start)) / (Convert.ToDouble(step) * 1.0))));
+                    }
+
+                    var x1 = asanyarray(step);
+                    var x2 = asanyarray(start);
+
+                    if ((x1.Array.descr.type_num == NPY_TYPES.NPY_FLOAT) ||
+                        (x2.Array.descr.type_num == NPY_TYPES.NPY_FLOAT))
+                    {
+                        typ = np.Float64;
+                    }
+
+   
+
+                }
+
+
+                ndarray nn = null;
+                if (Sparse)
+                {
+
+                }
+                else
+                {
+                    nn = np.indices(new shape(size), typ);
+                }
+
+                for (int k = 0; k < size.Count; k++)
+                {
+                    var step = key[k].step;
+                    var start = key[k].start;
+                    if (start == null)
+                        start = 0;
+                    if (step == null)
+                        step = 1;
+
+                    if (IsComplex(step))
+                    {
+                        //step = int(abs(step))
+                        //if step != 1:
+                        //    step = (key[k].stop - start) / float(step - 1)
+                    }
+
+                    if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
+                    {
+                        nn[k] = (Convert.ToSingle(nn[k]) * Convert.ToSingle(step) + Convert.ToSingle(start));
+                    }
+                    if (typ.TypeNum == NPY_TYPES.NPY_INT32)
+                    {
+                        nn[k] = ((nn[k] as ndarray) * Convert.ToInt32(step) + Convert.ToInt32(start));
+                    }
+                }
+
+                if (Sparse)
+                {
+
+                }
+
+                return nn;
+            }
+            else
+            {
+                var step = key[0].step;
+                var stop = key[0].stop;
+                var start = key[0].start;
+                if (start == null)
+                    start = 0;
+
+                if (IsComplex(step))
+                {
+                    //step = abs(step);
+                    //length = int(step)
+                    //if step != 1:
+                    //    step = (key.stop - start) / float(step - 1)
+                    //stop = key.stop + step
+                    //return _nx.arange(0, length, 1, float) * step + start
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    var tt = asanyarray(start);
+                    if (tt.IsInexact)
+                    {
+                        double? iStart = null;
+                        double? iStop = null;
+                        double? iStep = null;
+                        if (start != null)
+                            iStart = Convert.ToDouble(start);
+                        if (stop != null)
+                            iStop = Convert.ToDouble(stop);
+                        if (step != null)
+                            iStep = Convert.ToDouble(step);
+
+                        return arange(iStart.Value, iStop, iStep, dtype : np.Float64);
+                    }
+                    else
+                    {
+                        Int64? iStart = null;
+                        Int64? iStop = null;
+                        Int64? iStep = null;
+                        if (start != null)
+                            iStart = Convert.ToInt64(start);
+                        if (stop != null)
+                            iStop = Convert.ToInt64(stop);
+                        if (step != null)
+                            iStep = Convert.ToInt64(step);
+
+                        return arange(iStart.Value, iStop, iStep, dtype: np.Int64);
+                    }
+                }
+    
+
+            }
+        }
+
+        private static bool IsComplex(object step)
+        {
+            return false;
         }
 
         #endregion
