@@ -14,9 +14,25 @@ class Test_test1(unittest.TestCase):
 
     def test_mgrid_1(self):
 
+         a = np.mgrid[0:5,0:5]
+         print(a)
+
+         print("************")
+
+         b = nptest.mgrid[0:5,0:5]
+         print(b)
+
          return;
 
     def test_ogrid_1(self):
+
+         a = np.ogrid[0:5,0:5]
+         print(a)
+
+         print("************")
+
+         b = nptest.ogrid[0:5,0:5]
+         print(b)
 
          return;
 
