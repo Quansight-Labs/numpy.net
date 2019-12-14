@@ -3358,11 +3358,12 @@ namespace NumpyDotNet
 
         }
 
-#endregion
+        #endregion
 
-#region meshgrid
+        #region meshgrid
 
-        public static ndarray[] meshgrid(ndarray []xi, string[] kwargs)
+
+        public static ndarray[] meshgrid(ndarray []xi, string indexing = "xy", bool sparse = false, bool copy = true)
         {
             /*
             Return coordinate matrices from coordinate vectors.
@@ -3421,12 +3422,12 @@ namespace NumpyDotNet
                 xv, yv = np.meshgrid(x, y, sparse=False, indexing='ij')
                 for i in range(nx):
                     for j in range(ny):
-# treat xv[i,j], yv[i,j]
+                 treat xv[i,j], yv[i,j]
 
                 xv, yv = np.meshgrid(x, y, sparse=False, indexing='xy')
                 for i in range(nx):
                     for j in range(ny):
-# treat xv[j,i], yv[j,i]
+                # treat xv[j,i], yv[j,i]
 
             In the 1-D and 0-D case, the indexing and sparse keywords have no effect.
 
@@ -3463,8 +3464,7 @@ namespace NumpyDotNet
             >>> xx, yy = np.meshgrid(x, y, sparse=True)
             >>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
             >>> h = plt.contourf(x,y,z)             
-            */
-
+           */
             throw new NotImplementedException();
         }
 

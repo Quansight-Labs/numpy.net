@@ -157,11 +157,82 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-        [Ignore] // not implemented yet
         [TestMethod]
-        public void xxx_test_meshgrid_1()
+        public void test_meshgrid_1()
         {
+            int nx = 3;
+            int ny = 2;
 
+            double ret = 0;
+
+            var x = np.linspace(0, 1,ref ret, nx);
+            var y = np.linspace(0, 1, ref ret, ny);
+
+            ndarray []xv = np.meshgrid(new ndarray[] { x });
+            print(xv[0]);
+
+            print("************");
+
+            ndarray[] xyv = np.meshgrid(new ndarray[] { x, y });
+            print(xyv[0]);
+            print(xyv[1]);
+
+            print("************");
+
+            xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
+            print(xyv[0]);
+            print(xyv[1]);
+
+            print("************");
+
+            x = np.arange(-5, 5, 1);
+            y = np.arange(-5, 5, 1);
+            xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
+            print(xyv[0]);
+            print(xyv[1]);
+
+            print("************");
+        }
+
+        [TestMethod]
+        public void test_meshgrid_2()
+        {
+            int nx = 3;
+            int ny = 2;
+            int nz = 2;
+
+            double ret = 0;
+
+            var x = np.linspace(0, 1, ref ret, nx);
+            var y = np.linspace(4, 5, ref ret, ny);
+            var z = np.linspace(8, 9, ref ret, nz);
+
+            ndarray[] xyzv = np.meshgrid(new ndarray[] { x, y, z }, indexing : "ij");
+            print(xyzv[0]);
+            print(xyzv[1]);
+            print(xyzv[2]);
+
+            print("************");
+
+            xyzv = np.meshgrid(new ndarray[] { x, y, z }, sparse:true);
+            print(xyzv[0]);
+            print(xyzv[1]);
+            print(xyzv[2]);
+
+            print("************");
+
+
+
+            x = np.arange(-2, 2, 1);
+            y = np.arange(-2, 2, 1);
+            z = np.arange(2, -2, -1);
+
+            xyzv = np.meshgrid(new ndarray[] { x, y, z }, copy: true);
+            print(xyzv[0]);
+            print(xyzv[1]);
+            print(xyzv[2]);
+
+            print("************");
         }
 
 
