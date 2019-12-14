@@ -86,7 +86,73 @@ class ArrayCreationTests(unittest.TestCase):
 
         d = np.geomspace(1, 256, num=9)
         print(d)
- 
+
+    def test_meshgrid_1(self):
+        nx = 3
+        ny = 2
+
+        x = np.linspace(0, 1, nx)
+        y = np.linspace(0, 1, ny)
+
+        yv = nptest.meshgrid(x, y)
+        print(yv)
+
+        print("************")
+
+        xv, yv = nptest.meshgrid(x, y)
+        print(xv)
+        print(yv)
+
+        print("************")
+
+        xv, yv = nptest.meshgrid(x, y, sparse=True)
+        print(xv)
+        print(yv)
+
+        print("************")
+
+        x = np.arange(-5, 5, 1)
+        y = np.arange(-5, 5, 1)
+        xx, yy = nptest.meshgrid(x, y, sparse=True)
+        print(xx)
+        print(yy)
+
+        print("************")
+
+    def test_meshgrid_2(self):
+        nx = 3
+        ny = 2
+        nz = 2
+
+        x = np.linspace(0, 1, nx)
+        y = np.linspace(4, 5, ny)
+        z = np.linspace(8, 9, nz)
+        xv, yv, zv = nptest.meshgrid(x, y, z, indexing='ij')
+        print(xv)
+        print(yv)
+        print(zv)
+
+        print("************")
+
+        xv, yv, zv = nptest.meshgrid(x, y,z, sparse=True)
+        print(xv)
+        print(yv)
+        print(zv)
+
+        print("************")
+
+        x = np.arange(-2, 2, 1)
+        y = np.arange(-2, 2, 1)
+        z = np.arange(2, -2, -1)
+
+        xx, yy, zz = nptest.meshgrid(x, y, z, copy=True)
+        print(xx)
+        print(yy)
+        print(zz)
+
+        print("************")
+
+
     def test_OneDimensionalArray(self):
         l = [12.23, 13.32, 100, 36.32]
         print("Original List:",l)

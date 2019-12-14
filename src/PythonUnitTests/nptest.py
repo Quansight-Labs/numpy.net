@@ -1952,7 +1952,39 @@ class nptest(object):
         res = np.dot(at, bt)
         return res.reshape(olda + oldb)
 
-    
+    @staticmethod
+    def meshgrid(*xi, **kwargs):
+        ndim = len(xi)
+
+        copy_ = kwargs.pop('copy', True)
+        sparse = kwargs.pop('sparse', False)
+        indexing = kwargs.pop('indexing', 'xy')
+
+        if kwargs:
+            raise TypeError("meshgrid() got an unexpected keyword argument '%s'"
+                            % (list(kwargs)[0],))
+
+        if indexing not in ['xy', 'ij']:
+            raise ValueError(
+                "Valid values for `indexing` are 'xy' and 'ij'.")
+
+        s0 = (1,) * ndim
+        output = [np.asanyarray(x).reshape(s0[:i] + (-1,) + s0[i + 1:])
+                  for i, x in enumerate(xi)]
+
+        if indexing == 'xy' and ndim > 1:
+            # switch first and second axis
+            output[0].shape = (1, -1) + s0[2:]
+            output[1].shape = (-1, 1) + s0[2:]
+
+        if not sparse:
+            # Return the full N-D matrix (not only the 1-D vector)
+            output = np.broadcast_arrays(*output, subok=True)
+
+        if copy_:
+            output = [x.copy() for x in output]
+
+        return output
 
     @staticmethod
     def cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None):
