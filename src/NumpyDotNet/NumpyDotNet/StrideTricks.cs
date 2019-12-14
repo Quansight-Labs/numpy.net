@@ -248,13 +248,14 @@ namespace NumpyDotNet
             return b1.shape;
         }
 
-        public static IEnumerable<ndarray> broadcast_arrays(bool subok, params object[] args)
+  
+        public static IEnumerable<ndarray> broadcast_arrays(bool subok, IEnumerable<ndarray> args)
         {
-            ndarray[] arrays = new ndarray[args.Length];
+            ndarray[] arrays = new ndarray[args.Count()];
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Count(); i++)
             {
-                arrays[i] = np.array(args[i], copy: false,subok:subok);
+                arrays[i] = np.array(args.ElementAt(i), copy: false, subok: subok);
             }
 
             var shape = _broadcast_shape(arrays);
@@ -274,11 +275,11 @@ namespace NumpyDotNet
                 return arrays;
             }
 
-            ndarray[] broadcastedto = new ndarray[args.Length];
+            ndarray[] broadcastedto = new ndarray[args.Count()];
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Count(); i++)
             {
-                broadcastedto[i] = _broadcast_to(args[i], shape, subok: subok, _readonly: false);
+                broadcastedto[i] = _broadcast_to(args.ElementAt(i), shape, subok: subok, _readonly: false);
             }
 
             return broadcastedto;

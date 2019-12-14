@@ -180,7 +180,7 @@ namespace NumpyDotNetTests
         {
             var x = np.array(new int[,] { { 1, 2, 3 } });
             var y = np.array(new int[,] { { 4 }, { 5 } });
-            var z = np.broadcast_arrays(false, x, y);
+            var z = np.broadcast_arrays(false, new ndarray[] { x, y });
 
             print(z);
 

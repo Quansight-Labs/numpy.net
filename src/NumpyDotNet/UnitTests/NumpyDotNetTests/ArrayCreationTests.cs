@@ -70,11 +70,11 @@ namespace NumpyDotNetTests
             AssertArray(a, new double[] { 2, 3 });
             print(a);
 
-            var b = np.asfarray(new int []{ 2, 3}, dtype : np.Float32);
+            var b = np.asfarray(new int[] { 2, 3 }, dtype: np.Float32);
             AssertArray(b, new double[] { 2, 3 });
             print(b);
 
-            var c = np.asfarray(new int[] { 2, 3 }, dtype : np.Int8);
+            var c = np.asfarray(new int[] { 2, 3 }, dtype: np.Int8);
             AssertArray(c, new double[] { 2, 3 });
             print(c);
 
@@ -108,15 +108,15 @@ namespace NumpyDotNetTests
         {
             double retstep = 0;
 
-            var a = np.linspace(2.0, 3.0, ref retstep, num : 5);
+            var a = np.linspace(2.0, 3.0, ref retstep, num: 5);
             AssertArray(a, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
             print(a);
 
-            var b = np.linspace(2.0, 3.0, ref retstep, num :5, endpoint: false);
+            var b = np.linspace(2.0, 3.0, ref retstep, num: 5, endpoint: false);
             AssertArray(b, new double[] { 2.0, 2.2, 2.4, 2.6, 2.8 });
             print(b);
 
-            var c = np.linspace(2.0, 3.0, ref retstep, num : 5);
+            var c = np.linspace(2.0, 3.0, ref retstep, num: 5);
             AssertArray(c, new double[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
             print(c);
         }
@@ -132,7 +132,7 @@ namespace NumpyDotNetTests
             AssertArray(b, new double[] { 100.0, 177.827941, 316.22776602, 562.34132519 });
             print(b);
 
-            var c = np.logspace(2.0, 3.0, num: 4, _base:2.0);
+            var c = np.logspace(2.0, 3.0, num: 4, _base: 2.0);
             AssertArray(c, new double[] { 4.0, 5.0396842, 6.34960421, 8.0 });
             print(c);
         }
@@ -140,19 +140,19 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_geomspace_1()
         {
-            var a = np.geomspace(1, 1000, num:4);
-            AssertArray(a, new double[] { 1.0,   10.0,  100.0, 1000.0 });
+            var a = np.geomspace(1, 1000, num: 4);
+            AssertArray(a, new double[] { 1.0, 10.0, 100.0, 1000.0 });
             print(a);
 
-            var b = np.geomspace(1, 1000, num : 3, endpoint : false);
-            AssertArray(b, new double[] { 1.0,  10.0, 100.0 });
+            var b = np.geomspace(1, 1000, num: 3, endpoint: false);
+            AssertArray(b, new double[] { 1.0, 10.0, 100.0 });
             print(b);
 
-            var c = np.geomspace(1, 1000, num : 4, endpoint : false);
+            var c = np.geomspace(1, 1000, num: 4, endpoint: false);
             AssertArray(c, new double[] { 1.0, 5.62341325, 31.6227766, 177.827941 });
             print(c);
 
-            var d = np.geomspace(1, 256, num : 9);
+            var d = np.geomspace(1, 256, num: 9);
             AssertArray(d, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
             print(d);
         }
@@ -165,21 +165,28 @@ namespace NumpyDotNetTests
 
             double ret = 0;
 
-            var x = np.linspace(0, 1,ref ret, nx);
+            var x = np.linspace(0, 1, ref ret, nx);
             var y = np.linspace(0, 1, ref ret, ny);
 
-            ndarray []xv = np.meshgrid(new ndarray[] { x });
+            ndarray[] xv = np.meshgrid(new ndarray[] { x });
+            AssertArray(xv[0], new double[] { 0.0, 0.5, 1.0 });
             print(xv[0]);
 
             print("************");
 
             ndarray[] xyv = np.meshgrid(new ndarray[] { x, y });
+            AssertArray(xyv[0], new double[,] { { 0.0, 0.5, 1.0 }, { 0.0, 0.5, 1.0 } });
+            AssertArray(xyv[1], new double[,] { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } });
+
             print(xyv[0]);
             print(xyv[1]);
 
             print("************");
 
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
+            AssertArray(xyv[0], new double[,] { { 0.0, 0.5, 1.0 } });
+            AssertArray(xyv[1], new double[,] { { 0.0 },{ 1.0 } });
+
             print(xyv[0]);
             print(xyv[1]);
 
@@ -188,6 +195,8 @@ namespace NumpyDotNetTests
             x = np.arange(-5, 5, 1);
             y = np.arange(-5, 5, 1);
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
+            AssertArray(xyv[0], new double[,] { { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4 } });
+            AssertArray(xyv[1], new double[,] { { -5 }, { -4 }, { -3 }, { -2 }, { -1 }, { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
             print(xyv[0]);
             print(xyv[1]);
 
@@ -208,6 +217,10 @@ namespace NumpyDotNetTests
             var z = np.linspace(8, 9, ref ret, nz);
 
             ndarray[] xyzv = np.meshgrid(new ndarray[] { x, y, z }, indexing : "ij");
+            AssertArray(xyzv[0], new double[,,] { { { 0.0, 0.0 }, { 0.0, 0.0 } }, { { 0.5, 0.5 }, { 0.5, 0.5 } }, { { 1.0, 1.0 }, { 1.0, 1.0 } } });
+            AssertArray(xyzv[1], new double[,,] { { { 4.0, 4.0 }, { 5.0, 5.0 } }, { { 4.0, 4.0 }, { 5.0, 5.0 } }, { { 4.0, 4.0 }, { 5.0, 5.0 } } });
+            AssertArray(xyzv[2], new double[,,] { { { 8.0, 9.0 }, { 8.0, 9.0 } }, { { 8.0, 9.0 }, { 8.0, 9.0 } }, { { 8.0, 9.0 }, { 8.0, 9.0 } } });
+
             print(xyzv[0]);
             print(xyzv[1]);
             print(xyzv[2]);
@@ -215,6 +228,10 @@ namespace NumpyDotNetTests
             print("************");
 
             xyzv = np.meshgrid(new ndarray[] { x, y, z }, sparse:true);
+            AssertArray(xyzv[0], new double[,,] { { { 0.0 }, { 0.5 }, { 1.0 } } });
+            AssertArray(xyzv[1], new double[,,] { { { 4.0 } }, { { 5.0 } } });
+            AssertArray(xyzv[2], new double[,,] { { { 8.0, 9.0 } } });
+
             print(xyzv[0]);
             print(xyzv[1]);
             print(xyzv[2]);
@@ -228,6 +245,15 @@ namespace NumpyDotNetTests
             z = np.arange(2, -2, -1);
 
             xyzv = np.meshgrid(new ndarray[] { x, y, z }, copy: true);
+
+            var ExpectedData1 = new double[,,]
+            {{{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},
+             {{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},
+             {{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},
+             {{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}}};
+            AssertArray(xyzv[0], ExpectedData1);
+
+
             print(xyzv[0]);
             print(xyzv[1]);
             print(xyzv[2]);

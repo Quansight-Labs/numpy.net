@@ -94,18 +94,18 @@ class ArrayCreationTests(unittest.TestCase):
         x = np.linspace(0, 1, nx)
         y = np.linspace(0, 1, ny)
 
-        yv = nptest.meshgrid(x, y)
-        print(yv)
+        xv = np.meshgrid(x)
+        print(xv)
 
         print("************")
 
-        xv, yv = nptest.meshgrid(x, y)
+        xv, yv = np.meshgrid(x, y)
         print(xv)
         print(yv)
 
         print("************")
 
-        xv, yv = nptest.meshgrid(x, y, sparse=True)
+        xv, yv = np.meshgrid(x, y, sparse=True)
         print(xv)
         print(yv)
 
@@ -113,7 +113,7 @@ class ArrayCreationTests(unittest.TestCase):
 
         x = np.arange(-5, 5, 1)
         y = np.arange(-5, 5, 1)
-        xx, yy = nptest.meshgrid(x, y, sparse=True)
+        xx, yy = np.meshgrid(x, y, sparse=True)
         print(xx)
         print(yy)
 
@@ -134,7 +134,7 @@ class ArrayCreationTests(unittest.TestCase):
 
         print("************")
 
-        xv, yv, zv = nptest.meshgrid(x, y,z, sparse=True)
+        xv, yv, zv = np.meshgrid(x, y,z, sparse=True)
         print(xv)
         print(yv)
         print(zv)
@@ -145,7 +145,7 @@ class ArrayCreationTests(unittest.TestCase):
         y = np.arange(-2, 2, 1)
         z = np.arange(2, -2, -1)
 
-        xx, yy, zz = nptest.meshgrid(x, y, z, copy=True)
+        xx, yy, zz = np.meshgrid(x, y, z, copy=True)
         print(xx)
         print(yy)
         print(zz)
