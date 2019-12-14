@@ -49,12 +49,12 @@ namespace NumpyDotNet
     {
         #region mgrid/ogrid
 
-        public static ndarray mgrid(Slice[] key)
+        public static object mgrid(Slice[] key)
         {
             return nd_grid(key, false);
         }
 
-        public static ndarray ogrid(Slice[] key)
+        public static object ogrid(Slice[] key)
         {
             return nd_grid(key, true);
         }
@@ -116,7 +116,7 @@ namespace NumpyDotNet
         //         [3],
         //         [4]]), array([[0, 1, 2, 3, 4]])]
 
-        private static ndarray nd_grid(Slice[] key, bool Sparse)
+        private static object nd_grid(Slice[] key, bool Sparse)
         {
             if (key.Length > 1)
             {
@@ -157,9 +157,15 @@ namespace NumpyDotNet
 
 
                 ndarray nn = null;
+                ndarray []nnarray = null;
                 if (Sparse)
                 {
-
+                    List<ndarray> _nnarray = new List<ndarray>();
+                    for (int i = 0; i < size.Count; i++)
+                    {
+                        _nnarray.Add(arange(size[i], dtype: typ));
+                    }
+                    nnarray = _nnarray.ToArray();
                 }
                 else
                 {
@@ -182,22 +188,51 @@ namespace NumpyDotNet
                         //    step = (key[k].stop - start) / float(step - 1)
                     }
 
-                    if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
+                    if (Sparse)
                     {
-                        nn[k] = (Convert.ToSingle(nn[k]) * Convert.ToSingle(step) + Convert.ToSingle(start));
+                        if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
+                        {
+                            nnarray[k] = nnarray[k] * Convert.ToSingle(step) + Convert.ToSingle(start);
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_INT32)
+                        {
+                            nnarray[k] = nnarray[k] * Convert.ToInt32(step) + Convert.ToInt32(start);
+                        }
                     }
-                    if (typ.TypeNum == NPY_TYPES.NPY_INT32)
+                    else
                     {
-                        nn[k] = ((nn[k] as ndarray) * Convert.ToInt32(step) + Convert.ToInt32(start));
+                        if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
+                        {
+                            nn[k] = (Convert.ToSingle(nn[k]) * Convert.ToSingle(step) + Convert.ToSingle(start));
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_INT32)
+                        {
+                            nn[k] = ((nn[k] as ndarray) * Convert.ToInt32(step) + Convert.ToInt32(start));
+                        }
                     }
+    
                 }
 
                 if (Sparse)
                 {
+                    var slobj = new object[size.Count];
+                    for (int j = 0; j < size.Count; j++)
+                        slobj[j] = np.newaxis;
 
+                    for (int k = 0; k < size.Count; k++)
+                    {
+                        slobj[k] = new Slice(null, null);
+                        nnarray[k] = (ndarray)nnarray[k][slobj];
+                        slobj[k] = np.newaxis;
+                    }
+
+                    return nnarray;
+                }
+                else
+                {
+                    return nn;
                 }
 
-                return nn;
             }
             else
             {

@@ -42,13 +42,29 @@ class Test_test1(unittest.TestCase):
 
     def test_ogrid_1(self):
 
-         a = np.ogrid[0:5,0:5]
+         a = nptest.ogrid[0:5]
          print(a)
 
          print("************")
 
-         b = nptest.ogrid[0:5,0:5]
+         b = nptest.ogrid[0.0:5.5]
          print(b)
+
+         print("************")
+
+
+         c = nptest.ogrid[0:5,0:5]
+         print(c)
+
+         print("************")
+
+         d = np.ogrid[0:5.5,0:5.5]
+         print(d)
+
+         print("************")
+
+         e = nptest.ogrid[3:5,4:6, 2:4.2]
+         print(e)
 
          return;
 

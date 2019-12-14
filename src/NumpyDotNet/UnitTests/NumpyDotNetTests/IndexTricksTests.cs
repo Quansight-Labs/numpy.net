@@ -68,17 +68,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_mgrid_1()
         {
-            var a = np.mgrid(new Slice[] { new Slice(0, 5) });
+            var a = (ndarray)np.mgrid(new Slice[] { new Slice(0, 5) });
             print(a);
             AssertArray(a, new Int32[] { 0, 1, 2, 3, 4 });
             print("************");
 
-            var b = np.mgrid(new Slice[] { new Slice(0.0, 5.5) });
+            var b = (ndarray)np.mgrid(new Slice[] { new Slice(0.0, 5.5) });
             print(b);
             AssertArray(b, new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0 });
             print("************");
 
-            var c = np.mgrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
+            var c = (ndarray)np.mgrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
             print(c);
 
             var ExpectedCArray = new Int32[,,]
@@ -89,7 +89,7 @@ namespace NumpyDotNetTests
 
             print("************");
 
-            var d = np.mgrid(new Slice[] { new Slice(0, 5.5), new Slice(0, 5.5) });
+            var d = (ndarray)np.mgrid(new Slice[] { new Slice(0, 5.5), new Slice(0, 5.5) });
             print(d);
             var ExpectedDArray = new double[,,]
                 {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
@@ -98,7 +98,7 @@ namespace NumpyDotNetTests
 
             print("************");
 
-            var e = np.mgrid(new Slice[] { new Slice(3, 5), new Slice(4, 6), new Slice(2, 4.2) });
+            var e = (ndarray)np.mgrid(new Slice[] { new Slice(3, 5), new Slice(4, 6), new Slice(2, 4.2) });
             print(e);
             var ExpectedEArray = new double[,,,]
                 {
@@ -114,8 +114,37 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ogrid_1()
         {
-            var a = np.ogrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
+            var a = (ndarray)np.ogrid(new Slice[] { new Slice(0, 5) });
             print(a);
+            AssertArray(a, new Int32[] { 0, 1, 2, 3, 4 });
+            print("************");
+
+            var b = (ndarray)np.ogrid(new Slice[] { new Slice(0.0, 5.5) });
+            print(b);
+            AssertArray(b, new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0 });
+            print("************");
+
+            var c = (ndarray[])np.ogrid(new Slice[] { new Slice(0, 5), new Slice(0, 5) });
+            print(c);
+            AssertArray(c[0], new Int32[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c[1], new Int32[,] { { 0, 1, 2, 3, 4 } });
+
+
+            print("************");
+
+            var d = (ndarray[])np.ogrid(new Slice[] { new Slice(0, 5.5), new Slice(0, 5.5) });
+            print(d);
+            AssertArray(d[0], new Int32[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+            AssertArray(d[1], new Int32[,] { { 0, 1, 2, 3, 4, 5 } });
+
+            print("************");
+
+            var e = (ndarray[])np.ogrid(new Slice[] { new Slice(3, 5), new Slice(4, 6), new Slice(2, 4.2) });
+            print(e);
+            AssertArray(e[0], new Int32[,,] { { { 3 } }, { { 4 } } });
+            AssertArray(e[1], new Int32[,,] { { { 4 }, { 5 } } });
+            AssertArray(e[2], new Int32[,,] { { { 2, 3, 4 } } });
+
         }
 
         [TestMethod]
