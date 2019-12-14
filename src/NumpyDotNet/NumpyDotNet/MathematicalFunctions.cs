@@ -1274,6 +1274,66 @@ namespace NumpyDotNet
 
         #endregion
 
+
+        public static ndarray[] frexp(object x, object where = null)
+        {
+            var xa = asanyarray(x);
+
+            if (xa.Dtype.TypeNum == NPY_TYPES.NPY_FLOAT)
+            {
+                MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
+
+                int[] _exponents = new int[ch.expectedLength];
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    float f = ch.X1(i);
+ 
+                    int exponent = 0;
+                    ch.results[i] = MachineCognitus.math.frexp(f, ref exponent);
+                    _exponents[i] = exponent;
+                }
+
+                var mantissas = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                var expononents = np.array(_exponents).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    mantissas[np.invert(where)] = np.NaN;
+                    expononents[np.invert(where)] = 0;
+                }
+
+                return new ndarray[] { mantissas, expononents };
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                int[] _exponents = new int[ch.expectedLength];
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    double f = ch.X1(i);
+
+                    int exponent = 0;
+                    ch.results[i] = MachineCognitus.math.frexp(f, ref exponent);
+                    _exponents[i] = exponent;
+                }
+
+                var mantissas = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                var expononents = np.array(_exponents).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    mantissas[np.invert(where)] = np.NaN;
+                    expononents[np.invert(where)] = 0;
+                }
+
+                return new ndarray[] { mantissas, expononents };
+            }
+
+
+        }
+
+
         #region Misc
 
         public static ndarray sign(object x, object where = null)

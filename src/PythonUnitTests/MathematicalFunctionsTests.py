@@ -1117,6 +1117,27 @@ class MathematicalFunctionsTests(unittest.TestCase):
         e  = np.copysign([-1, 0, 1], np.arange(3)-1)
         print(e)
 
+    def test_frexp_1(self):
+
+        x = np.arange(9)
+        y1, y2 = np.frexp(x)
+        print(y1)
+        print(y2)
+
+        print("***************")
+
+        x = np.arange(9, dtype = np.float32).reshape(3,3)
+        y1, y2 = np.frexp(x)
+        print(y1)
+        print(y2)
+
+        print("***************")
+
+        x = np.arange(9, dtype = np.float64).reshape(3,3)
+        y1, y2 = np.frexp(x, where = x < 5)
+        print(y1)
+        print(y2)
+
 
     #endregion
 

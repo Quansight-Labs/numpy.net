@@ -1823,10 +1823,39 @@ namespace NumpyDotNetTests
             print(e);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_frexp_Placeholder()
+        public void test_frexp_1()
         {
+            var x = np.arange(9);
+            var results = np.frexp(x);
+
+            AssertArray(results[0], new double[] { 0.0, 0.5, 0.5, 0.75, 0.5, 0.625, 0.75, 0.875, 0.5 });
+            AssertArray(results[1], new int[] { 0, 1, 2, 2, 3, 3, 3, 3, 4 });
+
+            print(results[0]);
+            print(results[1]);
+
+            print("***************");
+
+            x = np.arange(9, dtype: np.Float32).reshape((3,3));
+            results = np.frexp(x);
+
+            AssertArray(results[0], new float[,] { { 0.0f, 0.5f, 0.5f }, { 0.75f, 0.5f, 0.625f }, { 0.75f, 0.875f, 0.5f } });
+            AssertArray(results[1], new int[,] { { 0, 1, 2 }, { 2, 3, 3 }, { 3, 3, 4 } });
+
+            print(results[0]);
+            print(results[1]);
+
+            print("***************");
+
+            x = np.arange(9, dtype: np.Float64).reshape((3, 3));
+            results = np.frexp(x, where: x < 5);
+
+            AssertArray(results[0], new double[,] { { 0.0, 0.5, 0.5 }, { 0.75, 0.5, double.NaN }, { double.NaN, double.NaN, double.NaN } });
+            AssertArray(results[1], new int[,] { { 0, 1, 2 }, { 2, 3, 0 }, { 0, 0, 0 } });
+
+            print(results[0]);
+            print(results[1]);
         }
 
         [Ignore]
