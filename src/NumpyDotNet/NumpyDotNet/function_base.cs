@@ -3465,7 +3465,59 @@ namespace NumpyDotNet
             >>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
             >>> h = plt.contourf(x,y,z)             
            */
-            throw new NotImplementedException();
+
+
+            int ndim = xi.Length;
+
+            switch (indexing)
+            {
+                case "xy":
+                case "ij":
+                    break;
+                default:
+                    throw new TypeError("Valid values for `indexing` are 'xy' and 'ij'.");
+            }
+
+            List<ndarray> output = new List<ndarray>();
+
+            npy_intp[] s0 = new npy_intp[ndim];
+            for (int i = 0; i < ndim; i++) s0[i] = 1;
+
+            for (int i = 0; i < ndim; i++)
+            {
+                npy_intp[] newshape = new npy_intp[s0.Length];
+                Array.Copy(s0, 0, newshape, 0, s0.Length);
+                newshape[i] = -1;
+                output.Add(np.asanyarray(xi[i]).reshape(newshape));
+            }
+
+            if (indexing == "xy" && ndim > 1)
+            {
+                npy_intp[] newshape = new npy_intp[s0.Length];
+                Array.Copy(s0, 0, newshape, 0, s0.Length);
+
+                // switch first and second axis
+                newshape[0] = 1; newshape[1] = -1;
+                output[0] = output[0].reshape(newshape);
+
+                newshape[0] = -1; newshape[1] = 1;
+                output[1] = output[1].reshape(newshape);
+            }
+
+            if (output.Count() > 1 && sparse == false)
+            {
+                output = np.broadcast_arrays(true, output).ToList();
+            }
+
+            if (copy)
+            {
+                for (int i = 0; i < output.Count; i++)
+                {
+                    output[i] = np.copy(output[i]);
+                }
+            }
+
+            return output.ToArray();
         }
 
 #endregion
