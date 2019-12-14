@@ -1858,10 +1858,16 @@ namespace NumpyDotNetTests
             print(results[1]);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_idexp_Placeholder()
+        public void test_ldexp_1()
         {
+            var a = np.ldexp(5, np.arange(4));
+            AssertArray(a, new float[] { 5.0f, 10.0f, 20.0f, 40.0f});
+            print(a);
+
+            var b = np.ldexp(np.arange(4, dtype: np.Int64), 5);
+            AssertArray(b, new double[] { 0.0, 32.0, 64.0, 96.0});
+            print(b);
         }
 
         [Ignore]

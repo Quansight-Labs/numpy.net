@@ -1086,6 +1086,49 @@ namespace NumpyDotNet
 
         }
 
+        public static ndarray ldexp(object x1, object x2, object where = null)
+        {
+            var a1 = asanyarray(x1);
+            var a2 = asanyarray(x2);
+
+            if (a1.itemsize <= sizeof(float) && a2.itemsize <= sizeof(float))
+            {
+                MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = MachineCognitus.math.ldexp(ch.X1(i), Convert.ToInt32(ch.X2(i)));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = MachineCognitus.math.ldexp(ch.X1(i), Convert.ToInt32(ch.X2(i)));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
+ 
+        }
+
         #endregion
 
         #region Rational routines

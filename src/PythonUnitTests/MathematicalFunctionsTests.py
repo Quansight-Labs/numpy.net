@@ -1138,6 +1138,16 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(y1)
         print(y2)
 
+        
+    def test_ldexp_1(self):
+
+        a = np.ldexp(5, np.arange(4))
+        print(a)
+
+        b = np.ldexp(np.arange(4), 5);
+        print(b)
+
+
 
     #endregion
 
