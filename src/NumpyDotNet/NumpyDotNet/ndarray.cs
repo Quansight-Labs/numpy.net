@@ -1270,6 +1270,11 @@ namespace NumpyDotNet
             get { return BaseArray != null; }
         }
 
+        public bool IsAScalar
+        {
+            get { return Array.IsScalar; }
+        }
+
         /// <summary>
         /// True if memory layout is Fortran order, false implies C order
         /// </summary>

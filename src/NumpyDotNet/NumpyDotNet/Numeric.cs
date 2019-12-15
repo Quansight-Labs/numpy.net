@@ -497,7 +497,9 @@ namespace NumpyDotNet
 
             if (IsNumericType(a))
             {
-                return np.array(GetSingleElementArray(a), null);
+                ndarray ret = np.array(GetSingleElementArray(a), null);
+                ret.Array.IsScalar = true;
+                return ret;
             }
 
             throw new Exception("Unable to convert object to ndarray");

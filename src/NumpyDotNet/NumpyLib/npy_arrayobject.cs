@@ -75,6 +75,8 @@ namespace NumpyLib
         public NpyArray_Descr descr;  /* Pointer to type structure */
         public NPYARRAYFLAGS flags;   /* Flags describing array -- see below */
 
+        public bool IsScalar = false;
+
         public int ItemSize
         {
             get
