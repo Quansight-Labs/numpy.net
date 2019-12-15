@@ -1147,6 +1147,25 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.ldexp(np.arange(4), 5);
         print(b)
 
+    def test_nextafter_1(self):
+
+        a = np.nextafter(1, 2)
+        print(a)
+
+        b = np.nextafter([1, 2], [2, 1])
+        d1 = b[0]
+        d2 = b[1]
+        print(d1)
+        print(d2)
+
+        c1 = np.array([1, 2], dtype=np.float32)
+        c2 = np.array([2, 1], dtype=np.float32)
+
+        c = np.nextafter(c1,c2)
+        f1 = c[0]
+        f2 = c[1]
+        print(f1)
+        print(f2)
 
 
     #endregion

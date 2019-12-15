@@ -1129,6 +1129,53 @@ namespace NumpyDotNet
  
         }
 
+        public static ndarray nextafter(object x1, object x2, object where = null)
+        {
+            var a1 = asanyarray(x1);
+            var a2 = asanyarray(x2);
+
+            bool a1b = !a1.IsAScalar && a1.IsFloatingPoint && a1.itemsize <= sizeof(float);
+            bool a2b = !a2.IsAScalar && a2.IsFloatingPoint && a2.itemsize <= sizeof(float);
+
+            if (a1b && a2b)
+            {
+                MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = MachineCognitus.math.nextafter(ch.X1(i), Convert.ToSingle(ch.X2(i)));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = MachineCognitus.math.nextafter(ch.X1(i), Convert.ToInt32(ch.X2(i)));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
+
+        }
+
+
         #endregion
 
         #region Rational routines

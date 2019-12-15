@@ -1870,10 +1870,33 @@ namespace NumpyDotNetTests
             print(b);
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_nextafter_Placeholder()
+        public void test_nextafter_1()
         {
+            var a = np.nextafter(1, 2);
+            double d = (double)a.GetItem(0);
+            Assert.AreEqual(d, 1.0000000000000002);
+            print(d);
+
+            var b = np.nextafter(new int[] { 1, 2 }, new int[] { 2, 1 });
+            double d1 = (double)b.GetItem(0);
+            double d2 = (double)b.GetItem(1);
+            Assert.AreEqual(d1, 1.0000000000000002);
+            Assert.AreEqual(d2, 1.9999999999999998);
+
+            print(d1);
+            print(d2);
+
+            var c = np.nextafter(new float[] { 1f, 2f }, new float[] { 2f, 1f });
+            float f1 = (float)c.GetItem(0);
+            float f2 = (float)c.GetItem(1);
+            Assert.AreEqual(f1, 1.0000001f);
+            Assert.AreEqual(f2, 1.99999988f);
+
+            print(f1);
+            print(f2);
+
+
         }
 
         [Ignore]
