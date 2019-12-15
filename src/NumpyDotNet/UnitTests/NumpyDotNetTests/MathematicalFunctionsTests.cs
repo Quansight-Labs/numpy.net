@@ -2266,11 +2266,20 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_modf_Placeholder()
+        public void test_modf_1()
         {
+            var x = np.modf(new double[] { 0, 3.5 });
+            AssertArray(x[0], new double[] { 0, 0.5 });
+            AssertArray(x[1], new double[] { 0, 3.0 });
+            print(x);
 
+            var y = np.modf(np.arange(7));
+            AssertArray(y[0], new double[] { 0, 0, 0,0,0,0,0 });
+            AssertArray(y[1], new double[] { 0, 1,2,3,4,5,6 });
+            print(y);
+
+            return;
         }
 
 

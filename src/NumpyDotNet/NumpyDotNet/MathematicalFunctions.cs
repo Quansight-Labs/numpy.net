@@ -1420,10 +1420,25 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region modf
+
+        public static ndarray[] modf(object x1, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        {
+            ndarray[] results = new ndarray[2];
+
+            results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1), asanyarray(1), @out1, asanyarray(where));
+            results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1), asanyarray(1), @out2, asanyarray(where));
+
+            return results;
+        }
+
+
+        #endregion
+
         #endregion
 
 
-   
+
 
 
         #region Misc

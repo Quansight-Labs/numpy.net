@@ -1387,6 +1387,16 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
         return
 
+    def test_modf_1(self):
+
+        x = np.modf([0, 3.5])
+        print(x)
+
+        y = np.modf(np.arange(7))
+        print(y)
+
+        return
+
     def test_remainder_1(self):
 
         x = np.remainder([4, 7], [2, 3])
