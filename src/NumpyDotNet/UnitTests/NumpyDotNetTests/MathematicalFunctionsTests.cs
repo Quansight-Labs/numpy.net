@@ -1381,11 +1381,71 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
         [TestMethod]
-        public void test_gradient_placeholder()
+        public void test_gradient_1()
         {
+            var f = np.array(new int[] { 1, 2, 4, 7, 11, 16 }, dtype: np.Float32);
+            var a = np.gradient(f);
+            print(a);
+            print("***********");
 
+            var b = np.gradient(f, new object[] { 2 });
+            print(b);
+            print("***********");
+
+            // Spacing can be also specified with an array that represents the coordinates
+            // of the values F along the dimensions.
+            // For instance a uniform spacing:
+
+            var x = np.arange(f.size);
+            var c = np.gradient(f, x);
+            print(c);
+            print("***********");
+
+            // Or a non uniform one:
+
+            x = np.array(new float[] { 0.0f, 1.0f, 1.5f, 3.5f, 4.0f, 6.0f }, dtype: np.Float32);
+            var d = np.gradient(f, x);
+            print(d);
+        }
+
+        [TestMethod]
+        public void test_gradient_2()
+        {
+            // For two dimensional arrays, the return will be two arrays ordered by
+            // axis. In this example the first array stands for the gradient in
+            // rows and the second one in columns direction:
+
+            var a = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32));
+            print(a);
+            print("***********");
+
+            // In this example the spacing is also specified:
+            // uniform for axis=0 and non uniform for axis=1
+
+            var dx = 2.0;
+            var y = new float[] { 1.0f, 1.5f, 3.5f };
+            var b = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), new object[] { dx, y });
+            print(b);
+            print("***********");
+
+            // It is possible to specify how boundaries are treated using `edge_order`
+
+            var x = np.array(new int[] { 0, 1, 2, 3, 4 });
+            var f = np.power(x,2);
+            var c = np.gradient(f, edge_order: 1);
+            print(c);
+            print("***********");
+
+            var d = np.gradient(f, edge_order: 2);
+            print(d);
+            print("***********");
+
+            // The `axis` keyword can be used to specify a subset of axes of which the
+            // gradient is calculated
+
+            var e = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), axis: 0);
+            print(e);
         }
 
         [TestMethod]

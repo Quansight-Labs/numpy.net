@@ -578,7 +578,11 @@ namespace NumpyDotNet
         #endregion
 
         #region gradient
-        public static ndarray gradient(ndarray f, string[] varargs, string[] kwargs)
+        public static ndarray gradient(ndarray f, IEnumerable<object> varargs = null, int axis = 1, int edge_order = 1)
+        {
+            return gradient(f, varargs, new int[] { axis }, edge_order);
+        }
+        public static ndarray gradient(ndarray f, IEnumerable<object> varargs, IEnumerable<int> axis, int edge_order = 1)
         {
             throw new NotImplementedException();
         }
