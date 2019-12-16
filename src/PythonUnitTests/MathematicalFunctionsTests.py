@@ -902,6 +902,70 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(np.ediff1d(y))
 
 
+    def test_gradient_1(self):
+        f = np.array([1, 2, 4, 7, 11, 16], dtype=float)
+        a = nptest.gradient(f)
+        print(a)
+        print("***********")
+
+        b = nptest.gradient(f, 2)
+        print(b)
+        print("***********")
+
+        #Spacing can be also specified with an array that represents the coordinates
+        #of the values F along the dimensions.
+        #For instance a uniform spacing:
+
+        x = np.arange(f.size)
+        c = nptest.gradient(f, x)
+        print(c)
+        print("***********")
+
+        #Or a non uniform one:
+
+        x = np.array([0., 1., 1.5, 3.5, 4., 6.], dtype=float)
+        d = nptest.gradient(f, x)
+        print(d)
+
+    def test_gradient_2(self):
+
+        #For two dimensional arrays, the return will be two arrays ordered by
+        #axis. In this example the first array stands for the gradient in
+        #rows and the second one in columns direction:
+
+        a = nptest.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=float))
+        print(a)
+        print("***********")
+ 
+        #In this example the spacing is also specified:
+        #uniform for axis=0 and non uniform for axis=1
+
+        dx = 2.
+        y = [1., 1.5, 3.5]
+        b = nptest.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=float), dx, y)
+        print(b)
+        print("***********")
+ 
+        #It is possible to specify how boundaries are treated using `edge_order`
+
+        x = np.array([0, 1, 2, 3, 4])
+        f = x**2
+        c = nptest.gradient(f, edge_order=1)
+        print(c)
+        print("***********")
+
+        d = nptest.gradient(f, edge_order=2)
+        print(d)
+        print("***********")
+
+        #The `axis` keyword can be used to specify a subset of axes of which the
+        #gradient is calculated
+
+        e = nptest.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=float), axis=0)
+        print(e)
+ 
+
+
     def test_trapz_1(self):
 
         a = np.trapz([1,2,3])
