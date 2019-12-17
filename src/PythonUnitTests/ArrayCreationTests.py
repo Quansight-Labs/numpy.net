@@ -254,9 +254,9 @@ class ArrayCreationTests(unittest.TestCase):
        print(5*F/9 - 5*32/9)
 
 
-    def test_RealImage_1(self):
-        x = np.sqrt([1+0j])
-        y = np.sqrt([0+1j])
+    def test_RealImage_float_1(self):
+        x = np.array([1.0,1.5,1.74,1.9])
+        y = np.array([0.1,0.3,0.5,0.7])
         print("Original array:x ",x)
         print("Original array:y ",y)
         print("Real part of the array:")

@@ -497,21 +497,19 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // this needs to be implemented
         [TestMethod]
-        public void xxx_test_RealImage_1()
+        public void test_RealImage_float_1()
         {
-            // todo: this needs work.  Need to understand how these complex numbers are really used.
-            var x = np.sqrt(np.array(1.0f));
-            var y = np.sqrt(np.array(0.1));
+            var x = np.array(new float[] { 1.0f, 1.5f, 1.74f, 1.9f });
+            var y = np.array(new float[] { 0.1f, 0.3f, 0.5f, 0.7f });
             print("Original array:x ", x);
             print("Original array:y ", y);
             print("Real part of the array:");
-            //print(x.real);
-            //print(y.real);
-            //print("Imaginary part of the array:");
-            //print(x.imag);
-            //print(y.imag);
+            print(x.real);
+            print(y.real);
+            print("Imaginary part of the array:");
+            print(x.imag);
+            print(y.imag);
 
         }
 
