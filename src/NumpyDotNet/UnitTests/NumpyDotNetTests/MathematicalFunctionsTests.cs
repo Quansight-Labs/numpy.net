@@ -1384,13 +1384,15 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_gradient_1()
         {
-            var f = np.array(new int[] { 1, 2, 4, 7, 11, 16 }, dtype: np.Float32);
+            var f = np.array(new double[] { 1, 2, 4, 7, 11, 16 }, dtype: np.Float64);
             var a = np.gradient(f);
-            print(a);
+            AssertArray(a[0], new double[] { 1, 1.5, 2.5, 3.5, 4.5, 5 });
+            print(a[0]);
             print("***********");
 
             var b = np.gradient(f, new object[] { 2 });
-            print(b);
+            AssertArray(b[0], new double[] { 0.5, 0.75, 1.25, 1.75, 2.25, 2.5 });
+            print(b[0]);
             print("***********");
 
             // Spacing can be also specified with an array that represents the coordinates
@@ -1398,15 +1400,17 @@ namespace NumpyDotNetTests
             // For instance a uniform spacing:
 
             var x = np.arange(f.size);
-            var c = np.gradient(f, x);
-            print(c);
+            var c = np.gradient(f, new object[] { x });
+            AssertArray(c[0], new double[] { 1.0, 1.5, 2.5, 3.5, 4.5, 5.0 });
+            print(c[0]);
             print("***********");
 
             // Or a non uniform one:
 
             x = np.array(new float[] { 0.0f, 1.0f, 1.5f, 3.5f, 4.0f, 6.0f }, dtype: np.Float32);
-            var d = np.gradient(f, x);
-            print(d);
+            var d = np.gradient(f, new object[] { x });
+            AssertArray(d[0], new double[] { 1.0,  3.0,  3.5, 6.7, 6.9, 2.5 });
+            print(d[0]);
         }
 
         [TestMethod]
@@ -1417,7 +1421,11 @@ namespace NumpyDotNetTests
             // rows and the second one in columns direction:
 
             var a = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32));
-            print(a);
+            AssertArray(a[0], new double[,] { { 2.0, 2.0, -1.0}, { 2.0, 2.0, -1.0} });
+            AssertArray(a[1], new double[,] { { 1.0 , 2.5, 4.0 }, { 1.0 , 1.0 , 1.0 } });
+  
+            print(a[0]);
+            print(a[1]);
             print("***********");
 
             // In this example the spacing is also specified:
@@ -1426,7 +1434,12 @@ namespace NumpyDotNetTests
             var dx = 2.0;
             var y = new float[] { 1.0f, 1.5f, 3.5f };
             var b = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), new object[] { dx, y });
-            print(b);
+            AssertArray(b[0], new double[,] { { 1.0, 1.0, -0.5 }, { 1.0, 1.0, -0.5 } });
+            AssertArray(b[1], new double[,] { { 2.0, 2.0, 2.0 }, { 2.0, 1.7000000476837158, 0.5 } });
+
+            print(b[0]);
+            print(b[1]);
+
             print("***********");
 
             // It is possible to specify how boundaries are treated using `edge_order`
@@ -1434,18 +1447,24 @@ namespace NumpyDotNetTests
             var x = np.array(new int[] { 0, 1, 2, 3, 4 });
             var f = np.power(x,2);
             var c = np.gradient(f, edge_order: 1);
-            print(c);
+            AssertArray(c[0], new double[] { 1, 2, 4, 6, 7 });
+
+            print(c[0]);
             print("***********");
 
             var d = np.gradient(f, edge_order: 2);
-            print(d);
+            AssertArray(d[0], new double[] { 0, 2, 4, 6, 8 });
+
+            print(d[0]);
             print("***********");
 
             // The `axis` keyword can be used to specify a subset of axes of which the
             // gradient is calculated
 
-            var e = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), axis: 0);
-            print(e);
+            var e = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), axes: 0);
+            AssertArray(e[0], new double[,] { { 2, 2, -1 }, { 2, 2, -1 } });
+            print(e[0]);
+
         }
 
         [TestMethod]

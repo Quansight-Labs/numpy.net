@@ -277,7 +277,7 @@ namespace NumpyDotNet
         }
         #endregion
 
-   
+
         #region asarray_chkfinite
         public static ndarray asarray_chkfinite(ndarray a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
@@ -578,13 +578,288 @@ namespace NumpyDotNet
         #endregion
 
         #region gradient
-        public static ndarray gradient(ndarray f, IEnumerable<object> varargs = null, int axis = 1, int edge_order = 1)
+        public static ndarray[] gradient(object f, IList<object> varargs = null, int? axes = null, int edge_order = 1)
         {
-            return gradient(f, varargs, new int[] { axis }, edge_order);
+            return gradient(f, varargs, axes != null ? new int[] { axes.Value } : null, edge_order);
         }
-        public static ndarray gradient(ndarray f, IEnumerable<object> varargs, IEnumerable<int> axis, int edge_order = 1)
+        public static ndarray[] gradient(object f, IList<object> varargs, IList<int> axes, int edge_order = 1)
         {
-            throw new NotImplementedException();
+            var f1 = np.asanyarray(f);
+            var N = f1.ndim;      // number of dimensions
+
+            if (axes == null)
+            {
+                List<int> tempAxes = new List<int>();
+                for (int i = 0; i < N; i++)
+                    tempAxes.Add(i);
+                axes = tempAxes.ToArray();
+            }
+            else
+            {
+                axes = normalize_axis_tuple(axes, N);
+            }
+
+            var len_axes = axes.Count();
+            var n = varargs != null ? varargs.Count() : 0;
+
+            List<object> dx = new List<object>();
+            if (n == 0)
+            {
+                // no spacing argument - use 1 in all axes
+                for (int i = 0; i < len_axes; i++)
+                    dx.Add(1.0f);
+            }
+            else if (n == 1 && asanyarray(varargs[0]).IsAScalar)
+            {
+                // single scalar for all axes
+                for (int i = 0; i < len_axes; i++)
+                    dx.Add(varargs[0]);
+            }
+            else if (n == len_axes)
+            {
+                dx.AddRange(varargs);
+
+                for (int i = 0; i < dx.Count; i++)
+                {
+                    var distances = asanyarray(dx[i]);
+                    if (distances.IsAScalar)
+                    {
+                        continue;
+                    }
+                    else if (distances.ndim != 1)
+                    {
+                        throw new ValueError("distances must be either scalars or 1d");
+                    }
+
+                    if (distances.Length != f1.dims[axes[i]])
+                    {
+                        throw new ValueError("when 1d, distances must match the length of the corresponding dimension");
+                    }
+
+                    var diffx = np.diff(distances);
+                    // if distances are constant reduce to the scalar case
+                    // since it brings a consistent speedup
+
+
+                    bool AllSame = true;
+                    object diff0 = diffx[0];
+                    foreach (var dd in diffx)
+                    {
+                        if (diff0.ToString() != dd.ToString())
+                        {
+                            AllSame = false;
+                            break;
+                        }
+                    }
+                    if (AllSame)
+                    {
+                        dx[i] = diff0;
+                    }
+                    else
+                    {
+                        dx[i] = diffx;
+                    }
+                }
+            }
+            else
+            {
+                throw new TypeError("invalid number of arguments");
+            }
+
+
+            if (edge_order > 2)
+            {
+                throw new ValueError("'edge_order' greater than 2 not supported");
+            }
+
+            // use central differences on interior and one-sided differences on the
+            // endpoints. This preserves second order-accuracy over the full domain.
+
+            List<ndarray> outvals = new List<ndarray>();
+
+            // create slice objects --- initially all are [:, :, ..., :]
+
+            var slice1 = BuildSliceArray(new Slice(null), N);
+            var slice2 = BuildSliceArray(new Slice(null), N);
+            var slice3 = BuildSliceArray(new Slice(null), N);
+            var slice4 = BuildSliceArray(new Slice(null), N);
+
+            dtype otype = f1.Dtype;
+            if (otype.TypeNum == NPY_TYPES.NPY_DATETIME)
+            {
+                // the timedelta dtype with the same unit information
+                //otype = np.dtype(otype.name.replace('datetime', 'timedelta'))
+                // view as timedelta to allow addition
+                //f1 = f1.view(otype);
+                throw new TypeError("We don't support DateTime");
+            }
+            else if (otype.TypeNum == NPY_TYPES.NPY_TIMEDELTA)
+            {
+                throw new TypeError("We don't support TimeDelta");
+            }
+            else if (f1.IsInexact)
+            {
+                ;
+            }
+            else
+            {
+                //all other types convert to floating point
+                otype = np.Float64;
+            }
+
+            for (int i = 0; i < axes.Count; i++)
+            {
+                int axis = axes[i];
+                object ax_dx = dx[i];
+
+                if (f1.dims[axis] < edge_order + 1)
+                {
+                    throw new ValueError(
+                        "Shape of array too small to calculate a numerical gradient, at least (edge_order + 1) elements are required.");
+                }
+
+                // result allocation
+                var _out = np.empty_like(f, dtype: otype);
+
+                // spacing for the current axis
+                bool uniform_spacing = asanyarray(ax_dx).IsAScalar;
+
+                // Numerical differentiation: 2nd order interior
+                slice1[axis] = new Slice(1, -1);
+                slice2[axis] = new Slice(null, -2);
+                slice3[axis] = new Slice(1, -1);
+                slice4[axis] = new Slice(2, null);
+
+                if (uniform_spacing)
+                {
+                    _out[slice1] = (f1.A(slice4) - f1.A(slice2)) / (2.0 * asanyarray(ax_dx));
+                }
+                else
+                {
+                    ndarray ax_dxx = asanyarray(ax_dx);
+
+                    ndarray dx1 = ax_dxx.A("0:-1");
+                    ndarray dx2 = ax_dxx.A("1:");
+                    ndarray a = (ndarray)(-(dx2) / (dx1 * (dx1 + dx2)));
+                    ndarray b = (ndarray)((dx2 - dx1) / (dx1 * dx2));
+                    ndarray c = (ndarray)(dx1 / (dx2 * (dx1 + dx2)));
+                    // fix the shape for broadcasting
+                    var shape = np.ones(N, dtype : np.Int32);
+                    shape[axis] = -1;
+
+                    //a = a.reshape(new shape(shape));
+                   //a.shape = b.shape = c.shape = shape;
+                    // 1D equivalent -- out[1:-1] = a * f[:-2] + b * f[1:-1] + c * f[2:]
+                    _out[slice1] = (a * f1.A(slice2)) + (b * f1.A(slice3)) + (c * f1.A(slice4));
+                }
+
+                ndarray dx_0;
+                ndarray dx_n;
+
+                // Numerical differentiation: 1st order edges
+                if (edge_order == 1)
+                {
+                    slice1[axis] = new Slice(0, 1);
+                    slice2[axis] = new Slice(1, 2);
+                    slice3[axis] = new Slice(0, 1);
+
+                    if (uniform_spacing)
+                    {
+                        dx_0 = asanyarray(ax_dx);
+                    }
+                    else
+                    {
+                        dx_0 = asanyarray(asanyarray(ax_dx)[0]);
+                    }
+
+                    // 1D equivalent -- out[0] = (f[1] - f[0]) / (x[1] - x[0])
+                    _out[slice1] = (f1.A(slice2) - f1.A(slice3)) / dx_0;
+
+                    slice1[axis] = new Slice(-1,-2,-1);
+                    slice2[axis] = new Slice(-1,-2,-1);
+                    slice3[axis] = new Slice(-2,-3,-1);
+
+                    if (uniform_spacing)
+                    {
+                        dx_n = asanyarray(ax_dx);
+                    }
+                    else
+                    {
+                        dx_n = asanyarray(asanyarray(ax_dx)[-1]);
+                    }
+                    // 1D equivalent -- out[-1] = (f[-1] - f[-2]) / (x[-1] - x[-2])
+                    _out[slice1] = (f1.A(slice2) - f1.A(slice3)) / dx_n;
+                }
+                else // Numerical differentiation: 2nd order edges
+                {
+                    ndarray a, b, c;
+
+
+                    slice1[axis] = new Slice(0, 1);
+                    slice2[axis] = new Slice(0, 1);
+                    slice3[axis] = new Slice(1, 2);
+                    slice4[axis] = new Slice(2, 3);
+                    if (uniform_spacing)
+                    {
+                        double ax_dxd = Convert.ToDouble(ax_dx);
+                        a = asanyarray(-1.5 / ax_dxd);
+                        b = asanyarray(2.0 / ax_dxd);
+                        c = asanyarray(-0.5 / ax_dxd);
+                    }
+                    else
+                    {
+                        ndarray ax_dxx = asanyarray(ax_dx);
+
+                        var dx1 = asanyarray(ax_dxx[0]);
+                        var dx2 = asanyarray(ax_dxx[1]);
+                        a = (ndarray)(-(2.0 * dx1 + dx2) / (dx1 * (dx1 + dx2)));
+                        b = (ndarray)((dx1 + dx2) / (dx1 * dx2));
+                        c = (ndarray)(-dx1 / (dx2 * (dx1 + dx2)));
+                    }
+
+                    // 1D equivalent -- out[0] = a * f[0] + b * f[1] + c * f[2]
+                    _out[slice1] = (a * f1.A(slice2)) + (b * f1.A(slice3)) + (c * f1.A(slice4));
+
+                    slice1[axis] = new Slice(-1, -2, -1);
+                    slice2[axis] = new Slice(-3, -4, -1);
+                    slice3[axis] = new Slice(-2, -3, -1);
+                    slice4[axis] = new Slice(-1, -2, -1);
+                    if (uniform_spacing)
+                    {
+                        double ax_dxd = Convert.ToDouble(ax_dx);
+
+                        a = asanyarray(0.5 / ax_dxd);
+                        b = asanyarray(-2.0 / ax_dxd);
+                        c = asanyarray(1.5 / ax_dxd);
+                    }
+                    else
+                    {
+                        ndarray ax_dxx = asanyarray(ax_dx);
+
+                        var dx1 = asanyarray(ax_dxx[-2]);
+                        var dx2 = asanyarray(ax_dxx[-1]);
+                        a = (ndarray)((dx2) / (dx1 * (dx1 + dx2)));
+                        b = (ndarray)(-(dx2 + dx1) / (dx1 * dx2));
+                        c = (ndarray)((2.0 * dx2 + dx1) / (dx2 * (dx1 + dx2)));
+                    }
+
+                    // 1D equivalent -- out[-1] = a * f[-3] + b * f[-2] + c * f[-1]
+                    _out[slice1] = (a * f1.A(slice2)) + (b * f1.A(slice3)) + (c * f1.A(slice4));
+                }
+
+                outvals.Add(_out);
+
+                // reset the slice object in this dimension to ":"
+                slice1[axis] = new Slice(null);
+                slice2[axis] = new Slice(null);
+                slice3[axis] = new Slice(null);
+                slice4[axis] = new Slice(null);
+            }
+
+            if (len_axes == 1)
+                return new ndarray[] { outvals[0] };
+            else
+                return outvals.ToArray();
         }
         #endregion
 
@@ -844,6 +1119,8 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region unwrap
+
         public static ndarray unwrap(object p, double discont = Math.PI, int axis = -1)
         {
             /*
@@ -906,6 +1183,7 @@ namespace NumpyDotNet
             up[slice1] = arrp.A(slice1) + ph_correct.cumsum(axis);
             return up;
         }
+        #endregion
 
         #region trim_zero
         public static ndarray trim_zeros(ndarray filt, string trim = "fb")
@@ -3225,9 +3503,9 @@ namespace NumpyDotNet
             return r;
         }
 
-#endregion
+        #endregion
 
-#region trapz
+        #region trapz
 
         public static ndarray trapz(object y, object x = null, double dx=1.0, int axis= -1)
         {
@@ -3353,9 +3631,9 @@ namespace NumpyDotNet
 
         }
 
-#endregion
+        #endregion
 
-#region add_newdoc
+        #region add_newdoc
 
         public static void add_newdoc(object place, object obj, object doc)
         {
@@ -3431,7 +3709,7 @@ namespace NumpyDotNet
                 xv, yv = np.meshgrid(x, y, sparse=False, indexing='xy')
                 for i in range(nx):
                     for j in range(ny):
-                # treat xv[j,i], yv[j,i]
+                treat xv[j,i], yv[j,i]
 
             In the 1-D and 0-D case, the indexing and sparse keywords have no effect.
 
@@ -3524,9 +3802,9 @@ namespace NumpyDotNet
             return output.ToArray();
         }
 
-#endregion
+        #endregion
 
-#region delete
+        #region delete
 
 
         public static ndarray delete(ndarray srcArray, Slice slice, int axis)
@@ -3684,9 +3962,9 @@ namespace NumpyDotNet
             return retArray;
         }
 
-#endregion
+        #endregion
 
-#region insert
+        #region insert
 
         public static ndarray insert(ndarray arr, object obj, dynamic _invalues, int? axis = null)
         {
@@ -3936,9 +4214,9 @@ namespace NumpyDotNet
             return newarray;
         }
 
-#endregion
+        #endregion
 
-#region append
+        #region append
 
         public static ndarray append(ndarray arr, dynamic values, int? axis = null)
         {
@@ -4000,7 +4278,7 @@ namespace NumpyDotNet
 
         }
 
-#endregion
+        #endregion
     }
 
 
