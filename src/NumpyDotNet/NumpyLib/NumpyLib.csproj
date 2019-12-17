@@ -4,10 +4,25 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyLib</AssemblyName>
     <RootNamespace>NumpyLib</RootNamespace>
+    <Version>0.9.0</Version>
+    <Authors>Kevin McKenna</Authors>
+    <Company>Baseline Software Solutions, Inc.</Company>
+    <Description>This library contains the lower level 'engine' of the NumpyDotNet system.   This library is typically accessed via the higher  level NumpyDotNet.dll</Description>
+    <Copyright>Copyright 2020, Baseline Software Solutions, Inc.</Copyright>
+    <PackageLicenseUrl>BSD</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>NumPy, .NET, C#,</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

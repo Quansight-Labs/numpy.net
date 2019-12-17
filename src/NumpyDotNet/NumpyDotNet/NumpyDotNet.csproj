@@ -4,9 +4,24 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyDotNet</AssemblyName>
     <RootNamespace>NumpyDotNet</RootNamespace>
+    <Authors>Kevin McKenna</Authors>
+    <Company>Baseline Software Solutions</Company>
+    <Description>This library provides an API to the .NET implementation of NumPy.</Description>
+    <Copyright>Copyright 2020, Baseline Software Solutions, Inc.</Copyright>
+    <Version>0.9.00</Version>
+    <PackageLicenseUrl>BSD</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>NumPy, .NET, C#,</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
