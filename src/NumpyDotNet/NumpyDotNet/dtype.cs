@@ -776,8 +776,9 @@ namespace NumpyDotNet {
             }
             else
             {
-                ScalarGeneric result = scalarInfo.ScalarConstructor();
-                return result.FillData(arr, offset, arr.Dtype.IsNativeByteOrder);
+                return arr.GetItem(offset);
+                //ScalarGeneric result = scalarInfo.ScalarConstructor();
+                //return result.FillData(arr, offset, arr.Dtype.IsNativeByteOrder);
             }
         }
 
