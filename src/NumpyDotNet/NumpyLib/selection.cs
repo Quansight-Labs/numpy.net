@@ -40,7 +40,7 @@ using npy_intp = System.Int64;
 using npy_uintp = System.UInt64;
 #else
 using npy_intp = System.Int32;
-using npy_uintp = System.UInt632;
+using npy_uintp = System.UInt32;
 #endif
 
 namespace NumpyLib
