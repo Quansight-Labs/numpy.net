@@ -1194,48 +1194,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
-        [TestMethod]
-        public void xxx_test_ndarray_unique_2()
-        {
-            var x = np.array(new Int32[] { 1, 2, 3, 1, 98, 97, 96, 94, 3, 4, 5, 4, 4, 1, 9, 6, 9, 11, 23, 9, 5, 0, 11, 12 }).reshape(new shape(6,4));
-
-            print("X");
-            print(x);
-
-            var result = np.unique(x, return_counts: true, return_index: true, return_inverse: true, axis:0);
-            var uvalues = result.data;
-            var indexes = result.indices;
-            var inverse = result.inverse;
-            var counts = result.counts;
-
-            print("uvalues");
-            print(uvalues);
-            //AssertArray(uvalues, new Int32[] { 1, 2, 3, 4, 5 });
-
-            print("indexes");
-            print(indexes);
-            print("inverse");
-            print(inverse);
-            print("counts");
-            print(counts);
-
-            result = np.unique(x, return_counts: true, return_index: true, return_inverse: true, axis: 1);
-            uvalues = result.data;
-            indexes = result.indices;
-            inverse = result.inverse;
-            counts = result.counts;
-
-            print("uvalues");
-            print(uvalues);
-            print("indexes");
-            print(indexes);
-            print("inverse");
-            print(inverse);
-            print("counts");
-            print(counts);
-
-        }
 
 
         [TestMethod]
@@ -1618,49 +1576,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // bit operation is not producing the expected result
-        [TestMethod]
-        public void xxx_test_arange_slice_2C()
-        {
-            var a = np.arange(0, 32, dtype: np.Int16).reshape(new shape(2, 4, -1));
-            var b = np.arange(100, 132, dtype: np.Int16).reshape(new shape(2, 4, -1));
-            print("A");
-            // print(a);
-            print(a.shape);
-            print(a.strides);
-
-            AssertShape(a, 2, 4, 4);
-            AssertStrides(a, 32, 8, 2);
-
-            b.A(":", ":", new int[] { 2 }).InPlaceBitwiseOr(a.A(":", ":", new int[] { 2 }));
-            print("B");
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new Int16[2, 4, 4]
-            {
-                {
-                    { 100, 101, 102, 103 },
-                    { 104, 105, 110, 107 },
-                    { 108, 109, 110, 111 },
-                    { 112, 113, 126, 115 },
-                },
-                {
-                    { 116, 117, 118, 119 },
-                    { 120, 121, 126, 123 },
-                    { 124, 125, 126, 127 },
-                    { 128, 129, 158, 131 },
-                },
-
-            };
-
-            AssertArray(b, ExpectedDataB);
-            AssertShape(b, 2, 4, 4);
-            AssertStrides(b, 32, 8, 2);
-
-
-        }
+  
 
         [TestMethod]
         public void test_arange_slice_2C2()

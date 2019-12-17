@@ -1978,12 +1978,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_spacing_Placeholder()
-        {
-        }
-
         #endregion
 
         #region Rational routines
