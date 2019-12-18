@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.04</version>
+    <version>0.9.05</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/Quansight-Labs/numpy.net</projectUrl>
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This library provides an API to the .NET implementation of NumPy.</description>
+    <description>This library provides a 100% pure .NET implementation of the NumPy API.</description>
     <releaseNotes>Initial release of the library</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#,</tags>
