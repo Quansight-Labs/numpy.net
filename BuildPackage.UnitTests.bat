@@ -1,0 +1,1 @@
+nuget pack NumpyDotNet.UnitTests.nuspec
