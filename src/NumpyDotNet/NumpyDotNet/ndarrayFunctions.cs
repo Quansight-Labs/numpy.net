@@ -59,8 +59,12 @@ namespace NumpyDotNet
 
     public static partial class np
     {
+        // need this static initializer.  It forces the code below to be initialized in release mode.
+        static np()
+        {
+        }
 
-        public static readonly string __version__ = "0.1 alpgha";
+        public static readonly string __version__ = "0.9.03";
         private static readonly bool _init = numpy.InitializeNumpyLibrary();
 
 
