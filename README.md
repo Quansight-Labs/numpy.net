@@ -1,75 +1,51 @@
-# numpy.net
-A port of NumPy to .Net
 
-History:
+<a href="https://github.com/Quansight-Labs/numpy.net"><img src="https://github.com/Quansight-Labs/numpy.net/Database.png" width="200" height="200" align="right" /></a>
 
-In early 2018, I was tasked with porting a python/numpy application to .NET. 
-There was no documentation available on the python source and I needed to 
-produce binary compatible output.
+# NumpyDotNet
 
-I started out by trying to write custom code to do the numpy manipulations 
-but that quickly became too difficult, so I searched for any solution that 
-would allow .NET to perform numpy operations.  I ran across this public repository.   
-I believe it is an abandoned effort to wrap the underlying C based numpy code in 
-.NET interop code. It was originally worked on by Enthought Corporation under 
-contract to Microsoft. I am not sure of the reasons, but this project was 
-abandoned before it was finished. I was not able to figure out how to use this 
-repository in any way, but that may have been user error on my part.
+This is a 100% pure .NET implementation of the Numpy API.  This library is ported from the real Numpy source code.  
+The C and the Python code of Numpy have been ported to C#.  
 
-https://github.com/numpy/numpy-refactor 
+We have near 100% of the API ported and unit tested.  The one notable missing is np.einsum (volunteers welcome).
 
-My initial goal was to review this source for some tips on how the numpy 
-manipulations were done so that I could use it in my custom code.  
+The result is a .NET library that is 100% compatible with the Numpy API.  It can be run anywhere that .NET can run.
+There are no dependencies on having Python installed.  There are no performance issues related to interoping with Python. 
 
-I was getting desperate, so on a whim, I grabbed a couple of the C functions 
-and tried to port them to C#.  Generally, I did a global replace of NULL to null 
-nd -> to . and then had to convert pointers to class references and for the most 
-part it compiled. I slowly converted the dozens of C macros to C# functions.  
-Eventually I was able to get something to work so I started doing a few more 
-functions.  Before long I had most of the C code ported into a .NET DLL.
+Since all of the underlying data are pure .NET System.Array types, they can be used like any other array.
 
-Next, I took the C# code from this repository and tried to connect it to this 
-newly ported DLL.  This involved unwinding the enormous amount of C interop 
-code that the Enthought team wrote.   Since both the DLL and higher layer
-library were now in C#, lots of things became simpler and it became easy to 
-step through the code and debug it.  It took several months to port this 
-code and make it work correctly.  
+Our ndarray class is iterable, which means that it can be data bound to windows UI elements.
 
-I ported enough of this code to complete my original porting task and then I
-added many more functions to help complete the testing.
-As a result, I believe I have a pure .NET numpy whose core logic is 
-largely complete and correct.
 
-Cool features:
+## Pure .NET data types
+The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
 
-python is a scripted language and C# is compiled language.  Much of the 
-numpy syntax is not compilable in C#, especially the slicing syntax.
-As the next best thing, I turned the python slicing sytax into a 
-string which is parsed into compatible slice values.  For example:
+##### Our API has full support of the following .NET data types:
 
-in python, a statement like this:
+System.Boolean, System.Sbyte, System.Byte, System.UInt16, System.Int16, System.UInt32, System.Int32, System.UInt64, System.Int64, System.Single (float), System.Double.
 
-	index = 2
-	a = arr[:,:index]
+##### Currently we have partial support of the following .NET data types:
 
-	becomes a C# statement like this:
-	
-	ndarray a = arr[":", ":" + index.ToString()] as ndarray;
-	
-	or the shortcut form where casting to ndarray is not necessary:
-	
-	ndarray a = arr.A(":", ":" + index.ToString());
+System.Decimal
+
+##### Future plans include support for:
+
+System.Numerics.Complex, System.Numerics.BigInteger
+
+
+## Array Slicing:
+
+Numpy allows you to create different views of an array using a technique called "slicing" ([array slicing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing)).  
+As an interpreted language, python can use syntax that the compilable C# can't.  This necessitates a difference in NumpyDotNet.
+
+In the example of python slicing array like this:  A1 = A[1:4:2, 10:0:-2], 
+
+NumpyDotNet supports the slicing syntax  like this:  var A1 = A["1:4:2", "10:0:-2"]; or like this: var A1 = A[new Slice(1,4,2), new Slice(10,2,-2)];  
+We also support Ellipsis slicing:   var A1 = A["..."];
 
 
 
+## Documentation
 
-Unit tests:
-
-I have unit tests in python and I have similarly named unit tests in C#.
-I grabbed the generated output from the python tests and assert that the C# 
-version produces the same results.
-
-If the unit tests in the C# code are set for ignore, it is because they
-currently do not work 100% correctly and need to be debugged.
+We have worked hard to make NumpyDotNET as similar to the python NumPy as possible.  We rely on the official [NumPy manual](https://docs.scipy.org/doc/numpy/). 
 
 
