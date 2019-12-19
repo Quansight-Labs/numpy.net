@@ -21,6 +21,11 @@ The unit tests that demonstrate how to use use all of the APIs and features are 
 
 https://www.nuget.org/packages/NumpyDotNet.UnitTests/  
 
+The simple sample apps that shows windows console and GUI apps using NumpyDotNet:  
+
+https://www.nuget.org/packages/NumpyDotNet.SampleApps/  
+
+
 
 ## Pure .NET data types
 The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
