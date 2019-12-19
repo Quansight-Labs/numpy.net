@@ -11,6 +11,16 @@ Since all of the underlying data are pure .NET System.Array types, they can be u
 
 Our ndarray class is iterable, which means that it can be data bound to windows UI elements.
 
+## Nuget packaging
+
+The built release mode libraries are available from here:  
+
+https://www.nuget.org/packages/NumpyDotNet/  
+
+The unit tests that demonstrate how to use use all of the APIs and feature are available here:  
+
+https://www.nuget.org/packages/NumpyDotNet.UnitTests/  
+
 
 ## Pure .NET data types
 The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
@@ -39,7 +49,7 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 * System.Numerics.BigInteger
 
 
-## Array Slicing:
+## Array Slicing
 
 Numpy allows you to create different views of an array using a technique called "slicing" ([array slicing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing)).  As an interpreted language, python can use syntax that the compilable C# can't.  This necessitates a difference in NumpyDotNet.
 
