@@ -164,7 +164,7 @@ namespace NumpyDotNet {
                 }
                 else
                 {
-                    int prefixLen = "numpy.".Length;
+                    int prefixLen = "NPY_".Length;
                     int len = typeName.Length;
                     if (typeName[len - 1] == '_')
                     {
