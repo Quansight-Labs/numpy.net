@@ -34,21 +34,21 @@ System.Numerics.Complex, System.Numerics.BigInteger
 
 Numpy allows you to create different views of an array using a technique called "slicing" ([array slicing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#arrays-indexing)).  As an interpreted language, python can use syntax that the compilable C# can't.  This necessitates a difference in NumpyDotNet.
 
-In the example of python slicing array like this:
+In the example of python slicing array like this:  
 
-    A1 = A[1:4:2, 10:0:-2], 
+    A1 = A[1:4:2, 10:0:-2]    
 
 NumpyDotNet supports the slicing syntax  like this:  
 
-    var A1 = A["1:4:2", "10:0:-2"]; 
+    var A1 = A["1:4:2", "10:0:-2"];  
 
-or like this: 
+or like this:  
 
     var A1 = A[new Slice(1,4,2), new Slice(10,2,-2)];  
 
-We also support Ellipsis slicing:   
+We also support Ellipsis slicing:  
 
-    var A1 = A["..."];
+    var A1 = A["..."];  
 
 
 
