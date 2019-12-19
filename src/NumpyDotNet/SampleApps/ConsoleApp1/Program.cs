@@ -25,7 +25,7 @@ namespace ConsoleApp1
             System.Diagnostics.Trace.WriteLine(copymatrix);
 
             // change the data in the view.  Notice the matrix gets changed too, but not the copy.
-            viewmatrix[":"] = viewmatrix * 10;                              
+            viewmatrix[":"] = viewmatrix * 10;
 
             System.Diagnostics.Trace.WriteLine("Full matrix data (with view x10)");
             System.Diagnostics.Trace.WriteLine(matrix);
@@ -49,3 +49,4 @@ namespace ConsoleApp1
         }
     }
 }
+
