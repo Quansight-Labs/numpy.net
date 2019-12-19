@@ -52,11 +52,14 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 
 We have extended the Numpy API to allow you to access the underlying System.Array type data.
 
-    ndarray A = np.array(new int[] {1,2,3});
+    ndarray O = np.arange(0, 12, dtype: np.Int32);  // create Int32 ndarray   
+    ndarray A = (ndarray)O["2:6"];                  // create a view of this middle 4 elements, starting at index 2   
 
-    int[] A1 = A.AsInt32Array();    // gets a reference to internally created array  
-    Int16[] A2 = A.AsInt16Array();  // gets a reference to a copy of the original data, now int Int16[] form.  
+    Int32[] O1 = O.AsInt32Array();                  // Int32[] {0,1,2,3,4,5,6,7,8,9,10,11}  reference to real data   
+    Int32[] A1 = A.AsInt32Array();                  // Int32[] {2,3,4,5}  The view was copied into a new array.   
+    Int16[] A2 = A.AsInt16Array();                  // Int16[] {2,3,4,5}  The view was copied into a new array.   
 
+ 
 ## Accessing a scalar return value
 
 Many Numpy operations can return an ndarray full of data, or a single scalar object if the resultant is a single item.  Python, not being a strongly typed language, can get away with that.  .NET languages can't. .NET functions need to specify the exact return type.  In most cases, our API will always return an ndarray, even if the resultant is a single data item. To help with this issue, we have extended the ndarray class to have the following APIs.  
