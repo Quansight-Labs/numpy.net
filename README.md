@@ -1,9 +1,7 @@
 
-<a href="https://github.com/Quansight-Labs/numpy.net"><img src="https://github.com/Quansight-Labs/numpy.net/Database.png" width="200" height="200" align="right" /></a>
-
 # NumpyDotNet
 
-This is a 100% pure .NET implementation of the Numpy API.  This library is ported from the real Numpy source code.  The C and the Python code of Numpy have been ported to C#.  
+This is a 100% pure .NET implementation of the Numpy API.  This library is ported from the real Numpy source code. The C and the Python code of Numpy have been ported to C#.  
 
 We have near 100% of the API ported and unit tested.  The one notable missing is np.einsum (volunteers welcome).
 
@@ -19,15 +17,26 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 
 ##### Our API has full support of the following .NET data types:
 
-System.Boolean, System.Sbyte, System.Byte, System.UInt16, System.Int16, System.UInt32, System.Int32, System.UInt64, System.Int64, System.Single (float), System.Double.
+* System.Boolean
+* System.Sbyte
+* System.Byte
+* System.UInt16
+* System.Int16
+* System.UInt32
+* System.Int32
+* System.UInt64
+* System.Int64
+* System.Single (float)
+* System.Double.
 
 ##### Currently we have partial support of the following .NET data types:
 
-System.Decimal
+* System.Decimal
 
 ##### Future plans include support for:
 
-System.Numerics.Complex, System.Numerics.BigInteger
+* System.Numerics.Complex
+* System.Numerics.BigInteger
 
 
 ## Array Slicing:
