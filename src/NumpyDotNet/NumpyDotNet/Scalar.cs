@@ -911,7 +911,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_LONGLONG);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_LONG);
                         }
                     }
                 }
@@ -1333,7 +1333,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_ULONGLONG);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_ULONG);
                         }
                     }
                 }
@@ -1580,7 +1580,7 @@ namespace NumpyDotNet
     {
         public override object dtype {
             get {
-                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_CDOUBLE);
+                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
             }
         }
 

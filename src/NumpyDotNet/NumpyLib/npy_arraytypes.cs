@@ -61,15 +61,11 @@ namespace NumpyLib
         static NpyArray_Descr npy_UINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UINT) { elsize = 4, kind = 'u' };
         static NpyArray_Descr npy_LONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_LONG) {  elsize = 8, kind = 'i' };
         static NpyArray_Descr npy_ULONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_ULONG) {  elsize = 8, kind = 'u' };
-        static NpyArray_Descr npy_LONGLONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_LONGLONG) {  elsize = NotSupportedSizeYet, kind = 'u' };
-        static NpyArray_Descr npy_ULONGLONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_ULONGLONG) {  elsize = NotSupportedSizeYet, kind = 'u' };
         static NpyArray_Descr npy_FLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) {  elsize = 4, kind = 'f' };
         static NpyArray_Descr npy_DOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) {  elsize = 8, kind = 'f' };
         static NpyArray_Descr npy_DECIMAL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  elsize = sizeof(decimal), kind = 'c' };
-        static NpyArray_Descr npy_LONGDOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  elsize = NotSupportedSizeYet, kind = 'u' };
-        static NpyArray_Descr npy_CFLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_CFLOAT) {  elsize = NotSupportedSizeYet, kind = 'c' };
-        static NpyArray_Descr npy_CDOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_CDOUBLE) {  elsize = NotSupportedSizeYet, kind = 'c' };
-        static NpyArray_Descr npy_CLONGDOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_CLONGDOUBLE) {  elsize = NotSupportedSizeYet, kind = 'u' };
+        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  elsize = NotSupportedSizeYet, kind = 'c' };
+        static NpyArray_Descr npy_BIGINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { elsize = NotSupportedSizeYet, kind = 'c' };
         static NpyArray_Descr npy_DATETIME_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) {  elsize = 8, kind = 'M' };
         static NpyArray_Descr npy_TIMEDELTA_Descr = new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) {  elsize = 8, kind = 'm' };
         static NpyArray_Descr npy_OBJECT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) {  elsize = NotSupportedSizeYet, kind = 'O' };
@@ -88,15 +84,11 @@ namespace NumpyLib
             npy_UINT_Descr,
             npy_LONG_Descr,
             npy_ULONG_Descr,
-            npy_LONGLONG_Descr,
-            npy_ULONGLONG_Descr,
             npy_FLOAT_Descr,
             npy_DOUBLE_Descr,
             npy_DECIMAL_Descr,
-            npy_LONGDOUBLE_Descr,
-            npy_CFLOAT_Descr,
-            npy_CDOUBLE_Descr,
-            npy_CLONGDOUBLE_Descr,
+            npy_COMPLEX_Descr,
+            npy_BIGINT_Descr,
             npy_DATETIME_Descr,
             npy_TIMEDELTA_Descr,
             npy_OBJECT_Descr,
@@ -105,9 +97,9 @@ namespace NumpyLib
             npy_VOID_Descr,
         };
   
-        internal static NpyArray_Descr _get_builtin_descrs(int type)
+        internal static NpyArray_Descr _get_builtin_descrs(NPY_TYPES type)
         {
-            var ret = _builtin_descrs[type];
+            var ret = _builtin_descrs.FirstOrDefault(t=>t.type_num == type);
             return ret;
         }
 
@@ -117,7 +109,7 @@ namespace NumpyLib
 
             if (type < NPY_TYPES.NPY_NTYPES)
             {
-                ret = NpyArray_DescrNew(_get_builtin_descrs((int)type));
+                ret = NpyArray_DescrNew(_get_builtin_descrs(type));
             }
             else if (type == NPY_TYPES.NPY_NOTYPE)
             {
@@ -130,7 +122,7 @@ namespace NumpyLib
             }
             else if ((type == NPY_TYPES.NPY_CHAR) || ((int)type == (int)NPY_TYPECHAR.NPY_CHARLTR))
             {
-                ret = NpyArray_DescrNew(_get_builtin_descrs((int)NPY_TYPES.NPY_STRING));
+                ret = NpyArray_DescrNew(_get_builtin_descrs(NPY_TYPES.NPY_STRING));
                 if (ret == null)
                 {
                     return null;
@@ -156,7 +148,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    ret = _get_builtin_descrs((int)num);
+                    ret = _get_builtin_descrs(num);
                 }
             }
             if (ret == null)

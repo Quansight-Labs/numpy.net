@@ -120,15 +120,11 @@ namespace NumpyLib
         NPY_UINT,
         NPY_LONG,
         NPY_ULONG,
-        NPY_LONGLONG,
-        NPY_ULONGLONG,
         NPY_FLOAT,
         NPY_DOUBLE,
         NPY_DECIMAL,
-        NPY_LONGDOUBLE,
-        NPY_CFLOAT,
-        NPY_CDOUBLE,
-        NPY_CLONGDOUBLE,
+        NPY_COMPLEX,
+        NPY_BIGINT,
         NPY_DATETIME,
         NPY_TIMEDELTA,
         NPY_OBJECT,
@@ -144,7 +140,6 @@ namespace NumpyLib
         NPY_INT16 = NPY_SHORT,
         NPY_INT32 = NPY_INT,
         NPY_INT64 = NPY_LONG,
-        NPY_INT128 = NPY_LONGLONG,
         NPY_UINT8 = NPY_UBYTE,
         NPY_UINT16 = NPY_USHORT,
         NPY_UINT32 = NPY_UINT,
@@ -155,20 +150,7 @@ namespace NumpyLib
 #else
         NPY_INTP = NPY_INT,
 #endif
-        //NPY_UINT128 = NPY_ULONGLONG,
-
-        //NPY_FLOAT32 = NPY_FLOAT,
-        //NPY_FLOAT64 = NPY_DOUBLE,
-        //NPY_FLOAT80 = NPY_DOUBLE,
-        //NPY_FLOAT96 = NPY_LONGDOUBLE,
-        //NPY_FLOAT128 = NPY_LONGDOUBLE,
-
-        //NPY_COMPLEX64 = NPY_CFLOAT,
-        //NPY_COMPLEX128 = NPY_CDOUBLE,
-        //NPY_COMPLEX160 = NPY_CLONGDOUBLE,
-        //NPY_COMPLEX192 = NPY_CLONGDOUBLE,
-        //NPY_COMPLEX256 = NPY_CLONGDOUBLE,
-
+ 
     };
 
     /* How many floating point types are there */
@@ -346,7 +328,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_USHORT:
                 case NPY_TYPES.NPY_UINT:
                 case NPY_TYPES.NPY_ULONG:
-                case NPY_TYPES.NPY_ULONGLONG:
                     return true;
 
                 default:
@@ -361,7 +342,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_SHORT:
                 case NPY_TYPES.NPY_INT:
                 case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_LONGLONG:
                     return true;
 
                 default:
@@ -371,26 +351,44 @@ namespace NumpyLib
 
         internal static bool NpyTypeNum_ISINTEGER(NPY_TYPES type)
         {
-            if ((type >= NPY_TYPES.NPY_BYTE) && (type <= NPY_TYPES.NPY_ULONGLONG))
-                return true;
+            switch (type)
+            {
+                case NPY_TYPES.NPY_BYTE:
+                case NPY_TYPES.NPY_UBYTE:
+                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_INT:
+                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_BIGINT:
+                    return true;
 
-            return false;
+                default:
+                    return false;
+            }
+
         }
 
         internal static bool NpyTypeNum_ISFLOAT(NPY_TYPES type)
         {
-            if ((type >= NPY_TYPES.NPY_FLOAT) && (type <= NPY_TYPES.NPY_LONGDOUBLE))
-                return true;
+            switch (type)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
+                case NPY_TYPES.NPY_DECIMAL:
+                    return true;
 
-            return false;
+                default:
+                    return false;
+            }
+
         }
 
         internal static bool NpyTypeNum_ISNUMBER(NPY_TYPES type)
         {
-            if (type <= NPY_TYPES.NPY_CLONGDOUBLE)
-                return true;
-
-            return false;
+            return NpyTypeNum_ISINTEGER(type) || NpyTypeNum_ISFLOAT(type);
         }
 
         internal static bool NpyTypeNum_ISSTRING(NPY_TYPES type)
@@ -409,42 +407,40 @@ namespace NumpyLib
 
         internal static bool NpyTypeNum_ISCOMPLEX(NPY_TYPES type)
         {
-            if ((type >= NPY_TYPES.NPY_CFLOAT) && (type <= NPY_TYPES.NPY_CLONGDOUBLE))
+            if (type == NPY_TYPES.NPY_COMPLEX)
                 return true;
 
             return false;
         }
+  
 
-        internal static bool NpyTypeNum_ISPYTHON(NPY_TYPES type)
+        internal static bool NpyTypeNum_ISFLEXIBLE(NPY_TYPES type)
         {
             switch (type)
             {
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_DOUBLE:
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_BOOL:
-                case NPY_TYPES.NPY_OBJECT:
+                case NPY_TYPES.NPY_STRING:
+                case NPY_TYPES.NPY_UNICODE:
+                case NPY_TYPES.NPY_VOID:
                     return true;
 
                 default:
                     return false;
             }
-        }
 
-        internal static bool NpyTypeNum_ISFLEXIBLE(NPY_TYPES type)
-        {
-            if ((type >= NPY_TYPES.NPY_STRING) && (type <= NPY_TYPES.NPY_VOID))
-                return true;
-
-            return false;
         }
 
         internal static bool NpyTypeNum_ISDATETIME(NPY_TYPES type)
         {
-            if ((type >= NPY_TYPES.NPY_DATETIME) && (type <= NPY_TYPES.NPY_TIMEDELTA))
-                return true;
+            switch (type)
+            {
+                case NPY_TYPES.NPY_DATETIME:
+                case NPY_TYPES.NPY_TIMEDELTA:
+                    return true;
 
-            return false;
+                default:
+                    return false;
+            }
+
         }
 
         internal static bool NpyTypeNum_ISUSERDEF(NPY_TYPES type)
@@ -462,7 +458,14 @@ namespace NumpyLib
 
         internal static bool NpyTypeNum_ISOBJECT(NPY_TYPES type)
         {
-            return (type == NPY_TYPES.NPY_OBJECT);
+            switch (type)
+            {
+                case NPY_TYPES.NPY_OBJECT:
+                    return true;
+
+                default:
+                    return false;
+            }
         }
 
    

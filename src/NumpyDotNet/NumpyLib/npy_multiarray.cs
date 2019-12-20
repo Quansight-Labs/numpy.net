@@ -718,7 +718,7 @@ namespace NumpyLib
                         case NPY_SCALARKIND.NPY_FLOAT_SCALAR:
                             return (neededtype >= NPY_TYPES.NPY_FLOAT);
                         case NPY_SCALARKIND.NPY_COMPLEX_SCALAR:
-                            return (neededtype >= NPY_TYPES.NPY_CFLOAT);
+                            return (neededtype >= NPY_TYPES.NPY_COMPLEX);
                         default:
                             /* should never get here... */
                             return true;

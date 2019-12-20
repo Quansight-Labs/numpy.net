@@ -148,62 +148,152 @@ namespace NumpyDotNet {
 
         #region Type functions
 
-        public static bool IsBool(NPY_TYPES type) {
+        public static bool IsBool(NPY_TYPES type)
+        {
             return type == NPY_TYPES.NPY_BOOL;
         }
 
-        public static bool IsUnsigned(NPY_TYPES type) {
-            return type == NPY_TYPES.NPY_UBYTE || type == NPY_TYPES.NPY_USHORT ||
-                type == NPY_TYPES.NPY_UINT || type == NPY_TYPES.NPY_ULONG ||
-                type == NPY_TYPES.NPY_ULONGLONG;
+        public static bool IsUnsigned(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_UBYTE:
+                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_ULONG:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsSigned(NPY_TYPES type) {
-            return type == NPY_TYPES.NPY_BYTE || type == NPY_TYPES.NPY_SHORT ||
-                type == NPY_TYPES.NPY_INT || type == NPY_TYPES.NPY_LONG ||
-                type == NPY_TYPES.NPY_LONGLONG;
+        public static bool IsSigned(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_BYTE:
+                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_INT:
+                case NPY_TYPES.NPY_LONG:
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
-        public static bool IsInteger(NPY_TYPES type) {
-            return NPY_TYPES.NPY_BYTE <= type && type <= NPY_TYPES.NPY_ULONGLONG;
+        public static bool IsInteger(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_BYTE:
+                case NPY_TYPES.NPY_UBYTE:
+                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_INT:
+                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_BIGINT:
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
-        public static bool IsFloat(NPY_TYPES type) {
-            return NPY_TYPES.NPY_FLOAT <= type && type <= NPY_TYPES.NPY_LONGDOUBLE;
+        public static bool IsFloat(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsNumber(NPY_TYPES type) {
-            return type <= NPY_TYPES.NPY_CLONGDOUBLE;
+        public static bool IsNumber(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_BYTE:
+                case NPY_TYPES.NPY_UBYTE:
+                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_INT:
+                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_FLOAT:
+                case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
+                case NPY_TYPES.NPY_BIGINT:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsString(NPY_TYPES type) {
-            return type == NPY_TYPES.NPY_STRING || type == NPY_TYPES.NPY_UNICODE;
+        public static bool IsString(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_STRING:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsComplex(NPY_TYPES type) {
-            return NPY_TYPES.NPY_CFLOAT <= type && type <= NPY_TYPES.NPY_CLONGDOUBLE;
+        public static bool IsComplex(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_COMPLEX:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsPython(NPY_TYPES type) {
-            return type == NPY_TYPES.NPY_LONG || type == NPY_TYPES.NPY_DOUBLE ||
-                type == NPY_TYPES.NPY_CDOUBLE || type == NPY_TYPES.NPY_BOOL ||
-                type == NPY_TYPES.NPY_OBJECT;
+
+        public static bool IsFlexible(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_STRING:
+                case NPY_TYPES.NPY_UNICODE:
+                case NPY_TYPES.NPY_VOID:
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
-        public static bool IsFlexible(NPY_TYPES type) {
-            return NPY_TYPES.NPY_STRING <= type && type <= NPY_TYPES.NPY_VOID;
+        public static bool IsDatetime(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_DATETIME:
+                case NPY_TYPES.NPY_TIMEDELTA:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        public static bool IsDatetime(NPY_TYPES type) {
-            return NPY_TYPES.NPY_DATETIME <= type && type <= NPY_TYPES.NPY_TIMEDELTA;
-        }
-
-        public static bool IsUserDefined(NPY_TYPES type) {
+        public static bool IsUserDefined(NPY_TYPES type)
+        {
             return NPY_TYPES.NPY_USERDEF <= type &&
                 (int)type <= (int)NPY_TYPES.NPY_USERDEF + 0; // TODO: Need GetNumUserTypes
         }
 
-        public static bool IsExtended(NPY_TYPES type) {
+        public static bool IsExtended(NPY_TYPES type)
+        {
             return IsFlexible(type) || IsUserDefined(type);
         }
 

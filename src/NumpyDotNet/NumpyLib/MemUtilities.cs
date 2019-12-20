@@ -706,10 +706,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     vp.datap = new decimal[size / (AdjustForBytes ? sizeof(decimal) : (ulong)1)];
                     break;
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_ULONGLONG:
-                    vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
-                    break;
                 // not sure about these yet.  Not really supported
                 case NPY_TYPES.NPY_DATETIME:
                 case NPY_TYPES.NPY_TIMEDELTA:
@@ -717,10 +713,7 @@ namespace NumpyLib
                     break;
 
                 // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_LONGDOUBLE:
-                case NPY_TYPES.NPY_CFLOAT:
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_CLONGDOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
                     vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
                     break;
                 default:

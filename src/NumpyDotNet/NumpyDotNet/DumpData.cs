@@ -110,11 +110,7 @@ namespace NumpyDotNet
                             }
                             break;
 
-                        case NPY_TYPES.NPY_CDOUBLE:
                         case NPY_TYPES.NPY_DOUBLE:
-                        case NPY_TYPES.NPY_LONGDOUBLE:
-                        case NPY_TYPES.NPY_CLONGDOUBLE:
-
                             double dValue = (double)value;
                             strValue = dValue.ToString();
                             if (!strValue.Contains("."))

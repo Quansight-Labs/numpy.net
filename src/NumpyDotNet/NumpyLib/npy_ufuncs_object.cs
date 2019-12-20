@@ -3281,31 +3281,34 @@ namespace NumpyLib
 
         private static NPY_TYPES _lowest_type(NPY_TYPES intype)
         {
-            /* TODO: Ready to move */
             switch (intype)
             {
-                /* case PyArray_BYTE */
+                case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_SHORT:
                 case NPY_TYPES.NPY_INT:
                 case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
                     return NPY_TYPES.NPY_BYTE;
-                /* case NPY_UBYTE */
+
+                case NPY_TYPES.NPY_UBYTE:
                 case NPY_TYPES.NPY_USHORT:
                 case NPY_TYPES.NPY_UINT:
                 case NPY_TYPES.NPY_ULONG:
-                case NPY_TYPES.NPY_ULONGLONG:
                     return NPY_TYPES.NPY_UBYTE;
-                /* case PyArray_FLOAT:*/
+
+                case NPY_TYPES.NPY_FLOAT:
                 case NPY_TYPES.NPY_DOUBLE:
-                case NPY_TYPES.NPY_LONGDOUBLE:
                     return NPY_TYPES.NPY_FLOAT;
-                /* case PyArray_CFLOAT:*/
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_CLONGDOUBLE:
-                    return NPY_TYPES.NPY_CFLOAT;
+
+                case NPY_TYPES.NPY_COMPLEX:
+                    return NPY_TYPES.NPY_COMPLEX;
+
+                case NPY_TYPES.NPY_BIGINT:
+                    return NPY_TYPES.NPY_BIGINT;
+
+                case NPY_TYPES.NPY_DATETIME:
+                case NPY_TYPES.NPY_TIMEDELTA:
+                    throw new NotImplementedException("not handling DateTime values yet");
+
                 default:
                     return intype;
             }

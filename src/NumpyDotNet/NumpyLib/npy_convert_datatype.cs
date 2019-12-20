@@ -319,7 +319,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_SHORT:
                 case NPY_TYPES.NPY_INT:
                 case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_LONGLONG:
                     if (NpyTypeNum_ISINTEGER(totype))
                     {
                         if (NpyTypeNum_ISUNSIGNED(totype))
@@ -361,7 +360,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_USHORT:
                 case NPY_TYPES.NPY_UINT:
                 case NPY_TYPES.NPY_ULONG:
-                case NPY_TYPES.NPY_ULONGLONG:
                     if (NpyTypeNum_ISINTEGER(totype))
                     {
                         if (NpyTypeNum_ISSIGNED(totype))
@@ -402,7 +400,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_FLOAT:
                 case NPY_TYPES.NPY_DOUBLE:
                 case NPY_TYPES.NPY_DECIMAL:
-                case NPY_TYPES.NPY_LONGDOUBLE:
                     if (NpyTypeNum_ISCOMPLEX(totype))
                     {
                         return (telsize >> 1) >= felsize;
@@ -411,9 +408,7 @@ namespace NumpyLib
                     {
                         return totype > fromtype;
                     }
-                case NPY_TYPES.NPY_CFLOAT:
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_CLONGDOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
                     return totype > fromtype;
                 case NPY_TYPES.NPY_STRING:
                 case NPY_TYPES.NPY_UNICODE:

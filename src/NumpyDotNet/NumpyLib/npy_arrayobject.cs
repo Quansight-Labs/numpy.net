@@ -609,10 +609,6 @@ namespace NumpyLib
         {
             return NpyTypeNum_ISCOMPLEX(NpyArray_TYPE(arr));
         }
-        internal static bool NpyArray_ISPYTHON(NpyArray arr)
-        {
-            return NpyTypeNum_ISPYTHON(NpyArray_TYPE(arr));
-        }
         internal static bool NpyArray_ISFLEXIBLE(NpyArray arr)
         {
             return NpyTypeNum_ISFLEXIBLE(NpyArray_TYPE(arr));

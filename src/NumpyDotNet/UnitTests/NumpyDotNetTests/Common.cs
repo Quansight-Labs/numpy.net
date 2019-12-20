@@ -677,26 +677,7 @@ namespace NumpyDotNetTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_ULONGLONG:
-                    {
-                        UInt64[] bdata = new UInt64[dataLen];
-
-                        for (int i = 0; i < bdata.Length; i++)
-                        {
-                            if (UseFillData)
-                            {
-                                bdata[i] = (UInt64)FillData;
-                            }
-                            else
-                            {
-                                bdata[i] = (UInt64)(i + ArrayDataAdjust);
-                            }
-                        }
-
-                        data = new VoidPtr(bdata);
-                        break;
-                    }
+  
 
                 // not sure about these yet.  Not really supported
                 case NPY_TYPES.NPY_DATETIME:
@@ -722,10 +703,7 @@ namespace NumpyDotNetTests
 
 
                 // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_LONGDOUBLE:
-                case NPY_TYPES.NPY_CFLOAT:
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_CLONGDOUBLE:
+                case NPY_TYPES.NPY_COMPLEX:
                     {
                         UInt64[] bdata = new UInt64[dataLen];
 
@@ -774,9 +752,6 @@ namespace NumpyDotNetTests
                 case NPY_TYPES.NPY_LONG:
                 case NPY_TYPES.NPY_ULONG:
                     return 8;
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_ULONGLONG:
-                    return NotSupportedSizeYet;
                 case NPY_TYPES.NPY_FLOAT:
                     return 4;
 
@@ -786,8 +761,6 @@ namespace NumpyDotNetTests
                 case NPY_TYPES.NPY_DECIMAL:
                     return sizeof(decimal);
 
-                case NPY_TYPES.NPY_LONGDOUBLE:
-                    return NotSupportedSizeYet;
 
                 case NPY_TYPES.NPY_USERDEF:
                     return NotSupportedSizeYet;

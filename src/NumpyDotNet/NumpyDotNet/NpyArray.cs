@@ -715,8 +715,10 @@ namespace NumpyDotNet {
                     type = NPY_TYPES.NPY_OBJECT;
                 }
             }
-            else if (src is Complex) type = NPY_TYPES.NPY_CDOUBLE;
-            else type = NPY_TYPES.NPY_NOTYPE;
+            else if (src is Complex)
+                type = NPY_TYPES.NPY_COMPLEX;
+            else
+                type = NPY_TYPES.NPY_NOTYPE;
 
             return (type != NPY_TYPES.NPY_NOTYPE) ?
                 NpyCoreApi.DescrFromType(type) : null;

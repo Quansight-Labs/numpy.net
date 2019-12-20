@@ -155,17 +155,11 @@ namespace NumpyDotNet
         {
             switch (dest.Dtype.TypeNum)
             {
-                case NPY_TYPES.NPY_CFLOAT:
-                    return float.MinValue;
+                case NPY_TYPES.NPY_COMPLEX:
+                    return  double.MinValue;
                 case NPY_TYPES.NPY_FLOAT:
                     return float.MinValue;
-                case NPY_TYPES.NPY_CDOUBLE:
-                    return double.MinValue;
-                case NPY_TYPES.NPY_CLONGDOUBLE:
-                    return double.MinValue;
                 case NPY_TYPES.NPY_DOUBLE:
-                    return double.MinValue;
-                case NPY_TYPES.NPY_LONGDOUBLE:
                     return double.MinValue;
                 default:
                     throw new Exception("Unexpected datatype in _getmin");
@@ -176,17 +170,11 @@ namespace NumpyDotNet
         {
             switch (dest.Dtype.TypeNum)
             {
-                case NPY_TYPES.NPY_CFLOAT:
-                    return float.MaxValue;
+                case NPY_TYPES.NPY_COMPLEX:
+                    return double.MaxValue;
                 case NPY_TYPES.NPY_FLOAT:
                     return float.MaxValue;
-                case NPY_TYPES.NPY_CDOUBLE:
-                    return double.MaxValue;
-                case NPY_TYPES.NPY_CLONGDOUBLE:
-                    return double.MaxValue;
                 case NPY_TYPES.NPY_DOUBLE:
-                    return double.MaxValue;
-                case NPY_TYPES.NPY_LONGDOUBLE:
                     return double.MaxValue;
                 default:
                     throw new Exception("Unexpected datatype in _getmax");
