@@ -449,6 +449,53 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
+
+        [TestMethod]
+        public void test_multiply_operations_DECIMAL()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a * 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new decimal[,]
+            {
+                {0,   8,  16,  24},
+                {32,  40,  48,  56},
+                {64,  72,  80, 88},
+                {96, 104, 112, 120},
+                {128, 136, 144, 152}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a * 2400;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new decimal[,]
+            {
+                {0,  2400,  4800,  7200},
+                {9600, 12000, 14400, 16800},
+                {19200, 21600, 24000, 26400},
+                {28800, 31200, 33600, 36000},
+                {38400, 40800, 43200, 45600}
+            };
+            AssertArray(b, ExpectedDataB2);
+        }
+
         [TestMethod]
         public void test_division_operations()
         {
@@ -491,6 +538,53 @@ namespace NumpyDotNetTests
                 {833, 833, 833, 833},
                 {833, 833, 833, 833},
                 {833, 833, 833, 833},
+            };
+            AssertArray(b, ExpectedDataB2);
+        }
+
+
+        [TestMethod]
+        public void test_division_operations_DECIMAL()
+        {
+            var a = np.arange(20000, 20020, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a / 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new decimal[,]
+            {
+                {2500m,   2500.125m, 2500.25m, 2500.375m},
+                {2500.5m, 2500.625m, 2500.75m, 2500.875m},
+                {2501m,   2501.125m, 2501.25m, 2501.375m},
+                {2501.5m, 2501.625m, 2501.75m, 2501.875m},
+                {2502m,   2502.125m, 2502.25m, 2502.375m}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2000000, 2000020, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a / 2400;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new decimal[,]
+            {
+                {833.3333333333333333333333333m, 833.33375m, 833.3341666666666666666666667m, 833.3345833333333333333333333m},
+                {833.335m, 833.3354166666666666666666667m, 833.3358333333333333333333333m, 833.33625m},
+                {833.3366666666666666666666667m, 833.3370833333333333333333333m, 833.3375m, 833.3379166666666666666666667m},
+                {833.3383333333333333333333333m, 833.33875m, 833.3391666666666666666666667m, 833.3395833333333333333333333m},
+                {833.34m, 833.3404166666666666666666667m, 833.3408333333333333333333333m, 833.34125m},
             };
             AssertArray(b, ExpectedDataB2);
         }
