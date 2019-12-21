@@ -642,6 +642,54 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_leftshift_operations_DECIMAL()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a << 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new decimal[,]
+            {
+                {0,  256,  512,  768},
+                {1024, 1280, 1536, 1792},
+                {2048, 2304, 2560, 2816},
+                {3072, 3328, 3584, 3840},
+                {4096, 4352, 4608, 4864}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a << 24;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new decimal[,]
+            {
+                {0,  16777216,  33554432,  50331648},
+                {67108864,  83886080, 100663296, 117440512},
+                {134217728, 150994944, 167772160, 184549376},
+                {201326592, 218103808, 234881024, 251658240},
+                {268435456, 285212672, 301989888, 318767104}
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+
+        [TestMethod]
         public void test_leftshift_operations2()
         {
             var a = np.arange(0, 20, 1, dtype: np.Int8);
@@ -734,6 +782,54 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
 
         }
+
+        [TestMethod]
+        public void test_rightshift_operations_DECIMAL()
+        {
+            var a = np.arange(20000, 20020, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a >> 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new decimal[,]
+            {
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2123450, 2123470, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a >> 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new decimal[,]
+            {
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 }
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
 
         [TestMethod]
         public void test_bitwiseand_operations()
