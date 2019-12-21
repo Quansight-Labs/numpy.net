@@ -87,6 +87,51 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_add_operations_DECIMAL()
+        {
+            var a = np.arange(0m, 20m, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a + 8m;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB = new decimal[,]
+            {{8,  9, 10, 11},
+             {12, 13, 14, 15},
+             {16, 17, 18, 19},
+             {20, 21, 22, 23},
+             {24, 25, 26, 27}
+            };
+            AssertArray(b, ExpectedDataB);
+
+            a = np.arange(0m, 20m, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a + 2400;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            ExpectedDataB = new decimal[,]
+            {{2400, 2401, 2402, 2403},
+             {2404, 2405, 2406, 2407},
+             {2408, 2409, 2410, 2411},
+             {2412, 2413, 2414, 2415},
+             {2416, 2417, 2418, 2419}
+            };
+            AssertArray(b, ExpectedDataB);
+
+        }
+
+        [TestMethod]
         public void test_add_operations_2()
         {
             var a = np.arange(0, 20, 1, dtype: np.Int16);
@@ -119,6 +164,47 @@ namespace NumpyDotNetTests
             print(d);
 
             var ExpectedDataD = new Int16[,]
+                {{10, 21, 32, 43},
+                 {14, 25, 36, 47},
+                 {18, 29, 40, 51},
+                 {22, 33, 44, 55},
+                 {26, 37, 48, 59}};
+            AssertArray(d, ExpectedDataD);
+        }
+
+        [TestMethod]
+        public void test_add_operations_DECIMAL_2()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+
+            var ExpectedDataA = new Decimal[,]
+                {{0,  1,  2,  3},
+                 {4,  5,  6,  7},
+                 {8,  9, 10, 11},
+                 {12, 13, 14, 15},
+                 {16, 17, 18, 19}};
+            AssertArray(a, ExpectedDataA);
+
+            var b = np.array(new Decimal[] { 2 });
+            var c = a + b;
+            print(c);
+
+            var ExpectedDataC = new Decimal[,]
+                {{2,  3,  4,  5},
+                 {6,  7,  8,  9},
+                 {10, 11, 12, 13},
+                 {14, 15, 16, 17},
+                 {18, 19, 20, 21}};
+            AssertArray(c, ExpectedDataC);
+
+
+            b = np.array(new Decimal[] { 10, 20, 30, 40 });
+            var d = a + b;
+            print(d);
+
+            var ExpectedDataD = new Decimal[,]
                 {{10, 21, 32, 43},
                  {14, 25, 36, 47},
                  {18, 29, 40, 51},
@@ -214,6 +300,53 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_subtract_operations_DECIMAL()
+        {
+            var a = np.arange(0m, 20m, 1m, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a - 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB = new decimal[,]
+            {{-8, -7, -6, -5},
+             {-4, -3, -2, -1},
+             {0,  1,  2,  3},
+             {4,  5,  6,  7},
+             {8,  9, 10, 11}
+            };
+            AssertArray(b, ExpectedDataB);
+
+            a = np.arange(0m, 20m, 1m, dtype: np.Decimal);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a - 2400;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            ExpectedDataB = new decimal[,]
+            {{-2400, -2399, -2398, -2397},
+             {-2396, -2395, -2394, -2393},
+             {-2392, -2391, -2390, -2389},
+             {-2388, -2387, -2386, -2385},
+             {-2384, -2383, -2382, -2381}
+            };
+
+            AssertArray(b, ExpectedDataB);
+
+        }
+
         [TestMethod]
         public void test_subtract_operations_2()
         {
@@ -239,6 +372,34 @@ namespace NumpyDotNetTests
             print(c);
             print("****");
             AssertArray(c, new Int16[,] { { -65, -77 }, { -63, -75 } });
+
+        }
+
+        [TestMethod]
+        public void test_subtract_operations_DECIMAL_2()
+        {
+            var a = np.arange(100, 102, 1, dtype: np.Decimal);
+            var b = np.array(new Decimal[] { 1, 63 });
+            var c = a - b;
+            print(a);
+            print("****");
+            print(b);
+            print("****");
+            print(c);
+            print("****");
+            AssertArray(c, new decimal[] { 99, 38 });
+
+
+            a = np.arange(0, 4, 1, dtype: np.Decimal).reshape(new shape(2, 2));
+            b = np.array(new Decimal[] { 65, 78 }).reshape(new shape(1, 2));
+            c = a - b;
+            print(a);
+            print("****");
+            print(b);
+            print("****");
+            print(c);
+            print("****");
+            AssertArray(c, new Decimal[,] { { -65, -77 }, { -63, -75 } });
 
         }
 
