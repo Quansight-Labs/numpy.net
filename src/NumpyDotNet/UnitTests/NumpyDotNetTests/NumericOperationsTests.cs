@@ -1284,9 +1284,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_invert_operations_DECIMAL()
+        {
+            var a = np.arange(-32, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = ~a;
+            print(b);
+
+            // this should not be changed at all.  Decimals can't be inverted.
+            AssertArray(b, a.AsDecimalArray());
+
+        }
+
+        [TestMethod]
         public void test_LESS_operations()
         {
             var a = np.arange(-5, 5, 1, dtype: np.Int16);
+            print(a);
+
+            var b = a < -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
+        }
+
+        [TestMethod]
+        public void test_LESS_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
             print(a);
 
             var b = a < -2;
@@ -1308,6 +1334,19 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_LESSEQUAL_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a <= -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
+        }
+
+
+        [TestMethod]
         public void test_EQUAL_operations()
         {
             var a = np.arange(-5, 5, 1, dtype: np.Int16);
@@ -1320,9 +1359,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_EQUAL_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a == -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
+        }
+
+
+        [TestMethod]
         public void test_NOTEQUAL_operations()
         {
             var a = np.arange(-5, 5, 1, dtype: np.Int16);
+            print(a);
+
+            var b = a != -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
+        }
+
+        [TestMethod]
+        public void test_NOTEQUAL_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
             print(a);
 
             var b = a != -2;
@@ -1345,9 +1409,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_GREATER_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a > -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, false, true, true, true, true, true, true });
+
+        }
+
+        [TestMethod]
         public void test_GREATEREQUAL_operations()
         {
             var a = np.arange(-5, 5, 1, dtype: np.Int16);
+            print(a);
+
+            var b = a >= -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, true, true, true, true, true, true, true });
+
+        }
+
+        [TestMethod]
+        public void test_GREATEREQUAL_operations_DECIMAL()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
             print(a);
 
             var b = a >= -2;
