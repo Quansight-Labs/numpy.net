@@ -940,6 +940,13 @@ namespace NumpyLib
                         break;
 
                     }
+
+                case NPY_TYPES.NPY_DECIMAL:
+                    {
+                        // decimals can't be swapped
+                        return;
+                    }
+
             }
         }
 
