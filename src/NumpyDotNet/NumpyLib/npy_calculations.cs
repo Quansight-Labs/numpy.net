@@ -914,6 +914,8 @@ namespace NumpyLib
                                 return FLOAT_IsNaNOperation;
                             case NPY_TYPES.NPY_DOUBLE:
                                 return DOUBLE_IsNaNOperation;
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_IsNaNOperation;
                             default:
                                 return FLOAT_IsNaNOperation;
                         }
@@ -3733,6 +3735,10 @@ namespace NumpyLib
         private static object DOUBLE_IsNaNOperation(object bValue, object operand)
         {
             return double.IsNaN((double)bValue);
+        }
+        private static object DECIMAL_IsNaNOperation(object bValue, object operand)
+        {
+            return false;
         }
         #endregion
 
