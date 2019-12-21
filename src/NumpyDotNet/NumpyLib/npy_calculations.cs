@@ -1086,7 +1086,16 @@ namespace NumpyLib
             {
                 if (NpyArray_ISFLOAT(operandArray))
                 {
-                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                    switch (operandArray.descr.type_num)
+                    {
+                        case NPY_TYPES.NPY_DECIMAL:
+                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
+                            break;
+                        default:
+                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                            break;
+
+                    }
                 }
             }
   
@@ -1380,7 +1389,7 @@ namespace NumpyLib
 
                 object destValue = null;
 
-                destValue = operation(srcValue, Convert.ToDouble(operValue));
+                destValue = operation(srcValue,  ConvertBySrcValue(srcValue, operValue));
 
                 try
                 {
@@ -1395,6 +1404,14 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(DestIter);
                 NpyArray_ITER_NEXT(OperIter);
             }
+        }
+
+        private static object ConvertBySrcValue(object srcValue, object operValue)
+        {
+            if (srcValue is Decimal)
+                return Convert.ToDecimal(operValue);
+
+            return Convert.ToDouble(operValue);
         }
 
         private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperation operation)
