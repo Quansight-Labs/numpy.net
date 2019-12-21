@@ -342,6 +342,7 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_SHORT:
                 case NPY_TYPES.NPY_INT:
                 case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_DECIMAL:
                     return true;
 
                 default:
