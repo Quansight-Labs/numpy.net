@@ -213,15 +213,71 @@ namespace NumpyDotNetTests
             }
         }
 
+        private void AssertDataTypes<T>(ndarray arrayData, T[] expectedData)
+        {
+            Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0].GetType(), "ndarray type is not a match for expectedData");
+        }
+        private void AssertDataTypes<T>(ndarray arrayData, T[,] expectedData)
+        {
+            Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0,0].GetType(), "ndarray type is not a match for expectedData");
+        }
+        private void AssertDataTypes<T>(ndarray arrayData, T[,,] expectedData)
+        {
+            Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
+        }
+        private void AssertDataTypes<T>(ndarray arrayData, T[,,,] expectedData)
+        {
+            Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
+        }
+        private void AssertDataTypes<T>(ndarray arrayData, T[,,,,] expectedData)
+        {
+            Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
+        }
+
+        #region 1D array asserts
         internal void AssertArray<T>(ndarray arrayData, T[] expectedData)
         {
             int length = expectedData.Length;
             AssertShape(arrayData, length);
+            AssertDataTypes(arrayData, expectedData);
 
             for (int i = 0; i < length; i++)
             {
-                double E1 = Convert.ToDouble(expectedData[i]);
-                double A1 = Convert.ToDouble(arrayData[i]);
+                T E1 = expectedData[i];
+                T A1 = (T)arrayData[i];
+
+                Assert.AreEqual(E1, A1);
+            }
+        }
+        internal void AssertArray(ndarray arrayData, float[] expectedData)
+        {
+            int length = expectedData.Length;
+            AssertShape(arrayData, length);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < length; i++)
+            {
+                float E1 = expectedData[i];
+                float A1 = (float)arrayData[i];
+
+                if (float.IsNaN(E1) && float.IsNaN(A1))
+                    continue;
+                if (float.IsInfinity(E1) && float.IsInfinity(A1))
+                    continue;
+
+                Assert.AreEqual(E1, A1, 0.00000001);
+            }
+        }
+        internal void AssertArray(ndarray arrayData, double[] expectedData)
+        {
+            int length = expectedData.Length;
+            AssertShape(arrayData, length);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < length; i++)
+            {
+                double E1 = expectedData[i];
+                double A1 = (double)arrayData[i];
 
                 if (double.IsNaN(E1) && double.IsNaN(A1))
                     continue;
@@ -231,20 +287,67 @@ namespace NumpyDotNetTests
                 Assert.AreEqual(E1, A1, 0.00000001);
             }
         }
+ 
+        #endregion
 
+        #region 2d array asserts
         internal void AssertArray<T>(ndarray arrayData, T[,] expectedData)
         {
             int lengthd0 = expectedData.GetLength(0);
             int lengthd1 = expectedData.GetLength(1);
             AssertShape(arrayData, lengthd0, lengthd1);
+            AssertDataTypes(arrayData, expectedData);
 
             for (int i = 0; i < lengthd0; i++)
             {
                 ndarray rowData = arrayData[i] as ndarray;
                 for (int j = 0; j < lengthd1; j++)
                 {
-                    double E1 = Convert.ToDouble(expectedData[i, j]);
-                    double A1 = Convert.ToDouble(rowData[j]);
+                    T E1 = expectedData[i, j];
+                    T A1 = (T)rowData[j];
+
+                    Assert.AreEqual(E1, A1);
+                }
+            }
+        }
+        internal void AssertArray<T>(ndarray arrayData, float[,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            AssertShape(arrayData, lengthd0, lengthd1);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray rowData = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    float E1 = expectedData[i, j];
+                    float A1 = (float)rowData[j];
+
+                    if (float.IsNaN(E1) && float.IsNaN(A1))
+                        continue;
+                    if (float.IsInfinity(E1) && float.IsInfinity(A1))
+                        continue;
+
+                    Assert.AreEqual(E1, A1, 0.00000001);
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, double[,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            AssertShape(arrayData, lengthd0, lengthd1);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray rowData = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    double E1 = expectedData[i, j];
+                    double A1 = (double)rowData[j];
 
                     if (double.IsNaN(E1) && double.IsNaN(A1))
                         continue;
@@ -256,12 +359,16 @@ namespace NumpyDotNetTests
             }
         }
 
+        #endregion
+
+        #region 3d array asserts
         internal void AssertArray<T>(ndarray arrayData, T[,,] expectedData)
         {
             int lengthd0 = expectedData.GetLength(0);
             int lengthd1 = expectedData.GetLength(1);
             int lengthd2 = expectedData.GetLength(2);
             AssertShape(arrayData, lengthd0, lengthd1, lengthd2);
+            AssertDataTypes(arrayData, expectedData);
 
             for (int i = 0; i < lengthd0; i++)
             {
@@ -271,8 +378,61 @@ namespace NumpyDotNetTests
                     ndarray dim2Data = dim1Data[j] as ndarray;
                     for (int k = 0; k < lengthd2; k++)
                     {
-                        double E1 = Convert.ToDouble(expectedData[i, j, k]);
-                        double A1 = Convert.ToDouble(dim2Data[k]);
+                        T E1 = expectedData[i, j, k];
+                        T A1 = (T)dim2Data[k];
+
+                        Assert.AreEqual(E1, A1);
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, float[,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        float E1 = expectedData[i, j, k];
+                        float A1 = (float)dim2Data[k];
+
+                        if (float.IsNaN(E1) && float.IsNaN(A1))
+                            continue;
+                        if (float.IsInfinity(E1) && float.IsInfinity(A1))
+                            continue;
+
+                        Assert.AreEqual(E1, A1, 0.00000001);
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, double[,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        double E1 = expectedData[i, j, k];
+                        double A1 = (double)dim2Data[k];
 
                         if (double.IsNaN(E1) && double.IsNaN(A1))
                             continue;
@@ -285,6 +445,9 @@ namespace NumpyDotNetTests
             }
         }
 
+        #endregion
+
+        #region 4d array asserts
         internal void AssertArray<T>(ndarray arrayData, T[,,,] expectedData)
         {
             int lengthd0 = expectedData.GetLength(0);
@@ -292,6 +455,70 @@ namespace NumpyDotNetTests
             int lengthd2 = expectedData.GetLength(2);
             int lengthd3 = expectedData.GetLength(3);
             AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            T E1 = expectedData[i, j, k, l];
+                            T A1 = (T)dim3Data[l];
+
+                            Assert.AreEqual(E1, A1);
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, float[,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            float E1 = expectedData[i, j, k, l];
+                            float A1 = (float)dim3Data[l];
+
+                            if (float.IsNaN(E1) && float.IsNaN(A1))
+                                continue;
+                            if (float.IsInfinity(E1) && float.IsInfinity(A1))
+                                continue;
+
+                            Assert.AreEqual(E1, A1, 0.00000001);
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, double[,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3);
+            AssertDataTypes(arrayData, expectedData);
 
             for (int i = 0; i < lengthd0; i++)
             {
@@ -318,7 +545,9 @@ namespace NumpyDotNetTests
                 }
             }
         }
+        #endregion
 
+        #region 5d array asserts
         internal void AssertArray<T>(ndarray arrayData, T[,,,,] expectedData)
         {
             int lengthd0 = expectedData.GetLength(0);
@@ -328,6 +557,7 @@ namespace NumpyDotNetTests
             int lengthd4 = expectedData.GetLength(4);
 
             AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3, lengthd4);
+            AssertDataTypes(arrayData, expectedData);
 
             for (int i = 0; i < lengthd0; i++)
             {
@@ -344,8 +574,85 @@ namespace NumpyDotNetTests
 
                             for (int m = 0; m < lengthd4; m++)
                             {
-                                double E1 = Convert.ToDouble(expectedData[i, j, k, l, m]);
-                                double A1 = Convert.ToDouble(dim4Data[m]);
+                                T E1 = expectedData[i, j, k, l, m];
+                                T A1 = (T)dim4Data[m];
+            
+                                Assert.AreEqual(E1, A1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, float[,,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            int lengthd4 = expectedData.GetLength(4);
+
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3, lengthd4);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            ndarray dim4Data = dim3Data[l] as ndarray;
+
+                            for (int m = 0; m < lengthd4; m++)
+                            {
+                                float E1 = expectedData[i, j, k, l, m];
+                                float A1 = (float)dim4Data[m];
+
+                                if (float.IsNaN(E1) && float.IsNaN(A1))
+                                    continue;
+                                if (float.IsInfinity(E1) && float.IsInfinity(A1))
+                                    continue;
+
+                                Assert.AreEqual(E1, A1, 0.00000001);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, double[,,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            int lengthd4 = expectedData.GetLength(4);
+
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3, lengthd4);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            ndarray dim4Data = dim3Data[l] as ndarray;
+
+                            for (int m = 0; m < lengthd4; m++)
+                            {
+                                double E1 = expectedData[i, j, k, l, m];
+                                double A1 = (double)dim4Data[m];
 
                                 if (double.IsNaN(E1) && double.IsNaN(A1))
                                     continue;
@@ -359,8 +666,8 @@ namespace NumpyDotNetTests
                 }
             }
         }
-
+        #endregion
         #endregion
 
-        }
+    }
 }
