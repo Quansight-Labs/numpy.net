@@ -459,18 +459,19 @@ namespace NumpyDotNetTests
             print(a.shape);
             print(a.strides);
 
-            var b = a * 8;
+            decimal multiplierB1 = 9023.67m;
+            var b = a * multiplierB1;
             print(b);
             print(b.shape);
             print(b.strides);
 
             var ExpectedDataB1 = new decimal[,]
             {
-                {0,   8,  16,  24},
-                {32,  40,  48,  56},
-                {64,  72,  80, 88},
-                {96, 104, 112, 120},
-                {128, 136, 144, 152}
+                {0m*multiplierB1,  1m*multiplierB1,  2m*multiplierB1,  3m*multiplierB1},
+                {4m*multiplierB1,  5m*multiplierB1,  6m*multiplierB1,  7m*multiplierB1},
+                {8m*multiplierB1,  9m*multiplierB1,  10m*multiplierB1, 11m*multiplierB1},
+                {12m*multiplierB1, 13m*multiplierB1, 14m*multiplierB1, 15m*multiplierB1},
+                {16m*multiplierB1, 17m*multiplierB1, 18m*multiplierB1, 19m*multiplierB1}
             };
             AssertArray(b, ExpectedDataB1);
 
@@ -480,18 +481,19 @@ namespace NumpyDotNetTests
             print(a.shape);
             print(a.strides);
 
-            b = a * 2400;
+            decimal multiplierB2 = 990425023.67864101m;
+            b = a * multiplierB2;
             print(b);
             print(b.shape);
             print(b.strides);
 
             var ExpectedDataB2 = new decimal[,]
             {
-                {0,  2400,  4800,  7200},
-                {9600, 12000, 14400, 16800},
-                {19200, 21600, 24000, 26400},
-                {28800, 31200, 33600, 36000},
-                {38400, 40800, 43200, 45600}
+                {0m*multiplierB2,  1m*multiplierB2,  2m*multiplierB2,  3m*multiplierB2},
+                {4m*multiplierB2,  5m*multiplierB2,  6m*multiplierB2,  7m*multiplierB2},
+                {8m*multiplierB2,  9m*multiplierB2,  10m*multiplierB2, 11m*multiplierB2},
+                {12m*multiplierB2, 13m*multiplierB2, 14m*multiplierB2, 15m*multiplierB2},
+                {16m*multiplierB2, 17m*multiplierB2, 18m*multiplierB2, 19m*multiplierB2}
             };
             AssertArray(b, ExpectedDataB2);
         }
@@ -552,18 +554,19 @@ namespace NumpyDotNetTests
             print(a.shape);
             print(a.strides);
 
-            var b = a / 8;
+            decimal divisorB1 = 611m;
+            var b = a / divisorB1;
             print(b);
             print(b.shape);
             print(b.strides);
 
             var ExpectedDataB1 = new decimal[,]
             {
-                {2500m,   2500.125m, 2500.25m, 2500.375m},
-                {2500.5m, 2500.625m, 2500.75m, 2500.875m},
-                {2501m,   2501.125m, 2501.25m, 2501.375m},
-                {2501.5m, 2501.625m, 2501.75m, 2501.875m},
-                {2502m,   2502.125m, 2502.25m, 2502.375m}
+                {20000m/divisorB1, 20001m/divisorB1, 20002m/divisorB1, 20003m/divisorB1},
+                {20004m/divisorB1, 20005m/divisorB1, 20006m/divisorB1, 20007m/divisorB1},
+                {20008m/divisorB1, 20009m/divisorB1, 20010m/divisorB1, 20011m/divisorB1},
+                {20012m/divisorB1, 20013m/divisorB1, 20014m/divisorB1, 20015m/divisorB1},
+                {20016m/divisorB1, 20017m/divisorB1, 20018m/divisorB1, 20019m/divisorB1}
             };
             AssertArray(b, ExpectedDataB1);
 
@@ -573,18 +576,19 @@ namespace NumpyDotNetTests
             print(a.shape);
             print(a.strides);
 
-            b = a / 2400;
+            decimal divisorB2 = 2411m;
+            b = a / divisorB2;
             print(b);
             print(b.shape);
             print(b.strides);
 
             var ExpectedDataB2 = new decimal[,]
             {
-                {833.3333333333333333333333333m, 833.33375m, 833.3341666666666666666666667m, 833.3345833333333333333333333m},
-                {833.335m, 833.3354166666666666666666667m, 833.3358333333333333333333333m, 833.33625m},
-                {833.3366666666666666666666667m, 833.3370833333333333333333333m, 833.3375m, 833.3379166666666666666666667m},
-                {833.3383333333333333333333333m, 833.33875m, 833.3391666666666666666666667m, 833.3395833333333333333333333m},
-                {833.34m, 833.3404166666666666666666667m, 833.3408333333333333333333333m, 833.34125m},
+                {2000000m/divisorB2, 2000001m/divisorB2, 2000002m/divisorB2, 2000003m/divisorB2},
+                {2000004m/divisorB2, 2000005m/divisorB2, 2000006m/divisorB2, 2000007m/divisorB2},
+                {2000008m/divisorB2, 2000009m/divisorB2, 2000010m/divisorB2, 2000011m/divisorB2},
+                {2000012m/divisorB2, 2000013m/divisorB2, 2000014m/divisorB2, 2000015m/divisorB2},
+                {2000016m/divisorB2, 2000017m/divisorB2, 2000018m/divisorB2, 2000019m/divisorB2},
             };
             AssertArray(b, ExpectedDataB2);
         }
