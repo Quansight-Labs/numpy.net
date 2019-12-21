@@ -125,6 +125,16 @@ namespace NumpyDotNet
                                 }
                             }
                             break;
+                        case NPY_TYPES.NPY_DECIMAL:
+                            decimal ddValue = (decimal)value;
+                            strValue = ddValue.ToString();
+                            if (strValue.Contains("."))
+                            {
+                                strValue = ddValue.ToString("0,0.00000000000000000000000000000");
+                            }
+
+
+                            break;
                         default:
                             strValue = value.ToString();
                             break;
