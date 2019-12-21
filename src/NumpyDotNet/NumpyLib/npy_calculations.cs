@@ -1260,7 +1260,23 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_true_divide:
                     {
-                        newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                        switch (srcArray.ItemType)
+                        {
+                            case NPY_TYPES.NPY_DECIMAL:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
+                                    break;
+                                }
+                            case NPY_TYPES.NPY_FLOAT:
+                            case NPY_TYPES.NPY_DOUBLE:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                                    break;
+                                }
+                            default:
+                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                                break;
+                        }
                         break;
                     }
                 case NpyArray_Ops.npy_op_logical_or:
