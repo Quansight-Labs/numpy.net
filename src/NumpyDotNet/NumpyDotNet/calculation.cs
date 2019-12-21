@@ -147,6 +147,12 @@ namespace NumpyDotNet
                 NpyCoreApi.CopyAnyInto(ret, tmp);
                 return ret;
             }
+
+            if (this.Array.ItemType != tmp.Array.ItemType)
+            {
+                tmp = tmp.astype(this.Dtype);
+            }
+
             return tmp;
         }
 

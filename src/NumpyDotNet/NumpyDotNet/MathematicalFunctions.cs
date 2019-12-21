@@ -1426,8 +1426,8 @@ namespace NumpyDotNet
         {
             ndarray[] results = new ndarray[2];
 
-            results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1), asanyarray(1), @out1, asanyarray(where));
-            results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1), asanyarray(1), @out2, asanyarray(where));
+            results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1).astype(np.Float64), asanyarray(1), @out1, asanyarray(where));
+            results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1).astype(np.Float64), asanyarray(1), @out2, asanyarray(where));
 
             return results;
         }

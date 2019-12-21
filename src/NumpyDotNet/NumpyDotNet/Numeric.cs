@@ -92,6 +92,11 @@ namespace NumpyDotNet
             shape shape = new shape(src.Array.dimensions, src.Array.nd);
             double FillValue = 0;
 
+            if (dtype == null)
+            {
+                dtype = src.Dtype;
+            }
+
             return CommonFill(dtype, shape, FillValue, ConvertOrder(src, order), subok, 0);
         }
         #endregion
@@ -137,6 +142,12 @@ namespace NumpyDotNet
 
             shape shape = new shape(src.Array.dimensions, src.Array.nd);
             double FillValue = 1;
+
+
+            if (dtype == null)
+            {
+                dtype = src.Dtype;
+            }
 
             return CommonFill(dtype, shape, FillValue, ConvertOrder(src, order), subok, 0);
         }
@@ -211,6 +222,11 @@ namespace NumpyDotNet
             var src = asanyarray(osrc);
 
             shape shape = new shape(src.Array.dimensions, src.Array.nd);
+
+            if (dtype == null)
+            {
+                dtype = src.Dtype;
+            }
 
             return CommonFill(dtype, shape, fill_value, ConvertOrder(src, order), subok, 0);
         }

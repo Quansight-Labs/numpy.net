@@ -1607,8 +1607,23 @@ namespace NumpyDotNet {
                 case NPY_TYPES.NPY_DOUBLE:
                     return NPY_TYPES.NPY_DOUBLE;
 
-                default:
+                case NPY_TYPES.NPY_BOOL:
+                case NPY_TYPES.NPY_BYTE:
+                case NPY_TYPES.NPY_SHORT:
+                    return NPY_TYPES.NPY_INT32;
+
+                case NPY_TYPES.NPY_UBYTE:
+                case NPY_TYPES.NPY_USHORT:
+                    return NPY_TYPES.NPY_UINT32;
+
+                case NPY_TYPES.NPY_INT32:
+                    return NPY_TYPES.NPY_INT64;
+
+                case NPY_TYPES.NPY_UINT32:
                     return NPY_TYPES.NPY_UINT64;
+
+                default:
+                    return t;
             }
         }
 
