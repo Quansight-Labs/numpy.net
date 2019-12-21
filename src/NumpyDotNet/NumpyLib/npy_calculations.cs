@@ -945,7 +945,13 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_maximum:
                     {
-                        return MaximumOperation;
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_FMaxOperation;
+                            default:
+                                return MaximumOperation;
+                        }
                     }
                 case NpyArray_Ops.npy_op_fmax:
                     {
@@ -955,13 +961,21 @@ namespace NumpyLib
                                 return FLOAT_FMaxOperation;
                             case NPY_TYPES.NPY_DOUBLE:
                                 return DOUBLE_FMaxOperation;
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_FMaxOperation;
                             default:
                                 return MaximumOperation;
                         }
                     }
                 case NpyArray_Ops.npy_op_minimum:
                     {
-                        return MinimumOperation;
+                        switch (ItemType)
+                        {
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_FMinOperation;
+                            default:
+                                return MinimumOperation;
+                        }
                     }
                 case NpyArray_Ops.npy_op_fmin:
                     {
@@ -971,6 +985,8 @@ namespace NumpyLib
                                 return FLOAT_FMinOperation;
                             case NPY_TYPES.NPY_DOUBLE:
                                 return DOUBLE_FMinOperation;
+                            case NPY_TYPES.NPY_DECIMAL:
+                                return DECIMAL_FMinOperation;
                             default:
                                 return MinimumOperation;
                         }
@@ -3800,20 +3816,17 @@ namespace NumpyLib
             return Math.Max(Convert.ToDouble(bValue), Convert.ToDouble(operand));
 
         }
-   
+
+        private static object DECIMAL_FMaxOperation(object bValue, dynamic operand)
+        {
+            return Math.Max(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
+        }
+
         private static T MinimumOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
 
-            if (bValue is decimal)
-            {
-                return Math.Min(Convert.ToDecimal(dValue), operand);
-            }
-            else
-            {
-                return Math.Min(Convert.ToDouble(dValue), operand);
-            }
-
+            return Math.Min(Convert.ToDouble(dValue), operand);
         }
 
         private static object FLOAT_FMinOperation(object bValue, dynamic operand)
@@ -3838,6 +3851,11 @@ namespace NumpyLib
 
             return Math.Min(Convert.ToDouble(bValue), Convert.ToDouble(operand));
 
+        }
+
+        private static object DECIMAL_FMinOperation(object bValue, dynamic operand)
+        {
+            return Math.Min(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
         }
 
         private static object FLOAT_HeavisideOperation(object bValue, dynamic operand)
