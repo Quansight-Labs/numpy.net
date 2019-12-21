@@ -2560,10 +2560,22 @@ namespace NumpyDotNet
             return resultArray;
         }
 
-        public static double max(object arr)
+        public static object max(object arr)
         {
             var resultArray = np.amax(arr);
-            return Convert.ToDouble(resultArray.GetItem(0));
+
+            switch (resultArray.Array.ItemType)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                    return Convert.ToSingle(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_DOUBLE:
+                    return Convert.ToDouble(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_DECIMAL:
+                    return Convert.ToDecimal(resultArray.GetItem(0));
+                default:
+                    return Convert.ToDouble(resultArray.GetItem(0));
+            }
+  
         }
 
         #endregion
@@ -2669,10 +2681,21 @@ namespace NumpyDotNet
             return resultArray;
         }
 
-        public static double min(object arr)
+        public static object min(object arr)
         {
             var resultArray = np.amin(arr);
-            return Convert.ToDouble(resultArray.GetItem(0));
+
+            switch (resultArray.Array.ItemType)
+            {
+                case NPY_TYPES.NPY_FLOAT:
+                    return Convert.ToSingle(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_DOUBLE:
+                    return Convert.ToDouble(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_DECIMAL:
+                    return Convert.ToDecimal(resultArray.GetItem(0));
+                default:
+                    return Convert.ToDouble(resultArray.GetItem(0));
+            }
         }
 
         #endregion
