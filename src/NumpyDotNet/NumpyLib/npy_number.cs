@@ -301,13 +301,15 @@ namespace NumpyLib
 
                 var O1 = GetIndex(Operand1, O1_Index);  // get operand 1
                 var O2 = GetIndex(Operand2, O2_Index);  // get operand 2
-                var R = Operation(O1, Convert.ToDouble(O2));              // calculate result
+                var R = Operation(O1, ConvertBySrcValue(O1, O2));              // calculate result
 
                 SetIndex(Result, R_Index, R);
             }
 
             return;
         }
+
+        
 
         internal static void UFuncAdd(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
         {
