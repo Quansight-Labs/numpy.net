@@ -1145,14 +1145,35 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_sqrt:
                     {
-                        if (GetTypeSize(srcArray.ItemType) > 4)
+                        switch (srcArray.ItemType)
                         {
-                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                            case NPY_TYPES.NPY_DECIMAL:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
+                                    break;
+                                }
+                            case NPY_TYPES.NPY_FLOAT:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_FLOAT);
+                                    break;
+                                }
+                            case NPY_TYPES.NPY_DOUBLE:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                                    break;
+                                }
+                            default:
+                                if (GetTypeSize(srcArray.ItemType) > 4)
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                                }
+                                else
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_FLOAT);
+                                }
+                                break;
                         }
-                        else
-                        {
-                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_FLOAT);
-                        }
+         
                         break;
                     }
                 case NpyArray_Ops.npy_op_negative:
@@ -2685,7 +2706,22 @@ namespace NumpyLib
         private static object DECIMAL_SqrtOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return Math.Sqrt(Convert.ToDouble(dValue));
+            decimal epsilon = 0.0M;
+
+            if (dValue < 0)
+                throw new OverflowException("Cannot calculate square root from a negative number");
+
+            decimal current = (decimal)Math.Sqrt((double)dValue), previous;
+            do
+            {
+                previous = current;
+                if (previous == 0.0M)
+                    return 0;
+
+                current = (previous + dValue / previous) / 2;
+            }
+            while (Math.Abs(previous - current) > epsilon);
+            return current;
         }
 
         private static T SqrtOperation<T>(T bValue, dynamic operand)
