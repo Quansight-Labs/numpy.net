@@ -859,6 +859,33 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_bitwiseand_operations_DECIMAL()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a & 0x0f;
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
+              0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = a & 0xFF;
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
+            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
+              16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
         public void test_bitwiseor_operations()
         {
             var a = np.arange(0, 32, 1, dtype: np.Int16);
@@ -887,6 +914,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_bitwiseor_operations_DECIMAL()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a | 0x100;
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            { 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
+              272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = a | 0x1000;
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
+            { 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 6152, 6153, 6154, 6155, 6156, 6157,
+              6158, 6159, 6160, 6161, 6162, 6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171,
+              6172, 6173, 6174, 6175 };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+
+        [TestMethod]
         public void test_bitwisexor_operations()
         {
             var a = np.arange(0, 32, 1, dtype: np.Int16);
@@ -907,6 +963,34 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedDataB2 = new Int64[]
+            { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
+              41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
+              41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_bitwisexor_operations_DECIMAL()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = a ^ 0xAAA;
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            { 2730, 2731, 2728, 2729, 2734, 2735, 2732, 2733, 2722, 2723, 2720, 2721, 2726, 2727, 2724,
+              2725, 2746, 2747, 2744, 2745, 2750, 2751, 2748, 2749, 2738, 2739, 2736, 2737, 2742, 2743, 2740, 2741 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = a ^ 0xAAAA;
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
             { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
               41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
               41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
