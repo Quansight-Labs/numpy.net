@@ -465,14 +465,14 @@ namespace NumpyDotNetTests
             var x = np.arange(6).reshape((2, 3));
             var y = np.argwhere(x > 1);
 
-            var ExpectedY = new int[,] {{0, 2}, {1, 0}, {1, 1}, {1, 2}};
+            var ExpectedY = new Int64[,] {{0, 2}, {1, 0}, {1, 1}, {1, 2}};
             AssertArray(y, ExpectedY);
             print(y);
 
             var a = np.arange(12).reshape((2, 3, 2));
             var b = np.argwhere(a > 1);
 
-            var ExpectedB = new int[,]
+            var ExpectedB = new Int64[,]
                 {{0, 1, 0}, {0, 1, 1}, {0, 2, 0}, {0, 2, 1}, {1, 0, 0},
                  {1, 0, 1}, {1, 1, 0}, {1, 1, 1}, {1, 2, 0}, {1, 2, 1}};
 
@@ -489,13 +489,13 @@ namespace NumpyDotNetTests
             var x = np.arange(-2, 3);
 
             var y = np.flatnonzero(x);
-            AssertArray(y, new int[] {0,1,3,4});
+            AssertArray(y, new Int64[] {0,1,3,4});
             print(y);
 
             // Use the indices of the non-zero elements as an index array to extract these elements:
 
             var z = x.ravel()[np.flatnonzero(x)] as ndarray;
-            AssertArray(z, new int[] { -2,-1,1,2 });
+            AssertArray(z, new Int32[] { -2,-1,1,2 });
             print(z);
 
             return;
@@ -559,10 +559,10 @@ namespace NumpyDotNetTests
 
             b = np.arange(11, 15, dtype: np.Int16).reshape((2, 2));
             c = np.inner(a, b);
-            AssertArray(c, new Int32[,] { { 11, 13 }, { 12, 14 } });
+            AssertArray(c, new Int16[,] { { 11, 13 }, { 12, 14 } });
             print(c);
             c = np.inner(b, a);
-            AssertArray(c, new Int32[,] { { 11, 12 }, { 13, 14 } });
+            AssertArray(c, new Int16[,] { { 11, 12 }, { 13, 14 } });
             print(c);
 
             a = np.arange(0, 80, dtype: np.Int32).reshape((-1, 4, 5, 2));
@@ -584,8 +584,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_tensordot_1()
         {
-            var a = np.arange(60.0).reshape((3, 4, 5));
-            var b = np.arange(24.0).reshape((4, 3, 2));
+            var a = np.arange(60.0, dtype: np.Float64).reshape((3, 4, 5));
+            var b = np.arange(24.0, dtype: np.Float64).reshape((4, 3, 2));
             var c = np.tensordot(a, b, axes: (new long[] { 1, 0 },new long[] { 0, 1 }));
             AssertShape(c, 5, 2);
             print(c.shape);
@@ -597,8 +597,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_tensordot_2()
         {
-            var a = np.arange(12.0).reshape((3, 4));
-            var b = np.arange(24.0).reshape((4, 3, 2));
+            var a = np.arange(12.0, dtype: np.Float64).reshape((3, 4));
+            var b = np.arange(24.0, dtype: np.Float64).reshape((4, 3, 2));
             var c = np.tensordot(a, b, axis: 1);
             AssertShape(c, 3, 3, 2);
             print(c.shape);
@@ -789,14 +789,14 @@ namespace NumpyDotNetTests
             var grid = np.indices((2, 3));
             AssertShape(grid, 2, 2, 3);
             print(grid.shape);
-            AssertArray(grid[0] as ndarray, new long[,] { {0,0,0}, {1,1,1} });
+            AssertArray(grid[0] as ndarray, new Int32[,] { {0,0,0}, {1,1,1} });
             print(grid[0]);
-            AssertArray(grid[1] as ndarray, new long[,] { { 0, 1, 2 }, { 0, 1, 2 } });
+            AssertArray(grid[1] as ndarray, new Int32[,] { { 0, 1, 2 }, { 0, 1, 2 } });
             print(grid[1]);
 
             var x = np.arange(20).reshape((5, 4));
             var y = x[grid[0], grid[1]];
-            AssertArray(y as ndarray, new long[,] { { 0, 1, 2 }, { 4, 5, 6 } });
+            AssertArray(y as ndarray, new Int32[,] { { 0, 1, 2 }, { 4, 5, 6 } });
             print(y);
 
             return;

@@ -17,11 +17,11 @@ namespace NumpyDotNetTests
         {
 
             var x = np.nanprod(1);
-            Assert.AreEqual((ulong)1, x.GetItem(0));
+            Assert.AreEqual((long)1, x.GetItem(0));
             print(x);
 
             var y = np.nanprod(new int[] { 1 });
-            Assert.AreEqual((ulong)1, y.GetItem(0));
+            Assert.AreEqual((long)1, y.GetItem(0));
             print(y);
 
             var z = np.nanprod(new float[] { 1, float.NaN});
@@ -89,15 +89,15 @@ namespace NumpyDotNetTests
         {
 
             var x = np.nancumprod(1);
-            AssertArray(x, new double[] { 1 });
+            AssertArray(x, new Int32[] { 1 });
             print(x);
 
             var y = np.nancumprod(new int[] { 1 });
-            AssertArray(y, new double[] { 1 });
+            AssertArray(y, new Int32[] { 1 });
             print(y);
 
             var z = np.nancumprod(new float[] { 1, float.NaN });
-            AssertArray(z, new double[] { 1, 1 });
+            AssertArray(z, new float[] { 1, 1 });
             print(z);
 
             var a = np.array(new double[,] { { 1, 2 }, { 3, double.NaN } });
@@ -120,25 +120,25 @@ namespace NumpyDotNetTests
         public void test_nancumsum_1()
         {
             var a = np.nancumsum(1);
-            AssertArray(a, new double[] { 1 });
+            AssertArray(a, new Int32[] { 1 });
             print(a);
 
             var b = np.nancumsum(new int[] { 1 });
-            AssertArray(b, new double[] { 1 });
+            AssertArray(b, new Int32[] { 1 });
             print(b);
 
             var c = np.nancumsum(new float[] { 1, float.NaN });
-            AssertArray(c, new double[] { 1, 1 });
+            AssertArray(c, new float[] { 1, 1 });
             print(c);
 
             a = np.array(new float[,] { { 1, 2 }, { 3, float.NaN } });
             var d = np.nancumsum(a);
-            AssertArray(d, new double[] { 1, 3, 6, 6 });
+            AssertArray(d, new float[] { 1, 3, 6, 6 });
             print(d);
 
 
             var e = np.nancumsum(a, axis: 0);
-            AssertArray(e, new double[,] { {1, 2 }, {4, 2 } });
+            AssertArray(e, new float[,] { {1, 2 }, {4, 2 } });
             print(e);
 
             var f = np.nancumsum(new double[] { 1, double.NaN, double.PositiveInfinity });
@@ -298,7 +298,7 @@ namespace NumpyDotNetTests
             print(d);
 
             var e = np.median(a, axis: 1);
-            AssertArray(e, new float[] { float.NaN, 2.0f });
+            AssertArray(e, new double[] { double.NaN, 2.0f });
             print(e);
 
             var f = a.Copy();

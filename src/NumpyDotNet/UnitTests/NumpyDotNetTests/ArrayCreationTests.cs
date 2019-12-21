@@ -71,7 +71,7 @@ namespace NumpyDotNetTests
             print(a);
 
             var b = np.asfarray(new int[] { 2, 3 }, dtype: np.Float32);
-            AssertArray(b, new double[] { 2, 3 });
+            AssertArray(b, new float[] { 2, 3 });
             print(b);
 
             var c = np.asfarray(new int[] { 2, 3 }, dtype: np.Int8);
@@ -195,8 +195,8 @@ namespace NumpyDotNetTests
             x = np.arange(-5, 5, 1);
             y = np.arange(-5, 5, 1);
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
-            AssertArray(xyv[0], new double[,] { { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4 } });
-            AssertArray(xyv[1], new double[,] { { -5 }, { -4 }, { -3 }, { -2 }, { -1 }, { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(xyv[0], new Int32[,] { { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4 } });
+            AssertArray(xyv[1], new Int32[,] { { -5 }, { -4 }, { -3 }, { -2 }, { -1 }, { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
             print(xyv[0]);
             print(xyv[1]);
 
@@ -246,7 +246,7 @@ namespace NumpyDotNetTests
 
             xyzv = np.meshgrid(new ndarray[] { x, y, z }, copy: true);
 
-            var ExpectedData1 = new double[,,]
+            var ExpectedData1 = new Int32[,,]
             {{{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},
              {{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},
              {{-2, -2, -2, -2}, {-1, -1, -1, -1},{ 0, 0,  0,  0}, { 1,  1,  1,  1}},

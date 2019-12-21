@@ -723,11 +723,11 @@ namespace NumpyDotNetTests
 
             ndarray d = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
             print(d);
-            AssertArray(d, new double[] { 1, 2, 3, 11 });
+            AssertArray(d, new Int32[] { 1, 2, 3, 11 });
 
             ndarray e = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: -1);
             print(e);
-            AssertArray(e, new double[] { 0, 0, 0, 10 });
+            AssertArray(e, new Int32[] { 0, 0, 0, 10 });
         }
 
         [TestMethod]
@@ -886,13 +886,13 @@ namespace NumpyDotNetTests
             print("*****");
 
             ndarray d = np.array(new byte[] { 1, 2, 3 }, dtype: np.UInt8);
-            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_UINT64;  // note: different typenum from python
+            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_UINT32; 
             print(e);
             Assert.AreEqual(true, e);
             print("*****");
 
             ndarray f = np.array(new sbyte[] { 1, 2, 3 }, dtype: np.Int8);
-            bool g = np.prod(f).Dtype.TypeNum == NPY_TYPES.NPY_UINT64; // note: different typenum from python
+            bool g = np.prod(f).Dtype.TypeNum == NPY_TYPES.NPY_INT32; 
             print(g);
             Assert.AreEqual(true, g);
 
@@ -903,11 +903,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_prod_3()
         {
-            ndarray a = np.array(new Int32[] { 1, 2, 3 });
+            ndarray a = np.array(new sbyte[] { 1, 2, 3 });
             ndarray b = np.prod(a);          // intermediate results 1, 1*2
                                              // total product 1*2*3 = 6
             print(b);
-            Assert.AreEqual((UInt64)6, b.GetItem(0));
+            Assert.AreEqual((Int32)6, b.GetItem(0));
             print("*****");
 
             a = np.array(new Int32[,] { { 1, 2, 3 }, { 4, 5, 6 } });
@@ -1124,7 +1124,7 @@ namespace NumpyDotNetTests
 
                 AssertArray(y, new UInt64[] {10, 150, 3750, 168750, 13162500, 1184625000,
                                 11846250000, 177693750000, 4442343750000,199905468750000,
-                                15592626562500000, 1403336390625000000 });
+                                15592626562500000, 1403336390624999936 });
             }
             catch (Exception ex)
             {
@@ -1144,7 +1144,7 @@ namespace NumpyDotNetTests
 
                 AssertArray(y, new Int64[] {10, 150, 3750, 168750, 13162500, 1184625000,
                                 11846250000, 177693750000, 4442343750000,199905468750000,
-                                15592626562500000, 1403336390625000000 });
+                                15592626562500000, 1403336390624999936 });
             }
             catch (Exception ex)
             {
@@ -1421,8 +1421,8 @@ namespace NumpyDotNetTests
             // rows and the second one in columns direction:
 
             var a = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32));
-            AssertArray(a[0], new double[,] { { 2.0, 2.0, -1.0}, { 2.0, 2.0, -1.0} });
-            AssertArray(a[1], new double[,] { { 1.0 , 2.5, 4.0 }, { 1.0 , 1.0 , 1.0 } });
+            AssertArray(a[0], new float[,] { { 2.0f, 2.0f, -1.0f}, { 2.0f, 2.0f, -1.0f} });
+            AssertArray(a[1], new float[,] { { 1.0f , 2.5f, 4.0f }, { 1.0f , 1.0f , 1.0f } });
   
             print(a[0]);
             print(a[1]);
@@ -1433,9 +1433,9 @@ namespace NumpyDotNetTests
 
             var dx = 2.0;
             var y = new float[] { 1.0f, 1.5f, 3.5f };
-            var b = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), new object[] { dx, y });
+            var b = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float64), new object[] { dx, y });
             AssertArray(b[0], new double[,] { { 1.0, 1.0, -0.5 }, { 1.0, 1.0, -0.5 } });
-            AssertArray(b[1], new double[,] { { 2.0, 2.0, 2.0 }, { 2.0, 1.7000000476837158, 0.5 } });
+            AssertArray(b[1], new double[,] { { 2.0, 2.0, 2.0 }, { 2.0, 1.6999999999999993, 0.5 } });
 
             print(b[0]);
             print(b[1]);
@@ -1462,7 +1462,7 @@ namespace NumpyDotNetTests
             // gradient is calculated
 
             var e = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float32), axes: 0);
-            AssertArray(e[0], new double[,] { { 2, 2, -1 }, { 2, 2, -1 } });
+            AssertArray(e[0], new float[,] { { 2, 2, -1 }, { 2, 2, -1 } });
             print(e[0]);
 
         }
@@ -2598,7 +2598,7 @@ namespace NumpyDotNetTests
             print(e);
 
             var f = np.sign(np.array(new int[] { -1, 0, 1 }));
-            AssertArray(f, new int[] { -1, 0, 1 });
+            AssertArray(f, new Int64[] { -1, 0, 1 });
             print(f);
         }
 
@@ -2606,7 +2606,7 @@ namespace NumpyDotNetTests
         public void test_heaviside_1()
         {
             var a = np.heaviside(new float[] { -1.5f, 0.0f, 2.0f }, 0.5f);
-            AssertArray(a, new float[] {0.0f, 0.5f, 1.0f });
+            AssertArray(a, new double[] {0.0f, 0.5f, 1.0f });
             print(a);
 
             var b = np.heaviside(new double[] { -1.5, 0, 2.0 }, 1);
@@ -2614,7 +2614,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.heaviside(new int[] { -1, 0, 2 }, 1);
-            AssertArray(c, new double[] { 0.0, 1.0, 1.0 });
+            AssertArray(c, new Int32[] { 0, 1, 1 });
             print(c);
 
        }
@@ -2631,7 +2631,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.maximum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { float.NaN, float.NaN, float.NaN });
+            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
             print(c);
 
             var d = np.maximum(double.PositiveInfinity, 1);
@@ -2651,7 +2651,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.minimum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { float.NaN, float.NaN, float.NaN });
+            AssertArray(c, new double[] { float.NaN, float.NaN, float.NaN });
             print(c);
 
             var d = np.minimum(double.PositiveInfinity, 1);
@@ -2672,7 +2672,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmax(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
+            AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
             print(c);
 
             var d = np.fmax(double.PositiveInfinity, 1);
@@ -2692,7 +2692,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmin(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
+            AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
             print(c);
 
             var d = np.fmin(double.PositiveInfinity, 1);

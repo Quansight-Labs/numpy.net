@@ -257,13 +257,13 @@ namespace NumpyDotNetTests
 
             var a = np.arange(9).reshape((3, 3));
             var b = a[iu] as ndarray;
-            AssertArray(b, new Int64[] { 0, 1, 2, 4, 5, 8 });
+            AssertArray(b, new Int32[] { 0, 1, 2, 4, 5, 8 });
             print(b);
 
             var iu1 = np.mask_indices(3, np.triu, 1);
 
             var c = a[iu1] as ndarray;
-            AssertArray(c, new Int64[] { 1, 2, 5 });
+            AssertArray(c, new Int32[] { 1, 2, 5 });
             print(c);
 
             return;

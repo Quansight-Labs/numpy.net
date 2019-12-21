@@ -75,14 +75,14 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            ExpectedDataB = new Int16[,]
+            var ExpectedDataB1 = new Int64[,]
             {{2400, 2401, 2402, 2403},
              {2404, 2405, 2406, 2407},
              {2408, 2409, 2410, 2411},
              {2412, 2413, 2414, 2415},
              {2416, 2417, 2418, 2419}
             };
-            AssertArray(b, ExpectedDataB);
+            AssertArray(b, ExpectedDataB1);
 
         }
 
@@ -288,7 +288,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            ExpectedDataB = new Int16[,]
+            var ExpectedDataB2 = new Int64[,]
             {{-2400, -2399, -2398, -2397},
              {-2396, -2395, -2394, -2393},
              {-2392, -2391, -2390, -2389},
@@ -296,7 +296,7 @@ namespace NumpyDotNetTests
              {-2384, -2383, -2382, -2381}
             };
 
-            AssertArray(b, ExpectedDataB);
+            AssertArray(b, ExpectedDataB2);
 
         }
 
@@ -484,7 +484,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB2 = new Int16[,]
+            var ExpectedDataB2 = new Int64[,]
             {
                 {833, 833, 833, 833},
                 {833, 833, 833, 833},

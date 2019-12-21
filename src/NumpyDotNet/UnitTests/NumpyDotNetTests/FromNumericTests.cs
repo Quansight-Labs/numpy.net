@@ -955,15 +955,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new int[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
+            AssertArray(b, new Int64[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new int[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
+            AssertArray(c, new Int64[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new int[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
+            AssertArray(d, new Int64[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
@@ -986,15 +986,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1, dtype: np.Float64).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new int[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
+            AssertArray(b, new Int64[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new int[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
+            AssertArray(c, new Int64[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new int[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
+            AssertArray(d, new Int64[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
@@ -1660,11 +1660,11 @@ namespace NumpyDotNetTests
 
             ndarray d = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
             print(d);
-            AssertArray(d, new double[] { 1,2,3,11 });
+            AssertArray(d, new Int32[] { 1,2,3,11 });
 
             ndarray e = np.around(np.array(new int[] { 1, 2, 3, 11 }), decimals: -1);
             print(e);
-            AssertArray(e, new double[] { 0, 0, 0, 10 });
+            AssertArray(e, new Int32[] { 0, 0, 0, 10 });
 
         }
 
