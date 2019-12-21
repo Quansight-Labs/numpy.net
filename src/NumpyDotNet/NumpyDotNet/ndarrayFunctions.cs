@@ -562,6 +562,97 @@ namespace NumpyDotNet
             }
             return result;
         }
+
+
+        public static ndarray arange(decimal start, decimal? stop = null, decimal? step = null, dtype dtype = null)
+        {
+            npy_intp[] dims;
+
+            if (stop == null)
+            {
+                stop = start;
+                start = 0m;
+            }
+
+            // determine what data type it should be if not set,
+            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            {
+                dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
+            }
+
+            if (dtype.TypeNum != NPY_TYPES.NPY_DECIMAL)
+            {
+                throw new ArgumentException("Array type must be Decimal");
+            }
+
+            if (step == null)
+            {
+                step = 1m;
+            }
+            if (stop == null)
+            {
+                stop = start;
+                start = 0m;
+            }
+
+            decimal len = 0m;
+            try
+            {
+                decimal ArrayLen = (decimal)(stop - start);
+
+                if ((ArrayLen % step) > 0)
+                {
+                    ArrayLen += (decimal)(ArrayLen % step);
+                }
+                ArrayLen = (decimal)(ArrayLen / step);
+
+                len = ArrayLen;
+            }
+            catch (OverflowException)
+            {
+                // Translate the error to make test_regression.py happy.
+                throw new ArgumentException("step can't be 0");
+            }
+
+            if (len < 0)
+            {
+                dims = new npy_intp[] { 0 };
+                return NpyCoreApi.NewFromDescr(dtype, dims, null, 0, null);
+            }
+
+            dtype native;
+            bool swap;
+            if (!dtype.IsNativeByteOrder)
+            {
+                native = NpyCoreApi.DescrNewByteorder(dtype, '=');
+                swap = true;
+            }
+            else
+            {
+                native = dtype;
+                swap = false;
+            }
+
+            dims = new npy_intp[] { (npy_intp)len };
+            ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
+
+            // populate the array
+            decimal _step = (decimal)step;
+            decimal _start = (decimal)start;
+            for (int i = 0; i < (int)len; i++)
+            {
+                decimal value = _start + (i * _step);
+                numpyAPI.SetIndex(result.Array.data, i, value);
+            }
+
+
+            if (swap)
+            {
+                NpyCoreApi.Byteswap(result, true);
+                result.Dtype = dtype;
+            }
+            return result;
+        }
         #endregion
 
         #region linspace
