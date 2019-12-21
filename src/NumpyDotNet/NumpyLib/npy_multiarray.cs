@@ -1498,24 +1498,39 @@ namespace NumpyLib
 
         static bool _signbit_set(NpyArray arr)
         {
-            char bitmask = (char)0x80;
-            VoidPtr ptr;  /* points to the byte to test */
-            int ptr_index = 0;
-            char byteorder;
-            int elsize;
-
-            elsize = arr.descr.elsize;
-            byteorder = arr.descr.byteorder;
-            ptr = new VoidPtr(arr);
-            if (elsize > 1 &&
-                (byteorder == NPY_LITTLE ||
-                (byteorder == NPY_NATIVE && NpyArray_ISNBO(NPY_LITTLE))))
+            if (NpyTypeNum_ISSIGNED(arr.ItemType))
             {
-                ptr_index += elsize - 1;
+                VoidPtr ptr = new VoidPtr(arr);
+                dynamic data = GetIndex(ptr, 0);
+
+                switch (arr.ItemType)
+                {
+                    case NPY_TYPES.NPY_BYTE:
+                        var bdata = (byte)data;
+                        return bdata < 0;
+
+                    case NPY_TYPES.NPY_SHORT:
+                        var sdata = (Int16)data;
+                        return sdata < 0;
+
+                    case NPY_TYPES.NPY_INT:
+                        var idata = (Int32)data;
+                        return idata < 0;
+
+                    case NPY_TYPES.NPY_LONG:
+                        var ldata = (Int64)data;
+                        return ldata < 0;
+
+                    case NPY_TYPES.NPY_DECIMAL:
+                        var ddata = (Decimal)data;
+                        return ddata < 0;
+
+                    default:
+                        return false;
+                }
             }
 
-            dynamic data = GetIndex(ptr, ptr_index);
-            return ((data & bitmask) != 0);
+            return false;
         }
 
 
