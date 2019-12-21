@@ -3358,7 +3358,7 @@ namespace NumpyLib
         private static object DECIMAL_LessOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue < Convert.ToDecimal(operand);
+            return dValue < (decimal)operand;
         }
 
         private static T LessOperation<T>(T bValue, dynamic operand)
@@ -3427,7 +3427,7 @@ namespace NumpyLib
         private static object DECIMAL_LessEqualOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue <= Convert.ToDecimal(operand);
+            return dValue <= (decimal)operand;
         }
 
         private static T LessEqualOperation<T>(T bValue, dynamic operand)
@@ -3496,7 +3496,7 @@ namespace NumpyLib
         private static object DECIMAL_EqualOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue == Convert.ToDecimal(operand);
+            return dValue == (decimal)operand;
         }
         private static T EqualOperation<T>(T bValue, dynamic operand)
         {
@@ -3564,7 +3564,7 @@ namespace NumpyLib
         private static object DECIMAL_NotEqualOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue != Convert.ToDecimal(operand);
+            return dValue != (decimal)operand;
         }
         private static T NotEqualOperation<T>(T bValue, dynamic operand)
         {
@@ -3632,7 +3632,7 @@ namespace NumpyLib
         private static object DECIMAL_GreaterOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue > Convert.ToDecimal(operand);
+            return dValue > (decimal)operand;
         }
         private static T GreaterOperation<T>(T bValue, dynamic operand)
         {
@@ -3700,7 +3700,7 @@ namespace NumpyLib
         private static object DECIMAL_GreaterEqualOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue >= Convert.ToDecimal(operand);
+            return dValue >= (decimal)operand;
         }
         private static T GreaterEqualOperation<T>(T bValue, dynamic operand)
         {
