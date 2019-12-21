@@ -142,11 +142,10 @@ namespace NumpyDotNet
                         size.Add(Convert.ToInt32(Math.Ceiling((Convert.ToDouble(key[k].stop) - Convert.ToDouble(start)) / (Convert.ToDouble(step) * 1.0))));
                     }
 
-                    var x1 = asanyarray(step);
-                    var x2 = asanyarray(start);
-
-                    if ((x1.Array.descr.type_num == NPY_TYPES.NPY_FLOAT) ||
-                        (x2.Array.descr.type_num == NPY_TYPES.NPY_FLOAT))
+   
+                    if (FloatingPointValue(step) ||
+                        FloatingPointValue(start) ||
+                        FloatingPointValue(key[k].Stop))
                     {
                         typ = np.Float64;
                     }
@@ -187,12 +186,15 @@ namespace NumpyDotNet
                         //if step != 1:
                         //    step = (key[k].stop - start) / float(step - 1)
                     }
-
                     if (Sparse)
                     {
                         if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
                         {
                             nnarray[k] = nnarray[k] * Convert.ToSingle(step) + Convert.ToSingle(start);
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_DOUBLE)
+                        {
+                            nnarray[k] = nnarray[k] * Convert.ToDouble(step) + Convert.ToDouble(start);
                         }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
@@ -203,7 +205,11 @@ namespace NumpyDotNet
                     {
                         if (typ.TypeNum == NPY_TYPES.NPY_FLOAT)
                         {
-                            nn[k] = (Convert.ToSingle(nn[k]) * Convert.ToSingle(step) + Convert.ToSingle(start));
+                            nn[k] = ((nn[k] as ndarray) * Convert.ToSingle(step) + Convert.ToSingle(start));
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_DOUBLE)
+                        {
+                            nn[k] = ((nn[k] as ndarray) * Convert.ToDouble(step) + Convert.ToDouble(start));
                         }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
@@ -281,12 +287,23 @@ namespace NumpyDotNet
                         if (step != null)
                             iStep = Convert.ToInt64(step);
 
-                        return arange(iStart.Value, iStop, iStep, dtype: np.Int64);
+                        return arange(iStart.Value, iStop, iStep);
                     }
                 }
     
 
             }
+        }
+
+        private static bool FloatingPointValue(object value)
+        {
+            if (value is float)
+                return true;
+            if (value is double)
+                return true;
+
+            return false;
+
         }
 
         private static bool IsComplex(object step)

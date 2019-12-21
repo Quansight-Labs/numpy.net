@@ -134,16 +134,16 @@ namespace NumpyDotNetTests
 
             var d = (ndarray[])np.ogrid(new Slice[] { new Slice(0, 5.5), new Slice(0, 5.5) });
             print(d);
-            AssertArray(d[0], new Int32[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-            AssertArray(d[1], new Int32[,] { { 0, 1, 2, 3, 4, 5 } });
+            AssertArray(d[0], new double[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+            AssertArray(d[1], new double[,] { { 0, 1, 2, 3, 4, 5 } });
 
             print("************");
 
             var e = (ndarray[])np.ogrid(new Slice[] { new Slice(3, 5), new Slice(4, 6), new Slice(2, 4.2) });
             print(e);
-            AssertArray(e[0], new Int32[,,] { { { 3 } }, { { 4 } } });
-            AssertArray(e[1], new Int32[,,] { { { 4 }, { 5 } } });
-            AssertArray(e[2], new Int32[,,] { { { 2, 3, 4 } } });
+            AssertArray(e[0], new double[,,] { { { 3 } }, { { 4 } } });
+            AssertArray(e[1], new double[,,] { { { 4 }, { 5 } } });
+            AssertArray(e[2], new double[,,] { { { 2, 3, 4 } } });
 
         }
 
