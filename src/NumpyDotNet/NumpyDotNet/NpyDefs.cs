@@ -208,6 +208,7 @@ namespace NumpyDotNet {
             {
                 case NPY_TYPES.NPY_FLOAT:
                 case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_DECIMAL:
                 case NPY_TYPES.NPY_COMPLEX:
                     return true;
                 default:
