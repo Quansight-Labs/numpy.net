@@ -129,6 +129,94 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_take_1_DECIMAL()
+        {
+            var a = np.array(new decimal[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            var indices = np.array(new Int32[] { 0, 1, 4 });
+            ndarray b = np.take(a, indices);
+            print("B");
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            AssertArray(b, new decimal[] { 4, 3, 6 });
+            AssertShape(b, 3);
+            AssertStrides(b, sizeof(decimal));
+
+
+            a = np.array(new decimal[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            indices = np.array(new Int32[,] { { 0, 1 }, { 2, 3 } });
+            ndarray c = np.take(a, indices);
+            print("C");
+            print(c);
+            print(c.shape);
+            print(c.strides);
+
+            var ExpectedDataC = new decimal[2, 2]
+            {
+                { 4, 3 },
+                { 5, 7 },
+            };
+            AssertArray(c, ExpectedDataC);
+            AssertShape(c, 2, 2);
+            AssertStrides(c, sizeof(decimal) * 2, sizeof(decimal));
+
+            ndarray d = np.take(a.reshape(new shape(4, -1)), indices, axis: 0);
+            print("D");
+            print(d);
+            print(d.shape);
+            print(d.strides);
+
+            var ExpectedDataD = new decimal[2, 2, 4]
+            {
+                {
+                    { 4, 3, 5, 7 },
+                    { 6, 8, 9, 12 },
+                },
+                {
+                    { 14, 16, 18, 20 },
+                    { 22, 24, 26, 28 },
+                },
+
+            };
+            AssertArray(d, ExpectedDataD);
+            AssertShape(d, 2, 2, 4);
+            AssertStrides(d, sizeof(decimal) * 8, sizeof(decimal) * 4, sizeof(decimal) * 1);
+
+            ndarray e = np.take(a.reshape(new shape(4, -1)), indices, axis: 1);
+            print("E");
+            print(e);
+            print(e.shape);
+            print(e.strides);
+
+            var ExpectedDataE = new decimal[4, 2, 2]
+            {
+                {
+                    { 4, 3 },
+                    { 5, 7 },
+                },
+                {
+                    { 6, 8 },
+                    { 9, 12 },
+                },
+                {
+                    { 14, 16 },
+                    { 18, 20 },
+                },
+                {
+                    { 22, 24 },
+                    { 26, 28 },
+                },
+
+            };
+
+            AssertArray(e, ExpectedDataE);
+            AssertShape(e, 4, 2, 2);
+            AssertStrides(e, sizeof(decimal) * 4, sizeof(decimal) * 2, sizeof(decimal) * 1);
+
+        }
+
         //[Ignore]
         //[TestMethod]
         //public void test_take_along_axis_1()
@@ -216,6 +304,32 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ravel_1_DECIMAL()
+        {
+            var a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var b = np.ravel(a);
+            AssertArray(b, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(b);
+
+            var c = a.reshape(-1);
+            AssertArray(c, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(c);
+
+            var d = np.ravel(a, order: NPY_ORDER.NPY_FORTRANORDER);
+            AssertArray(d, new decimal[] { 1, 4, 2, 5, 3, 6 });
+            print(d);
+
+            // When order is 'A', it will preserve the array's 'C' or 'F' ordering:
+            var e = np.ravel(a.T);
+            AssertArray(e, new decimal[] { 1, 4, 2, 5, 3, 6 });
+            print(e);
+
+            var f = np.ravel(a.T, order: NPY_ORDER.NPY_ANYORDER);
+            AssertArray(f, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(f);
+        }
+
+        [TestMethod]
         public void test_ravel_2()
         {
             // When order is 'K', it will preserve orderings that are neither 'C' nor 'F', but won't reverse axes:
@@ -268,6 +382,23 @@ namespace NumpyDotNetTests
             AssertArray(a, new Int32[] { 20, 31, 12, 3 });
         }
 
+        [TestMethod]
+        public void test_choose_1_DECIMAL()
+        {
+            ndarray choice1 = np.array(new decimal[] { 0, 1, 2, 3 });
+            ndarray choice2 = np.array(new decimal[] { 10, 11, 12, 13 });
+            ndarray choice3 = np.array(new decimal[] { 20, 21, 22, 23 });
+            ndarray choice4 = np.array(new decimal[] { 30, 31, 32, 33 });
+
+            ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
+
+            ndarray a = np.choose(np.array(new Int32[] { 2, 3, 1, 0 }), choices);
+
+            print(a);
+
+            AssertArray(a, new decimal[] { 20, 31, 12, 3 });
+        }
+
 
         [TestMethod]
         public void test_choose_2()
@@ -292,6 +423,40 @@ namespace NumpyDotNetTests
                 a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_RAISE);
                 print(a);
                 AssertArray(a, new Int32[] { 20, 1, 12, 3 });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("invalid entry in choice array"))
+                    return;
+            }
+            Assert.Fail("Should have caught exception from np.choose");
+
+
+        }
+
+        [TestMethod]
+        public void test_choose_2_DECIMAL()
+        {
+            ndarray choice1 = np.array(new decimal[] { 0, 1, 2, 3 });
+            ndarray choice2 = np.array(new decimal[] { 10, 11, 12, 13 });
+            ndarray choice3 = np.array(new decimal[] { 20, 21, 22, 23 });
+            ndarray choice4 = np.array(new decimal[] { 30, 31, 32, 33 });
+
+            ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
+
+            ndarray a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_CLIP);
+            print(a);
+            AssertArray(a, new decimal[] { 20, 31, 12, 3 });
+
+            a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_WRAP);
+            print(a);
+            AssertArray(a, new decimal[] { 20, 1, 12, 3 });
+
+            try
+            {
+                a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_RAISE);
+                print(a);
+                AssertArray(a, new decimal[] { 20, 1, 12, 3 });
             }
             catch (Exception ex)
             {
@@ -353,6 +518,19 @@ namespace NumpyDotNetTests
             var y = np.select(condlist, choicelist);
 
             AssertArray(y, new int[] { 0,  1,  2,  0,  0,  0, 36, 49, 64, 81 });
+            print(y);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_select_1_DECIMAL()
+        {
+            var x = np.arange(10, dtype: np.Decimal);
+            var condlist = new ndarray[] { x < 3, x > 5 };
+            var choicelist = new ndarray[] { x, np.array(np.power(x, 2), dtype: np.Decimal) };
+            var y = np.select(condlist, choicelist);
+
+            AssertArray(y, new decimal[] { 0, 1, 2, 0, 0, 0, 36, 49, 64, 81 });
             print(y);
         }
 
