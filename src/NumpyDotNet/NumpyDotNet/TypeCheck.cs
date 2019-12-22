@@ -161,6 +161,8 @@ namespace NumpyDotNet
                     return float.MinValue;
                 case NPY_TYPES.NPY_DOUBLE:
                     return double.MinValue;
+                case NPY_TYPES.NPY_DECIMAL:
+                    return decimal.MinValue;
                 default:
                     throw new Exception("Unexpected datatype in _getmin");
             }
@@ -176,6 +178,8 @@ namespace NumpyDotNet
                     return float.MaxValue;
                 case NPY_TYPES.NPY_DOUBLE:
                     return double.MaxValue;
+                case NPY_TYPES.NPY_DECIMAL:
+                    return decimal.MaxValue;
                 default:
                     throw new Exception("Unexpected datatype in _getmax");
             }

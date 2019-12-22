@@ -1540,14 +1540,38 @@ namespace NumpyLib
         }
 
 
+        private static dynamic MaxValue(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_DECIMAL:
+                    return decimal.MaxValue;
+                default:
+                    return double.MaxValue;
+            }
+        }
+
+        private static dynamic MinValue(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_DECIMAL:
+                    return decimal.MinValue;
+                default:
+                    return double.MinValue;
+            }
+        }
+
 
         private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, long startingIndex)
         {
-            double lastLowest = double.MinValue;
+            dynamic lastLowest = MinValue(sortData.type_num);
+            dynamic _MaxValue = MaxValue(sortData.type_num);
+
             for (int i = 0; i < m; )
             {
                 long endingIndex = m + startingIndex;
-                lastLowest = getNextLowest(lastLowest, sortData, startingIndex, endingIndex);
+                lastLowest = getNextLowest(lastLowest, sortData, startingIndex, endingIndex, _MaxValue);
 
                 npy_intp foundIndex = startingIndex;
                 while (foundIndex >= 0)
@@ -1567,7 +1591,7 @@ namespace NumpyLib
             return;
         }
 
-        private static long getMatchingIndex(double nextLowest, VoidPtr sortData, long startingIndex, long endingIndex)
+        private static long getMatchingIndex(dynamic nextLowest, VoidPtr sortData, long startingIndex, long endingIndex)
         {
             dynamic array = sortData.datap;
 
@@ -1585,10 +1609,10 @@ namespace NumpyLib
             return -1;
         }
 
-        private static double getNextLowest(double lastLowest, VoidPtr sortData, long startingIndex, long endingIndex)
+        private static dynamic getNextLowest(dynamic lastLowest, VoidPtr sortData, long startingIndex, long endingIndex, dynamic MaxValue)
         {
             dynamic array = sortData.datap;
-            double foundLowest = double.MaxValue;
+            dynamic foundLowest = MaxValue;
 
             startingIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
             endingIndex = endingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
