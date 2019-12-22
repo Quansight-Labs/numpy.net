@@ -1178,7 +1178,18 @@ namespace NumpyDotNet
             copyto(ddmod, Math.PI, where : (ddmod == -Math.PI) & (dd > 0));
             var ph_correct = ddmod - dd;
             copyto(ph_correct, 0, where: absolute(dd) < discont);
-            var up = array(p, copy: true, dtype: np.Float64);
+
+            dtype dtype = null;
+            if (arrp.Dtype.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            {
+                dtype = np.Decimal;
+            }
+            else
+            {
+                dtype = np.Float64;
+            }
+
+            var up = array(p, copy: true, dtype: dtype);
 
             up[slice1] = arrp.A(slice1) + ph_correct.cumsum(axis);
             return up;
