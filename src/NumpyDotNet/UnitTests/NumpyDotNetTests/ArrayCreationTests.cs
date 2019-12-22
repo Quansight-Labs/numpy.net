@@ -2514,6 +2514,7 @@ namespace NumpyDotNetTests
 
         }
 
+    
         [TestMethod]
         public void test_append_1()
         {
@@ -2531,6 +2532,26 @@ namespace NumpyDotNetTests
             AssertArray(b, new int[] { 1, 1, 2, 2, 3, 3, 1 });
             AssertShape(b, 7);
             AssertStrides(b, 4);
+        }
+
+
+        [TestMethod]
+        public void test_append_1_DECIMAL()
+        {
+            decimal[] TestData = new decimal[] { 1, 1, 2, 2, 3, 3 };
+            ndarray a = np.array(TestData, dtype: np.Decimal);
+            ndarray b = np.append(a, (decimal)1);
+
+            print(a);
+            print(a.shape);
+
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            AssertArray(b, new decimal[] { 1, 1, 2, 2, 3, 3, 1 });
+            AssertShape(b, 7);
+            AssertStrides(b, 16);
         }
 
         [TestMethod]
@@ -2598,6 +2619,31 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_append_3_DECIMAL()
+        {
+            decimal[] TestData1 = new decimal[] { 1, 1, 2, 2, 3, 3 };
+            decimal[] TestData2 = new decimal[] { 4, 4, 5, 5, 6, 6 };
+            ndarray a = np.array(TestData1, dtype: np.Decimal);
+            ndarray b = np.array(TestData2, dtype: np.Decimal);
+
+            ndarray c = np.append(a, b);
+
+            print(a);
+            print(a.shape);
+
+            print(b);
+            print(b.shape);
+
+            print(c);
+            print(c.shape);
+            print(c.strides);
+
+            AssertArray(c, new decimal[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 });
+            AssertShape(c, 12);
+            AssertStrides(c, 16);
+        }
+
+        [TestMethod]
         public void test_append_4()
         {
             Int32[] TestData1 = new int[] { 1, 1, 2, 2, 3, 3 };
@@ -2628,6 +2674,41 @@ namespace NumpyDotNetTests
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2,6);
+            //AssertStrides(c, 24, 4); 
+
+        }
+
+        [TestMethod]
+        public void test_append_4_DECIMAL()
+        {
+            decimal[] TestData1 = new decimal[] { 1, 1, 2, 2, 3, 3 };
+            decimal[] TestData2 = new decimal[] { 4, 4, 5, 5, 6, 6 };
+            ndarray a = np.array(TestData1, dtype: np.Decimal).reshape((2, -1));
+            ndarray b = np.array(TestData2, dtype: np.Decimal).reshape((2, -1));
+
+            ndarray c = np.append(a, b, axis: 1);
+
+            print(a);
+            print(a.shape);
+            print("");
+
+            print(b);
+            print(b.shape);
+            print("");
+
+            print(c);
+            print(c.shape);
+            print(c.strides);
+            print("");
+
+            var ExpectedDataC = new decimal[,]
+            {
+                { 1, 1, 2, 4, 4, 5 },
+                { 2, 3, 3, 5, 6, 6 },
+            };
+
+            AssertArray(c, ExpectedDataC);
+            AssertShape(c, 2, 6);
             //AssertStrides(c, 24, 4); 
 
         }
@@ -2699,6 +2780,28 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_flat_2_DECIMAL()
+        {
+            var x = np.arange(1, 7, dtype: np.Decimal).reshape((2, 3));
+            print(x);
+
+            Assert.AreEqual(4m, x.Flat[3]);
+            print(x.Flat[3]);
+
+            print(x.T);
+            Assert.AreEqual(5m, x.T.Flat[3]);
+            print(x.T.Flat[3]);
+
+            x.flat = 3;
+            AssertArray(x, new decimal[,] { { 3, 3, 3 }, { 3, 3, 3 } });
+            print(x);
+
+            x.Flat[new int[] { 1, 4 }] = 1;
+            AssertArray(x, new decimal[,] { { 3, 1, 3 }, { 3, 1, 3 } });
+            print(x);
+        }
+
+        [TestMethod]
         public void test_intersect1d_1()
         {
             ndarray a = np.array(new int[] { 1, 3, 4, 3 });
@@ -2714,6 +2817,21 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_intersect1d_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[] { 1, 3, 4, 3 });
+            ndarray b = np.array(new decimal[] { 3, 1, 2, 1 });
+
+            ndarray c = np.intersect1d(a, b);
+            print(c);
+
+            AssertArray(c, new decimal[] { 1, 3 });
+            AssertShape(c, 2);
+            AssertStrides(c, 16);
+
+        }
+
+        [TestMethod]
         public void test_setxor1d_1()
         {
             ndarray a = np.array(new int[] { 1, 2, 3, 2, 4 });
@@ -2725,6 +2843,20 @@ namespace NumpyDotNetTests
             AssertArray(c, new Int32[] { 1, 4, 5, 7 });
             AssertShape(c, 4);
             AssertStrides(c, 4);
+        }
+
+        [TestMethod]
+        public void test_setxor1d_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[] { 1, 2, 3, 2, 4 });
+            ndarray b = np.array(new decimal[] { 2, 3, 5, 7, 5 });
+
+            ndarray c = np.setxor1d(a, b);
+            print(c);
+
+            AssertArray(c, new decimal[] { 1, 4, 5, 7 });
+            AssertShape(c, 4);
+            AssertStrides(c, 16);
         }
 
         [TestMethod]
@@ -2758,6 +2890,41 @@ namespace NumpyDotNetTests
             AssertArray(b, new Int32[] { 1,5 });
             AssertShape(b, 2);
             AssertStrides(b, 4);
+
+        }
+
+
+        [TestMethod]
+        public void test_in1d_1_DECIMAL()
+        {
+            ndarray test = np.array(new decimal[] { 0, 1, 2, 5, 0 });
+            ndarray states = np.array(new decimal[] { 0, 2 });
+
+            ndarray mask = np.in1d(test, states);
+            print(mask);
+            print(test[mask]);
+
+            AssertArray(mask, new bool[] { true, false, true, false, true });
+            AssertShape(mask, 5);
+            AssertStrides(mask, 1);
+
+            ndarray a = test[mask] as ndarray;
+            AssertArray(a, new decimal[] { 0, 2, 0 });
+            AssertShape(a, 3);
+            AssertStrides(a, 16);
+
+            mask = np.in1d(test, states, invert: true);
+            print(mask);
+            print(test[mask]);
+
+            AssertArray(mask, new bool[] { false, true, false, true, false });
+            AssertShape(mask, 5);
+            AssertStrides(mask, 1);
+
+            ndarray b = test[mask] as ndarray;
+            AssertArray(b, new decimal[] { 1, 5 });
+            AssertShape(b, 2);
+            AssertStrides(b, 16);
 
         }
 
@@ -2811,6 +2978,58 @@ namespace NumpyDotNetTests
             AssertArray(a, new Int32[] { 0,6 });
             AssertShape(a, 2);
             AssertStrides(a, 4);
+        }
+
+        [TestMethod]
+        public void test_isin_1_DECIMAL()
+        {
+            ndarray element = 2 * np.arange(4, dtype: np.Decimal).reshape(new shape(2, 2));
+            print(element);
+
+            ndarray test_elements = np.array(new decimal[] { 1, 2, 4, 8 });
+            ndarray mask = np.isin(element, test_elements);
+            print(mask);
+            print(element[mask]);
+
+            ndarray a = element[mask] as ndarray;
+
+            var ExpectedDataMask = new bool[2, 2]
+            {
+                { false, true },
+                { true, false },
+            };
+
+            AssertArray(mask, ExpectedDataMask);
+            AssertShape(mask, 2, 2);
+            AssertStrides(mask, 2, 1);
+
+            AssertArray(a, new decimal[] { 2, 4 });
+            AssertShape(a, 2);
+            AssertStrides(a, 16);
+
+            print("***********");
+
+            mask = np.isin(element, test_elements, invert: true);
+            print(mask);
+            print(element[mask]);
+
+            a = element[mask] as ndarray;
+
+
+            ExpectedDataMask = new bool[2, 2]
+            {
+                { true, false },
+                { false, true },
+            };
+
+
+            AssertArray(mask, ExpectedDataMask);
+            AssertShape(mask, 2, 2);
+            AssertStrides(mask, 2, 1);
+
+            AssertArray(a, new decimal[] { 0, 6 });
+            AssertShape(a, 2);
+            AssertStrides(a, 16);
 
 
 
@@ -2828,6 +3047,23 @@ namespace NumpyDotNetTests
             AssertArray(a, new Int32[] { -2, -1, 0, 1, 2 });
             AssertShape(a, 5);
             AssertStrides(a, 4);
+
+
+        }
+
+
+        [TestMethod]
+        public void test_union1d_1_DECIMAL()
+        {
+            ndarray a1 = np.array(new decimal[] { -1, 0, 1 });
+            ndarray a2 = np.array(new decimal[] { -2, 0, 2 });
+
+            ndarray a = np.union1d(a1, a2);
+            print(a);
+
+            AssertArray(a, new decimal[] { -2, -1, 0, 1, 2 });
+            AssertShape(a, 5);
+            AssertStrides(a, 16);
 
 
         }
@@ -2879,6 +3115,55 @@ namespace NumpyDotNetTests
 
             var i = a[":", 2, 1, 1, "..."] as ndarray;
             AssertArray(i, new UInt32[,] { { 12 } });
+            print(i);
+        }
+
+        [TestMethod]
+        public void test_Ellipsis_indexing_1_DECIMAL()
+        {
+            var a = np.array(new decimal[] { 10.0m, 7, 4, 3, 2, 1 });
+
+            var b = a.A("...", -1);
+            Assert.AreEqual((decimal)1.0, b.GetItem(0));
+            print(b);
+            print("********");
+
+
+            a = np.array(new decimal[,] { { 10.0m, 7, 4 }, { 3, 2, 1 } });
+            var c = a.A("...", -1);
+            AssertArray(c, new decimal[] { 4.0m, 1.0m });
+            print(c);
+            print("********");
+
+            var TestData = new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            a = np.array(TestData, dtype: np.Decimal).reshape((1, 3, 2, -1, 1));
+            var d = a["...", -1] as ndarray;
+            AssertArray(d, new decimal[,,,] { { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } } });
+            print(d);
+            print("********");
+
+            var e = a[0, "...", -1] as ndarray;
+            AssertArray(e, new decimal[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(e);
+            print("********");
+
+            var f = a[0, ":", ":", ":", -1] as ndarray;
+            AssertArray(f, new decimal[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            print(f);
+            print("********");
+
+            var g = a.A(0, 1, "...", -1);
+            AssertArray(g, new decimal[,] { { 5, 6 }, { 7, 8 } });
+            print(g);
+            print("********");
+
+            var h = a.A(0, 2, 1, "...", -1);
+            AssertArray(h, new decimal[] { 11, 12 });
+            print(h);
+            print("********");
+
+            var i = a[":", 2, 1, 1, "..."] as ndarray;
+            AssertArray(i, new decimal[,] { { 12 } });
             print(i);
         }
 
@@ -2956,9 +3241,33 @@ namespace NumpyDotNetTests
             var g = np.concatenate((np.eye(2), np.ones((2, 2))), axis : 1);
             AssertArray(g, new double[,] { { 1, 0, 1,1 }, { 0, 1, 1,1 } });
             print(g);
+        }
 
+        [TestMethod]
+        public void test_concatenate_1_DECIMAL()
+        {
 
+            var a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            var b = np.array(new decimal[,] { { 5, 6 } });
+            var c = np.concatenate((a, b), axis: 0);
+            AssertArray(c, new decimal[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
+            print(c);
 
+            var d = np.concatenate((a, b.T), axis: 1);
+            AssertArray(d, new decimal[,] { { 1, 2, 5 }, { 3, 4, 6 } });
+            print(d);
+
+            var e = np.concatenate((a, b), axis: null);
+            AssertArray(e, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(e);
+
+            var f = np.concatenate((np.eye(2, dtype: np.Decimal), np.ones((2, 2), dtype: np.Decimal)), axis: 0);
+            AssertArray(f, new decimal[,] { { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, 1 }, });
+            print(f);
+
+            var g = np.concatenate((np.eye(2, dtype: np.Decimal), np.ones((2, 2), dtype: np.Decimal)), axis: 1);
+            AssertArray(g, new decimal[,] { { 1, 0, 1, 1 }, { 0, 1, 1, 1 } });
+            print(g);
         }
 
         [TestMethod]
@@ -3001,6 +3310,31 @@ namespace NumpyDotNetTests
 
             d = np.concatenate((a,a,a), axis: -2);
             AssertArray(d, new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            print(d);
+
+
+        }
+
+
+        [TestMethod]
+        public void test_concatenate_3_DECIMAL()
+        {
+
+            var a = np.array(new decimal[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            var c = np.concatenate(a, axis: -1);
+            AssertArray(c, new decimal[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(c);
+
+            var d = np.concatenate(a, axis: -2);
+            AssertArray(d, new decimal[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            print(d);
+
+            c = np.concatenate((a, a, a), axis: -1);
+            AssertArray(c, new decimal[,,,] { { { { 1, 2, 1, 2, 1, 2 }, { 3, 4, 3, 4, 3, 4 }, { 5, 6, 5, 6, 5, 6 } } } });
+            print(c);
+
+            d = np.concatenate((a, a, a), axis: -2);
+            AssertArray(d, new decimal[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
             print(d);
 
 
