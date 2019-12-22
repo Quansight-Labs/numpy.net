@@ -149,8 +149,13 @@ namespace NumpyDotNet
                     {
                         typ = np.Float64;
                     }
-
-   
+                    else
+                    if (DecimalValue(step) ||
+                        DecimalValue(start) ||
+                        DecimalValue(key[k].Stop))
+                    {
+                        typ = np.Decimal;
+                    }
 
                 }
 
@@ -196,6 +201,10 @@ namespace NumpyDotNet
                         {
                             nnarray[k] = nnarray[k] * Convert.ToDouble(step) + Convert.ToDouble(start);
                         }
+                        if (typ.TypeNum == NPY_TYPES.NPY_DECIMAL)
+                        {
+                            nnarray[k] = nnarray[k] * Convert.ToDecimal(step) + Convert.ToDecimal(start);
+                        }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
                             nnarray[k] = nnarray[k] * Convert.ToInt32(step) + Convert.ToInt32(start);
@@ -210,6 +219,10 @@ namespace NumpyDotNet
                         if (typ.TypeNum == NPY_TYPES.NPY_DOUBLE)
                         {
                             nn[k] = ((nn[k] as ndarray) * Convert.ToDouble(step) + Convert.ToDouble(start));
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_DECIMAL)
+                        {
+                            nn[k] = ((nn[k] as ndarray) * Convert.ToDecimal(step) + Convert.ToDecimal(start));
                         }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
@@ -263,17 +276,35 @@ namespace NumpyDotNet
                     var tt = asanyarray(start);
                     if (tt.IsInexact)
                     {
-                        double? iStart = null;
-                        double? iStop = null;
-                        double? iStep = null;
-                        if (start != null)
-                            iStart = Convert.ToDouble(start);
-                        if (stop != null)
-                            iStop = Convert.ToDouble(stop);
-                        if (step != null)
-                            iStep = Convert.ToDouble(step);
+                        if (tt.Array.ItemType == NPY_TYPES.NPY_DECIMAL)
+                        {
+                            decimal? iStart = null;
+                            decimal? iStop = null;
+                            decimal? iStep = null;
+                            if (start != null)
+                                iStart = Convert.ToDecimal(start);
+                            if (stop != null)
+                                iStop = Convert.ToDecimal(stop);
+                            if (step != null)
+                                iStep = Convert.ToDecimal(step);
 
-                        return arange(iStart.Value, iStop, iStep, dtype : np.Float64);
+                            return arange(iStart.Value, iStop, iStep, dtype: np.Decimal);
+                        }
+                        else
+                        {
+                            double? iStart = null;
+                            double? iStop = null;
+                            double? iStep = null;
+                            if (start != null)
+                                iStart = Convert.ToDouble(start);
+                            if (stop != null)
+                                iStop = Convert.ToDouble(stop);
+                            if (step != null)
+                                iStep = Convert.ToDouble(step);
+
+                            return arange(iStart.Value, iStop, iStep, dtype: np.Float64);
+                        }
+  
                     }
                     else
                     {
@@ -301,7 +332,13 @@ namespace NumpyDotNet
                 return true;
             if (value is double)
                 return true;
+            return false;
 
+        }
+        private static bool DecimalValue(object value)
+        {
+            if (value is decimal)
+                return true;
             return false;
 
         }
