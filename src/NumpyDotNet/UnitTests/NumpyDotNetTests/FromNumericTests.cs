@@ -2661,6 +2661,27 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
+        public void test_place_1_DECIMAL()
+        {
+            var arr = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55 });
+            AssertArray(arr, new decimal[,] { { 0, 1, 2 }, { 44, 55, 44 } });
+            print(arr);
+
+            arr = np.arange(16, dtype: np.Decimal).reshape((2, 4, 2));
+            np.place(arr, arr > 12, new Int32[] { 33 });
+            AssertArray(arr, new decimal[,,] { { { 0, 1 }, { 2, 3 }, { 4, 5 }, { 6, 7 } }, { { 8, 9 }, { 10, 11 }, { 12, 33 }, { 33, 33 } } });
+            print(arr);
+
+            arr = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55, 66, 77, 88, 99, 11, 22, 33 });
+            AssertArray(arr, new decimal[,] { { 0, 1, 2 }, { 44, 55, 66 } });
+            print(arr);
+
+        }
+
+
+        [TestMethod]
         public void test_extract_1()
         {
             var arr = np.arange(12).reshape((3, 4));
@@ -2668,8 +2689,24 @@ namespace NumpyDotNetTests
             print(condition);
 
             var b = np.extract(condition, arr);
+            AssertArray(b, new Int32[] {0,3,6,9 });
             print(b);
         }
+
+
+        [TestMethod]
+        public void test_extract_1_DECIMAL()
+        {
+            var arr = np.arange(12, dtype: np.Decimal).reshape((3, 4));
+            var condition = np.mod(arr, 3) == 0;
+            print(condition);
+
+            var b = np.extract(condition, arr);
+            AssertArray(b, new decimal[] { 0, 3, 6, 9 });
+            print(b);
+        }
+
+
 
         [TestMethod]
         public void test_indicesfromaxis_1()
@@ -2738,6 +2775,38 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_viewfromaxis_1_DECIMAL()
+        {
+            decimal[] TestData = new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var a = np.zeros_like(TestData).reshape(new shape(3, 2, -1));
+            //print(a);
+
+
+            var b = np.ViewFromAxis(a, 0);
+            b[":"] = 99;
+            //print(a);
+            AssertArray(a, new decimal[,,] { { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 0), new decimal[,] { { 297, 0 }, { 0, 0 } });
+
+            b = np.ViewFromAxis(a, 1);
+            b[":"] = 11;
+            AssertArray(a, new decimal[,,] { { { 11, 0 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 1), new decimal[,] { { 22, 0 }, { 99, 0 }, { 99, 0 } });
+
+            b = np.ViewFromAxis(a, 2);
+            b[":"] = 22;
+            AssertArray(a, new decimal[,,] { { { 22, 22 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 2), new decimal[,] { { 44, 11 }, { 99, 0 }, { 99, 0 } });
+
+            Assert.AreEqual((decimal)253, np.sum(a).GetItem(0));
+
+
+        }
+
+        [TestMethod]
         public void test_unwrap_1()
         {
             double retstep = 0;
@@ -2748,6 +2817,21 @@ namespace NumpyDotNetTests
 
             var x = np.unwrap(phase);
             AssertArray(x, new double[] { 0.0, 0.785398163397448, 1.5707963267949, -0.785398163397448, 0.0 });
+            print(x);
+        }
+
+
+        [TestMethod]
+        public void test_unwrap_1_DECIMAL()
+        {
+            double retstep = 0;
+
+            var phase = np.linspace(0, Math.PI, ref retstep, num: 5, dtype: np.Decimal);
+            phase["3:"] = phase.A("3:") + Math.PI;
+            print(phase);
+
+            var x = np.unwrap(phase);
+            AssertArray(x, new decimal[] { 0, 00.785398163397448m, 01.5707963267949m, -00.78539816339746m, -00.00000000000001m});
             print(x);
         }
 
