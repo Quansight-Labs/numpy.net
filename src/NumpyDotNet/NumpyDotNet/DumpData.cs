@@ -52,9 +52,11 @@ namespace NumpyDotNet
             // Equivalent to array_repr_builtin (arrayobject.c)
             if (repr)
                 sb.Append("array(");
+            else
+                sb.Append(string.Format("{0}\n", arr.ItemType.ToString().Substring("NPY_".Length)));
 
             npy_intp totalElements = numpyAPI.NpyArray_Size(arr);
-            DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements);
+            DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements, !repr);
 
             if (repr)
             {
@@ -79,7 +81,7 @@ namespace NumpyDotNet
         /// <param name="strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="offset">Byte offset into data array, starts at 0</param>
-        private static void DumpArray(NpyArray arr, StringBuilder sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements)
+        private static void DumpArray(NpyArray arr, StringBuilder sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, bool UseParensForMarkers)
         {
 
             if (dimIdx == arr.nd)
@@ -99,15 +101,9 @@ namespace NumpyDotNet
                             strValue = fValue.ToString();
                             if (!strValue.Contains("."))
                             {
-                                if (totalElements == 1)
-                                {
-                                    strValue += ".0";
-                                }
-                                else
-                                {
-                                    strValue += ".";
-                                }
+                                strValue += ".0";
                             }
+                            strValue += "f";
                             break;
 
                         case NPY_TYPES.NPY_DOUBLE:
@@ -115,25 +111,17 @@ namespace NumpyDotNet
                             strValue = dValue.ToString();
                             if (!strValue.Contains("."))
                             {
-                                if (totalElements == 1)
-                                {
-                                    strValue += ".0";
-                                }
-                                else
-                                {
-                                    strValue += ".";
-                                }
+                                strValue += ".0";
                             }
                             break;
                         case NPY_TYPES.NPY_DECIMAL:
                             decimal ddValue = (decimal)value;
                             strValue = ddValue.ToString();
-                            if (strValue.Contains("."))
+                            if (!strValue.Contains("."))
                             {
-                                strValue = ddValue.ToString() + "m";
+                                strValue += ".0";
                             }
-
-
+                            strValue += "m";
                             break;
                         default:
                             strValue = value.ToString();
@@ -146,16 +134,30 @@ namespace NumpyDotNet
             }
             else
             {
-                sb.Append('[');
+                string RowStartMarker;
+                string RowEndMarker;
+
+                if (UseParensForMarkers)
+                {
+                    RowStartMarker = "{";
+                    RowEndMarker = "}\n";
+                }
+                else
+                {
+                    RowStartMarker = "[";
+                    RowEndMarker = "]\n";
+                }
+
+                sb.Append(RowStartMarker);
                 for (int i = 0; i < dimensions[dimIdx]; i++)
                 {
-                    DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements);
+                    DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements, UseParensForMarkers);
                     if (i < dimensions[dimIdx] - 1)
                     {
                         sb.Append(", ");
                     }
                 }
-                sb.Append("]\n");
+                sb.Append(RowEndMarker);
             }
         }
 

@@ -1397,16 +1397,23 @@ namespace NumpyDotNet
                 return a;
             }
         }
-        private string BuildStringRepr(bool repr) {
+        private string BuildStringRepr(bool repr)
+        {
             // Equivalent to array_repr_builtin (arrayobject.c)
             StringBuilder sb = new StringBuilder();
-            if (repr) sb.Append("array(");
+            if (repr)
+                sb.Append("array(");
+
             DumpData.DumpArray(sb, this.Array, repr);
 
-            if (repr) {
-                if (NpyDefs.IsExtended(this.Dtype.TypeNum)) {
+            if (repr)
+            {
+                if (NpyDefs.IsExtended(this.Dtype.TypeNum))
+                {
                     sb.AppendFormat(", '{0}{1}')", (char)Dtype.Type, this.Dtype.ElementSize);
-                } else {
+                }
+                else
+                {
                     sb.AppendFormat(", '{0}')", (char)Dtype.Type);
                 }
             }
