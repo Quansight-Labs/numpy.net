@@ -427,13 +427,16 @@ namespace NumpyDotNet
             dims = new npy_intp[] { len };
             ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
 
+            var CC = BuildFastArrayAccessDataByType(result.Array.data);
+            var SetItemFunc = FastSetItemFuncByType(CC, result.Array.data);
+
             // populate the array
             int _step = (int)step;
             int _start = (int)start;
             for (int i = 0; i < len; i++)
             {
-                Int64 value = _start + (i * _step);
-                numpyAPI.SetIndex(result.Array.data, i, value);
+                double value = _start + (i * _step);
+                SetItemFunc(i, value);
             }
 
 
@@ -545,13 +548,16 @@ namespace NumpyDotNet
             dims = new npy_intp[] { (npy_intp)len };
             ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
 
+            var CC = BuildFastArrayAccessDataByType(result.Array.data);
+            var SetItemFunc = FastSetItemFuncByType(CC, result.Array.data);
+
             // populate the array
             double _step = (double)step;
             double _start = (double)start;
             for (int i = 0; i < (int)len; i++)
             {
                 double value = _start + (i * _step);
-                numpyAPI.SetIndex(result.Array.data, i, value);
+                SetItemFunc(i, value);
             }
 
 
@@ -636,13 +642,16 @@ namespace NumpyDotNet
             dims = new npy_intp[] { (npy_intp)len };
             ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
 
+            var CC = BuildFastArrayAccessDataByType(result.Array.data);
+            var SetItemFunc = FastSetItemFuncByType(CC, result.Array.data);
+
             // populate the array
             decimal _step = (decimal)step;
             decimal _start = (decimal)start;
             for (int i = 0; i < (int)len; i++)
             {
                 decimal value = _start + (i * _step);
-                numpyAPI.SetIndex(result.Array.data, i, value);
+                SetItemFunc(i, value);
             }
 
 
@@ -652,6 +661,124 @@ namespace NumpyDotNet
                 result.Dtype = dtype;
             }
             return result;
+        }
+        #endregion
+
+        #region FAST ARRAY ACCESS
+        private class FastArrayAccessData
+        {
+            public bool[] BoolArray;
+            public byte[] ByteArray;
+            public sbyte[] SByteArray;
+            public Int16[] Int16Array;
+            public UInt16[] UInt16Array;
+            public Int32[] Int32Array;
+            public UInt32[] UInt32Array;
+            public Int64[] Int64Array;
+            public UInt64[] UInt64Array;
+            public float[] FloatArray;
+            public double[] DoubleArray;
+            public decimal[] DecimalArray;
+        }
+
+
+        private static FastArrayAccessData BuildFastArrayAccessDataByType(VoidPtr vp)
+        {
+            FastArrayAccessData FAData = new FastArrayAccessData();
+
+            switch (vp.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    FAData.BoolArray = vp.datap as bool[];
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    FAData.ByteArray = vp.datap as byte[];
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    FAData.SByteArray = vp.datap as sbyte[];
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    FAData.UInt16Array = vp.datap as UInt16[];
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    FAData.Int16Array = vp.datap as Int16[];
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    FAData.UInt32Array = vp.datap as UInt32[];
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    FAData.Int32Array = vp.datap as Int32[];
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    FAData.Int64Array = vp.datap as Int64[];
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    FAData.UInt64Array = vp.datap as UInt64[];
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    FAData.FloatArray = vp.datap as float[];
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    FAData.DoubleArray = vp.datap as double[];
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    FAData.DecimalArray = vp.datap as decimal[];
+                    break;
+                default:
+                    throw new Exception("Unsupported data type");
+            }
+
+            return FAData;
+        }
+
+        private static Func<int, object, int> FastSetItemFuncByType(FastArrayAccessData FAData, VoidPtr vp)
+        {
+            Func<int, object, int> ret = null;
+
+            switch (vp.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    ret = (index, value) => { FAData.BoolArray[index] = Convert.ToBoolean(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    ret = (index, value) => { FAData.ByteArray[index] = Convert.ToByte(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    ret = (index, value) => { FAData.SByteArray[index] = Convert.ToSByte(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    ret = (index, value) => { FAData.UInt16Array[index] = Convert.ToUInt16(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    ret = (index, value) => { FAData.Int16Array[index] = Convert.ToInt16(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    ret = (index, value) => { FAData.UInt32Array[index] = Convert.ToUInt32(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    ret = (index, value) => { FAData.Int32Array[index] = Convert.ToInt32(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    ret = (index, value) => { FAData.Int64Array[index] = Convert.ToInt64(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    ret = (index, value) => { FAData.UInt64Array[index] = Convert.ToUInt64(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    ret = (index, value) => { FAData.FloatArray[index] = Convert.ToSingle(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    ret = (index, value) => { FAData.DoubleArray[index] = Convert.ToDouble(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    ret = (index, value) => { FAData.DecimalArray[index] = Convert.ToDecimal(value); return 0; };
+                    break;
+                default:
+                    throw new Exception("Unsupported data type");
+            }
+
+
+            return ret;
         }
         #endregion
 
