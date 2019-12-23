@@ -129,9 +129,13 @@ namespace NumpyDotNet
                 return x;
             }
 
-            bool iscomplex = x.IsComplex;
+            // decimal numbers don't have NAN or Infinity values
+            if (x.IsDecimal)
+            {
+                return x;
+            }
 
-            if (iscomplex)
+            if (x.IsComplex)
             {
                 throw new NotImplementedException("not handling complex numbers yet");
             }
@@ -146,7 +150,6 @@ namespace NumpyDotNet
                 copyto(dest, minf, where: isneginf(dest));
 
                 return dest;
-
             }
 
         }
