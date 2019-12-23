@@ -140,13 +140,13 @@ namespace NumpyDotNet
 
                 if (UseParensForMarkers)
                 {
-                    RowStartMarker = "{";
-                    RowEndMarker = "}\n";
+                    RowStartMarker = "{ ";
+                    RowEndMarker = " }\n";
                 }
                 else
                 {
-                    RowStartMarker = "[";
-                    RowEndMarker = "]\n";
+                    RowStartMarker = "[ ";
+                    RowEndMarker = " ]\n";
                 }
 
                 string StartRow = InsertRowStartOffsets(sb,IndentCount);
@@ -167,7 +167,7 @@ namespace NumpyDotNet
                         }
                         else
                         {
-                            sb.Add(",");
+                            sb.Add(", ");
                         }
                     }
                 }
@@ -192,7 +192,7 @@ namespace NumpyDotNet
             {
                 string indentString = "";
                 for (int i = 0; i < IndentCount; i++)
-                    indentString += " ";
+                    indentString += "  ";
                 return indentString;
             }
 
