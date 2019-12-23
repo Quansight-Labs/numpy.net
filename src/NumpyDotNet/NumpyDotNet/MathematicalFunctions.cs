@@ -1426,8 +1426,15 @@ namespace NumpyDotNet
         {
             ndarray[] results = new ndarray[2];
 
-            results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1).astype(np.Float64), asanyarray(1), @out1, asanyarray(where));
-            results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1).astype(np.Float64), asanyarray(1), @out2, asanyarray(where));
+            dtype ret_type = np.Float64;
+            var x1a = asanyarray(x1);
+            if (x1a.Array.ItemType == NPY_TYPES.NPY_DECIMAL)
+            {
+                ret_type = np.Decimal;
+            }
+
+            results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1).astype(ret_type), asanyarray(1), @out1, asanyarray(where));
+            results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1).astype(ret_type), asanyarray(1), @out2, asanyarray(where));
 
             return results;
         }
