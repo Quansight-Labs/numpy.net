@@ -1259,6 +1259,7 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore]
         [TestMethod]
         public void test_indices_1_DECIMAL()
         {
