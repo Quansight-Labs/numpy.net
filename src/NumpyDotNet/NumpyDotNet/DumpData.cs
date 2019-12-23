@@ -149,16 +149,39 @@ namespace NumpyDotNet
                     RowEndMarker = "]\n";
                 }
 
-                sb.Add(RowStartMarker);
+                string LastRow3 = sb[sb.Count - 1];
+                string StartRow = "";
+
+     
+                StartRow += RowStartMarker;
+                sb.Add(StartRow);
+
                 for (int i = 0; i < dimensions[dimIdx]; i++)
                 {
                     DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements, UseParensForMarkers);
                     if (i < dimensions[dimIdx] - 1)
                     {
-                        sb.Add(",");
+                        string LastRow = sb[sb.Count - 1];
+                        if (LastRow.EndsWith(RowEndMarker))
+                        {
+                            sb[sb.Count - 1] = LastRow.TrimEnd() + ",\n";
+                        }
+                        else
+                        {
+                            sb.Add(",");
+                        }
                     }
                 }
-                sb.Add(RowEndMarker);
+
+                string LastRow2 = sb[sb.Count - 1];
+                if (LastRow2.EndsWith(RowEndMarker))
+                {
+                    sb[sb.Count - 1] = LastRow2.TrimEnd() + RowEndMarker;
+                }
+                else
+                {
+                    sb.Add(RowEndMarker);
+                }
             }
         }
 
