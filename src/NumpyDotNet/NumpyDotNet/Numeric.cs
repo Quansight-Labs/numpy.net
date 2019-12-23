@@ -1863,6 +1863,9 @@ namespace NumpyDotNet
             if (source.GetType().IsPrimitive)
                 return true;
 
+            if (source is Decimal)
+                return true;
+
             return false;
         }
 
