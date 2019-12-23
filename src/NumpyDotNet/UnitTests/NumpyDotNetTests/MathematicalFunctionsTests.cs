@@ -3849,18 +3849,42 @@ namespace NumpyDotNetTests
             AssertArray(a, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
             print("*****");
 
+            a = np.arange(16).reshape(new shape(4, 4));
+            print(a);
+            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }), 8);
+            print(b);
+            AssertArray(b, new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
-            // TODO: UFUNC - uncomment when fix the multi-array UFUNC problem.  This might work then.
-            //a = np.arange(16).reshape(new shape(4, 4));
-            //print(a);
-            //b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }), 8);
-            //print(b);
-            //AssertArray(a, new Int32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-            //AssertArray(b, new Int32[] { 3, 4, 2, 3, 4, 5, 6, 7, 8, 8 });
-            //print("*****");
         }
 
-  
+        [TestMethod]
+        public void test_clip_2_DECIMAL()
+        {
+            ndarray a = np.arange(16, dtype: np.Decimal).reshape(new shape(4, 4));
+            print(a);
+            print("*****");
+
+            ndarray b = np.clip(a, 1, 8);
+            print(b);
+            print("*****");
+            AssertArray(b, new decimal[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+
+            ndarray c = np.clip(a, 3, 6, @out: a);
+            print(c);
+            AssertArray(c, new decimal[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print(a);
+            AssertArray(a, new decimal[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            print("*****");
+
+            a = np.arange(16, dtype: np.Decimal).reshape(new shape(4, 4));
+            print(a);
+            b = np.clip(a, np.array(new decimal[] { 3, 4, 1, 1 }), 8);
+            print(b);
+            AssertArray(b, new decimal[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+
+        }
+
+
         [TestMethod]
         public void test_square_operations()
         {
@@ -3896,6 +3920,40 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
+        public void test_square_operations_DECIMAL()
+        {
+            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = np.square(a);
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            {
+                0,   1,   4,   9,  16,  25,  36,  49,  64,  81, 100, 121, 144, 169, 196, 225, 256, 289,
+                324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = np.square(a);
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
+            {
+                4194304, 4198401, 4202500, 4206601, 4210704, 4214809, 4218916, 4223025, 4227136,
+                4231249, 4235364, 4239481, 4243600, 4247721, 4251844, 4255969, 4260096, 4264225,
+                4268356, 4272489, 4276624, 4280761, 4284900, 4289041, 4293184, 4297329, 4301476,
+                4305625, 4309776, 4313929, 4318084, 4322241
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+
+        [TestMethod]
         public void test_absolute_operations()
         {
             var a = np.arange(-32, 32, 1, dtype: np.Int16);
@@ -3915,6 +3973,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_absolute_operations_DECIMAL()
+        {
+            var a = np.arange(-32, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = np.absolute(a);
+            print(b);
+
+            var ExpectedDataB = new decimal[]
+            {
+                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
+                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
+                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
+                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                28, 29, 30, 31
+            };
+        }
+
+        [TestMethod]
         public void test_fabs_1()
         {
             var a = np.arange(-32, 32, 1, dtype: np.Int16);
@@ -3924,6 +4001,25 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedDataB = new Int16[]
+            {
+                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
+                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
+                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
+                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                28, 29, 30, 31
+            };
+        }
+
+        [TestMethod]
+        public void test_fabs_1_DECIMAL()
+        {
+            var a = np.arange(-32, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = np.fabs(a);
+            print(b);
+
+            var ExpectedDataB = new decimal[]
             {
                 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
                 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
@@ -3962,6 +4058,27 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_sign_1_DECIMAL()
+        {
+            var a = np.sign(-1.2m);
+            Assert.AreEqual(-1.0, a.GetItem(0));
+            print(a);
+
+            var b = np.sign(np.array(new decimal[] { 1, -2.3m, 2.1m }));
+            AssertArray(b, new double[] { 1, -1, 1 });
+            print(b);
+
+            var c = np.sign(np.array(new decimal[] { +0.0m, -0.0m }));
+            AssertArray(c, new double[] { 0, 0 });
+            print(c);
+
+
+            var f = np.sign(np.array(new decimal[] { -1, 0, 1 }));
+            AssertArray(f, new double[] { -1, 0, 1 });
+            print(f);
+        }
+
+        [TestMethod]
         public void test_heaviside_1()
         {
             var a = np.heaviside(new float[] { -1.5f, 0.0f, 2.0f }, 0.5f);
@@ -3976,7 +4093,24 @@ namespace NumpyDotNetTests
             AssertArray(c, new Int32[] { 0, 1, 1 });
             print(c);
 
-       }
+        }
+
+        [TestMethod]
+        public void test_heaviside_1_DECIMAL()
+        {
+            var a = np.heaviside(new decimal[] { -1.5m, 0.0m, 2.0m }, 0.5m);
+            AssertArray(a, new decimal[] { 0.0m, 0.5m, 1.0m });
+            print(a);
+
+            var b = np.heaviside(new decimal[] { -1.5m, 0m, 2.0m }, 1);
+            AssertArray(b, new decimal[] { 0.0m, 1.0m, 1.0m });
+            print(b);
+
+            var c = np.heaviside(new decimal[] { -1, 0, 2 }, 1);
+            AssertArray(c, new decimal[] { 0, 1, 1 });
+            print(c);
+
+        }
 
         [TestMethod]
         public void test_maximum_1()
@@ -3999,6 +4133,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_maximum_1_DECIMAL()
+        {
+            var a = np.maximum(new decimal[] { 2, 3, 4 }, new decimal[] { 1, 5, 2 });
+            AssertArray(a, new decimal[] { 2, 5, 4 });
+            print(a);
+
+            var b = np.maximum(np.eye(2, dtype: np.Decimal), new decimal[] { 0.5m, 2m }); // broadcasting
+            AssertArray(b, new decimal[,] { { 1, 2 }, { 0.5m, 2.0m } });
+            print(b);
+
+            //var c = np.maximum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            //AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            //print(c);
+
+            //var d = np.maximum(double.PositiveInfinity, 1);
+            //Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
+            //print(d);
+        }
+
+        [TestMethod]
         public void test_minimum_1()
         {
             var a = np.minimum(new int[] { 2, 3, 4 }, new int[] { 1, 5, 2 });
@@ -4018,7 +4172,27 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-   
+        [TestMethod]
+        public void test_minimum_1_DECIMAL()
+        {
+            var a = np.minimum(new decimal[] { 2, 3, 4 }, new decimal[] { 1, 5, 2 });
+            AssertArray(a, new decimal[] { 1, 3, 2 });
+            print(a);
+
+            var b = np.minimum(np.eye(2, dtype: np.Decimal), new decimal[] { 0.5m, 2 }); // broadcasting
+            AssertArray(b, new decimal[,] { { 0.5m, 0.0m }, { 0.0m, 1.0m } });
+            print(b);
+
+            //var c = np.minimum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            //AssertArray(c, new double[] { float.NaN, float.NaN, float.NaN });
+            //print(c);
+
+            //var d = np.minimum(double.PositiveInfinity, 1);
+            //Assert.AreEqual((double)1, d.GetItem(0));
+            //print(d);
+        }
+
+
         [TestMethod]
         public void test_fmax_1()
         {
@@ -4039,6 +4213,28 @@ namespace NumpyDotNetTests
             print(d);
         }
 
+
+        [TestMethod]
+        public void test_fmax_1_DECIMAL()
+        {
+            var a = np.fmax(new decimal[] { 2, 3, 4 }, new decimal[] { 1, 5, 2 });
+            AssertArray(a, new decimal[] { 2, 5, 4 });
+            print(a);
+
+            var b = np.fmax(np.eye(2, dtype: np.Decimal), new decimal[] { 0.5m, 2m }); // broadcasting
+            AssertArray(b, new decimal[,] { { 1, 2 }, { 0.5m, 2.0m } });
+            print(b);
+
+            //var c = np.fmax(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            //AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
+            //print(c);
+
+            //var d = np.fmax(double.PositiveInfinity, 1);
+            //Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
+            //print(d);
+        }
+
+
         [TestMethod]
         public void test_fmin_1()
         {
@@ -4057,6 +4253,26 @@ namespace NumpyDotNetTests
             var d = np.fmin(double.PositiveInfinity, 1);
             Assert.AreEqual((double)1, d.GetItem(0));
             print(d);
+        }
+
+        [TestMethod]
+        public void test_fmin_1_DECIMAL()
+        {
+            var a = np.fmin(new decimal[] { 2, 3, 4 }, new decimal[] { 1, 5, 2 });
+            AssertArray(a, new decimal[] { 1, 3, 2 });
+            print(a);
+
+            var b = np.fmin(np.eye(2, dtype: np.Decimal), new decimal[] { 0.5m, 2 }); // broadcasting
+            AssertArray(b, new decimal[,] { { 0.5m, 0.0m }, { 0.0m, 1.0m } });
+            print(b);
+
+            //var c = np.fmin(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
+            //AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
+            //print(c);
+
+            //var d = np.fmin(double.PositiveInfinity, 1);
+            //Assert.AreEqual((double)1, d.GetItem(0));
+            //print(d);
         }
 
         [TestMethod]
@@ -4104,6 +4320,20 @@ namespace NumpyDotNetTests
             //print(g);
         }
 
+        [TestMethod]
+        public void test_nan_to_num_1_DECIMAL()
+        {
+            decimal a1 = (decimal)np.nan_to_num(2.0m);
+            Assert.AreEqual(a1, 2.0m);
+            print(a1);
+
+            ndarray x = np.array(new decimal[] { 1.0m, 2.0m, 3.0m, -128, 128 });
+            ndarray d = np.nan_to_num(x);
+            AssertArray(d, new decimal[] { 1.0m, 2.0m, 3.0m, -128, 128 });
+            print(d);
+   
+        }
+
         [Ignore]
         [TestMethod]
         public void test_interp_1()
@@ -4125,29 +4355,5 @@ namespace NumpyDotNetTests
         #endregion
 
    
-        private bool CompareArrays(ndarray a1, ndarray a2)
-        {
-            if (a1.size != a2.size)
-                return false;
-
-            if (a1.Dtype.TypeNum != a2.Dtype.TypeNum)
-                return false;
-
-            long ElementCount = a1.size;
-
-            for (int i = 0; i < ElementCount; i++)
-            {
-                var a1d = a1.GetItem(i);
-                var a2d = a2.GetItem(i);
-
-                if (!a1d.Equals(a2d))
-                    return false;
-            }
-
-            return true;
-
-        }
-
-
     }
 }
