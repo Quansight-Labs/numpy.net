@@ -132,7 +132,7 @@ class NumericTests(unittest.TestCase):
 
   
     def test_full_2(self):
-      x = np.arange(0,100).reshape(10,10)
+      x = np.full((100), 99).reshape(10,10)
       print(x)
       print("Update sixth value to 11")
       x[6] = 55
@@ -145,7 +145,7 @@ class NumericTests(unittest.TestCase):
       #print(x.strides)
 
     def test_full_3(self):
-      x = np.arange(0,100)
+      x = np.full(0,100)
       print(x)
       kevin = x[62]
       print(kevin)
