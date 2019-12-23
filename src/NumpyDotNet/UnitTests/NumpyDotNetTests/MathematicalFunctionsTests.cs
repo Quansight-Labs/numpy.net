@@ -3062,6 +3062,21 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_add_1_DECIMAL()
+        {
+            var a = np.add(1.0m, 4.0m);
+            Assert.AreEqual(5.0m, a.GetItem(0));
+            print(a);
+
+            var b = np.arange(9.0m).reshape((3, 3));
+            var c = np.arange(3.0m);
+            var d = np.add(b, c);
+            AssertArray(d, new decimal[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
+            print(d);
+
+        }
+
 
         [TestMethod]
         public void test_reciprocal_operations()
@@ -3103,6 +3118,55 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
+
+        [TestMethod]
+        public void test_reciprocal_operations_DECIMAL()
+        {
+            var a = np.arange(1, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = np.reciprocal(a);
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            {
+               1.0m, 0.5m, 0.3333333333333333333333333333m, 0.25m, 0.2m, 0.1666666666666666666666666667m,
+                0.1428571428571428571428571429m, 0.125m, 0.1111111111111111111111111111m, 0.1m, 0.0909090909090909090909090909m,
+                0.0833333333333333333333333333m, 0.0769230769230769230769230769m, 0.0714285714285714285714285714m,
+                0.0666666666666666666666666667m, 0.0625m, 0.0588235294117647058823529412m, 0.0555555555555555555555555556m,
+                0.0526315789473684210526315789m, 0.05m, 0.0476190476190476190476190476m, 0.0454545454545454545454545455m,
+                0.0434782608695652173913043478m, 0.0416666666666666666666666667m, 0.04m, 0.0384615384615384615384615385m,
+                0.037037037037037037037037037m, 0.0357142857142857142857142857m, 0.0344827586206896551724137931m,
+                0.0333333333333333333333333333m, 0.0322580645161290322580645161m
+            };
+
+            AssertArray(b, ExpectedDataB1);
+
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = np.reciprocal(a);
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
+            {
+                0.00048828125m, 0.0004880429477794045876037091m, 0.000487804878048780487804878m, 0.0004875670404680643588493418m,
+                0.0004873294346978557504873294m, 0.0004870920603994154895275207m, 0.0004868549172346640701071081m,
+                0.0004866180048661800486618005m, 0.0004863813229571984435797665m, 0.000486144871171609139523578m,
+                0.000485908649173955296404276m, 0.0004856726566294317629917436m, 0.0004854368932038834951456311m,
+                0.0004852013585638039786511402m, 0.0004849660523763336566440349m, 0.0004847309743092583616093068m,
+                0.0004844961240310077519379845m, 0.0004842615012106537530266344m, 0.0004840271055179090029041626m,
+                0.0004837929366231253023705854m, 0.0004835589941972920696324952m, 0.0004833252779120347994200097m,
+                0.0004830917874396135265700483m, 0.0004828585224529212940608402m, 0.0004826254826254826254826255m,
+                0.0004823926676314520019295707m, 0.0004821600771456123432979749m, 0.0004819277108433734939759036m,
+                0.0004816955684007707129094412m, 0.0004814636494944631680308137m, 0.0004812319538017324350336862m,
+                0.0004810004810004810004810005m
+            };
+            AssertArray(b, ExpectedDataB2);
+        }
+
+
         [TestMethod]
         public void test_positive_1()
         {
@@ -3112,6 +3176,19 @@ namespace NumpyDotNetTests
 
             var e = np.positive(new int[,] { { 1, 0, -1 }, { -2, 3, -4 } });
             AssertArray(e, new int[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            print(e);
+        }
+
+
+        [TestMethod]
+        public void test_positive_1_DECIMAL()
+        {
+            var d = np.positive(new decimal[] { -1, -0, 1 });
+            AssertArray(d, new decimal[] { -1, -0, 1 });
+            print(d);
+
+            var e = np.positive(new decimal[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            AssertArray(e, new decimal[,] { { 1, 0, -1 }, { -2, 3, -4 } });
             print(e);
         }
 
@@ -3128,6 +3205,19 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_negative_1_DECIMAL()
+        {
+            var d = np.negative(new decimal[] { -1, -0, 1 });
+            AssertArray(d, new decimal[] { 1, 0, -1 });
+            print(d);
+
+            var e = np.negative(new decimal[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            AssertArray(e, new decimal[,] { { -1, 0, 1 }, { 2, -3, 4 } });
+            print(e);
+        }
+
+
+        [TestMethod]
         public void test_multiply_1()
         {
             var a = np.multiply(2.0, 4.0);
@@ -3138,6 +3228,21 @@ namespace NumpyDotNetTests
             var c = np.arange(3.0);
             var d = np.multiply(b, c);
             AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
+            print(d);
+        }
+
+
+        [TestMethod]
+        public void test_multiply_1_DECIMAL()
+        {
+            var a = np.multiply(2.0m, 4.0m);
+            Assert.AreEqual(8.0m, a.GetItem(0));
+            print(a);
+
+            var b = np.arange(9.0m).reshape((3, 3));
+            var c = np.arange(3.0m);
+            var d = np.multiply(b, c);
+            AssertArray(d, new decimal[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
             print(d);
         }
 
@@ -3154,6 +3259,24 @@ namespace NumpyDotNetTests
 
             var c = np.divide(new double[] { 1.0, 2.0, 3.0, 4.0 }, new double[] { 0.5, 2.5, 2.5, 3.5 });
             AssertArray(c, new double[] { 2.0, 0.8, 1.2, 1.14285714 });
+            print(c);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_divide_DECIMAL()
+        {
+            var a = np.divide(7m, 3m);
+            Assert.AreEqual(2.3333333333333333333333333333m, a.GetItem(0));
+            print(a);
+
+            var b = np.divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
+            AssertArray(b, new decimal[] { 0.4m, 0.8m, 1.2m, 1.6m });
+            print(b);
+
+            var c = np.divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
+            AssertArray(c, new decimal[] { 2.0m, 0.8m, 1.2m, 1.1428571428571428571428571429m });
             print(c);
 
             return;
@@ -3226,6 +3349,75 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_power_operations_DECIMAL()
+        {
+            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            print(a);
+
+            var b = np.power(a, 3.23m);
+            print(b);
+
+            var ExpectedDataB1 = new decimal[]
+            { 0.0m, 1.0m, 9.38267959385503m, 34.7617516700826m, 88.0346763609436m, 180.997724101542m,
+              326.15837804154m, 536.619770563306m, 826.001161443457m, 1208.37937917249m, 1698.24365246174m,
+              2310.45956851781m, 3060.23955801521m, 3963.11822364251m, 5034.9313709235m, 6291.79793806794m,
+              7750.10424197608m, 9426.49010646868m, 11337.836542597m, 13501.2547250997m, 15934.0760633466m,
+              18653.8432055784m, 21678.3018459592m, 25025.3932276144m, 28713.2472532973m, 32760.176129938m,
+              37184.6684850056m, 42005.3839020428m, 47241.1478304245m, 52910.9468307066m, 59033.9241221692m,
+              65629.3754035258m
+            };
+
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            print(a);
+
+            b = np.power(a, 4m);
+            print(b);
+
+            var ExpectedDataB2 = new decimal[]
+            {
+             17592186044416, 17626570956801, 17661006250000, 17695491973201,
+             17730028175616, 17764614906481, 17799252215056, 17833940150625,
+             17868678762496, 17903468100001, 17938308212496, 17973199149361,
+             18008140960000, 18043133693841, 18078177400336, 18113272128961,
+             18148417929216, 18183614850625, 18218862942736, 18254162255121,
+             18289512837376, 18324914739121, 18360368010000, 18395872699681,
+             18431428857856, 18467036534241, 18502695778576, 18538406640625,
+             18574169170176, 18609983417041, 18645849431056, 18681767262081
+            };
+
+            AssertArray(b, ExpectedDataB2);
+
+            b = np.power(a, 0m);
+            print(b);
+            var ExpectedDataB3 = new decimal[]
+            {
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+            };
+            AssertArray(b, ExpectedDataB3);
+
+
+            b = np.power(a, 0.5m);
+            print(b);
+
+            var ExpectedDataB4 = new decimal[]
+            {
+                45.254833995939m, 45.2658811910251m, 45.2769256906871m, 45.287967496897m, 45.2990066116245m,
+                45.3100430368368m, 45.3210767744986m, 45.3321078265725m, 45.3431361950185m, 45.3541618817943m,
+                45.365184888855m, 45.3762052181537m, 45.3872228716409m, 45.3982378512647m, 45.4092501589709m,
+                45.4202597967031m, 45.4312667664022m, 45.442271070007m, 45.453272709454m, 45.4642716866772m,
+                45.4752680036083m, 45.4862616621766m, 45.4972526643093m, 45.508241011931m, 45.5192267069642m,
+                45.5302097513288m, 45.5411901469428m, 45.5521678957215m, 45.5631429995781m, 45.5741154604234m,
+                45.5850852801659m, 45.596052460712m
+            };
+
+            AssertArray(b, ExpectedDataB4);
+
+        }
+
 
 
         [TestMethod]
@@ -3244,6 +3436,21 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
+        public void test_subtract_1_DECIMAL()
+        {
+            var a = np.subtract(1.0m, 4.0m);
+            Assert.AreEqual(-3.0m, a.GetItem(0));
+            print(a);
+
+            var b = np.arange(9.0, dtype: np.Decimal).reshape((3, 3));
+            var c = np.arange(3.0, dtype: np.Decimal);
+            var d = np.subtract(b, c);
+            AssertArray(d, new decimal[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            print(d);
+        }
+
+
+        [TestMethod]
         public void test_true_divide()
         {
             var a = np.true_divide(7, 3);
@@ -3256,6 +3463,24 @@ namespace NumpyDotNetTests
 
             var c = np.true_divide(new double[] { 1.0, 2.0, 3.0, 4.0 }, new double[] { 0.5, 2.5, 2.5, 3.5 });
             AssertArray(c, new double[] { 2.0, 0.8, 1.2, 1.14285714 });
+            print(c);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_true_divide_DECIMAL()
+        {
+            var a = np.true_divide(7m, 3m);
+            Assert.AreEqual(2.3333333333333333333333333333m, a.GetItem(0));
+            print(a);
+
+            var b = np.true_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
+            AssertArray(b, new decimal[] { 0.4m, 0.8m, 1.2m, 1.6m });
+            print(b);
+
+            var c = np.true_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
+            AssertArray(c, new decimal[] { 2.0m, 0.8m, 1.2m, 1.1428571428571428571428571429m });
             print(c);
 
             return;
@@ -3282,6 +3507,26 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_floor_divide_DECIMAL()
+        {
+            var a = np.floor_divide(7m, 3m);
+            Assert.AreEqual(2.0m, a.GetItem(0));
+            print(a);
+
+            var b = np.floor_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
+            AssertArray(b, new decimal[] { 0, 0, 1, 1 });
+            print(b);
+
+            var c = np.floor_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
+            AssertArray(c, new decimal[] { 2, 0, 1, 1 });
+            print(c);
+
+            return;
+
+        }
+
         [TestMethod]
         public void test_float_power()
         {
@@ -3297,6 +3542,28 @@ namespace NumpyDotNetTests
             print(b);
 
             var x3 = np.array(new double[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
+            var c = np.float_power(x1, x3);
+            AssertArray(c, new double[,] { { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 }, { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 } });
+            print(c);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_float_power_DECIMAL()
+        {
+            var x1 = new decimal[] { 0, 1, 2, 3, 4, 5 };
+
+            var a = np.float_power(x1, 3m);
+            AssertArray(a, new double[] { 0.0, 1.0, 8.0, 27.0, 64.0, 125.0 });
+            print(a);
+
+            var x2 = new decimal[] { 1.0m, 2.0m, 3.0m, 3.0m, 2.0m, 1.0m };
+            var b = np.float_power(x1, x2);
+            AssertArray(b, new double[] { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 });
+            print(b);
+
+            var x3 = np.array(new decimal[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
             var c = np.float_power(x1, x3);
             AssertArray(c, new double[,] { { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 }, { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 } });
             print(c);
@@ -3333,6 +3600,21 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_fmod_2_DECIMAL()
+        {
+            var x = np.fmod(new decimal[] { -4, -7 }, new decimal[] { 2, 3 });
+            AssertArray(x, new decimal[] { 0, -1 });
+            print(x);
+
+            var y = np.fmod(np.arange(7, dtype: np.Decimal), -5m);
+            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
+
 
         [TestMethod]
         public void test_mod_1()
@@ -3343,6 +3625,22 @@ namespace NumpyDotNetTests
 
             var y = np.mod(np.arange(7), 5);
             AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
+            print(y);
+
+            return;
+        }
+
+
+
+        [TestMethod]
+        public void test_mod_1_DECIMAL()
+        {
+            var x = np.mod(new decimal[] { 4, 7 }, new decimal[] { 2, 3 });
+            AssertArray(x, new decimal[] { 0, 1 });
+            print(x);
+
+            var y = np.mod(np.arange(7, dtype:np.Decimal), 5m);
+            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             return;
@@ -3359,6 +3657,22 @@ namespace NumpyDotNetTests
             var y = np.modf(np.arange(7));
             AssertArray(y[0], new double[] { 0, 0, 0,0,0,0,0 });
             AssertArray(y[1], new double[] { 0, 1,2,3,4,5,6 });
+            print(y);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_modf_1_DECIMAL()
+        {
+            var x = np.modf(new decimal[] { 0, 3.5m });
+            AssertArray(x[0], new decimal[] { 0m, 0.5m });
+            AssertArray(x[1], new decimal[] { 0m, 3.0m });
+            print(x);
+
+            var y = np.modf(np.arange(7, dtype: np.Decimal));
+            AssertArray(y[0], new decimal[] { 0, 0, 0, 0, 0, 0, 0 });
+            AssertArray(y[1], new decimal[] { 0, 1, 2, 3, 4, 5, 6 });
             print(y);
 
             return;
@@ -3393,6 +3707,21 @@ namespace NumpyDotNetTests
             return;
         }
 
+
+        [TestMethod]
+        public void test_remainder_2_DECIMAL()
+        {
+            var x = np.remainder(new decimal[] { -4, -7 }, new decimal[] { 2, 3 });
+            AssertArray(x, new decimal[] { 0, 2 });
+            print(x);
+
+            var y = np.remainder(np.arange(7, dtype: np.Decimal), -5m);
+            AssertArray(y, new decimal[] { 0, -4, -3, -2, -1, 0, -4 });
+            print(y);
+
+            return;
+        }
+
         [TestMethod]
         public void test_divmod_1()
         {
@@ -3416,7 +3745,28 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_divmod_1_DECIMAL()
+        {
+            var a = np.divmod(7m, 3m);
+            Assert.AreEqual(2m, a[0].GetItem(0));
+            Assert.AreEqual(1m, a[1].GetItem(0));
 
+            print(a);
+
+            var b = np.divmod(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
+            AssertArray(b[0], new decimal[] { 0, 0, 1, 1 });
+            AssertArray(b[1], new decimal[] { 1, 2, 0.5m, 1.5m });
+            print(b);
+
+            var c = np.divmod(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
+            AssertArray(c[0], new decimal[] { 2, 0, 1, 1 });
+            AssertArray(c[1], new decimal[] { 0, 2, 0.5m, 0.5m });
+            print(c);
+
+            return;
+
+        }
 
 
         #endregion
