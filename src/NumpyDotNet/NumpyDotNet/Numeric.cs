@@ -257,15 +257,96 @@ namespace NumpyDotNet
             // allocate a new array based on the calculated type and length
             var a = numpyAPI.Alloc_NewArray(dtype.TypeNum, (UInt64)ArrayLen);
 
-            // populate the array
-            for (int i = 0; i < ArrayLen; i++)
+            switch (dtype.TypeNum)
             {
-                numpyAPI.SetIndex(a, i, FillValue);
+                case NPY_TYPES.NPY_BOOL:
+                {
+                    bool[] adata = a.datap as bool[];
+                    Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT8:
+                {
+                    sbyte[] adata = a.datap as sbyte[];
+                    Fill(adata, Convert.ToSByte(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT8:
+                {
+                    byte[] adata = a.datap as byte[];
+                    Fill(adata, Convert.ToByte(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT16:
+                {
+                    Int16[] adata = a.datap as Int16[];
+                    Fill(adata, Convert.ToInt16(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT16:
+                {
+                    UInt16[] adata = a.datap as UInt16[];
+                    Fill(adata, Convert.ToUInt16(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT32:
+                {
+                    Int32[] adata = a.datap as Int32[];
+                    Fill(adata, Convert.ToInt32(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT32:
+                {
+                    UInt32[] adata = a.datap as UInt32[];
+                    Fill(adata, Convert.ToUInt32(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT64:
+                {
+                    Int64[] adata = a.datap as Int64[];
+                    Fill(adata, Convert.ToInt64(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT64:
+                {
+                    UInt64[] adata = a.datap as UInt64[];
+                    Fill(adata, Convert.ToUInt64(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_FLOAT:
+                {
+                    float[] adata = a.datap as float[];
+                    Fill(adata, Convert.ToSingle(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_DOUBLE:
+                {
+                    double[] adata = a.datap as double[];
+                    Fill(adata, Convert.ToDouble(FillValue), 0, adata.Length);
+                    break;
+                }
+                case NPY_TYPES.NPY_DECIMAL:
+                {
+                    decimal[] adata = a.datap as decimal[];
+                    Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
+                    break;
+                }
+                default:
+                    throw new Exception(string.Format("{0} not supported by fill operation yet", dtype.TypeNum));
             }
+ 
 
             // load this into a ndarray and return it to the caller
             var ndArray = array(a, dtype, false, order, subok, ndmin).reshape(shape);
             return ndArray;
+        }
+
+        private static void Fill<T>(T[] array, T fillValue, int startIndex, int count)
+        {
+            for (int i = startIndex; i < count; i++)
+            {
+                array[i] = fillValue;
+            }
         }
 
 
