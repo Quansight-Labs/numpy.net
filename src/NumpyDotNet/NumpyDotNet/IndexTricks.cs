@@ -276,7 +276,7 @@ namespace NumpyDotNet
                     var tt = asanyarray(start);
                     if (tt.IsInexact)
                     {
-                        if (tt.Array.ItemType == NPY_TYPES.NPY_DECIMAL)
+                        if (tt.IsDecimal)
                         {
                             decimal? iStart = null;
                             decimal? iStop = null;

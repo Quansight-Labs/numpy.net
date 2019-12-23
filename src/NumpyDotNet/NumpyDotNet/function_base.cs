@@ -1180,7 +1180,7 @@ namespace NumpyDotNet
             copyto(ph_correct, 0, where: absolute(dd) < discont);
 
             dtype dtype = null;
-            if (arrp.Dtype.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            if (arrp.IsDecimal)
             {
                 dtype = np.Decimal;
             }

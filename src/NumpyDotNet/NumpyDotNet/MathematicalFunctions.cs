@@ -1428,7 +1428,7 @@ namespace NumpyDotNet
 
             dtype ret_type = np.Float64;
             var x1a = asanyarray(x1);
-            if (x1a.Array.ItemType == NPY_TYPES.NPY_DECIMAL)
+            if (x1a.IsDecimal)
             {
                 ret_type = np.Decimal;
             }
