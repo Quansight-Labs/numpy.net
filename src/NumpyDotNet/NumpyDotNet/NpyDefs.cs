@@ -261,6 +261,18 @@ namespace NumpyDotNet {
         }
 
 
+        public static bool IsDecimal(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_DECIMAL:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+
         public static bool IsFlexible(NPY_TYPES type)
         {
             switch (type)

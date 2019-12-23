@@ -1318,6 +1318,11 @@ namespace NumpyDotNet
             get { return NpyDefs.IsComplex(Dtype.TypeNum); }
         }
 
+        internal bool IsDecimal
+        {
+            get { return NpyDefs.IsDecimal(Dtype.TypeNum); }
+        }
+
         internal bool IsInteger {
             get { return NpyDefs.IsInteger(Dtype.TypeNum); }
         }
