@@ -130,7 +130,7 @@ namespace NumpyDotNet
                             strValue = ddValue.ToString();
                             if (strValue.Contains("."))
                             {
-                                strValue = ddValue.ToString("0,0.00000000000000000000000000000m");
+                                strValue = ddValue.ToString() + "m";
                             }
 
 
