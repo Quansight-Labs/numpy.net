@@ -56,7 +56,7 @@ namespace NumpyDotNet
                 sb.Add(string.Format("{0}\n", arr.ItemType.ToString().Substring("NPY_".Length)));
 
             npy_intp totalElements = numpyAPI.NpyArray_Size(arr);
-            DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements, !repr);
+            DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements, 0, !repr);
 
             if (repr)
             {
@@ -82,7 +82,7 @@ namespace NumpyDotNet
         /// <param name="strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="offset">Byte offset into data array, starts at 0</param>
-        private static void DumpArray(NpyArray arr, List<string> sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, bool UseParensForMarkers)
+        private static void DumpArray(NpyArray arr, List<string> sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, int IndentCount, bool UseParensForMarkers)
         {
 
             if (dimIdx == arr.nd)
@@ -149,16 +149,15 @@ namespace NumpyDotNet
                     RowEndMarker = "]\n";
                 }
 
-                string LastRow3 = sb[sb.Count - 1];
-                string StartRow = "";
-
+                string StartRow = InsertRowStartOffsets(sb,IndentCount);
      
                 StartRow += RowStartMarker;
                 sb.Add(StartRow);
+                IndentCount++;
 
                 for (int i = 0; i < dimensions[dimIdx]; i++)
                 {
-                    DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements, UseParensForMarkers);
+                    DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements, IndentCount, UseParensForMarkers);
                     if (i < dimensions[dimIdx] - 1)
                     {
                         string LastRow = sb[sb.Count - 1];
@@ -181,10 +180,23 @@ namespace NumpyDotNet
                 else
                 {
                     sb.Add(RowEndMarker);
+                    IndentCount--;
                 }
             }
         }
 
-       
+        private static string InsertRowStartOffsets(List<string> sb, int IndentCount)
+        {
+            string LastString = sb[sb.Count - 1];
+            if (LastString.EndsWith("},\n"))
+            {
+                string indentString = "";
+                for (int i = 0; i < IndentCount; i++)
+                    indentString += " ";
+                return indentString;
+            }
+
+            return "";
+        }
     }
 }
