@@ -1388,7 +1388,7 @@ namespace NumpyLib
                 var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
                 object destValue = null;
 
-                destValue = operation(srcValue, operand);
+                destValue = operation(srcValue, ConvertBySrcValue(srcValue, operand));
 
                 try
                 {
@@ -1422,7 +1422,7 @@ namespace NumpyLib
                 var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
                 object destValue = null;
 
-                destValue = operation(srcValue, operand);
+                destValue = operation(srcValue, ConvertBySrcValue(srcValue, operand));
 
                 try
                 {
@@ -1509,7 +1509,7 @@ namespace NumpyLib
                 {
                     var bValue = b.descr.f.getitem(bIter.dataptr.data_offset - b.data.data_offset, b);
 
-                    object destValue = operation(aValue, Convert.ToDouble(bValue));
+                    object destValue = operation(aValue, ConvertBySrcValue(aValue, bValue));
 
                     try
                     {
@@ -1546,10 +1546,12 @@ namespace NumpyLib
 
                 while (size > 0)
                 {
-                    var r = operation(srcArray.descr.f.getitem(srcPtr.data_offset, srcArray), operand);
+                    var aValue = srcArray.descr.f.getitem(srcPtr.data_offset, srcArray);
+
+                    var destValue = operation(aValue, ConvertBySrcValue(aValue, operand));
                     try
                     {
-                        destArray.descr.f.setitem(destPtr.data_offset, r, destArray);
+                        destArray.descr.f.setitem(destPtr.data_offset, destValue, destArray);
                     }
                     catch (Exception ex)
                     {
@@ -1581,8 +1583,10 @@ namespace NumpyLib
                 destIter.dataptr.data_offset = 0;
                 while (size > 0)
                 {
-                    var r = operation(srcArray.descr.f.getitem(srcIter.dataptr.data_offset, srcArray), operand);
-                    destArray.descr.f.setitem(destIter.dataptr.data_offset, r, destArray);
+                    var aValue = srcArray.descr.f.getitem(srcIter.dataptr.data_offset, srcArray);
+
+                    var destValue = operation(aValue, ConvertBySrcValue(aValue, operand));
+                    destArray.descr.f.setitem(destIter.dataptr.data_offset, destValue, destArray);
                     NpyArray_ITER_NEXT(srcIter);
                     NpyArray_ITER_NEXT(destIter);
                     size -= 1;
@@ -1679,7 +1683,7 @@ namespace NumpyLib
 
                 var operandValue = operandArray.array.descr.f.getitem(operandArray.GetIndex(), operandArray.array);
 
-                object destValue = operation(srcValue, Convert.ToDouble(operandValue));
+                object destValue = operation(srcValue, ConvertBySrcValue(srcValue, operandValue));
 
                 try
                 {
@@ -4390,7 +4394,7 @@ namespace NumpyLib
             {
                 var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
 
-                cumsum = operation(srcValue, Convert.ToDouble(cumsum));
+                cumsum = operation(srcValue, ConvertBySrcValue(srcValue, cumsum));
 
                 try
                 {
