@@ -47,13 +47,13 @@ namespace NumpyDotNet
     static class DumpData
     {
 
-        public static string DumpArray(StringBuilder sb, NpyArray arr, bool repr)
+        public static void DumpArray(List<string> sb, NpyArray arr, bool repr)
         {
             // Equivalent to array_repr_builtin (arrayobject.c)
             if (repr)
-                sb.Append("array(");
+                sb.Add("array(");
             else
-                sb.Append(string.Format("{0}\n", arr.ItemType.ToString().Substring("NPY_".Length)));
+                sb.Add(string.Format("{0}\n", arr.ItemType.ToString().Substring("NPY_".Length)));
 
             npy_intp totalElements = numpyAPI.NpyArray_Size(arr);
             DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements, !repr);
@@ -62,14 +62,15 @@ namespace NumpyDotNet
             {
                 if (NpyDefs.IsExtended(arr.descr.type_num))
                 {
-                    sb.AppendFormat(", '{0}{1}')", arr.ItemType, arr.ItemSize);
+                    sb.Add(string.Format(", '{0}{1}')", arr.ItemType, arr.ItemSize));
                 }
                 else
                 {
-                    sb.AppendFormat(", '{0}')", arr.ItemType);
+                    sb.Add(String.Format(", '{0}')", arr.ItemType));
                 }
             }
-            return sb.ToString();
+
+   
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace NumpyDotNet
         /// <param name="strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="offset">Byte offset into data array, starts at 0</param>
-        private static void DumpArray(NpyArray arr, StringBuilder sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, bool UseParensForMarkers)
+        private static void DumpArray(NpyArray arr, List<string> sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, bool UseParensForMarkers)
         {
 
             if (dimIdx == arr.nd)
@@ -89,7 +90,7 @@ namespace NumpyDotNet
                 Object value = arr.descr.f.getitem(offset, arr);
                 if (value == null)
                 {
-                    sb.Append("None");
+                    sb.Add("None");
                 }
                 else
                 {
@@ -129,7 +130,7 @@ namespace NumpyDotNet
                     }
 
     
-                    sb.Append(strValue);
+                    sb.Add(strValue);
                 }
             }
             else
@@ -148,16 +149,16 @@ namespace NumpyDotNet
                     RowEndMarker = "]\n";
                 }
 
-                sb.Append(RowStartMarker);
+                sb.Add(RowStartMarker);
                 for (int i = 0; i < dimensions[dimIdx]; i++)
                 {
                     DumpArray(arr, sb, dimensions, strides, dimIdx + 1,  offset + (strides[dimIdx] * i), totalElements, UseParensForMarkers);
                     if (i < dimensions[dimIdx] - 1)
                     {
-                        sb.Append(", ");
+                        sb.Add(",");
                     }
                 }
-                sb.Append(RowEndMarker);
+                sb.Add(RowEndMarker);
             }
         }
 

@@ -1400,7 +1400,7 @@ namespace NumpyDotNet
         private string BuildStringRepr(bool repr)
         {
             // Equivalent to array_repr_builtin (arrayobject.c)
-            StringBuilder sb = new StringBuilder();
+            List<string> sb = new List<string>();
             if (repr)
                 sb.Append("array(");
 
@@ -1410,14 +1410,20 @@ namespace NumpyDotNet
             {
                 if (NpyDefs.IsExtended(this.Dtype.TypeNum))
                 {
-                    sb.AppendFormat(", '{0}{1}')", (char)Dtype.Type, this.Dtype.ElementSize);
+                    sb.Add(String.Format(", '{0}{1}')", (char)Dtype.Type, this.Dtype.ElementSize));
                 }
                 else
                 {
-                    sb.AppendFormat(", '{0}')", (char)Dtype.Type);
+                    sb.Add(String.Format(", '{0}')", (char)Dtype.Type));
                 }
             }
-            return sb.ToString();
+
+            StringBuilder sb1 = new StringBuilder();
+            foreach (var s in sb)
+            {
+                sb1.Append(s);
+            }
+            return sb1.ToString();
         }
 
 
