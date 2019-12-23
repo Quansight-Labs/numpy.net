@@ -123,6 +123,11 @@ namespace NumpyDotNet
                 // object arrays do not support `isnan` (gh-9009), so make a guess
                 mask = a.NotEquals(a);
             }
+            else if (a.IsDecimal)
+            {
+                // decimals do not support NAN so cant do it.
+                mask = null;
+            }
             else if (a.IsInexact)
             {
                 mask = np.isnan(a);
