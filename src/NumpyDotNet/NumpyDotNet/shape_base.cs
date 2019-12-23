@@ -1185,6 +1185,11 @@ namespace NumpyDotNet
             if (indices_or_sections.GetType().IsArray)
             {
                 int[] _indices_or_sections = indices_or_sections as int[];
+                if (_indices_or_sections == null)
+                {
+                    throw new ValueError("indices value must be int[]");
+                }
+
                 Nsections = _indices_or_sections.Length + 1;
                 div_points.Add(0);
                 foreach (var _indices in _indices_or_sections)
