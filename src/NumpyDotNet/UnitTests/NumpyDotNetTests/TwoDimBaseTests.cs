@@ -43,6 +43,36 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_diag_1_DECIMAL()
+        {
+            ndarray m = np.arange(9, dtype: np.Decimal);
+            var n = np.diag(m);
+
+            print(m);
+            print(n);
+
+            var ExpectedDataN = new decimal[,]
+                {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+                 {0, 1, 0, 0, 0, 0, 0, 0, 0},
+                 {0, 0, 2, 0, 0, 0, 0, 0, 0},
+                 {0, 0, 0, 3, 0, 0, 0, 0, 0},
+                 {0, 0, 0, 0, 4, 0, 0, 0, 0},
+                 {0, 0, 0, 0, 0, 5, 0, 0, 0},
+                 {0, 0, 0, 0, 0, 0, 6, 0, 0},
+                 {0, 0, 0, 0, 0, 0, 0, 7, 0},
+                 {0, 0, 0, 0, 0, 0, 0, 0, 8}};
+
+            AssertArray(n, ExpectedDataN);
+
+            m = np.arange(9, dtype: np.Decimal).reshape(new shape(3, 3));
+            n = np.diag(m);
+
+            print(m);
+            print(n);
+            AssertArray(n, new decimal[] { 0, 4, 8 });
+        }
+
+        [TestMethod]
         public void test_diagflat_1()
         {
             ndarray m = np.arange(1, 5).reshape(new shape(2, 2));
@@ -82,6 +112,56 @@ namespace NumpyDotNetTests
             print(n);
 
             ExpectedDataN = new Int32[,]
+            {
+             {0, 0, 0},
+             {1, 0, 0},
+             {0, 2, 0},
+            };
+
+            AssertArray(n, ExpectedDataN);
+
+        }
+
+        [TestMethod]
+        public void test_diagflat_1_DECIMAL()
+        {
+            ndarray m = np.arange(1, 5, dtype: np.Decimal).reshape(new shape(2, 2));
+            var n = np.diagflat(m);
+
+            print(m);
+            print(n);
+
+            var ExpectedDataN = new decimal[,]
+            {
+             {1, 0, 0, 0},
+             {0, 2, 0, 0},
+             {0, 0, 3, 0},
+             {0, 0, 0, 4}
+            };
+            AssertArray(n, ExpectedDataN);
+
+            m = np.arange(1, 3, dtype: np.Decimal);
+            n = np.diagflat(m, 1);
+
+            print(m);
+            print(n);
+
+            ExpectedDataN = new decimal[,]
+            {
+             {0, 1, 0},
+             {0, 0, 2},
+             {0, 0, 0},
+            };
+
+            AssertArray(n, ExpectedDataN);
+
+            m = np.arange(1, 3, dtype: np.Decimal);
+            n = np.diagflat(m, -1);
+
+            print(m);
+            print(n);
+
+            ExpectedDataN = new decimal[,]
             {
              {0, 0, 0},
              {1, 0, 0},
@@ -145,6 +225,19 @@ namespace NumpyDotNetTests
             AssertArray(n, new Int32[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
         }
 
+
+        [TestMethod]
+        public void test_fliplr_1_DECIMAL()
+        {
+            ndarray m = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            var n = np.fliplr(m);
+
+            print(m);
+            print(n);
+
+            AssertArray(n, new decimal[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
+        }
+
         [TestMethod]
         public void test_flipud_1()
         {
@@ -155,6 +248,18 @@ namespace NumpyDotNetTests
             print(n);
 
             AssertArray(n, new Int32[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
+        }
+
+        [TestMethod]
+        public void test_flipud_1_DECIMAL()
+        {
+            ndarray m = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            var n = np.flipud(m);
+
+            print(m);
+            print(n);
+
+            AssertArray(n, new decimal[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
         }
 
 
@@ -187,6 +292,33 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_tri_1_DECIMAL()
+        {
+            ndarray a = np.tri(3, 5, 2, dtype: np.Decimal);
+            print(a);
+
+            var ExpectedDataA = new decimal[,]
+            {
+             {1, 1, 1, 0, 0},
+             {1, 1, 1, 1, 0},
+             {1, 1, 1, 1, 1}
+            };
+            AssertArray(a, ExpectedDataA);
+
+            print("***********");
+            ndarray b = np.tri(3, 5, -1, dtype: np.Decimal);
+            print(b);
+
+            var ExpectedDataB = new decimal[,]
+            {
+             {0.0m, 0.0m, 0.0m, 0.0m, 0.0m},
+             {1.0m, 0.0m, 0.0m, 0.0m, 0.0m},
+             {1.0m, 1.0m, 0.0m, 0.0m, 0.0m}
+            };
+            AssertArray(b, ExpectedDataB);
+        }
+
+        [TestMethod]
         public void test_tril_1()
         {
             ndarray a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
@@ -207,6 +339,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_tril_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
+            ndarray b = np.tril(a, -1);
+            print(a);
+            print("***********");
+            print(b);
+
+            var ExpectedDataB = new decimal[,]
+            {
+             {0, 0, 0},
+             {4, 0, 0},
+             {7, 8, 0},
+             {10, 11, 12},
+            };
+            AssertArray(b, ExpectedDataB);
+
+        }
+
+        [TestMethod]
         public void test_triu_1()
         {
             ndarray a = np.array(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
@@ -216,6 +368,26 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedDataB = new Int32[,]
+            {
+             {1, 2, 3},
+             {4, 5, 6},
+             {0, 8, 9},
+             {0, 0, 12},
+            };
+            AssertArray(b, ExpectedDataB);
+
+        }
+
+        [TestMethod]
+        public void test_triu_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
+            ndarray b = np.triu(a, -1);
+            print(a);
+            print("***********");
+            print(b);
+
+            var ExpectedDataB = new decimal[,]
             {
              {1, 2, 3},
              {4, 5, 6},
@@ -248,6 +420,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_vander_1_DECIMAL()
+        {
+            var x = np.array(new decimal[] { 1, 2, 3, 5 });
+            int N = 3;
+            var y = np.vander(x, N);
+            AssertArray(y, new decimal[,] { { 1, 1, 1 }, { 4, 2, 1 }, { 9, 3, 1 }, { 25, 5, 1 } });
+            print(y);
+
+            y = np.vander(x);
+            AssertArray(y, new decimal[,] { { 1, 1, 1, 1 }, { 8, 4, 2, 1 }, { 27, 9, 3, 1 }, { 125, 25, 5, 1 } });
+            print(y);
+
+            y = np.vander(x, increasing: true);
+            AssertArray(y, new decimal[,] { { 1, 1, 1, 1 }, { 1, 2, 4, 8 }, { 1, 3, 9, 27 }, { 1, 5, 25, 125 } });
+            print(y);
+
+            return;
+        }
+
+        [TestMethod]
         public void test_mask_indices()
         {
             var iu = np.mask_indices(3, np.triu);
@@ -264,6 +456,28 @@ namespace NumpyDotNetTests
 
             var c = a[iu1] as ndarray;
             AssertArray(c, new Int32[] { 1, 2, 5 });
+            print(c);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_mask_indices_DECIMAL()
+        {
+            var iu = np.mask_indices(3, np.triu);
+            AssertArray(iu[0], new Int64[] { 0, 0, 0, 1, 1, 2 });
+            AssertArray(iu[1], new Int64[] { 0, 1, 2, 1, 2, 2 });
+            print(iu);
+
+            var a = np.arange(9, dtype: np.Decimal).reshape((3, 3));
+            var b = a[iu] as ndarray;
+            AssertArray(b, new decimal[] { 0, 1, 2, 4, 5, 8 });
+            print(b);
+
+            var iu1 = np.mask_indices(3, np.triu, 1);
+
+            var c = a[iu1] as ndarray;
+            AssertArray(c, new decimal[] { 1, 2, 5 });
             print(c);
 
             return;
@@ -300,9 +514,58 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_tril_indices_DECIMAL()
+        {
+            var il1 = np.tril_indices(4);
+            var il2 = np.tril_indices(4, 2);
+
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            var b = a[il1] as ndarray;
+            AssertArray(b, new decimal[] { 0, 4, 5, 8, 9, 10, 12, 13, 14, 15 });
+            print(b);
+
+            a[il1] = -1;
+
+            var ExpectedDataA1 = new decimal[,]
+                {{-1,  1, 2,  3}, {-1, -1,  6,  7},
+                 {-1, -1,-1, 11}, {-1, -1, -1, -1}};
+            AssertArray(a, ExpectedDataA1);
+            print(a);
+
+            a[il2] = -10;
+
+            var ExpectedDataA2 = new decimal[,]
+                {{-10, -10, -10,  3}, {-10, -10, -10, -10},
+                 {-10, -10,-10, -10}, {-10, -10, -10, -10}};
+            AssertArray(a, ExpectedDataA2);
+            print(a);
+
+            return;
+        }
+
+        [TestMethod]
         public void test_tril_indices_from()
         {
             var a = np.arange(16).reshape((4, 4));
+            var il1 = np.tril_indices_from(a, 0);
+
+            AssertArray(il1[0], new Int64[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il1[1], new Int64[] { 0, 0, 1, 0, 1, 2, 0, 1, 2, 3 });
+            print(il1);
+
+            var il2 = np.tril_indices_from(a, 2);
+            AssertArray(il2[0], new Int64[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il2[1], new Int64[] { 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
+
+            print(il2);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_tril_indices_from_DECIMAL()
+        {
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
             var il1 = np.tril_indices_from(a, 0);
 
             AssertArray(il1[0], new Int64[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
@@ -349,9 +612,58 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_triu_indices_DECIMAL()
+        {
+            var il1 = np.triu_indices(4);
+            var il2 = np.triu_indices(4, 2);
+
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            var b = a[il1] as ndarray;
+            AssertArray(b, new decimal[] { 0, 1, 2, 3, 5, 6, 7, 10, 11, 15 });
+            print(b);
+
+            a[il1] = -1;
+
+            var ExpectedDataA1 = new decimal[,]
+                {{-1, -1, -1, -1}, { 4, -1, -1, -1},
+                 { 8,  9, -1, -1}, {12, 13, 14, -1}};
+            AssertArray(a, ExpectedDataA1);
+            print(a);
+
+            a[il2] = -10;
+
+            var ExpectedDataA2 = new decimal[,]
+                {{-1, -1, -10, -10}, {4,  -1, -1, -10},
+                 { 8,  9, -1,  -1},  {12, 13, 14, -1}};
+            AssertArray(a, ExpectedDataA2);
+            print(a);
+
+            return;
+        }
+
+        [TestMethod]
         public void test_triu_indices_from()
         {
             var a = np.arange(16).reshape((4, 4));
+            var il1 = np.triu_indices_from(a, 0);
+
+            AssertArray(il1[0], new Int64[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
+            AssertArray(il1[1], new Int64[] { 0, 1, 2, 3, 1, 2, 3, 2, 3, 3 });
+            print(il1);
+
+            var il2 = np.triu_indices_from(a, 2);
+            AssertArray(il2[0], new Int64[] { 0, 0, 1 });
+            AssertArray(il2[1], new Int64[] { 2, 3, 3 });
+
+            print(il2);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_triu_indices_from_DECIMAL()
+        {
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
             var il1 = np.triu_indices_from(a, 0);
 
             AssertArray(il1[0], new Int64[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
