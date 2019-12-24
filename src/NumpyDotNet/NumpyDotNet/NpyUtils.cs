@@ -50,8 +50,28 @@ namespace NumpyDotNet {
     public static partial class np
     {
         // todo: big task to reimplement this.
-        public static dtype result_type(params object []p)
+        public static dtype result_type(object a1, object a2, object type_suggestion = null)
         {
+            var arr1 = asanyarray(a1);
+            var arr2 = asanyarray(a2);
+
+            if (arr1.IsDecimal || arr2.IsDecimal)
+                return np.Decimal;
+
+            if (arr1.IsComplex || arr2.IsComplex)
+                throw new NotImplementedException("don't support complex yet");
+
+            return np.Float64;
+        }
+
+        public static dtype result_type(dtype a1, dtype a2, object type_suggestion = null)
+        {
+            if (a1.IsDecimal || a2.IsDecimal)
+                return np.Decimal;
+
+            if (a1.IsComplex || a1.IsComplex)
+                throw new NotImplementedException("don't support complex yet");
+
             return np.Float64;
         }
 

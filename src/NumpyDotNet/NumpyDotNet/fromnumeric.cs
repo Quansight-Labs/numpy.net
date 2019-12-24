@@ -3068,7 +3068,19 @@ namespace NumpyDotNet
             if (weights == null)
             {
                 avg =  mean(arr, axis);
-                scl = asanyarray((double)(arr.size / avg.size));
+
+                if (arr.IsDecimal)
+                {
+                    scl = asanyarray((decimal)(arr.size / avg.size));
+                }
+                else if (arr.IsComplex)
+                {
+                    throw new Exception("not handling complex numbers yet");
+                }
+                else
+                {
+                    scl = asanyarray((double)(arr.size / avg.size));
+                }
             }
             else
             {

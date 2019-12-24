@@ -284,6 +284,11 @@ namespace NumpyDotNet {
             get { return NpyDefs.IsComplex(this.TypeNum); }
         }
 
+        internal bool IsDecimal
+        {
+            get { return NpyDefs.IsDecimal(this.TypeNum); }
+        }
+
         internal bool IsInteger
         {
             get { return NpyDefs.IsInteger(this.TypeNum); }

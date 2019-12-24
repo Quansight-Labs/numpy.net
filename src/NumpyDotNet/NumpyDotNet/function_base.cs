@@ -1528,7 +1528,7 @@ namespace NumpyDotNet
 
             if (y == null)
             {
-                dtype = np.result_type(marr, np.Float64);
+                dtype = np.result_type(marr, marr, np.Float64);
             }
             else
             {
@@ -1621,7 +1621,7 @@ namespace NumpyDotNet
             }
 
             var avg_result = average(X, axis: 1, weights: w, returned: true);
-            double w_sum = (double)avg_result.sum_of_weights[0];
+            double w_sum = Convert.ToDouble(avg_result.sum_of_weights[0]);
 
             // Determine the normalization
             double fact;
@@ -1660,7 +1660,19 @@ namespace NumpyDotNet
                 X_T = (X * w).T;
             }
             var c = np.dot(X, X_T.conj());
-            c *= 1.0 / fact;
+
+            if (c.IsDecimal)
+            {
+                c *= 1.0m / Convert.ToDecimal(fact);
+            }
+            else if (c.IsComplex)
+            {
+                throw new NotImplementedException("no complex numbers yet");
+            }
+            else
+            {
+                c *= 1.0 / fact;
+            }
             return c.Squeeze();
 
         }
@@ -3310,11 +3322,28 @@ namespace NumpyDotNet
             //# avoid expensive reductions, relevant for arrays with < O(1000) elements
             if (q.ndim == 1 && q.size < 10)
             {
+                bool IsDecimal = q.IsDecimal;
+                bool IsComplex = q.IsComplex;
+
                 for (int i = 0; i < q.size; i++)
                 {
-                    var qd = Convert.ToDouble(q[i]);
-                    if (qd < 0.0 || qd > 1.0)
-                        return false;
+                    if (IsDecimal)
+                    {
+                        var qc = Convert.ToDecimal(q[i]);
+                        if (qc < 0.0m || qc > 1.0m)
+                            return false;
+                    }
+                    else if (IsComplex)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        var qd = Convert.ToDouble(q[i]);
+                        if (qd < 0.0 || qd > 1.0)
+                            return false;
+                    }
+    
                 }
             }
             else
