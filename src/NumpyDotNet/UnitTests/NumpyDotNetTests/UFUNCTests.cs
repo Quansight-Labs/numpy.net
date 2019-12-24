@@ -42,6 +42,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_UFUNC_AddAccumulate_1_DECIMAL()
+        {
+            var x = np.arange(8, dtype: np.Decimal);
+
+            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            AssertArray(a, new decimal[] { 0, 1, 3, 6, 10, 15, 21, 28 });
+            print(a);
+
+            x = np.arange(8, dtype: np.Decimal).reshape((2, 2, 2));
+            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            AssertArray(b, new decimal[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
+            print(b);
+
+            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
+            AssertArray(c, new decimal[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
+            print(c);
+
+            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
+            AssertArray(d, new decimal[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
+            print(d);
+
+            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
+            AssertArray(e, new decimal[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
+            print(e);
+
+        }
+
+
+        [TestMethod]
         public void test_UFUNC_AddReduce_1()
         {
             var x = np.arange(8);
@@ -65,6 +94,35 @@ namespace NumpyDotNetTests
 
             var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
             AssertArray(e, new int[,] { { 1, 5 }, { 9, 13 } });
+            print(e);
+
+        }
+
+
+        [TestMethod]
+        public void test_UFUNC_AddReduce_1_DECIMAL()
+        {
+            var x = np.arange(8, dtype: np.Decimal);
+
+            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            Assert.AreEqual(28m, a.GetItem(0));
+            print(a);
+
+            x = np.arange(8, dtype: np.Decimal).reshape((2, 2, 2));
+            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            AssertArray(b, new decimal[,] { { 4, 6 }, { 8, 10 } });
+            print(b);
+
+            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
+            AssertArray(c, new decimal[,] { { 4, 6 }, { 8, 10 } });
+            print(c);
+
+            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 1);
+            AssertArray(d, new decimal[,] { { 2, 4 }, { 10, 12 } });
+            print(d);
+
+            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
+            AssertArray(e, new decimal[,] { { 1, 5 }, { 9, 13 } });
             print(e);
 
         }
@@ -111,6 +169,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_UFUNC_AddReduceAt_1_DECIMAL()
+        {
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8, dtype: np.Decimal), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            AssertArray(a, new decimal[] { 6, 10, 14, 18 });
+            print(a);
+
+            double retstep = 0;
+            var x = np.linspace(0, 15, ref retstep, 16, dtype: np.Decimal).reshape((4, 4));
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new long[] { 0, 3, 1, 2, 0 });
+            AssertArray(b, new decimal[,] {{12.0m, 15.0m, 18.0m, 21.0m},{12.0m, 13.0m, 14.0m, 15.0m}, {4.0m, 5.0m, 6.0m, 7.0m},
+                                          {8.0m, 9.0m, 10.0m, 11.0m}, {24.0m, 28.0m, 32.0m, 36.0m}});
+            print(b);
+
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3 }, axis: 1);
+            AssertArray(c, new decimal[,] { { 0.0m, 3.0m }, { 120.0m, 7.0m }, { 720.0m, 11.0m }, { 2184.0m, 15.0m } });
+            print(c);
+        }
+
+        [TestMethod]
         public void test_UFUNC_AddOuter_1()
         {
             var x = np.arange(4);
@@ -128,6 +205,34 @@ namespace NumpyDotNetTests
             print(b.shape);
 
             var ExpectedDataB = new int[,,,]
+
+                {{{{0,  1,  2}, {3,  4,  5}}, {{1,  2,  3}, { 4,  5,  6}}},
+                 {{{2,  3,  4}, {5,  6,  7}}, {{3,  4,  5}, { 6,  7,  8}}},
+                 {{{4,  5,  6}, {7,  8,  9}}, {{5,  6,  7}, { 8,  9, 10}}}};
+
+            AssertArray(b, ExpectedDataB);
+
+            print(b);
+        }
+
+        [TestMethod]
+        public void test_UFUNC_AddOuter_1_DECIMAL()
+        {
+            var x = np.arange(4, dtype: np.Decimal);
+
+            var a = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, x);
+            AssertShape(a, 4, 4);
+            print(a.shape);
+            AssertArray(a, new decimal[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
+            print(a);
+
+            x = np.arange(6, dtype: np.Decimal).reshape((3, 2));
+            var y = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, y);
+            AssertShape(b, 3, 2, 2, 3);
+            print(b.shape);
+
+            var ExpectedDataB = new decimal[,,,]
 
                 {{{{0,  1,  2}, {3,  4,  5}}, {{1,  2,  3}, { 4,  5,  6}}},
                  {{{2,  3,  4}, {5,  6,  7}}, {{3,  4,  5}, { 6,  7,  8}}},
