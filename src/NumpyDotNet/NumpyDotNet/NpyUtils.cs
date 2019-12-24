@@ -79,9 +79,9 @@ namespace NumpyDotNet {
         public static dtype promote_types(dtype type1, dtype type2)
         {
             if (type1.TypeNum < type2.TypeNum)
-                return type1;
-            else
                 return type2;
+            else
+                return type1;
         }
 
 
