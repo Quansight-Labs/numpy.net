@@ -125,10 +125,10 @@ namespace NumpyDotNet
             NPY_TYPES tmpType = NPY_TYPES.NPY_DOUBLE;
             if (!IsInteger)
             {
-                tmpType = Dtype.TypeNum;
+                tmpType = TypeNum;
             }
             ndarray tmp;
-            if (ret != null && ret.Dtype.TypeNum == tmpType)
+            if (ret != null && ret.TypeNum == tmpType)
             {
                 tmp = ret;
             }
@@ -148,7 +148,7 @@ namespace NumpyDotNet
                 return ret;
             }
 
-            if (this.ItemType != tmp.ItemType)
+            if (this.TypeNum != tmp.TypeNum)
             {
                 tmp = tmp.astype(this.Dtype);
             }

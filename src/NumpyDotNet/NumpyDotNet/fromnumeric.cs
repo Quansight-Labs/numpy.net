@@ -2564,7 +2564,7 @@ namespace NumpyDotNet
         {
             var resultArray = np.amax(arr);
 
-            switch (resultArray.ItemType)
+            switch (resultArray.TypeNum)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return Convert.ToSingle(resultArray.GetItem(0));
@@ -2685,7 +2685,7 @@ namespace NumpyDotNet
         {
             var resultArray = np.amin(arr);
 
-            switch (resultArray.ItemType)
+            switch (resultArray.TypeNum)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return Convert.ToSingle(resultArray.GetItem(0));
@@ -3040,7 +3040,7 @@ namespace NumpyDotNet
 
             if (dtype == null)
             {
-                if (NpyDefs.IsInteger(arr.Dtype.TypeNum) || NpyDefs.IsBool(arr.Dtype.TypeNum))
+                if (NpyDefs.IsInteger(arr.TypeNum) || NpyDefs.IsBool(arr.TypeNum))
                 {
                     dtype = np.Float64;
                 }
@@ -3088,7 +3088,7 @@ namespace NumpyDotNet
 
                 dtype result_dtype = null;
 
-                if (arr.IsInteger || arr.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
+                if (arr.IsInteger || arr.TypeNum == NPY_TYPES.NPY_BOOL)
                     result_dtype = np.result_type(arr.Dtype, wgt.Dtype, "f8");
                 else
                     result_dtype = np.result_type(arr.Dtype, wgt.Dtype);
@@ -3457,7 +3457,7 @@ namespace NumpyDotNet
                 Console.WriteLine("Degrees of freedom <= 0 for slice");
             }
 
-            if (dtype == null && (NpyDefs.IsInteger(arr.Dtype.TypeNum) || NpyDefs.IsBool(arr.Dtype.TypeNum)))
+            if (dtype == null && (NpyDefs.IsInteger(arr.TypeNum) || NpyDefs.IsBool(arr.TypeNum)))
             {
                 dtype = np.Float32;
             }

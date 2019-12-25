@@ -200,7 +200,7 @@ namespace NumpyDotNet
 
         public object AsScalar()
         {
-            return arr.Dtype.ToScalar(current, arr.Dtype.ElementSize);
+            return arr.Dtype.ToScalar(current, arr.ItemSize);
         }
 
         public VoidPtr CurrentPtr

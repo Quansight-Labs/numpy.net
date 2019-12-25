@@ -47,7 +47,7 @@ namespace NumpyDotNet
     {
         private static object _get_infinity_value(ndarray arr, bool positiveInfinity)
         {
-            switch (arr.Dtype.TypeNum)
+            switch (arr.TypeNum)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     if (positiveInfinity)
@@ -70,7 +70,7 @@ namespace NumpyDotNet
 
         private static object _get_NAN_value(ndarray arr)
         {
-            switch (arr.Dtype.TypeNum)
+            switch (arr.TypeNum)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return float.NaN;
@@ -118,7 +118,7 @@ namespace NumpyDotNet
 
             ndarray mask;
 
-            if (a.Dtype.TypeNum == NPY_TYPES.NPY_OBJECT)
+            if (a.TypeNum == NPY_TYPES.NPY_OBJECT)
             {
                 // object arrays do not support `isnan` (gh-9009), so make a guess
                 mask = a.NotEquals(a);

@@ -600,14 +600,14 @@ namespace NumpyDotNet {
                 // Boolean scalars
                 if (array_arg != null &&
                     array_arg.ndim == 0 &&
-                    NpyDefs.IsBool(array_arg.Dtype.TypeNum))
+                    NpyDefs.IsBool(array_arg.TypeNum))
                 {
                     indexes.AddIndex(Convert.ToBoolean(array_arg[0]));
                 }
                 // Integer scalars
                 else if (array_arg != null &&
                     array_arg.ndim == 0 &&
-                    NpyDefs.IsInteger(array_arg.Dtype.TypeNum))
+                    NpyDefs.IsInteger(array_arg.TypeNum))
                 {
                     try
                     {
@@ -621,11 +621,11 @@ namespace NumpyDotNet {
                 else if (array_arg != null)
                 {
                     // Arrays must be either boolean or integer.
-                    if (NpyDefs.IsInteger(array_arg.Dtype.TypeNum))
+                    if (NpyDefs.IsInteger(array_arg.TypeNum))
                     {
                         indexes.AddIntpArray(array_arg);
                     }
-                    else if (NpyDefs.IsBool(array_arg.Dtype.TypeNum))
+                    else if (NpyDefs.IsBool(array_arg.TypeNum))
                     {
                         indexes.AddBoolArray(array_arg);
                     }

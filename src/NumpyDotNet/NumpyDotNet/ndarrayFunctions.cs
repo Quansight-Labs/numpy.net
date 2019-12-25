@@ -1673,9 +1673,9 @@ namespace NumpyDotNet
         public static ndarray packbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.ItemType != NPY_TYPES.NPY_UINT8)
+            if (input.TypeNum != NPY_TYPES.NPY_UINT8)
             {
-                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.ItemType));
+                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.TypeNum));
             }
 
 
@@ -1728,9 +1728,9 @@ namespace NumpyDotNet
         public static ndarray unpackbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.ItemType != NPY_TYPES.NPY_UINT8)
+            if (input.TypeNum != NPY_TYPES.NPY_UINT8)
             {
-                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.ItemType));
+                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.TypeNum));
             }
 
             // sanity check the axis value first
@@ -1783,7 +1783,7 @@ namespace NumpyDotNet
 
         public static string ToString(ndarray a)
         {
-            long nbytes = a.Size * a.Dtype.ElementSize;
+            long nbytes = a.Size * a.ItemSize;
             byte[] data = new byte[nbytes];
             NpyCoreApi.GetBytes(a, data, NPY_ORDER.NPY_CORDER);
             return ASCIIEncoding.UTF8.GetString(data);

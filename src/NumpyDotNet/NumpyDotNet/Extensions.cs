@@ -517,7 +517,7 @@ namespace NumpyDotNet
                     throw new ValueError("unable to convert a to ndarray");
                 }
 
-                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.TypeNum;
                 return NpyCoreApi.PerformReduceOp(arr, axis, ops, rtype, @out, keepdims);
             }
 
@@ -535,7 +535,7 @@ namespace NumpyDotNet
                     throw new ValueError("unable to convert indices to ndarray");
                 }
 
-                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.TypeNum;
                 return NpyCoreApi.PerformReduceAtOp(arr, indicesarr, axis, ops, rtype, @out);
             }
 
@@ -548,7 +548,7 @@ namespace NumpyDotNet
                 }
 
 
-                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.Dtype.TypeNum;
+                NPY_TYPES rtype = dtype != null ? dtype.TypeNum : arr.TypeNum;
                 return NpyCoreApi.PerformAccumulateOp(arr, axis, ops, rtype, @out);
             }
 
@@ -613,7 +613,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_BYTE)
+            if (a.TypeNum != NPY_TYPES.NPY_BYTE)
             {
                 a = a.astype(np.Int8);
             }
@@ -624,7 +624,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UBYTE)
+            if (a.TypeNum != NPY_TYPES.NPY_UBYTE)
             {
                 a = a.astype(np.UInt8);
             }
@@ -635,7 +635,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT16)
+            if (a.TypeNum != NPY_TYPES.NPY_INT16)
             {
                 a = a.astype(np.Int16);
             }
@@ -646,7 +646,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT16)
+            if (a.TypeNum != NPY_TYPES.NPY_UINT16)
             {
                 a = a.astype(np.UInt16);
             }
@@ -657,7 +657,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT32)
+            if (a.TypeNum != NPY_TYPES.NPY_INT32)
             {
                 a = a.astype(np.Int32);
             }
@@ -668,7 +668,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT32)
+            if (a.TypeNum != NPY_TYPES.NPY_UINT32)
             {
                 a = a.astype(np.UInt32);
             }
@@ -679,7 +679,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_INT64)
+            if (a.TypeNum != NPY_TYPES.NPY_INT64)
             {
                 a = a.astype(np.Int64);
             }
@@ -690,7 +690,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_UINT64)
+            if (a.TypeNum != NPY_TYPES.NPY_UINT64)
             {
                 a = a.astype(np.UInt32);
             }
@@ -701,7 +701,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_FLOAT)
+            if (a.TypeNum != NPY_TYPES.NPY_FLOAT)
             {
                 a = a.astype(np.Float32);
             }
@@ -712,7 +712,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_DOUBLE)
+            if (a.TypeNum != NPY_TYPES.NPY_DOUBLE)
             {
                 a = a.astype(np.Float64);
             }
@@ -723,7 +723,7 @@ namespace NumpyDotNet
         {
             var a = ConvertToFlattenedArray(oa);
 
-            if (a.Dtype.TypeNum != NPY_TYPES.NPY_DECIMAL)
+            if (a.TypeNum != NPY_TYPES.NPY_DECIMAL)
             {
                 a = a.astype(np.Float64);
             }

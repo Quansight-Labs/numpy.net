@@ -574,7 +574,7 @@ namespace NumpyDotNet {
             for (int i = 0; i < num; i++)
             {
                 newdims[i] = (npy_intp)1;
-                newstrides[i] = (npy_intp)arr.Dtype.ElementSize;
+                newstrides[i] = (npy_intp)arr.ItemSize;
             }
             // Copy in the rest of dims and strides
             for (int i = num; i < ndmin; i++)
@@ -872,7 +872,7 @@ namespace NumpyDotNet {
             if (s is ndarray)
             {
                 ndarray a1 = (ndarray)s;
-                return Math.Max(min, a1.Dtype.ElementSize);
+                return Math.Max(min, a1.ItemSize);
             }
 
             throw new Exception("not an ndarray");

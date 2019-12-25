@@ -487,13 +487,13 @@ namespace NumpyDotNet
                 throw new ValueError("list of cases must be same length as list of conditions");
             }
 
-            int condlistcount = condlist.Count(t => t.ItemType == NPY_TYPES.NPY_BOOL);
+            int condlistcount = condlist.Count(t => t.TypeNum == NPY_TYPES.NPY_BOOL);
             if (condlistcount != condlist.Count())
             {
                 throw new ValueError("condlist must be all boolean arrays");
             }
 
-            int choicelistcount = choicelist.Count(t => t.ItemType == choicelist[0].ItemType);
+            int choicelistcount = choicelist.Count(t => t.TypeNum == choicelist[0].TypeNum);
             if (choicelistcount != choicelist.Count())
             {
                 throw new ValueError("choicelist must be all of the same data type");
@@ -979,7 +979,7 @@ namespace NumpyDotNet
             x = srcArray.A(slice1);
             y = srcArray.A(slice2);
 
-            if (srcArray.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
+            if (srcArray.TypeNum == NPY_TYPES.NPY_BOOL)
             {
                 ndarray diff = x.NotEquals(y);
                 return diff;
@@ -3441,7 +3441,7 @@ namespace NumpyDotNet
 
 
             var n = np.array(false, dtype: np.Bool);            // check for nan's flag
-            if (indices.Dtype.TypeNum == NPY_TYPES.NPY_INTP)    // take the points along axis
+            if (indices.TypeNum == NPY_TYPES.NPY_INTP)    // take the points along axis
             {
                 // Check if the array contains any nan's
                 if (a.IsInexact)
@@ -4168,7 +4168,7 @@ namespace NumpyDotNet
             else
             {
                 indices = np.array(obj);
-                if (indices.Dtype.TypeNum == NPY_TYPES.NPY_BOOL)
+                if (indices.TypeNum == NPY_TYPES.NPY_BOOL)
                 {
                     // See also delete
                     //warnings.warn("in the future insert will treat boolean arrays and array-likes as a boolean index instead of casting it to integer");

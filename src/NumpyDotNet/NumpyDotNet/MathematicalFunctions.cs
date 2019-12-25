@@ -149,7 +149,7 @@ namespace NumpyDotNet
                 SetupTypes();
 
                 a = asanyarray(x);
-                if (a.Dtype.TypeNum != target_nptype)
+                if (a.TypeNum != target_nptype)
                 {
                     a = a.astype(dtype: target_dtype);
                 }
@@ -197,11 +197,11 @@ namespace NumpyDotNet
                     expectedShape = a.shape;
                 }
 
-                if (a.Dtype.TypeNum != target_nptype)
+                if (a.TypeNum != target_nptype)
                 {
                     a = a.astype(dtype: target_dtype);
                 }
-                if (b.Dtype.TypeNum != target_nptype)
+                if (b.TypeNum != target_nptype)
                 {
                     b = b.astype(dtype: target_dtype);
                 }
@@ -1032,7 +1032,7 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
-            if (xa.Dtype.TypeNum == NPY_TYPES.NPY_FLOAT)
+            if (xa.TypeNum == NPY_TYPES.NPY_FLOAT)
             {
                 MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
 
@@ -1090,6 +1090,8 @@ namespace NumpyDotNet
         {
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
+
+            bool kk = a1.Dtype.itemsize == 6;
 
             if (a1.ItemSize <= sizeof(float) && a2.ItemSize <= sizeof(float))
             {

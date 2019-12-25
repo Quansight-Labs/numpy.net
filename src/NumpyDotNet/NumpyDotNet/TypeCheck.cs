@@ -156,7 +156,7 @@ namespace NumpyDotNet
 
         private static object _getmin(ndarray dest)
         {
-            switch (dest.Dtype.TypeNum)
+            switch (dest.TypeNum)
             {
                 case NPY_TYPES.NPY_COMPLEX:
                     return  double.MinValue;
@@ -173,7 +173,7 @@ namespace NumpyDotNet
 
         private static object _getmax(ndarray dest)
         {
-            switch (dest.Dtype.TypeNum)
+            switch (dest.TypeNum)
             {
                 case NPY_TYPES.NPY_COMPLEX:
                     return double.MaxValue;

@@ -1873,7 +1873,7 @@ namespace NumpyDotNet
 
         internal override ScalarGeneric FillData(ndarray arr, long offset, bool isNativeByteOrder)
         {
-            int elsize = arr.Dtype.ElementSize;
+            int elsize = arr.ItemSize;
 
             if (dataptr != null)
             {

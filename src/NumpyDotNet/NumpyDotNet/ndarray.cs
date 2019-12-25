@@ -853,7 +853,7 @@ namespace NumpyDotNet
             }
         }
 
-        public NPY_TYPES ItemType
+        public NPY_TYPES TypeNum
         {
             get
             {
@@ -1330,21 +1330,21 @@ namespace NumpyDotNet
         }
 
         internal bool IsComplex {
-            get { return NpyDefs.IsComplex(Dtype.TypeNum); }
+            get { return NpyDefs.IsComplex(TypeNum); }
         }
 
         internal bool IsDecimal
         {
-            get { return NpyDefs.IsDecimal(Dtype.TypeNum); }
+            get { return NpyDefs.IsDecimal(TypeNum); }
         }
 
         internal bool IsInteger {
-            get { return NpyDefs.IsInteger(Dtype.TypeNum); }
+            get { return NpyDefs.IsInteger(TypeNum); }
         }
 
         internal bool IsFloatingPoint
         {
-            get { return NpyDefs.IsFloat(Dtype.TypeNum); }
+            get { return NpyDefs.IsFloat(TypeNum); }
         }
 
         internal bool IsInexact
@@ -1353,7 +1353,7 @@ namespace NumpyDotNet
         }
 
         public bool IsFlexible {
-            get { return NpyDefs.IsFlexible(Dtype.TypeNum); }
+            get { return NpyDefs.IsFlexible(TypeNum); }
         }
 
         internal bool IsMatrix
@@ -1366,7 +1366,7 @@ namespace NumpyDotNet
         }
 
         public bool IsString {
-            get { return Dtype.TypeNum == NPY_TYPES.NPY_STRING; }
+            get { return TypeNum == NPY_TYPES.NPY_STRING; }
         }
 
 
@@ -1428,9 +1428,9 @@ namespace NumpyDotNet
 
             if (repr)
             {
-                if (NpyDefs.IsExtended(this.Dtype.TypeNum))
+                if (NpyDefs.IsExtended(this.TypeNum))
                 {
-                    sb.Add(String.Format(", '{0}{1}')", (char)Dtype.Type, this.Dtype.ElementSize));
+                    sb.Add(String.Format(", '{0}{1}')", (char)Dtype.Type, this.ItemSize));
                 }
                 else
                 {

@@ -42,7 +42,7 @@ namespace NumpyDotNet
     public partial class ndarray
     {
         internal byte[] ToString(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
-            long nbytes = Size * Dtype.ElementSize;
+            long nbytes = Size * ItemSize;
             byte[] data = new byte[nbytes];
             NpyCoreApi.GetBytes(this, data, order);
             return data;

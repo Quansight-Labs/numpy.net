@@ -1450,7 +1450,7 @@ namespace NumpyDotNet {
             #endif
             {
                 return new ndarray(numpyAPI.NpyArray_CumProd(arr.Array, axis,
-                    (rtype == null ? arr.Dtype.TypeNum : rtype.TypeNum),
+                    (rtype == null ? arr.TypeNum : rtype.TypeNum),
                     (ret == null ? null : ret.Array)));
             }
         }
@@ -1462,7 +1462,7 @@ namespace NumpyDotNet {
             #endif
             {
                 return new ndarray(numpyAPI.NpyArray_CumSum(arr.Array, axis,
-                        (rtype == null ? arr.Dtype.TypeNum : rtype.TypeNum),
+                        (rtype == null ? arr.TypeNum : rtype.TypeNum),
                         (ret == null ? null : ret.Array)));
             }
         }
@@ -1594,7 +1594,7 @@ namespace NumpyDotNet {
             #endif
             {
                 return new ndarray(numpyAPI.NpyArray_Prod(arr.Array, axis,
-                        (rtype == null ? ScaleTypeUp(arr.Dtype.TypeNum) : rtype.TypeNum),
+                        (rtype == null ? ScaleTypeUp(arr.TypeNum) : rtype.TypeNum),
                         (ret == null ? null : ret.Array), keepdims));
             }
         }
