@@ -1259,7 +1259,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore]
         [TestMethod]
         public void test_indices_1_DECIMAL()
         {
@@ -1272,9 +1271,20 @@ namespace NumpyDotNetTests
             print(grid[1]);
 
             var x = np.arange(20, dtype: np.Decimal).reshape((5, 4));
-            var y = x[grid[0], grid[1]];
-            AssertArray(y as ndarray, new decimal[,] { { 0, 1, 2 }, { 4, 5, 6 } });
-            print(y);
+
+            bool CaughtException = false;
+            try
+            {
+                var y = x[grid[0], grid[1]];
+                AssertArray(y as ndarray, new decimal[,] { { 0, 1, 2 }, { 4, 5, 6 } });
+                print(y);
+            }
+            catch
+            {
+                CaughtException = true;
+            }
+
+            Assert.IsTrue(CaughtException, "indexing with decimal should have thrown an exception");
 
             return;
         }
@@ -1526,7 +1536,6 @@ namespace NumpyDotNetTests
             print(i);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_isclose_1_DECIMAL()
         {
