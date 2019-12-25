@@ -487,8 +487,20 @@ namespace NumpyDotNet
                 throw new ValueError("list of cases must be same length as list of conditions");
             }
 
+            int condlistcount = condlist.Count(t => t.Array.ItemType == NPY_TYPES.NPY_BOOL);
+            if (condlistcount != condlist.Count())
+            {
+                throw new ValueError("condlist must be all boolean arrays");
+            }
+
+            int choicelistcount = choicelist.Count(t => t.Array.ItemType == choicelist[0].Array.ItemType);
+            if (choicelistcount != choicelist.Count())
+            {
+                throw new ValueError("choicelist must be all of the same data type");
+            }
+
             var ExpandedChoiceList = new ndarray[choicelist.Length + 1];
-            ExpandedChoiceList[0] = array(new int[] { 0 });
+            ExpandedChoiceList[0] = array(new int[] { 0 }).astype(choicelist[0].Dtype);
             Array.Copy(choicelist, 0, ExpandedChoiceList, 1, choicelist.Length);
             choicelist = ExpandedChoiceList;
 
