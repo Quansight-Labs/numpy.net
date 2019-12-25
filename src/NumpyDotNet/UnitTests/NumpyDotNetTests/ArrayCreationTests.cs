@@ -1649,7 +1649,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore]   // this needs work to work with decimals
         [TestMethod]
         public void test_ndarray_unique_1_DECIMAL()
         {
