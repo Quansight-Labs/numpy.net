@@ -512,16 +512,15 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_select_1()
         {
-            var x = np.arange(10);
+            var x = np.arange(10, dtype: np.UInt64);
             var condlist = new ndarray[] { x < 3, x > 5 };
-            var choicelist = new ndarray[] { x,  np.array(np.power(x, 2), dtype: np.Int32) };
+            var choicelist = new ndarray[] { x,  np.array(np.power(x, 2), dtype: np.UInt64) };
             var y = np.select(condlist, choicelist);
 
-            AssertArray(y, new int[] { 0,  1,  2,  0,  0,  0, 36, 49, 64, 81 });
+            AssertArray(y, new UInt64[] { 0,  1,  2,  0,  0,  0, 36, 49, 64, 81 });
             print(y);
         }
 
-        [Ignore]
         [TestMethod]
         public void test_select_1_DECIMAL()
         {
