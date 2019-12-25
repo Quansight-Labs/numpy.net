@@ -840,7 +840,7 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsFloatingPoint)
             {
-                if (xa.itemsize <= sizeof(float))
+                if (xa.ItemSize <= sizeof(float))
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
                     ch.results = null;
@@ -947,7 +947,7 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsFloatingPoint)
             {
-                if (xa.itemsize <= sizeof(float))
+                if (xa.ItemSize <= sizeof(float))
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
 
@@ -1091,7 +1091,7 @@ namespace NumpyDotNet
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
 
-            if (a1.itemsize <= sizeof(float) && a2.itemsize <= sizeof(float))
+            if (a1.ItemSize <= sizeof(float) && a2.ItemSize <= sizeof(float))
             {
                 MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x1, x2);
 
@@ -1134,8 +1134,8 @@ namespace NumpyDotNet
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
 
-            bool a1b = !a1.IsAScalar && a1.IsFloatingPoint && a1.itemsize <= sizeof(float);
-            bool a2b = !a2.IsAScalar && a2.IsFloatingPoint && a2.itemsize <= sizeof(float);
+            bool a1b = !a1.IsAScalar && a1.IsFloatingPoint && a1.ItemSize <= sizeof(float);
+            bool a2b = !a2.IsAScalar && a2.IsFloatingPoint && a2.ItemSize <= sizeof(float);
 
             if (a1b && a2b)
             {
@@ -1219,7 +1219,7 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsInteger)
             {
-                if (xa.itemsize <= sizeof(Int32))
+                if (xa.ItemSize <= sizeof(Int32))
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
 
@@ -1263,7 +1263,7 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsInteger)
             {
-                if (xa.itemsize <= sizeof(Int32))
+                if (xa.ItemSize <= sizeof(Int32))
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
 
@@ -1455,7 +1455,7 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsFloatingPoint)
             {
-                if (xa.itemsize <= sizeof(float))
+                if (xa.ItemSize <= sizeof(float))
                 {
                     MathFunctionHelper<float> ch = new MathFunctionHelper<float>(x);
 

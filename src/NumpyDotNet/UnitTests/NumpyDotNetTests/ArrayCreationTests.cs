@@ -732,11 +732,11 @@ namespace NumpyDotNetTests
         {
             var x = np.array(new double[] { 1, 2, 3 }, dtype: np.Float64);
             print("Size of the array: ", x.size);
-            print("Length of one array element in bytes: ", x.itemsize);
+            print("Length of one array element in bytes: ", x.ItemSize);
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
 
             Assert.AreEqual(3, x.size);
-            Assert.AreEqual(8, x.itemsize);
+            Assert.AreEqual(8, x.ItemSize);
             Assert.AreEqual(24, x.nbytes);
 
         }
@@ -746,11 +746,11 @@ namespace NumpyDotNetTests
         {
             var x = np.array(new decimal[] { 1, 2, 3 }, dtype: np.Decimal);
             print("Size of the array: ", x.size);
-            print("Length of one array element in bytes: ", x.itemsize);
+            print("Length of one array element in bytes: ", x.ItemSize);
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
 
             Assert.AreEqual(3, x.size);
-            Assert.AreEqual(16, x.itemsize);
+            Assert.AreEqual(16, x.ItemSize);
             Assert.AreEqual(48, x.nbytes);
 
         }

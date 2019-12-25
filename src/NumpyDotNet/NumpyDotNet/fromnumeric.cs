@@ -2564,7 +2564,7 @@ namespace NumpyDotNet
         {
             var resultArray = np.amax(arr);
 
-            switch (resultArray.Array.ItemType)
+            switch (resultArray.ItemType)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return Convert.ToSingle(resultArray.GetItem(0));
@@ -2685,7 +2685,7 @@ namespace NumpyDotNet
         {
             var resultArray = np.amin(arr);
 
-            switch (resultArray.Array.ItemType)
+            switch (resultArray.ItemType)
             {
                 case NPY_TYPES.NPY_FLOAT:
                     return Convert.ToSingle(resultArray.GetItem(0));

@@ -1673,9 +1673,9 @@ namespace NumpyDotNet
         public static ndarray packbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.Array.ItemType != NPY_TYPES.NPY_UINT8)
+            if (input.ItemType != NPY_TYPES.NPY_UINT8)
             {
-                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.Array.ItemType));
+                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.ItemType));
             }
 
 
@@ -1728,9 +1728,9 @@ namespace NumpyDotNet
         public static ndarray unpackbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.Array.ItemType != NPY_TYPES.NPY_UINT8)
+            if (input.ItemType != NPY_TYPES.NPY_UINT8)
             {
-                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.Array.ItemType));
+                throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.ItemType));
             }
 
             // sanity check the axis value first

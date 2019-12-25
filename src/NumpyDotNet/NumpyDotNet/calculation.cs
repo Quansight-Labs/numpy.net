@@ -148,7 +148,7 @@ namespace NumpyDotNet
                 return ret;
             }
 
-            if (this.Array.ItemType != tmp.Array.ItemType)
+            if (this.ItemType != tmp.ItemType)
             {
                 tmp = tmp.astype(this.Dtype);
             }

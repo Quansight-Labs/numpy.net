@@ -646,7 +646,7 @@ namespace NumpyDotNet
                     if (single_offset >= 0 && np.IsNumericType(value))
                     {
                         // This is a single item assignment. Use SetItem.
-                        SetItem(value, single_offset / this.itemsize);
+                        SetItem(value, single_offset / this.ItemSize);
                         return;
                     }
 
@@ -687,7 +687,7 @@ namespace NumpyDotNet
                             {
                                 array_value.Array.nd = 1;
                                 array_value.Array.dimensions = new npy_intp[1] { 1 };
-                                array_value.Array.strides = new npy_intp[1] { array_value.itemsize };
+                                array_value.Array.strides = new npy_intp[1] { array_value.ItemSize };
                             }
                             // KM: this hack lets the IndexFancyAssign work
 
@@ -843,15 +843,30 @@ namespace NumpyDotNet
             }
         }
 
-        public int itemsize {
+        public int ItemSize {
             get {
-                return Dtype.ElementSize;
+
+                if (core == null)
+                    return 0;
+
+                return core.descr.elsize;
+            }
+        }
+
+        public NPY_TYPES ItemType
+        {
+            get
+            {
+                if (core == null)
+                    return NPY_TYPES.NPY_VOID;
+
+                return core.descr.type_num;
             }
         }
 
         public long nbytes {
             get {
-                return itemsize * Size;
+                return ItemSize * Size;
             }
         }
 
@@ -962,7 +977,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             long offset = indexes.SingleAssignOffset(this);
-                            return GetItem(offset / this.itemsize);
+                            return GetItem(offset / this.ItemSize);
                         }
                         else
                         {
@@ -1018,7 +1033,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             long offset = indexes.SingleAssignOffset(this);
-                            SetItem(value, offset / this.itemsize);
+                            SetItem(value, offset / this.ItemSize);
                         }
                         else
                         {
