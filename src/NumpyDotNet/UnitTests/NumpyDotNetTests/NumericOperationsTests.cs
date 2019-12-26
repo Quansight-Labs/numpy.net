@@ -86,7 +86,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_add_operations_2()
         {
@@ -127,7 +126,6 @@ namespace NumpyDotNetTests
                  {26, 37, 48, 59}};
             AssertArray(d, ExpectedDataD);
         }
-
 
         //[TestMethod]
         //public void test_add_operations_performance()
@@ -215,7 +213,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_subtract_operations_2()
         {
@@ -290,8 +287,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
-
-
         [TestMethod]
         public void test_division_operations()
         {
@@ -337,7 +332,6 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB2);
         }
-
 
         [TestMethod]
         public void test_leftshift_operations()
@@ -385,7 +379,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
 
         }
-
 
         [TestMethod]
         public void test_leftshift_operations2()
@@ -481,7 +474,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_bitwiseand_operations()
         {
@@ -508,7 +500,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
 
         }
-
 
         [TestMethod]
         public void test_bitwiseor_operations()
@@ -566,7 +557,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_remainder_operations()
         {
@@ -589,7 +579,6 @@ namespace NumpyDotNetTests
                                          0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
 
         }
-
 
         [TestMethod]
         public void test_sqrt_operations()
@@ -629,7 +618,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
 
         }
-
 
         [TestMethod]
         public void test_cbrt_operations()
@@ -671,7 +659,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_negative_operations()
         {
@@ -685,7 +672,6 @@ namespace NumpyDotNetTests
                                       -11, -12, -13, -14, -15, -16, -17, -18, -19, -20,
                                       -21, -22, -23, -24, -25, -26, -27, -28, -29, -30, -31 });
         }
-
 
         [TestMethod]
         public void test_invert_operations()
@@ -721,7 +707,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
         }
 
-
         [TestMethod]
         public void test_LESSEQUAL_operations()
         {
@@ -733,8 +718,6 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
         }
-
-
 
         [TestMethod]
         public void test_EQUAL_operations()
@@ -748,7 +731,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
         }
 
-
         [TestMethod]
         public void test_NOTEQUAL_operations()
         {
@@ -760,7 +742,6 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
         }
-
 
         [TestMethod]
         public void test_GREATER_operations()
@@ -774,7 +755,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { false, false, false, false, true, true, true, true, true, true });
 
         }
-
 
         [TestMethod]
         public void test_GREATEREQUAL_operations()
@@ -804,7 +784,6 @@ namespace NumpyDotNetTests
                                         57, 59, 59, 63, 61, 63, 63, 95 });
         }
 
-
         [TestMethod]
         public void test_bitwise_and()
         {
@@ -827,7 +806,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_bitwise_or()
         {
@@ -848,7 +826,6 @@ namespace NumpyDotNetTests
             AssertArray(y, ExpectedData);
             AssertArray(z, ExpectedData);
         }
-
 
         [TestMethod]
         public void test_bitwise_xor()
@@ -875,7 +852,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_bitwise_not()
@@ -929,7 +905,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_right_shift()
         {
@@ -980,7 +955,6 @@ namespace NumpyDotNetTests
             AssertArray(z, ExpectedData);
         }
 
-
         [TestMethod]
         public void test_left_shift_2()
         {
@@ -1006,7 +980,6 @@ namespace NumpyDotNetTests
             //AssertArray(x, ExpectedData);  // seems to be some sort of rounding error.  Data looks right
 
         }
- 
 
         [TestMethod]
         public void test_min()
@@ -1020,7 +993,6 @@ namespace NumpyDotNetTests
 
             Assert.AreEqual(-1.7f, y);
         }
-
 
         [TestMethod]
         public void test_max()
@@ -1052,7 +1024,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_setdiff1d()
         {
@@ -1070,7 +1041,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new Int32[] { 1, 2 });
 
         }
-
 
         [TestMethod]
         public void test_setdiff1d_2()
@@ -1090,7 +1060,6 @@ namespace NumpyDotNetTests
                                          29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
 
         }
-
 
         [TestMethod]
         public void test_interp1d()
@@ -1167,7 +1136,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_flip_1()
         {
@@ -1186,7 +1154,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_iterable_1()
         {
@@ -1199,7 +1166,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(false, b);
 
         }
-
 
         [TestMethod]
         public void test_trim_zeros_1()
@@ -1214,9 +1180,6 @@ namespace NumpyDotNetTests
             print(c);
             AssertArray(c, new int[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
         }
-
-
-
 
         [TestMethod]
         public void test_isfinite_1()
@@ -1252,7 +1215,6 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-
         [TestMethod]
         public void test_isinf_1()
         {
@@ -1286,8 +1248,6 @@ namespace NumpyDotNetTests
             AssertArray(g, new bool[,] { { true, false }, { true, true } });
             print(g);
         }
-
-   
 
         [TestMethod]
         public void test_isneginf_1()
@@ -1379,7 +1339,6 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-
         [TestMethod]
         public void test_logical_or_1()
         {
@@ -1427,7 +1386,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
 
-
         [TestMethod]
         public void test_logical_not_1()
         {
@@ -1462,7 +1420,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_greater_equal_1()
         {
@@ -1478,7 +1435,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { false, true, true });
             print(c);
         }
-
 
         [TestMethod]
         public void test_less_1()
@@ -1496,7 +1452,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_less_equal_1()
         {
@@ -1513,7 +1468,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_equal_1()
         {
@@ -1529,7 +1483,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { false, true, false });
             print(c);
         }
-
  
         [TestMethod]
         public void test_not_equal_1()
@@ -1546,8 +1499,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { true, false, true });
             print(c);
         }
-
- 
 
         [TestMethod]
         public void test_copyto_1()
@@ -1583,7 +1534,6 @@ namespace NumpyDotNetTests
  
         }
 
-
         [TestMethod]
         public void test_copyto_2()
         {
@@ -1594,7 +1544,5 @@ namespace NumpyDotNetTests
             AssertArray(a, new float[,,,,] { { { { { 1.0f, 2.0f } }, { { 1.0f, 2.0f } } }, { { { 1.0f, 2.0f } }, { { 1.0f, 2.0f, } } } } });
 
         }
-
-
     }
 }

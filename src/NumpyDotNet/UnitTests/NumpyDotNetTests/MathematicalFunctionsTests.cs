@@ -65,7 +65,6 @@ namespace NumpyDotNetTests
 
         }
 
-  
         [TestMethod]
         public void test_sin_2()
         {
@@ -141,7 +140,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_tan_1()
         {
@@ -194,7 +192,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_arcsin_1()
         {
@@ -237,7 +234,6 @@ namespace NumpyDotNetTests
             print(b);
 
         }
-
 
         [TestMethod]
         public void test_arccos_1()
@@ -282,7 +278,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_arctan_1()
         {
@@ -325,7 +320,6 @@ namespace NumpyDotNetTests
             print(b);
 
         }
-
 
         [TestMethod]
         public void test_hypot_1()
@@ -389,7 +383,6 @@ namespace NumpyDotNetTests
             //print(np.all(r == _out));
 
         }
-
  
         [TestMethod]
         public void test_rad2deg_1()
@@ -666,7 +659,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_arctanh_1()
         {
@@ -738,7 +730,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new Int32[] { 0, 0, 0, 10 });
         }
 
- 
         [TestMethod]
         public void test_round_1()
         {
@@ -810,7 +801,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_floor_1()
         {
@@ -824,7 +814,6 @@ namespace NumpyDotNetTests
             AssertArray(y, new float[] { -2.0f, -2.0f, -1.0f, 0.0f, 1.0f, 1.0f, 2.0f });
 
         }
-
 
         [TestMethod]
         public void test_ceil_1()
@@ -856,7 +845,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         #endregion
 
         #region Sums, products, differences
@@ -877,7 +865,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual((UInt64)1403336390624999936, y.GetItem(0));
 
         }
-
 
         [TestMethod]
         public void test_prod_2()
@@ -911,7 +898,6 @@ namespace NumpyDotNetTests
             print("*****");
 
         }
-
  
         [TestMethod]
         public void test_prod_3()
@@ -1058,7 +1044,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_nanprod_placeholder()
         {
@@ -1070,7 +1055,6 @@ namespace NumpyDotNetTests
         {
             // see the NANFunctionsTest version
         }
-
 
         [TestMethod]
         public void test_cumprod_1()
@@ -1195,7 +1179,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_cumsum_1()
         {
@@ -1306,7 +1289,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_nancumproduct_placeholder()
         {
@@ -1393,7 +1375,6 @@ namespace NumpyDotNetTests
             AssertArray(y, new int[] { 1, 2, -3, 5, 18 });
 
         }
-
 
         [TestMethod]
         public void test_gradient_1()
@@ -1645,7 +1626,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_log_1()
         {
@@ -1725,7 +1705,6 @@ namespace NumpyDotNetTests
             print(a);
 
         }
-
 
         [TestMethod]
         public void test_log1p_1()
@@ -1815,7 +1794,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_sinc_1()
         {
@@ -1860,7 +1838,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         #endregion
 
         #region Floating point routines
@@ -1892,7 +1869,6 @@ namespace NumpyDotNetTests
             AssertArray(f, new bool[] { true, false, false });
             print(f);
         }
-
 
         [TestMethod]
         public void test_copysign_1()
@@ -1954,7 +1930,6 @@ namespace NumpyDotNetTests
             print(results[1]);
         }
 
-
         [TestMethod]
         public void test_ldexp_1()
         {
@@ -1966,7 +1941,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new double[] { 0.0, 32.0, 64.0, 96.0 });
             print(b);
         }
-
 
         [TestMethod]
         public void test_nextafter_1()
@@ -2027,7 +2001,6 @@ namespace NumpyDotNetTests
             print(f);
         }
 
-
         [TestMethod]
         public void test_gcd_1()
         {
@@ -2055,7 +2028,6 @@ namespace NumpyDotNetTests
             print(f);
         }
 
-
         #endregion
 
         #region Arithmetic operations
@@ -2074,7 +2046,6 @@ namespace NumpyDotNetTests
             print(d);
 
         }
-
 
         [TestMethod]
         public void test_reciprocal_operations()
@@ -2128,7 +2099,6 @@ namespace NumpyDotNetTests
             print(e);
         }
 
-
         [TestMethod]
         public void test_negative_1()
         {
@@ -2140,7 +2110,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new int[,] { { -1, 0, 1 }, { 2, -3, 4 } });
             print(e);
         }
-
  
         [TestMethod]
         public void test_multiply_1()
@@ -2155,7 +2124,6 @@ namespace NumpyDotNetTests
             AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
             print(d);
         }
-
 
         [TestMethod]
         public void test_divide()
@@ -2174,7 +2142,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_power_operations()
@@ -2243,7 +2210,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_subtract_1()
         {
@@ -2275,7 +2241,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_floor_divide()
@@ -2318,7 +2283,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_fmod_1()
         {
@@ -2346,7 +2310,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_mod_1()
@@ -2377,7 +2340,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_remainder_1()
@@ -2462,7 +2424,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_clip_1()
         {
@@ -2518,7 +2479,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
         }
-
  
         [TestMethod]
         public void test_square_operations()
@@ -2572,7 +2532,6 @@ namespace NumpyDotNetTests
             };
         }
 
-
         [TestMethod]
         public void test_fabs_1()
         {
@@ -2620,7 +2579,6 @@ namespace NumpyDotNetTests
             print(f);
         }
 
-
         [TestMethod]
         public void test_heaviside_1()
         {
@@ -2657,7 +2615,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
             print(d);
         }
-
 
         [TestMethod]
         public void test_minimum_1()
@@ -2698,7 +2655,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
             print(d);
         }
-
 
         [TestMethod]
         public void test_fmin_1()

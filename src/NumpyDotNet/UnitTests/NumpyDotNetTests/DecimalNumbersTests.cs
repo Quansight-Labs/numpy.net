@@ -51,7 +51,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_linspace_1_DECIMAL()
         {
@@ -69,7 +68,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new decimal[] { 2.0m, 2.25m, 2.5m, 2.75m, 3.0m });
             print(c);
         }
-
 
         [TestMethod]
         public void test_logspace_1_DECIMAL()
@@ -182,7 +180,6 @@ namespace NumpyDotNetTests
             print(z);
         }
 
-
         [TestMethod]
         public void test_checkerboard_1_DECIMAL()
         {
@@ -227,7 +224,6 @@ namespace NumpyDotNetTests
                                             01.88888888888888888888888888900m, 38.50555555555555555555555555600m });
 
         }
-
 
         [TestMethod]
         public void test_ArrayStats_1_DECIMAL()
@@ -288,7 +284,6 @@ namespace NumpyDotNetTests
             AssertArray(y, x.AsDecimalArray());
 
         }
-
 
         [TestMethod]
         public void test_ndarray_view_DECIMAL()
@@ -368,7 +363,6 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
         }
-
 
         [TestMethod]
         public void test_ndarray_delete2_DECIMAL()
@@ -519,7 +513,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_ndarray_where_2_DECIMAL()
         {
@@ -541,7 +534,6 @@ namespace NumpyDotNetTests
             print(z);
             AssertArray(z, new decimal[] { 3, 3 });
         }
-
 
         [TestMethod]
         public void test_ndarray_where_3_DECIMAL()
@@ -578,7 +570,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_ndarray_where_4_DECIMAL()
         {
@@ -596,7 +587,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_ndarray_where_5_DECIMAL()
@@ -708,7 +698,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_arange_slice_2A_DECIMAL()
         {
@@ -762,7 +751,6 @@ namespace NumpyDotNetTests
             AssertStrides(b, 64, 16, 1408, 128);
         }
 
-
         [TestMethod]
         public void test_insert_1_DECIMAL()
         {
@@ -792,7 +780,6 @@ namespace NumpyDotNetTests
             AssertShape(c, 9);
             AssertStrides(c, 16);
         }
-
 
         [TestMethod]
         public void test_insert_2_DECIMAL()
@@ -827,7 +814,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_append_1_DECIMAL()
         {
@@ -846,7 +832,6 @@ namespace NumpyDotNetTests
             AssertShape(b, 7);
             AssertStrides(b, 16);
         }
-
 
         [TestMethod]
         public void test_append_3_DECIMAL()
@@ -908,7 +893,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_flat_2_DECIMAL()
         {
@@ -931,7 +915,6 @@ namespace NumpyDotNetTests
             print(x);
         }
 
-
         [TestMethod]
         public void test_intersect1d_1_DECIMAL()
         {
@@ -947,7 +930,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_setxor1d_1_DECIMAL()
         {
@@ -961,7 +943,6 @@ namespace NumpyDotNetTests
             AssertShape(c, 4);
             AssertStrides(c, 16);
         }
-
 
         [TestMethod]
         public void test_in1d_1_DECIMAL()
@@ -1049,7 +1030,6 @@ namespace NumpyDotNetTests
             AssertStrides(a, 16);
         }
 
-
         [TestMethod]
         public void test_union1d_1_DECIMAL()
         {
@@ -1063,7 +1043,6 @@ namespace NumpyDotNetTests
             AssertShape(a, 5);
             AssertStrides(a, 16);
         }
-
 
         [TestMethod]
         public void test_Ellipsis_indexing_1_DECIMAL()
@@ -1114,7 +1093,6 @@ namespace NumpyDotNetTests
             print(i);
         }
 
-
         [TestMethod]
         public void test_concatenate_1_DECIMAL()
         {
@@ -1142,7 +1120,6 @@ namespace NumpyDotNetTests
             print(g);
         }
 
-
         [TestMethod]
         public void test_concatenate_3_DECIMAL()
         {
@@ -1167,11 +1144,9 @@ namespace NumpyDotNetTests
 
         }
 
-
         #endregion
 
         #region from NumericalOperationsTests
-
 
         [TestMethod]
         public void test_add_operations_DECIMAL()
@@ -1259,7 +1234,6 @@ namespace NumpyDotNetTests
             AssertArray(d, ExpectedDataD);
         }
 
-
         [TestMethod]
         public void test_subtract_operations_DECIMAL()
         {
@@ -1334,7 +1308,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_multiply_operations_DECIMAL()
         {
@@ -1383,7 +1356,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
-
         [TestMethod]
         public void test_division_operations_DECIMAL()
         {
@@ -1431,7 +1403,6 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB2);
         }
-
 
         [TestMethod]
         public void test_leftshift_operations_DECIMAL()
@@ -1527,7 +1498,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_bitwiseand_operations_DECIMAL()
         {
@@ -1611,7 +1581,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_remainder_operations_DECIMAL()
         {
@@ -1634,7 +1603,6 @@ namespace NumpyDotNetTests
                                          0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
 
         }
-
 
         [TestMethod]
         public void test_sqrt_operations_DECIMAL()
@@ -1680,8 +1648,7 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
 
         }
-
-
+        
         [TestMethod]
         public void test_cbrt_operations_DECIMAL()
         {
@@ -1730,7 +1697,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
-
         [TestMethod]
         public void test_negative_operations_DECIMAL()
         {
@@ -1758,7 +1724,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_invert_operations_DECIMAL()
         {
@@ -1785,7 +1750,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
         }
 
-
         [TestMethod]
         public void test_LESSEQUAL_operations_DECIMAL()
         {
@@ -1797,7 +1761,6 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
         }
-
 
         [TestMethod]
         public void test_EQUAL_operations_DECIMAL()
@@ -1811,7 +1774,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
         }
 
-
         [TestMethod]
         public void test_NOTEQUAL_operations_DECIMAL()
         {
@@ -1823,7 +1785,6 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
         }
-
 
         [TestMethod]
         public void test_GREATER_operations_DECIMAL()
@@ -1838,7 +1799,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_GREATEREQUAL_operations_DECIMAL()
         {
@@ -1851,7 +1811,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new Boolean[] { false, false, false, true, true, true, true, true, true, true });
 
         }
-
 
         [TestMethod]
         public void test_arrayarray_or_DECIMAL()
@@ -1889,7 +1848,6 @@ namespace NumpyDotNetTests
             AssertArray(z, ExpectedData);
         }
 
-
         [TestMethod]
         public void test_bitwise_or_DECIMAL()
         {
@@ -1910,7 +1868,6 @@ namespace NumpyDotNetTests
             AssertArray(y, ExpectedData);
             AssertArray(z, ExpectedData);
         }
-
 
         [TestMethod]
         public void test_bitwise_xor_DECIMAL()
@@ -1937,7 +1894,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_bitwise_not_DECIMAL()
@@ -1966,7 +1922,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_invert_DECIMAL()
@@ -2038,7 +1993,6 @@ namespace NumpyDotNetTests
             AssertArray(z, ExpectedData);
         }
 
-
         [TestMethod]
         public void test_min_DECIMAL()
         {
@@ -2064,7 +2018,6 @@ namespace NumpyDotNetTests
 
             Assert.AreEqual(2.5m, y);
         }
-
 
         [TestMethod]
         public void test_isnan_DECIMAL()
@@ -2118,7 +2071,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_rot90_1_DECIMAL()
         {
@@ -2161,7 +2113,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_trim_zeros_1_DECIMAL()
         {
@@ -2175,7 +2126,6 @@ namespace NumpyDotNetTests
             print(c);
             AssertArray(c, new decimal[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
         }
-
 
         [TestMethod]
         public void test_logical_and_1_DECIMAL()
@@ -2225,7 +2175,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
 
-
         [TestMethod]
         public void test_logical_not_1_DECIMAL()
         {
@@ -2234,7 +2183,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { false, false, false, true, true });
             print(c);
         }
-
 
         [TestMethod]
         public void test_greater_1_DECIMAL()
@@ -2269,7 +2217,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_less_1_DECIMAL()
         {
@@ -2285,7 +2232,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new bool[] { true, false, false });
             print(c);
         }
-
 
         [TestMethod]
         public void test_less_equal_1_DECIMAL()
@@ -2335,7 +2281,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_copyto_1_DECIMAL()
         {
@@ -2369,7 +2314,6 @@ namespace NumpyDotNetTests
             Assert.IsTrue(false);
 
         }
-
 
         [TestMethod]
         public void test_copyto_2_DECIMAL()
@@ -2426,7 +2370,6 @@ namespace NumpyDotNetTests
             print(b);
 
         }
-
 
         [TestMethod]
         public void test_cos_1_DECIMAL()
@@ -2552,7 +2495,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_arccos_1_DECIMAL()
         {
@@ -2595,7 +2537,6 @@ namespace NumpyDotNetTests
             print(b);
 
         }
-
 
         [TestMethod]
         public void test_arctan_1_DECIMAL()
@@ -2653,7 +2594,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new decimal[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
 
         }
-
 
         [TestMethod]
         public void test_arctan2_1_DECIMAL()
@@ -2724,7 +2664,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new decimal[] { 0, 0, 0, 10 });
         }
 
-
         [TestMethod]
         public void test_round_1_DECIMAL()
         {
@@ -2760,7 +2699,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_fix_1_DECIMAL()
         {
@@ -2776,7 +2714,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new decimal[] { 2.0m, 2.0m, -2.0m, -2.0m });
             print(c);
         }
-
 
         [TestMethod]
         public void test_floor_1_DECIMAL()
@@ -2903,7 +2840,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_cumsum_3_DECIMAL()
         {
@@ -2970,7 +2906,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_diff_3_DECIMAL()
         {
@@ -2997,7 +2932,6 @@ namespace NumpyDotNetTests
             AssertArray(y, ExpectedData);
 
         }
-
 
         [TestMethod]
         public void test_ediff1d_1_DECIMAL()
@@ -3084,7 +3018,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_trapz_1_DECIMAL()
         {
@@ -3110,7 +3043,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_exp_1_DECIMAL()
         {
@@ -3132,7 +3064,6 @@ namespace NumpyDotNetTests
             print(a);
 
         }
-
 
         [TestMethod]
         public void test_exp2_1_DECIMAL()
@@ -3156,7 +3087,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_i0_1_DECIMAL()
         {
@@ -3175,7 +3105,6 @@ namespace NumpyDotNetTests
             return;
 
         }
-
 
         [TestMethod]
         public void test_sinc_1_DECIMAL()
@@ -3221,7 +3150,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_signbit_1_DECIMAL()
         {
@@ -3266,7 +3194,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new double[] { -1, 0, 1 });
             print(e);
         }
-
 
         [TestMethod]
         public void test_frexp_1_DECIMAL()
@@ -3344,7 +3271,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(0, success, "Did not catch all exceptions as expected");
         }
 
-
         [TestMethod]
         public void test_gcd_1_DECIMAL()
         {
@@ -3393,7 +3319,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(0, success, "Did not catch all exceptions as expected");
         }
 
-
         [TestMethod]
         public void test_add_1_DECIMAL()
         {
@@ -3408,7 +3333,6 @@ namespace NumpyDotNetTests
             print(d);
 
         }
-
 
         [TestMethod]
         public void test_reciprocal_operations_DECIMAL()
@@ -3457,7 +3381,6 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB2);
         }
 
-
         [TestMethod]
         public void test_positive_1_DECIMAL()
         {
@@ -3481,7 +3404,6 @@ namespace NumpyDotNetTests
             AssertArray(e, new decimal[,] { { -1, 0, 1 }, { 2, -3, 4 } });
             print(e);
         }
-
 
         [TestMethod]
         public void test_multiply_1_DECIMAL()
@@ -3514,7 +3436,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_power_operations_DECIMAL()
@@ -3585,7 +3506,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_subtract_1_DECIMAL()
         {
@@ -3617,7 +3537,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_floor_divide_DECIMAL()
@@ -3759,7 +3678,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_clip_2_DECIMAL()
         {
@@ -3786,7 +3704,6 @@ namespace NumpyDotNetTests
             AssertArray(b, new decimal[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
         }
-
 
         [TestMethod]
         public void test_square_operations_DECIMAL()
@@ -3937,7 +3854,6 @@ namespace NumpyDotNetTests
             //print(d);
         }
 
-
         [TestMethod]
         public void test_fmax_1_DECIMAL()
         {
@@ -3957,7 +3873,6 @@ namespace NumpyDotNetTests
             //Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
             //print(d);
         }
-
 
         [TestMethod]
         public void test_fmin_1_DECIMAL()
@@ -3979,7 +3894,6 @@ namespace NumpyDotNetTests
             //print(d);
         }
 
-
         [TestMethod]
         public void test_nan_to_num_1_DECIMAL()
         {
@@ -3994,11 +3908,995 @@ namespace NumpyDotNetTests
 
         }
 
-
         #endregion
 
         #region from FromNumericTests
 
+        [TestMethod]
+        public void test_take_1_DECIMAL()
+        {
+            var a = np.array(new decimal[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            var indices = np.array(new Int32[] { 0, 1, 4 });
+            ndarray b = np.take(a, indices);
+            print("B");
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            AssertArray(b, new decimal[] { 4, 3, 6 });
+            AssertShape(b, 3);
+            AssertStrides(b, sizeof(decimal));
+
+
+            a = np.array(new decimal[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            indices = np.array(new Int32[,] { { 0, 1 }, { 2, 3 } });
+            ndarray c = np.take(a, indices);
+            print("C");
+            print(c);
+            print(c.shape);
+            print(c.strides);
+
+            var ExpectedDataC = new decimal[2, 2]
+            {
+                { 4, 3 },
+                { 5, 7 },
+            };
+            AssertArray(c, ExpectedDataC);
+            AssertShape(c, 2, 2);
+            AssertStrides(c, sizeof(decimal) * 2, sizeof(decimal));
+
+            ndarray d = np.take(a.reshape(new shape(4, -1)), indices, axis: 0);
+            print("D");
+            print(d);
+            print(d.shape);
+            print(d.strides);
+
+            var ExpectedDataD = new decimal[2, 2, 4]
+            {
+                {
+                    { 4, 3, 5, 7 },
+                    { 6, 8, 9, 12 },
+                },
+                {
+                    { 14, 16, 18, 20 },
+                    { 22, 24, 26, 28 },
+                },
+
+            };
+            AssertArray(d, ExpectedDataD);
+            AssertShape(d, 2, 2, 4);
+            AssertStrides(d, sizeof(decimal) * 8, sizeof(decimal) * 4, sizeof(decimal) * 1);
+
+            ndarray e = np.take(a.reshape(new shape(4, -1)), indices, axis: 1);
+            print("E");
+            print(e);
+            print(e.shape);
+            print(e.strides);
+
+            var ExpectedDataE = new decimal[4, 2, 2]
+            {
+                {
+                    { 4, 3 },
+                    { 5, 7 },
+                },
+                {
+                    { 6, 8 },
+                    { 9, 12 },
+                },
+                {
+                    { 14, 16 },
+                    { 18, 20 },
+                },
+                {
+                    { 22, 24 },
+                    { 26, 28 },
+                },
+
+            };
+
+            AssertArray(e, ExpectedDataE);
+            AssertShape(e, 4, 2, 2);
+            AssertStrides(e, sizeof(decimal) * 4, sizeof(decimal) * 2, sizeof(decimal) * 1);
+
+        }
+
+        [TestMethod]
+        public void test_ravel_1_DECIMAL()
+        {
+            var a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var b = np.ravel(a);
+            AssertArray(b, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(b);
+
+            var c = a.reshape(-1);
+            AssertArray(c, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(c);
+
+            var d = np.ravel(a, order: NPY_ORDER.NPY_FORTRANORDER);
+            AssertArray(d, new decimal[] { 1, 4, 2, 5, 3, 6 });
+            print(d);
+
+            // When order is 'A', it will preserve the array's 'C' or 'F' ordering:
+            var e = np.ravel(a.T);
+            AssertArray(e, new decimal[] { 1, 4, 2, 5, 3, 6 });
+            print(e);
+
+            var f = np.ravel(a.T, order: NPY_ORDER.NPY_ANYORDER);
+            AssertArray(f, new decimal[] { 1, 2, 3, 4, 5, 6 });
+            print(f);
+        }
+
+        [TestMethod]
+        public void test_choose_1_DECIMAL()
+        {
+            ndarray choice1 = np.array(new decimal[] { 0, 1, 2, 3 });
+            ndarray choice2 = np.array(new decimal[] { 10, 11, 12, 13 });
+            ndarray choice3 = np.array(new decimal[] { 20, 21, 22, 23 });
+            ndarray choice4 = np.array(new decimal[] { 30, 31, 32, 33 });
+
+            ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
+
+            ndarray a = np.choose(np.array(new Int32[] { 2, 3, 1, 0 }), choices);
+
+            print(a);
+
+            AssertArray(a, new decimal[] { 20, 31, 12, 3 });
+        }
+
+        [TestMethod]
+        public void test_choose_2_DECIMAL()
+        {
+            ndarray choice1 = np.array(new decimal[] { 0, 1, 2, 3 });
+            ndarray choice2 = np.array(new decimal[] { 10, 11, 12, 13 });
+            ndarray choice3 = np.array(new decimal[] { 20, 21, 22, 23 });
+            ndarray choice4 = np.array(new decimal[] { 30, 31, 32, 33 });
+
+            ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
+
+            ndarray a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_CLIP);
+            print(a);
+            AssertArray(a, new decimal[] { 20, 31, 12, 3 });
+
+            a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_WRAP);
+            print(a);
+            AssertArray(a, new decimal[] { 20, 1, 12, 3 });
+
+            try
+            {
+                a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_RAISE);
+                print(a);
+                AssertArray(a, new decimal[] { 20, 1, 12, 3 });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("invalid entry in choice array"))
+                    return;
+            }
+            Assert.Fail("Should have caught exception from np.choose");
+
+
+        }
+
+        [TestMethod]
+        public void test_select_1_DECIMAL()
+        {
+            var x = np.arange(10, dtype: np.Decimal);
+            var condlist = new ndarray[] { x < 3, x > 5 };
+            var choicelist = new ndarray[] { x, np.array(np.power(x, 2), dtype: np.Decimal) };
+            var y = np.select(condlist, choicelist);
+
+            AssertArray(y, new decimal[] { 0, 1, 2, 0, 0, 0, 36, 49, 64, 81 });
+            print(y);
+        }
+
+        [TestMethod]
+        public void test_repeat_1_DECIMAL()
+        {
+            ndarray x = np.array(new decimal[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            var y = new Int32[] { 2 };
+
+            ndarray z = np.repeat(x, y);
+            print(z);
+            print("");
+            AssertArray(z, new decimal[] { 1, 1, 2, 2, 3, 3, 4, 4 });
+
+            z = np.repeat(3m, 4);
+            print(z);
+            print("");
+            AssertArray(z, new decimal[] { 3, 3, 3, 3 });
+
+            z = np.repeat(x, 3, axis: 0);
+            print(z);
+            print("");
+
+            var ExpectedData1 = new decimal[6, 2]
+            {
+                { 1, 2 },
+                { 1, 2 },
+                { 1, 2 },
+                { 3, 4 },
+                { 3, 4 },
+                { 3, 4 },
+            };
+
+            AssertArray(z, ExpectedData1);
+            AssertShape(z, 6, 2);
+
+            z = np.repeat(x, 3, axis: 1);
+            print(z);
+            print("");
+
+            var ExpectedData2 = new decimal[2, 6]
+            {
+                { 1, 1, 1, 2, 2, 2 },
+                { 3, 3, 3, 4, 4, 4 },
+            };
+
+            AssertArray(z, ExpectedData2);
+            AssertShape(z, 2, 6);
+
+
+
+            z = np.repeat(x, new Int32[] { 1, 2 }, axis: 0);
+            print(z);
+
+            var ExpectedData3 = new decimal[3, 2]
+            {
+                { 1, 2 },
+                { 3, 4 },
+                { 3, 4 },
+            };
+
+            AssertArray(z, ExpectedData3);
+            AssertShape(z, 3, 2);
+        }
+
+        [TestMethod]
+        public void test_put_1_DECIMAL()
+        {
+            ndarray a = np.arange(5, dtype: np.Decimal);
+            np.put(a, new int[] { 0, 2 }, new int[] { -44, -55 });
+            print(a);
+            AssertArray(a, new decimal[] { -44, 1, -55, 3, 4 });
+
+            a = np.arange(5, dtype: np.Decimal);
+            np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_CLIP);
+            print(a);
+            AssertArray(a, new decimal[] { 0, 1, 2, 3, -5 });
+
+            a = np.arange(5, dtype: np.Decimal);
+            np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_WRAP);
+            print(a);
+            AssertArray(a, new decimal[] { 0, 1, -5, 3, 4 });
+
+            try
+            {
+                a = np.arange(5, dtype: np.Decimal);
+                np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_RAISE);
+                print(a);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            throw new Exception("this should have caught an exception");
+
+        }
+
+        [TestMethod]
+        public void test_putmask_1_DECIMAL()
+        {
+            var x = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            np.putmask(x, x > 2, np.power(x, 2).astype(np.Int32));
+            AssertArray(x, new decimal[,] { { 0, 1, 2, }, { 9, 16, 25 } });
+            print(x);
+
+
+            // If values is smaller than a it is repeated:
+
+            x = np.arange(5, dtype: np.Decimal);
+            np.putmask(x, x > 1, new Int32[] { -33, -44 });
+            AssertArray(x, new decimal[] { 0, 1, -33, -44, -33 });
+            print(x);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_swapaxes_1_DECIMAL()
+        {
+            ndarray x = np.array(new decimal[,] { { 1, 2, 3 } });
+            print(x);
+            print("********");
+
+            ndarray y = np.swapaxes(x, 0, 1);
+            print(y);
+            AssertArray(y, new decimal[3, 1] { { 1 }, { 2 }, { 3 } });
+            print("********");
+
+            x = np.array(new decimal[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            print(x);
+
+            var ExpectedDataX = new decimal[2, 2, 2]
+            {
+                {
+                    { 0,1 },
+                    { 2,3 },
+                },
+                {
+                    { 4,5 },
+                    { 6,7 },
+                },
+            };
+            AssertArray(x, ExpectedDataX);
+
+            print("********");
+
+            y = np.swapaxes(x, 0, 2);
+            print(y);
+
+            var ExpectedDataY = new decimal[2, 2, 2]
+            {
+                {
+                    { 0,4 },
+                    { 2,6 },
+                },
+                {
+                    { 1,5 },
+                    { 3,7 },
+                },
+            };
+            AssertArray(y, ExpectedDataY);
+        }
+
+        [TestMethod]
+        public void test_ndarray_T_1_DECIMAL()
+        {
+            var x = np.arange(0, 32, dtype: np.Decimal).reshape(new shape(8, 4));
+            print("X");
+            print(x);
+            print(x.shape);
+
+            var y = x.T;
+
+            print("Y");
+            print(y);
+            print(y.shape);
+
+            var ExpectedDataY = new decimal[4, 8]
+            {
+                { 0, 4,  8, 12, 16, 20, 24, 28 },
+                { 1, 5,  9, 13, 17, 21, 25, 29 },
+                { 2, 6, 10, 14, 18, 22, 26, 30 },
+                { 3, 7, 11, 15, 19, 23, 27, 31 },
+            };
+
+            AssertArray(y, ExpectedDataY);
+
+        }
+
+        [TestMethod]
+        public void test_ndarray_transpose_1_DECIMAL()
+        {
+            var x = np.arange(0, 64, dtype: np.Decimal).reshape(new shape(2, 4, -1, 4));
+            print("X");
+            print(x);
+            print(x.shape);
+
+            var y = np.transpose(x, new long[] { 1, 2, 3, 0 });
+
+            print("Y");
+            print(y);
+            print(y.shape);
+
+            var ExpectedDataY = new Decimal[4, 2, 4, 2]
+                {{{ {0, 32},
+                    {1, 33},
+                    {2, 34},
+                    {3, 35}},
+                   {{4, 36},
+                    {5, 37},
+                    {6, 38},
+                    {7, 39}}},
+                  {{{8, 40},
+                    {9, 41},
+                    {10, 42},
+                    {11, 43}},
+                   {{12, 44},
+                    {13, 45},
+                    {14, 46},
+                    {15, 47}}},
+                  {{{16, 48},
+                    {17, 49},
+                    {18, 50},
+                    {19, 51}},
+                   {{20, 52},
+                    {21, 53},
+                    {22, 54},
+                    {23, 55}}},
+                  {{{24, 56},
+                    {25, 57},
+                    {26, 58},
+                    {27, 59}},
+                   {{28, 60},
+                    {29, 61},
+                    {30, 62},
+                    {31, 63}}}};
+
+            AssertArray(y, ExpectedDataY);
+
+        }
+
+        [TestMethod]
+        public void test_partition_3_DECIMAL()
+        {
+            var a = np.arange(22, 10, -1, dtype: np.Decimal).reshape((3, 4, 1));
+            var b = np.partition(a, 1, axis: 0);
+            AssertArray(b, new decimal[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            print(b);
+
+            var c = np.partition(a, 2, axis: 1);
+            AssertArray(c, new decimal[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            print(c);
+
+            var d = np.partition(a, 0, axis: 2);
+            AssertArray(d, new decimal[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
+        [TestMethod]
+        public void test_argpartition_3_DECIMAL()
+        {
+            var a = np.arange(22, 10, -1, np.Decimal).reshape((3, 4, 1));
+            var b = np.argpartition(a, 1, axis: 0);
+            AssertArray(b, new Int64[,,] { { { 2 }, { 2 }, { 2 }, { 2 } }, { { 1 }, { 1 }, { 1 }, { 1 } }, { { 0 }, { 0 }, { 0 }, { 0 } } });
+            print(b);
+
+            var c = np.argpartition(a, 2, axis: 1);
+            AssertArray(c, new Int64[,,] { { { 3 }, { 2 }, { 1 }, { 0 } }, { { 3 }, { 2 }, { 1 }, { 0 } }, { { 3 }, { 2 }, { 1 }, { 0 } } });
+            print(c);
+
+            var d = np.argpartition(a, 0, axis: 2);
+            AssertArray(d, new Int64[,,] { { { 0 }, { 0 }, { 0 }, { 0 } }, { { 0 }, { 0 }, { 0 }, { 0 } }, { { 0 }, { 0 }, { 0 }, { 0 } } });
+            print(d);
+
+            try
+            {
+                var e = np.partition(a, 4, axis: 1);
+                print(e);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            Assert.Fail("Should have caught the exception");
+
+        }
+
+        [TestMethod]
+        public void test_sort_2_DECIMAL()
+        {
+            var InputData = new decimal[]
+                {32.2m, 31.2m, 30.2m, 29.2m, 28.2m, 27.2m, 26.2m, 25.2m, 24.2m, 23.2m, 22.2m, 21.2m, 20.2m, 19.2m, 18.2m, 17.2m,
+                 16.2m, 15.2m, 14.2m, 13.2m, 12.2m, 11.2m, 10.2m, 9.2m,  8.2m,  7.2m,  6.2m,  5.2m,  4.2m,  3.2m,  2.2m,  1.2m};
+
+            var a = np.array(InputData).reshape(new shape(8, 4));
+            ndarray b = np.sort(a);                 // sort along the last axis
+            print(b);
+
+            var ExpectedDataB = new decimal[8, 4]
+            {
+             {29.2m, 30.2m, 31.2m, 32.2m},
+             {25.2m, 26.2m, 27.2m, 28.2m},
+             {21.2m, 22.2m, 23.2m, 24.2m},
+             {17.2m, 18.2m, 19.2m, 20.2m},
+             {13.2m, 14.2m, 15.2m, 16.2m},
+             {9.2m, 10.2m, 11.2m, 12.2m},
+             {5.2m,  6.2m,  7.2m,  8.2m},
+             {1.2m,  2.2m,  3.2m,  4.2m},
+            };
+
+            AssertArray(b, ExpectedDataB);
+
+            ndarray c = np.sort(a, axis: null);     // sort the flattened array
+            print(c);
+            print("********");
+
+            var ExpectedDataC = new decimal[]
+            {1.2m,  2.2m,  3.2m,  4.2m,  5.2m,  6.2m,  7.2m,  8.2m, 9.2m, 10.2m, 11.2m, 12.2m, 13.2m, 14.2m, 15.2m, 16.2m,
+            17.2m, 18.2m, 19.2m, 20.2m, 21.2m, 22.2m, 23.2m, 24.2m, 25.2m, 26.2m, 27.2m, 28.2m, 29.2m, 30.2m, 31.2m, 32.2m};
+
+            AssertArray(c, ExpectedDataC);
+
+            ndarray d = np.sort(a, axis: 0);        // sort along the first axis
+            print(d);
+
+            var ExpectedDataD = new decimal[8, 4]
+            {
+                {4.2m,  3.2m,  2.2m,  1.2m},
+                {8.2m,  7.2m,  6.2m,  5.2m},
+                {12.2m, 11.2m, 10.2m, 9.2m},
+                {16.2m, 15.2m, 14.2m, 13.2m},
+                {20.2m, 19.2m, 18.2m, 17.2m},
+                {24.2m, 23.2m, 22.2m, 21.2m},
+                {28.2m, 27.2m, 26.2m, 25.2m},
+                {32.2m, 31.2m, 30.2m, 29.2m},
+            };
+
+            AssertArray(d, ExpectedDataD);
+            print("********");
+
+        }
+
+        [TestMethod]
+        public void test_msort_1_DECIMAL()
+        {
+            var a = np.array(new decimal[,] { { 1, 4 }, { 3, 1 } });
+            ndarray b = np.msort(a);
+            print(b);
+            AssertArray(b, new decimal[,] { { 1, 1 }, { 3, 4 } });
+
+            a = np.arange(32.2, 0.2, -1.0, dtype: np.Decimal);
+            b = np.msort(a);
+
+            var ExpectedDataB = new decimal[]
+            {1.2m,  2.2m,  3.2m,  4.2m,  5.2m,  6.2m,  7.2m,  8.2m, 9.2m, 10.2m, 11.2m, 12.2m, 13.2m, 14.2m, 15.2m, 16.2m,
+            17.2m, 18.2m, 19.2m, 20.2m, 21.2m, 22.2m, 23.2m, 24.2m, 25.2m, 26.2m, 27.2m, 28.2m, 29.2m, 30.2m, 31.2m, 32.2m};
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+        }
+
+        [TestMethod]
+        public void test_ndarray_argsort_2_DECIMAL()
+        {
+            var ar = np.array(new decimal[] { 1, 2, 3, 1, 3, 4, 5, 4, 4, 1, 9, 6, 9, 11, 23, 9, 5, 0, 11, 12 }).reshape(new shape(5, 4));
+
+            ndarray perm1 = np.argsort(ar, kind: NPY_SORTKIND.NPY_MERGESORT);
+            ndarray perm2 = np.argsort(ar, kind: NPY_SORTKIND.NPY_QUICKSORT);
+            ndarray perm3 = np.argsort(ar);
+
+            print(perm1);
+
+            var Perm1Expected = new Int64[,]
+            {{0, 3, 1, 2},
+             {0, 1, 3, 2},
+             {1, 0, 3, 2},
+             {0, 3, 1, 2},
+             {1, 0, 2, 3}};
+            AssertArray(perm1, Perm1Expected);
+
+            print(perm2);
+            var Perm2Expected = new Int64[,]
+            {{0, 3, 1, 2},
+             {0, 1, 3, 2},
+             {1, 0, 3, 2},
+             {0, 3, 1, 2},
+             {1, 0, 2, 3}};
+            AssertArray(perm2, Perm2Expected);
+
+
+            print(perm3);
+            var Perm3Expected = new Int64[,]
+            {{0, 3, 1, 2},
+             {0, 1, 3, 2},
+             {1, 0, 3, 2},
+             {0, 3, 1, 2},
+             {1, 0, 2, 3}};
+            AssertArray(perm3, Perm3Expected);
+        }
+
+        [TestMethod]
+        public void test_argmin_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[] { 32, 33, 45, 98, 11, 02 }).reshape(new shape(2, 3));
+            print(a);
+
+            ndarray b = np.argmin(a);
+            print(b);
+            Assert.AreEqual(b.GetItem(0), (Int64)5);
+            print("********");
+
+            ndarray c = np.argmin(a, axis: 0);
+            print(c);
+            AssertArray(c, new Int64[] { 0, 1, 1 });
+            print("********");
+
+            ndarray d = np.argmin(a, axis: 1);
+            print(d);
+            AssertArray(d, new Int64[] { 0, 2 });
+            print("********");
+
+        }
+
+        [TestMethod]
+        public void test_argmax_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[] { 32, 33, 45, 98, 11, 02 }).reshape(new shape(2, 3));
+            print(a);
+            ndarray b = np.argmax(a);
+            print(b);
+            Assert.AreEqual(b.GetItem(0), (Int64)3);
+            print("********");
+
+            ndarray c = np.argmax(a, axis: 0);
+            print(c);
+            AssertArray(c, new Int64[] { 1, 0, 0 });
+            print("********");
+
+            ndarray d = np.argmax(a, axis: 1);
+            print(d);
+            AssertArray(d, new Int64[] { 2, 0 });
+            print("********");
+
+        }
+
+        [TestMethod]
+        public void test_searchsorted_1_DECIMAL()
+        {
+            ndarray arr = np.array(new decimal[] { 1, 2, 3, 4, 5 });
+            ndarray a = np.searchsorted(arr, 3);
+            print(a);
+            Assert.AreEqual(a.GetItem(0), (Int64)2);
+
+
+            ndarray b = np.searchsorted(arr, 3, side: NPY_SEARCHSIDE.NPY_SEARCHRIGHT);
+            print(b);
+            Assert.AreEqual(b.GetItem(0), (Int64)3);
+
+
+            ndarray c = np.searchsorted(arr, new Int32[] { -10, 10, 2, 3 });
+            print(c);
+            AssertArray(c, new Int64[] { 0, 5, 1, 2 });
+
+
+            ndarray d = np.searchsorted(np.array(new decimal[] { 15, 14, 13, 12, 11 }), 13);
+            print(d);
+            Assert.AreEqual(d.GetItem(0), (Int64)0);
+        }
+
+        [TestMethod]
+        public void test_resize_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[,] { { 0, 1 }, { 2, 3 } });
+            print(a);
+
+            ndarray b = np.resize(a, new shape(2, 3));
+            print(b);
+
+            var ExpectedDataB = new decimal[,]
+            {
+                { 0,1,2 },
+                { 3,0,1 },
+            };
+            AssertArray(b, ExpectedDataB);
+
+
+            ndarray c = np.resize(a, new shape(1, 4));
+            print(c);
+            var ExpectedDataC = new decimal[,]
+            {
+                { 0,1,2,3 },
+            };
+            AssertArray(c, ExpectedDataC);
+
+            ndarray d = np.resize(a, new shape(2, 4));
+            print(d);
+            var ExpectedDataD = new decimal[,]
+            {
+                { 0,1,2,3 },
+                { 0,1,2,3 },
+            };
+            AssertArray(d, ExpectedDataD);
+
+        }
+
+        [TestMethod]
+        public void test_squeeze_1_DECIMAL()
+        {
+            ndarray x = np.array(new decimal[,,] { { { 0 }, { 1 }, { 2 } } });
+            print(x);
+            AssertArray(x, new decimal[1, 3, 1] { { { 0 }, { 1 }, { 2 } } });
+
+            ndarray a = np.squeeze(x);
+            print(a);
+            AssertArray(a, new decimal[] { 0, 1, 2 });
+
+            ndarray b = np.squeeze(x, axis: 0);
+            print(b);
+            AssertArray(b, new decimal[3, 1] { { 0 }, { 1 }, { 2 } });
+
+            bool CaughtException = false;
+
+            try
+            {
+                ndarray c = np.squeeze(x, axis: 1);
+                print(c);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("cannot select an axis to squeeze out which has size not equal to one"))
+                    CaughtException = true;
+            }
+            Assert.IsTrue(CaughtException);
+
+            ndarray d = np.squeeze(x, axis: 2);
+            print(d);
+            AssertArray(d, new decimal[,] { { 0, 1, 2 } });
+        }
+
+        [TestMethod]
+        public void test_diagonal_1_DECIMAL()
+        {
+            ndarray a = np.arange(4, dtype: np.Decimal).reshape(new shape(2, 2));
+            print(a);
+            print("*****");
+
+            ndarray b = a.diagonal();
+            print(b);
+            AssertArray(b, new decimal[] { 0, 3 });
+            print("*****");
+
+            ndarray c = a.diagonal(1);
+            print(c);
+            AssertArray(c, new decimal[] { 1 });
+            print("*****");
+
+            a = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            print(a);
+            print("*****");
+            b = a.diagonal(0, // Main diagonals of two arrays created by skipping
+                           0, // across the outer(left)-most axis last and
+                           1); //the "middle" (row) axis first.
+
+            print(b);
+            AssertArray(b, new decimal[,] { { 0, 6 }, { 1, 7 } });
+            print("*****");
+
+            ndarray d = a.A(":", ":", 0);
+            print(d);
+            AssertArray(d, new decimal[,] { { 0, 2 }, { 4, 6 } });
+            print("*****");
+
+            ndarray e = a.A(":", ":", 1);
+            print(e);
+            AssertArray(e, new decimal[,] { { 1, 3 }, { 5, 7 } });
+            print("*****");
+        }
+
+        [TestMethod]
+        public void test_trace_1_DECIMAL()
+        {
+            ndarray a = np.trace(np.eye(3, dtype: np.Decimal));
+            print(a);
+            Assert.AreEqual(a.GetItem(0), 3.0m);
+            print("*****");
+
+            a = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            ndarray b = np.trace(a);
+            print(b);
+            AssertArray(b, new decimal[] { 6, 8 });
+            print("*****");
+
+            a = np.arange(24, dtype: np.Decimal).reshape(new shape(2, 2, 2, 3));
+            var c = np.trace(a);
+            print(c);
+            AssertArray(c, new decimal[,] { { 18, 20, 22 }, { 24, 26, 28 } });
+
+        }
+
+        [TestMethod]
+        public void test_nonzero_1_DECIMAL()
+        {
+            ndarray x = np.array(new decimal[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new Int64[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new Int64[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new decimal[] { 1, 2, 1, 1 });
+            print("*****");
+
+            //ndarray q = np.transpose(np.nonzero(x));
+            //print(q);
+
+        }
+
+        [TestMethod]
+        public void test_compress_1_DECIMAL()
+        {
+            ndarray a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
+            print(a);
+            print("*****");
+
+            ndarray b = np.compress(new int[] { 0, 1 }, a, axis: 0);
+            print(b);
+            AssertArray(b, new decimal[,] { { 3, 4 } });
+            print("*****");
+
+            ndarray c = np.compress(new bool[] { false, true, true }, a, axis: 0);
+            print(c);
+            AssertArray(c, new decimal[,] { { 3, 4 }, { 5, 6 } });
+            print("*****");
+
+            ndarray d = np.compress(new bool[] { false, true }, a, axis: 1);
+            print(d);
+            AssertArray(d, new decimal[,] { { 2 }, { 4 }, { 6 } });
+            print("*****");
+
+            ndarray e = np.compress(new bool[] { false, true }, a);
+            AssertArray(e, new decimal[] { 2 });
+            print(e);
+
+        }
+
+        [TestMethod]
+        public void test_any_1_DECIMAL()
+        {
+            decimal[] TestData = new decimal[] { 2.5m, -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            var x = np.array(TestData);
+            var y = np.any(x);
+
+            print(x);
+            print(y);
+            Assert.AreEqual(true, y.GetItem(0));
+
+            TestData = new decimal[] { 0.0m, 0.0m, 0.0m, 0.0m };
+            x = np.array(TestData);
+            y = np.any(x);
+
+            print(x);
+            print(y);
+            Assert.AreEqual(false, y.GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_all_1_DECIMAL()
+        {
+            decimal[] TestData = new decimal[] { 2.5m, -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            var x = np.array(TestData);
+            var y = np.all(x);
+
+            print(x);
+            print(y);
+            Assert.AreEqual(true, y.GetItem(0));
+
+            TestData = new decimal[] { 1.0m, 1.0m, 0.0m, 1.0m };
+            x = np.array(TestData);
+            y = np.all(x);
+
+            print(x);
+            print(y);
+            Assert.AreEqual(false, y.GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_ndarray_mean_1_DECIMAL()
+        {
+            var x = np.arange(0, 12, dtype: np.Decimal).reshape(new shape(3, -1));
+
+            print("X");
+            print(x);
+
+            var y = (ndarray)np.mean(x);
+            Assert.AreEqual(5.5m, y.GetItem(0));
+
+            print("Y");
+            print(y);
+
+            y = (ndarray)np.mean(x, axis: 0);
+            AssertArray(y, new decimal[] { 4, 5, 6, 7 });
+
+            print("Y");
+            print(y);
+
+            y = (ndarray)np.mean(x, axis: 1);
+            AssertArray(y, new decimal[] { 1.5m, 5.5m, 9.5m });
+
+            print("Y");
+            print(y);
+
+        }
+
+        [TestMethod]
+        public void test_place_1_DECIMAL()
+        {
+            var arr = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55 });
+            AssertArray(arr, new decimal[,] { { 0, 1, 2 }, { 44, 55, 44 } });
+            print(arr);
+
+            arr = np.arange(16, dtype: np.Decimal).reshape((2, 4, 2));
+            np.place(arr, arr > 12, new Int32[] { 33 });
+            AssertArray(arr, new decimal[,,] { { { 0, 1 }, { 2, 3 }, { 4, 5 }, { 6, 7 } }, { { 8, 9 }, { 10, 11 }, { 12, 33 }, { 33, 33 } } });
+            print(arr);
+
+            arr = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            np.place(arr, arr > 2, new Int32[] { 44, 55, 66, 77, 88, 99, 11, 22, 33 });
+            AssertArray(arr, new decimal[,] { { 0, 1, 2 }, { 44, 55, 66 } });
+            print(arr);
+
+        }
+
+        [TestMethod]
+        public void test_extract_1_DECIMAL()
+        {
+            var arr = np.arange(12, dtype: np.Decimal).reshape((3, 4));
+            var condition = np.mod(arr, 3) == 0;
+            print(condition);
+
+            var b = np.extract(condition, arr);
+            AssertArray(b, new decimal[] { 0, 3, 6, 9 });
+            print(b);
+        }
+
+        [TestMethod]
+        public void test_viewfromaxis_1_DECIMAL()
+        {
+            decimal[] TestData = new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var a = np.zeros_like(TestData).reshape(new shape(3, 2, -1));
+            //print(a);
+
+
+            var b = np.ViewFromAxis(a, 0);
+            b[":"] = 99;
+            //print(a);
+            AssertArray(a, new decimal[,,] { { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 0), new decimal[,] { { 297, 0 }, { 0, 0 } });
+
+            b = np.ViewFromAxis(a, 1);
+            b[":"] = 11;
+            AssertArray(a, new decimal[,,] { { { 11, 0 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 1), new decimal[,] { { 22, 0 }, { 99, 0 }, { 99, 0 } });
+
+            b = np.ViewFromAxis(a, 2);
+            b[":"] = 22;
+            AssertArray(a, new decimal[,,] { { { 22, 22 }, { 11, 0 } }, { { 99, 0 }, { 0, 0 } }, { { 99, 0 }, { 0, 0 } } });
+            //print(a);
+            AssertArray(np.sum(a, axis: 2), new decimal[,] { { 44, 11 }, { 99, 0 }, { 99, 0 } });
+
+            Assert.AreEqual((decimal)253, np.sum(a).GetItem(0));
+
+
+        }
+
+        [TestMethod]
+        public void test_unwrap_1_DECIMAL()
+        {
+            double retstep = 0;
+
+            var phase = np.linspace(0, Math.PI, ref retstep, num: 5, dtype: np.Decimal);
+            phase["3:"] = phase.A("3:") + Math.PI;
+            print(phase);
+
+            var x = np.unwrap(phase);
+            AssertArray(x, new decimal[] { 0, 00.785398163397448m, 01.5707963267949m, -00.78539816339746m, -00.00000000000001m });
+            print(x);
+        }
 
         #endregion
 

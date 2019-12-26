@@ -62,7 +62,6 @@ namespace NumpyDotNetTests
             print(np.__version__);
         }
 
-
         [TestMethod]
         public void test_asfarray_1()
         {
@@ -100,7 +99,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
  
         [TestMethod]
         public void test_linspace_1()
@@ -120,7 +118,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-
         [TestMethod]
         public void test_logspace_1()
         {
@@ -136,7 +133,6 @@ namespace NumpyDotNetTests
             AssertArray(c, new double[] { 4.0, 5.0396842, 6.34960421, 8.0 });
             print(c);
         }
-
 
         [TestMethod]
         public void test_geomspace_1()
@@ -157,7 +153,6 @@ namespace NumpyDotNetTests
             AssertArray(d, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
             print(d);
         }
-
   
         [TestMethod]
         public void test_meshgrid_1()
@@ -204,7 +199,6 @@ namespace NumpyDotNetTests
 
             print("************");
         }
-
   
         [TestMethod]
         public void test_meshgrid_2()
@@ -264,7 +258,6 @@ namespace NumpyDotNetTests
             print("************");
         }
 
-
         [TestMethod]
         public void test_OneDimensionalArray()
         {
@@ -279,7 +272,6 @@ namespace NumpyDotNetTests
             AssertShape(a, 4);
             AssertStrides(a, sizeof(double));
         }
-
 
         [TestMethod]
         public void test_arange_2to11()
@@ -338,6 +330,7 @@ namespace NumpyDotNetTests
             AssertStrides(a, sizeof(Int32) * 3, sizeof(Int32));
 
         }
+
         [TestMethod]
         public void test_arange_reshape_53()
         {
@@ -352,8 +345,6 @@ namespace NumpyDotNetTests
             AssertShape(a, 5, 3);
             AssertStrides(a, sizeof(Int32) * 3, sizeof(Int32));
         }
-
-
 
         [TestMethod]
         public void test_reverse_array()
@@ -376,7 +367,6 @@ namespace NumpyDotNetTests
             var z = x.reshape((5,-1));
             print(z);
         }
-
 
         //[Ignore] // throws an error in python code
         [TestMethod]
@@ -417,7 +407,6 @@ namespace NumpyDotNetTests
             AssertStrides(x, sizeof(double) * 15, sizeof(double));
 
         }
-
 
         [TestMethod]
         public void test_1_OnBorder_0Inside_2()
@@ -485,7 +474,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_F2C_1()
         {
@@ -531,7 +519,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual(24, x.nbytes);
 
         }
-
 
         [TestMethod]
         public void test_tofile_fromfile_text()
@@ -592,7 +579,6 @@ namespace NumpyDotNetTests
                                          19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
         }
 
-
         [TestMethod]
         public void test_ndarray_byteswap()
         {
@@ -638,7 +624,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_ndarray_view()
         {
@@ -673,7 +658,6 @@ namespace NumpyDotNetTests
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
         }
-
 
         [TestMethod]
         public void test_ndarray_view_1()
@@ -875,7 +859,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_ndarray_view2_reshape()
         {
@@ -1017,7 +1000,6 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
         }
-
  
         [TestMethod]
         public void test_ndarray_delete2()
@@ -1122,8 +1104,6 @@ namespace NumpyDotNetTests
             AssertShape(x, 8, 4);
         }
 
-   
-
         [TestMethod]
         public void test_pythonindexing_1()
         {
@@ -1163,7 +1143,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_ndarray_unique_1()
         {
@@ -1196,7 +1175,6 @@ namespace NumpyDotNetTests
 
 
         }
-
  
         [TestMethod]
         public void test_ndarray_where_1()
@@ -1212,7 +1190,6 @@ namespace NumpyDotNetTests
       
   
         }
-
 
         [TestMethod]
         public void test_ndarray_where_2()
@@ -1235,7 +1212,6 @@ namespace NumpyDotNetTests
             print(z);
             AssertArray(z, new UInt32[] { 3, 3 });
         }
-
 
         [TestMethod]
         public void test_ndarray_where_3()
@@ -1290,7 +1266,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-
         [TestMethod]
         public void test_ndarray_where_5()
         {
@@ -1315,7 +1290,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_ndarray_unpackbits_1()
@@ -1358,8 +1332,6 @@ namespace NumpyDotNetTests
             AssertShape(z, 3, 4);
 
         }
-
-  
 
         [TestMethod]
         public void test_arange_slice_1()
@@ -1445,7 +1417,6 @@ namespace NumpyDotNetTests
             AssertStrides(d, 8,2,16);
 
         }
-
 
         [TestMethod]
         public void test_arange_slice_2()
@@ -1539,7 +1510,6 @@ namespace NumpyDotNetTests
             AssertStrides(b, 8, 2, 176, 16);
         }
 
-
         [TestMethod]
         public void test_arange_slice_2B()
         {
@@ -1581,8 +1551,6 @@ namespace NumpyDotNetTests
             AssertStrides(b, 32,8,2); 
 
         }
-
-  
 
         [TestMethod]
         public void test_arange_slice_2C2()
@@ -1627,8 +1595,6 @@ namespace NumpyDotNetTests
             AssertShape(carray, 2, 4, 1);
             AssertStrides(carray, 8,2,2); 
         }
-
-
 
         [TestMethod]
         public void test_ndarray_NAN()
@@ -1677,8 +1643,6 @@ namespace NumpyDotNetTests
             AssertStrides(c, 4);
         }
 
-
-
         [TestMethod]
         public void test_insert_2()
         {
@@ -1711,7 +1675,6 @@ namespace NumpyDotNetTests
             AssertStrides(c, 4);
 
         }
-
     
         [TestMethod]
         public void test_append_1()
@@ -1731,7 +1694,6 @@ namespace NumpyDotNetTests
             AssertShape(b, 7);
             AssertStrides(b, 4);
         }
-
 
         [TestMethod]
         public void test_append_1d()
@@ -1897,7 +1859,6 @@ namespace NumpyDotNetTests
             print(x);
         }
 
-
         [TestMethod]
         public void test_intersect1d_1()
         {
@@ -1913,7 +1874,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_setxor1d_1()
         {
@@ -1927,7 +1887,6 @@ namespace NumpyDotNetTests
             AssertShape(c, 4);
             AssertStrides(c, 4);
         }
-
 
         [TestMethod]
         public void test_in1d_1()
@@ -2015,7 +1974,6 @@ namespace NumpyDotNetTests
             AssertStrides(a, 4);
         }
 
-
         [TestMethod]
         public void test_union1d_1()
         {
@@ -2031,7 +1989,6 @@ namespace NumpyDotNetTests
 
 
         }
-
 
         [TestMethod]
         public void test_Ellipsis_indexing_1()
@@ -2081,7 +2038,6 @@ namespace NumpyDotNetTests
             AssertArray(i, new UInt32[,] { { 12 } });
             print(i);
         }
-
 
         [TestMethod]
         public void test_Ellipsis_indexing_2()
@@ -2203,8 +2159,5 @@ namespace NumpyDotNetTests
 
 
         }
-
-
-
     }
 }
