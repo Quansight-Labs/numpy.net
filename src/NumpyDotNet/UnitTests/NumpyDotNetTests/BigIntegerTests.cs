@@ -36,7 +36,7 @@ namespace NumpyDotNetTests
 
         }
 
-#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         #region from ArrayCreationTests
         [TestMethod]
