@@ -64,29 +64,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_1_DECIMAL()
-        {
-            var x = np.array(new decimal[,] { { 11 }, { 2 }, { 3 } });
-            var y = np.array(new decimal[] { 4, 5, 6 });
-            var b = np.broadcast(x, y);
-            Assert.AreEqual(b.shape.iDims.Length, 2);
-            Assert.AreEqual(b.shape.iDims[0], 3);
-            Assert.AreEqual(b.shape.iDims[1], 3);
-            print(b.shape);
-
-            Assert.AreEqual(b.index, 0);
-            print(b.index);
-
-            foreach (var uv in b)
-            {
-                print(uv);
-            }
-            Assert.AreEqual(b.index, 9);
-            print(b.index);
-
-        }
-
-        [TestMethod]
         public void test_broadcast_2()
         {
             var x = np.array(new int[,] { { 11 }, { 2 }, { 3 } });
@@ -110,7 +87,6 @@ namespace NumpyDotNetTests
             print(b.index);
 
         }
-
 
         [TestMethod]
         public void test_broadcast_3()
@@ -161,31 +137,6 @@ namespace NumpyDotNetTests
 
         }
 
-
-        [TestMethod]
-        public void test_broadcast_to_1_DECIMAL()
-        {
-            var a = np.broadcast_to(5m, (4, 4));
-            AssertArray(a, new decimal[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
-            AssertStrides(a, 0, 0);
-            print(a);
-            print(a.shape);
-            print(a.strides);
-            print("*************");
-
-
-            var b = np.broadcast_to(new decimal[] { 1, 2, 3 }, (3, 3));
-            AssertArray(b, new decimal[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
-            AssertStrides(b, 0, 16);
-            print(b);
-            print(b.shape);
-            print(b.strides);
-            print("*************");
-
-
-        }
-
-
         [TestMethod]
         public void test_broadcast_to_2()
         {
@@ -203,7 +154,6 @@ namespace NumpyDotNetTests
             print(b.strides);
             print("*************");
         }
-
 
         [TestMethod]
         public void test_broadcast_to_3()
@@ -234,18 +184,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_arrays_1_DECIMAL()
-        {
-            var x = np.array(new decimal[,] { { 1, 2, 3 } });
-            var y = np.array(new decimal[,] { { 4 }, { 5 } });
-            var z = np.broadcast_arrays(false, new ndarray[] { x, y });
-
-            print(z);
-
-        }
-
-
-        [TestMethod]
         public void test_as_strided_1()
         {
             var y = np.zeros((10, 10));
@@ -266,32 +204,6 @@ namespace NumpyDotNetTests
             AssertStrides(b, 0, 8);
             print(b.strides);
             Assert.AreEqual(8000000, b.nbytes);
-            print(b.nbytes);
-
-        }
-
-
-        [TestMethod]
-        public void test_as_strided_1_DECIMAL()
-        {
-            var y = np.zeros((10, 10), np.Decimal);
-            AssertStrides(y, 160, 16);
-            print(y.strides);
-
-            var n = 1000;
-            var a = np.arange(n, dtype: np.Decimal);
-
-            var b = np.as_strided(a, (n, n), (0, 8));
-
-            //print(b);
-
-            Assert.AreEqual(1000000, b.size);
-            print(b.size);
-            AssertShape(b, 1000, 1000);
-            print(b.shape);
-            AssertStrides(b, 0, 8);
-            print(b.strides);
-            Assert.AreEqual(16000000, b.nbytes);
             print(b.nbytes);
 
         }

@@ -6917,16 +6917,300 @@ namespace NumpyDotNetTests
 
         #region from IndexTricksTests
 
+        [TestMethod]
+        public void test_mgrid_1_DECIMAL()
+        {
+            var a = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m) });
+            print(a);
+            AssertArray(a, new decimal[] { 0, 1, 2, 3, 4 });
+            print("************");
+
+            var b = (ndarray)np.mgrid(new Slice[] { new Slice(0.0m, 5.5m) });
+            print(b);
+            AssertArray(b, new decimal[] { 0.0m, 1.0m, 2.0m, 3.0m, 4.0m, 5.0m });
+            print("************");
+
+            var c = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m), new Slice(0m, 5m) });
+            print(c);
+
+            var ExpectedCArray = new decimal[,,]
+                {{{0, 0, 0, 0, 0},  {1, 1, 1, 1, 1},  {2, 2, 2, 2, 2},  {3, 3, 3, 3, 3},  {4, 4, 4, 4, 4}},
+                 {{0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4}}};
+            AssertArray(c, ExpectedCArray);
+
+
+            print("************");
+
+            var d = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5.5m), new Slice(0m, 5.5m) });
+            print(d);
+            var ExpectedDArray = new decimal[,,]
+                {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
+                 {{0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 4, 5}}};
+            AssertArray(d, ExpectedDArray);
+
+            print("************");
+
+            var e = (ndarray)np.mgrid(new Slice[] { new Slice(3m, 5m), new Slice(4m, 6m), new Slice(2m, 4.2m) });
+            print(e);
+            var ExpectedEArray = new decimal[,,,]
+                {
+                    {{{3, 3, 3}, {3, 3, 3}}, {{4, 4, 4}, {4, 4, 4}}},
+                    {{{4, 4, 4}, {5, 5, 5}}, {{4, 4, 4}, {5, 5, 5}}},
+                    {{{2, 3, 4}, {2, 3, 4}}, {{2, 3, 4}, {2, 3, 4}}},
+                };
+            AssertArray(e, ExpectedEArray);
+
+        }
+
+        [TestMethod]
+        public void test_ogrid_1_DECIMAL()
+        {
+            var a = (ndarray)np.ogrid(new Slice[] { new Slice(0m, 5m) });
+            print(a);
+            AssertArray(a, new decimal[] { 0, 1, 2, 3, 4 });
+            print("************");
+
+            var b = (ndarray)np.ogrid(new Slice[] { new Slice(0.0m, 5.5m) });
+            print(b);
+            AssertArray(b, new decimal[] { 0.0m, 1.0m, 2.0m, 3.0m, 4.0m, 5.0m });
+            print("************");
+
+            var c = (ndarray[])np.ogrid(new Slice[] { new Slice(0m, 5m), new Slice(0m, 5m) });
+            print(c);
+            AssertArray(c[0], new decimal[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c[1], new decimal[,] { { 0, 1, 2, 3, 4 } });
+
+
+            print("************");
+
+            var d = (ndarray[])np.ogrid(new Slice[] { new Slice(0m, 5.5m), new Slice(0m, 5.5m) });
+            print(d);
+            AssertArray(d[0], new decimal[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+            AssertArray(d[1], new decimal[,] { { 0, 1, 2, 3, 4, 5 } });
+
+            print("************");
+
+            var e = (ndarray[])np.ogrid(new Slice[] { new Slice(3m, 5m), new Slice(4m, 6m), new Slice(2m, 4.2m) });
+            print(e);
+            AssertArray(e[0], new decimal[,,] { { { 3 } }, { { 4 } } });
+            AssertArray(e[1], new decimal[,,] { { { 4 }, { 5 } } });
+            AssertArray(e[2], new decimal[,,] { { { 2, 3, 4 } } });
+
+        }
+
+        [TestMethod]
+        public void test_fill_diagonal_1_DECIMAL()
+        {
+            var a = np.zeros((3, 3), np.Decimal);
+            np.fill_diagonal(a, 5);
+            AssertArray(a, new decimal[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
+            print(a);
+
+            a = np.zeros((3, 3, 3, 3), np.Decimal);
+            np.fill_diagonal(a, 4);
+            AssertArray(a[0, 0] as ndarray, new decimal[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            print(a[0, 0]);
+            AssertArray(a[1, 1] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
+            print(a[1, 1]);
+            AssertArray(a[2, 2] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
+            print(a[2, 2]);
+
+            // tall matrices no wrap
+            a = np.zeros((5, 3), np.Decimal);
+            np.fill_diagonal(a, 4);
+            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            print(a);
+
+            // tall matrices wrap
+            a = np.zeros((5, 3), np.Decimal);
+            np.fill_diagonal(a, 4, wrap: true);
+            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
+            print(a);
+
+            // wide matrices wrap
+            a = np.zeros((3, 5), np.Decimal);
+            np.fill_diagonal(a, 4, wrap: true);
+            AssertArray(a, new decimal[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
+            print(a);
+
+
+        }
+
+        [TestMethod]
+        public void test_diag_indices_1_DECIMAL()
+        {
+            var di = np.diag_indices(4);
+            AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
+            AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
+            print(di);
+
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            a[di] = 100;
+
+            AssertArray(a, new decimal[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
+            print(a);
+
+            return;
+
+        }
+
+        [TestMethod]
+        public void test_diag_indices_from_1_DECIMAL()
+        {
+            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            var di = np.diag_indices_from(a);
+            AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
+            AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
+            print(di);
+        }
 
         #endregion
 
         #region from StrideTricksTests
 
+        [TestMethod]
+        public void test_broadcast_1_DECIMAL()
+        {
+            var x = np.array(new decimal[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new decimal[] { 4, 5, 6 });
+            var b = np.broadcast(x, y);
+            Assert.AreEqual(b.shape.iDims.Length, 2);
+            Assert.AreEqual(b.shape.iDims[0], 3);
+            Assert.AreEqual(b.shape.iDims[1], 3);
+            print(b.shape);
+
+            Assert.AreEqual(b.index, 0);
+            print(b.index);
+
+            foreach (var uv in b)
+            {
+                print(uv);
+            }
+            Assert.AreEqual(b.index, 9);
+            print(b.index);
+
+        }
+
+        [TestMethod]
+        public void test_broadcast_to_1_DECIMAL()
+        {
+            var a = np.broadcast_to(5m, (4, 4));
+            AssertArray(a, new decimal[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
+            AssertStrides(a, 0, 0);
+            print(a);
+            print(a.shape);
+            print(a.strides);
+            print("*************");
+
+
+            var b = np.broadcast_to(new decimal[] { 1, 2, 3 }, (3, 3));
+            AssertArray(b, new decimal[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            AssertStrides(b, 0, 16);
+            print(b);
+            print(b.shape);
+            print(b.strides);
+            print("*************");
+
+
+        }
+
+        [TestMethod]
+        public void test_broadcast_arrays_1_DECIMAL()
+        {
+            var x = np.array(new decimal[,] { { 1, 2, 3 } });
+            var y = np.array(new decimal[,] { { 4 }, { 5 } });
+            var z = np.broadcast_arrays(false, new ndarray[] { x, y });
+
+            print(z);
+
+        }
+
+        [TestMethod]
+        public void test_as_strided_1_DECIMAL()
+        {
+            var y = np.zeros((10, 10), np.Decimal);
+            AssertStrides(y, 160, 16);
+            print(y.strides);
+
+            var n = 1000;
+            var a = np.arange(n, dtype: np.Decimal);
+
+            var b = np.as_strided(a, (n, n), (0, 8));
+
+            //print(b);
+
+            Assert.AreEqual(1000000, b.size);
+            print(b.size);
+            AssertShape(b, 1000, 1000);
+            print(b.shape);
+            AssertStrides(b, 0, 8);
+            print(b.strides);
+            Assert.AreEqual(16000000, b.nbytes);
+            print(b.nbytes);
+
+        }
 
         #endregion
 
         #region from IteratorTests
 
+        [TestMethod]
+        public void test_nditer_1_DECIMAL()
+        {
+            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));
+            var b = np.array(new decimal[] { 7, 8, 9 });
+
+            foreach (var aa in new nditer(a))
+            {
+                print(aa);
+            }
+
+            foreach (var aa in new nditer((a, b)))
+            {
+                print(aa);
+            }
+
+            foreach (var aa in new nditer((a, b, a, b)))
+            {
+                print(aa);
+            }
+
+        }
+
+        [TestMethod]
+        public void test_ndindex_1_DECIMAL()
+        {
+            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));  // force numpy to be initialized
+
+            foreach (var aa in new ndindex((2, 3)))
+            {
+                print(aa);
+            }
+
+
+            foreach (var aa in new ndindex((2, 3, 2)))
+            {
+                print(aa);
+            }
+
+            foreach (var aa in new ndindex((3)))
+            {
+                print(aa);
+            }
+
+        }
+
+        [TestMethod]
+        public void test_ndenumerate_1_DECIMAL()
+        {
+            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));
+
+            foreach (ValueTuple<long[], object> aa in new ndenumerate(a))
+            {
+                print(aa.Item1);
+                print(aa.Item2);
+            }
+        }
 
         #endregion
 

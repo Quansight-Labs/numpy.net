@@ -63,8 +63,6 @@ namespace NumpyDotNetTests
         }
 
 #endif
-
-
         [TestMethod]
         public void test_mgrid_1()
         {
@@ -110,53 +108,6 @@ namespace NumpyDotNetTests
 
         }
 
-
-        [TestMethod]
-        public void test_mgrid_1_DECIMAL()
-        {
-            var a = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m) });
-            print(a);
-            AssertArray(a, new decimal[] { 0, 1, 2, 3, 4 });
-            print("************");
-
-            var b = (ndarray)np.mgrid(new Slice[] { new Slice(0.0m, 5.5m) });
-            print(b);
-            AssertArray(b, new decimal[] { 0.0m, 1.0m, 2.0m, 3.0m, 4.0m, 5.0m });
-            print("************");
-
-            var c = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m), new Slice(0m, 5m) });
-            print(c);
-
-            var ExpectedCArray = new decimal[,,]
-                {{{0, 0, 0, 0, 0},  {1, 1, 1, 1, 1},  {2, 2, 2, 2, 2},  {3, 3, 3, 3, 3},  {4, 4, 4, 4, 4}},
-                 {{0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4}}};
-            AssertArray(c, ExpectedCArray);
-
-
-            print("************");
-
-            var d = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5.5m), new Slice(0m, 5.5m) });
-            print(d);
-            var ExpectedDArray = new decimal[,,]
-                {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
-                 {{0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 4, 5}}};
-            AssertArray(d, ExpectedDArray);
-
-            print("************");
-
-            var e = (ndarray)np.mgrid(new Slice[] { new Slice(3m, 5m), new Slice(4m, 6m), new Slice(2m, 4.2m) });
-            print(e);
-            var ExpectedEArray = new decimal[,,,]
-                {
-                    {{{3, 3, 3}, {3, 3, 3}}, {{4, 4, 4}, {4, 4, 4}}},
-                    {{{4, 4, 4}, {5, 5, 5}}, {{4, 4, 4}, {5, 5, 5}}},
-                    {{{2, 3, 4}, {2, 3, 4}}, {{2, 3, 4}, {2, 3, 4}}},
-                };
-            AssertArray(e, ExpectedEArray);
-
-        }
-
-
         [TestMethod]
         public void test_ogrid_1()
         {
@@ -192,43 +143,6 @@ namespace NumpyDotNetTests
             AssertArray(e[2], new double[,,] { { { 2, 3, 4 } } });
 
         }
-
-        [TestMethod]
-        public void test_ogrid_1_DECIMAL()
-        {
-            var a = (ndarray)np.ogrid(new Slice[] { new Slice(0m, 5m) });
-            print(a);
-            AssertArray(a, new decimal[] { 0, 1, 2, 3, 4 });
-            print("************");
-
-            var b = (ndarray)np.ogrid(new Slice[] { new Slice(0.0m, 5.5m) });
-            print(b);
-            AssertArray(b, new decimal[] { 0.0m, 1.0m, 2.0m, 3.0m, 4.0m, 5.0m });
-            print("************");
-
-            var c = (ndarray[])np.ogrid(new Slice[] { new Slice(0m, 5m), new Slice(0m, 5m) });
-            print(c);
-            AssertArray(c[0], new decimal[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
-            AssertArray(c[1], new decimal[,] { { 0, 1, 2, 3, 4 } });
-
-
-            print("************");
-
-            var d = (ndarray[])np.ogrid(new Slice[] { new Slice(0m, 5.5m), new Slice(0m, 5.5m) });
-            print(d);
-            AssertArray(d[0], new decimal[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-            AssertArray(d[1], new decimal[,] { { 0, 1, 2, 3, 4, 5 } });
-
-            print("************");
-
-            var e = (ndarray[])np.ogrid(new Slice[] { new Slice(3m, 5m), new Slice(4m, 6m), new Slice(2m, 4.2m) });
-            print(e);
-            AssertArray(e[0], new decimal[,,] { { { 3 } }, { { 4 } } });
-            AssertArray(e[1], new decimal[,,] { { { 4 }, { 5 } } });
-            AssertArray(e[2], new decimal[,,] { { { 2, 3, 4 } } });
-
-        }
-
 
         [TestMethod]
         public void test_fill_diagonal_1()
@@ -269,44 +183,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fill_diagonal_1_DECIMAL()
-        {
-            var a = np.zeros((3, 3), np.Decimal);
-            np.fill_diagonal(a, 5);
-            AssertArray(a, new decimal[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
-            print(a);
-
-            a = np.zeros((3, 3, 3, 3), np.Decimal);
-            np.fill_diagonal(a, 4);
-            AssertArray(a[0, 0] as ndarray, new decimal[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
-            print(a[0, 0]);
-            AssertArray(a[1, 1] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
-            print(a[1, 1]);
-            AssertArray(a[2, 2] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
-            print(a[2, 2]);
-
-            // tall matrices no wrap
-            a = np.zeros((5, 3), np.Decimal);
-            np.fill_diagonal(a, 4);
-            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
-            print(a);
-
-            // tall matrices wrap
-            a = np.zeros((5, 3), np.Decimal);
-            np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
-            print(a);
-
-            // wide matrices wrap
-            a = np.zeros((3, 5), np.Decimal);
-            np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new decimal[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
-            print(a);
-
-
-        }
-
-        [TestMethod]
         public void test_diag_indices_1()
         {
             var di = np.diag_indices(4);
@@ -318,25 +194,6 @@ namespace NumpyDotNetTests
             a[di] = 100;
 
             AssertArray(a, new Int32[,] { {100,1,2,3 }, {4,100,6,7 }, {8, 9, 100, 11 }, { 12,13,14,100 } });
-            print(a);
-
-            return;
-
-        }
-
-
-        [TestMethod]
-        public void test_diag_indices_1_DECIMAL()
-        {
-            var di = np.diag_indices(4);
-            AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
-            AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
-            print(di);
-
-            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
-            a[di] = 100;
-
-            AssertArray(a, new decimal[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
             print(a);
 
             return;
