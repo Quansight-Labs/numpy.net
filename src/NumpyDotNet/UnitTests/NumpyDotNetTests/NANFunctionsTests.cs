@@ -45,35 +45,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nanprod_1_DECIMAL()
-        {
-
-            var x = np.nanprod(1m);
-            Assert.AreEqual(1m, x.GetItem(0));
-            print(x);
-
-            var y = np.nanprod(new decimal[] { 1 });
-            Assert.AreEqual(1m, y.GetItem(0));
-            print(y);
-
-  
-
-            var a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
-            var b = np.nanprod(a);
-            Assert.AreEqual(24.0m, b.GetItem(0));
-            print(b);
-
-            var c = np.nanprod(a, axis: 0);
-            AssertArray(c, new decimal[] { 3, 8 });
-            print(c);
-
-            var d = np.nanprod(a, axis: 1);
-            AssertArray(d, new decimal[] { 2, 12 });
-            print(d);
-
-            return;
-        }
-        [TestMethod]
         public void test_nansum_1()
         {
             var a = np.nansum(1);
@@ -265,7 +236,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
 
         [TestMethod]
         public void test_nanmedian_1()
@@ -492,7 +462,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_nanmin_4()
         {
@@ -511,7 +480,6 @@ namespace NumpyDotNetTests
             print(d);
 
         }
-
 
         [TestMethod]
         public void test_nanmax_1()
@@ -630,8 +598,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-
-
 
     }
 }
