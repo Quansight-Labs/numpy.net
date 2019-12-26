@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.05</version>
+    <version>0.9.07</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,13 +10,14 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.</description>
-    <releaseNotes>Initial release of the library</releaseNotes>
+    <releaseNotes>Adding support for Decimal data types, performance improvements and small bug fixes.</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
-    <tags>NumPy, .NET, C#,</tags>
+    <tags>NumPy, .NET, C#, Financial, Matrix</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />
       <dependency id="NETStandard.Library" version="2.0.3" />
 	  <dependency id="System.Dynamic.Runtime" version="4.3.0" />
+	  <dependency id="System.Numerics" version="4.0.0" />
     </dependencies>
 	
   </metadata>
