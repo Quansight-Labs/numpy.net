@@ -42,15 +42,13 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 * System.UInt64
 * System.Int64
 * System.Single (float)
-* System.Double.
+* System.Double
+* System.Decimal (exclusive feature!)
 
-##### Currently we have partial support of the following .NET data types:
-
-* System.Decimal
 
 ##### Future plans include support for:
 
-* System.Numerics.Complex
+* System.Numerics.Complex  (in active development)
 * System.Numerics.BigInteger
 
 ## Accessing the underlying array
