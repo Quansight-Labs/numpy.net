@@ -12,24 +12,31 @@ namespace NumpyDotNetTests
     [TestClass]
     public class ComplexNumbersTests : TestBaseClass
     {
-        [Ignore]
         [TestMethod]
         public void xxx_ComplexNumbers_Placeholder()
         {
+            Complex[] ca = new Complex[] { new Complex(5, 678901), 4, 3, 2, 1 };
+            print(ca);
+           
+
+            var kevin = np.array(ca, copy: false);
+
             System.Numerics.Complex c = new System.Numerics.Complex(1.2, 2.0);
             Console.WriteLine(c.Real);
             Console.WriteLine(c.Imaginary);
 
             c = c * 2;
 
+            c = 5;
+
             Console.WriteLine(c.Real);
             Console.WriteLine(c.Imaginary);
 
-            var d1 = Convert.ToDecimal(c);
+            //var d1 = Convert.ToDecimal(c);
 
-            var d2 = Convert.ToDouble(c);
+            //var d2 = Convert.ToDouble(c);
 
-            var cc = new System.Numerics.Complex(d2, 0);
+            //var cc = new System.Numerics.Complex(d2, 0);
         }
 
 #if COMPLEX_NUMBERS_UNIT_TESTS_TODO
