@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet.UnitTests</id>
-    <version>0.9.05</version>
+    <version>0.9.08</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,9 +10,9 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package provides the unit tests for the NumpyDotNet library.</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Adding support for Decimal data types</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
-    <tags>NumPy, .NET, C#,</tags>
+    <tags>NNumPy, .NET, C#, Financial, Matrix</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />
       <dependency id="NETStandard.Library" version="2.0.3" />
