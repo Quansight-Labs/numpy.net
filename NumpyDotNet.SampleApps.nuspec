@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet.SampleApps</id>
-    <version>0.9.06</version>
+    <version>0.9.08</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -12,7 +12,7 @@
     <description>This package provides the sample apps for the NumpyDotNet library.</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
-    <tags>NumPy, .NET, C#,</tags>
+    <tags>NumPy, .NET, C#, Financial, Matrix</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />
       <dependency id="NETStandard.Library" version="2.0.3" />

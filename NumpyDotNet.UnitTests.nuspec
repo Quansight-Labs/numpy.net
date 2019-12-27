@@ -12,7 +12,7 @@
     <description>This package provides the unit tests for the NumpyDotNet library.</description>
     <releaseNotes>Adding support for Decimal data types</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
-    <tags>NNumPy, .NET, C#, Financial, Matrix</tags>
+    <tags>NumPy, .NET, C#, Financial, Matrix</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />
       <dependency id="NETStandard.Library" version="2.0.3" />
