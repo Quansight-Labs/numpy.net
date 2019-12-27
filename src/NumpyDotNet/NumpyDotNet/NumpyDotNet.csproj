@@ -8,7 +8,7 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides an API to the .NET implementation of NumPy.</Description>
     <Copyright>Copyright 2020, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.07</Version>
+    <Version>0.9.08</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.07</version>
+    <version>0.9.08</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -17,7 +17,6 @@
       <dependency id="Microsoft.CSharp" version="4.5.0" />
       <dependency id="NETStandard.Library" version="2.0.3" />
 	  <dependency id="System.Dynamic.Runtime" version="4.3.0" />
-	  <dependency id="System.Numerics" version="4.0.0" />
     </dependencies>
 	
   </metadata>
