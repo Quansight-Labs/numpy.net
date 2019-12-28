@@ -49,9 +49,10 @@ using NpyArray_UCS4 = System.UInt32;
 
 namespace NumpyLib
 {
+
+
     internal partial class numpyinternal
     {
-        internal delegate object NumericOperation(object bValue, object operand);
 
         internal static NumericOperation GetOperation(ref NpyArray srcArray, NpyArray_Ops operationType)
         {
@@ -62,7 +63,7 @@ namespace NumpyLib
                     {
                         case NPY_TYPES.NPY_BOOL:
                             srcArray = NpyArray_CastToType(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_INT32), false);
-                            return INT32_AddOperation;
+                            break;
                         default:
                             break;
 
@@ -75,6 +76,8 @@ namespace NumpyLib
             return GetOperation(srcArray.data, operationType);
         }
 
+
+
         internal static NumericOperation GetOperation(VoidPtr vp, NpyArray_Ops operationType)
         {
             NPY_TYPES ItemType = vp.type_num;
@@ -84,39 +87,9 @@ namespace NumpyLib
             switch (operationType)
             {
                 case NpyArray_Ops.npy_op_add:
-                    {
-                        #region AddOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return INT32_AddOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_AddOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_AddOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_AddOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_AddOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_AddOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_AddOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_AddOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_AddOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_AddOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_AddOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_AddOperation;
-                            default:
-                                return AddOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).AddOperation;
+                }
                 case NpyArray_Ops.npy_op_subtract:
                     {
                         #region SubtractOperation
@@ -1373,30 +1346,35 @@ namespace NumpyLib
 
             //PerformNumericOpScalarIter(srcArray, destArray, operand, operation);
 
-            PerformNumericOpScalar(srcArray, destArray, operand, destArray.dimensions, 0, 0, 0, operation);
+            NumericOperations numericOperations = NumericOperations.GetOperations(operation, srcArray, destArray, null);
+
+
+            PerformNumericOpScalar(srcArray, destArray, operand, destArray.dimensions, 0, 0, 0, numericOperations);
 
 
             //PerformNumericOpScalar2(srcArray, destArray, operand, operation);
 
         }
 
+  
+
     
-        private static void PerformNumericOpScalar(NpyArray srcArray, NpyArray destArray, double operand, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperation operation)
+        private static void PerformNumericOpScalar(NpyArray srcArray, NpyArray destArray, double operand, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperations operation)
         {
             if (dimIdx == destArray.nd)
             {
-                var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
+                var srcValue = operation.srcGetItem(src_offset, srcArray);
                 object destValue = null;
 
-                destValue = operation(srcValue, ConvertBySrcValue(srcValue, operand));
+                destValue = operation.operation(srcValue, ConvertBySrcValue(srcValue, operand));
 
                 try
                 {
-                    destArray.descr.f.setitem(dest_offset, destValue, destArray);
+                    operation.destSetItem(dest_offset, destValue, destArray);
                 }
                 catch
                 {
-                    destArray.descr.f.setitem(dest_offset, 0, destArray);
+                    operation.destSetItem(dest_offset, 0, destArray);
                 }
             }
             else
@@ -1411,7 +1389,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
+        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, double operand, NumericOperations operations)
         {
             var srcSize = NpyArray_Size(srcArray);
             var SrcIter = NpyArray_BroadcastToShape(srcArray, srcArray.dimensions, srcArray.nd);
@@ -1419,18 +1397,18 @@ namespace NumpyLib
 
             for (long i = 0; i < srcSize; i++)
             {
-                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
+                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
                 object destValue = null;
 
-                destValue = operation(srcValue, ConvertBySrcValue(srcValue, operand));
+                destValue = operations.operation(srcValue, ConvertBySrcValue(srcValue, operand));
 
                 try
                 {
-                    destArray.descr.f.setitem(DestIter.dataptr.data_offset-destArray.data.data_offset, destValue, destArray);
+                    operations.destSetItem(DestIter.dataptr.data_offset-destArray.data.data_offset, destValue, destArray);
                 }
                 catch
                 {
-                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
                 }
 
                 NpyArray_ITER_NEXT(SrcIter);
@@ -1439,7 +1417,7 @@ namespace NumpyLib
         }
 
 
-        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperation operation)
+        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations)
         {
             var destSize = NpyArray_Size(destArray);
 
@@ -1455,20 +1433,20 @@ namespace NumpyLib
 
             for (long i = 0; i < destSize; i++)
             {
-                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
-                var operValue = operArray.descr.f.getitem(OperIter.dataptr.data_offset - operArray.data.data_offset, operArray);
+                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+                var operValue = operations.operandGetItem(OperIter.dataptr.data_offset - operArray.data.data_offset, operArray);
 
                 object destValue = null;
 
-                destValue = operation(srcValue,  ConvertBySrcValue(srcValue, operValue));
+                destValue = operations.operation(srcValue,  ConvertBySrcValue(srcValue, operValue));
 
                 try
                 {
-                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
                 }
                 catch
                 {
-                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
                 }
 
                 NpyArray_ITER_NEXT(SrcIter);
@@ -1485,7 +1463,7 @@ namespace NumpyLib
             return Convert.ToDouble(operValue);
         }
 
-        private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperation operation)
+        private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperations operations)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -1502,22 +1480,22 @@ namespace NumpyLib
 
             for (long i = 0; i < aSize; i++)
             {
-                var aValue = a.descr.f.getitem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                var aValue = operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
                 var bIter = NpyArray_IterNew(b);
 
                 for (long j = 0; j < bSize; j++)
                 {
-                    var bValue = b.descr.f.getitem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                    var bValue = operations.srcGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
 
-                    object destValue = operation(aValue, ConvertBySrcValue(aValue, bValue));
+                    object destValue = operations.operation(aValue, ConvertBySrcValue(aValue, bValue));
 
                     try
                     {
-                        destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                        operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
                     }
                     catch
                     {
-                        destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                        operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
                     }
                     NpyArray_ITER_NEXT(bIter);
                     NpyArray_ITER_NEXT(DestIter);
@@ -1529,7 +1507,7 @@ namespace NumpyLib
 
 
 
-        internal static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperation operation)
+        private static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperations operations)
         {
             npy_intp size;
 
@@ -1546,16 +1524,16 @@ namespace NumpyLib
 
                 while (size > 0)
                 {
-                    var aValue = srcArray.descr.f.getitem(srcPtr.data_offset, srcArray);
+                    var aValue =  operations.srcGetItem(srcPtr.data_offset, srcArray);
 
-                    var destValue = operation(aValue, ConvertBySrcValue(aValue, operand));
+                    var destValue = operations.operation(aValue, ConvertBySrcValue(aValue, operand));
                     try
                     {
-                        destArray.descr.f.setitem(destPtr.data_offset, destValue, destArray);
+                        operations.destSetItem(destPtr.data_offset, destValue, destArray);
                     }
                     catch (Exception ex)
                     {
-                        destArray.descr.f.setitem(destPtr.data_offset, 0, destArray);
+                        operations.destSetItem(destPtr.data_offset, 0, destArray);
                     }
 
                     srcPtr.data_offset += srcArray.ItemSize;
@@ -1583,10 +1561,10 @@ namespace NumpyLib
                 destIter.dataptr.data_offset = 0;
                 while (size > 0)
                 {
-                    var aValue = srcArray.descr.f.getitem(srcIter.dataptr.data_offset, srcArray);
+                    var aValue = operations.srcGetItem(srcIter.dataptr.data_offset, srcArray);
 
-                    var destValue = operation(aValue, ConvertBySrcValue(aValue, operand));
-                    destArray.descr.f.setitem(destIter.dataptr.data_offset, destValue, destArray);
+                    var destValue = operations.operation(aValue, ConvertBySrcValue(aValue, operand));
+                    operations.destSetItem(destIter.dataptr.data_offset, destValue, destArray);
                     NpyArray_ITER_NEXT(srcIter);
                     NpyArray_ITER_NEXT(destIter);
                     size -= 1;
@@ -1604,13 +1582,18 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(ref srcArray, operationType);
 
-            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operation);
+            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
+   
+            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operations);
         }
 
         public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, NpyArray_Ops operationType)
         {
             NumericOperation operation = GetOperation(ref srcArray, operationType);
-            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operation);
+
+            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
+  
+            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations);
             return destArray;
         }
 
@@ -1674,24 +1657,24 @@ namespace NumpyLib
         /// <param name="src_strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="src_offset">Byte offset into data array, starts at 0</param>
-        private static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArrayWrapper operandArray, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, long operand_offset, NumericOperation operation)
+        private static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArrayWrapper operandArray, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, long operand_offset, NumericOperations operation)
         {
             if (dimIdx == destArray.nd)
             {
 
-                var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
+                var srcValue = operation.srcGetItem(src_offset, srcArray);
 
-                var operandValue = operandArray.array.descr.f.getitem(operandArray.GetIndex(), operandArray.array);
+                var operandValue = operation.operandGetItem(operandArray.GetIndex(), operandArray.array);
 
-                object destValue = operation(srcValue, ConvertBySrcValue(srcValue, operandValue));
+                object destValue = operation.operation(srcValue, ConvertBySrcValue(srcValue, operandValue));
 
                 try
                 {
-                    destArray.descr.f.setitem(dest_offset, destValue, destArray);
+                    operation.destSetItem(dest_offset, destValue, destArray);
                 }
                 catch
                 {
-                    destArray.descr.f.setitem(dest_offset, 0, destArray);
+                    operation.destSetItem(dest_offset, 0, destArray);
                 }
             }
             else
@@ -1752,74 +1735,7 @@ namespace NumpyLib
         }
 
         #endregion
-
-        #region AddOperation
-        private static object BOOL_AddOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ (bool)operand;
-        }
-        private static object BYTE_AddOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue + (double)operand;
-        }
-        private static object UBYTE_AddOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue + (double)operand;
-        }
-        private static object INT16_AddOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue + (double)operand;
-        }
-        private static object UINT16_AddOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue + (double)operand;
-        }
-        private static object INT32_AddOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue + (double)operand;
-        }
-        private static object UINT32_AddOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue + (double)operand;
-        }
-        private static object INT64_AddOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue + (double)operand;
-        }
-        private static object UINT64_AddOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue + (double)operand;
-        }
-        private static object FLOAT_AddOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue + (double)operand;
-        }
-        private static object DOUBLE_AddOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue + (double)operand;
-        }
-        private static object DECIMAL_AddOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue + (decimal)operand;
-        }
-        private static T AddOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue + operand;
-        }
-        #endregion
+  
 
         #region SubtractOperation
         private static object BOOL_SubtractOperation(object bValue, object operand)
@@ -4315,8 +4231,10 @@ namespace NumpyLib
                 }
             }
 
+            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, outPtr, null);
+   
             object floor = 0;
-            PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operation);
+            PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operations);
 
 
             Npy_DECREF(outPtr);
@@ -4329,8 +4247,10 @@ namespace NumpyLib
 
             NpyArray outPtr = NpyArray_FromArray(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORCECAST);
 
+            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, outPtr, null);
+
             object floor = 0;
-            PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operation);
+            PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operations);
 
 
             return outPtr;
@@ -4388,21 +4308,21 @@ namespace NumpyLib
             return ret;
         }
 
-        private static void PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperation operation)
+        private static void PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperations operation)
         {
             if (dimIdx == destArray.nd)
             {
-                var srcValue = srcArray.descr.f.getitem(src_offset, srcArray);
+                var srcValue = operation.srcGetItem(src_offset, srcArray);
 
-                cumsum = operation(srcValue, ConvertBySrcValue(srcValue, cumsum));
+                cumsum = operation.operation(srcValue, ConvertBySrcValue(srcValue, cumsum));
 
                 try
                 {
-                    destArray.descr.f.setitem(dest_offset, cumsum, destArray);
+                    operation.destSetItem(dest_offset, cumsum, destArray);
                 }
                 catch
                 {
-                    destArray.descr.f.setitem(dest_offset, 0, destArray);
+                    operation.destSetItem(dest_offset, 0, destArray);
                 }
             }
             else

@@ -1192,6 +1192,8 @@ namespace NumpyLib
             bool needs_api = false;
             npy_intp dst_countptr, src_countptr;
 
+            NumericOperations operations = NumericOperations.GetOperations(null, src, dst, null);
+
 
             if (NpyArray_FailUnlessWriteable(dst, "destination array") < 0)
             {
@@ -1293,18 +1295,19 @@ namespace NumpyLib
             /* Transfer the biggest amount that fits both */
             count = (src_count < dst_count) ? src_count : dst_count;
 
+
+
             for (long j = 0; j < count; j++)
             {
-                var bValue = src.descr.f.getitem(src_iter.dataptr.data_offset - src.data.data_offset, src);
-
+                var bValue = operations.srcGetItem(src_iter.dataptr.data_offset - src.data.data_offset, src);
 
                 try
                 {
-                    dst.descr.f.setitem(dst_iter.dataptr.data_offset - dst.data.data_offset, bValue, dst);
+                    operations.destSetItem(dst_iter.dataptr.data_offset - dst.data.data_offset, bValue, dst);
                 }
                 catch
                 {
-                    dst.descr.f.setitem(dst_iter.dataptr.data_offset - dst.data.data_offset, 0, dst);
+                    operations.destSetItem(dst_iter.dataptr.data_offset - dst.data.data_offset, 0, dst);
                 }
                 NpyArray_ITER_NEXT(src_iter);
                 NpyArray_ITER_NEXT(dst_iter);

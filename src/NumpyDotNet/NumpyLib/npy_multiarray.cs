@@ -1304,6 +1304,8 @@ namespace NumpyLib
         {
             var destSize = NpyArray_Size(destArray);
 
+            NumericOperations operations = NumericOperations.GetOperations(null, srcArray, destArray, whereArray);
+
             NpyArrayIterObject SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             NpyArrayIterObject DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
             NpyArrayIterObject WhereIter = null;
@@ -1316,16 +1318,16 @@ namespace NumpyLib
 
             for (long i = 0; i < destSize; i++)
             {
-                var srcValue = srcArray.descr.f.getitem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
 
                 if (WhereIter != null)
                 {
-                    whereValue = (bool)whereArray.descr.f.getitem(WhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
+                    whereValue = (bool)operations.operandGetItem(WhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
                 }
 
                 if (whereValue)
                 {
-                    destArray.descr.f.setitem(DestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
+                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
                 }
 
                 NpyArray_ITER_NEXT(SrcIter);
@@ -1350,18 +1352,20 @@ namespace NumpyLib
                 return;
             }
 
+            NumericOperations operations = NumericOperations.GetOperations(null, mask, arr, vals);
+
             NpyArrayIterObject valsIter = NpyArray_IterNew(vals);
             NpyArrayIterObject arrIter = NpyArray_IterNew(arr);
             NpyArrayIterObject maskIter = NpyArray_IterNew(mask);
       
             for (long i = 0; i < arrSize; i++)
             {
-                bool whereValue = (bool)mask.descr.f.getitem(maskIter.dataptr.data_offset - mask.data.data_offset, mask);
+                bool whereValue = (bool)operations.srcGetItem(maskIter.dataptr.data_offset - mask.data.data_offset, mask);
 
                 if (whereValue)
                 {
-                    var valValue = vals.descr.f.getitem(valsIter.dataptr.data_offset - vals.data.data_offset, vals);
-                    arr.descr.f.setitem(arrIter.dataptr.data_offset - arr.data.data_offset, valValue, arr);
+                    var valValue = operations.operandGetItem(valsIter.dataptr.data_offset - vals.data.data_offset, vals);
+                    operations.destSetItem(arrIter.dataptr.data_offset - arr.data.data_offset, valValue, arr);
                     NpyArray_ITER_NEXT(valsIter);
                 }
 

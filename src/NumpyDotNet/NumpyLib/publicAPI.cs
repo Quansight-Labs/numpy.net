@@ -1285,6 +1285,8 @@ namespace NumpyLib
 
 #region npy_number
 
+
+ 
         public static NpyUFuncObject NpyArray_GetNumericOp(NpyArray_Ops op)
         {
             return numpyinternal.NpyArray_GetNumericOp(op);
@@ -1393,9 +1395,21 @@ namespace NumpyLib
             return numpyinternal.NpyUFunc_GenericReduction(self, arr, indices, _out, axis, otype, operation, false);
         }
 
-#endregion
+        #endregion
 
-#region npy_usertypes
+        #region DefaultArrayHandlers
+
+        public static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
+        {
+            DefaultArrayHandlers.SetArrayHandler(ItemType, Handlers);
+        }
+        public static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
+        {
+            return DefaultArrayHandlers.GetArrayHandler(ItemType);
+        }
+        #endregion
+
+        #region npy_usertypes
 
         public static void NpyArray_InitArrFuncs(NpyArray_ArrFuncs f)
         {

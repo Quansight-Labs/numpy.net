@@ -50,6 +50,11 @@ namespace NumpyLib
 {
     internal partial class numpyinternal
     {
+        static numpyinternal()
+        {
+            DefaultArrayHandlers.Initialize();
+        }
+
         internal static NpyArray_ArrFuncs GetArrFuncs(NPY_TYPES type_num)
         {
             NpyArray_ArrFuncs arrFuncs = new NpyArray_ArrFuncs()
