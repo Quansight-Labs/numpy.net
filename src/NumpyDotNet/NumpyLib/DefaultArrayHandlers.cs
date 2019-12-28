@@ -12,6 +12,7 @@ namespace NumpyLib
         NumericOperation DivideOperation { get; set; }
         NumericOperation RemainderOperation { get; set; }
         NumericOperation FModOperation { get; set; }
+        NumericOperation PowerOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -168,6 +169,11 @@ namespace NumpyLib
             }
             return dValue % operand;
         }
+        private static T PowerOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return Math.Pow(dValue, operand);
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -180,6 +186,7 @@ namespace NumpyLib
             DivideOperation = BOOL_DivideOperation;
             RemainderOperation = BOOL_RemainderOperation;
             FModOperation = BOOL_FModOperation;
+            PowerOperation = BOOL_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -188,6 +195,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
 
         private object INT32_AddOperation(object bValue, object operand)
@@ -220,6 +228,11 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
+        private static object BOOL_PowerOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ (bool)operand;
+        }
     }
 
     internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -232,6 +245,7 @@ namespace NumpyLib
             DivideOperation = BYTE_DivideOperation;
             RemainderOperation = BYTE_RemainderOperation;
             FModOperation = BYTE_FModOperation;
+            PowerOperation = BYTE_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -240,6 +254,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
 
         private object BYTE_AddOperation(object bValue, object operand)
@@ -298,6 +313,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object BYTE_PowerOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -310,6 +330,7 @@ namespace NumpyLib
             DivideOperation = UBYTE_DivideOperation;
             RemainderOperation = UBYTE_RemainderOperation;
             FModOperation = UBYTE_FModOperation;
+            PowerOperation = UBYTE_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -318,6 +339,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object UBYTE_AddOperation(object bValue, object operand)
         {
@@ -375,6 +397,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object UBYTE_PowerOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -387,6 +414,7 @@ namespace NumpyLib
             DivideOperation = INT16_DivideOperation;
             RemainderOperation = INT16_RemainderOperation;
             FModOperation = INT16_FModOperation;
+            PowerOperation = INT16_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -395,6 +423,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
@@ -452,6 +481,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object INT16_PowerOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -464,6 +498,7 @@ namespace NumpyLib
             DivideOperation = UINT16_DivideOperation;
             RemainderOperation = UINT16_RemainderOperation;
             FModOperation = UINT16_FModOperation;
+            PowerOperation = UINT16_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -472,6 +507,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
 
         private static object UINT16_AddOperation(object bValue, object operand)
@@ -500,7 +536,6 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-
         private static object UINT16_RemainderOperation(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
@@ -531,6 +566,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object UINT16_PowerOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -543,6 +583,7 @@ namespace NumpyLib
             DivideOperation = INT32_DivideOperation;
             RemainderOperation = INT32_RemainderOperation;
             FModOperation = INT32_FModOperation;
+            PowerOperation = INT32_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -551,6 +592,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -597,7 +639,6 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-
         private static object INT32_FModOperation(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
@@ -608,6 +649,11 @@ namespace NumpyLib
                 return dValue;
             }
             return dValue % doperand;
+        }
+        private static object INT32_PowerOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return Math.Pow(dValue, (double)operand);
         }
     }
 
@@ -621,6 +667,7 @@ namespace NumpyLib
             DivideOperation = UINT32_DivideOperation;
             RemainderOperation = UINT32_RemainderOperation;
             FModOperation = UINT32_FModOperation;
+            PowerOperation = UINT32_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -629,6 +676,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object UINT32_AddOperation(object bValue, object operand)
         {
@@ -686,6 +734,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object UINT32_PowerOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -698,6 +751,7 @@ namespace NumpyLib
             DivideOperation = INT64_DivideOperation;
             RemainderOperation = INT64_RemainderOperation;
             FModOperation = INT64_FModOperation;
+            PowerOperation = INT64_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -706,6 +760,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object INT64_AddOperation(object bValue, object operand)
         {
@@ -722,7 +777,6 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue * (double)operand;
         }
-
         private static object INT64_DivideOperation(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
@@ -764,7 +818,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-
+        private static object INT64_PowerOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -777,6 +835,7 @@ namespace NumpyLib
             DivideOperation = UINT64_DivideOperation;
             RemainderOperation = UINT64_RemainderOperation;
             FModOperation = UINT64_FModOperation;
+            PowerOperation = UINT64_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -785,6 +844,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
@@ -842,6 +902,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object UINT64_PowerOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
@@ -854,6 +919,7 @@ namespace NumpyLib
             DivideOperation = FLOAT_DivideOperation;
             RemainderOperation = FLOAT_RemainderOperation;
             FModOperation = FLOAT_FModOperation;
+            PowerOperation = FLOAT_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -862,6 +928,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object Float_AddOperation(object bValue, object operand)
         {
@@ -919,6 +986,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object FLOAT_PowerOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -931,6 +1003,7 @@ namespace NumpyLib
             DivideOperation = DOUBLE_DivideOperation;
             RemainderOperation = DOUBLE_RemainderOperation;
             FModOperation = DOUBLE_FModOperation;
+            PowerOperation = DOUBLE_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -939,6 +1012,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object Double_AddOperation(object bValue, object operand)
         {
@@ -996,6 +1070,11 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
+        private static object DOUBLE_PowerOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return Math.Pow(dValue, (double)operand);
+        }
     }
 
     internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1008,6 +1087,7 @@ namespace NumpyLib
             DivideOperation = DECIMAL_DivideOperation;
             RemainderOperation = DECIMAL_RemainderOperation;
             FModOperation = DECIMAL_FModOperation;
+            PowerOperation = DECIMAL_PowerOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -1016,6 +1096,7 @@ namespace NumpyLib
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
@@ -1072,6 +1153,11 @@ namespace NumpyLib
                 return dValue;
             }
             return dValue % doperand;
+        }
+        private static object DECIMAL_PowerOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return Math.Pow(Convert.ToDouble(dValue), Convert.ToDouble(operand));
         }
 
     }
