@@ -20,6 +20,7 @@ namespace NumpyLib
         NumericOperation NegativeOperation { get; set; }
         NumericOperation AbsoluteOperation { get; set; }
         NumericOperation InvertOperation { get; set; }
+        NumericOperation LeftShiftOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -138,6 +139,7 @@ namespace NumpyLib
             NegativeOperation = Negative;
             AbsoluteOperation = Absolute;
             InvertOperation = Invert;
+            LeftShiftOperation = LeftShift;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -154,6 +156,7 @@ namespace NumpyLib
         public NumericOperation NegativeOperation { get; set; }
         public NumericOperation AbsoluteOperation { get; set; }
         public NumericOperation InvertOperation { get; set; }
+        public NumericOperation LeftShiftOperation { get; set; }
 
 
         protected virtual object Add(dynamic bValue, dynamic operand)
@@ -250,6 +253,11 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return ~dValue;
         }
+        protected virtual object LeftShift(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -323,6 +331,11 @@ namespace NumpyLib
         {
             bool dValue = (bool)bValue;
             return !dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue;
         }
     }
 
@@ -424,6 +437,11 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return ~dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -524,6 +542,11 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return ~dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -623,6 +646,11 @@ namespace NumpyLib
         {
             Int16 dValue = (Int16)bValue;
             return ~dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return dValue << Convert.ToInt32(operand);
         }
     }
 
@@ -725,6 +753,11 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return ~dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -826,6 +859,11 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return ~dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -925,6 +963,11 @@ namespace NumpyLib
         {
             UInt32 dValue = (UInt32)bValue;
             return ~dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return dValue << Convert.ToInt32(operand);
         }
     }
 
@@ -1026,6 +1069,11 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return ~dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -1125,6 +1173,11 @@ namespace NumpyLib
         {
             UInt64 dValue = (UInt64)bValue;
             return ~dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return dValue << Convert.ToInt32(operand);
         }
     }
 
@@ -1226,6 +1279,11 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue;
         }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)(float)bValue;
+            return dValue << Convert.ToInt32(operand);
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1325,6 +1383,11 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             return dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)(double)bValue;
+            return dValue << Convert.ToInt32(operand);
         }
     }
 
@@ -1440,6 +1503,11 @@ namespace NumpyLib
         {
             decimal dValue = (decimal)bValue;
             return dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)(decimal)bValue;
+            return dValue << Convert.ToInt32(operand);
         }
 
     }

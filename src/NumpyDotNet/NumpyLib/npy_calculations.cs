@@ -145,39 +145,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
                 }
                 case NpyArray_Ops.npy_op_left_shift:
-                    {
-                        #region LeftShiftOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_LeftShiftOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_LeftShiftOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_LeftShiftOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_LeftShiftOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_LeftShiftOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_LeftShiftOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_LeftShiftOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_LeftShiftOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_LeftShiftOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_LeftShiftOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_LeftShiftOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_LeftShiftOperation;
-                            default:
-                                return LeftShiftOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).LeftShiftOperation;
+                }
                 case NpyArray_Ops.npy_op_right_shift:
                     {
                         #region RightShiftOperation
@@ -1435,72 +1405,17 @@ namespace NumpyLib
         #endregion
 
         #region LeftShiftOperation
-        private static object BOOL_LeftShiftOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue;
-        }
-        private static object BYTE_LeftShiftOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object UBYTE_LeftShiftOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object INT16_LeftShiftOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object UINT16_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object INT32_LeftShiftOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object UINT32_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object INT64_LeftShiftOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object UINT64_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object FLOAT_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)(float)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object DOUBLE_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)(double)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
-        private static object DECIMAL_LeftShiftOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)(decimal)bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
+ 
+ 
 
-        private static T LeftShiftOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue << Convert.ToInt32(operand);
-        }
+ 
+  
+ 
+  
+  
+   
+
+
         #endregion
 
         #region RightShiftOperation
