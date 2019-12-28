@@ -157,39 +157,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseAndOperation;
                 }
                 case NpyArray_Ops.npy_op_bitwise_xor:
-                    {
-                        #region BitWiseXorOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_BitWiseXorOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_BitWiseXorOperation;
-                            default:
-                                return BitWiseXorOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseXorOperation;
+                }
                 case NpyArray_Ops.npy_op_bitwise_or:
                     {
                         #region BitWiseOrOperation
@@ -1301,94 +1271,7 @@ namespace NumpyLib
         }
         #endregion
 
-        #region BitWiseAndOperation
- 
- 
- 
-   
-  
- 
-
-  
-
-        private static object DECIMAL_BitWiseAndOperation(object bValue, object operand)
-        {
-            UInt64 dValue = Convert.ToUInt64(bValue);
-            return dValue & Convert.ToUInt64(operand);
-        }
-
- 
-        #endregion
-
-        #region BitWiseXorOperation
-        private static object BOOL_BitWiseXorOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ Convert.ToBoolean(operand);
-        }
-        private static object BYTE_BitWiseXorOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue ^ Convert.ToSByte(operand);
-        }
-        private static object UBYTE_BitWiseXorOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue ^ Convert.ToByte(operand);
-        }
-        private static object INT16_BitWiseXorOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue ^ Convert.ToInt16(operand);
-        }
-        private static object UINT16_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue ^ Convert.ToUInt16(operand);
-        }
-        private static object INT32_BitWiseXorOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue ^ Convert.ToInt32(operand);
-        }
-        private static object UINT32_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue ^ Convert.ToUInt32(operand);
-        }
-        private static object INT64_BitWiseXorOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue ^ Convert.ToInt64(operand);
-        }
-        private static object UINT64_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue ^ Convert.ToUInt64(operand);
-        }
-        private static object FLOAT_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt64 dValue = Convert.ToUInt64(bValue);
-            return dValue ^ Convert.ToUInt64(operand);
-        }
-        private static object DOUBLE_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt64 dValue = Convert.ToUInt64(bValue);
-            return dValue ^ Convert.ToUInt64(operand);
-        }
-        private static object DECIMAL_BitWiseXorOperation(object bValue, object operand)
-        {
-            UInt64 dValue = Convert.ToUInt64(bValue);
-            return dValue ^ Convert.ToUInt64(operand);
-        }
-
-        private static T BitWiseXorOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue ^ operand;
-        }
-        #endregion
-
+      
         #region BitWiseOrOperation
         private static object BOOL_BitWiseOrOperation(object bValue, object operand)
         {
