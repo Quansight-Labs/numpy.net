@@ -553,6 +553,27 @@ namespace NumpyDotNet {
 
         }
 
+        internal static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                return numpyAPI.GetNumericHandler(ItemType);
+            }
+        }
+
+
+        internal static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
+        {
+            #if ENABLELOCKING
+            lock (GlobalIterpLock)
+            #endif
+            {
+                numpyAPI.SetNumericHandler(ItemType, Handlers);
+            }
+        }
+
         internal static ufunc GetNumericOp(NpyArray_Ops op)
         {
             NpyUFuncObject ufuncPtr;

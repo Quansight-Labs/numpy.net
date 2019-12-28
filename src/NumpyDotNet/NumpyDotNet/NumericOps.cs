@@ -43,67 +43,20 @@ using npy_intp = System.Int32;
 namespace NumpyDotNet {
 
 
-    /// <summary>
-    /// Records the type-specific get/set items for each descriptor type.
-    /// </summary>
-    public class ArrFuncs {
-        internal Object GetItem(long offset, NpyArray arr) {
-            return GetFunc(arr.data + offset, arr);
-        }
+    public static class NumericOps
+    {
+        #region Default array handlers
 
-        internal void SetItem(Object value, long offset, NpyArray arr) {
-            SetFunc(value, arr.data + offset, arr);
-        }
-
-        internal Func<VoidPtr, NpyArray, Object> GetFunc { get; set; }
-        internal Action<Object, VoidPtr, NpyArray> SetFunc { get; set; }
-    }
-
-
-
-    /// <summary>
-    /// Collection of getitem/setitem functions and operations on object types.
-    /// These are mostly used as callbacks from the core and operate on native
-    /// memory.
-    /// </summary>
-    internal static class NumericOps {
-        private static ArrFuncs[] ArrFuncs = null;
-        private static Object ArrFuncsSyncRoot = new Object();
-
-        /// <summary>
-        /// Returns the array of functions appropriate to a given type.  The actual
-        /// functions in the array will vary with the type sizes in the native code.
-        /// </summary>
-        /// <param name="t">Native array type</param>
-        /// <returns>Functions matching that type</returns>
-        internal static ArrFuncs FuncsForType(NPY_TYPES t)
+        public static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
-            if (ArrFuncs == null)
-            {
-                InitArrFuncs();
-            }
-            return ArrFuncs[(int)t];
+            NpyCoreApi.SetNumericHandler(ItemType, Handlers);
         }
 
-
-        /// <summary>
-        /// Initializes the type-specific functions for each native type.
-        /// </summary>
-        internal static void InitArrFuncs()
+        public static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
         {
-
-            lock (ArrFuncsSyncRoot)
-            {
-                if (ArrFuncs == null)
-                {
-                    ArrFuncs[] arr = new ArrFuncs[(int)NPY_TYPES.NPY_NTYPES];
-                    // todo: see all the crazy code from the original numpydotnet
-
-                    ArrFuncs = arr;
-                }
-            }
+            return NpyCoreApi.GetNumericHandler(ItemType);
         }
+        #endregion
 
-  
     }
 }
