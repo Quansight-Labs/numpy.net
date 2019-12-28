@@ -725,7 +725,7 @@ namespace NumpyDotNet
 
             if (a.TypeNum != NPY_TYPES.NPY_DECIMAL)
             {
-                a = a.astype(np.Float64);
+                a = a.astype(np.Decimal);
             }
 
             return a.rawdata(0).datap as decimal[];
