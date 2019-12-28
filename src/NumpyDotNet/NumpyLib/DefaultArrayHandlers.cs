@@ -8,6 +8,7 @@ namespace NumpyLib
     {
         NumericOperation AddOperation { get; set; }
         NumericOperation SubtractOperation { get; set; }
+        NumericOperation MultiplyOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -120,6 +121,11 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue - operand;
         }
+        private static T MultiplyOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue * operand;
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -128,10 +134,12 @@ namespace NumpyLib
         {
             AddOperation = INT32_AddOperation;
             SubtractOperation = BOOL_SubtractOperation;
+            MultiplyOperation = BOOL_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -143,6 +151,11 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return dValue | Convert.ToBoolean(operand);
         }
+        private static object BOOL_MultiplyOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ (bool)operand;
+        }
     }
 
     internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -151,10 +164,12 @@ namespace NumpyLib
         {
             AddOperation = BYTE_AddOperation;
             SubtractOperation = BYTE_SubtractOperation;
+            MultiplyOperation = BYTE_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
 
         private object BYTE_AddOperation(object bValue, object operand)
@@ -167,6 +182,11 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return dValue - (double)operand;
         }
+        private static object BYTE_MultiplyOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -175,11 +195,12 @@ namespace NumpyLib
         {
             AddOperation = UBYTE_AddOperation;
             SubtractOperation = UBYTE_SubtractOperation;
+            MultiplyOperation = UBYTE_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object UBYTE_AddOperation(object bValue, object operand)
         {
@@ -191,6 +212,11 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue - (double)operand;
         }
+        private static object UBYTE_MultiplyOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -199,10 +225,12 @@ namespace NumpyLib
         {
             AddOperation = INT16_AddOperation;
             SubtractOperation = INT16_SubtractOperation;
+            MultiplyOperation = INT16_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
@@ -214,6 +242,11 @@ namespace NumpyLib
             Int16 dValue = (Int16)bValue;
             return dValue - (double)operand;
         }
+        private static object INT16_MultiplyOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -222,10 +255,12 @@ namespace NumpyLib
         {
             AddOperation = UINT16_AddOperation;
             SubtractOperation = UINT16_SubtractOperation;
+            MultiplyOperation = UINT16_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
 
         private static object UINT16_AddOperation(object bValue, object operand)
@@ -238,6 +273,11 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return dValue - (double)operand;
         }
+        private static object UINT16_MultiplyOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -246,11 +286,12 @@ namespace NumpyLib
         {
             AddOperation = INT32_AddOperation;
             SubtractOperation = INT32_SubtractOperation;
+            MultiplyOperation = INT32_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -262,6 +303,11 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return dValue - (double)operand;
         }
+        private static object INT32_MultiplyOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -270,11 +316,12 @@ namespace NumpyLib
         {
             AddOperation = UINT32_AddOperation;
             SubtractOperation = UINT32_SubtractOperation;
+            MultiplyOperation = UINT32_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object UINT32_AddOperation(object bValue, object operand)
         {
@@ -286,6 +333,11 @@ namespace NumpyLib
             UInt32 dValue = (UInt32)bValue;
             return dValue - (double)operand;
         }
+        private static object UINT32_MultiplyOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -294,11 +346,12 @@ namespace NumpyLib
         {
             AddOperation = INT64_AddOperation;
             SubtractOperation = INT64_SubtractOperation;
+            MultiplyOperation = INT64_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object INT64_AddOperation(object bValue, object operand)
         {
@@ -310,6 +363,11 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue - (double)operand;
         }
+        private static object INT64_MultiplyOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return dValue * (double)operand;
+        }
 
     }
 
@@ -319,10 +377,12 @@ namespace NumpyLib
         {
             AddOperation = UINT64_AddOperation;
             SubtractOperation = UINT64_SubtractOperation;
+            MultiplyOperation = UINT64_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
@@ -334,6 +394,11 @@ namespace NumpyLib
             UInt64 dValue = (UInt64)bValue;
             return dValue - (double)operand;
         }
+        private static object UINT64_MultiplyOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
@@ -342,10 +407,12 @@ namespace NumpyLib
         {
             AddOperation = Float_AddOperation;
             SubtractOperation = FLOAT_SubtractOperation;
+            MultiplyOperation = FLOAT_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object Float_AddOperation(object bValue, object operand)
         {
@@ -357,6 +424,11 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue - (double)operand;
         }
+        private static object FLOAT_MultiplyOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -365,11 +437,12 @@ namespace NumpyLib
         {
             AddOperation = Double_AddOperation;
             SubtractOperation = DOUBLE_SubtractOperation;
+            MultiplyOperation = DOUBLE_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object Double_AddOperation(object bValue, object operand)
         {
@@ -381,6 +454,11 @@ namespace NumpyLib
             double dValue = (double)bValue;
             return dValue - (double)operand;
         }
+        private static object DOUBLE_MultiplyOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return dValue * (double)operand;
+        }
     }
 
     internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
@@ -389,11 +467,12 @@ namespace NumpyLib
         {
             AddOperation = Decimal_AddOperation;
             SubtractOperation = DECIMAL_SubtractOperation;
+            MultiplyOperation = DECIMAL_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
-
+        public NumericOperation MultiplyOperation { get; set; }
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
@@ -404,6 +483,11 @@ namespace NumpyLib
         {
             decimal dValue = (decimal)bValue;
             return dValue - (decimal)operand;
+        }
+        private static object DECIMAL_MultiplyOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return dValue * (decimal)operand;
         }
     }
 }

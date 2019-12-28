@@ -95,39 +95,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SubtractOperation;
                 }
                 case NpyArray_Ops.npy_op_multiply:
-                    {
-                        #region MultiplyOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_MultiplyOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_MultiplyOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_MultiplyOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_MultiplyOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_MultiplyOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_MultiplyOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_MultiplyOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_MultiplyOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_MultiplyOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_MultiplyOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_MultiplyOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_MultiplyOperation;
-                            default:
-                                return MultiplyOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).MultiplyOperation;
+                }
                 case NpyArray_Ops.npy_op_divide:
                     {
                         #region DivideOperation
@@ -1707,85 +1677,7 @@ namespace NumpyLib
         #endregion
   
 
-        #region SubtractOperation
-  
- 
-  
-  
-  
-  
-  
-  
-        #endregion
-
-        #region MultiplyOperation
-        private static object BOOL_MultiplyOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ (bool)operand;
-        }
-        private static object BYTE_MultiplyOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue * (double)operand;
-        }
-        private static object UBYTE_MultiplyOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue * (double)operand;
-        }
-        private static object INT16_MultiplyOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue * (double)operand;
-        }
-        private static object UINT16_MultiplyOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue * (double)operand;
-        }
-        private static object INT32_MultiplyOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue * (double)operand;
-        }
-        private static object UINT32_MultiplyOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue * (double)operand;
-        }
-        private static object INT64_MultiplyOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue * (double)operand;
-        }
-        private static object UINT64_MultiplyOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue * (double)operand;
-        }
-        private static object FLOAT_MultiplyOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue * (double)operand;
-        }
-        private static object DOUBLE_MultiplyOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue * (double)operand;
-        }
-        private static object DECIMAL_MultiplyOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue * (decimal)operand;
-        }
-
-        private static T MultiplyOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue * operand;
-        }
-        #endregion
+   
 
         #region DivideOperation
         private static object BOOL_DivideOperation(object bValue, object operand)

@@ -15,10 +15,12 @@ namespace NumpyDotNetTests
         {
             AddOperation = My_AddOperation;
             SubtractOperation = My_SubtractOperation;
+            MultiplyOperation = My_MultiplyOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
 
 
         private object My_AddOperation(object bValue, object operand)
@@ -30,6 +32,11 @@ namespace NumpyDotNetTests
         {
             Int32 dValue = (Int32)bValue;
             return dValue - (double)operand;
+        }
+        private static object My_MultiplyOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue * (double)operand;
         }
     }
 
