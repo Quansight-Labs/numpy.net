@@ -111,15 +111,10 @@ namespace NumpyLib
     {
         public BoolHandlers()
         {
-            _AddOperation = INT32_AddOperation;
+            AddOperation = INT32_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -132,15 +127,11 @@ namespace NumpyLib
     {
         public ByteHandlers()
         {
-            _AddOperation = BYTE_AddOperation;
+            AddOperation = BYTE_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object BYTE_AddOperation(object bValue, object operand)
         {
@@ -153,15 +144,11 @@ namespace NumpyLib
     {
         public UByteHandlers()
         {
-            _AddOperation = UBYTE_AddOperation;
+            AddOperation = UBYTE_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object UBYTE_AddOperation(object bValue, object operand)
         {
@@ -174,15 +161,10 @@ namespace NumpyLib
     {
         public Int16Handlers()
         {
-            _AddOperation = INT16_AddOperation;
+            AddOperation = INT16_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
@@ -195,15 +177,11 @@ namespace NumpyLib
     {
         public UInt16Handlers()
         {
-            _AddOperation = UINT16_AddOperation;
+            AddOperation = UINT16_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private static object UINT16_AddOperation(object bValue, object operand)
         {
@@ -233,15 +211,11 @@ namespace NumpyLib
     {
         public UInt32Handlers()
         {
-            _AddOperation = UINT32_AddOperation;
+            AddOperation = UINT32_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object UINT32_AddOperation(object bValue, object operand)
         {
@@ -254,15 +228,11 @@ namespace NumpyLib
     {
         public Int64Handlers()
         {
-            _AddOperation = INT64_AddOperation;
+            AddOperation = INT64_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object INT64_AddOperation(object bValue, object operand)
         {
@@ -275,15 +245,10 @@ namespace NumpyLib
     {
         public UInt64Handlers()
         {
-            _AddOperation = UINT64_AddOperation;
+            AddOperation = UINT64_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
@@ -296,15 +261,11 @@ namespace NumpyLib
     {
         public FloatHandlers()
         {
-            _AddOperation = Float_AddOperation;
+            AddOperation = Float_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object Float_AddOperation(object bValue, object operand)
         {
@@ -317,15 +278,11 @@ namespace NumpyLib
     {
         public DoubleHandlers()
         {
-            _AddOperation = Double_AddOperation;
+            AddOperation = Double_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object Double_AddOperation(object bValue, object operand)
         {
@@ -338,15 +295,11 @@ namespace NumpyLib
     {
         public DecimalHandlers()
         {
-            _AddOperation = Decimal_AddOperation;
+            AddOperation = Decimal_AddOperation;
         }
-        NumericOperation _AddOperation = null;
 
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
-        }
+        public NumericOperation AddOperation { get; set; }
+
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
