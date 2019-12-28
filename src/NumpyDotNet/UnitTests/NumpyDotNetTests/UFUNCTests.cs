@@ -17,12 +17,14 @@ namespace NumpyDotNetTests
             SubtractOperation = My_SubtractOperation;
             MultiplyOperation = My_MultiplyOperation;
             DivideOperation = My_DivideOperation;
+            RemainderOperation = My_RemainderOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
+        public NumericOperation RemainderOperation { get; set; }
 
 
         private object My_AddOperation(object bValue, object operand)
@@ -50,6 +52,25 @@ namespace NumpyDotNetTests
                 return dValue;
             }
             return dValue / doperand;
+        }
+        private static object My_RemainderOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
         }
     }
 
