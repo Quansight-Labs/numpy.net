@@ -129,39 +129,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
                 }
                 case NpyArray_Ops.npy_op_sqrt:
-                    {
-                        #region SqrtOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_SqrtOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_SqrtOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_SqrtOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_SqrtOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_SqrtOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_SqrtOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_SqrtOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_SqrtOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_SqrtOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_SqrtOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_SqrtOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_SqrtOperation;
-                            default:
-                                return SqrtOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
+                }
                 case NpyArray_Ops.npy_op_negative:
                     {
                         #region NegativeOperation
@@ -1510,89 +1480,18 @@ namespace NumpyLib
             return Math.Floor(dValue / operand);
         }
         #endregion
-         
+
         #region SqrtOperation
-        private static object BOOL_SqrtOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ (bool)operand;
-        }
-        private static object BYTE_SqrtOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object UBYTE_SqrtOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object INT16_SqrtOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object UINT16_SqrtOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object INT32_SqrtOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object UINT32_SqrtOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object INT64_SqrtOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object UINT64_SqrtOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object FLOAT_SqrtOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object DOUBLE_SqrtOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return Math.Sqrt(dValue);
-        }
-        private static object DECIMAL_SqrtOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            decimal epsilon = 0.0M;
 
-            if (dValue < 0)
-                throw new OverflowException("Cannot calculate square root from a negative number");
+  
+  
+ 
+  
+  
+    
+ 
 
-            decimal current = (decimal)Math.Sqrt((double)dValue), previous;
-            do
-            {
-                previous = current;
-                if (previous == 0.0M)
-                    return 0;
-
-                current = (previous + dValue / previous) / 2;
-            }
-            while (Math.Abs(previous - current) > epsilon);
-            return current;
-        }
-
-        private static T SqrtOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return Math.Sqrt(dValue);
-        }
+  
         #endregion
 
         #region NegativeOperation

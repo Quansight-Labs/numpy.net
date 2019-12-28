@@ -16,6 +16,7 @@ namespace NumpyLib
         NumericOperation SquareOperation { get; set; }
         NumericOperation ReciprocalOperation { get; set; }
         NumericOperation OnesLikeOperation { get; set; }
+        NumericOperation SqrtOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -130,6 +131,7 @@ namespace NumpyLib
             SquareOperation = Square;
             ReciprocalOperation = Reciprocal;
             OnesLikeOperation = OnesLike;
+            SqrtOperation = Sqrt;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -142,6 +144,7 @@ namespace NumpyLib
         public NumericOperation SquareOperation { get; set; }
         public NumericOperation ReciprocalOperation { get; set; }
         public NumericOperation OnesLikeOperation { get; set; }
+        public NumericOperation SqrtOperation { get; set; }
 
         protected virtual object Add(dynamic bValue, dynamic operand)
         {
@@ -217,6 +220,11 @@ namespace NumpyLib
             double dValue = 1;
             return dValue;
         }
+        protected virtual object Sqrt(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -270,6 +278,11 @@ namespace NumpyLib
         {
             bool dValue = (bool)bValue;
             return dValue ^ dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ (bool)operand;
         }
     }
 
@@ -351,6 +364,11 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -431,6 +449,11 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -510,6 +533,11 @@ namespace NumpyLib
         {
             Int16 dValue = (Int16)bValue;
             return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return Math.Sqrt(dValue);
         }
     }
 
@@ -592,6 +620,11 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -673,6 +706,11 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -752,6 +790,11 @@ namespace NumpyLib
         {
             UInt32 dValue = (UInt32)bValue;
             return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return Math.Sqrt(dValue);
         }
     }
 
@@ -833,6 +876,11 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -912,6 +960,11 @@ namespace NumpyLib
         {
             UInt64 dValue = (UInt64)bValue;
             return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return Math.Sqrt(dValue);
         }
     }
 
@@ -993,6 +1046,11 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return Math.Sqrt(dValue);
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1072,6 +1130,11 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return Math.Sqrt(dValue);
         }
     }
 
@@ -1153,6 +1216,27 @@ namespace NumpyLib
             decimal dValue = (decimal)bValue;
             return 1 / dValue;
         }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            decimal epsilon = 0.0M;
+
+            if (dValue < 0)
+                throw new OverflowException("Cannot calculate square root from a negative number");
+
+            decimal current = (decimal)Math.Sqrt((double)dValue), previous;
+            do
+            {
+                previous = current;
+                if (previous == 0.0M)
+                    return 0;
+
+                current = (previous + dValue / previous) / 2;
+            }
+            while (Math.Abs(previous - current) > epsilon);
+            return current;
+        }
+
 
     }
 }
