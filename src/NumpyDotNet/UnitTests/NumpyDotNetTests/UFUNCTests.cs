@@ -18,6 +18,7 @@ namespace NumpyDotNetTests
             MultiplyOperation = My_MultiplyOperation;
             DivideOperation = My_DivideOperation;
             RemainderOperation = My_RemainderOperation;
+            FModOperation = My_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -25,6 +26,7 @@ namespace NumpyDotNetTests
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
 
         private object My_AddOperation(object bValue, object operand)
@@ -71,6 +73,17 @@ namespace NumpyDotNetTests
             {
                 return rem + doperand;
             }
+        }
+        private static object My_FModOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
         }
     }
 

@@ -11,6 +11,7 @@ namespace NumpyLib
         NumericOperation MultiplyOperation { get; set; }
         NumericOperation DivideOperation { get; set; }
         NumericOperation RemainderOperation { get; set; }
+        NumericOperation FModOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -157,6 +158,16 @@ namespace NumpyLib
             }
 
         }
+        private static T FModOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            if (operand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % operand;
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -168,6 +179,7 @@ namespace NumpyLib
             MultiplyOperation = BOOL_MultiplyOperation;
             DivideOperation = BOOL_DivideOperation;
             RemainderOperation = BOOL_RemainderOperation;
+            FModOperation = BOOL_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -175,6 +187,8 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
+
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -201,6 +215,11 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
+        private static object BOOL_FModOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ (bool)operand;
+        }
     }
 
     internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -212,6 +231,7 @@ namespace NumpyLib
             MultiplyOperation = BYTE_MultiplyOperation;
             DivideOperation = BYTE_DivideOperation;
             RemainderOperation = BYTE_RemainderOperation;
+            FModOperation = BYTE_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -219,6 +239,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
 
         private object BYTE_AddOperation(object bValue, object operand)
@@ -266,6 +287,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object BYTE_FModOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -277,6 +309,7 @@ namespace NumpyLib
             MultiplyOperation = UBYTE_MultiplyOperation;
             DivideOperation = UBYTE_DivideOperation;
             RemainderOperation = UBYTE_RemainderOperation;
+            FModOperation = UBYTE_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -284,6 +317,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object UBYTE_AddOperation(object bValue, object operand)
         {
@@ -330,6 +364,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object UBYTE_FModOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -341,6 +386,7 @@ namespace NumpyLib
             MultiplyOperation = INT16_MultiplyOperation;
             DivideOperation = INT16_DivideOperation;
             RemainderOperation = INT16_RemainderOperation;
+            FModOperation = INT16_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -348,6 +394,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
@@ -394,6 +441,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object INT16_FModOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -405,6 +463,7 @@ namespace NumpyLib
             MultiplyOperation = UINT16_MultiplyOperation;
             DivideOperation = UINT16_DivideOperation;
             RemainderOperation = UINT16_RemainderOperation;
+            FModOperation = UINT16_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -412,6 +471,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
 
         private static object UINT16_AddOperation(object bValue, object operand)
@@ -460,6 +520,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object UINT16_FModOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -471,6 +542,7 @@ namespace NumpyLib
             MultiplyOperation = INT32_MultiplyOperation;
             DivideOperation = INT32_DivideOperation;
             RemainderOperation = INT32_RemainderOperation;
+            FModOperation = INT32_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -478,6 +550,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -524,6 +597,18 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+
+        private static object INT32_FModOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -535,6 +620,7 @@ namespace NumpyLib
             MultiplyOperation = UINT32_MultiplyOperation;
             DivideOperation = UINT32_DivideOperation;
             RemainderOperation = UINT32_RemainderOperation;
+            FModOperation = UINT32_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -542,6 +628,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object UINT32_AddOperation(object bValue, object operand)
         {
@@ -588,6 +675,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object UINT32_FModOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -599,6 +697,7 @@ namespace NumpyLib
             MultiplyOperation = INT64_MultiplyOperation;
             DivideOperation = INT64_DivideOperation;
             RemainderOperation = INT64_RemainderOperation;
+            FModOperation = INT64_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -606,6 +705,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object INT64_AddOperation(object bValue, object operand)
         {
@@ -653,6 +753,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object INT64_FModOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
 
     }
 
@@ -665,6 +776,7 @@ namespace NumpyLib
             MultiplyOperation = UINT64_MultiplyOperation;
             DivideOperation = UINT64_DivideOperation;
             RemainderOperation = UINT64_RemainderOperation;
+            FModOperation = UINT64_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -672,6 +784,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
@@ -718,6 +831,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object UINT64_FModOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
@@ -729,6 +853,7 @@ namespace NumpyLib
             MultiplyOperation = FLOAT_MultiplyOperation;
             DivideOperation = FLOAT_DivideOperation;
             RemainderOperation = FLOAT_RemainderOperation;
+            FModOperation = FLOAT_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -736,6 +861,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object Float_AddOperation(object bValue, object operand)
         {
@@ -782,6 +908,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object FLOAT_FModOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -793,6 +930,7 @@ namespace NumpyLib
             MultiplyOperation = DOUBLE_MultiplyOperation;
             DivideOperation = DOUBLE_DivideOperation;
             RemainderOperation = DOUBLE_RemainderOperation;
+            FModOperation = DOUBLE_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -800,6 +938,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object Double_AddOperation(object bValue, object operand)
         {
@@ -846,6 +985,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object DOUBLE_FModOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            double doperand = (double)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
     }
 
     internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
@@ -857,6 +1007,7 @@ namespace NumpyLib
             MultiplyOperation = DECIMAL_MultiplyOperation;
             DivideOperation = DECIMAL_DivideOperation;
             RemainderOperation = DECIMAL_RemainderOperation;
+            FModOperation = DECIMAL_FModOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -864,6 +1015,7 @@ namespace NumpyLib
         public NumericOperation MultiplyOperation { get; set; }
         public NumericOperation DivideOperation { get; set; }
         public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
@@ -910,5 +1062,17 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
+        private static object DECIMAL_FModOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            decimal doperand = (decimal)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+
     }
 }
