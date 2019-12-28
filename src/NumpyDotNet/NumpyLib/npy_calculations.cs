@@ -125,9 +125,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
                 }
                 case NpyArray_Ops.npy_op_ones_like:
-                    {
-                        return OnesLikeOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
+                }
                 case NpyArray_Ops.npy_op_sqrt:
                     {
                         #region SqrtOperation
@@ -1510,28 +1510,7 @@ namespace NumpyLib
             return Math.Floor(dValue / operand);
         }
         #endregion
-            
-
-        #region ReciprocalOperation
-  
- 
-  
- 
- 
- 
-
-
- 
-        #endregion
-
-        #region OnesLikeOperation
-        private static object OnesLikeOperation<T>(T bValue, object operand)
-        {
-            double dValue = 1;
-            return dValue;
-        }
-        #endregion
-
+         
         #region SqrtOperation
         private static object BOOL_SqrtOperation(object bValue, object operand)
         {

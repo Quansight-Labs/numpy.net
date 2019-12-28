@@ -15,6 +15,7 @@ namespace NumpyLib
         NumericOperation PowerOperation { get; set; }
         NumericOperation SquareOperation { get; set; }
         NumericOperation ReciprocalOperation { get; set; }
+        NumericOperation OnesLikeOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -117,22 +118,47 @@ namespace NumpyLib
 
     internal class ArrayHandlerBase
     {
-        protected static T AddOperation<T>(T bValue, dynamic operand)
+        internal ArrayHandlerBase()
+        {
+            AddOperation = Add;
+            SubtractOperation = Subtract;
+            MultiplyOperation = Multiply;
+            DivideOperation = Divide;
+            RemainderOperation = Remainder;
+            FModOperation = FMod;
+            PowerOperation = Power;
+            SquareOperation = Square;
+            ReciprocalOperation = Reciprocal;
+            OnesLikeOperation = OnesLike;
+        }
+
+        public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
+        public NumericOperation MultiplyOperation { get; set; }
+        public NumericOperation DivideOperation { get; set; }
+        public NumericOperation RemainderOperation { get; set; }
+        public NumericOperation FModOperation { get; set; }
+        public NumericOperation PowerOperation { get; set; }
+        public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
+        public NumericOperation OnesLikeOperation { get; set; }
+
+        protected virtual object Add(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue + operand;
         }
-        protected static T SubtractOperation<T>(T bValue, dynamic operand)
+        protected virtual object Subtract(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue - operand;
         }
-        private static T MultiplyOperation<T>(T bValue, dynamic operand)
+        protected virtual object Multiply(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue * operand;
         }
-        private static T DivideOperation<T>(T bValue, dynamic operand)
+        protected virtual object Divide(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             if (operand == 0)
@@ -142,7 +168,7 @@ namespace NumpyLib
             }
             return dValue / operand;
         }
-        private static T RemainderOperation<T>(T bValue, dynamic operand)
+        protected virtual object Remainder(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             if (operand == 0)
@@ -161,7 +187,7 @@ namespace NumpyLib
             }
 
         }
-        private static T FModOperation<T>(T bValue, dynamic operand)
+        protected virtual object FMod(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             if (operand == 0)
@@ -171,20 +197,25 @@ namespace NumpyLib
             }
             return dValue % operand;
         }
-        private static T PowerOperation<T>(T bValue, dynamic operand)
+        protected virtual object Power(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return Math.Pow(dValue, operand);
         }
-        private static T SquareOperation<T>(T bValue, dynamic operand)
+        protected virtual object Square(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue * dValue;
         }
-        private static T ReciprocalOperation<T>(T bValue, dynamic operand)
+        protected virtual object Reciprocal(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return 1 / dValue;
+        }
+        protected virtual object OnesLike(dynamic bValue, object operand)
+        {
+            double dValue = 1;
+            return dValue;
         }
     }
 
@@ -192,69 +223,50 @@ namespace NumpyLib
     {
         public BoolHandlers()
         {
-            AddOperation = INT32_AddOperation;
-            SubtractOperation = BOOL_SubtractOperation;
-            MultiplyOperation = BOOL_MultiplyOperation;
-            DivideOperation = BOOL_DivideOperation;
-            RemainderOperation = BOOL_RemainderOperation;
-            FModOperation = BOOL_FModOperation;
-            PowerOperation = BOOL_PowerOperation;
-            SquareOperation = BOOL_SquareOperation;
-            ReciprocalOperation = BOOL_ReciprocalOperation;
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
 
-
-        private object INT32_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue + (double)operand;
         }
-        private static object BOOL_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue | Convert.ToBoolean(operand);
         }
-        private static object BOOL_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
-        private static object BOOL_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
-        private static object BOOL_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
-        private static object BOOL_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
-        private static object BOOL_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ (bool)operand;
         }
-        private static object BOOL_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ dValue;
         }
-        private static object BOOL_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             bool dValue = (bool)bValue;
             return dValue ^ dValue;
@@ -265,44 +277,25 @@ namespace NumpyLib
     {
         public ByteHandlers()
         {
-            AddOperation = BYTE_AddOperation;
-            SubtractOperation = BYTE_SubtractOperation;
-            MultiplyOperation = BYTE_MultiplyOperation;
-            DivideOperation = BYTE_DivideOperation;
-            RemainderOperation = BYTE_RemainderOperation;
-            FModOperation = BYTE_FModOperation;
-            PowerOperation = BYTE_PowerOperation;
-            SquareOperation = BYTE_SquareOperation;
-            ReciprocalOperation = BYTE_ReciprocalOperation;
+  
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-
-        private object BYTE_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return dValue + (double)operand;
         }
-        private static object BYTE_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return dValue - (double)operand;
         }
-        private static object BYTE_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return dValue * (double)operand;
         }
-        private static object BYTE_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             double doperand = (double)operand;
@@ -313,7 +306,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object BYTE_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             double doperand = (double)operand;
@@ -332,7 +325,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object BYTE_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             double doperand = (double)operand;
@@ -343,17 +336,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object BYTE_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object BYTE_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return dValue * dValue;
         }
-        private static object BYTE_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
             return 1 / dValue;
@@ -364,43 +357,25 @@ namespace NumpyLib
     {
         public UByteHandlers()
         {
-            AddOperation = UBYTE_AddOperation;
-            SubtractOperation = UBYTE_SubtractOperation;
-            MultiplyOperation = UBYTE_MultiplyOperation;
-            DivideOperation = UBYTE_DivideOperation;
-            RemainderOperation = UBYTE_RemainderOperation;
-            FModOperation = UBYTE_FModOperation;
-            PowerOperation = UBYTE_PowerOperation;
-            SquareOperation = UBYTE_SquareOperation;
-            ReciprocalOperation = UBYTE_ReciprocalOperation;
+
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object UBYTE_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return dValue + (double)operand;
         }
-        private static object UBYTE_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return dValue - (double)operand;
         }
-        private static object UBYTE_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return dValue * (double)operand;
         }
-        private static object UBYTE_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             double doperand = (double)operand;
@@ -411,7 +386,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object UBYTE_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             double doperand = (double)operand;
@@ -430,7 +405,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object UBYTE_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             double doperand = (double)operand;
@@ -441,17 +416,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object UBYTE_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object UBYTE_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return dValue * dValue;
         }
-        private static object UBYTE_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
             return 1 / dValue;
@@ -462,43 +437,25 @@ namespace NumpyLib
     {
         public Int16Handlers()
         {
-            AddOperation = INT16_AddOperation;
-            SubtractOperation = INT16_SubtractOperation;
-            MultiplyOperation = INT16_MultiplyOperation;
-            DivideOperation = INT16_DivideOperation;
-            RemainderOperation = INT16_RemainderOperation;
-            FModOperation = INT16_FModOperation;
-            PowerOperation = INT16_PowerOperation;
-            SquareOperation = INT16_SquareOperation;
-            ReciprocalOperation = INT16_ReciprocalOperation;
+ 
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private static object INT16_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return dValue + (double)operand;
         }
-        private static object INT16_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return dValue - (double)operand;
         }
-        private static object INT16_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return dValue * (double)operand;
         }
-        private static object INT16_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             double doperand = (double)operand;
@@ -509,7 +466,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object INT16_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             double doperand = (double)operand;
@@ -528,7 +485,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object INT16_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             double doperand = (double)operand;
@@ -539,17 +496,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object INT16_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object INT16_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return dValue * dValue;
         }
-        private static object INT16_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return 1 / dValue;
@@ -560,44 +517,26 @@ namespace NumpyLib
     {
         public UInt16Handlers()
         {
-            AddOperation = UINT16_AddOperation;
-            SubtractOperation = UINT16_SubtractOperation;
-            MultiplyOperation = UINT16_MultiplyOperation;
-            DivideOperation = UINT16_DivideOperation;
-            RemainderOperation = UINT16_RemainderOperation;
-            FModOperation = UINT16_FModOperation;
-            PowerOperation = UINT16_PowerOperation;
-            SquareOperation = UINT16_SquareOperation;
-            ReciprocalOperation = UINT16_ReciprocalOperation;
+ 
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
 
-
-        private static object UINT16_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue + (double)operand;
         }
-        private static object UINT16_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue - (double)operand;
         }
-        private static object UINT16_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue * (double)operand;
         }
-        private static object UINT16_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             double doperand = (double)operand;
@@ -608,7 +547,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object UINT16_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             double doperand = (double)operand;
@@ -627,7 +566,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object UINT16_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             double doperand = (double)operand;
@@ -638,17 +577,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object UINT16_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object UINT16_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue * dValue;
         }
-        private static object UINT16_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return 1 / dValue;
@@ -659,43 +598,26 @@ namespace NumpyLib
     {
         public Int32Handlers()
         {
-            AddOperation = INT32_AddOperation;
-            SubtractOperation = INT32_SubtractOperation;
-            MultiplyOperation = INT32_MultiplyOperation;
-            DivideOperation = INT32_DivideOperation;
-            RemainderOperation = INT32_RemainderOperation;
-            FModOperation = INT32_FModOperation;
-            PowerOperation = INT32_PowerOperation;
-            SquareOperation = INT32_SquareOperation;
-            ReciprocalOperation = INT32_ReciprocalOperation;
+  
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
 
-        private object INT32_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue + (double)operand;
         }
-        private static object INT32_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue - (double)operand;
         }
-        private static object INT32_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue * (double)operand;
         }
-        private static object INT32_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             double doperand = (double)operand;
@@ -706,7 +628,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object INT32_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             double doperand = (double)operand;
@@ -725,7 +647,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object INT32_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             double doperand = (double)operand;
@@ -736,17 +658,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object INT32_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object INT32_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue * dValue;
         }
-        private static object INT32_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return 1 / dValue;
@@ -757,43 +679,25 @@ namespace NumpyLib
     {
         public UInt32Handlers()
         {
-            AddOperation = UINT32_AddOperation;
-            SubtractOperation = UINT32_SubtractOperation;
-            MultiplyOperation = UINT32_MultiplyOperation;
-            DivideOperation = UINT32_DivideOperation;
-            RemainderOperation = UINT32_RemainderOperation;
-            FModOperation = UINT32_FModOperation;
-            PowerOperation = UINT32_PowerOperation;
-            SquareOperation = UINT32_SquareOperation;
-            ReciprocalOperation = UINT32_ReciprocalOperation;
+ 
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object UINT32_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return dValue + (double)operand;
         }
-        private static object UINT32_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return dValue - (double)operand;
         }
-        private static object UINT32_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return dValue * (double)operand;
         }
-        private static object UINT32_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             double doperand = (double)operand;
@@ -804,7 +708,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object UINT32_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             double doperand = (double)operand;
@@ -823,7 +727,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object UINT32_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             double doperand = (double)operand;
@@ -834,17 +738,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object UINT32_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object UINT32_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return dValue * dValue;
         }
-        private static object UINT32_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
             return 1 / dValue;
@@ -855,43 +759,25 @@ namespace NumpyLib
     {
         public Int64Handlers()
         {
-            AddOperation = INT64_AddOperation;
-            SubtractOperation = INT64_SubtractOperation;
-            MultiplyOperation = INT64_MultiplyOperation;
-            DivideOperation = INT64_DivideOperation;
-            RemainderOperation = INT64_RemainderOperation;
-            FModOperation = INT64_FModOperation;
-            PowerOperation = INT64_PowerOperation;
-            SquareOperation = INT64_SquareOperation;
-            ReciprocalOperation = INT64_ReciprocalOperation;
+
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object INT64_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return dValue + (double)operand;
         }
-        private static object INT64_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return dValue - (double)operand;
         }
-        private static object INT64_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return dValue * (double)operand;
         }
-        private static object INT64_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             double doperand = (double)operand;
@@ -902,7 +788,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object INT64_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             double doperand = (double)operand;
@@ -921,7 +807,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object INT64_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             double doperand = (double)operand;
@@ -932,17 +818,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object INT64_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object INT64_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return dValue * dValue;
         }
-        private static object INT64_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
             return 1 / dValue;
@@ -953,43 +839,25 @@ namespace NumpyLib
     {
         public UInt64Handlers()
         {
-            AddOperation = UINT64_AddOperation;
-            SubtractOperation = UINT64_SubtractOperation;
-            MultiplyOperation = UINT64_MultiplyOperation;
-            DivideOperation = UINT64_DivideOperation;
-            RemainderOperation = UINT64_RemainderOperation;
-            FModOperation = UINT64_FModOperation;
-            PowerOperation = UINT64_PowerOperation;
-            SquareOperation = UINT64_SquareOperation;
-            ReciprocalOperation = UINT64_ReciprocalOperation;
+   
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object UINT64_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue + (double)operand;
         }
-        private static object UINT64_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue - (double)operand;
         }
-        private static object UINT64_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue * (double)operand;
         }
-        private static object UINT64_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             double doperand = (double)operand;
@@ -1000,7 +868,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object UINT64_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             double doperand = (double)operand;
@@ -1019,7 +887,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object UINT64_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             double doperand = (double)operand;
@@ -1030,17 +898,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object UINT64_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object UINT64_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue * dValue;
         }
-        private static object UINT64_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return 1 / dValue;
@@ -1051,43 +919,25 @@ namespace NumpyLib
     {
         public FloatHandlers()
         {
-            AddOperation = Float_AddOperation;
-            SubtractOperation = FLOAT_SubtractOperation;
-            MultiplyOperation = FLOAT_MultiplyOperation;
-            DivideOperation = FLOAT_DivideOperation;
-            RemainderOperation = FLOAT_RemainderOperation;
-            FModOperation = FLOAT_FModOperation;
-            PowerOperation = FLOAT_PowerOperation;
-            SquareOperation = FLOAT_SquareOperation;
-            ReciprocalOperation = FLOAT_ReciprocalOperation;
+ 
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object Float_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return dValue + (double)operand;
         }
-        private static object FLOAT_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return dValue - (double)operand;
         }
-        private static object FLOAT_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return dValue * (double)operand;
         }
-        private static object FLOAT_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             float dValue = (float)bValue;
             double doperand = (double)operand;
@@ -1098,7 +948,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object FLOAT_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             float dValue = (float)bValue;
             double doperand = (double)operand;
@@ -1117,7 +967,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object FLOAT_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             float dValue = (float)bValue;
             double doperand = (double)operand;
@@ -1128,17 +978,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object FLOAT_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object FLOAT_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return dValue * dValue;
         }
-        private static object FLOAT_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return 1 / dValue;
@@ -1149,43 +999,25 @@ namespace NumpyLib
     {
         public DoubleHandlers()
         {
-            AddOperation = Double_AddOperation;
-            SubtractOperation = DOUBLE_SubtractOperation;
-            MultiplyOperation = DOUBLE_MultiplyOperation;
-            DivideOperation = DOUBLE_DivideOperation;
-            RemainderOperation = DOUBLE_RemainderOperation;
-            FModOperation = DOUBLE_FModOperation;
-            PowerOperation = DOUBLE_PowerOperation;
-            SquareOperation = DOUBLE_SquareOperation;
-            ReciprocalOperation = DOUBLE_ReciprocalOperation;
+
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object Double_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return dValue + (double)operand;
         }
-        private static object DOUBLE_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return dValue - (double)operand;
         }
-        private static object DOUBLE_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return dValue * (double)operand;
         }
-        private static object DOUBLE_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             double dValue = (double)bValue;
             double doperand = (double)operand;
@@ -1196,7 +1028,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object DOUBLE_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             double dValue = (double)bValue;
             double doperand = (double)operand;
@@ -1215,7 +1047,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object DOUBLE_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             double dValue = (double)bValue;
             double doperand = (double)operand;
@@ -1226,17 +1058,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object DOUBLE_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return Math.Pow(dValue, (double)operand);
         }
-        private static object DOUBLE_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return dValue * dValue;
         }
-        private static object DOUBLE_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             double dValue = (double)bValue;
             return 1 / dValue;
@@ -1247,43 +1079,25 @@ namespace NumpyLib
     {
         public DecimalHandlers()
         {
-            AddOperation = Decimal_AddOperation;
-            SubtractOperation = DECIMAL_SubtractOperation;
-            MultiplyOperation = DECIMAL_MultiplyOperation;
-            DivideOperation = DECIMAL_DivideOperation;
-            RemainderOperation = DECIMAL_RemainderOperation;
-            FModOperation = DECIMAL_FModOperation;
-            PowerOperation = DECIMAL_PowerOperation;
-            SquareOperation = DECIMAL_SquareOperation;
-            ReciprocalOperation = DECIMAL_ReciprocalOperation;
+ 
         }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
-
-        private object Decimal_AddOperation(object bValue, object operand)
+        protected override object Add(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return dValue + (decimal)operand;
         }
-        private static object DECIMAL_SubtractOperation(object bValue, object operand)
+        protected override object Subtract(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return dValue - (decimal)operand;
         }
-        private static object DECIMAL_MultiplyOperation(object bValue, object operand)
+        protected override object Multiply(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return dValue * (decimal)operand;
         }
-        private static object DECIMAL_DivideOperation(object bValue, object operand)
+        protected override object Divide(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             decimal doperand = (decimal)operand;
@@ -1294,7 +1108,7 @@ namespace NumpyLib
             }
             return dValue / doperand;
         }
-        private static object DECIMAL_RemainderOperation(object bValue, object operand)
+        protected override object Remainder(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             decimal doperand = (decimal)operand;
@@ -1313,7 +1127,7 @@ namespace NumpyLib
                 return rem + doperand;
             }
         }
-        private static object DECIMAL_FModOperation(object bValue, object operand)
+        protected override object FMod(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             decimal doperand = (decimal)operand;
@@ -1324,17 +1138,17 @@ namespace NumpyLib
             }
             return dValue % doperand;
         }
-        private static object DECIMAL_PowerOperation(object bValue, object operand)
+        protected override object Power(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return Math.Pow(Convert.ToDouble(dValue), Convert.ToDouble(operand));
         }
-        private static object DECIMAL_SquareOperation(object bValue, object operand)
+        protected override object Square(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return dValue * dValue;
         }
-        private static object DECIMAL_ReciprocalOperation(object bValue, object operand)
+        protected override object Reciprocal(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return 1 / dValue;

@@ -9,103 +9,103 @@ using NumpyLib;
 
 namespace NumpyDotNetTests
 {
-    internal class MyInt32Handlers : IArrayHandlers
-    {
-        public MyInt32Handlers()
-        {
-            AddOperation = My_AddOperation;
-            SubtractOperation = My_SubtractOperation;
-            MultiplyOperation = My_MultiplyOperation;
-            DivideOperation = My_DivideOperation;
-            RemainderOperation = My_RemainderOperation;
-            FModOperation = My_FModOperation;
-            PowerOperation = My_PowerOperation;
-            SquareOperation = My_SquareOperation;
-            ReciprocalOperation = My_ReciprocalOperation;
-        }
+    //internal class MyInt32Handlers : IArrayHandlers
+    //{
+    //    public MyInt32Handlers()
+    //    {
+    //        AddOperation = My_AddOperation;
+    //        SubtractOperation = My_SubtractOperation;
+    //        MultiplyOperation = My_MultiplyOperation;
+    //        DivideOperation = My_DivideOperation;
+    //        RemainderOperation = My_RemainderOperation;
+    //        FModOperation = My_FModOperation;
+    //        PowerOperation = My_PowerOperation;
+    //        SquareOperation = My_SquareOperation;
+    //        ReciprocalOperation = My_ReciprocalOperation;
+    //    }
 
-        public NumericOperation AddOperation { get; set; }
-        public NumericOperation SubtractOperation { get; set; }
-        public NumericOperation MultiplyOperation { get; set; }
-        public NumericOperation DivideOperation { get; set; }
-        public NumericOperation RemainderOperation { get; set; }
-        public NumericOperation FModOperation { get; set; }
-        public NumericOperation PowerOperation { get; set; }
-        public NumericOperation SquareOperation { get; set; }
-        public NumericOperation ReciprocalOperation { get; set; }
+    //    public NumericOperation AddOperation { get; set; }
+    //    public NumericOperation SubtractOperation { get; set; }
+    //    public NumericOperation MultiplyOperation { get; set; }
+    //    public NumericOperation DivideOperation { get; set; }
+    //    public NumericOperation RemainderOperation { get; set; }
+    //    public NumericOperation FModOperation { get; set; }
+    //    public NumericOperation PowerOperation { get; set; }
+    //    public NumericOperation SquareOperation { get; set; }
+    //    public NumericOperation ReciprocalOperation { get; set; }
 
-        private object My_AddOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue + (double)operand;
-        }
-        private static object My_SubtractOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue - (double)operand;
-        }
-        private static object My_MultiplyOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue * (double)operand;
-        }
-        private static object My_DivideOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
-            if (doperand == 0)
-            {
-                dValue = 0;
-                return dValue;
-            }
-            return dValue / doperand;
-        }
-        private static object My_RemainderOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
-            if (doperand == 0)
-            {
-                dValue = 0;
-                return dValue;
-            }
-            var rem = dValue % doperand;
-            if ((dValue > 0) == (doperand > 0) || rem == 0)
-            {
-                return rem;
-            }
-            else
-            {
-                return rem + doperand;
-            }
-        }
-        private static object My_FModOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
-            if (doperand == 0)
-            {
-                dValue = 0;
-                return dValue;
-            }
-            return dValue % doperand;
-        }
-        private static object My_PowerOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return Math.Pow(dValue, (double)operand);
-        }
-        private static object My_SquareOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue * dValue;
-        }
-        private static object My_ReciprocalOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return 1 / dValue;
-        }
-    }
+    //    private object My_AddOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return dValue + (double)operand;
+    //    }
+    //    private static object My_SubtractOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return dValue - (double)operand;
+    //    }
+    //    private static object My_MultiplyOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return dValue * (double)operand;
+    //    }
+    //    private static object My_DivideOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        double doperand = (double)operand;
+    //        if (doperand == 0)
+    //        {
+    //            dValue = 0;
+    //            return dValue;
+    //        }
+    //        return dValue / doperand;
+    //    }
+    //    private static object My_RemainderOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        double doperand = (double)operand;
+    //        if (doperand == 0)
+    //        {
+    //            dValue = 0;
+    //            return dValue;
+    //        }
+    //        var rem = dValue % doperand;
+    //        if ((dValue > 0) == (doperand > 0) || rem == 0)
+    //        {
+    //            return rem;
+    //        }
+    //        else
+    //        {
+    //            return rem + doperand;
+    //        }
+    //    }
+    //    private static object My_FModOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        double doperand = (double)operand;
+    //        if (doperand == 0)
+    //        {
+    //            dValue = 0;
+    //            return dValue;
+    //        }
+    //        return dValue % doperand;
+    //    }
+    //    private static object My_PowerOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return Math.Pow(dValue, (double)operand);
+    //    }
+    //    private static object My_SquareOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return dValue * dValue;
+    //    }
+    //    private static object My_ReciprocalOperation(object bValue, object operand)
+    //    {
+    //        Int32 dValue = (Int32)bValue;
+    //        return 1 / dValue;
+    //    }
+    //}
 
     [TestClass]
     public class UFUNCTests : TestBaseClass
