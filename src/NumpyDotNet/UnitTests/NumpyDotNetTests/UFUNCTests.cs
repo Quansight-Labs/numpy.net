@@ -20,6 +20,7 @@ namespace NumpyDotNetTests
             RemainderOperation = My_RemainderOperation;
             FModOperation = My_FModOperation;
             PowerOperation = My_PowerOperation;
+            SquareOperation = My_SquareOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -29,7 +30,7 @@ namespace NumpyDotNetTests
         public NumericOperation RemainderOperation { get; set; }
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
-
+        public NumericOperation SquareOperation { get; set; }
 
         private object My_AddOperation(object bValue, object operand)
         {
@@ -91,6 +92,11 @@ namespace NumpyDotNetTests
         {
             Int32 dValue = (Int32)bValue;
             return Math.Pow(dValue, (double)operand);
+        }
+        private static object My_SquareOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue * dValue;
         }
     }
 
