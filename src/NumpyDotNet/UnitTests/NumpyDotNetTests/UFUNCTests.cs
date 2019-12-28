@@ -13,20 +13,23 @@ namespace NumpyDotNetTests
     {
         public MyInt32Handlers()
         {
-            _AddOperation = MYINT32_AddOperation;
-        }
-        NumericOperation _AddOperation = null;
-
-        public NumericOperation AddOperation
-        {
-            get { return _AddOperation; }
-            set { _AddOperation = value; }
+            AddOperation = My_AddOperation;
+            SubtractOperation = My_SubtractOperation;
         }
 
-        private object MYINT32_AddOperation(object bValue, object operand)
+        public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
+
+
+        private object My_AddOperation(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue + (double)operand;
+        }
+        private static object My_SubtractOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue - (double)operand;
         }
     }
 

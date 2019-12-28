@@ -7,6 +7,7 @@ namespace NumpyLib
     public interface IArrayHandlers
     {
         NumericOperation AddOperation { get; set; }
+        NumericOperation SubtractOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -43,7 +44,7 @@ namespace NumpyLib
             {
                 throw new Exception("ItemType can't be a negative value");
             }
-            if (index >= ArrayHandlers.Length )
+            if (index >= ArrayHandlers.Length)
             {
                 throw new Exception("Specified ItemType is not found");
             }
@@ -58,7 +59,7 @@ namespace NumpyLib
         }
 
         private static IArrayHandlers[] ArrayHandlers = new IArrayHandlers[255];
-    
+
     }
 
     internal class NumericOperations
@@ -107,30 +108,53 @@ namespace NumpyLib
         }
     }
 
-    internal class BoolHandlers : IArrayHandlers
+    internal class ArrayHandlerBase
+    {
+        protected static T AddOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue + operand;
+        }
+        protected static T SubtractOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue - operand;
+        }
+    }
+
+    internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public BoolHandlers()
         {
             AddOperation = INT32_AddOperation;
+            SubtractOperation = BOOL_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
             return dValue + (double)operand;
         }
+        private static object BOOL_SubtractOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue | Convert.ToBoolean(operand);
+        }
     }
 
-    internal class ByteHandlers : IArrayHandlers
+    internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public ByteHandlers()
         {
             AddOperation = BYTE_AddOperation;
+            SubtractOperation = BYTE_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object BYTE_AddOperation(object bValue, object operand)
@@ -138,16 +162,23 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return dValue + (double)operand;
         }
+        private static object BYTE_SubtractOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class UByteHandlers : IArrayHandlers
+    internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public UByteHandlers()
         {
             AddOperation = UBYTE_AddOperation;
+            SubtractOperation = UBYTE_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object UBYTE_AddOperation(object bValue, object operand)
@@ -155,32 +186,46 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue + (double)operand;
         }
+        private static object UBYTE_SubtractOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class Int16Handlers : IArrayHandlers
+    internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public Int16Handlers()
         {
             AddOperation = INT16_AddOperation;
+            SubtractOperation = INT16_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
             return dValue + (double)operand;
         }
+        private static object INT16_SubtractOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class UInt16Handlers : IArrayHandlers
+    internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public UInt16Handlers()
         {
             AddOperation = UINT16_AddOperation;
+            SubtractOperation = UINT16_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private static object UINT16_AddOperation(object bValue, object operand)
@@ -188,16 +233,23 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return dValue + (double)operand;
         }
+        private static object UINT16_SubtractOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class Int32Handlers : IArrayHandlers
+    internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public Int32Handlers()
         {
             AddOperation = INT32_AddOperation;
+            SubtractOperation = INT32_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object INT32_AddOperation(object bValue, object operand)
@@ -205,16 +257,23 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return dValue + (double)operand;
         }
+        private static object INT32_SubtractOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class UInt32Handlers : IArrayHandlers
+    internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public UInt32Handlers()
         {
             AddOperation = UINT32_AddOperation;
+            SubtractOperation = UINT32_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object UINT32_AddOperation(object bValue, object operand)
@@ -222,16 +281,23 @@ namespace NumpyLib
             UInt32 dValue = (UInt32)bValue;
             return dValue + (double)operand;
         }
+        private static object UINT32_SubtractOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class Int64Handlers : IArrayHandlers
+    internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public Int64Handlers()
         {
             AddOperation = INT64_AddOperation;
+            SubtractOperation = INT64_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object INT64_AddOperation(object bValue, object operand)
@@ -239,49 +305,70 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue + (double)operand;
         }
+        private static object INT64_SubtractOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return dValue - (double)operand;
+        }
+
     }
 
-    internal class UInt64Handlers : IArrayHandlers
+    internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
     {
         public UInt64Handlers()
         {
             AddOperation = UINT64_AddOperation;
+            SubtractOperation = UINT64_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue + (double)operand;
         }
+        private static object UINT64_SubtractOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class FloatHandlers : IArrayHandlers
+    internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public FloatHandlers()
         {
             AddOperation = Float_AddOperation;
+            SubtractOperation = FLOAT_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
-
+        public NumericOperation SubtractOperation { get; set; }
 
         private object Float_AddOperation(object bValue, object operand)
         {
             float dValue = (float)bValue;
             return dValue + (double)operand;
         }
+        private static object FLOAT_SubtractOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class DoubleHandlers : IArrayHandlers
+    internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public DoubleHandlers()
         {
             AddOperation = Double_AddOperation;
+            SubtractOperation = DOUBLE_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object Double_AddOperation(object bValue, object operand)
@@ -289,22 +376,34 @@ namespace NumpyLib
             double dValue = (double)bValue;
             return dValue + (double)operand;
         }
+        private static object DOUBLE_SubtractOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return dValue - (double)operand;
+        }
     }
 
-    internal class DecimalHandlers : IArrayHandlers
+    internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public DecimalHandlers()
         {
             AddOperation = Decimal_AddOperation;
+            SubtractOperation = DECIMAL_SubtractOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
+        public NumericOperation SubtractOperation { get; set; }
 
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
             return dValue + (decimal)operand;
+        }
+        private static object DECIMAL_SubtractOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return dValue - (decimal)operand;
         }
     }
 }
