@@ -133,39 +133,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
                 }
                 case NpyArray_Ops.npy_op_negative:
-                    {
-                        #region NegativeOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_NegativeOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_NegativeOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_NegativeOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_NegativeOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_NegativeOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_NegativeOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_NegativeOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_NegativeOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_NegativeOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_NegativeOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_NegativeOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_NegativeOperation;
-                            default:
-                                return NegativeOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
+                }
                 case NpyArray_Ops.npy_op_absolute:
                     {
                         #region AbsoluteOperation
@@ -1481,86 +1451,16 @@ namespace NumpyLib
         }
         #endregion
 
-        #region SqrtOperation
-
   
-  
- 
-  
-  
-    
- 
-
-  
-        #endregion
-
         #region NegativeOperation
-        private static object BOOL_NegativeOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ (bool)operand;
-        }
-        private static object BYTE_NegativeOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return -dValue;
-        }
-        private static object UBYTE_NegativeOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return -dValue;
-        }
-        private static object INT16_NegativeOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return -dValue;
-        }
-        private static object UINT16_NegativeOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return -dValue;
-        }
-        private static object INT32_NegativeOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return -dValue;
-        }
-        private static object UINT32_NegativeOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return -dValue;
-        }
-        private static object INT64_NegativeOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return -dValue;
-        }
-        private static object UINT64_NegativeOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)(UInt64)bValue;
-            return (UInt64)(-dValue);
-        }
-        private static object FLOAT_NegativeOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return -dValue;
-        }
-        private static object DOUBLE_NegativeOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return -dValue;
-        }
-        private static object DECIMAL_NegativeOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return -dValue;
-        }
+  
+  
+  
+   
+  
 
-        private static T NegativeOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return -dValue;
-        }
+ 
+
         #endregion
 
         #region AbsoluteOperation
