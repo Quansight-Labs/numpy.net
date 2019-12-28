@@ -14,6 +14,7 @@ namespace NumpyLib
         NumericOperation FModOperation { get; set; }
         NumericOperation PowerOperation { get; set; }
         NumericOperation SquareOperation { get; set; }
+        NumericOperation ReciprocalOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -180,6 +181,11 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue * dValue;
         }
+        private static T ReciprocalOperation<T>(T bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -194,6 +200,7 @@ namespace NumpyLib
             FModOperation = BOOL_FModOperation;
             PowerOperation = BOOL_PowerOperation;
             SquareOperation = BOOL_SquareOperation;
+            ReciprocalOperation = BOOL_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -204,6 +211,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
 
         private object INT32_AddOperation(object bValue, object operand)
@@ -246,6 +254,11 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return dValue ^ dValue;
         }
+        private static object BOOL_ReciprocalOperation(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue ^ dValue;
+        }
     }
 
     internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -260,6 +273,7 @@ namespace NumpyLib
             FModOperation = BYTE_FModOperation;
             PowerOperation = BYTE_PowerOperation;
             SquareOperation = BYTE_SquareOperation;
+            ReciprocalOperation = BYTE_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -270,6 +284,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
 
         private object BYTE_AddOperation(object bValue, object operand)
@@ -338,6 +353,11 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return dValue * dValue;
         }
+        private static object BYTE_ReciprocalOperation(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -352,6 +372,7 @@ namespace NumpyLib
             FModOperation = UBYTE_FModOperation;
             PowerOperation = UBYTE_PowerOperation;
             SquareOperation = UBYTE_SquareOperation;
+            ReciprocalOperation = UBYTE_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -362,6 +383,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object UBYTE_AddOperation(object bValue, object operand)
         {
@@ -429,6 +451,11 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue * dValue;
         }
+        private static object UBYTE_ReciprocalOperation(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -443,6 +470,7 @@ namespace NumpyLib
             FModOperation = INT16_FModOperation;
             PowerOperation = INT16_PowerOperation;
             SquareOperation = INT16_SquareOperation;
+            ReciprocalOperation = INT16_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -453,6 +481,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private static object INT16_AddOperation(object bValue, object operand)
         {
@@ -520,6 +549,11 @@ namespace NumpyLib
             Int16 dValue = (Int16)bValue;
             return dValue * dValue;
         }
+        private static object INT16_ReciprocalOperation(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -534,6 +568,7 @@ namespace NumpyLib
             FModOperation = UINT16_FModOperation;
             PowerOperation = UINT16_PowerOperation;
             SquareOperation = UINT16_SquareOperation;
+            ReciprocalOperation = UINT16_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -544,6 +579,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
 
         private static object UINT16_AddOperation(object bValue, object operand)
@@ -612,6 +648,11 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return dValue * dValue;
         }
+        private static object UINT16_ReciprocalOperation(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -626,6 +667,7 @@ namespace NumpyLib
             FModOperation = INT32_FModOperation;
             PowerOperation = INT32_PowerOperation;
             SquareOperation = INT32_SquareOperation;
+            ReciprocalOperation = INT32_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -636,6 +678,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object INT32_AddOperation(object bValue, object operand)
         {
@@ -703,6 +746,11 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return dValue * dValue;
         }
+        private static object INT32_ReciprocalOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -717,6 +765,7 @@ namespace NumpyLib
             FModOperation = UINT32_FModOperation;
             PowerOperation = UINT32_PowerOperation;
             SquareOperation = UINT32_SquareOperation;
+            ReciprocalOperation = UINT32_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -727,6 +776,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object UINT32_AddOperation(object bValue, object operand)
         {
@@ -794,6 +844,11 @@ namespace NumpyLib
             UInt32 dValue = (UInt32)bValue;
             return dValue * dValue;
         }
+        private static object UINT32_ReciprocalOperation(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -808,6 +863,7 @@ namespace NumpyLib
             FModOperation = INT64_FModOperation;
             PowerOperation = INT64_PowerOperation;
             SquareOperation = INT64_SquareOperation;
+            ReciprocalOperation = INT64_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -818,6 +874,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object INT64_AddOperation(object bValue, object operand)
         {
@@ -885,6 +942,11 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue * dValue;
         }
+        private static object INT64_ReciprocalOperation(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -899,6 +961,7 @@ namespace NumpyLib
             FModOperation = UINT64_FModOperation;
             PowerOperation = UINT64_PowerOperation;
             SquareOperation = UINT64_SquareOperation;
+            ReciprocalOperation = UINT64_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -909,6 +972,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object UINT64_AddOperation(object bValue, object operand)
         {
@@ -976,6 +1040,11 @@ namespace NumpyLib
             UInt64 dValue = (UInt64)bValue;
             return dValue * dValue;
         }
+        private static object UINT64_ReciprocalOperation(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
@@ -990,6 +1059,7 @@ namespace NumpyLib
             FModOperation = FLOAT_FModOperation;
             PowerOperation = FLOAT_PowerOperation;
             SquareOperation = FLOAT_SquareOperation;
+            ReciprocalOperation = FLOAT_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -1000,6 +1070,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object Float_AddOperation(object bValue, object operand)
         {
@@ -1067,6 +1138,11 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue * dValue;
         }
+        private static object FLOAT_ReciprocalOperation(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1081,6 +1157,7 @@ namespace NumpyLib
             FModOperation = DOUBLE_FModOperation;
             PowerOperation = DOUBLE_PowerOperation;
             SquareOperation = DOUBLE_SquareOperation;
+            ReciprocalOperation = DOUBLE_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -1091,6 +1168,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object Double_AddOperation(object bValue, object operand)
         {
@@ -1158,6 +1236,11 @@ namespace NumpyLib
             double dValue = (double)bValue;
             return dValue * dValue;
         }
+        private static object DOUBLE_ReciprocalOperation(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return 1 / dValue;
+        }
     }
 
     internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1172,6 +1255,7 @@ namespace NumpyLib
             FModOperation = DECIMAL_FModOperation;
             PowerOperation = DECIMAL_PowerOperation;
             SquareOperation = DECIMAL_SquareOperation;
+            ReciprocalOperation = DECIMAL_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -1182,6 +1266,7 @@ namespace NumpyLib
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object Decimal_AddOperation(object bValue, object operand)
         {
@@ -1248,6 +1333,11 @@ namespace NumpyLib
         {
             decimal dValue = (decimal)bValue;
             return dValue * dValue;
+        }
+        private static object DECIMAL_ReciprocalOperation(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return 1 / dValue;
         }
 
     }

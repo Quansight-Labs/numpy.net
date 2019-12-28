@@ -121,39 +121,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SquareOperation;
                 }
                 case NpyArray_Ops.npy_op_reciprocal:
-                    {
-                        #region ReciprocalOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_ReciprocalOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_ReciprocalOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_ReciprocalOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_ReciprocalOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_ReciprocalOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_ReciprocalOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_ReciprocalOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_ReciprocalOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_ReciprocalOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_ReciprocalOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_ReciprocalOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_ReciprocalOperation;
-                            default:
-                                return ReciprocalOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
+                }
                 case NpyArray_Ops.npy_op_ones_like:
                     {
                         return OnesLikeOperation;
@@ -1543,71 +1513,15 @@ namespace NumpyLib
             
 
         #region ReciprocalOperation
-        private static object BOOL_ReciprocalOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue ^ dValue;
-        }
-        private static object BYTE_ReciprocalOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return 1 / dValue;
-        }
-        private static object UBYTE_ReciprocalOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return 1 / dValue;
-        }
-        private static object INT16_ReciprocalOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return 1 / dValue;
-        }
-        private static object UINT16_ReciprocalOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return 1 / dValue;
-        }
-        private static object INT32_ReciprocalOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return 1 / dValue;
-        }
-        private static object UINT32_ReciprocalOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return 1 / dValue;
-        }
-        private static object INT64_ReciprocalOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return 1 / dValue;
-        }
-        private static object UINT64_ReciprocalOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return 1 / dValue;
-        }
-        private static object FLOAT_ReciprocalOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return 1 / dValue;
-        }
-        private static object DOUBLE_ReciprocalOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return 1 / dValue;
-        }
-        private static object DECIMAL_ReciprocalOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return 1 / dValue;
-        }
-        private static T ReciprocalOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return 1 / dValue;
-        }
+  
+ 
+  
+ 
+ 
+ 
+
+
+ 
         #endregion
 
         #region OnesLikeOperation

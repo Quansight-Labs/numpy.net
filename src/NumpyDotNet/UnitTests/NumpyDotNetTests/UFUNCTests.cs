@@ -21,6 +21,7 @@ namespace NumpyDotNetTests
             FModOperation = My_FModOperation;
             PowerOperation = My_PowerOperation;
             SquareOperation = My_SquareOperation;
+            ReciprocalOperation = My_ReciprocalOperation;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -31,6 +32,7 @@ namespace NumpyDotNetTests
         public NumericOperation FModOperation { get; set; }
         public NumericOperation PowerOperation { get; set; }
         public NumericOperation SquareOperation { get; set; }
+        public NumericOperation ReciprocalOperation { get; set; }
 
         private object My_AddOperation(object bValue, object operand)
         {
@@ -97,6 +99,11 @@ namespace NumpyDotNetTests
         {
             Int32 dValue = (Int32)bValue;
             return dValue * dValue;
+        }
+        private static object My_ReciprocalOperation(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return 1 / dValue;
         }
     }
 
