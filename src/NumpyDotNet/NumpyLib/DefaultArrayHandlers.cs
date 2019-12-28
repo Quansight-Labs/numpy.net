@@ -19,7 +19,7 @@ namespace NumpyLib
         NumericOperation SqrtOperation { get; set; }
         NumericOperation NegativeOperation { get; set; }
         NumericOperation AbsoluteOperation { get; set; }
-
+        NumericOperation InvertOperation { get; set; }
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -137,6 +137,7 @@ namespace NumpyLib
             SqrtOperation = Sqrt;
             NegativeOperation = Negative;
             AbsoluteOperation = Absolute;
+            InvertOperation = Invert;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -152,6 +153,7 @@ namespace NumpyLib
         public NumericOperation SqrtOperation { get; set; }
         public NumericOperation NegativeOperation { get; set; }
         public NumericOperation AbsoluteOperation { get; set; }
+        public NumericOperation InvertOperation { get; set; }
 
 
         protected virtual object Add(dynamic bValue, dynamic operand)
@@ -243,6 +245,11 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return Math.Abs(dValue);
         }
+        protected virtual object Invert(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return ~dValue;
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -312,7 +319,11 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return false;
         }
-
+        protected override object Invert(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return !dValue;
+        }
     }
 
     internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -407,6 +418,11 @@ namespace NumpyLib
         {
             sbyte dValue = (sbyte)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return ~dValue;
         }
     }
 
@@ -503,6 +519,11 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return Math.Abs(dValue);
         }
+        protected override object Invert(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return ~dValue;
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -597,6 +618,11 @@ namespace NumpyLib
         {
             Int16 dValue = (Int16)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return ~dValue;
         }
     }
 
@@ -694,6 +720,11 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return Math.Abs(dValue);
         }
+        protected override object Invert(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return ~dValue;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -790,6 +821,11 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return Math.Abs(dValue);
         }
+        protected override object Invert(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return ~dValue;
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -884,6 +920,11 @@ namespace NumpyLib
         {
             UInt32 dValue = (UInt32)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return ~dValue;
         }
     }
 
@@ -980,6 +1021,11 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return Math.Abs(dValue);
         }
+        protected override object Invert(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return ~dValue;
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -1074,6 +1120,11 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return ~dValue;
         }
     }
 
@@ -1170,6 +1221,11 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return Math.Abs(dValue);
         }
+        protected override object Invert(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return dValue;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1264,6 +1320,11 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return dValue;
         }
     }
 
@@ -1374,6 +1435,11 @@ namespace NumpyLib
         {
             decimal dValue = (decimal)bValue;
             return Math.Abs(dValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return dValue;
         }
 
     }

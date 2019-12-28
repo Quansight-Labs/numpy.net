@@ -141,39 +141,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
                 }
                 case NpyArray_Ops.npy_op_invert:
-                    {
-                        #region InvertOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_InvertOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_InvertOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_InvertOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_InvertOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_InvertOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_InvertOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_InvertOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_InvertOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_InvertOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_InvertOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_InvertOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_InvertOperation;
-                            default:
-                                return InvertOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
+                }
                 case NpyArray_Ops.npy_op_left_shift:
                     {
                         #region LeftShiftOperation
@@ -1450,72 +1420,18 @@ namespace NumpyLib
         #endregion
 
         #region InvertOperation
-        private static object BOOL_InvertOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return !dValue;
-        }
-        private static object BYTE_InvertOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return ~dValue;
-        }
-        private static object UBYTE_InvertOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return ~dValue;
-        }
-        private static object INT16_InvertOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return ~dValue;
-        }
-        private static object UINT16_InvertOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return ~dValue;
-        }
-        private static object INT32_InvertOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return ~dValue;
-        }
-        private static object UINT32_InvertOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return ~dValue;
-        }
-        private static object INT64_InvertOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return ~dValue;
-        }
-        private static object UINT64_InvertOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return ~dValue;
-        }
-        private static object FLOAT_InvertOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue;
-        }
-        private static object DOUBLE_InvertOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue;
-        }
-        private static object DECIMAL_InvertOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue;
-        }
 
-        private static T InvertOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return ~dValue;
-        }
+ 
+
+ 
+ 
+ 
+
+ 
+ 
+  
+
+   
         #endregion
 
         #region LeftShiftOperation
