@@ -137,39 +137,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
                 }
                 case NpyArray_Ops.npy_op_absolute:
-                    {
-                        #region AbsoluteOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_AbsoluteOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_AbsoluteOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_AbsoluteOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_AbsoluteOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_AbsoluteOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_AbsoluteOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_AbsoluteOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_AbsoluteOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_AbsoluteOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_AbsoluteOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_AbsoluteOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_AbsoluteOperation;
-                            default:
-                                return AbsoluteOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
+                }
                 case NpyArray_Ops.npy_op_invert:
                     {
                         #region InvertOperation
@@ -1464,72 +1434,19 @@ namespace NumpyLib
         #endregion
 
         #region AbsoluteOperation
-        private static object BOOL_AbsoluteOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return false;
-        }
-        private static object BYTE_AbsoluteOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object UBYTE_AbsoluteOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object INT16_AbsoluteOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object UINT16_AbsoluteOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object INT32_AbsoluteOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object UINT32_AbsoluteOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object INT64_AbsoluteOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object UINT64_AbsoluteOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object FLOAT_AbsoluteOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object DOUBLE_AbsoluteOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return Math.Abs(dValue);
-        }
-        private static object DECIMAL_AbsoluteOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return Math.Abs(dValue);
-        }
 
-        private static T AbsoluteOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return Math.Abs(dValue);
-        }
+
+
+
+ 
+  
+
+
+
+
+ 
+
+ 
         #endregion
 
         #region InvertOperation
