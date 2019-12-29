@@ -331,6 +331,17 @@ namespace NumpyDotNet
                     Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
                     break;
                 }
+                case NPY_TYPES.NPY_COMPLEX:
+                {
+                    System.Numerics.Complex[] adata = a.datap as System.Numerics.Complex[];
+
+                    if (FillValue is System.Numerics.Complex)
+                        Fill(adata, (System.Numerics.Complex)FillValue, 0, adata.Length);
+                    else
+                        Fill(adata, new System.Numerics.Complex(Convert.ToDouble(FillValue), 0), 0, adata.Length);
+
+                    break;
+                }
                 default:
                     throw new Exception(string.Format("{0} not supported by fill operation yet", dtype.TypeNum));
             }

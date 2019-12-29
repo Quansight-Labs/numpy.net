@@ -64,7 +64,7 @@ namespace NumpyLib
         static NpyArray_Descr npy_FLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) {  elsize = 4, kind = 'f' };
         static NpyArray_Descr npy_DOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) {  elsize = 8, kind = 'f' };
         static NpyArray_Descr npy_DECIMAL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  elsize = sizeof(decimal), kind = 'c' };
-        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  elsize = sizeof(decimal) * 2, kind = 'c' };
+        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  elsize = sizeof(double) * 4, kind = 'c' };
         static NpyArray_Descr npy_BIGINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { elsize = NotSupportedSizeYet, kind = 'c' };
         static NpyArray_Descr npy_DATETIME_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) {  elsize = 8, kind = 'M' };
         static NpyArray_Descr npy_TIMEDELTA_Descr = new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) {  elsize = 8, kind = 'm' };

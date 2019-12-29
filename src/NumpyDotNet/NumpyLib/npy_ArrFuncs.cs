@@ -994,6 +994,12 @@ namespace NumpyLib
                         return;
                     }
 
+                case NPY_TYPES.NPY_COMPLEX:
+                {
+                    // complex can't be swapped
+                    return;
+                }
+
             }
         }
 

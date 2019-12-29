@@ -608,6 +608,8 @@ namespace NumpyLib
                     return sizeof(double);
                 case NPY_TYPES.NPY_DECIMAL:
                     return sizeof(decimal);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return sizeof(double) * 4;
                 default:
                     throw new Exception("Unsupported data type");
             }

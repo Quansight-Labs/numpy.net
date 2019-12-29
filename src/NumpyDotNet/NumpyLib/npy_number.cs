@@ -249,7 +249,7 @@ namespace NumpyLib
 
         private static NpyUFuncObject DefaultOpControl(NpyArray_Ops ops, NpyUFuncGenericFunction UFunc)
         {
-            const int numTypes = 11;
+            const int numTypes = 12;
 
             var loc = new NpyUFuncObject()
             {
@@ -263,12 +263,12 @@ namespace NumpyLib
                                                  NPY_TYPES.NPY_INT32, NPY_TYPES.NPY_UINT32,
                                                  NPY_TYPES.NPY_INT64, NPY_TYPES.NPY_UINT64,
                                                  NPY_TYPES.NPY_FLOAT, NPY_TYPES.NPY_DOUBLE,
-                                                 NPY_TYPES.NPY_DECIMAL},
+                                                 NPY_TYPES.NPY_DECIMAL, NPY_TYPES.NPY_COMPLEX},
 
                 ntypes = numTypes,
                 functions = new NpyUFuncGenericFunction[numTypes]
                 {
-                    UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc,
+                    UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc
                 }
             };
 

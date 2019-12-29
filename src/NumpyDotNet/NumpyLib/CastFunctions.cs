@@ -83,6 +83,8 @@ namespace NumpyLib
                     return vp.data_offset / sizeof(double);
                 case NPY_TYPES.NPY_DECIMAL:
                     return vp.data_offset / sizeof(decimal);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return vp.data_offset / sizeof(double) * 4;
                 default:
                     throw new Exception("Unsupported data type");
             }
