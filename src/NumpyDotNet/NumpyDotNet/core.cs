@@ -112,6 +112,10 @@ namespace NumpyDotNet
                 case TypeCode.Single:
                     return true;
                 default:
+                    if (o is System.Numerics.Complex)
+                        return true;
+                    if (o is System.Numerics.BigInteger)
+                        return true;
                     return false;
             }
         }
@@ -145,6 +149,14 @@ namespace NumpyDotNet
                 case TypeCode.Single:
                     return new VoidPtr(new Single[] { (Single)o });
                 default:
+                    if (o is System.Numerics.Complex)
+                    {
+                        return new VoidPtr(new System.Numerics.Complex[] { (System.Numerics.Complex)o });
+                    }
+                    if (o is System.Numerics.BigInteger)
+                    {
+                        //return new VoidPtr(new System.Numerics.BigInteger[] { (System.Numerics.BigInteger)o });
+                    }
                     throw new Exception("Unable to convert numeric type");
             }
         }

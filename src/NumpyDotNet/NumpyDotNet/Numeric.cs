@@ -1866,6 +1866,9 @@ namespace NumpyDotNet
             if (source is Decimal)
                 return true;
 
+            if (source is System.Numerics.Complex)
+                return true;
+
             return false;
         }
 

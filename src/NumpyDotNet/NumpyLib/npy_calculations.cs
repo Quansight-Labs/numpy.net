@@ -319,6 +319,9 @@ namespace NumpyLib
                         case NPY_TYPES.NPY_DECIMAL:
                             newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
                             break;
+                        case NPY_TYPES.NPY_COMPLEX:
+                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
+                            break;
                         default:
                             newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
                             break;
@@ -696,6 +699,18 @@ namespace NumpyLib
         {
             if (srcValue is Decimal)
                 return Convert.ToDecimal(operValue);
+
+            if (srcValue is System.Numerics.Complex)
+            {
+                if (operValue is System.Numerics.Complex)
+                {
+                    return operValue;
+                }
+                else
+                {
+                    return new System.Numerics.Complex(Convert.ToDouble(operValue), 0);
+                }
+            }
 
             return Convert.ToDouble(operValue);
         }

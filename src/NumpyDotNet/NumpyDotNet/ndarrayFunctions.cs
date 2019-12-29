@@ -665,6 +665,100 @@ namespace NumpyDotNet
             }
             return result;
         }
+
+        public static ndarray arange(System.Numerics.Complex start, System.Numerics.Complex? stop = null, System.Numerics.Complex? step = null, dtype dtype = null)
+        {
+            npy_intp[] dims;
+
+            if (stop == null)
+            {
+                stop = start;
+                start = 0;
+            }
+
+            // determine what data type it should be if not set,
+            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            {
+                dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
+            }
+
+            if (dtype.TypeNum != NPY_TYPES.NPY_COMPLEX)
+            {
+                throw new ArgumentException("Array type must be Complex");
+            }
+
+            if (step == null)
+            {
+                step = 1;
+            }
+            if (stop == null)
+            {
+                stop = start;
+                start = 0;
+            }
+
+            npy_intp len = 0;
+            try
+            {
+                npy_intp ArrayLen = (npy_intp)(stop.Value.Real - start.Real);
+
+                if ((ArrayLen % step.Value.Real) > 0)
+                {
+                    ArrayLen += (npy_intp)(ArrayLen % step.Value.Real);
+                }
+                ArrayLen = (npy_intp)(ArrayLen / step.Value.Real);
+
+                len = ArrayLen;
+            }
+            catch (OverflowException)
+            {
+                // Translate the error to make test_regression.py happy.
+                throw new ArgumentException("step can't be 0");
+            }
+
+            if (len < 0)
+            {
+                dims = new npy_intp[] { 0 };
+                return NpyCoreApi.NewFromDescr(dtype, dims, null, 0, null);
+            }
+
+            dtype native;
+            bool swap;
+            if (!dtype.IsNativeByteOrder)
+            {
+                native = NpyCoreApi.DescrNewByteorder(dtype, '=');
+                swap = true;
+            }
+            else
+            {
+                native = dtype;
+                swap = false;
+            }
+
+            dims = new npy_intp[] { (npy_intp)len };
+            ndarray result = NpyCoreApi.NewFromDescr(native, dims, null, 0, null);
+
+            var CC = BuildFastArrayAccessDataByType(result.Array.data);
+            var SetItemFunc = FastSetItemFuncByType(CC, result.Array.data);
+
+            // populate the array
+            System.Numerics.Complex _step = step.Value;
+            System.Numerics.Complex _start = start;
+            for (int i = 0; i < (int)len; i++)
+            {
+                System.Numerics.Complex value = _start + (i * _step);
+                SetItemFunc(i, value);
+            }
+
+
+            if (swap)
+            {
+                NpyCoreApi.Byteswap(result, true);
+                result.Dtype = dtype;
+            }
+            return result;
+        }
+
         #endregion
 
         #region FAST ARRAY ACCESS
@@ -682,6 +776,7 @@ namespace NumpyDotNet
             public float[] FloatArray;
             public double[] DoubleArray;
             public decimal[] DecimalArray;
+            public System.Numerics.Complex[] ComplexArray;
         }
 
 
@@ -726,6 +821,9 @@ namespace NumpyDotNet
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     FAData.DecimalArray = vp.datap as decimal[];
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    FAData.ComplexArray = vp.datap as System.Numerics.Complex[];
                     break;
                 default:
                     throw new Exception("Unsupported data type");
@@ -775,6 +873,9 @@ namespace NumpyDotNet
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     ret = (index, value) => { FAData.DecimalArray[index] = Convert.ToDecimal(value); return 0; };
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    ret = (index, value) => { FAData.ComplexArray[index] = (System.Numerics.Complex)value; return 0; };
                     break;
                 default:
                     throw new Exception("Unsupported data type");
@@ -1055,6 +1156,163 @@ namespace NumpyDotNet
 
             bool _mult_inplace = np.isscalar(delta);
             decimal step = 0;
+            if (num > 1)
+            {
+                step = delta / div;
+                if (step == 0)
+                {
+                    // Special handling for denormal numbers, gh-5437
+                    y /= div;
+                    if (_mult_inplace)
+                    {
+                        y *= delta;
+                    }
+                    else
+                    {
+                        y = y * delta;
+                    }
+                }
+                else
+                {
+                    if (_mult_inplace)
+                    {
+                        y *= step;
+                    }
+                    else
+                    {
+                        y = y * step;
+                    }
+                }
+
+            }
+            else
+            {
+                // 0 and 1 item long sequences have an undefined step
+                step = -99999999999999;
+                // Multiply with delta to allow possible override of output class.
+                y = y * delta;
+            }
+
+            y += start;
+
+            if (endpoint && num > 1)
+            {
+                y["-1"] = stop;
+            }
+
+            retstep = step;
+
+            return y.astype(dtype, copy: false);
+
+        }
+
+        public static ndarray linspace(System.Numerics.Complex start, System.Numerics.Complex stop, ref System.Numerics.Complex retstep, int num = 50, bool endpoint = true, dtype dtype = null)
+        {
+            //  Return evenly spaced numbers over a specified interval.
+
+            //  Returns `num` evenly spaced samples, calculated over the
+            //  interval[`start`, `stop`].
+
+            //  The endpoint of the interval can optionally be excluded.
+
+            //  Parameters
+            //  ----------
+            //  start: scalar
+            //     The starting value of the sequence.
+            // stop : scalar
+            //     The end value of the sequence, unless `endpoint` is set to False.
+            //      In that case, the sequence consists of all but the last of ``num + 1``
+            //      evenly spaced samples, so that `stop` is excluded.Note that the step
+            //      size changes when `endpoint` is False.
+            //  num : int, optional
+            //      Number of samples to generate.Default is 50.Must be non-negative.
+            //endpoint : bool, optional
+            //      If True, `stop` is the last sample.Otherwise, it is not included.
+            //      Default is True.
+            //  retstep : bool, optional
+            //      If True, return (`samples`, `step`), where `step` is the spacing
+            //      between samples.
+            //  dtype: dtype, optional
+            //     The type of the output array.If `dtype` is not given, infer the data
+            //   type from the other input arguments.
+
+
+            //   ..versionadded:: 1.9.0
+
+            //  Returns
+            //  ------ -
+            //  samples : ndarray
+            //      There are `num` equally spaced samples in the closed interval
+            //      ``[start, stop]`` or the half-open interval ``[start, stop)``
+            //      (depending on whether `endpoint` is True or False).
+            //  step : float, optional
+            //      Only returned if `retstep` is True
+
+            //      Size of spacing between samples.
+
+
+            //  See Also
+            //  --------
+            //  arange : Similar to `linspace`, but uses a step size (instead of the
+            //           number of samples).
+            //  logspace : Samples uniformly distributed in log space.
+
+            //  Examples
+            //  --------
+            //  >>> np.linspace(2.0, 3.0, num= 5)
+            //  array([ 2.  ,  2.25,  2.5 ,  2.75,  3.  ])
+            //  >>> np.linspace(2.0, 3.0, num=5, endpoint=False)
+            //  array([ 2. ,  2.2,  2.4,  2.6,  2.8])
+            //  >>> np.linspace(2.0, 3.0, num=5, retstep=True)
+            //  (array([2.  , 2.25, 2.5, 2.75, 3.  ]), 0.25)
+
+            //  Graphical illustration:
+
+            //  >>> import matplotlib.pyplot as plt
+            //  >>> N = 8
+            //  >>> y = np.zeros(N)
+            //  >>> x1 = np.linspace(0, 10, N, endpoint = True)
+            //  >>> x2 = np.linspace(0, 10, N, endpoint = False)
+            //  >>> plt.plot(x1, y, 'o')
+            //  [< matplotlib.lines.Line2D object at 0x...>]
+            //  >>> plt.plot(x2, y + 0.5, 'o')
+            //  [< matplotlib.lines.Line2D object at 0x...>]
+            //  >>> plt.ylim([-0.5, 1])
+            //  (-0.5, 1)
+            //  >>> plt.show()
+
+            if (num < 0)
+            {
+                throw new ValueError(string.Format("Number of samples, {0}, must be non-negative.", num));
+            }
+
+            int div = 0;
+
+            if (endpoint)
+            {
+                div = num - 1;
+            }
+            else
+            {
+                div = num;
+            }
+
+            // Convert float/complex array scalars to float, gh-3504
+            // and make sure one can use variables that have an __array_interface__, gh-6634
+
+            dtype dt = np.Complex; // result_type(start, stop, Convert.ToSingle(num));
+            if (dtype == null)
+                dtype = dt;
+
+            var y = np.arange(new System.Numerics.Complex(0, 0), num, dtype: dt);
+
+            System.Numerics.Complex delta = stop - start;
+            // In-place multiplication y *= delta/div is faster, but prevents the multiplicant
+            // from overriding what class is produced, and thus prevents, e.g. use of Quantities,
+            // see gh-7142. Hence, we multiply in place only for standard scalar types.
+
+            bool _mult_inplace = np.isscalar(delta);
+            System.Numerics.Complex step = 0;
             if (num > 1)
             {
                 step = delta / div;
