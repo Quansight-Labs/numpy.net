@@ -110,6 +110,8 @@ namespace NumpyLib
                     return MemCpyToDoubles(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_DECIMAL:
                     return MemCpyToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return MemCpyToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
             }
             return false;
         }
@@ -497,6 +499,43 @@ namespace NumpyLib
                     return MemCpyDoublesToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_DECIMAL:
                     return MemCpyDecimalsToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+
+            }
+            return false;
+        }
+
+        private static bool MemCpyToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            switch (Src.type_num)
+            {
+                //case NPY_TYPES.NPY_BOOL:
+                //    return MemCpyBoolsToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_BYTE:
+                //    return MemCpyBytesToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_UBYTE:
+                //    return MemCpyUBytesToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_INT16:
+                //    return MemCpyInt16ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_UINT16:
+                //    return MemCpyUInt16ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_INT32:
+                //    return MemCpyInt32ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_UINT32:
+                //    return MemCpyUInt32ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_INT64:
+                //    return MemCpyInt64ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_UINT64:
+                //    return MemCpyUInt64ToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_FLOAT:
+                //    return MemCpyFloatsToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_DOUBLE:
+                //    return MemCpyDoublesToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                //case NPY_TYPES.NPY_DECIMAL:
+                //    return MemCpyDecimalsToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                default:
+                    throw new Exception("Attempt to copy non complex to complex number");
+                case NPY_TYPES.NPY_COMPLEX:
+                    return MemCpyComplexToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
 
             }
             return false;
@@ -2487,6 +2526,204 @@ namespace NumpyLib
             }
             return true;
         }
+        #endregion
+
+        #region Complex specific
+        private static bool MemCpyBoolsToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            bool[] sourceArray = Src.datap as bool[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                bool bdata = sourceArray[i + SrcOffset];
+                byte data = (byte)(bdata == true ? 1 : 0);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyBytesToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            sbyte[] sourceArray = Src.datap as sbyte[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                sbyte data = sourceArray[i + SrcOffset];
+                MemoryAccess.SetByte(destArray, i + DestOffset, (byte)data);
+            }
+            return true;
+        }
+        private static bool MemCpyUBytesToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            byte[] sourceArray = Src.datap as byte[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = sourceArray[i + SrcOffset];
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyInt16ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            Int16[] sourceArray = Src.datap as Int16[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyUInt16ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            UInt16[] sourceArray = Src.datap as UInt16[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyInt32ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            Int32[] sourceArray = Src.datap as Int32[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyUInt32ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            UInt32[] sourceArray = Src.datap as UInt32[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyInt64ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            Int64[] sourceArray = Src.datap as Int64[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyUInt64ToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            UInt64[] sourceArray = Src.datap as UInt64[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyFloatsToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            float[] sourceArray = Src.datap as float[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+        private static bool MemCpyDoublesToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            decimal[] sourceArray = Src.datap as decimal[];
+            decimal[] destArray = Dest.datap as decimal[];
+
+
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
+            {
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                MemoryAccess.SetByte(destArray, i + DestOffset, data);
+            }
+            return true;
+        }
+
+        private static bool MemCpyDecimalsToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            decimal[] sourceArray = Src.datap as decimal[];
+            decimal[] destArray = Dest.datap as decimal[];
+            npy_intp ItemSize = sizeof(decimal);
+
+            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
+            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+
+
+            if (DestOffsetAdjustment == SrcOffsetAdjustment)
+            {
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            }
+            else
+            {
+                for (npy_intp i = 0; i < totalBytesToCopy; i++)
+                {
+                    byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                    MemoryAccess.SetByte(destArray, i + DestOffset, data);
+                }
+            }
+            return true;
+        }
+
+        private static bool MemCpyComplexToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            System.Numerics.Complex[] sourceArray = Src.datap as System.Numerics.Complex[];
+            System.Numerics.Complex[] destArray = Dest.datap as System.Numerics.Complex[];
+            npy_intp ItemSize = sizeof(decimal) * 2;
+
+            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
+            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+
+
+            if (DestOffsetAdjustment == SrcOffsetAdjustment)
+            {
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            }
+            else
+            {
+                //for (npy_intp i = 0; i < totalBytesToCopy; i++)
+                //{
+                //    byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                //    MemoryAccess.SetByte(destArray, i + DestOffset, data);
+                //}
+            }
+            return true;
+        }
+
         #endregion
 
     }

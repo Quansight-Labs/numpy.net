@@ -64,7 +64,7 @@ namespace NumpyDotNet
         {
         }
 
-        public static readonly string __version__ = "0.9.03";
+        public static readonly string __version__ = "0.9.09";
         private static readonly bool _init = numpy.InitializeNumpyLibrary();
 
 
@@ -81,6 +81,7 @@ namespace NumpyDotNet
         public static readonly dtype Float32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_FLOAT);
         public static readonly dtype Float64 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE);
         public static readonly dtype Decimal = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
+        public static readonly dtype Complex = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
         public static readonly dtype None = null;
         public static readonly object newaxis = null;
@@ -2430,7 +2431,9 @@ namespace NumpyDotNet
                 case NPY_TYPES.NPY_DECIMAL:
                     var decimal1 = data.datap as decimal[];
                     return new VoidPtr(GetArrayCopy(decimal1), data.type_num);
-
+                case NPY_TYPES.NPY_COMPLEX:
+                    var complex1 = data.datap as System.Numerics.Complex[];
+                    return new VoidPtr(GetArrayCopy(complex1), data.type_num);
                 default:
                     throw new Exception("Unsupported data type");
             }
@@ -2496,6 +2499,10 @@ namespace NumpyDotNet
             {
                 return NPY_TYPES.NPY_DECIMAL;
             }
+            if (ArrayType == typeof(System.Numerics.Complex))
+            {
+                return NPY_TYPES.NPY_COMPLEX;
+            }
             return 0;
         }
 
@@ -2550,6 +2557,10 @@ namespace NumpyDotNet
             if (ArrayType == typeof(decimal))
             {
                 return NPY_TYPES.NPY_DECIMAL;
+            }
+            if (ArrayType == typeof(System.Numerics.Complex))
+            {
+                return NPY_TYPES.NPY_COMPLEX;
             }
             return 0;
         }

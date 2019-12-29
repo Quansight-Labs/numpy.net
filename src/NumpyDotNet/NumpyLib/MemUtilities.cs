@@ -706,16 +706,15 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     vp.datap = new decimal[size / (AdjustForBytes ? sizeof(decimal) : (ulong)1)];
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    vp.datap = new System.Numerics.Complex[size / (AdjustForBytes ? sizeof(decimal) * 2 : (ulong)1)];
+                    break;
                 // not sure about these yet.  Not really supported
                 case NPY_TYPES.NPY_DATETIME:
                 case NPY_TYPES.NPY_TIMEDELTA:
                     vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
                     break;
-
-                // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_COMPLEX:
-                    vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
-                    break;
+  
                 default:
                     throw new Exception(string.Format("NpyDataMem_NEW: Unexpected type_num {0}", type_num));
 

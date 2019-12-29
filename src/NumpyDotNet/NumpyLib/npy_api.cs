@@ -163,6 +163,11 @@ namespace NumpyLib
             datap = obj;
             type_num = NPY_TYPES.NPY_DECIMAL;
         }
+        public VoidPtr(System.Numerics.Complex[] obj)
+        {
+            datap = obj;
+            type_num = NPY_TYPES.NPY_COMPLEX;
+        }
         public VoidPtr()
         {
             datap = null;
