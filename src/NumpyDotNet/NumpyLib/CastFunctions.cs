@@ -57,38 +57,8 @@ namespace NumpyLib
 
         private static long AdjustedOffset(VoidPtr vp)
         {
-            switch (vp.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return vp.data_offset / sizeof(bool);
-                case NPY_TYPES.NPY_BYTE:
-                    return vp.data_offset / sizeof(sbyte);
-                case NPY_TYPES.NPY_UBYTE:
-                    return vp.data_offset / sizeof(byte);
-                case NPY_TYPES.NPY_UINT16:
-                    return vp.data_offset / sizeof(UInt16);
-                case NPY_TYPES.NPY_INT16:
-                    return vp.data_offset / sizeof(Int16);
-                case NPY_TYPES.NPY_UINT32:
-                    return vp.data_offset / sizeof(UInt32);
-                case NPY_TYPES.NPY_INT32:
-                    return vp.data_offset / sizeof(Int32);
-                case NPY_TYPES.NPY_INT64:
-                    return vp.data_offset / sizeof(Int64);
-                case NPY_TYPES.NPY_UINT64:
-                    return vp.data_offset / sizeof(UInt64);
-                case NPY_TYPES.NPY_FLOAT:
-                    return vp.data_offset / sizeof(float);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return vp.data_offset / sizeof(double);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return vp.data_offset / sizeof(decimal);
-                case NPY_TYPES.NPY_COMPLEX:
-                    return vp.data_offset / sizeof(double) * 4;
-                default:
-                    throw new Exception("Unsupported data type");
-            }
- 
+            var Handler = numpyAPI.GetArrayHandler(vp.type_num);
+            return vp.data_offset / Handler.ItemSize;
         }
 
         #region First Level Sorting

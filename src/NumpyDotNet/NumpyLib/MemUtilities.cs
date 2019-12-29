@@ -582,38 +582,7 @@ namespace NumpyLib
 
         private static long GetTypeSize(NPY_TYPES type_num)
         {
-            switch (type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return sizeof(bool);
-                case NPY_TYPES.NPY_BYTE:
-                    return sizeof(sbyte);
-                case NPY_TYPES.NPY_UBYTE:
-                    return sizeof(byte);
-                case NPY_TYPES.NPY_UINT16:
-                    return sizeof(UInt16);
-                case NPY_TYPES.NPY_INT16:
-                    return sizeof(Int16);
-                case NPY_TYPES.NPY_UINT32:
-                    return sizeof(UInt32);
-                case NPY_TYPES.NPY_INT32:
-                    return sizeof(Int32);
-                case NPY_TYPES.NPY_INT64:
-                    return sizeof(Int64);
-                case NPY_TYPES.NPY_UINT64:
-                    return sizeof(UInt64);
-                case NPY_TYPES.NPY_FLOAT:
-                    return sizeof(float);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return sizeof(double);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return sizeof(decimal);
-                case NPY_TYPES.NPY_COMPLEX:
-                    return sizeof(double) * 4;
-                default:
-                    throw new Exception("Unsupported data type");
-            }
-
+            return numpyAPI.GetArrayHandler(type_num).ItemSize;
         }
 
 
@@ -688,63 +657,17 @@ namespace NumpyLib
 
         internal static VoidPtr NpyDataMem_NEW(NPY_TYPES type_num, ulong size, bool AdjustForBytes = true)
         {
+
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(type_num);
+            size = size / (AdjustForBytes ? (ulong)ArrayHandler.ItemSize : (ulong)1);
+
             VoidPtr vp = new VoidPtr();
-
-            switch (type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    vp.datap = new bool[size / (AdjustForBytes ? sizeof(bool) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_BYTE:
-                    vp.datap = new sbyte[size / (AdjustForBytes ? sizeof(sbyte) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_UBYTE:
-                    vp.datap = new byte[size / (AdjustForBytes ? sizeof(byte) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_SHORT:
-                    vp.datap = new Int16[size / (AdjustForBytes ? sizeof(Int16) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_USHORT:
-                    vp.datap = new UInt16[size / (AdjustForBytes ? sizeof(UInt16) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_INT32:
-                    vp.datap = new Int32[size / (AdjustForBytes ? sizeof(Int32) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_UINT32:
-                    vp.datap = new UInt32[size / (AdjustForBytes ? sizeof(UInt32) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_LONG:
-                    vp.datap = new Int64[size / (AdjustForBytes ? sizeof(Int64) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_ULONG:
-                    vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_FLOAT:
-                    vp.datap = new float[size / (AdjustForBytes ? sizeof(float) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_DOUBLE:
-                    vp.datap = new double[size / (AdjustForBytes ? sizeof(double) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_DECIMAL:
-                    vp.datap = new decimal[size / (AdjustForBytes ? sizeof(decimal) : (ulong)1)];
-                    break;
-                case NPY_TYPES.NPY_COMPLEX:
-                    vp.datap = new System.Numerics.Complex[size / (AdjustForBytes ? sizeof(decimal) * 2 : (ulong)1)];
-                    break;
-                // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    vp.datap = new UInt64[size / (AdjustForBytes ? sizeof(UInt64) : (ulong)1)];
-                    break;
-  
-                default:
-                    throw new Exception(string.Format("NpyDataMem_NEW: Unexpected type_num {0}", type_num));
-
-            }
-
+            vp.datap = ArrayHandler.AllocateNewArray(size);
             vp.type_num = type_num;
             return vp;
         }
+
+
         internal static npy_intp[] NpyDimMem_NEW(npy_intp size)
         {
             return new npy_intp[size];

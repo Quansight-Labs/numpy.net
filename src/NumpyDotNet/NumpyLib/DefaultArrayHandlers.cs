@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
+using System.Linq;
 
 namespace NumpyLib
 {
@@ -47,6 +48,11 @@ namespace NumpyLib
         NumericOperation RintOperation { get; set; }
         NumericOperation ConjugateOperation { get; set; }
 
+        System.Array ToArray(Array ssrc);
+        int ItemSize { get; }
+        int GetLength(VoidPtr vp);
+        object AllocateNewArray(ulong size);
+  
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -69,6 +75,7 @@ namespace NumpyLib
             SetArrayHandler(NPY_TYPES.NPY_DOUBLE, new DoubleHandlers());
             SetArrayHandler(NPY_TYPES.NPY_DECIMAL, new DecimalHandlers());
             SetArrayHandler(NPY_TYPES.NPY_COMPLEX, new ComplexHandlers());
+            SetArrayHandler(NPY_TYPES.NPY_OBJECT, new ObjectHandlers());
         }
 
         public static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
@@ -465,10 +472,57 @@ namespace NumpyLib
 
     }
 
+    internal class ObjectHandlers : ArrayHandlerBase, IArrayHandlers
+    {
+        public ObjectHandlers()
+        {
+        }
+
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<object>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return IntPtr.Size; }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dobj = vp.datap as object[];
+            return dobj.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new object[size];
+        }
+
+    
+    }
+
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
     {
         public BoolHandlers()
         {
+        }
+
+ 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<bool>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(bool); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dbool = vp.datap as bool[];
+            return dbool.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new bool[size];
         }
 
 
@@ -599,6 +653,24 @@ namespace NumpyLib
         public ByteHandlers()
         {
   
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<sbyte>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(sbyte); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dsbyte = vp.datap as sbyte[];
+            return dsbyte.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new sbyte[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -756,6 +828,25 @@ namespace NumpyLib
 
         }
 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<byte>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(byte); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dbyte = vp.datap as byte[];
+            return dbyte.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new byte[size];
+        }
+
+
         protected override object Add(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
@@ -909,6 +1000,24 @@ namespace NumpyLib
         public Int16Handlers()
         {
  
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<Int16>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(Int16); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as Int16[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new Int16[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -1066,6 +1175,23 @@ namespace NumpyLib
  
         }
 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<UInt16>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(UInt16); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as UInt16[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new UInt16[size];
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -1222,6 +1348,23 @@ namespace NumpyLib
   
         }
 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<Int32>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(Int32); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as Int32[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new Int32[size];
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -1376,6 +1519,24 @@ namespace NumpyLib
         public UInt32Handlers()
         {
  
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<UInt32>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(UInt32); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as UInt32[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new UInt32[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -1533,6 +1694,24 @@ namespace NumpyLib
 
         }
 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<Int64>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(Int64); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as Int64[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new Int64[size];
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
@@ -1688,6 +1867,24 @@ namespace NumpyLib
    
         }
 
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<UInt64>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(UInt64); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as UInt64[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new UInt64[size];
+        }
+
         protected override object Add(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
@@ -1841,6 +2038,24 @@ namespace NumpyLib
         public FloatHandlers()
         {
  
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<float>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(float); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as float[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new float[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -2033,6 +2248,24 @@ namespace NumpyLib
         public DoubleHandlers()
         {
 
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<double>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(double); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as double[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new double[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -2229,6 +2462,24 @@ namespace NumpyLib
         public DecimalHandlers()
         {
  
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<decimal>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(decimal); }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as decimal[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new decimal[size];
         }
 
         protected override object Add(object bValue, object operand)
@@ -2431,6 +2682,24 @@ namespace NumpyLib
         public ComplexHandlers()
         {
 
+        }
+
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<System.Numerics.Complex>().ToArray();
+        }
+        public int ItemSize
+        {
+            get { return sizeof(double) * 4; }
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dint = vp.datap as System.Numerics.Complex[];
+            return dint.Length;
+        }
+        public object AllocateNewArray(ulong size)
+        {
+            return new System.Numerics.Complex[size];
         }
 
         System.Numerics.Complex ConvertToComplex(object o)

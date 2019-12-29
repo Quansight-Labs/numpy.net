@@ -60,36 +60,12 @@ namespace NumpyDotNet
 
         private static System.Array ArrayFromMD(Array ssrc, NPY_TYPES type_num)
         {
-            switch (type_num)
+            var ArrayHandler = numpyAPI.GetArrayHandler(type_num);
+            if (ArrayHandler != null)
             {
-                case NPY_TYPES.NPY_BOOL:
-                    return ssrc.Cast<bool>().ToArray();
-                case NPY_TYPES.NPY_BYTE:
-                    return ssrc.Cast<sbyte>().ToArray();
-                case NPY_TYPES.NPY_UBYTE:
-                    return ssrc.Cast<byte>().ToArray();
-                case NPY_TYPES.NPY_INT16:
-                    return ssrc.Cast<Int16>().ToArray();
-                case NPY_TYPES.NPY_UINT16:
-                    return ssrc.Cast<UInt16>().ToArray();
-                case NPY_TYPES.NPY_INT32:
-                    return ssrc.Cast<Int32>().ToArray();
-                case NPY_TYPES.NPY_UINT32:
-                    return ssrc.Cast<UInt32>().ToArray();
-                case NPY_TYPES.NPY_INT64:
-                    return ssrc.Cast<Int64>().ToArray();
-                case NPY_TYPES.NPY_UINT64:
-                    return ssrc.Cast<UInt64>().ToArray();
-                case NPY_TYPES.NPY_FLOAT:
-                    return ssrc.Cast<float>().ToArray();
-                case NPY_TYPES.NPY_DOUBLE:
-                    return ssrc.Cast<double>().ToArray();
-                case NPY_TYPES.NPY_DECIMAL:
-                    return ssrc.Cast<decimal>().ToArray();
-                case NPY_TYPES.NPY_COMPLEX:
-                    return ssrc.Cast<System.Numerics.Complex>().ToArray();
+                return ArrayHandler.ToArray(ssrc);
             }
-
+ 
             throw new Exception("Unexpected NPY_TYPES");
 
         }

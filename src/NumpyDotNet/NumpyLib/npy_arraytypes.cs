@@ -52,26 +52,26 @@ namespace NumpyLib
 
         static int NotSupportedSizeYet = 8;
 
-        static NpyArray_Descr npy_BOOL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BOOL) {  elsize = 1, kind = 'b'};
-        static NpyArray_Descr npy_BYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BYTE) { elsize = 1, kind = 'i' };
-        static NpyArray_Descr npy_UBYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) {  elsize = 1, kind = 'u' };
-        static NpyArray_Descr npy_SHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_SHORT) {  elsize = 2, kind = 'i' };
-        static NpyArray_Descr npy_USHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_USHORT) {  elsize = 2, kind = 'u' };
-        static NpyArray_Descr npy_INT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_INT) {  elsize = 4, kind = 'i' };
-        static NpyArray_Descr npy_UINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UINT) { elsize = 4, kind = 'u' };
-        static NpyArray_Descr npy_LONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_LONG) {  elsize = 8, kind = 'i' };
-        static NpyArray_Descr npy_ULONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_ULONG) {  elsize = 8, kind = 'u' };
-        static NpyArray_Descr npy_FLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) {  elsize = 4, kind = 'f' };
-        static NpyArray_Descr npy_DOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) {  elsize = 8, kind = 'f' };
-        static NpyArray_Descr npy_DECIMAL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  elsize = sizeof(decimal), kind = 'c' };
-        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  elsize = sizeof(double) * 4, kind = 'c' };
-        static NpyArray_Descr npy_BIGINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { elsize = NotSupportedSizeYet, kind = 'c' };
-        static NpyArray_Descr npy_DATETIME_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) {  elsize = 8, kind = 'M' };
-        static NpyArray_Descr npy_TIMEDELTA_Descr = new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) {  elsize = 8, kind = 'm' };
-        static NpyArray_Descr npy_OBJECT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) {  elsize = NotSupportedSizeYet, kind = 'O' };
-        static NpyArray_Descr npy_STRING_Descr = new NpyArray_Descr(NPY_TYPES.NPY_STRING) {  elsize = NotSupportedSizeYet, kind = 'S' };
-        static NpyArray_Descr npy_UNICODE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UNICODE) {  elsize = NotSupportedSizeYet, kind = 'U' };
-        static NpyArray_Descr npy_VOID_Descr = new NpyArray_Descr(NPY_TYPES.NPY_VOID) {  elsize = NotSupportedSizeYet, kind = 'V' };
+        static NpyArray_Descr npy_BOOL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BOOL) {  kind = 'b'};
+        static NpyArray_Descr npy_BYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BYTE) {  kind = 'i' };
+        static NpyArray_Descr npy_UBYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) {  kind = 'u' };
+        static NpyArray_Descr npy_SHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_SHORT) {   kind = 'i' };
+        static NpyArray_Descr npy_USHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_USHORT) {  kind = 'u' };
+        static NpyArray_Descr npy_INT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_INT) {  kind = 'i' };
+        static NpyArray_Descr npy_UINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UINT) { kind = 'u' };
+        static NpyArray_Descr npy_LONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_LONG) {  kind = 'i' };
+        static NpyArray_Descr npy_ULONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_ULONG) {  kind = 'u' };
+        static NpyArray_Descr npy_FLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) {  kind = 'f' };
+        static NpyArray_Descr npy_DOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) {  kind = 'f' };
+        static NpyArray_Descr npy_DECIMAL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  kind = 'c' };
+        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  kind = 'c' };
+        static NpyArray_Descr npy_BIGINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'c' };
+        static NpyArray_Descr npy_DATETIME_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) {  kind = 'M' };
+        static NpyArray_Descr npy_TIMEDELTA_Descr = new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) {  kind = 'm' };
+        static NpyArray_Descr npy_OBJECT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) {  kind = 'O' };
+        static NpyArray_Descr npy_STRING_Descr = new NpyArray_Descr(NPY_TYPES.NPY_STRING) {  kind = 'S' };
+        static NpyArray_Descr npy_UNICODE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UNICODE) {  kind = 'U' };
+        static NpyArray_Descr npy_VOID_Descr = new NpyArray_Descr(NPY_TYPES.NPY_VOID) {  kind = 'V' };
 
         static NpyArray_Descr[] _builtin_descrs = new NpyArray_Descr[]
         {
@@ -100,6 +100,10 @@ namespace NumpyLib
         internal static NpyArray_Descr _get_builtin_descrs(NPY_TYPES type)
         {
             var ret = _builtin_descrs.FirstOrDefault(t=>t.type_num == type);
+            if (ret != null)
+            {
+                ret.elsize = DefaultArrayHandlers.GetArrayHandler(type).ItemSize;
+            }
             return ret;
         }
 

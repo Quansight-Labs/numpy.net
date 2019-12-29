@@ -377,115 +377,19 @@ namespace NumpyLib
         }
         internal static ulong VoidPointer_BytesLength(VoidPtr vp)
         {
-            int Length = 0;
-            switch (vp.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    var dbool = vp.datap as bool[];
-                    Length = dbool.Length;
-                    break;
-                case NPY_TYPES.NPY_BYTE:
-                    var dsbyte = vp.datap as sbyte[];
-                    Length = dsbyte.Length;
-                    break;
-                case NPY_TYPES.NPY_UBYTE:
-                    var dbyte = vp.datap as byte[];
-                    Length = dbyte.Length;
-                    break;
-                case NPY_TYPES.NPY_UINT16:
-                    var duint16 = vp.datap as UInt16[];
-                    Length = duint16.Length * sizeof(UInt16);
-                    break;
-                case NPY_TYPES.NPY_INT16:
-                    var dint16 = vp.datap as Int16[];
-                    Length = dint16.Length * sizeof(Int16);
-                    break;
-                case NPY_TYPES.NPY_UINT32:
-                    var duint32 = vp.datap as UInt32[];
-                    Length = duint32.Length * sizeof(UInt32);
-                    break;
-                case NPY_TYPES.NPY_INT32:
-                    var dint32 = vp.datap as Int32[];
-                    Length = dint32.Length * sizeof(UInt32);
-                    break;
-                case NPY_TYPES.NPY_INT64:
-                    var dint64 = vp.datap as Int64[];
-                    Length = dint64.Length * sizeof(Int64);
-                    break;
-                case NPY_TYPES.NPY_UINT64:
-                    var duint64 = vp.datap as UInt64[];
-                    Length = duint64.Length * sizeof(UInt64);
-                    break;
-                case NPY_TYPES.NPY_FLOAT:
-                    var float1 = vp.datap as float[];
-                    Length = float1.Length * sizeof(float);
-                    break;
-                case NPY_TYPES.NPY_DOUBLE:
-                    var double1 = vp.datap as double[];
-                    Length = double1.Length * sizeof(double);
-                    break;
-                case NPY_TYPES.NPY_DECIMAL:
-                    var decimal1 = vp.datap as decimal[];
-                    Length = decimal1.Length * sizeof(decimal);
-                    break;
-                case NPY_TYPES.NPY_COMPLEX:
-                    var complex1 = vp.datap as System.Numerics.Complex[];
-                    Length = complex1.Length * sizeof(decimal) * 2;
-                    break;
-                default:
-                    throw new Exception("Unsupported data type");
-            }
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(vp.type_num);
 
+            var Length = ArrayHandler.GetLength(vp) * ArrayHandler.ItemSize;
             return (ulong)(Length - vp.data_offset);
         }
 
         internal static int VoidPointer_Length(VoidPtr vp)
         {
-            switch (vp.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    var dbool = vp.datap as bool[];
-                    return dbool.Length;
-                case NPY_TYPES.NPY_BYTE:
-                    var dsbyte = vp.datap as sbyte[];
-                    return dsbyte.Length;
-                case NPY_TYPES.NPY_UBYTE:
-                    var dbyte = vp.datap as byte[];
-                    return dbyte.Length;
-                case NPY_TYPES.NPY_UINT16:
-                    var duint16 = vp.datap as UInt16[];
-                    return duint16.Length;
-                case NPY_TYPES.NPY_INT16:
-                    var dint16 = vp.datap as Int16[];
-                    return dint16.Length;
-                case NPY_TYPES.NPY_UINT32:
-                    var duint32 = vp.datap as UInt32[];
-                    return duint32.Length;
-                case NPY_TYPES.NPY_INT32:
-                    var dint32 = vp.datap as Int32[];
-                    return dint32.Length;
-                case NPY_TYPES.NPY_INT64:
-                    var dint64 = vp.datap as Int64[];
-                    return dint64.Length;
-                case NPY_TYPES.NPY_UINT64:
-                    var duint64 = vp.datap as UInt64[];
-                    return duint64.Length;
-                case NPY_TYPES.NPY_FLOAT:
-                    var float1 = vp.datap as float[];
-                    return float1.Length;
-                case NPY_TYPES.NPY_DOUBLE:
-                    var double1 = vp.datap as double[];
-                    return double1.Length;
-                case NPY_TYPES.NPY_DECIMAL:
-                    var decimal1 = vp.datap as decimal[];
-                    return decimal1.Length;
-                case NPY_TYPES.NPY_COMPLEX:
-                    var complex1 = vp.datap as System.Numerics.Complex[];
-                    return complex1.Length;
-                default:
-                    throw new Exception("Unsupported data type");
-            }
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(vp.type_num);
 
+            var Length = ArrayHandler.GetLength(vp);
+            return Length;
+  
         }
         internal static npy_intp[] NpyArray_DIMS(NpyArray arr)
         {
