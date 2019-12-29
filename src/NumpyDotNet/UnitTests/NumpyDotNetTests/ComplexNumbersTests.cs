@@ -133,24 +133,24 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         [TestMethod]
-        public void test_logspace_1_COMPLEX_TODO()
+        public void test_logspace_1_COMPLEX()
         {
-            var a = np.logspace(2.0m, 3.0m, num: 4);
-            AssertArray(a, new decimal[] { 100, 215.44346900318800000000000000000m, 464.15888336127800000000000000000m, 1000 });
+            var a = np.logspace(new Complex(2.0, 0), new Complex(3.0, 0), num: 4);
+            AssertArray(a, new Complex[] { new Complex(100, 0), new Complex(215.443469003188, 0), new Complex(464.158883361278, 0), new Complex(1000, 0) });
             print(a);
 
-            var b = np.logspace(2.0m, 3.0m, num: 4, endpoint: false);
-            AssertArray(b, new decimal[] { 100, 177.82794100389200000000000000000m, 316.22776601683800000000000000000m, 562.34132519034900000000000000000m });
+            var b = np.logspace(new Complex(2.0, 0), new Complex(3.0, 0), num: 4, endpoint: false);
+            AssertArray(b, new Complex[] { 100, 177.827941003892, 316.227766016838, 562.341325190349 });
             print(b);
 
-            var c = np.logspace(2.0m, 3.0m, num: 4, _base: 2.0m);
-            AssertArray(c, new decimal[] { 4, 05.03968419957949000000000000000m, 06.34960420787280000000000000000m, 8 });
+            var c = np.logspace(new Complex(2.0, 0), new Complex(3.0, 0), num: 4, _base: 2.0);
+            AssertArray(c, new Complex[] { 4, 05.03968419957949, 06.3496042078728, 8 });
             print(c);
         }
 
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         [TestMethod]
         public void test_geomspace_1_COMPLEX_TODO()
         {

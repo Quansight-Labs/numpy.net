@@ -80,7 +80,7 @@ namespace NumpyDotNetTests
             AssertArray(b, new decimal[] { 100, 177.82794100389200000000000000000m, 316.22776601683800000000000000000m, 562.34132519034900000000000000000m });
             print(b);
 
-            var c = np.logspace(2.0m, 3.0m, num: 4, _base: 2.0m);
+            var c = np.logspace(2.0m, 3.0m, num: 4, _base: 2.0);
             AssertArray(c, new decimal[] { 4, 05.03968419957949000000000000000m, 06.34960420787280000000000000000m, 8 });
             print(c);
         }
