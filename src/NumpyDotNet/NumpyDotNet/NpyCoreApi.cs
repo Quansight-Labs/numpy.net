@@ -553,24 +553,24 @@ namespace NumpyDotNet {
 
         }
 
-        internal static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
+        internal static IArrayHandlers GetArrayHandler(NPY_TYPES ItemType)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                return numpyAPI.GetNumericHandler(ItemType);
+                return numpyAPI.GetArrayHandler(ItemType);
             }
         }
 
 
-        internal static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
+        internal static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
             #if ENABLELOCKING
             lock (GlobalIterpLock)
             #endif
             {
-                numpyAPI.SetNumericHandler(ItemType, Handlers);
+                numpyAPI.SetArrayHandler(ItemType, Handlers);
             }
         }
 

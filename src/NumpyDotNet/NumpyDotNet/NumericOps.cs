@@ -49,12 +49,12 @@ namespace NumpyDotNet {
 
         public static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
-            NpyCoreApi.SetNumericHandler(ItemType, Handlers);
+            NpyCoreApi.SetArrayHandler(ItemType, Handlers);
         }
 
         public static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
         {
-            return NpyCoreApi.GetNumericHandler(ItemType);
+            return NpyCoreApi.GetArrayHandler(ItemType);
         }
         #endregion
 
