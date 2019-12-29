@@ -2505,7 +2505,7 @@ namespace NumpyLib
         protected override object Power(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
-            return Complex.Pow(dValue, Convert.ToDouble(operand));
+            return Complex.Pow(dValue, ConvertToComplex(operand));
         }
         protected override object Square(object bValue, object operand)
         {

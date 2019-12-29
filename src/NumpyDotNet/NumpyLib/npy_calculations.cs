@@ -366,6 +366,11 @@ namespace NumpyLib
                                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
                                     break;
                                 }
+                                case NPY_TYPES.NPY_COMPLEX:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
+                                    break;
+                                }
                             case NPY_TYPES.NPY_FLOAT:
                             case NPY_TYPES.NPY_DOUBLE:
                                 {
