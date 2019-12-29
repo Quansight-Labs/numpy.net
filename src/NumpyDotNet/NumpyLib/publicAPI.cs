@@ -1399,11 +1399,11 @@ namespace NumpyLib
 
         #region DefaultArrayHandlers
 
-        public static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
+        public static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
             DefaultArrayHandlers.SetArrayHandler(ItemType, Handlers);
         }
-        public static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
+        public static IArrayHandlers GetArrayHandler(NPY_TYPES ItemType)
         {
             return DefaultArrayHandlers.GetArrayHandler(ItemType);
         }
