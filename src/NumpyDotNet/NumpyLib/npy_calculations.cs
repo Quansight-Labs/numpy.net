@@ -193,21 +193,21 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
                 }
                 case NpyArray_Ops.npy_op_floor_divide:
-                    {
-                        return FloorDivideOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorDivideOperation;
+                }
                 case NpyArray_Ops.npy_op_true_divide:
-                    {
-                        return TrueDivideOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).TrueDivideOperation;
+                }
                 case NpyArray_Ops.npy_op_logical_or:
-                    {
-                        return LogicalOrOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalOrOperation;
+                }
                 case NpyArray_Ops.npy_op_logical_and:
-                    {
-                        return LogicalAndOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
+                }
                 case NpyArray_Ops.npy_op_floor:
                     {
                         return FloorOperation;
@@ -1034,44 +1034,8 @@ namespace NumpyLib
 
         #endregion
   
-  
+   
 
-        #region FloorDivideOperation
-        private static T FloorDivideOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            if (operand == 0)
-            {
-                dValue = 0;
-                return dValue;
-            }
-            return Math.Floor(dValue / operand);
-        }
-        #endregion
-
-
-
-        #region IsNaNOperation
-
-  
-  
-        #endregion
-
-        private static T TrueDivideOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue / operand;
-        }
-        private static T LogicalOrOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue || Convert.ToBoolean(operand);
-        }
-        private static T LogicalAndOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue && Convert.ToBoolean(operand);
-        }
         private static T FloorOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;

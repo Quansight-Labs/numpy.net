@@ -32,6 +32,10 @@ namespace NumpyLib
         NumericOperation GreaterOperation { get; set; }
         NumericOperation GreaterEqualOperation { get; set; }
         NumericOperation IsNANOperation { get; set; }
+        NumericOperation FloorDivideOperation { get; set; }
+        NumericOperation TrueDivideOperation { get; set; }
+        NumericOperation LogicalOrOperation { get; set; }
+        NumericOperation LogicalAndOperation { get; set; }
 
     }
 
@@ -163,6 +167,10 @@ namespace NumpyLib
             GreaterOperation = Greater;
             GreaterEqualOperation = GreaterEqual;
             IsNANOperation = IsNAN;
+            FloorDivideOperation = FloorDivide;
+            TrueDivideOperation = TrueDivide;
+            LogicalOrOperation = LogicalOr;
+            LogicalAndOperation = LogicalAnd;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -191,6 +199,10 @@ namespace NumpyLib
         public NumericOperation GreaterOperation { get; set; }
         public NumericOperation GreaterEqualOperation { get; set; }
         public NumericOperation IsNANOperation { get; set; }
+        public NumericOperation FloorDivideOperation { get; set; }
+        public NumericOperation TrueDivideOperation { get; set; }
+        public NumericOperation LogicalOrOperation { get; set; }
+        public NumericOperation LogicalAndOperation { get; set; }
 
 
         protected virtual object Add(dynamic bValue, dynamic operand)
@@ -345,6 +357,31 @@ namespace NumpyLib
         protected virtual object IsNAN(object bValue, object operand)
         {
             return float.IsNaN((float)bValue);
+        }
+        protected virtual object FloorDivide(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            if (operand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return Math.Floor(dValue / operand);
+        }
+        protected virtual object TrueDivide(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue / operand;
+        }
+        protected virtual object LogicalOr(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue || Convert.ToBoolean(operand);
+        }
+        protected virtual object LogicalAnd(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue && Convert.ToBoolean(operand);
         }
     }
 
