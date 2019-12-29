@@ -568,6 +568,16 @@ namespace NumpyLib
                             }
                             break;
                         }
+                    case NPY_TYPES.NPY_COMPLEX:
+                    {
+                        //var bdata = vp.datap as System.Numerics.Complex[];
+                        //for (npy_intp i = dataOffset; i < dataLen; i++)
+                        //{
+                        //    binaryWriter.Write(bdata[i]);
+                        //}
+                        break;
+                    }
+
 
                 }
 
