@@ -1205,26 +1205,24 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
-
 
         #region from NumericalOperationsTests
 
         [TestMethod]
-        public void test_add_operations_COMPLEX_TODO()
+        public void test_add_operations_COMPLEX()
         {
-            var a = np.arange(0m, 20m, 1, dtype: np.Decimal);
+            var a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            var b = a + 8m;
+            var b = a + 8;
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new decimal[,]
+            var ExpectedDataB = new Complex[,]
             {{8,  9, 10, 11},
              {12, 13, 14, 15},
              {16, 17, 18, 19},
@@ -1233,18 +1231,18 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB);
 
-            a = np.arange(0m, 20m, 1, dtype: np.Decimal);
+            a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            b = a + 2400;
+            b = a + new Complex(2400, 0);
             print(b);
             print(b.shape);
             print(b.strides);
 
-            ExpectedDataB = new decimal[,]
+            ExpectedDataB = new Complex[,]
             {{2400, 2401, 2402, 2403},
              {2404, 2405, 2406, 2407},
              {2408, 2409, 2410, 2411},
@@ -1256,13 +1254,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_add_operations_COMPLEX_TODO_2()
+        public void test_add_operations_COMPLEX_2()
         {
-            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            var a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
 
-            var ExpectedDataA = new Decimal[,]
+            var ExpectedDataA = new Complex[,]
                 {{0,  1,  2,  3},
                  {4,  5,  6,  7},
                  {8,  9, 10, 11},
@@ -1270,11 +1268,11 @@ namespace NumpyDotNetTests
                  {16, 17, 18, 19}};
             AssertArray(a, ExpectedDataA);
 
-            var b = np.array(new Decimal[] { 2 });
+            var b = np.array(new Complex[] { 2 });
             var c = a + b;
             print(c);
 
-            var ExpectedDataC = new Decimal[,]
+            var ExpectedDataC = new Complex[,]
                 {{2,  3,  4,  5},
                  {6,  7,  8,  9},
                  {10, 11, 12, 13},
@@ -1283,11 +1281,11 @@ namespace NumpyDotNetTests
             AssertArray(c, ExpectedDataC);
 
 
-            b = np.array(new Decimal[] { 10, 20, 30, 40 });
+            b = np.array(new Complex[] { 10, 20, 30, 40 });
             var d = a + b;
             print(d);
 
-            var ExpectedDataD = new Decimal[,]
+            var ExpectedDataD = new Complex[,]
                 {{10, 21, 32, 43},
                  {14, 25, 36, 47},
                  {18, 29, 40, 51},
@@ -1297,20 +1295,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_subtract_operations_COMPLEX_TODO()
+        public void test_subtract_operations_COMPLEX()
         {
-            var a = np.arange(0m, 20m, 1m, dtype: np.Decimal);
+            var a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            var b = a - 8;
+            var b = a - new Complex(8, 0);
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new decimal[,]
+            var ExpectedDataB = new Complex[,]
             {{-8, -7, -6, -5},
              {-4, -3, -2, -1},
              {0,  1,  2,  3},
@@ -1319,7 +1317,7 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB);
 
-            a = np.arange(0m, 20m, 1m, dtype: np.Decimal);
+            a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
@@ -1330,7 +1328,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            ExpectedDataB = new decimal[,]
+            ExpectedDataB = new Complex[,]
             {{-2400, -2399, -2398, -2397},
              {-2396, -2395, -2394, -2393},
              {-2392, -2391, -2390, -2389},
@@ -1343,10 +1341,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_subtract_operations_COMPLEX_TODO_2()
+        public void test_subtract_operations_COMPLEX_2()
         {
-            var a = np.arange(100, 102, 1, dtype: np.Decimal);
-            var b = np.array(new Decimal[] { 1, 63 });
+            var a = np.arange(100, 102, 1, dtype: np.Complex);
+            var b = np.array(new Complex[] { 1, 63 });
             var c = a - b;
             print(a);
             print("****");
@@ -1354,11 +1352,11 @@ namespace NumpyDotNetTests
             print("****");
             print(c);
             print("****");
-            AssertArray(c, new decimal[] { 99, 38 });
+            AssertArray(c, new Complex[] { 99, 38 });
 
 
-            a = np.arange(0, 4, 1, dtype: np.Decimal).reshape(new shape(2, 2));
-            b = np.array(new Decimal[] { 65, 78 }).reshape(new shape(1, 2));
+            a = np.arange(0, 4, 1, dtype: np.Complex).reshape(new shape(2, 2));
+            b = np.array(new Complex[] { 65, 78 }).reshape(new shape(1, 2));
             c = a - b;
             print(a);
             print("****");
@@ -1366,110 +1364,110 @@ namespace NumpyDotNetTests
             print("****");
             print(c);
             print("****");
-            AssertArray(c, new Decimal[,] { { -65, -77 }, { -63, -75 } });
+            AssertArray(c, new Complex[,] { { -65, -77 }, { -63, -75 } });
 
         }
 
         [TestMethod]
-        public void test_multiply_operations_COMPLEX_TODO()
+        public void test_multiply_operations_COMPLEX()
         {
-            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            var a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            decimal multiplierB1 = 9023.67m;
+            double multiplierB1 = 9023.67;
             var b = a * multiplierB1;
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB1 = new decimal[,]
+            var ExpectedDataB1 = new Complex[,]
             {
-                {0m*multiplierB1,  1m*multiplierB1,  2m*multiplierB1,  3m*multiplierB1},
-                {4m*multiplierB1,  5m*multiplierB1,  6m*multiplierB1,  7m*multiplierB1},
-                {8m*multiplierB1,  9m*multiplierB1,  10m*multiplierB1, 11m*multiplierB1},
-                {12m*multiplierB1, 13m*multiplierB1, 14m*multiplierB1, 15m*multiplierB1},
-                {16m*multiplierB1, 17m*multiplierB1, 18m*multiplierB1, 19m*multiplierB1}
+                {0*multiplierB1,  1*multiplierB1,  2*multiplierB1,  3*multiplierB1},
+                {4*multiplierB1,  5*multiplierB1,  6*multiplierB1,  7*multiplierB1},
+                {8*multiplierB1,  9*multiplierB1,  10*multiplierB1, 11*multiplierB1},
+                {12*multiplierB1, 13*multiplierB1, 14*multiplierB1, 15*multiplierB1},
+                {16*multiplierB1, 17*multiplierB1, 18*multiplierB1, 19*multiplierB1}
             };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            decimal multiplierB2 = 990425023.67864101m;
+            Complex multiplierB2 = 990425023.67864101;
             b = a * multiplierB2;
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB2 = new decimal[,]
+            var ExpectedDataB2 = new Complex[,]
             {
-                {0m*multiplierB2,  1m*multiplierB2,  2m*multiplierB2,  3m*multiplierB2},
-                {4m*multiplierB2,  5m*multiplierB2,  6m*multiplierB2,  7m*multiplierB2},
-                {8m*multiplierB2,  9m*multiplierB2,  10m*multiplierB2, 11m*multiplierB2},
-                {12m*multiplierB2, 13m*multiplierB2, 14m*multiplierB2, 15m*multiplierB2},
-                {16m*multiplierB2, 17m*multiplierB2, 18m*multiplierB2, 19m*multiplierB2}
+                {0*multiplierB2,  1*multiplierB2,  2*multiplierB2,  3*multiplierB2},
+                {4*multiplierB2,  5*multiplierB2,  6*multiplierB2,  7*multiplierB2},
+                {8*multiplierB2,  9*multiplierB2,  10*multiplierB2, 11*multiplierB2},
+                {12*multiplierB2, 13*multiplierB2, 14*multiplierB2, 15*multiplierB2},
+                {16*multiplierB2, 17*multiplierB2, 18*multiplierB2, 19*multiplierB2}
             };
             AssertArray(b, ExpectedDataB2);
         }
 
         [TestMethod]
-        public void test_division_operations_COMPLEX_TODO()
+        public void test_division_operations_COMPLEX()
         {
-            var a = np.arange(20000, 20020, 1, dtype: np.Decimal);
+            var a = np.arange(20000, 20020, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            decimal divisorB1 = 611m;
+            double divisorB1 = 611;
             var b = a / divisorB1;
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB1 = new decimal[,]
+            var ExpectedDataB1 = new Complex[,]
             {
-                {20000m/divisorB1, 20001m/divisorB1, 20002m/divisorB1, 20003m/divisorB1},
-                {20004m/divisorB1, 20005m/divisorB1, 20006m/divisorB1, 20007m/divisorB1},
-                {20008m/divisorB1, 20009m/divisorB1, 20010m/divisorB1, 20011m/divisorB1},
-                {20012m/divisorB1, 20013m/divisorB1, 20014m/divisorB1, 20015m/divisorB1},
-                {20016m/divisorB1, 20017m/divisorB1, 20018m/divisorB1, 20019m/divisorB1}
+                {20000/divisorB1, 20001/divisorB1, 20002/divisorB1, 20003/divisorB1},
+                {20004/divisorB1, 20005/divisorB1, 20006/divisorB1, 20007/divisorB1},
+                {20008/divisorB1, 20009/divisorB1, 20010/divisorB1, 20011/divisorB1},
+                {20012/divisorB1, 20013/divisorB1, 20014/divisorB1, 20015/divisorB1},
+                {20016/divisorB1, 20017/divisorB1, 20018/divisorB1, 20019/divisorB1}
             };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2000000, 2000020, 1, dtype: np.Decimal);
+            a = np.arange(2000000, 2000020, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
             print(a.strides);
 
-            decimal divisorB2 = 2411m;
+            double divisorB2 = 2411;
             b = a / divisorB2;
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB2 = new decimal[,]
+            var ExpectedDataB2 = new Complex[,]
             {
-                {2000000m/divisorB2, 2000001m/divisorB2, 2000002m/divisorB2, 2000003m/divisorB2},
-                {2000004m/divisorB2, 2000005m/divisorB2, 2000006m/divisorB2, 2000007m/divisorB2},
-                {2000008m/divisorB2, 2000009m/divisorB2, 2000010m/divisorB2, 2000011m/divisorB2},
-                {2000012m/divisorB2, 2000013m/divisorB2, 2000014m/divisorB2, 2000015m/divisorB2},
-                {2000016m/divisorB2, 2000017m/divisorB2, 2000018m/divisorB2, 2000019m/divisorB2},
+                {2000000/divisorB2, 2000001/divisorB2, 2000002/divisorB2, 2000003/divisorB2},
+                {2000004/divisorB2, 2000005/divisorB2, 2000006/divisorB2, 2000007/divisorB2},
+                {2000008/divisorB2, 2000009/divisorB2, 2000010/divisorB2, 2000011/divisorB2},
+                {2000012/divisorB2, 2000013/divisorB2, 2000014/divisorB2, 2000015/divisorB2},
+                {2000016/divisorB2, 2000017/divisorB2, 2000018/divisorB2, 2000019/divisorB2},
             };
             AssertArray(b, ExpectedDataB2);
         }
 
         [TestMethod]
-        public void test_leftshift_operations_COMPLEX_TODO()
+        public void test_leftshift_operations_COMPLEX()
         {
-            var a = np.arange(0, 20, 1, dtype: np.Decimal);
+            var a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
@@ -1480,7 +1478,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB1 = new decimal[,]
+            var ExpectedDataB1 = new Complex[,]
             {
                 {0,  256,  512,  768},
                 {1024, 1280, 1536, 1792},
@@ -1490,7 +1488,7 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(0, 20, 1, dtype: np.Decimal);
+            a = np.arange(0, 20, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
@@ -1501,7 +1499,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB2 = new decimal[,]
+            var ExpectedDataB2 = new Complex[,]
             {
                 {0,  16777216,  33554432,  50331648},
                 {67108864,  83886080, 100663296, 117440512},
@@ -1514,9 +1512,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_rightshift_operations_COMPLEX_TODO()
+        public void test_rightshift_operations_COMPLEX()
         {
-            var a = np.arange(20000, 20020, 1, dtype: np.Decimal);
+            var a = np.arange(20000, 20020, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
@@ -1527,7 +1525,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB1 = new decimal[,]
+            var ExpectedDataB1 = new Complex[,]
             {
                 {78, 78, 78, 78},
                 {78, 78, 78, 78},
@@ -1537,7 +1535,7 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2123450, 2123470, 1, dtype: np.Decimal);
+            a = np.arange(2123450, 2123470, 1, dtype: np.Complex);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
@@ -1548,7 +1546,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB2 = new decimal[,]
+            var ExpectedDataB2 = new Complex[,]
             {
                 {8294 , 8294 , 8294 , 8294 },
                 {8294 , 8294 , 8294 , 8294 },
@@ -1561,26 +1559,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwiseand_operations_COMPLEX_TODO()
+        public void test_bitwiseand_operations_COMPLEX()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Complex);
             print(a);
 
             var b = a & 0x0f;
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
+            var ExpectedDataB1 = new Complex[]
             { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
               0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = a & 0xFF;
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
+            var ExpectedDataB2 = new Complex[]
             { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
               16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
             AssertArray(b, ExpectedDataB2);
@@ -1588,26 +1586,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwiseor_operations_COMPLEX_TODO()
+        public void test_bitwiseor_operations_COMPLEX()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Complex);
             print(a);
 
             var b = a | 0x100;
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
+            var ExpectedDataB1 = new Complex[]
             { 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
               272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287 };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = a | 0x1000;
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
+            var ExpectedDataB2 = new Complex[]
             { 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 6152, 6153, 6154, 6155, 6156, 6157,
               6158, 6159, 6160, 6161, 6162, 6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171,
               6172, 6173, 6174, 6175 };
@@ -1616,26 +1614,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwisexor_operations_COMPLEX_TODO()
+        public void test_bitwisexor_operations_COMPLEX()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.Decimal);
+            var a = np.arange(0.499, 32.499, 1, dtype: np.Complex);
             print(a);
 
             var b = a ^ 0xAAA;
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
+            var ExpectedDataB1 = new Complex[]
             { 2730, 2731, 2728, 2729, 2734, 2735, 2732, 2733, 2722, 2723, 2720, 2721, 2726, 2727, 2724,
               2725, 2746, 2747, 2744, 2745, 2750, 2751, 2748, 2749, 2738, 2739, 2736, 2737, 2742, 2743, 2740, 2741 };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = a ^ 0xAAAA;
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
+            var ExpectedDataB2 = new Complex[]
             { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
               41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
               41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
@@ -1644,166 +1642,165 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_remainder_operations_COMPLEX_TODO()
+        public void test_remainder_operations_COMPLEX()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            var a = np.arange(0, 32, 1, dtype: np.Complex);
             print(a);
 
             var b = a % 6;
             print(b);
 
-            AssertArray(b, new decimal[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3,
+            AssertArray(b, new Complex[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3,
                                          4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1 });
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = a % 6;
             print(b);
 
-            AssertArray(b, new decimal[] { 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,
+            AssertArray(b, new Complex[] { 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,
                                          0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
 
         }
 
         [TestMethod]
-        public void test_sqrt_operations_COMPLEX_TODO()
+        public void test_sqrt_operations_COMPLEX()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            var a = np.arange(0, 32, 1, dtype: np.Complex);
             print(a);
 
             var b = np.sqrt(a);
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
+            var ExpectedDataB1 = new Complex[]
             {
-               0m, 1m, 01.41421356237309504880168872420m, 01.73205080756887729352744634150m, 2m,
-                02.23606797749978969640917366880m, 02.44948974278317809819728407470m, 02.64575131106459059050161575360m, 02.82842712474619009760337744840m,
-                3m, 03.16227766016837933199889354440m, 03.31662479035539984911493273660m, 03.46410161513775458705489268300m,
-                03.60555127546398929311922126740m, 03.74165738677394138558374873230m, 03.87298334620741688517926539980m, 4m,
-                04.12310562561766054982140985600m, 04.24264068711928514640506617250m, 04.35889894354067355223698198400m, 04.47213595499957939281834733750m,
-                04.58257569495584000658804719400m, 04.69041575982342955456563011350m, 04.79583152331271954159743806400m, 04.89897948556635619639456814950m,
-                5m, 05.09901951359278483002822410900m, 05.19615242270663188058233902450m, 05.29150262212918118100323150750m,
-                05.38516480713450403125071049150m, 05.47722557505166113456969782800m, 05.56776436283002192211947129900m
+                new Complex(0, 0), new Complex(1, 0), new Complex(1.4142135623731, 0), new Complex(1.73205080756888, 0),
+                new Complex(2, 0), new Complex(2.23606797749979, 0), new Complex(2.44948974278318, 0), new Complex(2.64575131106459, 0),
+                new Complex(2.82842712474619, 0), new Complex(3, 0), new Complex(3.16227766016838, 0), new Complex(3.3166247903554, 0),
+                new Complex(3.46410161513775, 0), new Complex(3.60555127546399, 0), new Complex(3.74165738677394, 0),
+                new Complex(3.87298334620742, 0), new Complex(4, 0), new Complex(4.12310562561766, 0), new Complex(4.24264068711928, 0),
+                new Complex(4.35889894354067, 0), new Complex(4.47213595499958, 0), new Complex(4.58257569495584, 0),
+                new Complex(4.69041575982343, 0), new Complex(4.79583152331272, 0), new Complex(4.89897948556636, 0),
+                new Complex(5, 0), new Complex(5.09901951359278, 0), new Complex(5.19615242270663, 0), new Complex(5.29150262212918, 0),
+                new Complex(5.3851648071345, 0), new Complex(5.47722557505166, 0), new Complex(5.56776436283002, 0) };
 
-            };
 
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = np.sqrt(a);
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
-            {
-                45.25483399593904156165403917500m, 45.26588119102510082052098860500m, 45.27692569068708313286904083500m, 45.28796749689700967470411927000m,
-                45.29900661162449818342010884000m, 45.31004303683676705673235173000m, 45.32107677449863944262772470000m, 45.33210782657254732035535008500m,
-                45.34313619501853557248191637000m, 45.35416188179426604803550841500m, 45.36518488885502161676177205000m, 45.37620521815371021451616237500m,
-                45.38722287164086887981595016500m, 45.39823785126466778157558615000m, 45.40925015897091423804894846500m, 45.42025979670305672700192442500m,
-                45.43126676640218888713870387000m, 45.44227107000705351080508783000m, 45.45327270945404652799204274000m, 45.46427168667722098166265753000m,
-                45.47526800360829099442558795000m, 45.48626166217663572657800009000m, 45.49725266430930332554095262000m, 45.50824101193101486671008537000m,
-                45.51922670696416828574441006500m, 45.53020975132884230231592748500m, 45.54119014694280033534272413000m, 45.55216789572149440972813052500m,
-                45.56314299957806905462845237000m, 45.57411546042336519327171558000m, 45.58508528016592402434979572500m, 45.59605246071199089500623262000m
-            };
-            AssertArray(b, ExpectedDataB2);
+            //var ExpectedDataB2 = new Complex[]
+            //{
+            //    45.25483399593904156165403917500m, 45.26588119102510082052098860500m, 45.27692569068708313286904083500m, 45.28796749689700967470411927000m,
+            //    45.29900661162449818342010884000m, 45.31004303683676705673235173000m, 45.32107677449863944262772470000m, 45.33210782657254732035535008500m,
+            //    45.34313619501853557248191637000m, 45.35416188179426604803550841500m, 45.36518488885502161676177205000m, 45.37620521815371021451616237500m,
+            //    45.38722287164086887981595016500m, 45.39823785126466778157558615000m, 45.40925015897091423804894846500m, 45.42025979670305672700192442500m,
+            //    45.43126676640218888713870387000m, 45.44227107000705351080508783000m, 45.45327270945404652799204274000m, 45.46427168667722098166265753000m,
+            //    45.47526800360829099442558795000m, 45.48626166217663572657800009000m, 45.49725266430930332554095262000m, 45.50824101193101486671008537000m,
+            //    45.51922670696416828574441006500m, 45.53020975132884230231592748500m, 45.54119014694280033534272413000m, 45.55216789572149440972813052500m,
+            //    45.56314299957806905462845237000m, 45.57411546042336519327171558000m, 45.58508528016592402434979572500m, 45.59605246071199089500623262000m
+            //};
+            //AssertArray(b, ExpectedDataB2);
 
         }
 
         [TestMethod]
-        public void test_cbrt_operations_COMPLEX_TODO()
+        public void test_cbrt_operations_COMPLEX()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            var a = np.arange(0, 32, 1, dtype: np.Complex);
             print(a);
 
             var b = np.cbrt(a);
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
+            var ExpectedDataB1 = new Complex[]
             {
-                0, 1, 01.25992104989487000000000000000m, 01.44224957030741000000000000000m, 01.58740105196820000000000000000m,
-                01.70997594667670000000000000000m, 01.81712059283214000000000000000m, 01.91293118277239000000000000000m,
-                2, 02.08008382305190000000000000000m, 02.15443469003188000000000000000m, 02.22398009056931000000000000000m,
-                02.28942848510666000000000000000m, 02.35133468772076000000000000000m, 02.41014226417523000000000000000m,
-                02.46621207433047000000000000000m, 02.51984209978974000000000000000m, 02.57128159065823000000000000000m,
-                02.62074139420889000000000000000m, 02.66840164872194000000000000000m, 02.71441761659490000000000000000m,
-                02.75892417638112000000000000000m, 02.80203933065538000000000000000m, 02.84386697985156000000000000000m,
-                02.88449914061481000000000000000m, 02.92401773821286000000000000000m, 02.96249606840737000000000000000m, 3,
-                03.03658897187566000000000000000m, 03.07231682568584000000000000000m, 03.10723250595386000000000000000m,
-                03.14138065239139000000000000000m
+                0, 1, 01.25992104989487, 01.44224957030741, 01.5874010519682, 01.7099759466767, 01.81712059283214, 01.91293118277239,
+                2, 2.0800838230519, 02.15443469003188, 02.22398009056931,
+                02.28942848510666, 02.35133468772076, 02.41014226417523,
+                02.46621207433047, 02.51984209978974, 02.57128159065823,
+                02.62074139420889, 02.66840164872194, 02.7144176165949,
+                02.75892417638112, 02.80203933065538, 02.84386697985156,
+                02.88449914061481, 02.92401773821286, 02.96249606840737, 3,
+                03.03658897187566, 03.07231682568584, 03.10723250595386,
+                03.14138065239139
             };
 
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Complex);
             print(a);
 
             b = np.cbrt(a);
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
-            {
-                12.69920841574560000000000000000m, 12.70127500787570000000000000000m, 12.70334092772480000000000000000m,
-                12.70540617583920000000000000000m, 12.70747075276460000000000000000m, 12.70953465904630000000000000000m,
-                12.71159789522850000000000000000m, 12.71366046185490000000000000000m, 12.71572235946840000000000000000m,
-                12.71778358861120000000000000000m, 12.71984414982490000000000000000m, 12.72190404365040000000000000000m,
-                12.72396327062770000000000000000m, 12.72602183129630000000000000000m, 12.72807972619490000000000000000m,
-                12.73013695586160000000000000000m, 12.73219352083380000000000000000m, 12.73424942164790000000000000000m,
-                12.73630465884010000000000000000m, 12.73835923294560000000000000000m, 12.74041314449890000000000000000m,
-                12.74246639403400000000000000000m, 12.74451898208400000000000000000m, 12.74657090918140000000000000000m,
-                12.74862217585820000000000000000m, 12.75067278264530000000000000000m, 12.75272273007330000000000000000m,
-                12.75477201867200000000000000000m, 12.75682064897040000000000000000m, 12.75886862149700000000000000000m,
-                12.76091593677950000000000000000m, 12.76296259534500000000000000000m
-            };
-            AssertArray(b, ExpectedDataB2);
+            //var ExpectedDataB2 = new Complex[]
+            //{
+            //    12.69920841574560000000000000000m, 12.70127500787570000000000000000m, 12.70334092772480000000000000000m,
+            //    12.70540617583920000000000000000m, 12.70747075276460000000000000000m, 12.70953465904630000000000000000m,
+            //    12.71159789522850000000000000000m, 12.71366046185490000000000000000m, 12.71572235946840000000000000000m,
+            //    12.71778358861120000000000000000m, 12.71984414982490000000000000000m, 12.72190404365040000000000000000m,
+            //    12.72396327062770000000000000000m, 12.72602183129630000000000000000m, 12.72807972619490000000000000000m,
+            //    12.73013695586160000000000000000m, 12.73219352083380000000000000000m, 12.73424942164790000000000000000m,
+            //    12.73630465884010000000000000000m, 12.73835923294560000000000000000m, 12.74041314449890000000000000000m,
+            //    12.74246639403400000000000000000m, 12.74451898208400000000000000000m, 12.74657090918140000000000000000m,
+            //    12.74862217585820000000000000000m, 12.75067278264530000000000000000m, 12.75272273007330000000000000000m,
+            //    12.75477201867200000000000000000m, 12.75682064897040000000000000000m, 12.75886862149700000000000000000m,
+            //    12.76091593677950000000000000000m, 12.76296259534500000000000000000m
+            //};
+            //AssertArray(b, ExpectedDataB2);
         }
 
         [TestMethod]
-        public void test_negative_operations_COMPLEX_TODO()
+        public void test_negative_operations_COMPLEX()
         {
-            var a = np.arange(0.333, 32.333, 1, dtype: np.Decimal);
+            var a = np.arange(0.333, 32.333, 1, dtype: np.Complex);
             print(a);
 
             var b = -a;
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
+            var ExpectedDataB2 = new Complex[]
             {
-                -00.33300000000000000000000000000m, -01.33300000000000000000000000000m, -02.33300000000000000000000000000m,
-                -03.33300000000000000000000000000m, -04.33300000000000000000000000000m, -05.33300000000000000000000000000m,
-                -06.33300000000000000000000000000m, -07.33300000000000000000000000000m, -08.33300000000000000000000000000m,
-                -09.33300000000000000000000000000m, -10.33300000000000000000000000000m, -11.33300000000000000000000000000m,
-                -12.33300000000000000000000000000m, -13.33300000000000000000000000000m, -14.33300000000000000000000000000m,
-                -15.33300000000000000000000000000m, -16.33300000000000000000000000000m, -17.33300000000000000000000000000m,
-                -18.33300000000000000000000000000m, -19.33300000000000000000000000000m, -20.33300000000000000000000000000m,
-                -21.33300000000000000000000000000m, -22.33300000000000000000000000000m, -23.33300000000000000000000000000m,
-                -24.33300000000000000000000000000m, -25.33300000000000000000000000000m, -26.33300000000000000000000000000m,
-                -27.33300000000000000000000000000m, -28.33300000000000000000000000000m, -29.33300000000000000000000000000m,
-                -30.33300000000000000000000000000m, -31.33300000000000000000000000000m
+                -00.33300000000000000000000000000, -01.33300000000000000000000000000, -02.33300000000000000000000000000,
+                -03.33300000000000000000000000000, -04.33300000000000000000000000000, -05.33300000000000000000000000000,
+                -06.33300000000000000000000000000, -07.33300000000000000000000000000, -08.33300000000000000000000000000,
+                -09.33300000000000000000000000000, -10.33300000000000000000000000000, -11.33300000000000000000000000000,
+                -12.33300000000000000000000000000, -13.33300000000000000000000000000, -14.33300000000000000000000000000,
+                -15.33300000000000000000000000000, -16.33300000000000000000000000000, -17.33300000000000000000000000000,
+                -18.33300000000000000000000000000, -19.33300000000000000000000000000, -20.33300000000000000000000000000,
+                -21.33300000000000000000000000000, -22.33300000000000000000000000000, -23.33300000000000000000000000000,
+                -24.33300000000000000000000000000, -25.33300000000000000000000000000, -26.33300000000000000000000000000,
+                -27.33300000000000000000000000000, -28.33300000000000000000000000000, -29.33300000000000000000000000000,
+                -30.33300000000000000000000000000, -31.33300000000000000000000000000
             };
             AssertArray(b, ExpectedDataB2);
 
         }
 
         [TestMethod]
-        public void test_invert_operations_COMPLEX_TODO()
+        public void test_invert_operations_COMPLEX()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.Decimal);
+            var a = np.arange(-32, 32, 1, dtype: np.Complex);
             print(a);
 
             var b = ~a;
             print(b);
 
             // this should not be changed at all.  Decimals can't be inverted.
-            AssertArray(b, a.AsDecimalArray());
+            AssertArray(b, a.AsComplexArray());
 
         }
 
         [TestMethod]
-        public void test_LESS_operations_COMPLEX_TODO()
+        public void test_LESS_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a < -2;
@@ -1813,9 +1810,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_LESSEQUAL_operations_COMPLEX_TODO()
+        public void test_LESSEQUAL_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a <= -2;
@@ -1825,9 +1822,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_EQUAL_operations_COMPLEX_TODO()
+        public void test_EQUAL_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a == -2;
@@ -1837,9 +1834,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_NOTEQUAL_operations_COMPLEX_TODO()
+        public void test_NOTEQUAL_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a != -2;
@@ -1849,9 +1846,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_GREATER_operations_COMPLEX_TODO()
+        public void test_GREATER_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a > -2;
@@ -1862,9 +1859,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_GREATEREQUAL_operations_COMPLEX_TODO()
+        public void test_GREATEREQUAL_operations_COMPLEX()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.Decimal);
+            var a = np.arange(-5, 5, 1, dtype: np.Complex);
             print(a);
 
             var b = a >= -2;
@@ -1877,22 +1874,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_arrayarray_or_COMPLEX_TODO()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Decimal);
-            var b = np.arange(33, 33 + 32, 1, dtype: np.Decimal);
+            var a = np.arange(0, 32, 1, dtype: np.Complex);
+            var b = np.arange(33, 33 + 32, 1, dtype: np.Complex);
             var c = a | b;
             print(a);
             print(b);
             print(c);
 
-            AssertArray(c, new decimal[] {33, 35, 35, 39, 37, 39, 39, 47, 41, 43, 43, 47,
+            AssertArray(c, new Complex[] {33, 35, 35, 39, 37, 39, 39, 47, 41, 43, 43, 47,
                                         45, 47, 47, 63, 49, 51, 51, 55, 53, 55, 55, 63,
                                         57, 59, 59, 63, 61, 63, 63, 95 });
         }
 
         [TestMethod]
-        public void test_bitwise_and_COMPLEX_TODO()
+        public void test_bitwise_and_COMPLEX()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.Decimal).reshape(new shape(2, -1));
+            var x = np.arange(1023, 1039, 1, dtype: np.Complex).reshape(new shape(2, -1));
             var y = np.bitwise_and(x, 0x3FF);
             var z = x & 0x3FF;
 
@@ -1900,7 +1897,7 @@ namespace NumpyDotNetTests
             print(y);
             print(z);
 
-            var ExpectedData = new decimal[,]
+            var ExpectedData = new Complex[,]
             {
                 { 1023, 0, 1,  2,  3,  4,  5,  6 },
                 {  7, 8, 9, 10, 11, 12, 13, 14 }
@@ -1911,9 +1908,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwise_or_COMPLEX_TODO()
+        public void test_bitwise_or_COMPLEX()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.Decimal).reshape(new shape(2, -1));
+            var x = np.arange(1023, 1039, 1, dtype: np.Complex).reshape(new shape(2, -1));
             var y = np.bitwise_or(x, 0x10);
             var z = x | 0x10;
 
@@ -1921,7 +1918,7 @@ namespace NumpyDotNetTests
             print(y);
             print(z);
 
-            var ExpectedData = new decimal[,]
+            var ExpectedData = new Complex[,]
             {
                 { 1023, 1040, 1041, 1042, 1043, 1044, 1045, 1046 },
                 { 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054 }
@@ -1932,7 +1929,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwise_xor_COMPLEX_TODO()
+        public void test_bitwise_xor_COMPLEX()
         {
             var a = np.bitwise_xor(13, 17);
             Assert.AreEqual(28, a.GetItem(0));
@@ -1942,12 +1939,12 @@ namespace NumpyDotNetTests
             Assert.AreEqual(26, b.GetItem(0));
             print(b);
 
-            var c = np.bitwise_xor(new decimal[] { 31, 3 }, 5);
-            AssertArray(c, new decimal[] { 26, 6 });
+            var c = np.bitwise_xor(new Complex[] { 31, 3 }, 5);
+            AssertArray(c, new Complex[] { 26, 6 });
             print(c);
 
-            var d = np.bitwise_xor(new decimal[] { 31, 3 }, new decimal[] { 5, 6 });
-            AssertArray(d, new decimal[] { 26, 5 });
+            var d = np.bitwise_xor(new Complex[] { 31, 3 }, new Complex[] { 5, 6 });
+            AssertArray(d, new Complex[] { 26, 5 });
             print(d);
 
             var e = np.bitwise_xor(new bool[] { true, true }, new bool[] { false, true });
@@ -1958,7 +1955,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwise_not_COMPLEX_TODO()
+        public void test_bitwise_not_COMPLEX()
         {
             var a = np.bitwise_not(13);
             Assert.AreEqual(-14, a.GetItem(0));
@@ -1969,13 +1966,13 @@ namespace NumpyDotNetTests
             print(b);
 
             // can't inverse a decimal
-            var c = np.bitwise_not(new decimal[] { 31, 3 });
-            AssertArray(c, new decimal[] { 31, 3 });
+            var c = np.bitwise_not(new Complex[] { 31, 3 });
+            AssertArray(c, new Complex[] { 31, 3 });
             print(c);
 
             // can't inverse a decimal
-            var d = np.bitwise_not(new decimal[] { 31, 3 });
-            AssertArray(d, new decimal[] { 31, 3 });
+            var d = np.bitwise_not(new Complex[] { 31, 3 });
+            AssertArray(d, new Complex[] { 31, 3 });
             print(d);
 
             var e = np.bitwise_not(new bool[] { true, false });
@@ -1986,7 +1983,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_invert_COMPLEX_TODO()
+        public void test_invert_COMPLEX()
         {
             var a = np.invert(13);
             Assert.AreEqual(-14, a.GetItem(0));
@@ -1997,13 +1994,13 @@ namespace NumpyDotNetTests
             print(b);
 
             // can't inverse a decimal
-            var c = np.invert(new decimal[] { 31, 3 });
-            AssertArray(c, new decimal[] { 31, 3 });
+            var c = np.invert(new Complex[] { 31, 3 });
+            AssertArray(c, new Complex[] { 31, 3 });
             print(c);
 
             // can't inverse a decimal
-            var d = np.invert(new decimal[] { 31, 3 });
-            AssertArray(d, new decimal[] { 31, 3 });
+            var d = np.invert(new Complex[] { 31, 3 });
+            AssertArray(d, new Complex[] { 31, 3 });
             print(d);
 
             var e = np.invert(new bool[] { true, false });
@@ -2014,9 +2011,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_right_shift_COMPLEX_TODO()
+        public void test_right_shift_COMPLEX()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.Decimal).reshape(new shape(2, -1));
+            var x = np.arange(1023, 1039, 1, dtype: np.Complex).reshape(new shape(2, -1));
             var y = np.right_shift(x, 2);
             var z = x >> 2;
 
@@ -2024,7 +2021,7 @@ namespace NumpyDotNetTests
             print(y);
             print(z);
 
-            var ExpectedData = new decimal[,]
+            var ExpectedData = new Complex[,]
             {
                 { 255, 256, 256, 256, 256, 257, 257, 257 },
                 { 257, 258, 258, 258, 258, 259, 259, 259 }
@@ -2035,9 +2032,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_left_shift_COMPLEX_TODO()
+        public void test_left_shift_COMPLEX()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.Decimal).reshape(new shape(2, -1));
+            var x = np.arange(1023, 1039, 1, dtype: np.Complex).reshape(new shape(2, -1));
             var y = np.left_shift(x, 2);
             var z = x << 2;
 
@@ -2045,7 +2042,7 @@ namespace NumpyDotNetTests
             print(y);
             print(z);
 
-            var ExpectedData = new decimal[,]
+            var ExpectedData = new Complex[,]
             {
                 { 4092, 4096, 4100, 4104, 4108, 4112, 4116, 4120 },
                 { 4124, 4128, 4132, 4136, 4140, 4144, 4148, 4152 }
@@ -2056,35 +2053,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_min_COMPLEX_TODO()
+        public void test_min_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { 2.5m, -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            Complex[] TestData = new Complex[] { 2.5, -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0 };
             var x = np.array(TestData);
-            decimal y = (decimal)np.min(x);
+            Complex y = (Complex)np.min(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual(-1.7m, y);
+            Assert.AreEqual(new Complex(-1.7, 0), y);
         }
 
         [TestMethod]
-        public void test_max_COMPLEX_TODO()
+        public void test_max_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { 2.5m, -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            Complex[] TestData = new Complex[] { 2.5, -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0 };
             var x = np.array(TestData);
-            decimal y = (decimal)np.max(x);
+            Complex y = (Complex)np.max(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual(2.5m, y);
+            Assert.AreEqual(new Complex(2.5, 0), y);
         }
 
         [TestMethod]
-        public void test_isnan_COMPLEX_TODO()
+        public void test_isnan_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { -1.7m, 0, 0, 0.2m, 1.5m, 0, 2.0m };
+            Complex[] TestData = new Complex[] { 2.5, -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0 };
             var x = np.array(TestData);
             var y = np.isnan(x);
 
@@ -2092,15 +2089,16 @@ namespace NumpyDotNetTests
             print(y);
 
             // decimals don't support NAN so must be false
-            AssertArray(y, new bool[] { false, false, false, false, false, false, false });
+            AssertArray(y, new bool[] { false, false, false, false, false, false, false, false });
 
         }
 
+        [Ignore] // same sort issue
         [TestMethod]
-        public void test_setdiff1d_COMPLEX_TODO()
+        public void test_setdiff1d_COMPLEX()
         {
-            decimal[] TestDataA = new decimal[] { 1, 2, 3, 2, 4, };
-            decimal[] TestDataB = new decimal[] { 3, 4, 5, 6 };
+            Complex[] TestDataA = new Complex[] { 1, 2, 3, 2, 4, };
+            Complex[] TestDataB = new Complex[] { 3, 4, 5, 6 };
 
             var a = np.array(TestDataA);
             var b = np.array(TestDataB);
@@ -2110,16 +2108,17 @@ namespace NumpyDotNetTests
             print(b);
             print(c);
 
-            AssertArray(c, new decimal[] { 1, 2 });
+            AssertArray(c, new Complex[] { 1, 2 });
 
         }
 
-        [TestMethod]
-        public void test_setdiff1d_2_COMPLEX_TODO()
+        [Ignore] // same sort issue
+        [TestMethod] 
+        public void test_setdiff1d_2_COMPLEX()
         {
-            decimal[] TestDataB = new decimal[] { 3, 4, 5, 6 };
+            Complex[] TestDataB = new Complex[] { 3, 4, 5, 6 };
 
-            var a = np.arange(1, 39, dtype: np.Decimal).reshape(new shape(2, -1));
+            var a = np.arange(1, 39, dtype: np.Complex).reshape(new shape(2, -1));
             var b = np.array(TestDataB);
             ndarray c = np.setdiff1d(a, b);
 
@@ -2127,7 +2126,7 @@ namespace NumpyDotNetTests
             print(b);
             print(c);
 
-            AssertArray(c, new decimal[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+            AssertArray(c, new Complex[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
                                          17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
                                          29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
 
@@ -2389,6 +2388,10 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
 
         #region from MathematicalFunctionsTests
 
