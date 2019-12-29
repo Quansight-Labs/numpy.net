@@ -729,6 +729,11 @@ namespace NumpyLib
                     return new System.Numerics.Complex(Convert.ToDouble(operValue), 0);
                 }
             }
+            if (operValue is System.Numerics.Complex)
+            {
+                System.Numerics.Complex c = (System.Numerics.Complex)operValue;
+                return Convert.ToDouble(c.Real);
+            }
 
             return Convert.ToDouble(operValue);
         }
