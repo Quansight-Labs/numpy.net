@@ -245,18 +245,18 @@ namespace NumpyDotNetTests
             print(z);
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
         [TestMethod]
-        public void test_checkerboard_1_COMPLEX_TODO()
+        public void test_checkerboard_1_COMPLEX()
         {
-            var x = np.ones((3, 3), dtype: np.Decimal);
+            var x = np.ones((3, 3), dtype: np.Complex);
             print("Checkerboard pattern:");
-            x = np.zeros((8, 8), dtype: np.Decimal);
+            x = np.zeros((8, 8), dtype: np.Complex);
             x["1::2", "::2"] = 1;
             x["::2", "1::2"] = 1;
             print(x);
 
-            var ExpectedData = new decimal[8, 8]
+            var ExpectedData = new Complex[8, 8]
             {
                  { 0, 1, 0, 1, 0, 1, 0, 1 },
                  { 1, 0, 1, 0, 1, 0, 1, 0 },
@@ -270,14 +270,14 @@ namespace NumpyDotNetTests
 
             AssertArray(x, ExpectedData);
             AssertShape(x, 8, 8);
-            AssertStrides(x, sizeof(decimal) * 8, sizeof(decimal));
+            AssertStrides(x, sizeof(decimal) * 2 * 8, sizeof(decimal) * 2);
 
         }
 
         [TestMethod]
-        public void test_F2C_1_COMPLEX_TODO()
+        public void test_F2C_1_COMPLEX()
         {
-            decimal[] fvalues = new decimal[] { 0, 12, 45.21m, 34, 99.91m };
+            Complex[] fvalues = new Complex[] { 0, 12, 45.21, 34, 99.91 };
             ndarray F = (ndarray)np.array(fvalues);
             print("Values in Fahrenheit degrees:");
             print(F);
@@ -286,107 +286,112 @@ namespace NumpyDotNetTests
             ndarray C = 5 * F / 9 - 5 * 32 / 9;
             print(C);
 
-            AssertArray(C, new decimal[] { -17, -10.33333333333333333333333333300m, 08.11666666666666666666666666700m,
-                                            01.88888888888888888888888888900m, 38.50555555555555555555555555600m });
+            AssertArray(C, new Complex[] { -17, -10.33333333333333333333333333300, 08.11666666666666666666666666700,
+                                            01.88888888888888888888888888900, 38.50555555555555555555555555600 });
 
         }
 
+
         [TestMethod]
-        public void test_ArrayStats_1_COMPLEX_TODO()
+        public void test_ArrayStats_1_COMPLEX()
         {
-            var x = np.array(new decimal[] { 1, 2, 3 }, dtype: np.Decimal);
+            var x = np.array(new Complex[] { 1, 2, 3 }, dtype: np.Complex);
             print("Size of the array: ", x.size);
             print("Length of one array element in bytes: ", x.ItemSize);
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
 
             Assert.AreEqual(3, x.size);
-            Assert.AreEqual(16, x.ItemSize);
-            Assert.AreEqual(48, x.nbytes);
+            Assert.AreEqual(32, x.ItemSize);
+            Assert.AreEqual(96, x.nbytes);
 
         }
 
+
         [TestMethod]
-        public void test_ndarray_flatten_COMPLEX_TODO()
+        public void test_ndarray_flatten_COMPLEX()
         {
-            var x = np.arange(0.73m, 25.73m, dtype: np.Decimal).reshape(new shape(5, 5));
+            var x = np.arange(new Complex(0.73, 0), new Complex(25.73, 0), dtype: np.Complex).reshape(new shape(5, 5));
             var y = x.flatten();
             print(x);
             print(y);
 
-            AssertArray(y, new decimal[] { 0.73m, 1.73m, 2.73m, 3.73m, 4.73m, 5.73m, 6.73m, 7.73m, 8.73m, 9.73m,
-                                         10.73m, 11.73m, 12.73m, 13.73m, 14.73m, 15.73m, 16.73m, 17.73m, 18.73m,
-                                         19.73m, 20.73m, 21.73m, 22.73m, 23.73m, 24.73m });
+            AssertArray(y, new Complex[] { 0.73, 1.73, 2.73, 3.73, 4.73, 5.73, 6.73, 7.73, 8.73, 9.73,
+                                         10.73, 11.73, 12.73, 13.73, 14.73, 15.73, 16.73, 17.73, 18.73,
+                                         19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
 
             y = x.flatten(order: NPY_ORDER.NPY_FORTRANORDER);
             print(y);
 
-            AssertArray(y, new decimal[] { 0.73m, 5.73m, 10.73m, 15.73m, 20.73m,  1.73m, 6.73m, 11.73m, 16.73m,
-                                         21.73m, 2.73m,  7.73m, 12.73m, 17.73m, 22.73m, 3.73m, 8.73m, 13.73m, 18.73m,
-                                         23.73m, 4.73m,  9.73m, 14.73m, 19.73m, 24.73m });
+            AssertArray(y, new Complex[] { 0.73, 5.73, 10.73, 15.73, 20.73,  1.73, 6.73, 11.73, 16.73,
+                                         21.73, 2.73,  7.73, 12.73, 17.73, 22.73, 3.73, 8.73, 13.73, 18.73,
+                                         23.73, 4.73,  9.73, 14.73, 19.73, 24.73 });
 
             y = x.flatten(order: NPY_ORDER.NPY_KORDER);
             print(y);
 
-            AssertArray(y, new decimal[] { 0.73m, 1.73m, 2.73m, 3.73m, 4.73m, 5.73m, 6.73m, 7.73m, 8.73m, 9.73m,
-                                         10.73m, 11.73m, 12.73m, 13.73m, 14.73m, 15.73m, 16.73m, 17.73m, 18.73m,
-                                         19.73m, 20.73m, 21.73m, 22.73m, 23.73m, 24.73m });
+            AssertArray(y, new Complex[] { 0.73, 1.73, 2.73, 3.73, 4.73, 5.73, 6.73, 7.73, 8.73, 9.73,
+                                         10.73, 11.73, 12.73, 13.73, 14.73, 15.73, 16.73, 17.73, 18.73,
+                                         19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
         }
 
+
         [TestMethod]
-        public void test_ndarray_byteswap_COMPLEX_TODO()
+        public void test_ndarray_byteswap_COMPLEX()
         {
-            var x = np.arange(32, 64, dtype: np.Decimal);
+            var x = np.arange(32, 64, dtype: np.Complex);
             print(x);
             var y = x.byteswap(true);
             print(y);
 
             // decimals can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsDecimalArray());
+            AssertArray(y, x.AsComplexArray());
 
             y = x.byteswap(false);
             print(y);
 
             // decimals can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsDecimalArray());
+            AssertArray(y, x.AsComplexArray());
 
         }
 
+
         [TestMethod]
-        public void test_ndarray_view_COMPLEX_TODO()
+        public void test_ndarray_view_COMPLEX()
         {
-            var x = np.arange(256 + 32, 256 + 64, dtype: np.Decimal);
+            var x = np.arange(256 + 32, 256 + 64, dtype: np.Complex);
             print(x);
             print(x.shape);
             print(x.Dtype);
 
-            AssertArray(x, new decimal[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
+            AssertArray(x, new Complex[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
-            // decimals can't be mapped by something besides another decimal
+            // Complex can't be mapped by something besides another Complex
             var y = x.view(np.UInt64);
             Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
 
-            y = x.view(np.Decimal);
-            AssertArray(y, y.AsDecimalArray());
+            y = x.view(np.Complex);
+            AssertArray(y, y.AsComplexArray());
 
             y[5] = 1000;
 
-            AssertArray(x, new decimal[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
+            AssertArray(x, new Complex[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
         }
 
+
         [TestMethod]
-        public void test_ndarray_delete1_COMPLEX_TODO()
+        public void test_ndarray_delete1_COMPLEX()
         {
-            var x = np.arange(0, 32, dtype: np.Decimal).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Complex).reshape(new shape(8, 4));
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new decimal[8, 4]
+            var ExpectedDataX = new Complex[8, 4]
             {
                     { 0, 1, 2, 3},
                     { 4, 5, 6, 7},
@@ -407,7 +412,7 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new decimal[8, 3]
+            var ExpectedDataY = new Complex[8, 3]
             {
                     { 1, 2, 3},
                     { 99, 99, 99},
@@ -430,15 +435,17 @@ namespace NumpyDotNetTests
             AssertShape(x, 8, 4);
         }
 
+
+
         [TestMethod]
-        public void test_ndarray_delete2_COMPLEX_TODO()
+        public void test_ndarray_delete2_COMPLEX()
         {
-            var x = np.arange(0, 32, dtype: np.Decimal);
+            var x = np.arange(0, 32, dtype: np.Complex);
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new decimal[] {0,  1,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataX = new Complex[] {0,  1,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
                                              24, 25, 26, 27, 28, 29, 30, 31 };
@@ -450,7 +457,7 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new decimal[] {0,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataY = new Complex[] {0,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
                                              24, 25, 26, 27, 28, 29, 30, 31 };
@@ -463,15 +470,16 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
         }
 
+
         [TestMethod]
-        public void test_ndarray_delete3_COMPLEX_TODO()
+        public void test_ndarray_delete3_COMPLEX()
         {
-            var x = np.arange(0, 32, dtype: np.Decimal).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Complex).reshape(new shape(8, 4));
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new decimal[8, 4]
+            var ExpectedDataX = new Complex[8, 4]
             {
                 { 0, 1, 2, 3},
                 { 4, 5, 6, 7},
@@ -510,7 +518,7 @@ namespace NumpyDotNetTests
             print("Y");
             print(y);
 
-            var ExpectedDataY = new decimal[8, 3]
+            var ExpectedDataY = new Complex[8, 3]
             {
                 { 1, 2, 3},
                 { 5, 6, 7},
@@ -533,10 +541,12 @@ namespace NumpyDotNetTests
             AssertShape(x, 8, 4);
         }
 
+
+        [Ignore]  // need to fix up Arg/Part code to work with Complex
         [TestMethod]
-        public void test_ndarray_unique_1_COMPLEX_TODO()
+        public void test_ndarray_unique_1_COMPLEX()
         {
-            var x = np.array(new decimal[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 });
+            var x = np.array(new Complex[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 });
 
             print("X");
             print(x);
@@ -549,7 +559,7 @@ namespace NumpyDotNetTests
 
             print("uvalues");
             print(uvalues);
-            AssertArray(uvalues, new decimal[] { 1, 2, 3, 4, 5 });
+            AssertArray(uvalues, new Complex[] { 1, 2, 3, 4, 5 });
 
             print("indexes");
             print(indexes);
@@ -564,10 +574,11 @@ namespace NumpyDotNetTests
             AssertArray(counts, new Int64[] { 2, 1, 2, 3, 1 });
         }
 
+
         [TestMethod]
-        public void test_ndarray_where_1_COMPLEX_TODO()
+        public void test_ndarray_where_1_COMPLEX()
         {
-            var x = np.array(new decimal[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new Complex[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
 
             print("X");
             print(x);
@@ -579,10 +590,12 @@ namespace NumpyDotNetTests
 
         }
 
+
+
         [TestMethod]
-        public void test_ndarray_where_2_COMPLEX_TODO()
+        public void test_ndarray_where_2_COMPLEX()
         {
-            var x = np.array(new decimal[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new Complex[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
 
             print("X");
             print(x);
@@ -598,13 +611,14 @@ namespace NumpyDotNetTests
             var z = x.SliceMe(y) as ndarray;
             print("Z");
             print(z);
-            AssertArray(z, new decimal[] { 3, 3 });
+            AssertArray(z, new Complex[] { 3, 3 });
         }
 
+
         [TestMethod]
-        public void test_ndarray_where_3_COMPLEX_TODO()
+        public void test_ndarray_where_3_COMPLEX()
         {
-            var x = np.arange(0, 1000, dtype: np.Decimal).reshape(new shape(-1, 10));
+            var x = np.arange(0, 1000, dtype: np.Complex).reshape(new shape(-1, 10));
 
             //print("X");
             //print(x);
@@ -617,7 +631,7 @@ namespace NumpyDotNetTests
             print("Z");
             print(z);
 
-            var ExpectedDataZ = new decimal[]
+            var ExpectedDataZ = new Complex[]
             {
                 0,  10,  20,  30,  40,  50,  60,  70,  80,
                 90, 100, 110, 120, 130, 140, 150, 160, 170,
@@ -637,9 +651,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_4_COMPLEX_TODO()
+        public void test_ndarray_where_4_COMPLEX()
         {
-            var x = np.arange(0, 3000000, dtype: np.Decimal);
+            var x = np.arange(0, 3000000, dtype: np.Complex);
 
             var y = np.where(x % 7 == 0);
             //print("Y");
@@ -648,36 +662,39 @@ namespace NumpyDotNetTests
             var z = x[y] as ndarray;
             var m = np.mean(z);
             print("M");
-            Assert.AreEqual(1499998.5m, m.GetItem(0));
+            Assert.AreEqual(new Complex(1499998.5, 0), m.GetItem(0));
             print(m);
 
             return;
         }
 
+        
         [TestMethod]
-        public void test_ndarray_where_5_COMPLEX_TODO()
+        public void test_ndarray_where_5_COMPLEX()
         {
-            var a = np.arange(10, dtype: np.Decimal);
+            var a = np.arange(10, dtype: np.Complex);
 
             var b = np.where(a < 5, a, 10 * a) as ndarray;
-            AssertArray(b, new decimal[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
+            AssertArray(b, new Complex[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
             print(b);
 
-            a = np.array(new decimal[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
+            a = np.array(new Complex[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
             b = np.where(a < 4, a, -1) as ndarray;  // -1 is broadcast
-            AssertArray(b, new decimal[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
+            AssertArray(b, new Complex[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
             print(b);
 
             var c = np.where(new bool[,] { { true, false }, { true, true } },
-                                    new decimal[,] { { 1, 2 }, { 3, 4 } },
-                                    new decimal[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
+                                    new Complex[,] { { 1, 2 }, { 3, 4 } },
+                                    new Complex[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
 
-            AssertArray(c, new decimal[,] { { 1, 8 }, { 3, 4 } });
+            AssertArray(c, new Complex[,] { { 1, 8 }, { 3, 4 } });
 
             print(c);
 
             return;
         }
+
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         [TestMethod]
         public void test_arange_slice_1_COMPLEX_TODO()
