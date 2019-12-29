@@ -177,39 +177,9 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).EqualOperation;
                 }
                 case NpyArray_Ops.npy_op_not_equal:
-                    {
-                        #region NotEqualOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_NotEqualOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_NotEqualOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_NotEqualOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_NotEqualOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_NotEqualOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_NotEqualOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_NotEqualOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_NotEqualOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_NotEqualOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_NotEqualOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_NotEqualOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_NotEqualOperation;
-                            default:
-                                return NotEqualOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
+                }
                 case NpyArray_Ops.npy_op_greater:
                     {
                         #region GreaterOperation
@@ -1152,74 +1122,6 @@ namespace NumpyLib
         #endregion
 
   
-         #region NotEqualOperation
-        private static object BOOL_NotEqualOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return dValue != Convert.ToBoolean(operand);
-        }
-        private static object BYTE_NotEqualOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue != (double)operand;
-        }
-        private static object UBYTE_NotEqualOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue != (double)operand;
-        }
-        private static object INT16_NotEqualOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue != (double)operand;
-        }
-        private static object UINT16_NotEqualOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue != (double)operand;
-        }
-        private static object INT32_NotEqualOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue != (double)operand;
-        }
-        private static object UINT32_NotEqualOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue != (double)operand;
-        }
-        private static object INT64_NotEqualOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue != (double)operand;
-        }
-        private static object UINT64_NotEqualOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue != (double)operand;
-        }
-        private static object FLOAT_NotEqualOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue != (double)operand;
-        }
-        private static object DOUBLE_NotEqualOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue != (double)operand;
-        }
-        private static object DECIMAL_NotEqualOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue != (decimal)operand;
-        }
-        private static T NotEqualOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue != operand;
-        }
-        #endregion
-
         #region GreaterOperation
         private static object BOOL_GreaterOperation(object bValue, object operand)
         {
