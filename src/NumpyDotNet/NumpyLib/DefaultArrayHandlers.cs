@@ -26,6 +26,8 @@ namespace NumpyLib
         NumericOperation BitWiseXorOperation { get; set; }
         NumericOperation BitWiseOrOperation { get; set; }
         NumericOperation LessOperation { get; set; }
+        NumericOperation LessEqualOperation { get; set; }
+        NumericOperation EqualOperation { get; set; }
 
     }
 
@@ -151,6 +153,8 @@ namespace NumpyLib
             BitWiseXorOperation = BitWiseXor;
             BitWiseOrOperation = BitWiseOr;
             LessOperation = Less;
+            LessEqualOperation = LessEqual;
+            EqualOperation = Equal;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -173,7 +177,8 @@ namespace NumpyLib
         public NumericOperation BitWiseXorOperation { get; set; }
         public NumericOperation BitWiseOrOperation { get; set; }
         public NumericOperation LessOperation { get; set; }
-
+        public NumericOperation LessEqualOperation { get; set; }
+        public NumericOperation EqualOperation { get; set; }
 
 
         protected virtual object Add(dynamic bValue, dynamic operand)
@@ -300,6 +305,16 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue < operand;
         }
+        protected virtual object LessEqual(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue <= operand;
+        }
+        protected virtual object Equal(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue == operand;
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -403,6 +418,16 @@ namespace NumpyLib
         {
             bool dValue = (bool)bValue;
             return false;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return false;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            bool dValue = (bool)bValue;
+            return dValue == Convert.ToBoolean(operand);
         }
     }
 
@@ -534,6 +559,16 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            sbyte dValue = (sbyte)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
@@ -664,6 +699,16 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            byte dValue = (byte)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
@@ -793,6 +838,16 @@ namespace NumpyLib
         {
             Int16 dValue = (Int16)bValue;
             return dValue < (double)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            Int16 dValue = (Int16)bValue;
+            return dValue == (double)operand;
         }
     }
 
@@ -925,6 +980,16 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            UInt16 dValue = (UInt16)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -1056,6 +1121,16 @@ namespace NumpyLib
             Int32 dValue = (Int32)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            Int32 dValue = (Int32)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
@@ -1185,6 +1260,16 @@ namespace NumpyLib
         {
             UInt32 dValue = (UInt32)bValue;
             return dValue < (double)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            UInt32 dValue = (UInt32)bValue;
+            return dValue == (double)operand;
         }
     }
 
@@ -1316,6 +1401,16 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            Int64 dValue = (Int64)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
@@ -1445,6 +1540,16 @@ namespace NumpyLib
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue < (double)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            UInt64 dValue = (UInt64)bValue;
+            return dValue == (double)operand;
         }
     }
 
@@ -1576,6 +1681,16 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue < (double)operand;
         }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            float dValue = (float)bValue;
+            return dValue == (double)operand;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -1705,6 +1820,16 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             return dValue < (double)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return dValue <= (double)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            double dValue = (double)bValue;
+            return dValue == (double)operand;
         }
     }
 
@@ -1850,6 +1975,16 @@ namespace NumpyLib
         {
             decimal dValue = (decimal)bValue;
             return dValue < (decimal)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return dValue <= (decimal)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            decimal dValue = (decimal)bValue;
+            return dValue == (decimal)operand;
         }
 
 
