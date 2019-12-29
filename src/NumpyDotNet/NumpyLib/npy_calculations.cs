@@ -225,51 +225,27 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
                 }
                 case NpyArray_Ops.npy_op_minimum:
-                    {
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_FMinOperation;
-                            default:
-                                return MinimumOperation;
-                        }
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).MinimumOperation;
+                }
                 case NpyArray_Ops.npy_op_fmin:
-                    {
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_FMinOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_FMinOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_FMinOperation;
-                            default:
-                                return MinimumOperation;
-                        }
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).FMinOperation;
+                }
 
                 case NpyArray_Ops.npy_op_heaviside:
-                    {
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_HeavisideOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_HeavisideOperation;
-                            default:
-                                return DOUBLE_HeavisideOperation;
-                        }
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).HeavisideOperation;
+                }
 
                 case NpyArray_Ops.npy_op_rint:
-                    {
-                        return RintOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).RintOperation;
+                }
                 case NpyArray_Ops.npy_op_conjugate:
-                    {
-                        return ConjugateOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
+                }
   
                 default:
                     return null;
@@ -1018,99 +994,8 @@ namespace NumpyLib
 
         #endregion
   
-  
+   
 
-
-        private static T MinimumOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-
-            return Math.Min(Convert.ToDouble(dValue), operand);
-        }
-
-        private static object FLOAT_FMinOperation(object bValue, dynamic operand)
-        {
-
-            if (float.IsNaN(Convert.ToSingle(operand)))
-                return bValue;
-            if (float.IsNaN(Convert.ToSingle(bValue)))
-                return operand;
-
-            return Math.Min(Convert.ToSingle(bValue), Convert.ToSingle(operand));
-
-        }
-
-        private static object DOUBLE_FMinOperation(object bValue, dynamic operand)
-        {
-
-            if (double.IsNaN(Convert.ToDouble(operand)))
-                return bValue;
-            if (double.IsNaN(Convert.ToDouble(bValue)))
-                return operand;
-
-            return Math.Min(Convert.ToDouble(bValue), Convert.ToDouble(operand));
-
-        }
-
-        private static object DECIMAL_FMinOperation(object bValue, dynamic operand)
-        {
-            return Math.Min(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
-        }
-
-        private static object FLOAT_HeavisideOperation(object bValue, dynamic operand)
-        {
-            float x = Convert.ToSingle(bValue);
-
-            if (float.IsNaN(x))
-                return float.NaN;
-
-            if (x == 0.0f)
-                return Convert.ToSingle(operand);
-
-            if (x < 0.0f)
-                return 0.0f;
-
-            return 1.0f;
-        }
-
-        private static object DOUBLE_HeavisideOperation(object bValue, dynamic operand)
-        {
-
-            double x = Convert.ToDouble(bValue);
-
-            if (double.IsNaN(x))
-                return double.NaN;
-
-            if (x == 0.0)
-                return Convert.ToDouble(operand);
-
-            if (x < 0.0)
-                return 0.0;
-
-            return 1.0;
-
-        }
-
-
-
-        private static T RintOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-
-            if (bValue is decimal)
-            {
-                return Math.Round(Convert.ToDecimal(dValue));
-            }
-            else
-            {
-                return Math.Round(Convert.ToDouble(dValue));
-            }
-        }
-        private static T ConjugateOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue;
-        }
  
   
         internal static NpyArray NpyArray_ArgMax(NpyArray op, int axis, NpyArray outPtr)

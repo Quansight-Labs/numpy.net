@@ -40,6 +40,11 @@ namespace NumpyLib
         NumericOperation CeilingOperation { get; set; }
         NumericOperation MaximumOperation { get; set; }
         NumericOperation FMaxOperation { get; set; }
+        NumericOperation MinimumOperation { get; set; }
+        NumericOperation FMinOperation { get; set; }
+        NumericOperation HeavisideOperation { get; set; }
+        NumericOperation RintOperation { get; set; }
+        NumericOperation ConjugateOperation { get; set; }
 
     }
 
@@ -179,7 +184,11 @@ namespace NumpyLib
             CeilingOperation = Ceiling;
             MaximumOperation = Maximum;
             FMaxOperation = FMax;
-
+            MinimumOperation = Minimum;
+            FMinOperation = FMin;
+            HeavisideOperation = Heaviside;
+            RintOperation = Rint;
+            ConjugateOperation = Conjugate;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -216,6 +225,11 @@ namespace NumpyLib
         public NumericOperation CeilingOperation { get; set; }
         public NumericOperation MaximumOperation { get; set; }
         public NumericOperation FMaxOperation { get; set; }
+        public NumericOperation MinimumOperation { get; set; }
+        public NumericOperation FMinOperation { get; set; }
+        public NumericOperation HeavisideOperation { get; set; }
+        public NumericOperation RintOperation { get; set; }
+        public NumericOperation ConjugateOperation { get; set; }
 
 
 
@@ -412,6 +426,39 @@ namespace NumpyLib
         protected virtual object FMax(dynamic bValue, dynamic operand)
         {
             return Math.Max(Convert.ToDouble(bValue), operand);
+        }
+        protected virtual object Minimum(dynamic bValue, dynamic operand)
+        {
+            return Math.Min(Convert.ToDouble(bValue), operand);
+        }
+        protected virtual object FMin(dynamic bValue, dynamic operand)
+        {
+            return Math.Min(Convert.ToDouble(bValue), operand);
+        }
+        protected virtual object Heaviside(dynamic bValue, dynamic operand)
+        {
+            double x = Convert.ToDouble(bValue);
+
+            if (double.IsNaN(x))
+                return double.NaN;
+
+            if (x == 0.0)
+                return Convert.ToDouble(operand);
+
+            if (x < 0.0)
+                return 0.0;
+
+            return 1.0;
+
+        }
+        protected virtual object Rint(dynamic bValue, dynamic operand)
+        {
+            return Math.Round(Convert.ToDouble(bValue));
+        }
+        protected virtual object Conjugate(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue;
         }
 
     }
@@ -1951,6 +1998,32 @@ namespace NumpyLib
             return Math.Max(Convert.ToSingle(bValue), Convert.ToSingle(operand));
 
         }
+        protected override object FMin(object bValue, dynamic operand)
+        {
+
+            if (float.IsNaN(Convert.ToSingle(operand)))
+                return bValue;
+            if (float.IsNaN(Convert.ToSingle(bValue)))
+                return operand;
+
+            return Math.Min(Convert.ToSingle(bValue), Convert.ToSingle(operand));
+
+        }
+        protected override object Heaviside(object bValue, object operand)
+        {
+            float x = Convert.ToSingle(bValue);
+
+            if (float.IsNaN(x))
+                return float.NaN;
+
+            if (x == 0.0f)
+                return Convert.ToSingle(operand);
+
+            if (x < 0.0f)
+                return 0.0f;
+
+            return 1.0f;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -2119,6 +2192,32 @@ namespace NumpyLib
                 return operand;
 
             return Math.Max(Convert.ToDouble(bValue), Convert.ToDouble(operand));
+
+        }
+        protected override object FMin(object bValue, dynamic operand)
+        {
+
+            if (double.IsNaN(Convert.ToDouble(operand)))
+                return bValue;
+            if (double.IsNaN(Convert.ToDouble(bValue)))
+                return operand;
+
+            return Math.Min(Convert.ToDouble(bValue), Convert.ToDouble(operand));
+        }
+        protected override object Heaviside(object bValue, object operand)
+        {
+            double x = Convert.ToDouble(bValue);
+
+            if (double.IsNaN(x))
+                return double.NaN;
+
+            if (x == 0.0)
+                return Convert.ToDouble(operand);
+
+            if (x < 0.0)
+                return 0.0;
+
+            return 1.0;
 
         }
     }
@@ -2311,7 +2410,17 @@ namespace NumpyLib
         {
             return Math.Max(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
         }
-
-
+        protected override object Minimum(object bValue, object operand)
+        {
+            return Math.Min(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
+        }
+        protected override object FMin(object bValue, object operand)
+        {
+            return Math.Min(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
+        }
+        protected override object Rint(dynamic bValue, dynamic operand)
+        {
+            return Math.Round(Convert.ToDecimal(bValue));
+        }
     }
 }
