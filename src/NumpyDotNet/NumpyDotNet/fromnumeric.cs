@@ -2572,6 +2572,16 @@ namespace NumpyDotNet
                     return Convert.ToDouble(resultArray.GetItem(0));
                 case NPY_TYPES.NPY_DECIMAL:
                     return Convert.ToDecimal(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_COMPLEX:
+                    object o = resultArray.GetItem(0);
+                    if (o is System.Numerics.Complex)
+                    {
+                        return o;
+                    }
+                    else
+                    {
+                        return new System.Numerics.Complex(Convert.ToDouble(o), 0);
+                    }
                 default:
                     return Convert.ToDouble(resultArray.GetItem(0));
             }
@@ -2693,6 +2703,16 @@ namespace NumpyDotNet
                     return Convert.ToDouble(resultArray.GetItem(0));
                 case NPY_TYPES.NPY_DECIMAL:
                     return Convert.ToDecimal(resultArray.GetItem(0));
+                case NPY_TYPES.NPY_COMPLEX:
+                    object o = resultArray.GetItem(0);
+                    if (o is System.Numerics.Complex)
+                    {
+                        return o;
+                    }
+                    else
+                    {
+                        return new System.Numerics.Complex(Convert.ToDouble(o), 0);
+                    }
                 default:
                     return Convert.ToDouble(resultArray.GetItem(0));
             }

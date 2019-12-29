@@ -304,31 +304,34 @@ namespace NumpyLib
 
         }
 
-
         private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, NpyArray_Ops operationType)
         {
             NpyArray_Descr newtype = srcArray.descr;
             NPYARRAYFLAGS flags = srcArray.flags | NPYARRAYFLAGS.NPY_ENSURECOPY | NPYARRAYFLAGS.NPY_FORCECAST;
 
-            if (operandArray != null)
+            if (!NpyArray_ISCOMPLEX(srcArray))
             {
-                if (NpyArray_ISFLOAT(operandArray))
+                if (operandArray != null)
                 {
-                    switch (operandArray.descr.type_num)
+                    if (NpyArray_ISFLOAT(operandArray))
                     {
-                        case NPY_TYPES.NPY_DECIMAL:
-                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
-                            break;
-                        case NPY_TYPES.NPY_COMPLEX:
-                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
-                            break;
-                        default:
-                            newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                            break;
+                        switch (operandArray.descr.type_num)
+                        {
+                            case NPY_TYPES.NPY_DECIMAL:
+                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
+                                break;
+                            case NPY_TYPES.NPY_COMPLEX:
+                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
+                                break;
+                            default:
+                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+                                break;
 
+                        }
                     }
                 }
             }
+  
   
 
             switch (operationType)
@@ -414,7 +417,12 @@ namespace NumpyLib
                                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
                                     break;
                                 }
-                            default:
+                                case NPY_TYPES.NPY_COMPLEX:
+                                {
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
+                                    break;
+                                }
+                                default:
                                 if (GetTypeSize(srcArray.ItemType) > 4)
                                 {
                                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
@@ -490,8 +498,8 @@ namespace NumpyLib
                                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
                                     break;
                                 }
-                            case NPY_TYPES.NPY_FLOAT:
-                            case NPY_TYPES.NPY_DOUBLE:
+                                case NPY_TYPES.NPY_FLOAT:
+                                case NPY_TYPES.NPY_DOUBLE:
                                 {
                                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
                                     break;
