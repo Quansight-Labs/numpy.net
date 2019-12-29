@@ -610,6 +610,12 @@ namespace NumpyLib
                 MemCopy.MemCpy(Temp, 0, src, src_offset, len);
                 MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
             }
+            else if (dest.type_num == NPY_TYPES.NPY_COMPLEX)
+            {
+                VoidPtr Temp = new VoidPtr(new System.Numerics.Complex[len / sizeof(decimal) * 2]);
+                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+            }
             else
             {
                 VoidPtr Temp = new VoidPtr(new byte[len]);

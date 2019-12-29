@@ -502,6 +502,10 @@ namespace NumpyDotNet
         {
             return np.AsDecimalArray(a);
         }
+        public static System.Numerics.Complex[] AsComplexArray(this ndarray a)
+        {
+            return np.AsComplexArray(a);
+        }
     }
 
     public partial class np
@@ -729,6 +733,17 @@ namespace NumpyDotNet
             }
 
             return a.rawdata(0).datap as decimal[];
+        }
+        public static System.Numerics.Complex[] AsComplexArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.TypeNum != NPY_TYPES.NPY_COMPLEX)
+            {
+                a = a.astype(np.Complex);
+            }
+
+            return a.rawdata(0).datap as System.Numerics.Complex[];
         }
 
         private static ndarray ConvertToFlattenedArray(object input)
