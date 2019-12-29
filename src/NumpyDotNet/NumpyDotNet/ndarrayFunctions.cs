@@ -173,47 +173,9 @@ namespace NumpyDotNet
 
         public static ndarray array(VoidPtr arr, int numElements)
         {
-            switch (arr.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return array<bool>(arr, numElements, sizeof(bool));
-
-                case NPY_TYPES.NPY_BYTE:
-                    return array<sbyte>(arr, numElements, sizeof(sbyte));
-
-                case NPY_TYPES.NPY_UBYTE:
-                    return array<byte>(arr, numElements, sizeof(byte));
-
-                case NPY_TYPES.NPY_INT16:
-                    return array<Int16>(arr, numElements, sizeof(Int16));
-
-                case NPY_TYPES.NPY_UINT16:
-                    return array<UInt16>(arr, numElements, sizeof(UInt16));
-
-                case NPY_TYPES.NPY_INT32:
-                    return array<Int32>(arr, numElements, sizeof(Int32));
-
-                case NPY_TYPES.NPY_UINT32:
-                    return array<UInt32>(arr, numElements, sizeof(UInt32));
-
-                case NPY_TYPES.NPY_INT64:
-                    return array<Int64>(arr, numElements, sizeof(Int64));
-
-                case NPY_TYPES.NPY_UINT64:
-                    return array<UInt64>(arr, numElements, sizeof(UInt64));
-
-                case NPY_TYPES.NPY_FLOAT:
-                    return array<float>(arr, numElements, sizeof(float));
-
-                case NPY_TYPES.NPY_DOUBLE:
-                    return array<double>(arr, numElements, sizeof(double));
-
-                case NPY_TYPES.NPY_DECIMAL:
-                    return array<decimal>(arr, numElements, sizeof(decimal));
-
-            }
-
-            throw new Exception("unrecognized array type");
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(arr.type_num);
+            int startingOffset = (int)(arr.data_offset / ArrayHandler.ItemSize);
+            return array(ArrayHandler.AllocateAndCopy(arr.datap, startingOffset, numElements));
         }
 
         public static ndarray array(Object src, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)

@@ -662,7 +662,7 @@ namespace NumpyLib
             size = size / (AdjustForBytes ? (ulong)ArrayHandler.ItemSize : (ulong)1);
 
             VoidPtr vp = new VoidPtr();
-            vp.datap = ArrayHandler.AllocateNewArray(size);
+            vp.datap = ArrayHandler.AllocateNewArray((int)size);
             vp.type_num = type_num;
             return vp;
         }

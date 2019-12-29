@@ -51,7 +51,8 @@ namespace NumpyLib
         System.Array ToArray(Array ssrc);
         int ItemSize { get; }
         int GetLength(VoidPtr vp);
-        object AllocateNewArray(ulong size);
+        object AllocateNewArray(int size);
+        object AllocateAndCopy(object datap, int startingOffset, int numElements);
   
     }
 
@@ -198,6 +199,13 @@ namespace NumpyLib
             HeavisideOperation = Heaviside;
             RintOperation = Rint;
             ConjugateOperation = Conjugate;
+        }
+
+        protected T[] _AllocateAndCopy<T>(object datap, int startingOffset, int numElements)
+        {
+            T[] data = new T[numElements];
+            Array.Copy(datap as T[], startingOffset, data, 0, numElements);
+            return data;
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -492,12 +500,14 @@ namespace NumpyLib
             var dobj = vp.datap as object[];
             return dobj.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new object[size];
         }
-
-    
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<object>(datap, startingOffset, numElements);
+        }
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -520,11 +530,14 @@ namespace NumpyLib
             var dbool = vp.datap as bool[];
             return dbool.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new bool[size];
         }
-
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<bool>(datap, startingOffset, numElements);
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -668,10 +681,15 @@ namespace NumpyLib
             var dsbyte = vp.datap as sbyte[];
             return dsbyte.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new sbyte[size];
         }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<sbyte>(datap, startingOffset, numElements);
+        }
+
 
         protected override object Add(object bValue, object operand)
         {
@@ -841,11 +859,14 @@ namespace NumpyLib
             var dbyte = vp.datap as byte[];
             return dbyte.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new byte[size];
         }
-
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<byte>(datap, startingOffset, numElements);
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -1015,9 +1036,13 @@ namespace NumpyLib
             var dint = vp.datap as Int16[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new Int16[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<Int16>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1188,9 +1213,13 @@ namespace NumpyLib
             var dint = vp.datap as UInt16[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new UInt16[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<UInt16>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1361,9 +1390,13 @@ namespace NumpyLib
             var dint = vp.datap as Int32[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new Int32[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<Int32>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1534,9 +1567,13 @@ namespace NumpyLib
             var dint = vp.datap as UInt32[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new UInt32[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<UInt32>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1707,9 +1744,13 @@ namespace NumpyLib
             var dint = vp.datap as Int64[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new Int64[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<Int64>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1880,9 +1921,13 @@ namespace NumpyLib
             var dint = vp.datap as UInt64[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new UInt64[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<UInt64>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2053,9 +2098,13 @@ namespace NumpyLib
             var dint = vp.datap as float[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new float[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<float>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2263,9 +2312,13 @@ namespace NumpyLib
             var dint = vp.datap as double[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new double[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<double>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2477,9 +2530,13 @@ namespace NumpyLib
             var dint = vp.datap as decimal[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new decimal[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<decimal>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2697,9 +2754,13 @@ namespace NumpyLib
             var dint = vp.datap as System.Numerics.Complex[];
             return dint.Length;
         }
-        public object AllocateNewArray(ulong size)
+        public object AllocateNewArray(int size)
         {
             return new System.Numerics.Complex[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
+        {
+            return _AllocateAndCopy<System.Numerics.Complex>(datap, startingOffset, numElements);
         }
 
         System.Numerics.Complex ConvertToComplex(object o)
