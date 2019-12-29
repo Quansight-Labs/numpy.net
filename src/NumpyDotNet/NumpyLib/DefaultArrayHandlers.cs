@@ -2523,8 +2523,7 @@ namespace NumpyLib
         }
         protected override object Negative(object bValue, object operand)
         {
-            Complex dValue = (Complex)bValue;
-            return -dValue;
+            return Complex.Negate((Complex)bValue);
         }
         protected override object Absolute(object bValue, object operand)
         {
@@ -2537,34 +2536,68 @@ namespace NumpyLib
         }
         protected override object LeftShift(object bValue, object operand)
         {
-            return bValue;
-            //UInt64 dValue = (UInt64)(Complex)bValue;
-            //return dValue << Convert.ToInt32(operand);
+            Complex cValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
+
+            UInt64 rValue = (UInt64)cValue.Real;
+            rValue = rValue << Convert.ToInt32(oValue.Real);
+
+            UInt64 iValue = (UInt64)cValue.Imaginary;
+            iValue = iValue << Convert.ToInt32(oValue.Imaginary);
+
+            return new Complex((double)rValue, (double)iValue);
         }
         protected override object RightShift(object bValue, object operand)
         {
-            return bValue;
-            //UInt64 dValue = (UInt64)(Complex)bValue;
-            //return dValue >> Convert.ToInt32(operand);
+            Complex cValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
+
+            UInt64 rValue = (UInt64)cValue.Real;
+            rValue = rValue >> Convert.ToInt32(oValue.Real);
+
+            UInt64 iValue = (UInt64)cValue.Imaginary;
+            iValue = iValue >> Convert.ToInt32(oValue.Imaginary);
+
+            return new Complex((double)rValue, (double)iValue);
         }
         protected override object BitWiseAnd(object bValue, object operand)
         {
-            return bValue;
-            //UInt64 dValue = Convert.ToUInt64(bValue);
-            //return dValue & Convert.ToUInt64(operand);
+            Complex cValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
+
+            UInt64 rValue = (UInt64)cValue.Real;
+            rValue = rValue & Convert.ToUInt64(oValue.Real);
+
+            UInt64 iValue = (UInt64)cValue.Imaginary;
+            iValue = iValue & Convert.ToUInt64(oValue.Imaginary);
+
+            return new Complex((double)rValue, (double)iValue);
         }
         protected override object BitWiseXor(object bValue, object operand)
         {
-            return bValue;
-            //UInt64 dValue = Convert.ToUInt64(bValue);
-            //return dValue ^ Convert.ToUInt64(operand);
+            Complex cValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
+
+            UInt64 rValue = (UInt64)cValue.Real;
+            rValue = rValue ^ Convert.ToUInt64(oValue.Real);
+
+            UInt64 iValue = (UInt64)cValue.Imaginary;
+            iValue = iValue ^ Convert.ToUInt64(oValue.Imaginary);
+
+            return new Complex((double)rValue, (double)iValue);
         }
         protected override object BitWiseOr(object bValue, object operand)
         {
-            return bValue;
+            Complex cValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
 
-            //UInt64 dValue = (UInt64)(decimal)bValue;
-            //return dValue | Convert.ToUInt64(operand);
+            UInt64 rValue = (UInt64)cValue.Real;
+            rValue = rValue | Convert.ToUInt64(oValue.Real);
+
+            UInt64 iValue = (UInt64)cValue.Imaginary;
+            iValue = iValue | Convert.ToUInt64(oValue.Imaginary);
+
+            return new Complex((double)rValue, (double)iValue);
         }
         protected override object Less(object bValue, object operand)
         {
