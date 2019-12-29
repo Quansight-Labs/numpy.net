@@ -428,6 +428,10 @@ namespace NumpyLib
                     var decimal1 = vp.datap as decimal[];
                     Length = decimal1.Length * sizeof(decimal);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    var complex1 = vp.datap as System.Numerics.Complex[];
+                    Length = complex1.Length * sizeof(decimal) * 2;
+                    break;
                 default:
                     throw new Exception("Unsupported data type");
             }
@@ -475,6 +479,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     var decimal1 = vp.datap as decimal[];
                     return decimal1.Length;
+                case NPY_TYPES.NPY_COMPLEX:
+                    var complex1 = vp.datap as System.Numerics.Complex[];
+                    return complex1.Length;
                 default:
                     throw new Exception("Unsupported data type");
             }

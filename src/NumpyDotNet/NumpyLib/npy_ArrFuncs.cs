@@ -1694,7 +1694,10 @@ namespace NumpyLib
                     var decimal1 = data.datap as decimal[];
                     Array.Sort(decimal1, offset, length);
                     return 0;
-
+                case NPY_TYPES.NPY_COMPLEX:
+                    var complex1 = data.datap as System.Numerics.Complex[];
+                    Array.Sort(complex1, offset, length);
+                    return 0;
                 default:
                     throw new Exception("Unsupported data type");
             }

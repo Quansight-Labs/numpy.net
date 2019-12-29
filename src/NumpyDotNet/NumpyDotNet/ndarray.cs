@@ -364,6 +364,10 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
         }
+        public static ndarray operator ==(ndarray a, Complex operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+        }
         [SpecialName]
         public ndarray Equals(ndarray b)
         {
@@ -390,6 +394,10 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, decimal operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+        }
+        public static ndarray operator !=(ndarray a, Complex operand)
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
         }
