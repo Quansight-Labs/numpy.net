@@ -229,6 +229,14 @@ namespace NumpyLib
                     arrFuncs.setitem = DECIMAL_SetItemFunc;
                     break;
 
+                case NPY_TYPES.NPY_COMPLEX:
+                    arrFuncs.copyswap = COMPLEX_copyswap;
+                    arrFuncs.nonzero = COMPLEX_NonZeroFunc;
+                    arrFuncs.getitem = COMPLEX_GetItemFunc;
+                    arrFuncs.setitem = COMPLEX_SetItemFunc;
+                    break;
+
+
                 default:
                     arrFuncs.copyswap = NpyArray_CopySwapFunc;
                     arrFuncs.nonzero = NpyArray_NonzeroFunc;
@@ -464,7 +472,19 @@ namespace NumpyLib
                 return DifferentSizes_GetItemFunc(index, npa);
             }
         }
-
+        internal static object COMPLEX_GetItemFunc(npy_intp index, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.Complex[] dp = npa.data.datap as System.Numerics.Complex[];
+                long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
+                return dp[AdjustedIndex];
+            }
+            else
+            {
+                return DifferentSizes_GetItemFunc(index, npa);
+            }
+        }
 
 
         internal static object NpyArray_GetItemFunc(npy_intp index, NpyArray npa)
@@ -674,6 +694,24 @@ namespace NumpyLib
                 return DifferentSizes_SetItemFunc(index, value, npa);
             }
         }
+        internal static int COMPLEX_SetItemFunc(npy_intp index, dynamic value, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.Complex[] dp = npa.data.datap as System.Numerics.Complex[];
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+
+                if (value is System.Numerics.Complex)
+                    dp[AdjustedIndex] = (System.Numerics.Complex)value;
+                else
+                    dp[AdjustedIndex] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+                return 1;
+            }
+            else
+            {
+                return DifferentSizes_SetItemFunc(index, value, npa);
+            }
+        }
 
         internal static int NpyArray_SetItemFunc(npy_intp index, object value, NpyArray npa)
         {
@@ -742,6 +780,10 @@ namespace NumpyLib
         internal static void DECIMAL_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
         {
             Common_copyswap<decimal>(dest, Source, swap, arr);
+        }
+        internal static void COMPLEX_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
+        {
+            Common_copyswap<System.Numerics.Complex>(dest, Source, swap, arr);
         }
         internal static void Common_copyswap<T>(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
         {
@@ -1465,6 +1507,11 @@ namespace NumpyLib
         internal static bool DECIMAL_NonZeroFunc(VoidPtr vp, NpyArray npa)
         {
             decimal[] bp = vp.datap as decimal[];
+            return (bp[vp.data_offset / npa.ItemSize] != 0);
+        }
+        internal static bool COMPLEX_NonZeroFunc(VoidPtr vp, NpyArray npa)
+        {
+            System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
             return (bp[vp.data_offset / npa.ItemSize] != 0);
         }
         internal static bool NpyArray_NonzeroFunc(VoidPtr vp, NpyArray npa)

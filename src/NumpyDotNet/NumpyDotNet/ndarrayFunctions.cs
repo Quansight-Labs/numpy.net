@@ -875,7 +875,14 @@ namespace NumpyDotNet
                     ret = (index, value) => { FAData.DecimalArray[index] = Convert.ToDecimal(value); return 0; };
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    ret = (index, value) => { FAData.ComplexArray[index] = (System.Numerics.Complex)value; return 0; };
+                    ret = (index, value) => 
+                    {
+                        if (value is System.Numerics.Complex)
+                            FAData.ComplexArray[index] = (System.Numerics.Complex)value;
+                        else
+                            FAData.ComplexArray[index] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+                        return 0;
+                    };
                     break;
                 default:
                     throw new Exception("Unsupported data type");
