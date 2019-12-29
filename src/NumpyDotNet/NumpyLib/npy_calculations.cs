@@ -304,27 +304,6 @@ namespace NumpyLib
 
         }
 
-        // this function does not currently work.  Don't know why.
-        internal static NpyArray NpyArray_PerformNumericOpArray_NpyArray_GenericBinaryFunction(NpyArray srcArray, NpyArray_Ops operationType, NpyArray operandArray, bool UseSrcAsDest)
-        {
-
-            NpyArray destArray = null;
-            if (UseSrcAsDest)
-            {
-                destArray = srcArray;
-            }
-            else
-            {
-                destArray = NpyArray_NumericOpArraySelection(srcArray, operandArray, operationType);
-            }
-
-            var UFuncOp = get_op_loc(operationType);
-            UFuncOp.nin = 3;
-            UFuncOp.nargs = 3;
-     
-            destArray = NpyArray_GenericBinaryFunction(srcArray, operandArray, UFuncOp, destArray);
-            return destArray;
-        }
 
         private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, NpyArray_Ops operationType)
         {
