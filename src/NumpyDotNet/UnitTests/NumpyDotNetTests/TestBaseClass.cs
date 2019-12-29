@@ -287,7 +287,23 @@ namespace NumpyDotNetTests
                 Assert.AreEqual(E1, A1, 0.00000001);
             }
         }
- 
+        internal void AssertArray(ndarray arrayData, System.Numerics.Complex[] expectedData)
+        {
+            int length = expectedData.Length;
+            AssertShape(arrayData, length);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < length; i++)
+            {
+                System.Numerics.Complex E1 = expectedData[i];
+                System.Numerics.Complex A1 = (System.Numerics.Complex)arrayData[i];
+                   
+                Assert.AreEqual(E1.Real, A1.Real, 0.00000001);
+                Assert.AreEqual(E1.Imaginary, A1.Imaginary, 0.00000001);
+
+            }
+        }
+
         #endregion
 
         #region 2d array asserts
@@ -355,6 +371,26 @@ namespace NumpyDotNetTests
                         continue;
 
                     Assert.AreEqual(E1, A1, 0.00000001);
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, System.Numerics.Complex[,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            AssertShape(arrayData, lengthd0, lengthd1);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray rowData = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    System.Numerics.Complex E1 = expectedData[i, j];
+                    System.Numerics.Complex A1 = (System.Numerics.Complex)rowData[j];
+
+                    Assert.AreEqual(E1.Real, A1.Real, 0.00000001);
+                    Assert.AreEqual(E1.Imaginary, A1.Imaginary, 0.00000001);
                 }
             }
         }
@@ -440,6 +476,31 @@ namespace NumpyDotNetTests
                             continue;
 
                         Assert.AreEqual(E1, A1, 0.00000001);
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, System.Numerics.Complex[,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        System.Numerics.Complex E1 = expectedData[i, j, k];
+                        System.Numerics.Complex A1 = (System.Numerics.Complex)dim2Data[k];
+
+                        Assert.AreEqual(E1.Real, A1.Real, 0.00000001);
+                        Assert.AreEqual(E1.Imaginary, A1.Imaginary, 0.00000001);
                     }
                 }
             }
@@ -540,6 +601,36 @@ namespace NumpyDotNetTests
                                 continue;
 
                             Assert.AreEqual(E1, A1, 0.00000001);
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, System.Numerics.Complex[,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            System.Numerics.Complex E1 = (System.Numerics.Complex)expectedData[i, j, k, l];
+                            System.Numerics.Complex A1 = (System.Numerics.Complex)dim3Data[l];
+
+                            Assert.AreEqual(E1.Real, A1.Real, 0.00000001);
+                            Assert.AreEqual(E1.Imaginary, A1.Imaginary, 0.00000001);
                         }
                     }
                 }
@@ -660,6 +751,43 @@ namespace NumpyDotNetTests
                                     continue;
 
                                 Assert.AreEqual(E1, A1, 0.00000001);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        internal void AssertArray(ndarray arrayData, System.Numerics.Complex[,,,,] expectedData)
+        {
+            int lengthd0 = expectedData.GetLength(0);
+            int lengthd1 = expectedData.GetLength(1);
+            int lengthd2 = expectedData.GetLength(2);
+            int lengthd3 = expectedData.GetLength(3);
+            int lengthd4 = expectedData.GetLength(4);
+
+            AssertShape(arrayData, lengthd0, lengthd1, lengthd2, lengthd3, lengthd4);
+            AssertDataTypes(arrayData, expectedData);
+
+            for (int i = 0; i < lengthd0; i++)
+            {
+                ndarray dim1Data = arrayData[i] as ndarray;
+                for (int j = 0; j < lengthd1; j++)
+                {
+                    ndarray dim2Data = dim1Data[j] as ndarray;
+                    for (int k = 0; k < lengthd2; k++)
+                    {
+                        ndarray dim3Data = dim2Data[k] as ndarray;
+                        for (int l = 0; l < lengthd3; l++)
+                        {
+                            ndarray dim4Data = dim3Data[l] as ndarray;
+
+                            for (int m = 0; m < lengthd4; m++)
+                            {
+                                System.Numerics.Complex E1 = expectedData[i, j, k, l, m];
+                                System.Numerics.Complex A1 = (System.Numerics.Complex)dim4Data[m];
+
+                                Assert.AreEqual(E1.Real, A1.Real, 0.00000001);
+                                Assert.AreEqual(E1.Imaginary, A1.Imaginary, 0.00000001);
                             }
                         }
                     }
