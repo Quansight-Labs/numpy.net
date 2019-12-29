@@ -12,6 +12,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class ComplexNumbersTests : TestBaseClass
     {
+        [Ignore]
         [TestMethod]
         public void xxx_ComplexNumbers_Placeholder()
         {
@@ -40,11 +41,6 @@ namespace NumpyDotNetTests
 
             //var cc = new System.Numerics.Complex(d2, 0);
         }
-
-
-
-
-
 
         #region from ArrayCreationTests
         [TestMethod]
@@ -90,7 +86,6 @@ namespace NumpyDotNetTests
 
             return;
         }
-        #endregion
 
 
 
@@ -149,28 +144,32 @@ namespace NumpyDotNetTests
             AssertArray(c, new Complex[] { 4, 05.03968419957949, 06.3496042078728, 8 });
             print(c);
         }
+        #endregion
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
         [TestMethod]
-        public void test_geomspace_1_COMPLEX_TODO()
+        public void test_geomspace_1_COMPLEX()
         {
-            var a = np.geomspace(1m, 1000m, num: 4);
-            AssertArray(a, new decimal[] { 1.0m, 10.0m, 100.0m, 1000.0m });
+            var a = np.geomspace(new Complex(1, 0), new Complex(1000, 0), num: 4);
+            AssertArray(a, new Complex[] { new Complex(1, 0), new Complex(9.9999999999999, 0), new Complex(99.999999999998, 0), new Complex(999.99999999997, 0) });
             print(a);
 
-            var b = np.geomspace(1m, 1000m, num: 3, endpoint: false);
-            AssertArray(b, new decimal[] { 1.0m, 10.0m, 100.0m });
+            var b = np.geomspace(new Complex(1, 0), new Complex(1000, 0), num: 3, endpoint: false);
+            AssertArray(b, new Complex[] { new Complex(1, 0), new Complex(9.9999999999999, 0), new Complex(99.999999999998, 0) });
             print(b);
 
-            var c = np.geomspace(1m, 1000m, num: 4, endpoint: false);
-            AssertArray(c, new decimal[] { 1, 05.62341325190349000000000000000m, 31.62277660168380000000000000000m, 177.82794100389200000000000000000m });
+            var c = np.geomspace(new Complex(1, 0), new Complex(1000, 0), num: 4, endpoint: false);
+            AssertArray(c, new Complex[] { new Complex(1, 0), new Complex(5.62341325190345, 0), new Complex(31.6227766016833, 0), new Complex(177.827941003888, 0) });
             print(c);
 
-            var d = np.geomspace(1m, 256m, num: 9);
-            AssertArray(d, new decimal[] { 1.0m, 2.0m, 4.0m, 8.0m, 16.0m, 32.0m, 64.0m, 128.0m, 256.0m });
+            var d = np.geomspace(new Complex(1, 0), new Complex(256, 0), num: 9);
+            AssertArray(d, new Complex[] { new Complex(1, 0), new Complex(1.99999999999999, 0), new Complex(3.99999999999998, 0),
+                           new Complex(7.99999999999993, 0),  new Complex(15.9999999999998, 0), new Complex(31.9999999999995, 0),
+                           new Complex(63.9999999999989, 0),  new Complex(127.999999999997, 0), new Complex(255.999999999994, 0) });
             print(d);
         }
 
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         [TestMethod]
         public void test_meshgrid_1_COMPLEX_TODO()
         {
