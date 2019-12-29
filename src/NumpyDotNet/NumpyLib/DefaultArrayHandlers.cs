@@ -36,6 +36,8 @@ namespace NumpyLib
         NumericOperation TrueDivideOperation { get; set; }
         NumericOperation LogicalOrOperation { get; set; }
         NumericOperation LogicalAndOperation { get; set; }
+        NumericOperation FloorOperation { get; set; }
+        NumericOperation CeilingOperation { get; set; }
 
     }
 
@@ -171,6 +173,9 @@ namespace NumpyLib
             TrueDivideOperation = TrueDivide;
             LogicalOrOperation = LogicalOr;
             LogicalAndOperation = LogicalAnd;
+            FloorOperation = Floor;
+            CeilingOperation = Ceiling;
+
         }
 
         public NumericOperation AddOperation { get; set; }
@@ -203,6 +208,9 @@ namespace NumpyLib
         public NumericOperation TrueDivideOperation { get; set; }
         public NumericOperation LogicalOrOperation { get; set; }
         public NumericOperation LogicalAndOperation { get; set; }
+        public NumericOperation FloorOperation { get; set; }
+        public NumericOperation CeilingOperation { get; set; }
+
 
 
         protected virtual object Add(dynamic bValue, dynamic operand)
@@ -383,6 +391,15 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue && Convert.ToBoolean(operand);
         }
+        protected virtual object Floor(dynamic bValue, dynamic operand)
+        {
+            return Math.Floor(Convert.ToDouble(bValue));
+        }
+        protected virtual object Ceiling(dynamic bValue, dynamic operand)
+        {
+            return Math.Ceiling(Convert.ToDouble(bValue));
+        }
+
     }
 
     internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
@@ -2241,6 +2258,14 @@ namespace NumpyLib
         protected override object IsNAN(object bValue, object operand)
         {
             return false;
+        }
+        protected override object Floor(object bValue, object operand)
+        {
+            return Math.Floor(Convert.ToDecimal(bValue));
+        }
+        protected override object Ceiling(object bValue, object operand)
+        {
+            return Math.Ceiling(Convert.ToDecimal(bValue));
         }
 
 

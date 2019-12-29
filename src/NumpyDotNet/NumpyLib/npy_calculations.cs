@@ -209,13 +209,13 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
                 }
                 case NpyArray_Ops.npy_op_floor:
-                    {
-                        return FloorOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorOperation;
+                }
                 case NpyArray_Ops.npy_op_ceil:
-                    {
-                        return CeilOperation;
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
+                }
                 case NpyArray_Ops.npy_op_maximum:
                     {
                         switch (ItemType)
@@ -1034,35 +1034,7 @@ namespace NumpyLib
 
         #endregion
   
-   
-
-        private static T FloorOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-
-            if (bValue is decimal)
-            {
-                return Math.Floor(Convert.ToDecimal(dValue));
-            }
-            else
-            {
-                return Math.Floor(Convert.ToDouble(dValue));
-            }
-        }
-        private static T CeilOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-
-            if (bValue is decimal)
-            {
-                return Math.Ceiling(Convert.ToDecimal(dValue));
-            }
-            else
-            {
-                return Math.Ceiling(Convert.ToDouble(dValue));
-            }
-
-        }
+  
         private static T MaximumOperation<T>(T bValue, dynamic operand)
         {
             dynamic dValue = bValue;
