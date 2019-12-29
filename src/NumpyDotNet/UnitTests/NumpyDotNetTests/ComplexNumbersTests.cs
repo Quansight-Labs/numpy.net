@@ -113,25 +113,27 @@ namespace NumpyDotNetTests
             return;
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
 
         [TestMethod]
-        public void test_linspace_1_COMPLEX_TODO()
+        public void test_linspace_1_COMPLEX()
         {
-            decimal retstep = 0;
+            Complex retstep = 0;
 
-            var a = np.linspace(2.0m, 3.0m, ref retstep, num: 5);
-            AssertArray(a, new decimal[] { 2.0m, 2.25m, 2.5m, 2.75m, 3.0m });
+            var a = np.linspace(new Complex(2.0, 0), new Complex(3.0, 0), ref retstep, num: 5);
+            AssertArray(a, new Complex[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
             print(a);
 
-            var b = np.linspace(2.0m, 3.0m, ref retstep, num: 5, endpoint: false);
-            AssertArray(b, new decimal[] { 2.0m, 2.2m, 2.4m, 2.6m, 2.8m });
+            var b = np.linspace(new Complex(2.0, 0), new Complex(3.0, 0), ref retstep, num: 5, endpoint: false);
+            AssertArray(b, new Complex[] { 2.0, 2.2, 2.4, 2.6, 2.8 });
             print(b);
 
-            var c = np.linspace(2.0m, 3.0m, ref retstep, num: 5);
-            AssertArray(c, new decimal[] { 2.0m, 2.25m, 2.5m, 2.75m, 3.0m });
+            var c = np.linspace(new Complex(2.0, 2.0), new Complex(3.0, 3.0), ref retstep, num: 5);
+            AssertArray(c, new Complex[] { new Complex(2.0, 2.0), new Complex(2.25, 2.25), new Complex(2.5, 2.5), new Complex(2.75, 2.75), new Complex(3.0, 3.0) });
             print(c);
         }
+
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         [TestMethod]
         public void test_logspace_1_COMPLEX_TODO()
