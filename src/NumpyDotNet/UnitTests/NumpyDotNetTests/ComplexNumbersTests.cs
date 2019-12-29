@@ -19,7 +19,9 @@ namespace NumpyDotNetTests
             print(ca);
            
 
-            var kevin = np.array(ca, copy: false);
+            var kevin = np.array(ca, copy: true, dtype: np.Complex);
+
+            var k2 = kevin.AsComplexArray();
 
             System.Numerics.Complex c = new System.Numerics.Complex(1.2, 2.0);
             Console.WriteLine(c.Real);
@@ -39,62 +41,63 @@ namespace NumpyDotNetTests
             //var cc = new System.Numerics.Complex(d2, 0);
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_test_angle_1()
-        {
-        }
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_test_real_1()
-        {
-        }
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_test_image_1()
-        {
-        }
-        [Ignore]
-        [TestMethod]
-        public void xxx_test_conj_1()
-        {
-        }
-        [Ignore]
-        [TestMethod]
-        public void test_real_if_close_1()
-        {
-
-        }
 
 
         #region from ArrayCreationTests
         [TestMethod]
-        public void test_asfarray_COMPLEX_TODO()
+        public void test_asfarray_COMPLEX()
         {
-            var a = np.asfarray(new decimal[] { 2, 3 });
-            AssertArray(a, new double[] { 2, 3 });
-            print(a);
+            int CaughtExceptions = 0;
 
-            var b = np.asfarray(new decimal[] { 2, 3 }, dtype: np.Float32);
-            AssertArray(b, new float[] { 2, 3 });
-            print(b);
+            try
+            {
+                var a = np.asfarray(new Complex[] { 2, 3 });
+                AssertArray(a, new double[] { 2, 3 });
+                print(a);
 
-            var c = np.asfarray(new decimal[] { 2, 3 }, dtype: np.Int8);
-            AssertArray(c, new double[] { 2, 3 });
-            print(c);
+            }
+            catch
+            {
+                CaughtExceptions++;
+            }
 
+            try
+            {
+                var b = np.asfarray(new Complex[] { 2, 3 }, dtype: np.Float32);
+                AssertArray(b, new float[] { 2, 3 });
+                print(b);
+            }
+            catch
+            {
+                CaughtExceptions++;
+            }
+
+            try
+            {
+                var c = np.asfarray(new Complex[] { 2, 3 }, dtype: np.Int8);
+                AssertArray(c, new double[] { 2, 3 });
+                print(c);
+            }
+            catch
+            {
+                CaughtExceptions++;
+            }
+
+            Assert.AreEqual(3, CaughtExceptions);
 
             return;
         }
+        #endregion
+
+
 
         [TestMethod]
-        public void test_copy_1_COMPLEX_TODO()
+        public void test_copy_1_COMPLEX()
         {
-            var x = np.array(new decimal[] { 1, 2, 3 });
+            var x = np.array(new Complex[] { 1, 2, 3 });
             var y = x;
 
             var z = np.copy(x);
@@ -103,12 +106,14 @@ namespace NumpyDotNetTests
 
             x[0] = 10;
 
-            Assert.AreEqual(10m, y[0]);
+            Assert.AreEqual(new Complex(10, 0), y[0]);
 
-            Assert.AreEqual(1m, z[0]);
+            Assert.AreEqual(new Complex(1, 0), z[0]);
 
             return;
         }
+
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         [TestMethod]
         public void test_linspace_1_COMPLEX_TODO()
@@ -1203,7 +1208,7 @@ namespace NumpyDotNetTests
 
         }
 
-        #endregion
+//#endregion
 
         #region from NumericalOperationsTests
 
@@ -7272,6 +7277,36 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+
+                [Ignore]
+        [TestMethod]
+        public void xxx_test_angle_1()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_test_real_1()
+        {
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void xxx_test_image_1()
+        {
+        }
+        [Ignore]
+        [TestMethod]
+        public void xxx_test_conj_1()
+        {
+        }
+        [Ignore]
+        [TestMethod]
+        public void test_real_if_close_1()
+        {
+
+        }
 
 #endif
 
