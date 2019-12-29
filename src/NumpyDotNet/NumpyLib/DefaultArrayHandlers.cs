@@ -38,6 +38,8 @@ namespace NumpyLib
         NumericOperation LogicalAndOperation { get; set; }
         NumericOperation FloorOperation { get; set; }
         NumericOperation CeilingOperation { get; set; }
+        NumericOperation MaximumOperation { get; set; }
+        NumericOperation FMaxOperation { get; set; }
 
     }
 
@@ -175,6 +177,8 @@ namespace NumpyLib
             LogicalAndOperation = LogicalAnd;
             FloorOperation = Floor;
             CeilingOperation = Ceiling;
+            MaximumOperation = Maximum;
+            FMaxOperation = FMax;
 
         }
 
@@ -210,6 +214,8 @@ namespace NumpyLib
         public NumericOperation LogicalAndOperation { get; set; }
         public NumericOperation FloorOperation { get; set; }
         public NumericOperation CeilingOperation { get; set; }
+        public NumericOperation MaximumOperation { get; set; }
+        public NumericOperation FMaxOperation { get; set; }
 
 
 
@@ -398,6 +404,14 @@ namespace NumpyLib
         protected virtual object Ceiling(dynamic bValue, dynamic operand)
         {
             return Math.Ceiling(Convert.ToDouble(bValue));
+        }
+        protected virtual object Maximum(dynamic bValue, dynamic operand)
+        {
+            return Math.Max(Convert.ToDouble(bValue), operand);
+        }
+        protected virtual object FMax(dynamic bValue, dynamic operand)
+        {
+            return Math.Max(Convert.ToDouble(bValue), operand);
         }
 
     }
@@ -1926,6 +1940,17 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue >= (double)operand;
         }
+        protected override object FMax(object bValue, object operand)
+        {
+
+            if (float.IsNaN(Convert.ToSingle(operand)))
+                return bValue;
+            if (float.IsNaN(Convert.ToSingle(bValue)))
+                return operand;
+
+            return Math.Max(Convert.ToSingle(bValue), Convert.ToSingle(operand));
+
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
@@ -2084,6 +2109,17 @@ namespace NumpyLib
         protected override object IsNAN(object bValue, object operand)
         {
             return double.IsNaN((double)bValue);
+        }
+        protected override object FMax(object bValue, object operand)
+        {
+
+            if (double.IsNaN(Convert.ToDouble(operand)))
+                return bValue;
+            if (double.IsNaN(Convert.ToDouble(bValue)))
+                return operand;
+
+            return Math.Max(Convert.ToDouble(bValue), Convert.ToDouble(operand));
+
         }
     }
 
@@ -2266,6 +2302,14 @@ namespace NumpyLib
         protected override object Ceiling(object bValue, object operand)
         {
             return Math.Ceiling(Convert.ToDecimal(bValue));
+        }
+        protected override object Maximum(object bValue, object operand)
+        {
+            return Math.Max(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
+        }
+        protected override object FMax(object bValue, object operand)
+        {
+            return Math.Max(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
         }
 
 

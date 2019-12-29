@@ -217,29 +217,13 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
                 }
                 case NpyArray_Ops.npy_op_maximum:
-                    {
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_FMaxOperation;
-                            default:
-                                return MaximumOperation;
-                        }
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).MaximumOperation;
+                }
                 case NpyArray_Ops.npy_op_fmax:
-                    {
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_FMaxOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_FMaxOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_FMaxOperation;
-                            default:
-                                return MaximumOperation;
-                        }
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
+                }
                 case NpyArray_Ops.npy_op_minimum:
                     {
                         switch (ItemType)
@@ -1035,49 +1019,7 @@ namespace NumpyLib
         #endregion
   
   
-        private static T MaximumOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
 
-            if (bValue is decimal)
-            {
-                return Math.Max(Convert.ToDecimal(dValue), operand);
-            }
-            else
-            {
-                return Math.Max(Convert.ToDouble(dValue), operand);
-            }
-
-        }
-
-        private static object FLOAT_FMaxOperation(object bValue, dynamic operand)
-        {
-
-            if (float.IsNaN(Convert.ToSingle(operand)))
-                return bValue;
-            if (float.IsNaN(Convert.ToSingle(bValue)))
-                return operand;
-
-            return Math.Max(Convert.ToSingle(bValue), Convert.ToSingle(operand));
-      
-        }
-
-        private static object DOUBLE_FMaxOperation(object bValue, dynamic operand)
-        {
-
-            if (double.IsNaN(Convert.ToDouble(operand)))
-                return bValue;
-            if (double.IsNaN(Convert.ToDouble(bValue)))
-                return operand;
-
-            return Math.Max(Convert.ToDouble(bValue), Convert.ToDouble(operand));
-
-        }
-
-        private static object DECIMAL_FMaxOperation(object bValue, dynamic operand)
-        {
-            return Math.Max(Convert.ToDecimal(bValue), Convert.ToDecimal(operand));
-        }
 
         private static T MinimumOperation<T>(T bValue, dynamic operand)
         {
