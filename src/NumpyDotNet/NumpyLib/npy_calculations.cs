@@ -181,89 +181,17 @@ namespace NumpyLib
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
                 }
                 case NpyArray_Ops.npy_op_greater:
-                    {
-                        #region GreaterOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_GreaterOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_GreaterOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_GreaterOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_GreaterOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_GreaterOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_GreaterOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_GreaterOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_GreaterOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_GreaterOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_GreaterOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_GreaterOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_GreaterOperation;
-                            default:
-                                return GreaterOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterOperation;
+                }
                 case NpyArray_Ops.npy_op_greater_equal:
-                    {
-                        #region GreaterEqualOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_BOOL:
-                                return BOOL_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_BYTE:
-                                return BYTE_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_UBYTE:
-                                return UBYTE_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_INT16:
-                                return INT16_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_UINT16:
-                                return UINT16_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_INT32:
-                                return INT32_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_UINT32:
-                                return UINT32_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_INT64:
-                                return INT64_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_UINT64:
-                                return UINT64_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_GreaterEqualOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_GreaterEqualOperation;
-                            default:
-                                return GreaterEqualOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterEqualOperation;
+                }
                 case NpyArray_Ops.npy_op_isnan:
-                    {
-                        #region IsNaNOperation
-                        switch (ItemType)
-                        {
-                            case NPY_TYPES.NPY_FLOAT:
-                                return FLOAT_IsNaNOperation;
-                            case NPY_TYPES.NPY_DOUBLE:
-                                return DOUBLE_IsNaNOperation;
-                            case NPY_TYPES.NPY_DECIMAL:
-                                return DECIMAL_IsNaNOperation;
-                            default:
-                                return FLOAT_IsNaNOperation;
-                        }
-                        #endregion
-                    }
+                {
+                    return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
+                }
                 case NpyArray_Ops.npy_op_floor_divide:
                     {
                         return FloorDivideOperation;
@@ -1121,156 +1049,12 @@ namespace NumpyLib
         }
         #endregion
 
-  
-        #region GreaterOperation
-        private static object BOOL_GreaterOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return true;
-        }
-        private static object BYTE_GreaterOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue > (double)operand;
-        }
-        private static object UBYTE_GreaterOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue > (double)operand;
-        }
-        private static object INT16_GreaterOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue > (double)operand;
-        }
-        private static object UINT16_GreaterOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue > (double)operand;
-        }
-        private static object INT32_GreaterOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue > (double)operand;
-        }
-        private static object UINT32_GreaterOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue > (double)operand;
-        }
-        private static object INT64_GreaterOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue > (double)operand;
-        }
-        private static object UINT64_GreaterOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue > (double)operand;
-        }
-        private static object FLOAT_GreaterOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue > (double)operand;
-        }
-        private static object DOUBLE_GreaterOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue > (double)operand;
-        }
-        private static object DECIMAL_GreaterOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue > (decimal)operand;
-        }
-        private static T GreaterOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue > operand;
-        }
-        #endregion
 
-        #region GreaterEqualOperation
-        private static object BOOL_GreaterEqualOperation(object bValue, object operand)
-        {
-            bool dValue = (bool)bValue;
-            return true;
-        }
-        private static object BYTE_GreaterEqualOperation(object bValue, object operand)
-        {
-            sbyte dValue = (sbyte)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object UBYTE_GreaterEqualOperation(object bValue, object operand)
-        {
-            byte dValue = (byte)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object INT16_GreaterEqualOperation(object bValue, object operand)
-        {
-            Int16 dValue = (Int16)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object UINT16_GreaterEqualOperation(object bValue, object operand)
-        {
-            UInt16 dValue = (UInt16)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object INT32_GreaterEqualOperation(object bValue, object operand)
-        {
-            Int32 dValue = (Int32)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object UINT32_GreaterEqualOperation(object bValue, object operand)
-        {
-            UInt32 dValue = (UInt32)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object INT64_GreaterEqualOperation(object bValue, object operand)
-        {
-            Int64 dValue = (Int64)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object UINT64_GreaterEqualOperation(object bValue, object operand)
-        {
-            UInt64 dValue = (UInt64)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object FLOAT_GreaterEqualOperation(object bValue, object operand)
-        {
-            float dValue = (float)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object DOUBLE_GreaterEqualOperation(object bValue, object operand)
-        {
-            double dValue = (double)bValue;
-            return dValue >= (double)operand;
-        }
-        private static object DECIMAL_GreaterEqualOperation(object bValue, object operand)
-        {
-            decimal dValue = (decimal)bValue;
-            return dValue >= (decimal)operand;
-        }
-        private static T GreaterEqualOperation<T>(T bValue, dynamic operand)
-        {
-            dynamic dValue = bValue;
-            return dValue >= operand;
-        }
-        #endregion
 
         #region IsNaNOperation
-        private static object FLOAT_IsNaNOperation(object bValue, object operand)
-        {
-            return float.IsNaN((float)bValue);
-        }
-        private static object DOUBLE_IsNaNOperation(object bValue, object operand)
-        {
-            return double.IsNaN((double)bValue);
-        }
-        private static object DECIMAL_IsNaNOperation(object bValue, object operand)
-        {
-            return false;
-        }
+
+  
+  
         #endregion
 
         private static T TrueDivideOperation<T>(T bValue, dynamic operand)
