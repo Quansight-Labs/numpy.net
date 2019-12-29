@@ -156,7 +156,7 @@ namespace NumpyLib
         }
     }
 
-    internal class ArrayHandlerBase
+    internal class ArrayHandlerBase<T>
     {
         internal ArrayHandlerBase()
         {
@@ -201,12 +201,26 @@ namespace NumpyLib
             ConjugateOperation = Conjugate;
         }
 
-        protected T[] _AllocateAndCopy<T>(object datap, int startingOffset, int numElements)
+        public System.Array ToArray(Array ssrc)
+        {
+            return ssrc.Cast<T>().ToArray();
+        }
+        public int GetLength(VoidPtr vp)
+        {
+            var dbool = vp.datap as T[];
+            return dbool.Length;
+        }
+        public object AllocateNewArray(int size)
+        {
+            return new T[size];
+        }
+        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
         {
             T[] data = new T[numElements];
             Array.Copy(datap as T[], startingOffset, data, 0, numElements);
             return data;
         }
+  
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
@@ -480,65 +494,30 @@ namespace NumpyLib
 
     }
 
-    internal class ObjectHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class ObjectHandlers : ArrayHandlerBase<object>, IArrayHandlers
     {
         public ObjectHandlers()
         {
         }
 
-
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<object>().ToArray();
-        }
         public int ItemSize
         {
             get { return IntPtr.Size; }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dobj = vp.datap as object[];
-            return dobj.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new object[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<object>(datap, startingOffset, numElements);
-        }
+   
     }
 
-    internal class BoolHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class BoolHandlers : ArrayHandlerBase<bool>, IArrayHandlers
     {
         public BoolHandlers()
         {
         }
 
- 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<bool>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(bool); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dbool = vp.datap as bool[];
-            return dbool.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new bool[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<bool>(datap, startingOffset, numElements);
-        }
-
+  
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
@@ -661,35 +640,17 @@ namespace NumpyLib
         }
     }
 
-    internal class ByteHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class ByteHandlers : ArrayHandlerBase<sbyte>, IArrayHandlers
     {
         public ByteHandlers()
         {
   
         }
-
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<sbyte>().ToArray();
-        }
+ 
         public int ItemSize
         {
             get { return sizeof(sbyte); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dsbyte = vp.datap as sbyte[];
-            return dsbyte.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new sbyte[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<sbyte>(datap, startingOffset, numElements);
-        }
-
 
         protected override object Add(object bValue, object operand)
         {
@@ -839,35 +800,19 @@ namespace NumpyLib
         }
     }
 
-    internal class UByteHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class UByteHandlers : ArrayHandlerBase<byte>, IArrayHandlers
     {
         public UByteHandlers()
         {
 
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<byte>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(byte); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dbyte = vp.datap as byte[];
-            return dbyte.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new byte[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<byte>(datap, startingOffset, numElements);
-        }
-
+  
+   
         protected override object Add(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
@@ -1016,35 +961,18 @@ namespace NumpyLib
         }
     }
 
-    internal class Int16Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class Int16Handlers : ArrayHandlerBase<Int16>, IArrayHandlers
     {
         public Int16Handlers()
         {
  
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<Int16>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(Int16); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as Int16[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new Int16[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<Int16>(datap, startingOffset, numElements);
-        }
-
+ 
         protected override object Add(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
@@ -1193,36 +1121,19 @@ namespace NumpyLib
         }
     }
 
-    internal class UInt16Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class UInt16Handlers : ArrayHandlerBase<UInt16>, IArrayHandlers
     {
         public UInt16Handlers()
         {
  
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<UInt16>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(UInt16); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as UInt16[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new UInt16[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<UInt16>(datap, startingOffset, numElements);
-        }
 
-        protected override object Add(object bValue, object operand)
+         protected override object Add(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue + (double)operand;
@@ -1370,35 +1281,19 @@ namespace NumpyLib
         }
     }
 
-    internal class Int32Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class Int32Handlers : ArrayHandlerBase<Int32>, IArrayHandlers
     {
         public Int32Handlers()
         {
   
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<Int32>().ToArray();
-        }
+ 
         public int ItemSize
         {
             get { return sizeof(Int32); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as Int32[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new Int32[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<Int32>(datap, startingOffset, numElements);
-        }
-
+   
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
@@ -1547,33 +1442,16 @@ namespace NumpyLib
         }
     }
 
-    internal class UInt32Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class UInt32Handlers : ArrayHandlerBase<UInt32>, IArrayHandlers
     {
         public UInt32Handlers()
         {
  
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<UInt32>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(UInt32); }
-        }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as UInt32[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new UInt32[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<UInt32>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1724,35 +1602,19 @@ namespace NumpyLib
         }
     }
 
-    internal class Int64Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class Int64Handlers : ArrayHandlerBase<Int64>, IArrayHandlers
     {
         public Int64Handlers()
         {
 
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<Int64>().ToArray();
-        }
+ 
         public int ItemSize
         {
             get { return sizeof(Int64); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as Int64[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new Int64[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<Int64>(datap, startingOffset, numElements);
-        }
-
+   
         protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
@@ -1901,33 +1763,17 @@ namespace NumpyLib
         }
     }
 
-    internal class UInt64Handlers : ArrayHandlerBase, IArrayHandlers
+    internal class UInt64Handlers : ArrayHandlerBase<UInt64>, IArrayHandlers
     {
         public UInt64Handlers()
         {
    
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<UInt64>().ToArray();
-        }
+
         public int ItemSize
         {
             get { return sizeof(UInt64); }
-        }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as UInt64[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new UInt64[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<UInt64>(datap, startingOffset, numElements);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2078,35 +1924,18 @@ namespace NumpyLib
         }
     }
 
-    internal class FloatHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class FloatHandlers : ArrayHandlerBase<float>, IArrayHandlers
     {
         public FloatHandlers()
         {
  
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<float>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(float); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as float[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new float[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<float>(datap, startingOffset, numElements);
-        }
-
+ 
         protected override object Add(object bValue, object operand)
         {
             float dValue = (float)bValue;
@@ -2292,35 +2121,19 @@ namespace NumpyLib
         }
     }
 
-    internal class DoubleHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class DoubleHandlers : ArrayHandlerBase<double>, IArrayHandlers
     {
         public DoubleHandlers()
         {
 
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<double>().ToArray();
-        }
+ 
         public int ItemSize
         {
             get { return sizeof(double); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as double[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new double[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<double>(datap, startingOffset, numElements);
-        }
-
+ 
         protected override object Add(object bValue, object operand)
         {
             double dValue = (double)bValue;
@@ -2510,35 +2323,18 @@ namespace NumpyLib
         }
     }
 
-    internal class DecimalHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class DecimalHandlers : ArrayHandlerBase<Decimal>, IArrayHandlers
     {
         public DecimalHandlers()
         {
  
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<decimal>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(decimal); }
         }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as decimal[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new decimal[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<decimal>(datap, startingOffset, numElements);
-        }
-
+ 
         protected override object Add(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
@@ -2734,33 +2530,16 @@ namespace NumpyLib
         }
     }
 
-    internal class ComplexHandlers : ArrayHandlerBase, IArrayHandlers
+    internal class ComplexHandlers : ArrayHandlerBase<System.Numerics.Complex>, IArrayHandlers
     {
         public ComplexHandlers()
         {
 
         }
 
-        public System.Array ToArray(Array ssrc)
-        {
-            return ssrc.Cast<System.Numerics.Complex>().ToArray();
-        }
         public int ItemSize
         {
             get { return sizeof(double) * 4; }
-        }
-        public int GetLength(VoidPtr vp)
-        {
-            var dint = vp.datap as System.Numerics.Complex[];
-            return dint.Length;
-        }
-        public object AllocateNewArray(int size)
-        {
-            return new System.Numerics.Complex[size];
-        }
-        public object AllocateAndCopy(object datap, int startingOffset, int numElements)
-        {
-            return _AllocateAndCopy<System.Numerics.Complex>(datap, startingOffset, numElements);
         }
 
         System.Numerics.Complex ConvertToComplex(object o)
