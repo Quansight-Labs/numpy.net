@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Numerics;
 
 namespace NumpyLib
 {
@@ -67,6 +68,7 @@ namespace NumpyLib
             SetArrayHandler(NPY_TYPES.NPY_FLOAT, new FloatHandlers());
             SetArrayHandler(NPY_TYPES.NPY_DOUBLE, new DoubleHandlers());
             SetArrayHandler(NPY_TYPES.NPY_DECIMAL, new DecimalHandlers());
+            SetArrayHandler(NPY_TYPES.NPY_COMPLEX, new ComplexHandlers());
         }
 
         public static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
@@ -2421,6 +2423,232 @@ namespace NumpyLib
         protected override object Rint(dynamic bValue, dynamic operand)
         {
             return Math.Round(Convert.ToDecimal(bValue));
+        }
+    }
+
+    internal class ComplexHandlers : ArrayHandlerBase, IArrayHandlers
+    {
+        public ComplexHandlers()
+        {
+
+        }
+
+        System.Numerics.Complex ConvertToComplex(object o)
+        {
+            if (o is System.Numerics.Complex)
+            {
+                System.Numerics.Complex c = (System.Numerics.Complex)o;
+                return c;
+            }
+            else
+            {
+                return new System.Numerics.Complex(Convert.ToDouble(o), 0);
+            }
+        }
+
+        protected override object Add(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue + (Complex)operand;
+        }
+        protected override object Subtract(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue - (Complex)operand;
+        }
+        protected override object Multiply(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue * (Complex)operand;
+        }
+        protected override object Divide(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            Complex doperand = (Complex)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue / doperand;
+        }
+        protected override object Remainder(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            Complex doperand = (Complex)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            var rem = dValue.Real % doperand.Real;
+            if ((dValue.Real > 0) == (doperand.Real > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
+        }
+        protected override object FMod(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            Complex doperand = (Complex)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue.Real % doperand.Real;
+        }
+        protected override object Power(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return Complex.Pow(dValue, Convert.ToDouble(operand));
+        }
+        protected override object Square(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue * dValue;
+        }
+        protected override object Reciprocal(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            return Complex.Sqrt((Complex)bValue);
+        }
+        protected override object Negative(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return -dValue;
+        }
+        protected override object Absolute(object bValue, object operand)
+        {
+            return Complex.Abs((Complex)bValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            return bValue;
+            //UInt64 dValue = (UInt64)(Complex)bValue;
+            //return dValue << Convert.ToInt32(operand);
+        }
+        protected override object RightShift(object bValue, object operand)
+        {
+            return bValue;
+            //UInt64 dValue = (UInt64)(Complex)bValue;
+            //return dValue >> Convert.ToInt32(operand);
+        }
+        protected override object BitWiseAnd(object bValue, object operand)
+        {
+            return bValue;
+            //UInt64 dValue = Convert.ToUInt64(bValue);
+            //return dValue & Convert.ToUInt64(operand);
+        }
+        protected override object BitWiseXor(object bValue, object operand)
+        {
+            return bValue;
+            //UInt64 dValue = Convert.ToUInt64(bValue);
+            //return dValue ^ Convert.ToUInt64(operand);
+        }
+        protected override object BitWiseOr(object bValue, object operand)
+        {
+            return bValue;
+
+            //UInt64 dValue = (UInt64)(decimal)bValue;
+            //return dValue | Convert.ToUInt64(operand);
+        }
+        protected override object Less(object bValue, object operand)
+        {
+            return false;
+            //Complex dValue = (Complex)bValue;
+            //return dValue < (Complex)operand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            return false;
+
+            //Complex dValue = (Complex)bValue;
+            //return dValue <= (Complex)operand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue == (Complex)operand;
+        }
+        protected override object NotEqual(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return dValue != (Complex)operand;
+        }
+        protected override object Greater(object bValue, object operand)
+        {
+            return false;
+            //Complex dValue = (Complex)bValue;
+            //return dValue > (Complex)operand;
+        }
+        protected override object GreaterEqual(object bValue, object operand)
+        {
+            return false;
+            //Complex dValue = (Complex)bValue;
+            //return dValue >= (Complex)operand;
+        }
+        protected override object IsNAN(object bValue, object operand)
+        {
+            return false;
+        }
+        protected override object Floor(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return Math.Floor(dValue.Real);
+        }
+        protected override object Ceiling(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            return Math.Ceiling(dValue.Real);
+        }
+        protected override object Maximum(object bValue, object operand)
+        {
+            Complex a = (Complex)bValue;
+            Complex b = (Complex)operand;
+
+            return Math.Max(a.Real, b.Real);
+        }
+        protected override object FMax(object bValue, object operand)
+        {
+            Complex a = (Complex)bValue;
+            Complex b = (Complex)operand;
+
+            return Math.Max(a.Real, b.Real);
+        }
+        protected override object Minimum(object bValue, object operand)
+        {
+            Complex a = (Complex)bValue;
+            Complex b = (Complex)operand;
+
+            return Math.Min(a.Real, b.Real);
+        }
+        protected override object FMin(object bValue, object operand)
+        {
+            Complex a = (Complex)bValue;
+            Complex b = (Complex)operand;
+
+            return Math.Min(a.Real, b.Real);
+        }
+        protected override object Rint(dynamic bValue, dynamic operand)
+        {
+            Complex a = (Complex)bValue;
+            Complex b = (Complex)operand;
+
+            return Math.Round(a.Real);
         }
     }
 }
