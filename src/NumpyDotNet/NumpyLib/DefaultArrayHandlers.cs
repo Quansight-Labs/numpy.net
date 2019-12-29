@@ -2568,16 +2568,25 @@ namespace NumpyLib
         }
         protected override object Less(object bValue, object operand)
         {
+            Complex cOperand = (Complex)operand;
+            Complex dValue = (Complex)bValue;
+
+            if (cOperand.Imaginary == 0)
+            {
+                return dValue.Real < cOperand.Real;
+            }
             return false;
-            //Complex dValue = (Complex)bValue;
-            //return dValue < (Complex)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
-            return false;
+            Complex cOperand = (Complex)operand;
+            Complex dValue = (Complex)bValue;
 
-            //Complex dValue = (Complex)bValue;
-            //return dValue <= (Complex)operand;
+            if (cOperand.Imaginary == 0)
+            {
+                return dValue.Real <= cOperand.Real;
+            }
+            return false;
         }
         protected override object Equal(object bValue, object operand)
         {
@@ -2591,15 +2600,25 @@ namespace NumpyLib
         }
         protected override object Greater(object bValue, object operand)
         {
+            Complex cOperand = (Complex)operand;
+            Complex dValue = (Complex)bValue;
+
+            if (cOperand.Imaginary == 0)
+            {
+                return dValue.Real > cOperand.Real;
+            }
             return false;
-            //Complex dValue = (Complex)bValue;
-            //return dValue > (Complex)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
+            Complex cOperand = (Complex)operand;
+            Complex dValue = (Complex)bValue;
+
+            if (cOperand.Imaginary == 0)
+            {
+                return dValue.Real >= cOperand.Real;
+            }
             return false;
-            //Complex dValue = (Complex)bValue;
-            //return dValue >= (Complex)operand;
         }
         protected override object IsNAN(object bValue, object operand)
         {
