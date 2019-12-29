@@ -86,6 +86,8 @@ namespace NumpyDotNet
                     return ssrc.Cast<double>().ToArray();
                 case NPY_TYPES.NPY_DECIMAL:
                     return ssrc.Cast<decimal>().ToArray();
+                case NPY_TYPES.NPY_COMPLEX:
+                    return ssrc.Cast<System.Numerics.Complex>().ToArray();
             }
 
             throw new Exception("Unexpected NPY_TYPES");

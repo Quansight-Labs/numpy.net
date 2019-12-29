@@ -157,6 +157,8 @@ namespace NumpyDotNet
                     return array(arr.datap as double[], dtype, copy, order, subok, ndmin);
                 case NPY_TYPES.NPY_DECIMAL:
                     return array(arr.datap as decimal[], dtype, copy, order, subok, ndmin);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return array(arr.datap as System.Numerics.Complex[], dtype, copy, order, subok, ndmin);
             }
 
             throw new Exception("unrecognized array type");

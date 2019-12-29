@@ -90,6 +90,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     var decimal1 = obj.datap as decimal[];
                     return decimal1[index];
+                case NPY_TYPES.NPY_COMPLEX:
+                    var complex1 = obj.datap as System.Numerics.Complex[];
+                    return complex1[index];
                 default:
                     throw new Exception("Unsupported data type");
             }
@@ -544,6 +547,17 @@ namespace NumpyLib
                     case NPY_TYPES.NPY_DECIMAL:
                         var decimal1 = obj.datap as decimal[];
                         decimal1[index] = Convert.ToDecimal(value);
+                        break;
+                    case NPY_TYPES.NPY_COMPLEX:
+                        var complex1 = obj.datap as System.Numerics.Complex[];
+                        if (value is System.Numerics.Complex)
+                        {
+                            complex1[index] = (System.Numerics.Complex)value;
+                        }
+                        else
+                        {
+                            complex1[index] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+                        }
                         break;
                     default:
                         throw new Exception("Unsupported data type");
