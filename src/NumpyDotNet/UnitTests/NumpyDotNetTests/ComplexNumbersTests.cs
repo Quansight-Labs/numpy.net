@@ -169,27 +169,27 @@ namespace NumpyDotNetTests
             print(d);
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
         [TestMethod]
-        public void test_meshgrid_1_COMPLEX_TODO()
+        public void test_meshgrid_1_COMPLEX()
         {
             int nx = 3;
             int ny = 2;
 
-            decimal ret = 0;
+            Complex ret = 0;
 
-            var x = np.linspace(0m, 1m, ref ret, nx);
-            var y = np.linspace(0m, 1m, ref ret, ny);
+            var x = np.linspace(new Complex(0,0), new Complex(1, 0), ref ret, nx);
+            var y = np.linspace(new Complex(0, 0), new Complex(1, 0), ref ret, ny);
 
             ndarray[] xv = np.meshgrid(new ndarray[] { x });
-            AssertArray(xv[0], new decimal[] { 0.0m, 0.5m, 1.0m });
+            AssertArray(xv[0], new Complex[] { 0.0, 0.5, 1.0 });
             print(xv[0]);
 
             print("************");
 
             ndarray[] xyv = np.meshgrid(new ndarray[] { x, y });
-            AssertArray(xyv[0], new decimal[,] { { 0.0m, 0.5m, 1.0m }, { 0.0m, 0.5m, 1.0m } });
-            AssertArray(xyv[1], new decimal[,] { { 0.0m, 0.0m, 0.0m }, { 1.0m, 1.0m, 1.0m } });
+            AssertArray(xyv[0], new Complex[,] { { 0.0, 0.5, 1.0 }, { 0.0, 0.5, 1.0 } });
+            AssertArray(xyv[1], new Complex[,] { { 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0 } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -197,8 +197,8 @@ namespace NumpyDotNetTests
             print("************");
 
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
-            AssertArray(xyv[0], new decimal[,] { { 0.0m, 0.5m, 1.0m } });
-            AssertArray(xyv[1], new decimal[,] { { 0.0m }, { 1.0m } });
+            AssertArray(xyv[0], new Complex[,] { { 0.0, 0.5, 1.0 } });
+            AssertArray(xyv[1], new Complex[,] { { 0.0 }, { 1.0 } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -209,9 +209,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_OneDimensionalArray_COMPLEX_TODO()
+        public void test_OneDimensionalArray_COMPLEX()
         {
-            decimal[] l = new decimal[] { 12.23m, 13.32m, 100m, 36.32m };
+            Complex[] l = new Complex[] { 12.23, 13.32, 100, 36.32 };
             print("Original List:", l);
             var a = np.array(l);
             print("One-dimensional numpy array: ", a);
@@ -220,23 +220,23 @@ namespace NumpyDotNetTests
 
             AssertArray(a, l);
             AssertShape(a, 4);
-            AssertStrides(a, sizeof(decimal));
+            AssertStrides(a, sizeof(decimal)*2);
         }
 
         [TestMethod]
-        public void test_reverse_array_COMPLEX_TODO()
+        public void test_reverse_array_COMPLEX()
         {
-            var x = np.arange(0, 40, dtype: np.Decimal);
+            var x = np.arange(0, 40, dtype: np.Complex);
             print("Original array:");
             print(x);
             print("Reverse array:");
-            //x = (ndarray)x[new Slice(null, null, -1)];
-            x = (ndarray)x["::-1"];
+            x = (ndarray)x[new Slice(null, null, -1)];
+            //x = (ndarray)x.A("::-1");
             print(x);
 
-            AssertArray(x, new decimal[] { 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 });
+            AssertArray(x, new Complex[] { 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 });
             AssertShape(x, 40);
-            AssertStrides(x, -sizeof(decimal));
+            AssertStrides(x, -sizeof(decimal)*2);
 
             var y = x + 100;
             print(y);
@@ -245,6 +245,7 @@ namespace NumpyDotNetTests
             print(z);
         }
 
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         [TestMethod]
         public void test_checkerboard_1_COMPLEX_TODO()
         {
