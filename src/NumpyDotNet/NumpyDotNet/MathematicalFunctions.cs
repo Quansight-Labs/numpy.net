@@ -139,6 +139,14 @@ namespace NumpyDotNet
                         break;
 
                     default:
+
+                        if (n[0] is System.Numerics.Complex)
+                        {
+                            target_nptype = NPY_TYPES.NPY_COMPLEX;
+                            target_dtype = np.Complex;
+                            break;
+                        }
+
                         throw new Exception("Data type not supported");
                 }
             }
@@ -252,138 +260,307 @@ namespace NumpyDotNet
 
         public static ndarray sin(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-            
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Sin(ch.X1(i));
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Sin(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Sin(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
+  
         }
 
         public static ndarray cos(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Cos(ch.X1(i));
-            }
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Cos(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
             {
-                ret[np.invert(where)] = np.NaN;
-            }
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            return ret;
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Cos(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+  
         }
 
         public static ndarray tan(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Tan(ch.X1(i));
-            }
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Tan(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
             {
-                ret[np.invert(where)] = np.NaN;
-            }
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            return ret;
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Tan(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+ 
         }
 
         public static ndarray arcsin(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Asin(ch.X1(i));
-            }
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Asin(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
             {
-                ret[np.invert(where)] = np.NaN;
-            }
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            return ret;
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Asin(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+ 
         }
 
         public static ndarray arccos(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Acos(ch.X1(i));
-            }
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Acos(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
             {
-                ret[np.invert(where)] = np.NaN;
-            }
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            return ret;
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Acos(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+
+            }
         }
 
         public static ndarray arctan(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Atan(ch.X1(i));
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Atan(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Atan(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray hypot(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            var xa = asanyarray(x1);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
 
-            var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
+                var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
 
-            return hypot;
+                return hypot;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
+
+                return hypot;
+            }
+
         }
 
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x1);
+            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
             {
-                ch.results[i] = Math.Atan2(ch.X1(i), ch.X2(i));
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Atan2(ch.X1(i).Real, ch.X2(i).Real);
+                }
+
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Atan2(ch.X1(i), ch.X2(i));
+                }
+
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray rad2deg(object x, object where = null)
