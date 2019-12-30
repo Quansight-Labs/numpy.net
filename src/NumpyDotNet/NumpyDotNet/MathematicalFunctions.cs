@@ -51,6 +51,10 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        private static double DNAN = double.NaN;
+        private static float FNAN = float.NaN;
+        private static System.Numerics.Complex CNAN = new System.Numerics.Complex(double.NaN, double.NaN);
+
         #region MathFunctionHelper
 
         class MathFunctionHelper<T>
@@ -261,7 +265,7 @@ namespace NumpyDotNet
         public static ndarray sin(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -273,7 +277,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -290,7 +294,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -302,7 +306,7 @@ namespace NumpyDotNet
         public static ndarray cos(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -314,7 +318,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -331,7 +335,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -342,7 +346,7 @@ namespace NumpyDotNet
         public static ndarray tan(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -354,7 +358,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -371,7 +375,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -382,7 +386,7 @@ namespace NumpyDotNet
         public static ndarray arcsin(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -394,7 +398,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -411,7 +415,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -422,7 +426,7 @@ namespace NumpyDotNet
         public static ndarray arccos(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -434,7 +438,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -451,7 +455,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -462,7 +466,7 @@ namespace NumpyDotNet
         public static ndarray arctan(object x, object where = null)
         {
             var xa = asanyarray(x);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
@@ -474,7 +478,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -491,7 +495,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -502,7 +506,7 @@ namespace NumpyDotNet
         public static ndarray hypot(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
 
@@ -524,7 +528,7 @@ namespace NumpyDotNet
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
-            if (xa.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
 
@@ -537,7 +541,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = CNAN;
                 }
 
                 return ret;
@@ -555,7 +559,7 @@ namespace NumpyDotNet
                 var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
                 if (where != null)
                 {
-                    ret[np.invert(where)] = np.NaN;
+                    ret[np.invert(where)] = DNAN;
                 }
 
                 return ret;
@@ -570,22 +574,45 @@ namespace NumpyDotNet
 
         public static ndarray degrees(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.IsComplex)
             {
-                ch.results[i] = ch.X1(i) * (180 / Math.PI);
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = ch.X1(i) * (180 / Math.PI);
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = CNAN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = ch.X1(i) * (180 / Math.PI);
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = DNAN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
+ 
         }
-
+  
         public static ndarray deg2rad(object x, object where = null)
         {
             return radians(x, where);
@@ -593,20 +620,43 @@ namespace NumpyDotNet
 
         public static ndarray radians(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.PI * ch.X1(i) / 180;
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.PI * ch.X1(i) / 180;
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = CNAN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.PI * ch.X1(i) / 180;
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = DNAN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
+ 
         }
 
         #endregion
