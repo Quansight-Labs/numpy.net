@@ -2703,7 +2703,7 @@ namespace NumpyLib
         {
             System.Numerics.Complex[] sourceArray = Src.datap as System.Numerics.Complex[];
             System.Numerics.Complex[] destArray = Dest.datap as System.Numerics.Complex[];
-            npy_intp ItemSize = sizeof(decimal) * 2;
+            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
