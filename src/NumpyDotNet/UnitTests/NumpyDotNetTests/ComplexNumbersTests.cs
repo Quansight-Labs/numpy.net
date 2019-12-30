@@ -2785,69 +2785,69 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_floor_1_COMPLEX_TODO()
+        public void test_floor_1_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            Complex[] TestData = new Complex[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0 };
             var x = np.array(TestData);
             var y = np.floor(x);
 
             print(x);
             print(y);
 
-            AssertArray(y, new decimal[] { -2.0m, -2.0m, -1.0m, 0.0m, 1.0m, 1.0m, 2.0m });
+            AssertArray(y, new Complex[] { -2.0, -2.0, -1.0, 0.0, 1.0, 1.0, 2.0 });
 
         }
 
         [TestMethod]
-        public void test_ceil_1_COMPLEX_TODO()
+        public void test_ceil_1_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { -1.7m, -1.5m, -0.2m, 0.2m, 1.5m, 1.7m, 2.0m };
+            Complex[] TestData = new Complex[] { -1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0 };
             var x = np.array(TestData);
             var y = np.ceil(x);
 
             print(x);
             print(y);
 
-            AssertArray(y, new decimal[] { -1.0m, -1.0m, -0.0m, 1.0m, 2.0m, 2.0m, 2.0m });
+            AssertArray(y, new Complex[] { -1.0 -1.0, -0.0, 1.0, 2.0, 2.0, 2.0 });
 
         }
 
         [TestMethod]
-        public void test_trunc_1_COMPLEX_TODO()
+        public void test_trunc_1_COMPLEX()
         {
-            var a = np.trunc(3.14m);
-            Assert.AreEqual(3.0m, a.GetItem(0));
+            var a = np.trunc((Complex)3.14);
+            Assert.AreEqual(new Complex(3.0, 0), a.GetItem(0));
             print(a);
 
             var b = np.trunc(3m);
             Assert.AreEqual(3m, b.GetItem(0));
             print(b);
 
-            var c = np.trunc(new decimal[] { 2.1m, 2.9m, -2.1m, -2.9m });
-            AssertArray(c, new decimal[] { 2.0m, 2.0m, -2.0m, -2.0m });
+            var c = np.trunc(new Complex[] { new Complex(2.1, 2.1), 2.9, -2.1, -2.9 });
+            AssertArray(c, new Complex[] {new Complex(2.0, 2.0), 2.0, -2.0, -2.0 });
             print(c);
         }
 
         [TestMethod]
-        public void test_prod_2_COMPLEX_TODO()
+        public void test_prod_2_COMPLEX()
         {
-            ndarray a = np.prod(np.array(new decimal[] { 1.0m, 2.0m }));
+            ndarray a = np.prod(np.array(new Complex[] { 1.0, 2.0 }));
             print(a);
-            Assert.AreEqual(2m, a.GetItem(0));
+            Assert.AreEqual((Complex)2, a.GetItem(0));
             print("*****");
 
-            ndarray b = np.prod(np.array(new decimal[,] { { 1.0m, 2.0m }, { 3.0m, 4.0m } }));
+            ndarray b = np.prod(np.array(new Complex[,] { { 1.0, 2.0 }, { 3.0, 4.0 } }));
             print(b);
-            Assert.AreEqual(24m, b.GetItem(0));
+            Assert.AreEqual((Complex)24, b.GetItem(0));
             print("*****");
 
-            ndarray c = np.prod(np.array(new decimal[,] { { 1.0m, 2.0m }, { 3.0m, 4.0m } }), axis: 1);
+            ndarray c = np.prod(np.array(new Complex[,] { { new Complex(1.0, 3.0), 2.0 }, { new Complex(3.0, 4.0), 4.0 } }), axis: 1);
             print(c);
-            AssertArray(c, new decimal[] { 2, 12 });
+            AssertArray(c, new Complex[] { new Complex(2, 6), new Complex(12, 16) });
             print("*****");
 
-            ndarray d = np.array(new decimal[] { 1, 2, 3 }, dtype: np.Decimal);
-            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_DECIMAL;
+            ndarray d = np.array(new Complex[] { 1, 2, 3 }, dtype: np.Complex);
+            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_COMPLEX;
             print(e);
             Assert.AreEqual(true, e);
             print("*****");
@@ -2855,56 +2855,61 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sum_2_COMPLEX_TODO()
+        public void test_sum_2_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.Decimal).reshape(new shape(3, 2, -1));
+            Complex[] TestData = new Complex[] { new Complex(10.5, 2.5), 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Complex).reshape(new shape(3, 2, -1));
             x = x * 3;
 
             var y = np.sum(x, axis: 0);
             print(y);
-            AssertArray(y, new decimal[,] { { 339, 450 }, { 339, 450 } });
+            AssertArray(y, new Complex[,] { { new Complex(340.5, 7.5), new Complex(450, 0)  }, { new Complex(339, 0), new Complex(450, 0) } });
 
             print("*****");
 
             y = np.sum(x, axis: 1);
             print(y);
-            AssertArray(y, new decimal[,] { { 105, 180 }, { 264, 315 }, { 309, 405 } });
+            AssertArray(y, new Complex[,] { { new Complex(106.5, 7.5), 180 }, { 264, 315 }, { 309, 405 } });
 
             print("*****");
 
             y = np.sum(x, axis: 2);
             print(y);
-            AssertArray(y, new decimal[,] { { 75, 210 }, { 504, 75 }, { 210, 504 } });
+            AssertArray(y, new Complex[,] { { new Complex(76.5, 7.5), 210 }, { 504, 75 }, { 210, 504 } });
 
             print("*****");
 
         }
 
         [TestMethod]
-        public void test_cumprod_2_COMPLEX_TODO()
+        public void test_cumprod_2_COMPLEX()
         {
-            ndarray a = np.array(new decimal[] { 1, 2, 3 });
+            var k1 = new Complex(1, 4);
+            var k2 = new Complex(2, 2.25);
+
+            var k3 = System.Numerics.Complex.Multiply(k1, k2);
+
+            ndarray a = np.array(new Complex[] { new Complex(1, 4), new Complex(2, 2.25), new Complex(3, 6.67) });
             ndarray b = np.cumprod(a);          // intermediate results 1, 1*2
                                                 // total product 1*2*3 = 6
             print(b);
-            AssertArray(b, new decimal[] { 1, 2, 6 });
+            AssertArray(b, new Complex[] { new Complex(1, 4), new Complex(-7, 10.25), new Complex(-89.3675, -15.94) });
             print("*****");
 
-            a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } });
-            ndarray c = np.cumprod(a, dtype: np.Decimal); //specify type of output
+            a = np.array(new Complex[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            ndarray c = np.cumprod(a, dtype: np.Complex); //specify type of output
             print(c);
-            AssertArray(c, new decimal[] { 1m, 2m, 6m, 24m, 120m, 720m });
+            AssertArray(c, new Complex[] { 1, 2, 6, 24, 120, 720 });
             print("*****");
 
             ndarray d = np.cumprod(a, axis: 0);
             print(d);
-            AssertArray(d, new decimal[,] { { 1, 2, 3 }, { 4, 10, 18 } });
+            AssertArray(d, new Complex[,] { { 1, 2, 3 }, { 4, 10, 18 } });
             print("*****");
 
             ndarray e = np.cumprod(a, axis: 1);
             print(e);
-            AssertArray(e, new decimal[,] { { 1, 2, 6 }, { 4, 20, 120 } });
+            AssertArray(e, new Complex[,] { { 1, 2, 6 }, { 4, 20, 120 } });
             print("*****");
 
         }
