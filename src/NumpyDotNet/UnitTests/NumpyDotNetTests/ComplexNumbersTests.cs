@@ -12,6 +12,8 @@ namespace NumpyDotNetTests
     [TestClass]
     public class ComplexNumbersTests : TestBaseClass
     {
+        private static int SizeofComplex = sizeof(double) * 2;
+
         [Ignore]
         [TestMethod]
         public void xxx_ComplexNumbers_Placeholder()
@@ -210,7 +212,7 @@ namespace NumpyDotNetTests
 
             AssertArray(a, l);
             AssertShape(a, 4);
-            AssertStrides(a, sizeof(decimal)*2);
+            AssertStrides(a, SizeofComplex);
         }
 
         [TestMethod]
@@ -226,7 +228,7 @@ namespace NumpyDotNetTests
 
             AssertArray(x, new Complex[] { 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 });
             AssertShape(x, 40);
-            AssertStrides(x, -sizeof(decimal)*2);
+            AssertStrides(x, -SizeofComplex);
 
             var y = x + 100;
             print(y);
@@ -259,7 +261,7 @@ namespace NumpyDotNetTests
 
             AssertArray(x, ExpectedData);
             AssertShape(x, 8, 8);
-            AssertStrides(x, sizeof(decimal) * 2 * 8, sizeof(decimal) * 2);
+            AssertStrides(x, SizeofComplex * 8, SizeofComplex);
 
         }
 
@@ -289,8 +291,8 @@ namespace NumpyDotNetTests
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
 
             Assert.AreEqual(3, x.size);
-            Assert.AreEqual(32, x.ItemSize);
-            Assert.AreEqual(96, x.nbytes);
+            Assert.AreEqual(SizeofComplex, x.ItemSize);
+            Assert.AreEqual(SizeofComplex * 3, x.nbytes);
 
         }
 
@@ -680,7 +682,7 @@ namespace NumpyDotNetTests
             print(a.strides);
 
             AssertShape(a, 2, 4, 128);
-            //AssertStrides(a, 8192, 2048, 16);
+            AssertStrides(a, SizeofComplex * 512, SizeofComplex * 128, SizeofComplex);
 
             var b = (ndarray)a[":", ":", 122];
             print("B");
@@ -696,7 +698,7 @@ namespace NumpyDotNetTests
 
             AssertArray(b, ExpectedDataB);
             AssertShape(b, 2, 4);
-            //AssertStrides(b, 8192, 2048);
+            AssertStrides(b, SizeofComplex * 512, SizeofComplex * 128);
 
             var c = (ndarray)a.A(":", ":", new Int64[] { 122 });
             print("C");
@@ -723,7 +725,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2, 4, 1);
-            //AssertStrides(c, 64, 16, 128);
+            AssertStrides(c, SizeofComplex*4, SizeofComplex, SizeofComplex*8);
 
             var d = (ndarray)a.A(":", ":", new Int64[] { 122, 123 });
             print("D");
@@ -750,7 +752,7 @@ namespace NumpyDotNetTests
 
             AssertArray(d, ExpectedDataD);
             AssertShape(d, 2, 4, 2);
-            //AssertStrides(d, 64, 16, 128);
+            AssertStrides(d, SizeofComplex*4, SizeofComplex, SizeofComplex*8);
 
         }
 
@@ -804,13 +806,13 @@ namespace NumpyDotNetTests
                    {29, 30, 31, 28, 29, 30, 31, 28, 29, 30, 31}}}};
 
             AssertArray(b, ExpectedDataB);
-            AssertStrides(b, 64*2, 16*2, 1408*2, 128*2);
+            AssertStrides(b, SizeofComplex*4, SizeofComplex, SizeofComplex*88, SizeofComplex*8);
         }
 
         [TestMethod]
         public void test_insert_1_COMPLEX()
         {
-            Complex[,] TestData = new Complex[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+            Complex[,] TestData = new Complex[,] { { new Complex(1, .5), 1 }, { 2, 2 }, { 3, 3 } };
             ndarray a = np.array(TestData, dtype: np.Complex);
             ndarray b = np.insert(a, 1, 5);
             ndarray c = np.insert(a, 0, new Complex[] { 999, 100, 101 });
@@ -823,18 +825,18 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new Complex[] { 1, 5, 1, 2, 2, 3, 3 });
+            AssertArray(b, new Complex[] { new Complex(1, .5), 5, 1, 2, 2, 3, 3 });
             AssertShape(b, 7);
-            AssertStrides(b, 16*2);
+            AssertStrides(b, SizeofComplex);
 
             print("C");
             print(c);
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new Complex[] { 999, 100, 101, 1, 1, 2, 2, 3, 3 });
+            AssertArray(c, new Complex[] { 999, 100, 101, new Complex(1, .5), 1, 2, 2, 3, 3 });
             AssertShape(c, 9);
-            AssertStrides(c, 16*2);
+            AssertStrides(c, SizeofComplex);
         }
 
         [TestMethod]
@@ -857,7 +859,7 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Complex[] { 90, 91, 92, 92, 93, 93 });
             AssertShape(b, 6);
-            //AssertStrides(b, 4);
+            AssertStrides(b, SizeofComplex);
 
             print("C");
             print(c);
@@ -866,7 +868,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, new Complex[] { 90, 1, 91, 1, 92, 2, 92, 2, 93, 3, 93, 3 });
             AssertShape(c, 12);
-            //AssertStrides(c, 4);
+            AssertStrides(c, SizeofComplex);
 
         }
 
@@ -886,7 +888,7 @@ namespace NumpyDotNetTests
 
             AssertArray(b, new Complex[] { 1, 1, 2, 2, 3, 3, 1 });
             AssertShape(b, 7);
-            AssertStrides(b, 16*2);
+            AssertStrides(b, SizeofComplex);
         }
 
         [TestMethod]
@@ -911,7 +913,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, new Complex[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 });
             AssertShape(c, 12);
-            AssertStrides(c, 16*2);
+            AssertStrides(c, SizeofComplex);
         }
 
         [TestMethod]
@@ -945,7 +947,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2, 6);
-            //AssertStrides(c, 24, 4); 
+            AssertStrides(c, SizeofComplex, SizeofComplex*2); 
 
         }
 
@@ -983,7 +985,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, new Complex[] { 1, 3 });
             AssertShape(c, 2);
-            AssertStrides(c, 16*2);
+            AssertStrides(c, SizeofComplex * 2);
 
         }
 
@@ -999,7 +1001,7 @@ namespace NumpyDotNetTests
 
             AssertArray(c, new Complex[] { 1, 4, 5, 7 });
             AssertShape(c, 4);
-            AssertStrides(c, 16*2);
+            AssertStrides(c, SizeofComplex);
         }
 
         [TestMethod]
@@ -1019,7 +1021,7 @@ namespace NumpyDotNetTests
             ndarray a = test[mask] as ndarray;
             AssertArray(a, new Complex[] { 0, 2, 0 });
             AssertShape(a, 3);
-            AssertStrides(a, 16*2);
+            AssertStrides(a, SizeofComplex);
 
             mask = np.in1d(test, states, invert: true);
             print(mask);
@@ -1032,12 +1034,12 @@ namespace NumpyDotNetTests
             ndarray b = test[mask] as ndarray;
             AssertArray(b, new Complex[] { 1, 5 });
             AssertShape(b, 2);
-            AssertStrides(b, 16*2);
+            AssertStrides(b, SizeofComplex);
 
         }
 
         [TestMethod]
-        public void test_isin_1_COMPLEX_TODO()
+        public void test_isin_1_COMPLEX()
         {
             ndarray element = 2 * np.arange(4, dtype: np.Complex).reshape(new shape(2, 2));
             print(element);
@@ -1061,7 +1063,7 @@ namespace NumpyDotNetTests
 
             AssertArray(a, new Complex[] { 2, 4 });
             AssertShape(a, 2);
-            AssertStrides(a, 16*2);
+            AssertStrides(a, SizeofComplex);
 
             print("***********");
 
@@ -1085,7 +1087,7 @@ namespace NumpyDotNetTests
 
             AssertArray(a, new Complex[] { 0, 6 });
             AssertShape(a, 2);
-            AssertStrides(a, 16*2);
+            AssertStrides(a, SizeofComplex);
         }
 
         [Ignore] // same compare problem
@@ -2676,11 +2678,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_degrees_1_COMPLEX_TODO()
+        public void test_degrees_1_COMPLEX()
         {
-            var rad = np.arange(12.0, dtype: np.Decimal) * Math.PI / 6;
+            var rad = np.arange(12.0, dtype: np.Complex) * Math.PI / 6;
             var a = np.degrees(rad);
-            AssertArray(a, new double[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 });
+            AssertArray(a, new Complex[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 });
             print(a);
 
             //var _out = np.zeros((rad.shape));
@@ -2690,11 +2692,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_radians_1_COMPLEX_TODO()
+        public void test_radians_1_COMPLEX()
         {
-            var deg = np.arange(12.0, dtype: np.Decimal) * 30.0;
+            var deg = np.arange(12.0, dtype: np.Complex) * 30.0;
             var a = np.radians(deg);
-            AssertArray(a, new double[] { 0.0, 0.523598775598299, 1.0471975511966, 1.5707963267949, 2.0943951023932,
+            AssertArray(a, new Complex[] { 0.0, 0.523598775598299, 1.0471975511966, 1.5707963267949, 2.0943951023932,
                                          2.61799387799149, 3.14159265358979, 3.66519142918809, 4.18879020478639,
                                         4.71238898038469, 5.23598775598299, 5.75958653158129 });
             print(a);
@@ -2705,28 +2707,86 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void test_around_1_COMPLEX_TODO()
+        static int FieldOffset<T>(string fieldName)
         {
-            ndarray a = np.around(np.array(new decimal[] { 0.37m, 1.64m }));
+            if (typeof(T).IsValueType == false)
+            {
+                throw new ArgumentOutOfRangeException("T");
+            }
+            var AllFields = typeof(T).GetFields(System.Reflection.BindingFlags.FlattenHierarchy);
+
+            System.Reflection.FieldInfo field = typeof(T).GetField(fieldName, System.Reflection.BindingFlags.NonPublic);
+            if (field == null)
+            {
+                throw new ArgumentOutOfRangeException("fieldName");
+            }
+            object[] attributes = field.GetCustomAttributes(
+                typeof(System.Runtime.InteropServices.FieldOffsetAttribute),
+                true
+            );
+            if (attributes.Length == 0)
+            {
+                throw new ArgumentException();
+            }
+            System.Runtime.InteropServices.FieldOffsetAttribute fieldOffset = (System.Runtime.InteropServices.FieldOffsetAttribute)attributes[0];
+            return fieldOffset.Value;
+        }
+        static int PropertyOffset<T>(string fieldName)
+        {
+            if (typeof(T).IsValueType == false)
+            {
+                throw new ArgumentOutOfRangeException("T");
+            }
+            System.Reflection.PropertyInfo field = typeof(T).GetProperty(fieldName);
+            if (field == null)
+            {
+                throw new ArgumentOutOfRangeException("fieldName");
+            }
+            object[] attributes = field.GetCustomAttributes(typeof(System.Runtime.InteropServices._PropertyBuilder),true);
+            if (attributes.Length == 0)
+            {
+                throw new ArgumentException();
+            }
+            System.Runtime.InteropServices.FieldOffsetAttribute fieldOffset = (System.Runtime.InteropServices.FieldOffsetAttribute)attributes[0];
+            return fieldOffset.Value;
+        }
+
+        [TestMethod]
+        public void test_around_1_COMPLEX()
+        {
+            System.Numerics.Complex C = new System.Numerics.Complex(1.37, 1.47);
+
+            //var ioffset = FieldOffset<System.Numerics.Complex>("m_imaginary");
+            //var roffset = FieldOffset<System.Numerics.Complex>("m_real");
+            //var moffset = FieldOffset<System.Numerics.Complex>("Magnitude");
+            //var poffset = FieldOffset<System.Numerics.Complex>("Phase");
+
+
+            var kk = np.array(new Complex[] { new Complex(1.37, 1.47), new Complex(2.64, 2.47) });
+            var rr = kk.Real;
+            var ii = kk.Imag;
+
+            return;
+
+            ndarray a = np.around(np.array(new Complex[] { 0.37, 1.64 }));
             print(a);
-            AssertArray(a, new decimal[] { 0, 2 });
+            AssertArray(a, new Complex[] { 0, 2 });
 
-            ndarray b = np.around(np.array(new decimal[] { 0.37m, 1.64m }), decimals: 1);
+            ndarray b = np.around(np.array(new Complex[] { 0.37, 1.64 }), decimals: 1);
             print(b);
-            AssertArray(b, new decimal[] { 0.4m, 1.6m });
+            AssertArray(b, new Complex[] { 0.4, 1.6 });
 
-            ndarray c = np.around(np.array(new decimal[] { .5m, 1.5m, 2.5m, 3.5m, 4.5m })); // rounds to nearest even value
+            ndarray c = np.around(np.array(new Complex[] { .5, 1.5, 2.5, 3.5, 4.5 })); // rounds to nearest even value
             print(c);
-            AssertArray(c, new decimal[] { 0.0m, 2.0m, 2.0m, 4.0m, 4.0m });
+            AssertArray(c, new Complex[] { 0.0, 2.0, 2.0, 4.0, 4.0 });
 
-            ndarray d = np.around(np.array(new decimal[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
+            ndarray d = np.around(np.array(new Complex[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
             print(d);
-            AssertArray(d, new decimal[] { 1, 2, 3, 11 });
+            AssertArray(d, new Complex[] { 1, 2, 3, 11 });
 
-            ndarray e = np.around(np.array(new decimal[] { 1, 2, 3, 11 }), decimals: -1);
+            ndarray e = np.around(np.array(new Complex[] { 1, 2, 3, 11 }), decimals: -1);
             print(e);
-            AssertArray(e, new decimal[] { 0, 0, 0, 10 });
+            AssertArray(e, new Complex[] { 0, 0, 0, 10 });
         }
 
         [TestMethod]
