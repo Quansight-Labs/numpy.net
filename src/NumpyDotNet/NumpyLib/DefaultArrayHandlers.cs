@@ -2539,7 +2539,7 @@ namespace NumpyLib
 
         public int ItemSize
         {
-            get { return sizeof(double) * 4; }
+            get { return sizeof(double) * 2; }
         }
 
         System.Numerics.Complex ConvertToComplex(object o)
