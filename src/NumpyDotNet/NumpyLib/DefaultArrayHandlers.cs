@@ -2802,14 +2802,15 @@ namespace NumpyLib
             Complex a = (Complex)bValue;
             Complex b = (Complex)operand;
 
-            return Math.Min(a.Real, b.Real);
+            return new Complex(Math.Min(a.Real, b.Real), 0);
+
         }
         protected override object Rint(dynamic bValue, dynamic operand)
         {
             Complex a = (Complex)bValue;
             Complex b = (Complex)operand;
 
-            return Math.Round(a.Real);
+            return new Complex(Math.Round(a.Real), Math.Round(a.Imaginary));
         }
     }
 }

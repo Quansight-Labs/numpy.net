@@ -72,17 +72,18 @@ namespace NumpyDotNet
 
         internal object Round(int decimals, ndarray ret = null)
         {
-            // For complex just round both parts.
-            if (IsComplex)
-            {
-                if (ret == null)
-                {
-                    ret = Copy();
-                }
-                Real.Round(decimals, ret.Real);
-                Imag.Round(decimals, ret.Imag);
-                return ret;
-            }
+            // KM: this is done in the rint handler function for COMPLEX variables
+            // For complex just round both parts. 
+            //if (IsComplex)
+            //{
+            //    if (ret == null)
+            //    {
+            //        ret = Copy();
+            //    }
+            //    Real.Round(decimals, ret.Real);
+            //    Imag.Round(decimals, ret.Imag);
+            //    return ret;
+            //}
 
             if (decimals >= 0 && IsInteger)
             {
