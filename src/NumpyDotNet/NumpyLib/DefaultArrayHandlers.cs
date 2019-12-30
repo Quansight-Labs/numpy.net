@@ -2769,12 +2769,12 @@ namespace NumpyLib
         protected override object Floor(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
-            return Math.Floor(dValue.Real);
+            return new Complex(Math.Floor(dValue.Real), Math.Floor(dValue.Imaginary));
         }
         protected override object Ceiling(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
-            return Math.Ceiling(dValue.Real);
+            return new Complex(Math.Ceiling(dValue.Real), Math.Ceiling(dValue.Imaginary));
         }
         protected override object Maximum(object bValue, object operand)
         {
