@@ -179,8 +179,13 @@ namespace NumpyLib
             NpyArray_Descr type;
             int offset;
 
-            type = NpyArray_DescrFromType((NpyArray_TYPE(self) - npy_defs.NPY_NUM_FLOATTYPE));
-            offset = (imag ? type.elsize : 0);
+            type = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+
+            if (imag)
+                offset = sizeof(double);
+            else
+                offset = 0;
+
 
             if (!NpyArray_ISNBO(self))
             {
