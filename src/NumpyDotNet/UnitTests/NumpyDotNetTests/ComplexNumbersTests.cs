@@ -2707,70 +2707,14 @@ namespace NumpyDotNetTests
 
         }
 
-        static int FieldOffset<T>(string fieldName)
-        {
-            if (typeof(T).IsValueType == false)
-            {
-                throw new ArgumentOutOfRangeException("T");
-            }
-            var AllFields = typeof(T).GetFields(System.Reflection.BindingFlags.FlattenHierarchy);
-
-            System.Reflection.FieldInfo field = typeof(T).GetField(fieldName, System.Reflection.BindingFlags.NonPublic);
-            if (field == null)
-            {
-                throw new ArgumentOutOfRangeException("fieldName");
-            }
-            object[] attributes = field.GetCustomAttributes(
-                typeof(System.Runtime.InteropServices.FieldOffsetAttribute),
-                true
-            );
-            if (attributes.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-            System.Runtime.InteropServices.FieldOffsetAttribute fieldOffset = (System.Runtime.InteropServices.FieldOffsetAttribute)attributes[0];
-            return fieldOffset.Value;
-        }
-        static int PropertyOffset<T>(string fieldName)
-        {
-            if (typeof(T).IsValueType == false)
-            {
-                throw new ArgumentOutOfRangeException("T");
-            }
-            System.Reflection.PropertyInfo field = typeof(T).GetProperty(fieldName);
-            if (field == null)
-            {
-                throw new ArgumentOutOfRangeException("fieldName");
-            }
-            object[] attributes = field.GetCustomAttributes(typeof(System.Runtime.InteropServices._PropertyBuilder),true);
-            if (attributes.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-            System.Runtime.InteropServices.FieldOffsetAttribute fieldOffset = (System.Runtime.InteropServices.FieldOffsetAttribute)attributes[0];
-            return fieldOffset.Value;
-        }
-
+ 
         [TestMethod]
         public void test_around_1_COMPLEX()
         {
-            System.Numerics.Complex C = new System.Numerics.Complex(1.37, 1.47);
-
-            //var ioffset = FieldOffset<System.Numerics.Complex>("m_imaginary");
-            //var roffset = FieldOffset<System.Numerics.Complex>("m_real");
-            //var moffset = FieldOffset<System.Numerics.Complex>("Magnitude");
-            //var poffset = FieldOffset<System.Numerics.Complex>("Phase");
-
-
-            var kk = np.array(new Complex[] { new Complex(1.37, 1.47), new Complex(2.64, 2.47) });
-            var rr = kk.Real;
-            var ii = kk.Imag;
-
-            return;
-
-            ndarray a = np.around(np.array(new Complex[] { 0.37, 1.64 }));
+    
+            ndarray a = np.around(np.array(new Complex[] { new Complex(0.37, .49), new Complex(1.64, .51) } ));
             print(a);
-            AssertArray(a, new Complex[] { 0, 2 });
+            AssertArray(a, new Complex[] { new Complex(0, 0), new Complex(2, 1) });
 
             ndarray b = np.around(np.array(new Complex[] { 0.37, 1.64 }), decimals: 1);
             print(b);
@@ -2790,13 +2734,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_round_1_COMPLEX_TODO()
+        public void test_round_1_COMPLEX()
         {
-            decimal ref_step = 0;
-            var a = np.linspace(-1.0m, 1.0m, ref ref_step, 12).reshape((2, 2, 3));
+            Complex ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
             print(a);
 
-            var ExpectedData1 = new decimal[,,] { { { -1.0m, -0.82m, -0.64m }, { -0.45m, -0.27m, -0.09m } }, { { 0.09m, 0.27m, 0.45m }, { 0.64m, 0.82m, 1.0m } } };
+            var ExpectedData1 = new Complex[,,] { { { -1.0, -0.82, -0.64 }, { -0.45, -0.27, -0.09 } }, { { 0.09, 0.27, 0.45 }, { 0.64, 0.82, 1.0 } } };
 
             print("********");
             var b = np.round_(a, 2);
@@ -2809,7 +2753,7 @@ namespace NumpyDotNetTests
             AssertArray(c, ExpectedData1);
             print(c);
 
-            var ExpectedData2 = new decimal[,,] { { { -1.0m, -0.8182m, -0.6364m }, { -0.4545m, -0.2727m, -0.0909m } }, { { 0.0909m, 0.2727m, 0.4545m }, { 0.6364m, 0.8182m, 1.0m } } };
+            var ExpectedData2 = new Complex[,,] { { { -1.0, -0.8182, -0.6364 }, { -0.4545, -0.2727, -0.0909 } }, { { 0.0909, 0.2727, 0.4545 }, { 0.6364, 0.8182, 1.0 } } };
 
             print("********");
             b = np.round_(a, 4);
@@ -2825,18 +2769,18 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fix_1_COMPLEX_TODO()
+        public void test_fix_1_COMPLEX()
         {
-            var a = np.fix(3.14m);
-            Assert.AreEqual(3.0m, a.GetItem(0));
+            var a = np.fix((Complex)3.14);
+            Assert.AreEqual((Complex)3.0, a.GetItem(0));
             print(a);
 
-            var b = np.fix(3m);
-            Assert.AreEqual(3m, b.GetItem(0));
+            var b = np.fix((Complex)3);
+            Assert.AreEqual((Complex)3, b.GetItem(0));
             print(b);
 
-            var c = np.fix(new decimal[] { 2.1m, 2.9m, -2.1m, -2.9m });
-            AssertArray(c, new decimal[] { 2.0m, 2.0m, -2.0m, -2.0m });
+            var c = np.fix(new Complex[] { 2.1, 2.9, -2.1, -2.9 });
+            AssertArray(c, new Complex[] { 2.0, 2.0, -2.0, -2.0 });
             print(c);
         }
 
