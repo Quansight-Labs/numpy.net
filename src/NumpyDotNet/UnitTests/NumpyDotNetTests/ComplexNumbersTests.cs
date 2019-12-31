@@ -3181,12 +3181,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sinc_1_COMPLEX_TODO()
+        public void test_sinc_1_COMPLEX()
         {
-            double retstep = 0;
-            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Decimal);
+            Complex retstep = 0;
+            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Complex);
             var a = np.sinc(x);
-            AssertArray(a, new double[] {-3.89817183e-17, -3.49934120e-02,  9.20725429e-02, -2.06748336e-01, 7.05316598e-01,
+            AssertArray(a, new Complex[] {-3.89817183e-17, -3.49934120e-02,  9.20725429e-02, -2.06748336e-01, 7.05316598e-01,
                                           7.05316598e-01, -2.06748336e-01,  9.20725429e-02, -3.49934120e-02, -3.89817183e-17 });
             print(a);
 
@@ -3195,7 +3195,7 @@ namespace NumpyDotNetTests
             var xx = np.outer(x, x);
             var b = np.sinc(xx);
 
-            var ExpectedDataB = new double[,]
+            var ExpectedDataB = new Complex[,]
 
                 {{-3.89817183e-17,  2.51898785e-02,  1.22476942e-02, -5.16870839e-02, -1.15090679e-01,
                   -1.15090679e-01, -5.16870839e-02,  1.22476942e-02,  2.51898785e-02, -3.89817183e-17},
@@ -3225,21 +3225,21 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_signbit_1_COMPLEX_TODO()
+        public void test_signbit_1_COMPLEX()
         {
-            var a = np.signbit(-1.2m);
+            var a = np.signbit((Complex)(-1.2));
             Assert.AreEqual(true, a.GetItem(0));
             print(a);
 
-            var b = np.signbit(np.array(new decimal[] { 1, -2.3m, 2.1m }));
+            var b = np.signbit(np.array(new Complex[] { 1, -2.3, 2.1 }));
             AssertArray(b, new bool[] { false, true, false });
             print(b);
 
-            var c = np.signbit(np.array(new decimal[] { +0.0m, -0.0m }));  // note: different result than python.  No such thing as -0.0
+            var c = np.signbit(np.array(new Complex[] { +0.0, -0.0 }));  // note: different result than python.  No such thing as -0.0
             AssertArray(c, new bool[] { false, false });
             print(c);
 
-            var f = np.signbit(np.array(new decimal[] { -1, 0, 1 }));
+            var f = np.signbit(np.array(new Complex[] { -1, 0, 1 }));
             AssertArray(f, new bool[] { true, false, false });
             print(f);
         }
