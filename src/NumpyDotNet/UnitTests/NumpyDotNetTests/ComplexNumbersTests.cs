@@ -331,13 +331,13 @@ namespace NumpyDotNetTests
             var y = x.byteswap(true);
             print(y);
 
-            // decimals can't be swapped.  Data should be unchanged
+            // complex can't be swapped.  Data should be unchanged
             AssertArray(y, x.AsComplexArray());
 
             y = x.byteswap(false);
             print(y);
 
-            // decimals can't be swapped.  Data should be unchanged
+            // complex can't be swapped.  Data should be unchanged
             AssertArray(y, x.AsComplexArray());
 
         }
@@ -973,7 +973,6 @@ namespace NumpyDotNetTests
             print(x);
         }
 
-        [Ignore]  // need to fix issue with sorting
         [TestMethod]
         public void test_intersect1d_1_COMPLEX()
         {
@@ -985,11 +984,10 @@ namespace NumpyDotNetTests
 
             AssertArray(c, new Complex[] { 1, 3 });
             AssertShape(c, 2);
-            AssertStrides(c, SizeofComplex * 2);
+            AssertStrides(c, SizeofComplex);
 
         }
 
-        [Ignore]  // need to fix issue with sorting
         [TestMethod]
         public void test_setxor1d_1_COMPLEX()
         {
@@ -1090,7 +1088,6 @@ namespace NumpyDotNetTests
             AssertStrides(a, SizeofComplex);
         }
 
-        [Ignore] // same compare problem
         [TestMethod]
         public void test_union1d_1_COMPLEX()
         {
@@ -1102,7 +1099,7 @@ namespace NumpyDotNetTests
 
             AssertArray(a, new Complex[] { -2, -1, 0, 1, 2 });
             AssertShape(a, 5);
-            AssertStrides(a, 16*2);
+            AssertStrides(a, SizeofComplex);
         }
 
         [TestMethod]
@@ -1794,7 +1791,7 @@ namespace NumpyDotNetTests
             var b = ~a;
             print(b);
 
-            // this should not be changed at all.  Decimals can't be inverted.
+            // this should not be changed at all.  complex can't be inverted.
             AssertArray(b, a.AsComplexArray());
 
         }
@@ -1967,12 +1964,12 @@ namespace NumpyDotNetTests
             Assert.AreEqual(-32, b.GetItem(0));
             print(b);
 
-            // can't inverse a decimal
+            // can't inverse a complex
             var c = np.bitwise_not(new Complex[] { 31, 3 });
             AssertArray(c, new Complex[] { 31, 3 });
             print(c);
 
-            // can't inverse a decimal
+            // can't inverse a complex
             var d = np.bitwise_not(new Complex[] { 31, 3 });
             AssertArray(d, new Complex[] { 31, 3 });
             print(d);
@@ -1995,12 +1992,12 @@ namespace NumpyDotNetTests
             Assert.AreEqual(-32, b.GetItem(0));
             print(b);
 
-            // can't inverse a decimal
+            // can't inverse a complex
             var c = np.invert(new Complex[] { 31, 3 });
             AssertArray(c, new Complex[] { 31, 3 });
             print(c);
 
-            // can't inverse a decimal
+            // can't inverse a complex
             var d = np.invert(new Complex[] { 31, 3 });
             AssertArray(d, new Complex[] { 31, 3 });
             print(d);
@@ -2090,12 +2087,11 @@ namespace NumpyDotNetTests
             print(x);
             print(y);
 
-            // decimals don't support NAN so must be false
+            // complex don't support NAN so must be false
             AssertArray(y, new bool[] { false, false, false, false, false, false, false, false });
 
         }
 
-        [Ignore] // same sort issue
         [TestMethod]
         public void test_setdiff1d_COMPLEX()
         {
@@ -2114,7 +2110,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // same sort issue
         [TestMethod] 
         public void test_setdiff1d_2_COMPLEX()
         {
@@ -2224,17 +2219,17 @@ namespace NumpyDotNetTests
         public void test_logical_xor_1_COMPLEX()
         {
 
-            var x = np.arange(5, dtype: np.Decimal);
+            var x = np.arange(5, dtype: np.Complex);
             var c = np.logical_xor(x < 1, x > 3);
             AssertArray(c, new bool[] { true, false, false, false, true });
             print(c);
 
-            var y = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            var y = np.arange(6, dtype: np.Complex).reshape((2, 3));
             var d = np.logical_xor(y < 1, y > 3);
             AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
             print(d);
 
-            var e = np.logical_xor(0, np.eye(2, dtype: np.Decimal));
+            var e = np.logical_xor(0, np.eye(2, dtype: np.Complex));
             AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
 
