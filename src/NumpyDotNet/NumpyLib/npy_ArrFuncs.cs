@@ -1276,65 +1276,8 @@ namespace NumpyLib
 
         private static int NpyArray_SortFuncTypeNum(VoidPtr data, int offset, int length)
         {
-            switch (data.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    var dbool = data.datap as bool[];
-                    Array.Sort(dbool, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_BYTE:
-                    var dsbyte = data.datap as sbyte[];
-                    Array.Sort(dsbyte, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_UBYTE:
-                    var dbyte = data.datap as byte[];
-                    Array.Sort(dbyte, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_UINT16:
-                    var duint16 = data.datap as UInt16[];
-                    Array.Sort(duint16, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_INT16:
-                    var dint16 = data.datap as Int16[];
-                    Array.Sort(dint16, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_UINT32:
-                    var duint32 = data.datap as UInt32[];
-                    Array.Sort(duint32, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_INT32:
-                    var dint32 = data.datap as Int32[];
-                    Array.Sort(dint32, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_INT64:
-                    var dint64 = data.datap as Int64[];
-                    Array.Sort(dint64, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_UINT64:
-                    var duint64 = data.datap as UInt64[];
-                    Array.Sort(duint64, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_FLOAT:
-                    var float1 = data.datap as float[];
-                    Array.Sort(float1, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_DOUBLE:
-                    var double1 = data.datap as double[];
-                    Array.Sort(double1, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_DECIMAL:
-                    var decimal1 = data.datap as decimal[];
-                    Array.Sort(decimal1, offset, length);
-                    return 0;
-                case NPY_TYPES.NPY_COMPLEX:
-                    var complex1 = data.datap as System.Numerics.Complex[];
-                    Array.Sort(complex1, offset, length);
-                    return 0;
-                default:
-                    throw new Exception("Unsupported data type");
-            }
-
-
+            DefaultArrayHandlers.GetArrayHandler(data.type_num).SortArray(data, offset, length);
+            return 0;
         }
 
 

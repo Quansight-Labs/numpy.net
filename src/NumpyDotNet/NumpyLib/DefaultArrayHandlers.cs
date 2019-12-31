@@ -61,6 +61,7 @@ namespace NumpyLib
         object AllocateNewArray(int size);
         object AllocateAndCopy(object datap, int startingOffset, int numElements);
         void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n);
+        void SortArray(VoidPtr data, int offset, int length);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -227,8 +228,14 @@ namespace NumpyLib
             Array.Copy(datap as T[], startingOffset, data, 0, numElements);
             return data;
         }
+        public virtual void SortArray(VoidPtr data, int offset, int length)
+        {
+            var arr = data.datap as T[];
+            Array.Sort(arr, offset, length);
+        }
 
- 
+
+
         public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
             T tmp = default(T);
