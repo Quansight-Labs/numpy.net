@@ -156,81 +156,81 @@ namespace NumpyLib
             switch (type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    arrFuncs.copyswap = BOOL_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<bool>;
                     arrFuncs.nonzero = BOOL_NonZeroFunc;
                     arrFuncs.getitem = BOOL_GetItemFunc;
                     arrFuncs.setitem = BOOL_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    arrFuncs.copyswap = BYTE_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<sbyte>;
                     arrFuncs.nonzero = BYTE_NonZeroFunc;
                     arrFuncs.getitem = BYTE_GetItemFunc;
                     arrFuncs.setitem = BYTE_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    arrFuncs.copyswap = UBYTE_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<byte>;
                     arrFuncs.nonzero = UBYTE_NonZeroFunc;
                     arrFuncs.getitem = UBYTE_GetItemFunc;
                     arrFuncs.setitem = UBYTE_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    arrFuncs.copyswap = INT16_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<Int16>;
                     arrFuncs.nonzero = INT16_NonZeroFunc;
                     arrFuncs.getitem = INT16_GetItemFunc;
                     arrFuncs.setitem = INT16_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    arrFuncs.copyswap = UINT16_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<UInt16>;
                     arrFuncs.nonzero = UINT16_NonZeroFunc;
                     arrFuncs.getitem = UINT16_GetItemFunc;
                     arrFuncs.setitem = UINT16_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    arrFuncs.copyswap = INT32_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<Int32>;
                     arrFuncs.nonzero = INT32_NonZeroFunc;
                     arrFuncs.getitem = INT32_GetItemFunc;
                     arrFuncs.setitem = INT32_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    arrFuncs.copyswap = UINT32_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<UInt32>;
                     arrFuncs.nonzero = UINT32_NonZeroFunc;
                     arrFuncs.getitem = UINT32_GetItemFunc;
                     arrFuncs.setitem = UINT32_SetItemFunc;
                     arrFuncs.setitem = UINT32_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    arrFuncs.copyswap = INT64_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<Int64>;
                     arrFuncs.nonzero = INT64_NonZeroFunc;
                     arrFuncs.getitem = INT64_GetItemFunc;
                     arrFuncs.setitem = INT64_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    arrFuncs.copyswap = UINT64_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<UInt64>;
                     arrFuncs.nonzero = UINT64_NonZeroFunc;
                     arrFuncs.getitem = UINT64_GetItemFunc;
                     arrFuncs.setitem = UINT64_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    arrFuncs.copyswap = FLOAT_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<float>;
                     arrFuncs.nonzero = FLOAT_NonZeroFunc;
                     arrFuncs.getitem = FLOAT_GetItemFunc;
                     arrFuncs.setitem = FLOAT_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    arrFuncs.copyswap = DOUBLE_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<double>;
                     arrFuncs.nonzero = DOUBLE_NonZeroFunc;
                     arrFuncs.getitem = DOUBLE_GetItemFunc;
                     arrFuncs.setitem = DOUBLE_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    arrFuncs.copyswap = DECIMAL_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<decimal>;
                     arrFuncs.nonzero = DECIMAL_NonZeroFunc;
                     arrFuncs.getitem = DECIMAL_GetItemFunc;
                     arrFuncs.setitem = DECIMAL_SetItemFunc;
                     break;
 
                 case NPY_TYPES.NPY_COMPLEX:
-                    arrFuncs.copyswap = COMPLEX_copyswap;
+                    arrFuncs.copyswap = Common_copyswap<System.Numerics.Complex>;
                     arrFuncs.nonzero = COMPLEX_NonZeroFunc;
                     arrFuncs.getitem = COMPLEX_GetItemFunc;
                     arrFuncs.setitem = COMPLEX_SetItemFunc;
@@ -733,58 +733,7 @@ namespace NumpyLib
         }
 
         #region copyswap
-        internal static void BOOL_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<bool>(dest, Source, swap, arr);
-        }
-        internal static void BYTE_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<sbyte>(dest, Source, swap, arr);
-        }
-        internal static void UBYTE_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<byte>(dest, Source, swap, arr);
-        }
-        internal static void INT16_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<Int16>(dest, Source, swap, arr);
-        }
-        internal static void UINT16_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<UInt16>(dest, Source, swap, arr);
-        }
-        internal static void INT32_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<Int32>(dest, Source, swap, arr);
-        }
-        internal static void UINT32_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<UInt32>(dest, Source, swap, arr);
-        }
-        internal static void INT64_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<Int64>(dest, Source, swap, arr);
-        }
-        internal static void UINT64_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<UInt64>(dest, Source, swap, arr);
-        }
-        internal static void FLOAT_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<float>(dest, Source, swap, arr);
-        }
-        internal static void DOUBLE_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<double>(dest, Source, swap, arr);
-        }
-        internal static void DECIMAL_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<decimal>(dest, Source, swap, arr);
-        }
-        internal static void COMPLEX_copyswap(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
-        {
-            Common_copyswap<System.Numerics.Complex>(dest, Source, swap, arr);
-        }
+  
         internal static void Common_copyswap<T>(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
         {
             if (Source != null)
@@ -1202,6 +1151,7 @@ namespace NumpyLib
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
             return (bp[vp.data_offset / npa.ItemSize] != 0);
         }
+  
         internal static bool NpyArray_NonzeroFunc(VoidPtr vp, NpyArray npa)
         {
             dynamic Item = npa.descr.f.getitem(vp.data_offset, npa);
