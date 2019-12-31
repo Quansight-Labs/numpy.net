@@ -2594,7 +2594,17 @@ namespace NumpyDotNet
             */
 
             var xa = np.asanyarray(x);
-            var y = asanyarray(Math.PI) * (ndarray)np.where(xa == 0, 1.0e-20, xa);
+
+            ndarray y;
+
+            if (xa.IsComplex)
+            {
+                y = asanyarray((System.Numerics.Complex)Math.PI) * (ndarray)np.where(xa == 0, (System.Numerics.Complex)1.0e-20, xa);
+            }
+            else
+            {
+                y = asanyarray(Math.PI) * (ndarray)np.where(xa == 0, 1.0e-20, xa);
+            }
             return sin(y) / y as ndarray;
 
         }

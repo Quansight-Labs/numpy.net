@@ -1110,6 +1110,28 @@ namespace NumpyDotNet
         public static ndarray signbit(object x, object where = null)
         {
             var xa = asanyarray(x);
+            if (xa.IsComplex)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+                ch.results = null;
+
+                bool[] bret = new bool[ch.expectedLength];
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    System.Numerics.Complex f = ch.X1(i);
+                    bret[i] = Math.Sign(f.Real) < 0 ? true : false;
+                }
+
+                var ret = np.array(bret).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
             if (xa.IsFloatingPoint)
             {
                 if (xa.ItemSize <= sizeof(float))
