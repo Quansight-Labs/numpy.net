@@ -3020,7 +3020,7 @@ namespace NumpyLib
         public override void SortArray(VoidPtr data, int offset, int length)
         {
             var arr = data.datap as System.Numerics.Complex[];
-            Quick_Sort(arr, 0, arr.Length - 1);
+            Quick_Sort(arr, offset, offset + length-1);
         }
 
 
