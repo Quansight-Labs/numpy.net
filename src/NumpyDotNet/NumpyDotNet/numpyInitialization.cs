@@ -95,7 +95,27 @@ namespace NumpyDotNet
             }
             NumpyErrors.Add(new NumpyExceptionInfo() { FunctionName = FunctionName, exctype = et, error = error });
 
-            throw new Exception(string.Format("({0}) {1}: {2}", et, FunctionName, error));
+            switch (et)
+            {
+                case npyexc_type.NpyExc_MemoryError:
+                case npyexc_type.NpyExc_IOError:
+                case npyexc_type.NpyExc_ValueError:
+                case npyexc_type.NpyExc_TypeError:
+                case npyexc_type.NpyExc_IndexError:
+                case npyexc_type.NpyExc_RuntimeError:
+                case npyexc_type.NpyExc_AttributeError:
+                case npyexc_type.NpyExc_NotImplementedError:
+                case npyexc_type.NpyExc_DotNetException:
+                case npyexc_type.NpyExc_OverflowError:
+                case npyexc_type.NpyExc_FloatingPointError:
+                    throw new Exception(string.Format("({0}) {1}: {2}", et, FunctionName, error));
+
+                case npyexc_type.NpyExc_ComplexWarning:
+                case npyexc_type.NpyExc_NoError:
+                    break;
+
+            }
+
             return;
         }
 
