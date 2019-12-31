@@ -1157,6 +1157,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     DECIMAL_dot(ip1, is1, ip2, is2, op, n);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    COMPLEX_dot(ip1, is1, ip2, is2, op, n);
+                    break;
             }
 
             return;
@@ -1442,9 +1445,32 @@ namespace NumpyLib
             }
             op[_op.data_offset / opSize] = tmp;
         }
+
+        internal static void COMPLEX_dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            System.Numerics.Complex tmp = 0;
+            npy_intp i;
+
+            System.Numerics.Complex[] ip1 = _ip1.datap as System.Numerics.Complex[];
+            System.Numerics.Complex[] ip2 = _ip2.datap as System.Numerics.Complex[];
+            System.Numerics.Complex[] op = _op.datap as System.Numerics.Complex[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = GetTypeSize(_ip1);
+            npy_intp ip2Size = GetTypeSize(_ip2);
+            npy_intp opSize = GetTypeSize(_op);
+
+            for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
+            {
+                tmp += (System.Numerics.Complex)((System.Numerics.Complex)ip1[ip1_index / ip1Size] * (System.Numerics.Complex)ip2[ip2_index / ip2Size]);
+            }
+            op[_op.data_offset / opSize] = tmp;
+        }
         #endregion
 
- 
+
         internal static int NpyArray_ScanFunc(FileInfo fp, object dptr, string ignore, NpyArray_Descr a)
         {
             return 2;

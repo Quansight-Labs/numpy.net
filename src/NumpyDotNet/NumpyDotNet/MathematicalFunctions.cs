@@ -1825,6 +1825,10 @@ namespace NumpyDotNet
             {
                 ret_type = np.Decimal;
             }
+            if (x1a.IsComplex)
+            {
+                ret_type = np.Complex;
+            }
 
             results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1).astype(ret_type), asanyarray(1), @out1, asanyarray(where));
             results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1).astype(ret_type), asanyarray(1), @out2, asanyarray(where));
