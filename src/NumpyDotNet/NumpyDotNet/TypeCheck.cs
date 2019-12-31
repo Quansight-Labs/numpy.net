@@ -137,7 +137,7 @@ namespace NumpyDotNet
 
             if (x.IsComplex)
             {
-                throw new NotImplementedException("not handling complex numbers yet");
+                return x;
             }
             else
             {

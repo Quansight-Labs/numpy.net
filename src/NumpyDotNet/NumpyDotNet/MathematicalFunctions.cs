@@ -1850,6 +1850,49 @@ namespace NumpyDotNet
         public static ndarray sign(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (xa.IsComplex)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    double Real = 0.0;
+                    double Imaginary = 0.0;
+
+                    System.Numerics.Complex f = ch.X1(i);
+
+
+                    if (f.Real == 0.0)
+                    {
+                        Real = 0.0;
+                    }
+                    else
+                    {
+                        Real = Math.Sign(f.Real) < 0 ? -1.0 : 1.0;
+                    }
+
+                    if (f.Imaginary == 0.0)
+                    {
+                        Imaginary = 0.0;
+                    }
+                    else
+                    {
+                        Imaginary = Math.Sign(f.Real) < 0 ? -1.0 : 1.0;
+                    }
+                    ch.results[i] = new System.Numerics.Complex(Real, Imaginary);
+                }
+
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
             if (xa.IsFloatingPoint)
             {
                 if (xa.ItemSize <= sizeof(float))
