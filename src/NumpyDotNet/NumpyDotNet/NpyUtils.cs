@@ -59,7 +59,7 @@ namespace NumpyDotNet {
                 return np.Decimal;
 
             if (arr1.IsComplex || arr2.IsComplex)
-                throw new NotImplementedException("don't support complex yet");
+                return np.Complex;
 
             return np.Float64;
         }
