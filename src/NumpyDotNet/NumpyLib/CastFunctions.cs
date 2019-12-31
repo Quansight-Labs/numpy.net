@@ -105,6 +105,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     DefaultCastsToDecimal(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    DefaultCastsToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
             return;
@@ -154,6 +157,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToBools(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToBools(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -196,6 +202,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToBytes(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToBytes(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -240,6 +249,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToUBytes(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToUBytes(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -282,6 +294,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToInt16s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToInt16s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -326,6 +341,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToUInt16s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToUInt16s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -368,6 +386,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToInt32s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToInt32s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -412,6 +433,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToUInt32s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToUInt32s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -454,6 +478,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToInt64s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToInt64s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -498,6 +525,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToUInt64s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToUInt64s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -540,6 +570,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToFloats(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToFloats(Src, src_offset, Dest, dest_offset, srclen);
                     break;
 
             }
@@ -586,6 +619,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToDoubles(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToDoubles(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
 
@@ -630,6 +666,57 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     CastDecimalsToDecimals(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToDecimals(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+
+        }
+
+        static void DefaultCastsToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    CastBoolsToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    CastBytesToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    CastUBytesToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    CastInt16sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    CastUInt16sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    CastInt32sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    CastUInt32sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    CastInt64sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    CastUInt64sToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    CastFloatsToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    CastDoublesToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    CastDecimalsToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToComplex(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
 
@@ -784,6 +871,18 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToBools(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as bool[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (bool)(s[index + src_offset].Real != 0 ? true : false);
+                index++;
+            }
+        }
         #endregion
 
         #region Bytes specific casts
@@ -931,6 +1030,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToSByte(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = SByte.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastComplexToBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as sbyte[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToSByte(s[index + src_offset].Real);
                 }
                 catch
                 {
@@ -1095,6 +1214,26 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToUBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as byte[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToByte(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Byte.MinValue;
+                }
+
+                index++;
+            }
+        }
         #endregion
 
         #region Int16 specific casts
@@ -1249,6 +1388,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as Int16[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToInt16(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int16.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt16 specific casts
@@ -1395,6 +1553,25 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt16(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt16.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastComplexToUInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as UInt16[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToUInt16(s[index + src_offset].Real);
                 }
                 catch
                 {
@@ -1558,6 +1735,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as Int32[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToInt32(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int32.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt32 specific casts
@@ -1704,6 +1900,25 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt32(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt32.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastComplexToUInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as UInt32[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToUInt32(s[index + src_offset].Real);
                 }
                 catch
                 {
@@ -1867,6 +2082,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as Int64[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToInt64(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int64.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt64 specific casts
@@ -2013,6 +2247,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt64(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt64.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastComplexToUInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as UInt64[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToUInt64(s[index + src_offset].Real);
                 }
                 catch
                 {
@@ -2177,6 +2431,26 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastComplexToFloats(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as float[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToSingle(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Single.MinValue;
+                }
+
+                index++;
+            }
+        }
         #endregion
 
         #region Double specific casts
@@ -2323,6 +2597,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToDouble(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Double.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastComplexToDoubles(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as double[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToDouble(s[index + src_offset].Real);
                 }
                 catch
                 {
@@ -2490,6 +2784,191 @@ namespace NumpyLib
             while (srclen-- > 0)
             {
                 d[index + dest_offset] = (decimal)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastComplexToDecimals(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as decimal[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (decimal)(s[index + src_offset].Real);
+                index++;
+            }
+        }
+        #endregion
+
+        #region Complex specific casts
+        static void CastBoolsToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as bool[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset] == true ? 1 : 0);
+                index++;
+            }
+        }
+        static void CastBytesToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as sbyte[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUBytesToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as byte[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt16sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int16[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt16sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt16[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt32sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int32[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt32sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt32[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt64sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int64[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt64sToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt64[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastFloatsToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as float[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToDouble(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = double.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastDoublesToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as double[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = Convert.ToDouble(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = double.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastDecimalsToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as decimal[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = Convert.ToDouble(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastComplexToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
                 index++;
             }
         }
