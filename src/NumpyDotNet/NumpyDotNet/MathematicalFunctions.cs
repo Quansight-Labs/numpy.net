@@ -833,20 +833,43 @@ namespace NumpyDotNet
 
         public static ndarray exp(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Exp(ch.X1(i));
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Exp(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Exp(ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
+  
         }
 
         public static ndarray expm1(object x, object where = null)
@@ -881,20 +904,42 @@ namespace NumpyDotNet
 
         public static ndarray exp2(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var xa = asanyarray(x);
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Pow(2, ch.X1(i));
-            }
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Pow(2, ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
             {
-                ret[np.invert(where)] = np.NaN;
-            }
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
 
-            return ret;
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Pow(2, ch.X1(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+  
         }
 
         public static ndarray log(object x, object where = null)
