@@ -597,7 +597,7 @@ namespace NumpyLib
             }
             else if (dest.type_num == NPY_TYPES.NPY_COMPLEX)
             {
-                VoidPtr Temp = new VoidPtr(new System.Numerics.Complex[len / sizeof(decimal) * 2]);
+                VoidPtr Temp = new VoidPtr(new System.Numerics.Complex[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize]);
                 MemCopy.MemCpy(Temp, 0, src, src_offset, len);
                 MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
             }

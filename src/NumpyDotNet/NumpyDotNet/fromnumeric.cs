@@ -445,13 +445,13 @@ namespace NumpyDotNet
             ndarray aValues;
             NPY_CLIPMODE eMode;
 
-            aIndices = (indices as ndarray);
+            aIndices = asanyarray(indices);
             if (aIndices == null)
             {
                 aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NpyDefs.NPY_INTP),
                     0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
             }
-            aValues = (values as ndarray);
+            aValues = asanyarray(values);
             if (aValues == null)
             {
                 aValues = np.FromAny(values, a.Dtype, 0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
