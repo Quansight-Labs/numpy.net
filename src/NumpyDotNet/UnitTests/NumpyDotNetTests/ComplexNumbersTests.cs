@@ -3654,80 +3654,81 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fmod_2_COMPLEX_TODO()
+        public void test_fmod_2_COMPLEX()
         {
-            var x = np.fmod(new decimal[] { -4, -7 }, new decimal[] { 2, 3 });
-            AssertArray(x, new decimal[] { 0, -1 });
+            var x = np.fmod(new Complex[] { -4, -7 }, new Complex[] { 2, 3 });
+            AssertArray(x, new Complex[] { 0, -1 });
             print(x);
 
-            var y = np.fmod(np.arange(7, dtype: np.Decimal), -5m);
-            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.fmod(np.arange(7, dtype: np.Complex), -5);
+            AssertArray(y, new Complex[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_mod_1_COMPLEX_TODO()
+        public void test_mod_1_COMPLEX
+            ()
         {
-            var x = np.mod(new decimal[] { 4, 7 }, new decimal[] { 2, 3 });
-            AssertArray(x, new decimal[] { 0, 1 });
+            var x = np.mod(new Complex[] { 4, 7 }, new Complex[] { 2, 3 });
+            AssertArray(x, new Complex[] { 0, 1 });
             print(x);
 
-            var y = np.mod(np.arange(7, dtype: np.Decimal), 5m);
-            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.mod(np.arange(7, dtype: np.Complex), 5);
+            AssertArray(y, new Complex[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_modf_1_COMPLEX_TODO()
+        public void test_modf_1_COMPLEX()
         {
-            var x = np.modf(new decimal[] { 0, 3.5m });
-            AssertArray(x[0], new decimal[] { 0m, 0.5m });
-            AssertArray(x[1], new decimal[] { 0m, 3.0m });
+            var x = np.modf(new Complex[] { 0, 3.5 });
+            AssertArray(x[0], new Complex[] { 0, 0.5 });
+            AssertArray(x[1], new Complex[] { 0, 3.0 });
             print(x);
 
-            var y = np.modf(np.arange(7, dtype: np.Decimal));
-            AssertArray(y[0], new decimal[] { 0, 0, 0, 0, 0, 0, 0 });
-            AssertArray(y[1], new decimal[] { 0, 1, 2, 3, 4, 5, 6 });
+            var y = np.modf(np.arange(7, dtype: np.Complex));
+            AssertArray(y[0], new Complex[] { 0, 0, 0, 0, 0, 0, 0 });
+            AssertArray(y[1], new Complex[] { 0, 1, 2, 3, 4, 5, 6 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_remainder_2_COMPLEX_TODO()
+        public void test_remainder_2_COMPLEX()
         {
-            var x = np.remainder(new decimal[] { -4, -7 }, new decimal[] { 2, 3 });
-            AssertArray(x, new decimal[] { 0, 2 });
+            var x = np.remainder(new Complex[] { -4, -7 }, new Complex[] { 2, 3 });
+            AssertArray(x, new Complex[] { 0, 2 });
             print(x);
 
-            var y = np.remainder(np.arange(7, dtype: np.Decimal), -5m);
-            AssertArray(y, new decimal[] { 0, -4, -3, -2, -1, 0, -4 });
+            var y = np.remainder(np.arange(7, dtype: np.Complex), -5);
+            AssertArray(y, new Complex[] { 0, -4, -3, -2, -1, 0, -4 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_divmod_1_COMPLEX_TODO()
+        public void test_divmod_1_COMPLEX()
         {
-            var a = np.divmod(7m, 3m);
-            Assert.AreEqual(2m, a[0].GetItem(0));
-            Assert.AreEqual(1m, a[1].GetItem(0));
+            var a = np.divmod((Complex)7, (Complex)3);
+            Assert.AreEqual((Complex)2, a[0].GetItem(0));
+            Assert.AreEqual((Complex)1, a[1].GetItem(0));
 
             print(a);
 
-            var b = np.divmod(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
-            AssertArray(b[0], new decimal[] { 0, 0, 1, 1 });
-            AssertArray(b[1], new decimal[] { 1, 2, 0.5m, 1.5m });
+            var b = np.divmod(new Complex[] { 1.0, 2.0, 3.0, 4.0 }, 2.5m);
+            AssertArray(b[0], new Complex[] { 0, 0, 1, 1 });
+            AssertArray(b[1], new Complex[] { 1, 2, 0.5, 1.5 });
             print(b);
 
-            var c = np.divmod(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
-            AssertArray(c[0], new decimal[] { 2, 0, 1, 1 });
-            AssertArray(c[1], new decimal[] { 0, 2, 0.5m, 0.5m });
+            var c = np.divmod(new Complex[] { 1.0, 2.0, 3.0, 4.0 }, new Complex[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c[0], new Complex[] { 2, 0, 1, 1 });
+            AssertArray(c[1], new Complex[] { 0, 2, 0.5, 0.5 });
             print(c);
 
             return;
@@ -3735,18 +3736,18 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_convolve_1_COMPLEX_TODO()
+        public void test_convolve_1_COMPLEX()
         {
-            var a = np.convolve(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
-            AssertArray(a, new decimal[] { 0.0m, 1.0m, 2.5m, 4.0m, 1.5m });
+            var a = np.convolve(new Complex[] { 1, 2, 3 }, new Complex[] { 0, 1, 0.5f });
+            AssertArray(a, new Complex[] { 0.0, 1.0, 2.5, 4.0, 1.5 });
             print(a);
 
-            var b = np.convolve(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new decimal[] { 1.0m, 2.5m, 4.0m });
+            var b = np.convolve(new Complex[] { 1, 2, 3 }, new Complex[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new Complex[] { 1.0, 2.5, 4.0 });
             print(b);
 
-            var c = np.convolve(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
-            AssertArray(c, new decimal[] { 2.5m });
+            var c = np.convolve(new Complex[] { 1, 2, 3 }, new Complex[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            AssertArray(c, new Complex[] { 2.5 });
             print(c);
 
             return;
