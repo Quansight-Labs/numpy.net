@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
 using System.Linq;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+using npy_ucs4 = System.Int64;
+#else
+using npy_intp = System.Int32;
+using npy_ucs4 = System.Int32;
+#endif
 
 namespace NumpyLib
 {
@@ -53,7 +60,7 @@ namespace NumpyLib
         int GetLength(VoidPtr vp);
         object AllocateNewArray(int size);
         object AllocateAndCopy(object datap, int startingOffset, int numElements);
-  
+        void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -220,7 +227,40 @@ namespace NumpyLib
             Array.Copy(datap as T[], startingOffset, data, 0, numElements);
             return data;
         }
-  
+
+ 
+        public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            T tmp = default(T);
+            npy_intp i;
+
+            T[] ip1 = _ip1.datap as T[];
+            T[] ip2 = _ip2.datap as T[];
+            T[] op = _op.datap as T[];
+
+            npy_intp ip1_index = _ip1.data_offset;
+            npy_intp ip2_index = _ip2.data_offset;
+
+            npy_intp ip1Size = DefaultArrayHandlers.GetArrayHandler(_ip1.type_num).ItemSize;
+            npy_intp ip2Size = DefaultArrayHandlers.GetArrayHandler(_ip2.type_num).ItemSize;
+            npy_intp opSize = DefaultArrayHandlers.GetArrayHandler(_op.type_num).ItemSize;
+
+            for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
+            {
+                tmp = (T)T_dot(tmp, ip1, ip2, ip1_index, ip2_index, ip1Size, ip2Size);
+            }
+            op[_op.data_offset / opSize] = tmp;
+        }
+        protected virtual object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            System.Numerics.Complex tmp = (System.Numerics.Complex)otmp;
+            System.Numerics.Complex[] ip1 = op1 as System.Numerics.Complex[];
+            System.Numerics.Complex[] ip2 = op2 as System.Numerics.Complex[];
+
+            tmp += (ip1[ip1_index / ip1Size] * ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
@@ -504,7 +544,13 @@ namespace NumpyLib
         {
             get { return IntPtr.Size; }
         }
-   
+
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            throw new NotImplementedException("This array handler does not implement DOT");
+            return otmp;
+        }
+
     }
 
     internal class BoolHandlers : ArrayHandlerBase<bool>, IArrayHandlers
@@ -517,7 +563,20 @@ namespace NumpyLib
         {
             get { return sizeof(bool); }
         }
-  
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            bool tmp = (bool)otmp;
+            bool[] ip1 = op1 as bool[];
+            bool[] ip2 = op2 as bool[];
+
+            if ((ip1[ip1_index / ip1Size] == true) && (ip2[ip2_index / ip2Size] == true))
+            {
+                tmp = true;
+                return tmp;
+            }
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
@@ -638,6 +697,8 @@ namespace NumpyLib
             bool dValue = (bool)bValue;
             return true;
         }
+
+   
     }
 
     internal class ByteHandlers : ArrayHandlerBase<sbyte>, IArrayHandlers
@@ -650,6 +711,15 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(sbyte); }
+        }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            sbyte tmp = (sbyte)otmp;
+            sbyte[] ip1 = op1 as sbyte[];
+            sbyte[] ip2 = op2 as sbyte[];
+
+            tmp += (sbyte)((sbyte)ip1[ip1_index / ip1Size] * (sbyte)ip2[ip2_index / ip2Size]);
+            return tmp;
         }
 
         protected override object Add(object bValue, object operand)
@@ -811,8 +881,17 @@ namespace NumpyLib
         {
             get { return sizeof(byte); }
         }
-  
-   
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            byte tmp = (byte)otmp;
+            byte[] ip1 = op1 as byte[];
+            byte[] ip2 = op2 as byte[];
+
+            tmp += (byte)((byte)ip1[ip1_index / ip1Size] * (byte)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
+
         protected override object Add(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
@@ -959,6 +1038,7 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue >= (double)operand;
         }
+  
     }
 
     internal class Int16Handlers : ArrayHandlerBase<Int16>, IArrayHandlers
@@ -972,7 +1052,16 @@ namespace NumpyLib
         {
             get { return sizeof(Int16); }
         }
- 
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            Int16 tmp = (Int16)otmp;
+            Int16[] ip1 = op1 as Int16[];
+            Int16[] ip2 = op2 as Int16[];
+
+            tmp += (Int16)((Int16)ip1[ip1_index / ip1Size] * (Int16)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
@@ -1132,8 +1221,17 @@ namespace NumpyLib
         {
             get { return sizeof(UInt16); }
         }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            UInt16 tmp = (UInt16)otmp;
+            UInt16[] ip1 = op1 as UInt16[];
+            UInt16[] ip2 = op2 as UInt16[];
 
-         protected override object Add(object bValue, object operand)
+            tmp += (UInt16)((UInt16)ip1[ip1_index / ip1Size] * (UInt16)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
+        protected override object Add(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue + (double)operand;
@@ -1287,13 +1385,20 @@ namespace NumpyLib
         {
   
         }
-
- 
         public int ItemSize
         {
             get { return sizeof(Int32); }
         }
-   
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            Int32 tmp = (Int32)otmp;
+            Int32[] ip1 = op1 as Int32[];
+            Int32[] ip2 = op2 as Int32[];
+
+            tmp += (Int32)((Int32)ip1[ip1_index / ip1Size] * (Int32)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
@@ -1453,6 +1558,15 @@ namespace NumpyLib
         {
             get { return sizeof(UInt32); }
         }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            UInt32 tmp = (UInt32)otmp;
+            UInt32[] ip1 = op1 as UInt32[];
+            UInt32[] ip2 = op2 as UInt32[];
+
+            tmp += (UInt32)((UInt32)ip1[ip1_index / ip1Size] * (UInt32)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -1608,13 +1722,20 @@ namespace NumpyLib
         {
 
         }
-
- 
         public int ItemSize
         {
             get { return sizeof(Int64); }
         }
-   
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            Int64 tmp = (Int64)otmp;
+            Int64[] ip1 = op1 as Int64[];
+            Int64[] ip2 = op2 as Int64[];
+
+            tmp += (Int64)((Int64)ip1[ip1_index / ip1Size] * (Int64)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
@@ -1774,6 +1895,15 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(UInt64); }
+        }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            UInt64 tmp = (UInt64)otmp;
+            UInt64[] ip1 = op1 as UInt64[];
+            UInt64[] ip2 = op2 as UInt64[];
+
+            tmp += (UInt64)((UInt64)ip1[ip1_index / ip1Size] * (UInt64)ip2[ip2_index / ip2Size]);
+            return tmp;
         }
 
         protected override object Add(object bValue, object operand)
@@ -1935,7 +2065,16 @@ namespace NumpyLib
         {
             get { return sizeof(float); }
         }
- 
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            float tmp = (float)otmp;
+            float[] ip1 = op1 as float[];
+            float[] ip2 = op2 as float[];
+
+            tmp += (float)((float)ip1[ip1_index / ip1Size] * (float)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             float dValue = (float)bValue;
@@ -2127,13 +2266,20 @@ namespace NumpyLib
         {
 
         }
-
- 
         public int ItemSize
         {
             get { return sizeof(double); }
         }
- 
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            double tmp = (double)otmp;
+            double[] ip1 = op1 as double[];
+            double[] ip2 = op2 as double[];
+
+            tmp += (double)((double)ip1[ip1_index / ip1Size] * (double)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             double dValue = (double)bValue;
@@ -2334,7 +2480,16 @@ namespace NumpyLib
         {
             get { return sizeof(decimal); }
         }
- 
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            decimal tmp = (decimal)otmp;
+            decimal[] ip1 = op1 as decimal[];
+            decimal[] ip2 = op2 as decimal[];
+
+            tmp += (decimal)((decimal)ip1[ip1_index / ip1Size] * (decimal)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
@@ -2540,6 +2695,15 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(double) * 2; }
+        }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            var tmp = (System.Numerics.Complex)otmp;
+            var ip1 = op1 as System.Numerics.Complex[];
+            var ip2 = op2 as System.Numerics.Complex[];
+
+            tmp += (System.Numerics.Complex)((System.Numerics.Complex)ip1[ip1_index / ip1Size] * (System.Numerics.Complex)ip2[ip2_index / ip2Size]);
+            return tmp;
         }
 
         System.Numerics.Complex ConvertToComplex(object o)
