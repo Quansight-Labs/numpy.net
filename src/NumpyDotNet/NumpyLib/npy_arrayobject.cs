@@ -317,7 +317,8 @@ namespace NumpyLib
         }
         internal static bool NpyArray_ISALIGNED(NpyArray arr)
         {
-            return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_ALIGNED);
+            return true;
+            //return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_ALIGNED);
         }
         internal static bool NpyArray_IS_C_CONTIGUOUS(NpyArray arr)
         {
