@@ -3017,5 +3017,52 @@ namespace NumpyLib
             return 1.0;
 
         }
+        public override void SortArray(VoidPtr data, int offset, int length)
+        {
+            var arr = data.datap as System.Numerics.Complex[];
+            Quick_Sort(arr, 0, arr.Length - 1);
+        }
+
+
+        static void Quick_Sort(System.Numerics.Complex[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                int partitionIndex = Partition(array, low, high);
+
+                //3. Recursively continue sorting the array
+                Quick_Sort(array, low, partitionIndex - 1);
+                Quick_Sort(array, partitionIndex + 1, high);
+            }
+        }
+
+        static int Partition(System.Numerics.Complex[] array, int low, int high)
+        {
+            //1. Select a pivot point.
+            double pivot = array[high].Real;
+
+            int lowIndex = (low - 1);
+
+            //2. Reorder the collection.
+            for (int j = low; j < high; j++)
+            {
+                if (array[j].Real <= pivot)
+                {
+                    lowIndex++;
+
+                    var temp = array[lowIndex];
+                    array[lowIndex] = array[j];
+                    array[j] = temp;
+                }
+            }
+
+            var temp1 = array[lowIndex + 1];
+            array[lowIndex + 1] = array[high];
+            array[high] = temp1;
+
+            return lowIndex + 1;
+        }
+
+
     }
 }
