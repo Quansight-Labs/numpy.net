@@ -1196,6 +1196,10 @@ namespace NumpyDotNet
             {
                 dtype = np.Decimal;
             }
+            else if (arrp.IsComplex)
+            {
+                dtype = np.Complex;
+            }
             else
             {
                 dtype = np.Float64;
