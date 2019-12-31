@@ -1239,6 +1239,38 @@ namespace NumpyDotNet
         public static ndarray copysign(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
+            if (xa.IsComplex)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    var a = ch.X1(i);
+                    var b = ch.X2(i);
+
+                    double Real = a.Real;
+                    double Imaginary = a.Imaginary;
+                    if (Math.Sign(a.Real) != Math.Sign(b.Real))
+                    {
+                        Real = -a.Real;
+                    }
+                    if (Math.Sign(a.Imaginary) != Math.Sign(b.Imaginary))
+                    {
+                        Imaginary = -a.Imaginary;
+                    }
+                    
+                    ch.results[i] = new System.Numerics.Complex(Real, Imaginary);
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+
             if (xa.IsFloatingPoint)
             {
                 if (xa.ItemSize <= sizeof(float))
@@ -1325,6 +1357,32 @@ namespace NumpyDotNet
         public static ndarray[] frexp(object x, object where = null)
         {
             var xa = asanyarray(x);
+            if (xa.IsComplex)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                int[] _exponents = new int[ch.expectedLength];
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    System.Numerics.Complex f = ch.X1(i);
+
+                    int exponent = 0;
+                    ch.results[i] = MachineCognitus.math.frexp(f.Real, ref exponent);
+                    _exponents[i] = exponent;
+                }
+
+                var mantissas = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                var expononents = np.array(_exponents).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    mantissas[np.invert(where)] = np.NaN;
+                    expononents[np.invert(where)] = 0;
+                }
+
+                return new ndarray[] { mantissas, expononents };
+            }
+
 
             if (xa.TypeNum == NPY_TYPES.NPY_FLOAT)
             {
@@ -1385,7 +1443,23 @@ namespace NumpyDotNet
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
 
-            bool kk = a1.Dtype.itemsize == 6;
+            if (a1.IsComplex)
+            {
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = MachineCognitus.math.ldexp(ch.X1(i).Real, Convert.ToInt32(ch.X2(i).Real));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
 
             if (a1.ItemSize <= sizeof(float) && a2.ItemSize <= sizeof(float))
             {
@@ -1660,20 +1734,43 @@ namespace NumpyDotNet
  
         public static ndarray float_power(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            var x1a = asanyarray(x1);
+            if (x1a.IsComplex)
             {
-                ch.results[i] = Math.Pow(ch.X1(i), ch.X2(i));
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex> (x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = System.Numerics.Complex.Pow(ch.X1(i), ch.X2(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
+            }
+            else
+            {
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    ch.results[i] = Math.Pow(ch.X1(i), ch.X2(i));
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
+ 
 
         }
 

@@ -2766,6 +2766,26 @@ namespace NumpyLib
         {
             return false;
         }
+        protected override object FloorDivide(object bValue, object operand)
+        {
+            Complex dValue = (Complex)bValue;
+            Complex oValue = (Complex)operand;
+            if (oValue == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+
+            double Real = 0;
+            if (oValue.Real != 0)
+                Real = Math.Floor(dValue.Real / oValue.Real);
+
+            double Imaginary = 0;
+            if (oValue.Imaginary != 0)
+                Imaginary = Math.Floor(dValue.Imaginary / oValue.Imaginary);
+
+            return new Complex(Real, Imaginary);
+        }
         protected override object Floor(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
