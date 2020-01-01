@@ -4537,7 +4537,6 @@ namespace NumpyDotNetTests
             AssertArray(perm3, Perm3Expected);
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_argmin_1_COMPLEX()
         {
@@ -4561,7 +4560,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_argmax_1_COMPLEX()
         {
@@ -7283,29 +7281,29 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void xxx_test_angle_1()
+        public void xxx_test_angle_1_COMPLEX()
         {
         }
 
         [Ignore]
         [TestMethod]
-        public void xxx_test_real_1()
+        public void xxx_test_real_1_COMPLEX()
         {
         }
 
         [Ignore]
         [TestMethod]
-        public void xxx_test_image_1()
+        public void xxx_test_image_1_COMPLEX()
         {
         }
         [Ignore]
         [TestMethod]
-        public void xxx_test_conj_1()
+        public void xxx_test_conj_1_COMPLEX()
         {
         }
         [Ignore]
         [TestMethod]
-        public void test_real_if_close_1()
+        public void test_real_if_close_1_COMPLEX()
         {
 
         }
