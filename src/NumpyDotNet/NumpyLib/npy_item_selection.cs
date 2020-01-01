@@ -1542,28 +1542,13 @@ namespace NumpyLib
 
         private static dynamic MaxValue(NPY_TYPES type)
         {
-            switch (type)
-            {
-                case NPY_TYPES.NPY_DECIMAL:
-                    return decimal.MaxValue;
-                case NPY_TYPES.NPY_COMPLEX:
-                    return double.MaxValue;
-                default:
-                    return double.MaxValue;
-            }
+            return DefaultArrayHandlers.GetArrayHandler(type).GetMaxValue();
         }
 
         private static dynamic MinValue(NPY_TYPES type)
         {
-            switch (type)
-            {
-                case NPY_TYPES.NPY_DECIMAL:
-                    return decimal.MinValue;
-                case NPY_TYPES.NPY_COMPLEX:
-                    return double.MinValue;
-                default:
-                    return double.MinValue;
-            }
+            return DefaultArrayHandlers.GetArrayHandler(type).GetMinValue();
+
         }
 
 

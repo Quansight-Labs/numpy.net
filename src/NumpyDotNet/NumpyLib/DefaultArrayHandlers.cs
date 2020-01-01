@@ -72,6 +72,11 @@ namespace NumpyLib
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
         NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
+        object GetMinValue();
+        object GetMaxValue();
+        object GetPositiveInfinity();
+        object GetNegativeInfinity();
+        object GetNaN();
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -335,7 +340,26 @@ namespace NumpyLib
             }
         }
 
-
+        public virtual object GetMinValue()
+        {
+            return double.MinValue;
+        }
+        public virtual object GetMaxValue()
+        {
+            return double.MaxValue;
+        }
+        public virtual object GetPositiveInfinity()
+        {
+            return double.PositiveInfinity;
+        }
+        public virtual object GetNegativeInfinity()
+        {
+            return double.NegativeInfinity;
+        }
+        public virtual object GetNaN()
+        {
+            return double.NaN;
+        }
         public virtual bool IsNan(object o)
         {
             return false;
@@ -2295,6 +2319,26 @@ namespace NumpyLib
             tmp += (float)((float)ip1[ip1_index / ip1Size] * (float)ip2[ip2_index / ip2Size]);
             return tmp;
         }
+        public override object GetMinValue()
+        {
+            return float.MinValue;
+        }
+        public override object GetMaxValue()
+        {
+            return float.MaxValue;
+        }
+        public override object GetPositiveInfinity()
+        {
+            return float.PositiveInfinity;
+        }
+        public override object GetNegativeInfinity()
+        {
+            return float.NegativeInfinity;
+        }
+        public override object GetNaN()
+        {
+            return float.NaN;
+        }
         public override bool IsNan(object o)
         {
             float f = (float)o;
@@ -2536,6 +2580,27 @@ namespace NumpyLib
             tmp += (double)((double)ip1[ip1_index / ip1Size] * (double)ip2[ip2_index / ip2Size]);
             return tmp;
         }
+
+        public override object GetMinValue()
+        {
+            return double.MinValue;
+        }
+        public override object GetMaxValue()
+        {
+            return double.MaxValue;
+        }
+        public override object GetPositiveInfinity()
+        {
+            return double.PositiveInfinity;
+        }
+        public override object GetNegativeInfinity()
+        {
+            return double.NegativeInfinity;
+        }
+        public override object GetNaN()
+        {
+            return double.NaN;
+        }
         public override bool IsNan(object o)
         {
             double d = (double)o;
@@ -2763,6 +2828,28 @@ namespace NumpyLib
             Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
             return;
         }
+
+        public override object GetMinValue()
+        {
+            return decimal.MinValue;
+        }
+        public override object GetMaxValue()
+        {
+            return decimal.MaxValue;
+        }
+        public override object GetPositiveInfinity()
+        {
+            return double.PositiveInfinity;
+        }
+        public override object GetNegativeInfinity()
+        {
+            return double.NegativeInfinity;
+        }
+        public override object GetNaN()
+        {
+            return double.NaN;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             decimal tmp = (decimal)otmp;
@@ -2989,6 +3076,29 @@ namespace NumpyLib
         {
             get { return sizeof(double) * 2; }
         }
+
+
+        public override object GetMinValue()
+        {
+            return (System.Numerics.Complex)double.MinValue;
+        }
+        public override object GetMaxValue()
+        {
+            return (System.Numerics.Complex)double.MaxValue;
+        }
+        public override object GetPositiveInfinity()
+        {
+            return (System.Numerics.Complex)double.PositiveInfinity;
+        }
+        public override object GetNegativeInfinity()
+        {
+            return (System.Numerics.Complex)double.NegativeInfinity;
+        }
+        public override object GetNaN()
+        {
+            return (System.Numerics.Complex)double.NaN;
+        }
+
         public override void ArrayFill(VoidPtr vp, object FillValue)
         {
             System.Numerics.Complex[] adata = vp.datap as System.Numerics.Complex[];

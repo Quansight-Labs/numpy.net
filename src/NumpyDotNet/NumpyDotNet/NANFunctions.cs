@@ -47,42 +47,17 @@ namespace NumpyDotNet
     {
         private static object _get_infinity_value(ndarray arr, bool positiveInfinity)
         {
-            switch (arr.TypeNum)
-            {
-                case NPY_TYPES.NPY_FLOAT:
-                    if (positiveInfinity)
-                        return float.PositiveInfinity;
-                    else
-                        return float.NegativeInfinity;
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(arr.TypeNum);
 
-                case NPY_TYPES.NPY_DOUBLE:
-                    if (positiveInfinity)
-                        return double.PositiveInfinity;
-                    else
-                        return double.NegativeInfinity;
-
-                default:
-                    break;
-            }
-
-            return 0;
+            if (positiveInfinity)
+                return ArrayHandler.GetPositiveInfinity();
+            else
+                return ArrayHandler.GetNegativeInfinity();
         }
 
         private static object _get_NAN_value(ndarray arr)
         {
-            switch (arr.TypeNum)
-            {
-                case NPY_TYPES.NPY_FLOAT:
-                    return float.NaN;
-
-                case NPY_TYPES.NPY_DOUBLE:
-                    return double.NaN;
-
-                default:
-                    break;
-            }
-
-            return 0;
+            return DefaultArrayHandlers.GetArrayHandler(arr.TypeNum).GetNaN();
         }
 
         private static (ndarray a, ndarray mask) _replace_nan(ndarray a, object val)

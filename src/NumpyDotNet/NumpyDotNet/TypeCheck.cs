@@ -156,36 +156,12 @@ namespace NumpyDotNet
 
         private static object _getmin(ndarray dest)
         {
-            switch (dest.TypeNum)
-            {
-                case NPY_TYPES.NPY_COMPLEX:
-                    return  double.MinValue;
-                case NPY_TYPES.NPY_FLOAT:
-                    return float.MinValue;
-                case NPY_TYPES.NPY_DOUBLE:
-                    return double.MinValue;
-                case NPY_TYPES.NPY_DECIMAL:
-                    return decimal.MinValue;
-                default:
-                    throw new Exception("Unexpected datatype in _getmin");
-            }
+            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetMinValue();
         }
 
         private static object _getmax(ndarray dest)
         {
-            switch (dest.TypeNum)
-            {
-                case NPY_TYPES.NPY_COMPLEX:
-                    return double.MaxValue;
-                case NPY_TYPES.NPY_FLOAT:
-                    return float.MaxValue;
-                case NPY_TYPES.NPY_DOUBLE:
-                    return double.MaxValue;
-                case NPY_TYPES.NPY_DECIMAL:
-                    return decimal.MaxValue;
-                default:
-                    throw new Exception("Unexpected datatype in _getmax");
-            }
+            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetMaxValue();
         }
     }
 }
