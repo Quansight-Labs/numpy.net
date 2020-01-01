@@ -661,7 +661,7 @@ namespace NumpyDotNet {
                 return FindArrayReturn(chktype, minitype);
             }
 
-   
+
             if (src is String)
             {
                 String s = (String)src;
@@ -689,39 +689,13 @@ namespace NumpyDotNet {
         /// <returns>Descriptor for type of 'src' or null if not scalar</returns>
         internal static dtype FindScalarType(Object src)
         {
-            NPY_TYPES type;
+            NPY_TYPES type = DefaultArrayHandlers.GetArrayType(src);
 
-            if (src is Double) type = NPY_TYPES.NPY_DOUBLE;
-            else if (src is Single) type = NPY_TYPES.NPY_FLOAT;
-            else if (src is Boolean) type = NPY_TYPES.NPY_BOOL;
-            else if (src is Byte) type = NPY_TYPES.NPY_UBYTE;
-            else if (src is SByte) type = NPY_TYPES.NPY_BYTE;
-            else if (src is Int16) type = NPY_TYPES.NPY_SHORT;
-            else if (src is Int32) type = NpyCoreApi.TypeOf_Int32;
-            else if (src is Int64) type = NpyCoreApi.TypeOf_Int64;
-            else if (src is UInt16) type = NPY_TYPES.NPY_USHORT;
-            else if (src is UInt32) type = NpyCoreApi.TypeOf_UInt32;
-            else if (src is UInt64) type = NpyCoreApi.TypeOf_UInt64;
-            else if (src is Decimal) type = NpyCoreApi.TypeOf_Decimal;
-            else if (src is BigInteger)
+            if (type != NPY_TYPES.NPY_NOTSET)
             {
-                BigInteger bi = (BigInteger)src;
-                if (System.Int64.MinValue <= bi && bi <= System.Int64.MaxValue)
-                {
-                    type = NpyCoreApi.TypeOf_Int64;
-                }
-                else
-                {
-                    type = NPY_TYPES.NPY_OBJECT;
-                }
+                return NpyCoreApi.DescrFromType(type);
             }
-            else if (src is Complex)
-                type = NPY_TYPES.NPY_COMPLEX;
-            else
-                type = NPY_TYPES.NPY_NOTYPE;
-
-            return (type != NPY_TYPES.NPY_NOTYPE) ?
-                NpyCoreApi.DescrFromType(type) : null;
+            return null;
         }
 
 

@@ -236,12 +236,12 @@ namespace NumpyLib
             ConjugateOperation = Conjugate;
         }
 
-        private T _t;
+        protected T[] _t = new T[1] { default(T) };
         public Type ItemType
         {
             get
             {
-                return _t.GetType();
+                return _t[0].GetType();
             }
         }
 
@@ -651,6 +651,7 @@ namespace NumpyLib
     {
         public ObjectHandlers()
         {
+            _t = new object[1] { new object() };
         }
 
         public int ItemSize
