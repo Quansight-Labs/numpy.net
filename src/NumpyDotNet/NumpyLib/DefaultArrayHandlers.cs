@@ -77,6 +77,7 @@ namespace NumpyLib
         object GetPositiveInfinity();
         object GetNegativeInfinity();
         object GetNaN();
+        bool NonZero(VoidPtr vp, NpyArray npa);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -381,8 +382,11 @@ namespace NumpyLib
             return new VoidPtr(src, vp.type_num);
         }
 
-
-
+        public virtual bool NonZero(VoidPtr vp, NpyArray npa)
+        {
+            T[] bp = vp.datap as T[];
+            return !(bp[vp.data_offset / npa.ItemSize].Equals(0));
+        }
 
         public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
@@ -762,6 +766,12 @@ namespace NumpyLib
                 return tmp;
             }
             return tmp;
+        }
+
+        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        {
+            bool[] bp = vp.datap as bool[];
+            return (bp[vp.data_offset / npa.ItemSize]);
         }
 
         protected override object Add(object bValue, object operand)
