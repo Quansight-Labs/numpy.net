@@ -5636,35 +5636,35 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
 
         #region from NANFunctionsTests
 
         [TestMethod]
-        public void test_nanprod_1_COMPLEX_TODO()
+        public void test_nanprod_1_COMPLEX()
         {
 
             var x = np.nanprod(1m);
             Assert.AreEqual(1m, x.GetItem(0));
             print(x);
 
-            var y = np.nanprod(new decimal[] { 1 });
-            Assert.AreEqual(1m, y.GetItem(0));
+            var y = np.nanprod(new Complex[] { 1 });
+            Assert.AreEqual((Complex)1, y.GetItem(0));
             print(y);
 
 
 
-            var a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new Complex[,] { { 1, 2 }, { 3, 4 } });
             var b = np.nanprod(a);
-            Assert.AreEqual(24.0m, b.GetItem(0));
+            Assert.AreEqual((Complex)24.0, b.GetItem(0));
             print(b);
 
             var c = np.nanprod(a, axis: 0);
-            AssertArray(c, new decimal[] { 3, 8 });
+            AssertArray(c, new Complex[] { 3, 8 });
             print(c);
 
             var d = np.nanprod(a, axis: 1);
-            AssertArray(d, new decimal[] { 2, 12 });
+            AssertArray(d, new Complex[] { 2, 12 });
             print(d);
 
             return;
@@ -5675,25 +5675,25 @@ namespace NumpyDotNetTests
         #region from StatisticsTests
 
         [TestMethod]
-        public void test_amin_2_COMPLEX_TODO()
+        public void test_amin_2_COMPLEX()
         {
-            ndarray a = np.arange(30.25m, 46.25m).reshape(new shape(4, 4));
+            ndarray a = np.arange(30.25, 46.25, dtype: np.Complex).reshape(new shape(4, 4));
             print(a);
             print("*****");
 
             ndarray b = np.amin(a);          // Minimum of the flattened array
             print(b);
-            Assert.AreEqual(30.25m, b.GetItem(0));
+            Assert.AreEqual((Complex)30.25, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amin(a, axis: 0);  // Minimum along the first axis
             print(c);
-            AssertArray(c, new decimal[] { 30.25m, 31.25m, 32.25m, 33.25m });
+            AssertArray(c, new Complex[] { 30.25, 31.25, 32.25, 33.25 });
             print("*****");
 
             ndarray d = np.amin(a, axis: 1);   // Minimum along the second axis
             print(d);
-            AssertArray(d, new decimal[] { 30.25m, 34.25m, 38.25m, 42.25m });
+            AssertArray(d, new Complex[] { 30.25, 34.25, 38.25, 42.25 });
             print("*****");
 
             // decimals don't support NAN
@@ -5707,25 +5707,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_amax_2_COMPLEX_TODO()
+        public void test_amax_2_COMPLEX()
         {
-            ndarray a = np.arange(30.25m, 46.25m).reshape(new shape(4, 4));
+            ndarray a = np.arange(30.25, 46.25, dtype: np.Complex).reshape(new shape(4, 4));
             print(a);
             print("*****");
 
             ndarray b = np.amax(a);          // Maximum of the flattened array
             print(b);
-            Assert.AreEqual(45.25m, b.GetItem(0));
+            Assert.AreEqual((Complex)45.25, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amax(a, axis: 0);  // Maxima along the first axis
             print(c);
-            AssertArray(c, new decimal[] { 42.25m, 43.25m, 44.25m, 45.25m });
+            AssertArray(c, new Complex[] { 42.25, 43.25, 44.25, 45.25 });
             print("*****");
 
             ndarray d = np.amax(a, axis: 1);   // Maxima along the second axis
             print(d);
-            AssertArray(d, new decimal[] { 33.25m, 37.25m, 41.25m, 45.25m });
+            AssertArray(d, new Complex[] { 33.25, 37.25, 41.25, 45.25 });
             print("*****");
 
             // decimals don't support NAN
@@ -5741,45 +5741,46 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ptp_1_COMPLEX_TODO()
+        public void test_ptp_1_COMPLEX()
         {
-            ndarray a = np.arange(4, dtype: np.Decimal).reshape(new shape(2, 2));
+            ndarray a = np.arange(4, dtype: np.Complex).reshape(new shape(2, 2));
             print(a);
             print("*****");
 
             ndarray b = np.ptp(a, axis: 0);
             print(b);
-            AssertArray(b, new decimal[] { 2, 2 });
+            AssertArray(b, new Complex[] { 2, 2 });
             print("*****");
 
             ndarray c = np.ptp(a, axis: 1);
             print(c);
-            AssertArray(c, new decimal[] { 1, 1 });
+            AssertArray(c, new Complex[] { 1, 1 });
 
             ndarray d = np.ptp(a);
             print(d);
-            Assert.AreEqual(3m, d.GetItem(0));
+            Assert.AreEqual((Complex)3, d.GetItem(0));
         }
 
+        [Ignore] //needs to be debugged
         [TestMethod]
-        public void test_percentile_2_COMPLEX_TODO()
+        public void test_percentile_2_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new Complex[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.percentile(a, new decimal[] { 50, 75 });
-            AssertArray(b, new decimal[] { 3.5m, 6.25m });
+            var b = np.percentile(a, new Complex[] { 50, 75 });
+            AssertArray(b, new Complex[] { 3.5, 6.25 });
             print(b);
 
-            var c = np.percentile(a, new decimal[] { 50, 75 }, axis: 0);
-            AssertArray(c, new decimal[,] { { 6.5m, 4.5m, 2.5m }, { 8.25m, 5.75m, 3.25m } });
+            var c = np.percentile(a, new Complex[] { 50, 75 }, axis: 0);
+            AssertArray(c, new Complex[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            var d = np.percentile(a, new decimal[] { 50, 75 }, axis: 1);
-            AssertArray(d, new decimal[,] { { 7.0m, 2.0m }, { 8.5m, 2.5m } });
+            var d = np.percentile(a, new Complex[] { 50, 75 }, axis: 1);
+            AssertArray(d, new Complex[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
             print(d);
 
-            var e = np.percentile(a, new decimal[] { 50, 75 }, axis: 1, keepdims: true);
-            AssertArray(e, new decimal[,,] { { { 7.0m }, { 2.0m } }, { { 8.5m }, { 2.5m } } });
+            var e = np.percentile(a, new Complex[] { 50, 75 }, axis: 1, keepdims: true);
+            AssertArray(e, new Complex[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
             print(e);
 
             // note: we dont support the out parameter
@@ -5798,25 +5799,26 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore] //needs to be debugged
         [TestMethod]
-        public void test_quantile_2_COMPLEX_TODO()
+        public void test_quantile_2_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new Complex[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.quantile(a, new decimal[] { 0.5m, 0.75m });
-            AssertArray(b, new decimal[] { 3.5m, 6.25m });
+            var b = np.quantile(a, new Complex[] { 0.5, 0.75 });
+            AssertArray(b, new Complex[] { 3.5, 6.25 });
             print(b);
 
-            var c = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 0);
-            AssertArray(c, new decimal[,] { { 6.5m, 4.5m, 2.5m }, { 8.25m, 5.75m, 3.25m } });
+            var c = np.quantile(a, new Complex[] { 0.5, 0.75 }, axis: 0);
+            AssertArray(c, new Complex[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            var d = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 1);
-            AssertArray(d, new decimal[,] { { 7.0m, 2.0m }, { 8.5m, 2.5m } });
+            var d = np.quantile(a, new Complex[] { 0.5, 0.75 }, axis: 1);
+            AssertArray(d, new Complex[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
             print(d);
 
-            var e = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 1, keepdims: true);
-            AssertArray(e, new decimal[,,] { { { 7.0m }, { 2.0m } }, { { 8.5m }, { 2.5m } } });
+            var e = np.quantile(a, new Complex[] { 0.5, 0.75 }, axis: 1, keepdims: true);
+            AssertArray(e, new Complex[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
             print(e);
 
             // note: we dont support the out parameter
@@ -5837,211 +5839,212 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_median_2_COMPLEX_TODO()
+        public void test_median_2_COMPLEX()
         {
-            var a = np.arange(0, 64, 1, np.Decimal).reshape((4, 4, 4));
+            var a = np.arange(0, 64, 1, np.Complex).reshape((4, 4, 4));
 
             var b = np.median(a, axis: new int[] { 0, 2 }, keepdims: true);
-            AssertArray(b, new decimal[,,] { { { 25.5m }, { 29.5m }, { 33.5m }, { 37.5m } } });
+            AssertArray(b, new Complex[,,] { { { 25.5 }, { 29.5 }, { 33.5 }, { 37.5 } } });
             print(b);
 
             var c = np.median(a, new int[] { 0, 1 }, keepdims: true);
-            AssertArray(c, new decimal[,,] { { { 30, 31, 32, 33 } } });
+            AssertArray(c, new Complex[,,] { { { 30, 31, 32, 33 } } });
             print(c);
 
             var d = np.median(a, new int[] { 1, 2 }, keepdims: true);
-            AssertArray(d, new decimal[,,] { { { 7.5m } }, { { 23.5m } }, { { 39.5m } }, { { 55.5m } } });
+            AssertArray(d, new Complex[,,] { { { 7.5 } }, { { 23.5 } }, { { 39.5 } }, { { 55.5 } } });
             print(d);
 
             return;
         }
 
         [TestMethod]
-        public void test_average_3_COMPLEX_TODO()
+        public void test_average_3_COMPLEX()
         {
 
-            var a = np.array(new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            var a = np.array(new Complex[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
             var w = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
             var x1 = np.average(a, axis: null, weights: null, returned: true);
-            Assert.AreEqual(5.5m, x1.retval.GetItem(0));
-            Assert.AreEqual(10.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual((Complex)5.5, x1.retval.GetItem(0));
+            Assert.AreEqual((Complex)10.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a, axis: null, weights: w, returned: true);
-            Assert.AreEqual(4.0m, x1.retval.GetItem(0));
-            Assert.AreEqual(55.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual((Complex)4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((Complex)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: null, weights: np.array(w).reshape((2, -1)), returned: true);
-            Assert.AreEqual(4.0m, x1.retval.GetItem(0));
-            Assert.AreEqual(55.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual((Complex)4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((Complex)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 0, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.retval, new decimal[] { 2.6666666666666666666666666667m, 3.5384615384615384615384615385m, 4.3636363636363636363636363636m,
-                                                   5.1111111111111111111111111111m, 5.7142857142857142857142857143m });
-            AssertArray(x1.sum_of_weights, new decimal[] { 15.0m, 13.0m, 11.0m, 9.0m, 7.0m });
+            AssertArray(x1.retval, new Complex[] { 2.6666666666666666666666666667, 3.5384615384615384615384615385, 4.3636363636363636363636363636,
+                                                   5.1111111111111111111111111111, 5.7142857142857142857142857143 });
+            AssertArray(x1.sum_of_weights, new Complex[] { 15.0, 13.0, 11.0, 9.0, 7.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 1, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.retval, new decimal[] { 2.75m, 7.3333333333333333333333333333m });
-            AssertArray(x1.sum_of_weights, new decimal[] { 40.0m, 15.0m });
+            AssertArray(x1.retval, new Complex[] { 2.75, 7.3333333333333333333333333333 });
+            AssertArray(x1.sum_of_weights, new Complex[] { 40.0, 15.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, 2, -1, 1)), axis: 1, weights: np.array(w).reshape((1, 2, -1, 1)), returned: true);
-            AssertArray(x1.retval, new decimal[,,] { { { 2.6666666666666666666666666667m }, { 3.5384615384615384615384615385m }, { 4.3636363636363636363636363636m },
-                                                      { 5.1111111111111111111111111111m }, { 5.7142857142857142857142857143m } } });
-            AssertArray(x1.sum_of_weights, new decimal[,,] { { { 15.0m }, { 13.0m }, { 11.0m }, { 9.0m }, { 7.0m } } });
+            AssertArray(x1.retval, new Complex[,,] { { { 2.6666666666666666666666666667 }, { 3.5384615384615384615384615385 }, { 4.3636363636363636363636363636 },
+                                                      { 5.1111111111111111111111111111 }, { 5.7142857142857142857142857143 } } });
+            AssertArray(x1.sum_of_weights, new Complex[,,] { { { 15.0 }, { 13.0 }, { 11.0 }, { 9.0 }, { 7.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, -1, 2, 1)), axis: 1, weights: np.array(w).reshape((1, -1, 2, 1)), returned: true);
-            AssertArray(x1.retval, new decimal[,,] { { { 3.6666666666666666666666666667m }, { 4.4m } } });
-            AssertArray(x1.sum_of_weights, new decimal[,,] { { { 30.0m }, { 25.0m } } });
+            AssertArray(x1.retval, new Complex[,,] { { { 3.6666666666666666666666666667 }, { 4.4 } } });
+            AssertArray(x1.sum_of_weights, new Complex[,,] { { { 30.0 }, { 25.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1, 1, 1)), axis: 1, weights: np.array(w).reshape((2, -1, 1, 1)), returned: false);
-            AssertArray(x1.retval, new decimal[,,] { { { 2.75m } }, { { 7.3333333333333333333333333333m } } });
+            AssertArray(x1.retval, new Complex[,,] { { { 2.75 } }, { { 7.3333333333333333333333333333 } } });
             Assert.AreEqual(null, x1.sum_of_weights);
             print(x1);
 
         }
 
         [TestMethod]
-        public void test_mean_1_COMPLEX_TODO()
+        public void test_mean_1_COMPLEX()
         {
-            decimal[] TestData = new decimal[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.Decimal).reshape(new shape(3, 2, -1));
+            Complex[] TestData = new Complex[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Complex).reshape(new shape(3, 2, -1));
             x = x * 3;
             print(x);
 
             var y = np.mean(x);
             print(y);
-            Assert.AreEqual(131.5m, y.GetItem(0));
+            Assert.AreEqual((Complex)131.5, y.GetItem(0));
 
             y = np.mean(x, axis: 0);
             print(y);
-            AssertArray(y, new decimal[,] { { 113, 150 }, { 113, 150 } });
+            AssertArray(y, new Complex[,] { { 113, 150 }, { 113, 150 } });
 
             y = np.mean(x, axis: 1);
             print(y);
-            AssertArray(y, new decimal[,] { { 52.5m, 90 }, { 132, 157.5m }, { 154.5m, 202.5m } });
+            AssertArray(y, new Complex[,] { { 52.5, 90 }, { 132, 157.5 }, { 154.5, 202.5 } });
 
             y = np.mean(x, axis: 2);
             print(y);
-            AssertArray(y, new decimal[,] { { 37.5m, 105 }, { 252, 37.5m }, { 105, 252 } });
+            AssertArray(y, new Complex[,] { { 37.5, 105 }, { 252, 37.5 }, { 105, 252 } });
 
         }
 
         [TestMethod]
-        public void test_mean_2_COMPLEX_TODO()
+        public void test_mean_2_COMPLEX()
         {
-            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
+            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.Complex);
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             ndarray b = np.mean(a);
             print(b);
-            Assert.AreEqual(0.55m, (decimal)b.GetItem(0));
+            Assert.AreEqual((Complex)0.54999999998835847, (Complex)b.GetItem(0));
 
-            ndarray c = np.mean(a, dtype: np.Decimal);
+            ndarray c = np.mean(a, dtype: np.Complex);
             print(c);
-            Assert.AreEqual(0.55m, c.GetItem(0));
+            Assert.AreEqual((Complex)0.54999999998835847, c.GetItem(0));
         }
 
         [TestMethod]
-        public void test_std_1_COMPLEX_TODO()
+        public void test_std_1_COMPLEX()
         {
-            ndarray a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new Complex[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.std(a);
             print(b);
-            Assert.AreEqual(1.1180339887498948482045868344m, (decimal)b.GetItem(0));
+            Assert.AreEqual(1.1180339887498948482045868344, (Complex)b.GetItem(0));
 
             ndarray c = np.std(a, axis: 0);
             print(c);
-            AssertArray(c, new decimal[] { 1.0m, 1.0m });
+            AssertArray(c, new Complex[] { 1.0, 1.0 });
 
             ndarray d = np.std(a, axis: 1);
             print(d);
-            AssertArray(d, new decimal[] { 1.1180339887498948482045868344m, 1.1180339887498948482045868344m }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new Complex[] { 1.1180339887498948482045868344, 1.1180339887498948482045868344 }); // NOTES: TODO: slightly different than python. keepdims issue
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.Complex);
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             b = np.std(a);
             print(b);
-            Assert.AreEqual(0.45m, b.GetItem(0));
+            Assert.AreEqual((Complex)0.44999999999905771, b.GetItem(0));
             // Computing the standard deviation in float64 is more accurate:
-            c = np.std(a, dtype: np.Decimal);
+            c = np.std(a, dtype: np.Complex);
             print(c);
-            Assert.AreEqual(0.45m, c.GetItem(0));
+            Assert.AreEqual((Complex)0.44999999999905771, c.GetItem(0));
 
         }
 
         [TestMethod]
-        public void test_var_1_COMPLEX_TODO()
+        public void test_var_1_COMPLEX()
         {
-            ndarray a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new Complex[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
-            Assert.AreEqual(1.25m, b.GetItem(0));
+            Assert.AreEqual((Complex)1.25, b.GetItem(0));
             print(b);
 
             ndarray c = np.var(a, axis: 0);
-            AssertArray(c, new decimal[] { 1.0m, 1.0m });
+            AssertArray(c, new Complex[] { 1.0, 1.0 });
             print(c);
 
             ndarray d = np.var(a, axis: 1);
-            AssertArray(d, new decimal[] { 1.25m, 1.25m }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new Complex[] { 1.25, 1.25 }); // NOTES: TODO: slightly different than python. keepdims issue
             print(d);
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
-            a[0, ":"] = 1.0m;
-            a[1, ":"] = 0.1m;
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.Complex);
+            a[0, ":"] = 1.0;
+            a[1, ":"] = 0.1;
             b = np.var(a);
-            Assert.AreEqual(0.2025m, b.GetItem(0));
+            Assert.AreEqual((Complex)0.20249999999915194, b.GetItem(0));
             print(b);
 
             // Computing the standard deviation in float64 is more accurate:
-            c = np.var(a, dtype: np.Decimal);
-            Assert.AreEqual(0.2025m, c.GetItem(0));
+            c = np.var(a, dtype: np.Complex);
+            Assert.AreEqual((Complex)0.20249999999915194, c.GetItem(0));
             print(c);
 
         }
 
+        [Ignore] //needs to be debugged
         [TestMethod]
-        public void test_corrcoef_1_COMPLEX_TODO()
+        public void test_corrcoef_1_COMPLEX()
         {
-            var x1 = np.array(new decimal[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
             print(x1);
 
             // Note how  increases while  decreases. The covariance matrix shows this clearly:
 
             var a = np.corrcoef(x1);
-            AssertArray(a, new decimal[,] { { 1, -1 }, { -1, 1 } });
+            AssertArray(a, new Complex[,] { { 1, -1 }, { -1, 1 } });
             print(a);
 
-            var x = new decimal[] { -2.1m, -1, 4.3m };
-            var y = new decimal[] { 3, 1.1m, 0.12m };
+            var x = new Complex[] { -2.1, -1, 4.3 };
+            var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.corrcoef(X);
-            AssertArray(a, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(a, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
             print(a);
 
 
             var b = np.corrcoef(x, y);
-            AssertArray(b, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(b, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
             print(b);
 
             var c = np.corrcoef(x, y, rowvar: false);
-            AssertArray(a, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(a, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
             print(c);
 
 
@@ -6049,45 +6052,46 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_correlate_1_COMPLEX_TODO()
+        public void test_correlate_1_COMPLEX()
         {
-            var a = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
-            AssertArray(a, new decimal[] { 3.5m });
+            var a = np.correlate(new Complex[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
+            AssertArray(a, new Complex[] { 3.5 });
             print(a);
 
-            var b = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new decimal[] { 2.0m, 3.5m, 3.0m });
+            var b = np.correlate(new Complex[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new Complex[] { 2.0, 3.5, 3.0 });
             print(b);
 
-            var c = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
-            AssertArray(c, new decimal[] { 0.5m, 2.0m, 3.5m, 3.0m, 0.0m });
+            var c = np.correlate(new Complex[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            AssertArray(c, new Complex[] { 0.5, 2.0, 3.5, 3.0, 0.0 });
             print(c);
 
             return;
         }
 
+        [Ignore] //needs to be debugged
         [TestMethod]
-        public void test_cov_1_COMPLEX_TODO()
+        public void test_cov_1_COMPLEX()
         {
-            var x1 = np.array(new decimal[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
             print(x1);
 
             // Note how  increases while  decreases. The covariance matrix shows this clearly:
 
             var a = np.cov(x1);
-            AssertArray(a, new decimal[,] { { 1, -1 }, { -1, 1 } });
+            AssertArray(a, new Complex[,] { { 1, -1 }, { -1, 1 } });
             print(a);
 
-            var x = new decimal[] { -2.1m, -1, 4.3m };
-            var y = new decimal[] { 3, 1.1m, 0.12m };
+            var x = new Complex[] { -2.1, -1, 4.3 };
+            var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.cov(X);
-            AssertArray(a, new decimal[,] { { 11.710m, -4.2860000000000000000000000000m }, { -4.2860000000000000000000000000m, 2.1441333333333333333333333334m } });
+            AssertArray(a, new Complex[,] { { 11.710, -4.2860000000000000000000000000 }, { -4.2860000000000000000000000000, 2.1441333333333333333333333334 } });
             print(a);
 
 
             var b = np.cov(x, y);
-            AssertArray(b, new decimal[,] { { 11.710m, -4.2860000000000000000000000000m }, { -4.2860000000000000000000000000m, 2.1441333333333333333333333334m } });
+            AssertArray(b, new Complex[,] { { 11.710, -4.2860000000000000000000000000 }, { -4.2860000000000000000000000000, 2.1441333333333333333333333334 } });
             print(b);
 
             var c = np.cov(x);
@@ -6095,21 +6099,21 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.cov(X, rowvar: false);
-            AssertArray(d, new decimal[,] { { 13.00500m, 5.35500m, -10.65900m }, { 5.35500m, 2.20500m, -4.38900m }, { -10.65900m, -4.38900m, 8.73620m } });
+            AssertArray(d, new Complex[,] { { 13.00500, 5.35500, -10.65900 }, { 5.35500, 2.20500, -4.38900 }, { -10.65900, -4.38900, 8.73620 } });
             print(d);
 
             var e = np.cov(X, rowvar: false, bias: true);
-            AssertArray(e, new decimal[,] { { 6.50250m, 2.67750m, -5.32950m }, { 2.67750m, 1.10250m, -2.19450m }, { -5.32950m, -2.19450m, 4.36810m } });
+            AssertArray(e, new Complex[,] { { 6.50250, 2.67750, -5.32950 }, { 2.67750, 1.10250, -2.19450 }, { -5.32950, -2.19450, 4.36810 } });
             print(e);
 
             var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
-            AssertArray(f, new decimal[,] { { 5.7799999999999999999999999994m, 2.3799999999999999999999999998m, -4.7373333333333333333333333329m },
-                                            { 2.3799999999999999999999999998m, 0.9799999999999999999999999999m, -1.9506666666666666666666666665m },
-                                            { -4.7373333333333333333333333329m, -1.9506666666666666666666666665m, 3.8827555555555555555555555553m } });
+            AssertArray(f, new Complex[,] { { 5.7799999999999999999999999994, 2.3799999999999999999999999998, -4.7373333333333333333333333329 },
+                                            { 2.3799999999999999999999999998, 0.9799999999999999999999999999, -1.9506666666666666666666666665 },
+                                            { -4.7373333333333333333333333329, -1.9506666666666666666666666665, 3.8827555555555555555555555553 } });
             print(f);
 
             var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });
-            AssertArray(g, new decimal[,] { { 4.16160m, 1.71360m, -3.410880m }, { 1.71360m, 0.70560m, -1.404480m }, { -3.410880m, -1.404480m, 2.7955840m } });
+            AssertArray(g, new Complex[,] { { 4.16160, 1.71360, -3.410880 }, { 1.71360, 0.70560, -1.404480 }, { -3.410880, -1.404480, 2.7955840 } });
             print(g);
 
             return;
@@ -6117,6 +6121,7 @@ namespace NumpyDotNetTests
 
         #endregion
 
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         #region from TwoDimBaseTests
 
         [TestMethod]
