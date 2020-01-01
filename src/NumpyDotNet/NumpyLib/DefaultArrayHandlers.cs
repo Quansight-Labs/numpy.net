@@ -237,12 +237,18 @@ namespace NumpyLib
             var arr = data.datap as T[];
             Array.Sort(arr, offset, length);
         }
-        public virtual int CompareTo(object invalue, object comparevalue)
+        public virtual int CompareTo(dynamic invalue, dynamic comparevalue)
         {
-            if (invalue is IComparable)
+            if (invalue is IComparable && comparevalue is IComparable)
             {
-                IComparable inx = (IComparable)invalue;
-                return inx.CompareTo(comparevalue);
+                if (invalue == comparevalue)
+                    return 0;
+                if (invalue < comparevalue)
+                    return -1;
+                return 1;
+
+                //IComparable inx = (IComparable)invalue;
+               //return inx.CompareTo(comparevalue);
             }
 
             return 0;
@@ -2520,6 +2526,7 @@ namespace NumpyLib
             return 1.0;
 
         }
+
     }
 
     internal class DecimalHandlers : ArrayHandlerBase<Decimal>, IArrayHandlers

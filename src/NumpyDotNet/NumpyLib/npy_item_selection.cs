@@ -1546,6 +1546,8 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_DECIMAL:
                     return decimal.MaxValue;
+                case NPY_TYPES.NPY_COMPLEX:
+                    return double.MaxValue;
                 default:
                     return double.MaxValue;
             }
@@ -1557,6 +1559,8 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_DECIMAL:
                     return decimal.MinValue;
+                case NPY_TYPES.NPY_COMPLEX:
+                    return double.MinValue;
                 default:
                     return double.MinValue;
             }
@@ -1611,6 +1615,8 @@ namespace NumpyLib
 
         private static dynamic getNextLowest(dynamic lastLowest, VoidPtr sortData, long startingIndex, long endingIndex, dynamic MaxValue)
         {
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(sortData.type_num);
+
             dynamic array = sortData.datap;
             dynamic foundLowest = MaxValue;
 
@@ -1619,7 +1625,7 @@ namespace NumpyLib
 
             for (long i = startingIndex; i < endingIndex; i++)
             {
-                if (array[i] > lastLowest && array[i] <= foundLowest)
+                if ((ArrayHandler.CompareTo(array[i], lastLowest) > 0) && (ArrayHandler.CompareTo(array[i], foundLowest) <= 0))
                 {
                     foundLowest = array[i];
                 }
