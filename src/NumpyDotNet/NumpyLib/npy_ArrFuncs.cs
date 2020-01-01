@@ -957,7 +957,7 @@ namespace NumpyLib
             dynamic d1 = o1.datap;
             dynamic d2 = o2.datap;
 
-            return d1[o1.data_offset/elSize].CompareTo(d2[o2.data_offset/elSize]);
+            return DefaultArrayHandlers.GetArrayHandler(o1.type_num).CompareTo(d1[o1.data_offset / elSize], d2[o2.data_offset / elSize]);
         }
 
 
