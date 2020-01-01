@@ -964,46 +964,51 @@ namespace NumpyLib
         #region ArgMax
         internal static int NpyArray_ArgMaxFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind, NpyArray NOT_USED)
         {
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(ip.type_num);
+
+
             switch (ip.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    return NpyArray_ArgMaxFunc(ip.datap as bool[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as bool[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_BYTE:
-                    return NpyArray_ArgMaxFunc(ip.datap as sbyte[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as sbyte[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UBYTE:
-                    return NpyArray_ArgMaxFunc(ip.datap as byte[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as byte[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT16:
-                    return NpyArray_ArgMaxFunc(ip.datap as Int16[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int16[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT16:
-                    return NpyArray_ArgMaxFunc(ip.datap as UInt16[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt16[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT32:
-                    return NpyArray_ArgMaxFunc(ip.datap as Int32[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int32[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT32:
-                    return NpyArray_ArgMaxFunc(ip.datap as UInt32[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt32[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT64:
-                    return NpyArray_ArgMaxFunc(ip.datap as Int64[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int64[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT64:
-                    return NpyArray_ArgMaxFunc(ip.datap as UInt64[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt64[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_FLOAT:
-                    return NpyArray_ArgMaxFunc(ip.datap as float[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as float[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_DOUBLE:
-                    return NpyArray_ArgMaxFunc(ip.datap as double[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as double[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_DECIMAL:
-                    return NpyArray_ArgMaxFunc(ip.datap as decimal[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as decimal[], startIndex, endIndex, ref max_ind);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as System.Numerics.Complex[], startIndex, endIndex, ref max_ind);
             }
 
             return 0;
 
         }
 
-        internal static int NpyArray_ArgMaxFunc<T>(T[] ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind) where T : IComparable
+        internal static int NpyArray_ArgMaxFunc<T>(IArrayHandlers ArrayHander, T[] ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind)
         {
             T mp = ip[0 + startIndex];
 
             max_ind = 0;
             for (npy_intp i = 1+startIndex; i < endIndex+startIndex; i++)
             {
-                if (ip[i].CompareTo(mp) > 0)
+                if (ArrayHander.CompareTo(ip[i], mp) > 0)
                 {
                     mp = ip[i];
                     max_ind = i-startIndex;
@@ -1016,46 +1021,50 @@ namespace NumpyLib
         #region ArgMin
         internal static int NpyArray_ArgMinFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind, NpyArray NOT_USED)
         {
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(ip.type_num);
+
             switch (ip.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    return NpyArray_ArgMinFunc(ip.datap as bool[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as bool[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_BYTE:
-                    return NpyArray_ArgMinFunc(ip.datap as sbyte[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as sbyte[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UBYTE:
-                    return NpyArray_ArgMinFunc(ip.datap as byte[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as byte[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT16:
-                    return NpyArray_ArgMinFunc(ip.datap as Int16[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int16[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT16:
-                    return NpyArray_ArgMinFunc(ip.datap as UInt16[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt16[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT32:
-                    return NpyArray_ArgMinFunc(ip.datap as Int32[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int32[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT32:
-                    return NpyArray_ArgMinFunc(ip.datap as UInt32[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt32[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_INT64:
-                    return NpyArray_ArgMinFunc(ip.datap as Int64[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int64[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_UINT64:
-                    return NpyArray_ArgMinFunc(ip.datap as UInt64[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt64[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_FLOAT:
-                    return NpyArray_ArgMinFunc(ip.datap as float[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as float[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_DOUBLE:
-                    return NpyArray_ArgMinFunc(ip.datap as double[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as double[], startIndex, endIndex, ref max_ind);
                 case NPY_TYPES.NPY_DECIMAL:
-                    return NpyArray_ArgMinFunc(ip.datap as decimal[], startIndex, endIndex, ref max_ind);
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as decimal[], startIndex, endIndex, ref max_ind);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as System.Numerics.Complex[], startIndex, endIndex, ref max_ind);
             }
 
             return 0;
 
         }
 
-        internal static int NpyArray_ArgMinFunc<T>(T[] ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind) where T : IComparable
+        internal static int NpyArray_ArgMinFunc<T>(IArrayHandlers ArrayHander, T[] ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind)
         {
             T mp = ip[0+ startIndex];
 
             max_ind = 0;
             for (npy_intp i = 1+ startIndex; i < endIndex+ startIndex; i++)
             {
-                if (ip[i].CompareTo(mp) < 0)
+                if (ArrayHander.CompareTo(ip[i],mp) < 0)
                 {
                     mp = ip[i];
                     max_ind = i-startIndex;

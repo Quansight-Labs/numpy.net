@@ -62,6 +62,7 @@ namespace NumpyLib
         object AllocateAndCopy(object datap, int startingOffset, int numElements);
         void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n);
         void SortArray(VoidPtr data, int offset, int length);
+        int CompareTo(object invalue, object comparevalue);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -232,6 +233,16 @@ namespace NumpyLib
         {
             var arr = data.datap as T[];
             Array.Sort(arr, offset, length);
+        }
+        public virtual int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is IComparable)
+            {
+                IComparable inx = (IComparable)invalue;
+                return inx.CompareTo(comparevalue);
+            }
+
+            return 0;
         }
 
 
@@ -3022,8 +3033,6 @@ namespace NumpyLib
             var arr = data.datap as System.Numerics.Complex[];
             Quick_Sort(arr, offset, offset + length-1);
         }
-
-
         static void Quick_Sort(System.Numerics.Complex[] array, int low, int high)
         {
             if (low < high)
@@ -3035,7 +3044,6 @@ namespace NumpyLib
                 Quick_Sort(array, partitionIndex + 1, high);
             }
         }
-
         static int Partition(System.Numerics.Complex[] array, int low, int high)
         {
             //1. Select a pivot point.
@@ -3063,6 +3071,24 @@ namespace NumpyLib
             return lowIndex + 1;
         }
 
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is System.Numerics.Complex)
+            {
+                System.Numerics.Complex cin = (System.Numerics.Complex)invalue;
 
+                if (comparevalue is System.Numerics.Complex)
+                {
+                    System.Numerics.Complex ccin = (System.Numerics.Complex)comparevalue;
+                    return cin.Real.CompareTo(ccin.Real);
+                }
+                if (comparevalue is IComparable)
+                {
+                    return cin.Real.CompareTo(comparevalue);
+                }
+            }
+
+            return 0;
+        }
     }
 }
