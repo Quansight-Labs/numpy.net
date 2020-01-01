@@ -3095,7 +3095,7 @@ namespace NumpyDotNet
                 }
                 else if (arr.IsComplex)
                 {
-                    throw new Exception("not handling complex numbers yet");
+                    scl = asanyarray((System.Numerics.Complex)(arr.size / avg.size));
                 }
                 else
                 {

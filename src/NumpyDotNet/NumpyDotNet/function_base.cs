@@ -3375,7 +3375,10 @@ namespace NumpyDotNet
                     }
                     else if (IsComplex)
                     {
-                        throw new NotImplementedException();
+                        var cc = (System.Numerics.Complex)q[i];
+                        var qd = cc.Real;
+                        if (qd < 0.0 || qd > 1.0)
+                            return false;
                     }
                     else
                     {
