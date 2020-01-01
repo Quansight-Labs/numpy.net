@@ -1717,8 +1717,16 @@ namespace NumpyDotNet
             ndarray c = np.array(A, copy: false, subok: true, ndmin: d);
 
             List<npy_intp> tupList = new List<npy_intp>();
-            foreach (var t1 in tup)
-                tupList.Add(Convert.ToInt64(t1));
+            try
+            {
+                foreach (var t1 in tup)
+                    tupList.Add(Convert.ToInt64(t1));
+            }
+            catch
+            {
+                throw new Exception("the reps field must be convertible to Int64");
+            }
+
 
             if (d < c.ndim)
             {
