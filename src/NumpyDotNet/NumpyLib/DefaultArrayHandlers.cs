@@ -70,6 +70,7 @@ namespace NumpyLib
         bool IsInfinity(object o);
         object ConvertToUpgradedValue(object o);
         VoidPtr GetArrayCopy(VoidPtr vp);
+        void ArrayFill(VoidPtr vp, object FillValue);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -317,6 +318,20 @@ namespace NumpyLib
             }
             return max_ind;
         }
+        public virtual void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            var adata = vp.datap as object[];
+            Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
+            return;
+        }
+        protected void Fill<T>(T[] array, T fillValue, int startIndex, int count)
+        {
+            for (int i = startIndex; i < count; i++)
+            {
+                array[i] = fillValue;
+            }
+        }
+
 
         public virtual bool IsNan(object o)
         {
@@ -659,6 +674,13 @@ namespace NumpyLib
             get { return IntPtr.Size; }
         }
 
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            var adata = vp.datap as object[];
+            Fill(adata, FillValue, 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             throw new NotImplementedException("This array handler does not implement DOT");
@@ -677,6 +699,14 @@ namespace NumpyLib
         {
             get { return sizeof(bool); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            var adata = vp.datap as bool[];
+            Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
+            return;
+        }
+
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             bool tmp = (bool)otmp;
@@ -826,6 +856,13 @@ namespace NumpyLib
         {
             get { return sizeof(sbyte); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            sbyte[] adata = vp.datap as sbyte[];
+            Fill(adata, Convert.ToSByte(FillValue), 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             sbyte tmp = (sbyte)otmp;
@@ -995,6 +1032,14 @@ namespace NumpyLib
         {
             get { return sizeof(byte); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            byte[] adata = vp.datap as byte[];
+            Fill(adata, Convert.ToByte(FillValue), 0, adata.Length);
+            return;
+        }
+
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             byte tmp = (byte)otmp;
@@ -1166,6 +1211,13 @@ namespace NumpyLib
         {
             get { return sizeof(Int16); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            Int16[] adata = vp.datap as Int16[];
+            Fill(adata, Convert.ToInt16(FillValue), 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             Int16 tmp = (Int16)otmp;
@@ -1335,6 +1387,13 @@ namespace NumpyLib
         {
             get { return sizeof(UInt16); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            UInt16[] adata = vp.datap as UInt16[];
+            Fill(adata, Convert.ToUInt16(FillValue), 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             UInt16 tmp = (UInt16)otmp;
@@ -1503,6 +1562,13 @@ namespace NumpyLib
         {
             get { return sizeof(Int32); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            Int32[] adata = vp.datap as Int32[];
+            Fill(adata, Convert.ToInt32(FillValue), 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             Int32 tmp = (Int32)otmp;
@@ -1672,6 +1738,13 @@ namespace NumpyLib
         {
             get { return sizeof(UInt32); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            UInt32[] adata = vp.datap as UInt32[];
+            Fill(adata, Convert.ToUInt32(FillValue), 0, adata.Length);
+            return;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             UInt32 tmp = (UInt32)otmp;
@@ -1840,6 +1913,12 @@ namespace NumpyLib
         {
             get { return sizeof(Int64); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            Int64[] adata = vp.datap as Int64[];
+            Fill(adata, Convert.ToInt64(FillValue), 0, adata.Length);
+            return;
+        }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             Int64 tmp = (Int64)otmp;
@@ -2004,11 +2083,15 @@ namespace NumpyLib
         {
    
         }
-
-
         public int ItemSize
         {
             get { return sizeof(UInt64); }
+        }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            UInt64[] adata = vp.datap as UInt64[];
+            Fill(adata, Convert.ToUInt64(FillValue), 0, adata.Length);
+            return;
         }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -2177,6 +2260,12 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(float); }
+        }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            float[] adata = vp.datap as float[];
+            Fill(adata, Convert.ToSingle(FillValue), 0, adata.Length);
+            return;
         }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -2396,6 +2485,12 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(double); }
+        }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            double[] adata = vp.datap as double[];
+            Fill(adata, Convert.ToDouble(FillValue), 0, adata.Length);
+            return;
         }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -2622,6 +2717,12 @@ namespace NumpyLib
         {
             get { return sizeof(decimal); }
         }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            decimal[] adata = vp.datap as decimal[];
+            Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
+            return;
+        }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             decimal tmp = (decimal)otmp;
@@ -2841,6 +2942,17 @@ namespace NumpyLib
         public int ItemSize
         {
             get { return sizeof(double) * 2; }
+        }
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            System.Numerics.Complex[] adata = vp.datap as System.Numerics.Complex[];
+
+            if (FillValue is System.Numerics.Complex)
+                Fill(adata, (System.Numerics.Complex)FillValue, 0, adata.Length);
+            else
+                Fill(adata, new System.Numerics.Complex(Convert.ToDouble(FillValue), 0), 0, adata.Length);
+
+            return;
         }
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
