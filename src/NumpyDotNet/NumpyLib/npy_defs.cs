@@ -637,7 +637,7 @@ namespace NumpyLib
     */
 
     public delegate int NpyArray_CompareFunc(VoidPtr parrdp, VoidPtr pkeydp, int elSize, NpyArray npa);
-    public delegate int NpyArray_ArgFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex, ref npy_intp max_ind, NpyArray npa);
+    public delegate npy_intp NpyArray_ArgFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex);
 
     public delegate void NpyArray_DotFunc(VoidPtr o1, npy_intp i1, VoidPtr o2, npy_intp i2, VoidPtr o3, npy_intp i3, NpyArray npa);
     public delegate void NpyArray_VectorUnaryFunc(VoidPtr Src, VoidPtr Dest, npy_intp srclen, NpyArray srcArray, NpyArray destArray);

@@ -1115,7 +1115,7 @@ namespace NumpyLib
 
             for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
             {
-                arg_func(ip, ip.data_offset / elsize, m, ref rptr[i], ap);
+                rptr[i] = arg_func(ip, ip.data_offset / elsize, m);
             }
 
             Npy_DECREF(ap);
@@ -1236,7 +1236,7 @@ namespace NumpyLib
 
             for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
             {
-                arg_func(ip, ip.data_offset / elsize, m, ref rptr[i], ap);
+                rptr[i] = arg_func(ip, ip.data_offset / elsize, m);
             }
 
             Npy_DECREF(ap);
