@@ -2608,59 +2608,8 @@ namespace NumpyDotNet
 
         private static VoidPtr GetArrayCopy(VoidPtr data)
         {
-            switch (data.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    var dbool = data.datap as bool[];
-                    return new VoidPtr(GetArrayCopy(dbool), data.type_num);
-                case NPY_TYPES.NPY_BYTE:
-                    var dsbyte = data.datap as sbyte[];
-                    return new VoidPtr(GetArrayCopy(dsbyte), data.type_num);
-                case NPY_TYPES.NPY_UBYTE:
-                    var dbyte = data.datap as byte[];
-                    return new VoidPtr(GetArrayCopy(dbyte), data.type_num);
-                case NPY_TYPES.NPY_UINT16:
-                    var duint16 = data.datap as UInt16[];
-                    return new VoidPtr(GetArrayCopy(duint16), data.type_num);
-                case NPY_TYPES.NPY_INT16:
-                    var dint16 = data.datap as Int16[];
-                    return new VoidPtr(GetArrayCopy(dint16), data.type_num);
-                case NPY_TYPES.NPY_UINT32:
-                    var duint32 = data.datap as UInt32[];
-                    return new VoidPtr(GetArrayCopy(duint32), data.type_num);
-                case NPY_TYPES.NPY_INT32:
-                    var dint32 = data.datap as Int32[];
-                    return new VoidPtr(GetArrayCopy(dint32), data.type_num);
-                case NPY_TYPES.NPY_INT64:
-                    var dint64 = data.datap as Int64[];
-                    return new VoidPtr(GetArrayCopy(dint64), data.type_num);
-                case NPY_TYPES.NPY_UINT64:
-                    var duint64 = data.datap as UInt64[];
-                    return new VoidPtr(GetArrayCopy(duint64), data.type_num);
-                case NPY_TYPES.NPY_FLOAT:
-                    var float1 = data.datap as float[];
-                    return new VoidPtr(GetArrayCopy(float1), data.type_num);
-                case NPY_TYPES.NPY_DOUBLE:
-                    var double1 = data.datap as double[];
-                    return new VoidPtr(GetArrayCopy(double1), data.type_num);
-                case NPY_TYPES.NPY_DECIMAL:
-                    var decimal1 = data.datap as decimal[];
-                    return new VoidPtr(GetArrayCopy(decimal1), data.type_num);
-                case NPY_TYPES.NPY_COMPLEX:
-                    var complex1 = data.datap as System.Numerics.Complex[];
-                    return new VoidPtr(GetArrayCopy(complex1), data.type_num);
-                default:
-                    throw new Exception("Unsupported data type");
-            }
+            return DefaultArrayHandlers.GetArrayHandler(data.type_num).GetArrayCopy(data);
         }
-
-        private static T[] GetArrayCopy<T>(T[] src)
-        {
-            var copy = new T[src.Length];
-            Array.Copy(src, copy, src.Length);
-            return copy;
-        }
-
 
         private static NPY_TYPES Get_NPYType<T>(T[] _Array)
         {

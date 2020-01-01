@@ -68,6 +68,7 @@ namespace NumpyLib
         bool IsNan(object o);
         bool IsInfinity(object o);
         object ConvertToUpgradedValue(object o);
+        VoidPtr GetArrayCopy(VoidPtr vp);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -300,6 +301,15 @@ namespace NumpyLib
         {
             return Convert.ToDouble(o);
         }
+        public virtual VoidPtr GetArrayCopy(VoidPtr vp)
+        {
+            var src = vp.datap as T[];
+
+            var copy = new T[src.Length];
+            Array.Copy(src, copy, src.Length);
+            return new VoidPtr(src, vp.type_num);
+        }
+
 
 
 
