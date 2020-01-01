@@ -14,36 +14,6 @@ namespace NumpyDotNetTests
     {
         private static int SizeofComplex = sizeof(double) * 2;
 
-        [Ignore]
-        [TestMethod]
-        public void xxx_ComplexNumbers_Placeholder()
-        {
-            Complex[] ca = new Complex[] { new Complex(5, 678901), 4, 3, 2, 1 };
-            print(ca);
-           
-
-            var kevin = np.array(ca, copy: true, dtype: np.Complex);
-
-            var k2 = kevin.AsComplexArray();
-
-            System.Numerics.Complex c = new System.Numerics.Complex(1.2, 2.0);
-            Console.WriteLine(c.Real);
-            Console.WriteLine(c.Imaginary);
-
-            c = c * 2;
-
-            c = 5;
-
-            Console.WriteLine(c.Real);
-            Console.WriteLine(c.Imaginary);
-
-            //var d1 = Convert.ToDecimal(c);
-
-            //var d2 = Convert.ToDouble(c);
-
-            //var cc = new System.Numerics.Complex(d2, 0);
-        }
-
         #region from ArrayCreationTests
         [TestMethod]
         public void test_asfarray_COMPLEX()
@@ -4970,7 +4940,6 @@ namespace NumpyDotNetTests
 
         #endregion
 
-
         #region from NumericTests
 
         [TestMethod]
@@ -5249,8 +5218,8 @@ namespace NumpyDotNetTests
 
             print(c);
 
-            //a = np.arange(2000, 10000, dtype: np.Decimal).reshape((-1, 4000));
-            //b = np.arange(12000, 20000, dtype: np.Decimal).reshape((-1, 4000));
+            //a = np.arange(2000, 10000, dtype: np.Complex).reshape((-1, 4000));
+            //b = np.arange(12000, 20000, dtype: np.Complex).reshape((-1, 4000));
 
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             //sw.Start();
@@ -5538,11 +5507,11 @@ namespace NumpyDotNetTests
             Assert.AreEqual(false, c);
             print(c);
 
-            //bool d = np.allclose(new decimal[] { 1.0m, np.NaN }, new decimal[] { 1.0m, np.NaN });
+            //bool d = np.allclose(new Complex[] { 1.0m, np.NaN }, new Complex[] { 1.0m, np.NaN });
             //Assert.AreEqual(false, d);
             //print(d);
 
-            //bool e = np.allclose(new decimal[] { 1.0m, np.NaN }, new decimal[] { 1.0m, np.NaN }, equal_nan: true);
+            //bool e = np.allclose(new Complex[] { 1.0m, np.NaN }, new Complex[] { 1.0m, np.NaN }, equal_nan: true);
             //Assert.AreEqual(true, e);
             //print(e);
 
@@ -5636,8 +5605,6 @@ namespace NumpyDotNetTests
 
         #endregion
 
-
-
         #region from NANFunctionsTests
 
         [TestMethod]
@@ -5696,8 +5663,8 @@ namespace NumpyDotNetTests
             AssertArray(d, new Complex[] { 30.25, 34.25, 38.25, 42.25 });
             print("*****");
 
-            // decimals don't support NAN
-            //ndarray e = np.arange(5, dtype: np.Decimal);
+            // Complex don't support NAN
+            //ndarray e = np.arange(5, dtype: np.Complex);
             //e[2] = np.NaN;
             //ndarray f = np.amin(e);
             //print(f);
@@ -5728,8 +5695,8 @@ namespace NumpyDotNetTests
             AssertArray(d, new Complex[] { 33.25, 37.25, 41.25, 45.25 });
             print("*****");
 
-            // decimals don't support NAN
-            //ndarray e = np.arange(5, dtype: np.Float32);
+            // Complex don't support NAN
+            //ndarray e = np.arange(5, dtype: np.Complex);
             //e[2] = np.NaN;
             //ndarray f = np.amax(e);
             //print(f);
@@ -6121,7 +6088,6 @@ namespace NumpyDotNetTests
 
         #endregion
 
-
         #region from TwoDimBaseTests
 
         [TestMethod]
@@ -6437,176 +6403,175 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         #region from ShapeBaseTests
 
         [TestMethod]
-        public void test_atleast_1d_COMPLEX_TODO()
+        public void test_atleast_1d_COMPLEX()
         {
-            var a = np.atleast_1d(1.0m);
+            var a = np.atleast_1d((Complex)1.0);
             print(a);
-            AssertArray(a.ElementAt(0), new decimal[] { 1.0m });
+            AssertArray(a.ElementAt(0), new Complex[] { 1.0 });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Decimal).reshape(new shape(3, 3));
+            var x = np.arange(9.0, dtype: np.Complex).reshape(new shape(3, 3));
             var b = np.atleast_1d(x);
             print(b);
 
-            var ExpectedB = new decimal[,]
-                {{0.0m, 1.0m, 2.0m},
-                 {3.0m, 4.0m, 5.0m},
-                 {6.0m, 7.0m, 8.0m}};
+            var ExpectedB = new Complex[,]
+                {{0.0, 1.0, 2.0},
+                 {3.0, 4.0, 5.0},
+                 {6.0, 7.0, 8.0}};
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_1d(new object[] { 1m, new decimal[] { 3, 4 } });
+            var c = np.atleast_1d(new object[] { (Complex)1, new Complex[] { 3, 4 } });
 
-            AssertArray(c.ElementAt(0), new decimal[] { 1 });
-            AssertArray(c.ElementAt(1), new decimal[] { 3, 4 });
+            AssertArray(c.ElementAt(0), new Complex[] { 1 });
+            AssertArray(c.ElementAt(1), new Complex[] { 3, 4 });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_2d_COMPLEX_TODO()
+        public void test_atleast_2d_COMPLEX()
         {
-            var a = np.atleast_2d(1.0m);
+            var a = np.atleast_2d((Complex)1.0);
             print(a);
-            AssertArray(a.ElementAt(0), new decimal[,] { { 1.0m } });
+            AssertArray(a.ElementAt(0), new Complex[,] { { 1.0 } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Decimal).reshape(new shape(3, 3));
+            var x = np.arange((Complex)9.0, dtype: np.Complex).reshape(new shape(3, 3));
             var b = np.atleast_2d(x);
             print(b);
 
-            var ExpectedB = new decimal[,]
-                {{0.0m, 1.0m, 2.0m},
-                 {3.0m, 4.0m, 5.0m},
-                 {6.0m, 7.0m, 8.0m}};
+            var ExpectedB = new Complex[,]
+                {{0.0, 1.0, 2.0},
+                 {3.0, 4.0, 5.0},
+                 {6.0, 7.0, 8.0}};
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_2d(new object[] { 1m, new decimal[] { 3, 4 }, new decimal[] { 5, 6 } });
+            var c = np.atleast_2d(new object[] { (Complex)1, new Complex[] { 3, 4 }, new Complex[] { 5, 6 } });
 
-            AssertArray(c.ElementAt(0), new decimal[,] { { 1 } });
-            AssertArray(c.ElementAt(1), new decimal[,] { { 3, 4 } });
-            AssertArray(c.ElementAt(2), new decimal[,] { { 5, 6 } });
+            AssertArray(c.ElementAt(0), new Complex[,] { { 1 } });
+            AssertArray(c.ElementAt(1), new Complex[,] { { 3, 4 } });
+            AssertArray(c.ElementAt(2), new Complex[,] { { 5, 6 } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_3d_COMPLEX_TODO()
+        public void test_atleast_3d_COMPLEX()
         {
-            var a = np.atleast_3d(1.0m);
+            var a = np.atleast_3d((Complex)1.0);
             print(a);
-            AssertArray(a.ElementAt(0), new decimal[,,] { { { 1.0m } } });
+            AssertArray(a.ElementAt(0), new Complex[,,] { { { 1.0 } } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Decimal).reshape(new shape(3, 3));
+            var x = np.arange(9.0, dtype: np.Complex).reshape(new shape(3, 3));
             var b = np.atleast_3d(x);
             print(b);
 
-            var ExpectedB = new decimal[,,]
-             {{{0.0m},
-               {1.0m},
-               {2.0m}},
-              {{3.0m},
-               {4.0m},
-               {5.0m}},
-              {{6.0m},
-               {7.0m},
-               {8.0m}}};
+            var ExpectedB = new Complex[,,]
+             {{{0.0},
+               {1.0},
+               {2.0}},
+              {{3.0},
+               {4.0},
+               {5.0}},
+              {{6.0},
+               {7.0},
+               {8.0}}};
 
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_3d(new object[] { new decimal[] { 1, 2 }, new decimal[] { 3, 4 }, new decimal[] { 5, 6 } });
+            var c = np.atleast_3d(new object[] { new Complex[] { 1, 2 }, new Complex[] { 3, 4 }, new Complex[] { 5, 6 } });
 
-            AssertArray(c.ElementAt(0), new decimal[,,] { { { 1 }, { 2 } } });
-            AssertArray(c.ElementAt(1), new decimal[,,] { { { 3 }, { 4 } } });
-            AssertArray(c.ElementAt(2), new decimal[,,] { { { 5 }, { 6 } } });
+            AssertArray(c.ElementAt(0), new Complex[,,] { { { 1 }, { 2 } } });
+            AssertArray(c.ElementAt(1), new Complex[,,] { { { 3 }, { 4 } } });
+            AssertArray(c.ElementAt(2), new Complex[,,] { { { 5 }, { 6 } } });
             print(c);
 
 
         }
 
         [TestMethod]
-        public void test_vstack_2_COMPLEX_TODO()
+        public void test_vstack_2_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new decimal[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Complex[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Complex[,] { { 2 }, { 3 }, { 4 } });
             var c = np.vstack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c, new Complex[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_hstack_2_COMPLEX_TODO()
+        public void test_hstack_2_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new decimal[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Complex[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Complex[,] { { 2 }, { 3 }, { 4 } });
             var c = np.hstack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new Complex[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_stack_1_COMPLEX_TODO()
+        public void test_stack_1_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new decimal[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Complex[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Complex[,] { { 2 }, { 3 }, { 4 } });
 
             var c = np.stack(new object[] { a, b }, axis: 0);
-            AssertArray(c, new decimal[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
+            AssertArray(c, new Complex[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
             print(c);
             print("**************");
 
             var d = np.stack(new object[] { a, b }, axis: 1);
-            AssertArray(d, new decimal[,,] { { { 1 }, { 2 } }, { { 2 }, { 3 } }, { { 3 }, { 4 } } });
+            AssertArray(d, new Complex[,,] { { { 1 }, { 2 } }, { { 2 }, { 3 } }, { { 3 }, { 4 } } });
             print(d);
             print("**************");
 
             var e = np.stack(new object[] { a, b }, axis: 2);
-            AssertArray(e, new decimal[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(e, new Complex[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
             print(e);
 
         }
 
         [TestMethod]
-        public void test_block_2_COMPLEX_TODO()
+        public void test_block_2_COMPLEX()
         {
-            var a = np.array(new decimal[] { 1, 2, 3 });
-            var b = np.array(new decimal[] { 2, 3, 4 });
+            var a = np.array(new Complex[] { 1, 2, 3 });
+            var b = np.array(new Complex[] { 2, 3, 4 });
             var c = np.block(new object[] { a, b, 10 });    // hstack([a, b, 10])
 
-            AssertArray(c, new decimal[] { 1, 2, 3, 2, 3, 4, 10 });
+            AssertArray(c, new Complex[] { 1, 2, 3, 2, 3, 4, 10 });
             print(c);
             print("**************");
 
-            a = np.array(new decimal[] { 1, 2, 3 });
-            b = np.array(new decimal[] { 2, 3, 4 });
+            a = np.array(new Complex[] { 1, 2, 3 });
+            b = np.array(new Complex[] { 2, 3, 4 });
             c = np.block(new object[] { new object[] { a }, new object[] { b } });    // vstack([a, b])
 
-            AssertArray(c, new decimal[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new Complex[,] { { 1, 2, 3 }, { 2, 3, 4 } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_expand_dims_1_COMPLEX_TODO()
+        public void test_expand_dims_1_COMPLEX()
         {
-            var a = np.array(new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, -1, 2));
+            var a = np.array(new Complex[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, -1, 2));
             var b = np.expand_dims(a, axis: 0);
 
-            var ExpectedDataB = new decimal[,,,]
+            var ExpectedDataB = new Complex[,,,]
             {{{{1,  2}, {3,  4}, {5,  6}},
               {{7,  8}, {9, 10}, {11, 12}}}};
 
@@ -6615,7 +6580,7 @@ namespace NumpyDotNetTests
             print("**************");
 
             var c = np.expand_dims(a, axis: 1);
-            var ExpectedDataC = new decimal[,,,]
+            var ExpectedDataC = new Complex[,,,]
                 {{{{1,  2}, {3,  4}, {5,  6}}},
                 {{{ 7,  8},{ 9, 10}, {11, 12}}}};
             AssertArray(c, ExpectedDataC);
@@ -6623,7 +6588,7 @@ namespace NumpyDotNetTests
             print("**************");
 
             var d = np.expand_dims(a, axis: 2);
-            var ExpectedDataD = new decimal[,,,]
+            var ExpectedDataD = new Complex[,,,]
             {{{{1,  2}},{{3,  4}},{{5,  6}}},
              {{{7,  8}},{{9, 10}},{{11, 12}}}};
 
@@ -6633,104 +6598,104 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_column_stack_1_COMPLEX_TODO()
+        public void test_column_stack_1_COMPLEX()
         {
-            var a = np.array(new decimal[] { 1, 2, 3 });
-            var b = np.array(new decimal[] { 2, 3, 4 });
+            var a = np.array(new Complex[] { 1, 2, 3 });
+            var b = np.array(new Complex[] { 2, 3, 4 });
             var c = np.column_stack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new Complex[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
             print(c);
         }
 
         [TestMethod]
-        public void test_row_stack_1_COMPLEX_TODO()
+        public void test_row_stack_1_COMPLEX()
         {
-            var a = np.array(new decimal[] { 1, 2, 3 });
-            var b = np.array(new decimal[] { 2, 3, 4 });
+            var a = np.array(new Complex[] { 1, 2, 3 });
+            var b = np.array(new Complex[] { 2, 3, 4 });
             var c = np.row_stack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new Complex[,] { { 1, 2, 3 }, { 2, 3, 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_dstack_1_COMPLEX_TODO()
+        public void test_dstack_1_COMPLEX()
         {
-            var a = np.array(new decimal[] { 1, 2, 3 });
-            var b = np.array(new decimal[] { 2, 3, 4 });
+            var a = np.array(new Complex[] { 1, 2, 3 });
+            var b = np.array(new Complex[] { 2, 3, 4 });
             var c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
+            AssertArray(c, new Complex[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
             print(c);
 
-            a = np.array(new decimal[,] { { 1 }, { 2 }, { 3 } });
-            b = np.array(new decimal[,] { { 2 }, { 3 }, { 4 } });
+            a = np.array(new Complex[,] { { 1 }, { 2 }, { 3 } });
+            b = np.array(new Complex[,] { { 2 }, { 3 }, { 4 } });
             c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new decimal[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(c, new Complex[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_array_split_2_COMPLEX_TODO()
+        public void test_array_split_2_COMPLEX()
         {
-            var x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(2, 8, 1));
+            var x = np.arange(16.0, dtype: np.Complex).reshape(new shape(2, 8, 1));
             var y = np.array_split(x, 3, axis: 0);
 
 
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
             AssertShape(y.ElementAt(2), 0, 8, 1);
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(2, 8, 1));
+            x = np.arange(16.0, dtype: np.Complex).reshape(new shape(2, 8, 1));
             y = np.array_split(x, 3, axis: 1);
 
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } });
-            AssertArray(y.ElementAt(2), new decimal[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } });
+            AssertArray(y.ElementAt(2), new Complex[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } });
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(2, 8, 1));
+            x = np.arange(16.0, dtype: np.Complex).reshape(new shape(2, 8, 1));
             y = np.array_split(x, 3, axis: 2);
 
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
             AssertShape(y.ElementAt(1), 2, 8, 0);
             AssertShape(y.ElementAt(2), 2, 8, 0);
             print(y);
         }
 
         [TestMethod]
-        public void test_split_2_COMPLEX_TODO()
+        public void test_split_2_COMPLEX()
         {
-            var x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(8, 2, 1));
+            var x = np.arange(16.0, dtype: np.Complex).reshape(new shape(8, 2, 1));
             var y = np.split(x, new Int32[] { 2, 3 }, axis: 0);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 4 }, { 5 } } });
-            AssertArray(y.ElementAt(2), new decimal[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 4 }, { 5 } } });
+            AssertArray(y.ElementAt(2), new Complex[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(8, 2, 1));
+            x = np.arange(16.0, dtype: np.Complex).reshape(new shape(8, 2, 1));
             y = np.split(x, new int[] { 2, 3 }, axis: 1);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
+            AssertArray(y.ElementAt(0), new Complex[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
                                                         {{8},{9}},{{10},{11}}, {{12}, {13}}, {{14}, {15}}});
             AssertShape(y.ElementAt(1), 8, 0, 1);
             AssertShape(y.ElementAt(2), 8, 0, 1);
@@ -6739,11 +6704,11 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Decimal).reshape(new shape(8, 2, 1));
+            x = np.arange(16.0, dtype: np.Complex).reshape(new shape(8, 2, 1));
             y = np.split(x, new int[] { 2, 3 }, axis: 2);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
+            AssertArray(y.ElementAt(0), new Complex[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
                                                         {{ 8},{ 9}},{{10}, {11}}, {{12}, {13}}, {{14}, {15}}});
             AssertShape(y.ElementAt(1), 8, 2, 0);
             AssertShape(y.ElementAt(2), 8, 2, 0);
@@ -6752,23 +6717,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_hsplit_2_COMPLEX_TODO()
+        public void test_hsplit_2_COMPLEX()
         {
-            var x = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            var x = np.arange(8, dtype: np.Complex).reshape(new shape(2, 2, 2));
             var y = np.hsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1 } }, { { 4, 5 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 2, 3 } }, { { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1 } }, { { 4, 5 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 2, 3 } }, { { 6, 7 } } });
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            x = np.arange(8, dtype: np.Complex).reshape(new shape(2, 2, 2));
             y = np.hsplit(x, new Int32[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
             AssertShape(y.ElementAt(1), 2, 0, 2);
             AssertShape(y.ElementAt(2), 2, 0, 2);
 
@@ -6776,23 +6741,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_vsplit_2_COMPLEX_TODO()
+        public void test_vsplit_2_COMPLEX()
         {
-            var x = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            var x = np.arange(8, dtype: np.Complex).reshape(new shape(2, 2, 2));
             var y = np.vsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1 }, { 2, 3 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1 }, { 2, 3 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 4, 5 }, { 6, 7 } } });
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.Decimal).reshape(new shape(2, 2, 2));
+            x = np.arange(8, dtype: np.Complex).reshape(new shape(2, 2, 2));
             y = np.vsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
             AssertShape(y.ElementAt(1), 0, 2, 2);
             AssertShape(y.ElementAt(2), 0, 2, 2);
 
@@ -6800,59 +6765,59 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_dsplit_1_COMPLEX_TODO()
+        public void test_dsplit_1_COMPLEX()
         {
-            var x = np.arange(16, dtype: np.Decimal).reshape(new shape(2, 2, 4));
+            var x = np.arange(16, dtype: np.Complex).reshape(new shape(2, 2, 4));
             var y = np.dsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } });
             print(y);
 
 
             print("**************");
 
-            x = np.arange(16, dtype: np.Decimal).reshape(new shape(2, 2, 4));
+            x = np.arange(16, dtype: np.Complex).reshape(new shape(2, 2, 4));
             y = np.dsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new decimal[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } });
-            AssertArray(y.ElementAt(1), new decimal[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Complex[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } });
+            AssertArray(y.ElementAt(1), new Complex[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } });
             AssertShape(y.ElementAt(2), 2, 2, 0);
 
             print(y);
         }
 
         [TestMethod]
-        public void test_kron_1_COMPLEX_TODO()
+        public void test_kron_1_COMPLEX()
         {
 
-            var a = np.kron(new decimal[] { 1, 10, 100 }, new decimal[] { 5, 6, 7 });
-            AssertArray(a, new decimal[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
+            var a = np.kron(new Complex[] { 1, 10, 100 }, new Complex[] { 5, 6, 7 });
+            AssertArray(a, new Complex[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
             print(a);
 
-            var b = np.kron(new decimal[] { 5, 6, 7 }, new decimal[] { 1, 10, 100 });
-            AssertArray(b, new decimal[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
+            var b = np.kron(new Complex[] { 5, 6, 7 }, new Complex[] { 1, 10, 100 });
+            AssertArray(b, new Complex[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
             print(b);
 
-            var x = np.array(new decimal[,] { { 2, 3 }, { 4, 5 } });
-            var y = np.array(new decimal[,] { { 5, 6 }, { 7, 8 } });
+            var x = np.array(new Complex[,] { { 2, 3 }, { 4, 5 } });
+            var y = np.array(new Complex[,] { { 5, 6 }, { 7, 8 } });
 
             var c = np.kron(x, y);
-            AssertArray(c, new decimal[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
+            AssertArray(c, new Complex[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
             print(c);
             print(c.shape);
 
-            c = np.kron(np.eye(2, dtype: np.Decimal), np.ones(new shape(2, 2), dtype: np.Decimal));
-            AssertArray(c, new decimal[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
+            c = np.kron(np.eye(2, dtype: np.Complex), np.ones(new shape(2, 2), dtype: np.Complex));
+            AssertArray(c, new Complex[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
 
 
-            x = np.array(new decimal[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
-            y = np.array(new decimal[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
+            x = np.array(new Complex[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
+            y = np.array(new Complex[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
 
             c = np.kron(x, y);
-            AssertArray(c, new decimal[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 },
+            AssertArray(c, new Complex[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 },
                                            { 14, 16, 12, 12, 21, 24, 18, 18, 21, 24, 18, 18 },
                                            { 20, 24, 24, 24, 25, 30, 30, 30, 15, 18, 18, 18 },
                                            { 28, 32, 24, 24, 35, 40, 30, 30, 21, 24, 18, 18 } } });
@@ -6867,28 +6832,47 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tile_2_COMPLEX_TODO()
+        public void test_tile_2_COMPLEX()
         {
-            var a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new Complex[,] { { 1, 2 }, { 3, 4 } });
             var b = np.tile(a, 2);
-            AssertArray(b, new decimal[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
+            AssertArray(b, new Complex[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
             print(b);
             print("**************");
 
-            var c = np.tile(a, new decimal[] { 2, 1 });
-            AssertArray(c, new decimal[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
+            var c = np.tile(a, new Int16[] { 2, 1 });
+            AssertArray(c, new Complex[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
             print(c);
             print("**************");
 
-            var d = np.array(new decimal[] { 1, 2, 3, 4 });
-            var e = np.tile(d, new decimal[] { 4, 1 });
+            var d = np.array(new Complex[] { 1, 2, 3, 4 });
+            var e = np.tile(d, new float[] { 4, 1 });
 
-            AssertArray(e, new decimal[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
+            AssertArray(e, new Complex[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
             print(e);
+
+            try
+            {
+                var f = np.array(new Complex[] { 1, 2, 3, 4 });
+                var g = np.tile(d, new Complex[] { 4, 1 });
+
+                AssertArray(g, new Complex[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
+                print(e);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+     
+
+
         }
 
         #endregion
 
+
+#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
         #region from UFUNCTests
 
         [TestMethod]
