@@ -80,79 +80,8 @@ namespace NumpyDotNet
             {
                 T[] n = new T[1];
 
-                switch (Type.GetTypeCode(n[0].GetType()))
-                {
-                    case TypeCode.Boolean:
-                        target_nptype = NPY_TYPES.NPY_BOOL;
-                        target_dtype = np.Bool;
-                        break;
-
-                    case TypeCode.Byte:
-                        target_nptype = NPY_TYPES.NPY_UBYTE;
-                        target_dtype = np.UInt8;
-                        break;
-
-                    case TypeCode.SByte:
-                        target_nptype = NPY_TYPES.NPY_BYTE;
-                        target_dtype = np.Int8;
-                        break;
-
-                    case TypeCode.UInt16:
-                        target_nptype = NPY_TYPES.NPY_UINT16;
-                        target_dtype = np.UInt16;
-                        break;
-
-                    case TypeCode.UInt32:
-                        target_nptype = NPY_TYPES.NPY_UINT32;
-                        target_dtype = np.UInt32;
-                        break;
-
-                    case TypeCode.UInt64:
-                        target_nptype = NPY_TYPES.NPY_UINT64;
-                        target_dtype = np.UInt64;
-                        break;
-
-                    case TypeCode.Int16:
-                        target_nptype = NPY_TYPES.NPY_INT16;
-                        target_dtype = np.Int16;
-                        break;
-
-                    case TypeCode.Int32:
-                        target_nptype = NPY_TYPES.NPY_INT32;
-                        target_dtype = np.Int32;
-                        break;
-
-                    case TypeCode.Int64:
-                        target_nptype = NPY_TYPES.NPY_INT64;
-                        target_dtype = np.Int64;
-                        break;
-
-                    case TypeCode.Decimal:
-                        target_nptype = NPY_TYPES.NPY_DECIMAL;
-                        target_dtype = np.Decimal;
-                        break;
-
-                    case TypeCode.Double:
-                        target_nptype = NPY_TYPES.NPY_DOUBLE;
-                        target_dtype = np.Float64;
-                        break;
-
-                    case TypeCode.Single:
-                        target_nptype = NPY_TYPES.NPY_FLOAT;
-                        target_dtype = np.Float32;
-                        break;
-
-                    default:
-
-                        if (n[0] is System.Numerics.Complex)
-                        {
-                            target_nptype = NPY_TYPES.NPY_COMPLEX;
-                            target_dtype = np.Complex;
-                            break;
-                        }
-
-                        throw new Exception("Data type not supported");
-                }
+                target_nptype = DefaultArrayHandlers.GetArrayType(n[0]);
+                target_dtype = NpyCoreApi.DescrFromType(target_nptype);
             }
 
 
