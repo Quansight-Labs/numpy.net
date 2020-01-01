@@ -2624,61 +2624,13 @@ namespace NumpyDotNet
 
         private static NPY_TYPES Get_NPYType(object obj)
         {
-            Type ArrayType = obj.GetType();
+            NPY_TYPES NumType = DefaultArrayHandlers.GetArrayType(obj);
+            if (NumType != NPY_TYPES.NPY_NOTSET)
+            {
+                return NumType;
+            }
 
-            if (ArrayType == typeof(bool))
-            {
-                return NPY_TYPES.NPY_BOOL;
-            }
-            if (ArrayType == typeof(byte))
-            {
-                return NPY_TYPES.NPY_UBYTE;
-            }
-            if (ArrayType == typeof(sbyte))
-            {
-                return NPY_TYPES.NPY_BYTE;
-            }
-            if (ArrayType == typeof(Int16))
-            {
-                return NPY_TYPES.NPY_INT16;
-            }
-            if (ArrayType == typeof(UInt16))
-            {
-                return NPY_TYPES.NPY_UINT16;
-            }
-            if (ArrayType == typeof(Int32))
-            {
-                return NPY_TYPES.NPY_INT32;
-            }
-            if (ArrayType == typeof(UInt32))
-            {
-                return NPY_TYPES.NPY_UINT32;
-            }
-            if (ArrayType == typeof(Int64))
-            {
-                return NPY_TYPES.NPY_INT64;
-            }
-            if (ArrayType == typeof(UInt64))
-            {
-                return NPY_TYPES.NPY_UINT64;
-            }
-            if (ArrayType == typeof(float))
-            {
-                return NPY_TYPES.NPY_FLOAT;
-            }
-            if (ArrayType == typeof(double))
-            {
-                return NPY_TYPES.NPY_DOUBLE;
-            }
-            if (ArrayType == typeof(decimal))
-            {
-                return NPY_TYPES.NPY_DECIMAL;
-            }
-            if (ArrayType == typeof(System.Numerics.Complex))
-            {
-                return NPY_TYPES.NPY_COMPLEX;
-            }
-            return 0;
+            throw new Exception("This data type is not registered with the numpy system");
         }
 
         private static int normalize_axis_index(int axis, int ndim)

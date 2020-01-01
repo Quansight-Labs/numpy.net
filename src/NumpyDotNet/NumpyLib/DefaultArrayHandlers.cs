@@ -57,6 +57,7 @@ namespace NumpyLib
 
         System.Array ToArray(Array ssrc);
         int ItemSize { get; }
+        Type ItemType { get; }
         int GetLength(VoidPtr vp);
         object AllocateNewArray(int size);
         object AllocateAndCopy(object datap, int startingOffset, int numElements);
@@ -119,6 +120,25 @@ namespace NumpyLib
             }
 
             return Handler;
+        }
+
+        public static NPY_TYPES GetArrayType(object o)
+        {
+            Type otype = o.GetType();
+            for (int index = 0; index < ArrayHandlers.Length; index++)
+            {
+                var ah = ArrayHandlers[index];
+                if (ah != null)
+                {
+                    if (ah.ItemType == otype)
+                    {
+                        return (NPY_TYPES)index;
+                    }
+                }
+    
+            }
+
+            return NPY_TYPES.NPY_NOTSET;
         }
 
         private static IArrayHandlers[] ArrayHandlers = new IArrayHandlers[255];
@@ -214,6 +234,15 @@ namespace NumpyLib
             HeavisideOperation = Heaviside;
             RintOperation = Rint;
             ConjugateOperation = Conjugate;
+        }
+
+        private T _t;
+        public Type ItemType
+        {
+            get
+            {
+                return _t.GetType();
+            }
         }
 
         public System.Array ToArray(Array ssrc)
