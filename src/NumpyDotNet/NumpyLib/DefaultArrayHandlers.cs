@@ -63,6 +63,9 @@ namespace NumpyLib
         void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n);
         void SortArray(VoidPtr data, int offset, int length);
         int CompareTo(object invalue, object comparevalue);
+        npy_intp ArgMax(object ip, npy_intp startIndex, npy_intp endIndex);
+        npy_intp ArgMin(object ip, npy_intp startIndex, npy_intp endIndex);
+
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -243,6 +246,38 @@ namespace NumpyLib
             }
 
             return 0;
+        }
+        public virtual npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            T[] ip = oip as T[];
+            T mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (CompareTo(ip[i], mp) > 0)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
+        public virtual npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            T[] ip = oip as T[];
+            T mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (CompareTo(ip[i], mp) < 0)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
 
 

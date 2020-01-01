@@ -964,113 +964,14 @@ namespace NumpyLib
         #region ArgMax
         internal static npy_intp NpyArray_ArgMaxFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex)
         {
-            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(ip.type_num);
-
-
-            switch (ip.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as bool[], startIndex, endIndex);
-                case NPY_TYPES.NPY_BYTE:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as sbyte[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UBYTE:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as byte[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT16:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int16[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT16:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt16[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT32:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int32[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT32:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt32[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT64:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as Int64[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT64:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as UInt64[], startIndex, endIndex);
-                case NPY_TYPES.NPY_FLOAT:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as float[], startIndex, endIndex);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as double[], startIndex, endIndex);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as decimal[], startIndex, endIndex);
-                case NPY_TYPES.NPY_COMPLEX:
-                    return NpyArray_ArgMaxFunc(ArrayHandler, ip.datap as System.Numerics.Complex[], startIndex, endIndex);
-            }
-
-            return 0;
-
-        }
-
-        internal static npy_intp NpyArray_ArgMaxFunc<T>(IArrayHandlers ArrayHander, T[] ip, npy_intp startIndex, npy_intp endIndex)
-        {
-            T mp = ip[0 + startIndex];
-
-            npy_intp max_ind = 0;
-            for (npy_intp i = 1+startIndex; i < endIndex+startIndex; i++)
-            {
-                if (ArrayHander.CompareTo(ip[i], mp) > 0)
-                {
-                    mp = ip[i];
-                    max_ind = i-startIndex;
-                }
-            }
-            return max_ind;
+            return DefaultArrayHandlers.GetArrayHandler(ip.type_num).ArgMax(ip.datap, startIndex, endIndex);
         }
         #endregion
 
         #region ArgMin
         internal static npy_intp NpyArray_ArgMinFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex)
         {
-            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(ip.type_num);
-
-            switch (ip.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as bool[], startIndex, endIndex);
-                case NPY_TYPES.NPY_BYTE:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as sbyte[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UBYTE:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as byte[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT16:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int16[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT16:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt16[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT32:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int32[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT32:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt32[], startIndex, endIndex);
-                case NPY_TYPES.NPY_INT64:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as Int64[], startIndex, endIndex);
-                case NPY_TYPES.NPY_UINT64:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as UInt64[], startIndex, endIndex);
-                case NPY_TYPES.NPY_FLOAT:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as float[], startIndex, endIndex);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as double[], startIndex, endIndex);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as decimal[], startIndex, endIndex);
-                case NPY_TYPES.NPY_COMPLEX:
-                    return NpyArray_ArgMinFunc(ArrayHandler, ip.datap as System.Numerics.Complex[], startIndex, endIndex);
-            }
-
-            return 0;
-
-        }
-
-        internal static npy_intp NpyArray_ArgMinFunc<T>(IArrayHandlers ArrayHander, T[] ip, npy_intp startIndex, npy_intp endIndex)
-        {
-            T mp = ip[0+ startIndex];
-
-            npy_intp max_ind = 0;
-            for (npy_intp i = 1+ startIndex; i < endIndex+ startIndex; i++)
-            {
-                if (ArrayHander.CompareTo(ip[i],mp) < 0)
-                {
-                    mp = ip[i];
-                    max_ind = i-startIndex;
-                }
-            }
-            return max_ind;
+            return DefaultArrayHandlers.GetArrayHandler(ip.type_num).ArgMin(ip.datap, startIndex, endIndex);
         }
         #endregion
 
@@ -1080,8 +981,6 @@ namespace NumpyLib
             DefaultArrayHandlers.GetArrayHandler(ip1.type_num).dot(ip1, is1, ip2, is2, op, n);
             return;
         }
-
- 
         #endregion
 
 
