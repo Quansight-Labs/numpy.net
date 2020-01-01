@@ -494,7 +494,6 @@ namespace NumpyDotNetTests
             AssertShape(x, 8, 4);
         }
 
-        [Ignore]  // need to fix up Arg/Part code to work with Complex
         [TestMethod]
         public void test_ndarray_unique_1_COMPLEX()
         {
