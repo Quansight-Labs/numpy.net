@@ -1651,7 +1651,7 @@ namespace NumpyDotNet
             }
 
             var avg_result = average(X, axis: 1, weights: w, returned: true);
-            double w_sum = Convert.ToDouble(avg_result.sum_of_weights[0]);
+            double w_sum = ConvertToDouble(avg_result.sum_of_weights[0]);
 
             // Determine the normalization
             double fact;
@@ -1697,7 +1697,7 @@ namespace NumpyDotNet
             }
             else if (c.IsComplex)
             {
-                throw new NotImplementedException("no complex numbers yet");
+                c *= (System.Numerics.Complex)1.0 / new System.Numerics.Complex(fact, 0);
             }
             else
             {
@@ -1705,6 +1705,17 @@ namespace NumpyDotNet
             }
             return c.Squeeze();
 
+        }
+
+        private static double ConvertToDouble(object value)
+        {
+            if (value is System.Numerics.Complex)
+            {
+                System.Numerics.Complex c = (System.Numerics.Complex)value;
+                return c.Real;
+            }
+
+            return Convert.ToDouble(value);
         }
         #endregion
 
