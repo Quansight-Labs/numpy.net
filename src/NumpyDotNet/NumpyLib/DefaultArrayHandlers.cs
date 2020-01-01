@@ -67,6 +67,7 @@ namespace NumpyLib
         npy_intp ArgMin(object ip, npy_intp startIndex, npy_intp endIndex);
         bool IsNan(object o);
         bool IsInfinity(object o);
+        object ConvertToUpgradedValue(object o);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -295,6 +296,11 @@ namespace NumpyLib
         {
             return false;
         }
+        public virtual object ConvertToUpgradedValue(object o)
+        {
+            return Convert.ToDouble(o);
+        }
+
 
 
         public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
@@ -2151,6 +2157,10 @@ namespace NumpyLib
             float f = (float)o;
             return float.IsInfinity(f);
         }
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return Convert.ToSingle(o);
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -2366,6 +2376,10 @@ namespace NumpyLib
             double d = (double)o;
             return double.IsInfinity(d);
         }
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return Convert.ToDouble(o);
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -2576,6 +2590,10 @@ namespace NumpyLib
 
             tmp += (decimal)((decimal)ip1[ip1_index / ip1Size] * (decimal)ip2[ip2_index / ip2Size]);
             return tmp;
+        }
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return Convert.ToDecimal(o);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2793,6 +2811,11 @@ namespace NumpyLib
             tmp += (System.Numerics.Complex)((System.Numerics.Complex)ip1[ip1_index / ip1Size] * (System.Numerics.Complex)ip2[ip2_index / ip2Size]);
             return tmp;
         }
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return ConvertToComplex(o);
+        }
+
 
         System.Numerics.Complex ConvertToComplex(object o)
         {

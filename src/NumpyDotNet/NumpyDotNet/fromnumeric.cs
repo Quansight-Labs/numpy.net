@@ -2563,29 +2563,7 @@ namespace NumpyDotNet
         public static object max(object arr)
         {
             var resultArray = np.amax(arr);
-
-            switch (resultArray.TypeNum)
-            {
-                case NPY_TYPES.NPY_FLOAT:
-                    return Convert.ToSingle(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_DOUBLE:
-                    return Convert.ToDouble(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_DECIMAL:
-                    return Convert.ToDecimal(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_COMPLEX:
-                    object o = resultArray.GetItem(0);
-                    if (o is System.Numerics.Complex)
-                    {
-                        return o;
-                    }
-                    else
-                    {
-                        return new System.Numerics.Complex(Convert.ToDouble(o), 0);
-                    }
-                default:
-                    return Convert.ToDouble(resultArray.GetItem(0));
-            }
-  
+            return DefaultArrayHandlers.GetArrayHandler(resultArray.TypeNum).ConvertToUpgradedValue(resultArray.GetItem(0));
         }
 
         #endregion
@@ -2694,28 +2672,7 @@ namespace NumpyDotNet
         public static object min(object arr)
         {
             var resultArray = np.amin(arr);
-
-            switch (resultArray.TypeNum)
-            {
-                case NPY_TYPES.NPY_FLOAT:
-                    return Convert.ToSingle(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_DOUBLE:
-                    return Convert.ToDouble(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_DECIMAL:
-                    return Convert.ToDecimal(resultArray.GetItem(0));
-                case NPY_TYPES.NPY_COMPLEX:
-                    object o = resultArray.GetItem(0);
-                    if (o is System.Numerics.Complex)
-                    {
-                        return o;
-                    }
-                    else
-                    {
-                        return new System.Numerics.Complex(Convert.ToDouble(o), 0);
-                    }
-                default:
-                    return Convert.ToDouble(resultArray.GetItem(0));
-            }
+            return DefaultArrayHandlers.GetArrayHandler(resultArray.TypeNum).ConvertToUpgradedValue(resultArray.GetItem(0));
         }
 
         #endregion
