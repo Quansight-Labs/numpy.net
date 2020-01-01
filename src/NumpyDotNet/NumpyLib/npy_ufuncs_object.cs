@@ -243,7 +243,9 @@ namespace NumpyLib
         npy_op_fmax,
         npy_op_fmin,
         npy_op_heaviside,
-        npy_op_end_of_ops       // Must be the last entry
+
+        // special flags
+        npy_op_special_operand_is_float
     };
 
     public enum NpyUFuncIdentity

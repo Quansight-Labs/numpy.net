@@ -71,6 +71,7 @@ namespace NumpyLib
         object ConvertToUpgradedValue(object o);
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
+        NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -237,6 +238,8 @@ namespace NumpyLib
             ConjugateOperation = Conjugate;
         }
 
+        public virtual int ItemSize {get;}
+
         protected T[] _t = new T[1] { default(T) };
         public Type ItemType
         {
@@ -388,6 +391,22 @@ namespace NumpyLib
             tmp += (ip1[ip1_index / ip1Size] * ip2[ip2_index / ip2Size]);
             return tmp;
         }
+
+        public virtual NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            switch (Operation)
+            {
+                case NpyArray_Ops.npy_op_sqrt:
+                {
+                    if (ItemSize > 4)
+                        return NPY_TYPES.NPY_DOUBLE;
+                    else
+                        return NPY_TYPES.NPY_FLOAT;
+                }
+            }
+            return NPY_TYPES.NPY_DOUBLE;
+        }
+
 
 
         public NumericOperation AddOperation { get; set; }
@@ -695,7 +714,7 @@ namespace NumpyLib
         {
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(bool); }
         }
@@ -852,7 +871,7 @@ namespace NumpyLib
   
         }
  
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(sbyte); }
         }
@@ -1028,7 +1047,7 @@ namespace NumpyLib
 
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(byte); }
         }
@@ -1207,7 +1226,7 @@ namespace NumpyLib
  
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(Int16); }
         }
@@ -1383,7 +1402,7 @@ namespace NumpyLib
  
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(UInt16); }
         }
@@ -1558,7 +1577,7 @@ namespace NumpyLib
         {
   
         }
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(Int32); }
         }
@@ -1734,7 +1753,7 @@ namespace NumpyLib
  
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(UInt32); }
         }
@@ -1909,7 +1928,7 @@ namespace NumpyLib
         {
 
         }
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(Int64); }
         }
@@ -2083,7 +2102,7 @@ namespace NumpyLib
         {
    
         }
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(UInt64); }
         }
@@ -2257,7 +2276,7 @@ namespace NumpyLib
         {
  
         }
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(float); }
         }
@@ -2289,6 +2308,22 @@ namespace NumpyLib
         public override object ConvertToUpgradedValue(object o)
         {
             return Convert.ToSingle(o);
+        }
+
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            switch (Operation)
+            {
+                case NpyArray_Ops.npy_op_power:
+                    return NPY_TYPES.NPY_DOUBLE;
+                case NpyArray_Ops.npy_op_true_divide:
+                    return NPY_TYPES.NPY_DOUBLE;
+                case NpyArray_Ops.npy_op_special_operand_is_float:
+                    return NPY_TYPES.NPY_DOUBLE;
+
+            }
+
+            return NPY_TYPES.NPY_FLOAT;
         }
 
         protected override object Add(object bValue, object operand)
@@ -2482,7 +2517,7 @@ namespace NumpyLib
         {
 
         }
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(double); }
         }
@@ -2514,6 +2549,11 @@ namespace NumpyLib
         public override object ConvertToUpgradedValue(object o)
         {
             return Convert.ToDouble(o);
+        }
+
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DOUBLE;
         }
 
         protected override object Add(object bValue, object operand)
@@ -2713,7 +2753,7 @@ namespace NumpyLib
  
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(decimal); }
         }
@@ -2736,6 +2776,12 @@ namespace NumpyLib
         {
             return Convert.ToDecimal(o);
         }
+
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DECIMAL;
+        }
+
 
         protected override object Add(object bValue, object operand)
         {
@@ -2939,7 +2985,7 @@ namespace NumpyLib
 
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return sizeof(double) * 2; }
         }
@@ -2967,6 +3013,11 @@ namespace NumpyLib
         {
             return ConvertToComplex(o);
         }
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_COMPLEX;
+        }
+
 
 
         System.Numerics.Complex ConvertToComplex(object o)

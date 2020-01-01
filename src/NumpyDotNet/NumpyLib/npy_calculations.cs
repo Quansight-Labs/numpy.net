@@ -309,6 +309,8 @@ namespace NumpyLib
             NpyArray_Descr newtype = srcArray.descr;
             NPYARRAYFLAGS flags = srcArray.flags | NPYARRAYFLAGS.NPY_ENSURECOPY | NPYARRAYFLAGS.NPY_FORCECAST;
 
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType);
+
             if (!NpyArray_ISCOMPLEX(srcArray))
             {
                 if (operandArray != null)
@@ -328,11 +330,12 @@ namespace NumpyLib
                                 break;
 
                         }
+                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(NpyArray_Ops.npy_op_special_operand_is_float));
                     }
                 }
             }
   
-  
+            
 
             switch (operationType)
             {
@@ -362,28 +365,7 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_power:
                     {
-                        switch (srcArray.ItemType)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
-                                    break;
-                                }
-                                case NPY_TYPES.NPY_COMPLEX:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
-                                    break;
-                                }
-                            case NPY_TYPES.NPY_FLOAT:
-                            case NPY_TYPES.NPY_DOUBLE:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                    break;
-                                }
-                            default:
-                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                break;
-                        }
+                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                         break;
                     }
                 case NpyArray_Ops.npy_op_square:
@@ -400,40 +382,7 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_sqrt:
                     {
-                        switch (srcArray.ItemType)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
-                                    break;
-                                }
-                            case NPY_TYPES.NPY_FLOAT:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_FLOAT);
-                                    break;
-                                }
-                            case NPY_TYPES.NPY_DOUBLE:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                    break;
-                                }
-                                case NPY_TYPES.NPY_COMPLEX:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
-                                    break;
-                                }
-                                default:
-                                if (GetTypeSize(srcArray.ItemType) > 4)
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                }
-                                else
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_FLOAT);
-                                }
-                                break;
-                        }
-         
+                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                         break;
                     }
                 case NpyArray_Ops.npy_op_negative:
@@ -486,28 +435,7 @@ namespace NumpyLib
                     }
                 case NpyArray_Ops.npy_op_true_divide:
                     {
-                        switch (srcArray.ItemType)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
-                                    break;
-                                }
-                                case NPY_TYPES.NPY_COMPLEX:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
-                                    break;
-                                }
-                                case NPY_TYPES.NPY_FLOAT:
-                                case NPY_TYPES.NPY_DOUBLE:
-                                {
-                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                    break;
-                                }
-                            default:
-                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                break;
-                        }
+                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                         break;
                     }
                 case NpyArray_Ops.npy_op_logical_or:
