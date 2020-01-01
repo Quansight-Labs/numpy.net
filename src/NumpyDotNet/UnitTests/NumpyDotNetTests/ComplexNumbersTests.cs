@@ -4361,7 +4361,7 @@ namespace NumpyDotNetTests
             AssertArray(y, ExpectedDataY);
 
         }
-        [Ignore] // needs to be debugged
+
         [TestMethod]
         public void test_partition_3_COMPLEX()
         {
@@ -4392,7 +4392,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_argpartition_3_COMPLEX()
         {
@@ -4497,7 +4496,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_ndarray_argsort_2_COMPLEX()
         {
@@ -5726,7 +5724,6 @@ namespace NumpyDotNetTests
             Assert.AreEqual((Complex)3, d.GetItem(0));
         }
 
-        [Ignore] //needs to be debugged
         [TestMethod]
         public void test_percentile_2_COMPLEX()
         {
@@ -5764,7 +5761,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] //needs to be debugged
         [TestMethod]
         public void test_quantile_2_COMPLEX()
         {
@@ -5983,7 +5979,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] //needs to be debugged
+        [Ignore] // np.conj issue
         [TestMethod]
         public void test_corrcoef_1_COMPLEX()
         {
@@ -6034,7 +6030,7 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] //needs to be debugged
+        [Ignore] // np.conj issue
         [TestMethod]
         public void test_cov_1_COMPLEX()
         {
