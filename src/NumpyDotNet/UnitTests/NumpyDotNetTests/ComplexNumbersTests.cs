@@ -6975,7 +6975,6 @@ namespace NumpyDotNetTests
 
         #region from IndexTricksTests
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_mgrid_1_COMPLEX()
         {
@@ -7021,7 +7020,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_ogrid_1_COMPLEX_TODO()
         {

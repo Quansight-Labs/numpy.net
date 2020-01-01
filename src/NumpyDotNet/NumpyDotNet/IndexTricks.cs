@@ -139,7 +139,7 @@ namespace NumpyDotNet
                     }
                     else
                     {
-                        size.Add(Convert.ToInt32(Math.Ceiling((Convert.ToDouble(key[k].stop) - Convert.ToDouble(start)) / (Convert.ToDouble(step) * 1.0))));
+                        size.Add(Convert.ToInt32(Math.Ceiling((ConvertToDouble(key[k].stop) - ConvertToDouble(start)) / (ConvertToDouble(step) * 1.0))));
                     }
 
    
@@ -155,6 +155,13 @@ namespace NumpyDotNet
                         DecimalValue(key[k].Stop))
                     {
                         typ = np.Decimal;
+                    }
+                    else
+                    if (ComplexValue(step) ||
+                        ComplexValue(start) ||
+                        ComplexValue(key[k].Stop))
+                    {
+                        typ = np.Complex;
                     }
 
                 }
@@ -205,6 +212,10 @@ namespace NumpyDotNet
                         {
                             nnarray[k] = nnarray[k] * Convert.ToDecimal(step) + Convert.ToDecimal(start);
                         }
+                        if (typ.TypeNum == NPY_TYPES.NPY_COMPLEX)
+                        {
+                            nnarray[k] = nnarray[k] *  ConvertToComplex(step) + ConvertToComplex(start);
+                        }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
                             nnarray[k] = nnarray[k] * Convert.ToInt32(step) + Convert.ToInt32(start);
@@ -223,6 +234,10 @@ namespace NumpyDotNet
                         if (typ.TypeNum == NPY_TYPES.NPY_DECIMAL)
                         {
                             nn[k] = ((nn[k] as ndarray) * Convert.ToDecimal(step) + Convert.ToDecimal(start));
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_COMPLEX)
+                        {
+                            nn[k] = ((nn[k] as ndarray) * ConvertToComplex(step) + ConvertToComplex(start));
                         }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
@@ -291,6 +306,21 @@ namespace NumpyDotNet
                             return arange(iStart.Value, iStop, iStep, dtype: np.Decimal);
                         }
                         else
+                        if (tt.IsComplex)
+                        {
+                            System.Numerics.Complex? iStart = null;
+                            System.Numerics.Complex? iStop = null;
+                            System.Numerics.Complex? iStep = null;
+                            if (start != null)
+                                iStart = (System.Numerics.Complex)start;
+                            if (stop != null)
+                                iStop = (System.Numerics.Complex)stop;
+                            if (step != null)
+                                iStep = (System.Numerics.Complex)step;
+
+                            return arange(iStart.Value, iStop, iStep, dtype: np.Complex);
+                        }
+                        else
                         {
                             double? iStart = null;
                             double? iStop = null;
@@ -326,6 +356,21 @@ namespace NumpyDotNet
             }
         }
 
+        private static System.Numerics.Complex ConvertToComplex(object value)
+        {
+            if (value is System.Numerics.Complex)
+            {
+                return (System.Numerics.Complex)value;
+            }
+            if (value is IComparable)
+            {
+                return new System.Numerics.Complex(Convert.ToDouble(value), 0);
+            }
+
+            return (System.Numerics.Complex)0;
+
+        }
+
         private static bool FloatingPointValue(object value)
         {
             if (value is float)
@@ -340,7 +385,12 @@ namespace NumpyDotNet
             if (value is decimal)
                 return true;
             return false;
-
+        }
+        private static bool ComplexValue(object value)
+        {
+            if (value is System.Numerics.Complex)
+                return true;
+            return false;
         }
 
         private static bool IsComplex(object step)
