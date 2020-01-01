@@ -4580,7 +4580,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_searchsorted_1_COMPLEX()
         {
@@ -5487,7 +5486,6 @@ namespace NumpyDotNetTests
             AssertStrides(b, SizeofComplex * 5, SizeofComplex * 1);
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_allclose_1_COMPLEX()
         {
@@ -5514,7 +5512,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_isclose_1_COMPLEX()
         {
