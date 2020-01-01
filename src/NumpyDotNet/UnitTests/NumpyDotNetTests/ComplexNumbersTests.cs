@@ -6978,26 +6978,27 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
         #region from IndexTricksTests
 
+        [Ignore] // needs to be debugged
         [TestMethod]
-        public void test_mgrid_1_COMPLEX_TODO()
+        public void test_mgrid_1_COMPLEX()
         {
-            var a = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m) });
+            var a = (ndarray)np.mgrid(new Slice[] { new Slice((Complex)0, (Complex)5) });
             print(a);
-            AssertArray(a, new decimal[] { 0, 1, 2, 3, 4 });
+            AssertArray(a, new Complex[] { 0, 1, 2, 3, 4 });
             print("************");
 
-            var b = (ndarray)np.mgrid(new Slice[] { new Slice(0.0m, 5.5m) });
+            var b = (ndarray)np.mgrid(new Slice[] { new Slice((Complex)0.0, (Complex)5.5) });
             print(b);
-            AssertArray(b, new decimal[] { 0.0m, 1.0m, 2.0m, 3.0m, 4.0m, 5.0m });
+            AssertArray(b, new Complex[] { 0.0, 1.0, 2.0, 3.0, 4.0 });
             print("************");
 
-            var c = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5m), new Slice(0m, 5m) });
+            var c = (ndarray)np.mgrid(new Slice[] { new Slice((Complex)0, (Complex)5), new Slice((Complex)0, (Complex)5) });
             print(c);
 
-            var ExpectedCArray = new decimal[,,]
+            var ExpectedCArray = new Complex[,,]
                 {{{0, 0, 0, 0, 0},  {1, 1, 1, 1, 1},  {2, 2, 2, 2, 2},  {3, 3, 3, 3, 3},  {4, 4, 4, 4, 4}},
                  {{0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4}}};
             AssertArray(c, ExpectedCArray);
@@ -7005,18 +7006,18 @@ namespace NumpyDotNetTests
 
             print("************");
 
-            var d = (ndarray)np.mgrid(new Slice[] { new Slice(0m, 5.5m), new Slice(0m, 5.5m) });
+            var d = (ndarray)np.mgrid(new Slice[] { new Slice((Complex)0, (Complex)5.5), new Slice((Complex)0, (Complex)5.5) });
             print(d);
-            var ExpectedDArray = new decimal[,,]
+            var ExpectedDArray = new Complex[,,]
                 {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
                  {{0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 4, 5}}};
             AssertArray(d, ExpectedDArray);
 
             print("************");
 
-            var e = (ndarray)np.mgrid(new Slice[] { new Slice(3m, 5m), new Slice(4m, 6m), new Slice(2m, 4.2m) });
+            var e = (ndarray)np.mgrid(new Slice[] { new Slice((Complex)3, (Complex)5), new Slice((Complex)4, (Complex)6), new Slice((Complex)2, (Complex)4.2) });
             print(e);
-            var ExpectedEArray = new decimal[,,,]
+            var ExpectedEArray = new Complex[,,,]
                 {
                     {{{3, 3, 3}, {3, 3, 3}}, {{4, 4, 4}, {4, 4, 4}}},
                     {{{4, 4, 4}, {5, 5, 5}}, {{4, 4, 4}, {5, 5, 5}}},
@@ -7026,6 +7027,7 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore] // needs to be debugged
         [TestMethod]
         public void test_ogrid_1_COMPLEX_TODO()
         {
@@ -7063,55 +7065,55 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fill_diagonal_1_COMPLEX_TODO()
+        public void test_fill_diagonal_1_COMPLEX()
         {
-            var a = np.zeros((3, 3), np.Decimal);
+            var a = np.zeros((3, 3), np.Complex);
             np.fill_diagonal(a, 5);
-            AssertArray(a, new decimal[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
+            AssertArray(a, new Complex[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
             print(a);
 
-            a = np.zeros((3, 3, 3, 3), np.Decimal);
+            a = np.zeros((3, 3, 3, 3), np.Complex);
             np.fill_diagonal(a, 4);
-            AssertArray(a[0, 0] as ndarray, new decimal[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a[0, 0] as ndarray, new Complex[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
             print(a[0, 0]);
-            AssertArray(a[1, 1] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
+            AssertArray(a[1, 1] as ndarray, new Complex[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
             print(a[1, 1]);
-            AssertArray(a[2, 2] as ndarray, new decimal[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
+            AssertArray(a[2, 2] as ndarray, new Complex[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
             print(a[2, 2]);
 
             // tall matrices no wrap
-            a = np.zeros((5, 3), np.Decimal);
+            a = np.zeros((5, 3), np.Complex);
             np.fill_diagonal(a, 4);
-            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a, new Complex[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
             print(a);
 
             // tall matrices wrap
-            a = np.zeros((5, 3), np.Decimal);
+            a = np.zeros((5, 3), np.Complex);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new decimal[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
+            AssertArray(a, new Complex[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
             print(a);
 
             // wide matrices wrap
-            a = np.zeros((3, 5), np.Decimal);
+            a = np.zeros((3, 5), np.Complex);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new decimal[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
+            AssertArray(a, new Complex[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
             print(a);
 
 
         }
 
         [TestMethod]
-        public void test_diag_indices_1_COMPLEX_TODO()
+        public void test_diag_indices_1_COMPLEX()
         {
             var di = np.diag_indices(4);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
             print(di);
 
-            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            var a = np.arange(16, dtype: np.Complex).reshape((4, 4));
             a[di] = 100;
 
-            AssertArray(a, new decimal[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
+            AssertArray(a, new Complex[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
             print(a);
 
             return;
@@ -7119,9 +7121,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_diag_indices_from_1_COMPLEX_TODO()
+        public void test_diag_indices_from_1_COMPLEX()
         {
-            var a = np.arange(16, dtype: np.Decimal).reshape((4, 4));
+            var a = np.arange(16, dtype: np.Complex).reshape((4, 4));
             var di = np.diag_indices_from(a);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
@@ -7133,10 +7135,10 @@ namespace NumpyDotNetTests
         #region from StrideTricksTests
 
         [TestMethod]
-        public void test_broadcast_1_COMPLEX_TODO()
+        public void test_broadcast_1_COMPLEX()
         {
-            var x = np.array(new decimal[,] { { 11 }, { 2 }, { 3 } });
-            var y = np.array(new decimal[] { 4, 5, 6 });
+            var x = np.array(new Complex[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new Complex[] { 4, 5, 6 });
             var b = np.broadcast(x, y);
             Assert.AreEqual(b.shape.iDims.Length, 2);
             Assert.AreEqual(b.shape.iDims[0], 3);
@@ -7156,10 +7158,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_to_1_COMPLEX_TODO()
+        public void test_broadcast_to_1_COMPLEX()
         {
-            var a = np.broadcast_to(5m, (4, 4));
-            AssertArray(a, new decimal[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
+            var a = np.broadcast_to((Complex)5, (4, 4));
+            AssertArray(a, new Complex[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
             AssertStrides(a, 0, 0);
             print(a);
             print(a.shape);
@@ -7167,8 +7169,8 @@ namespace NumpyDotNetTests
             print("*************");
 
 
-            var b = np.broadcast_to(new decimal[] { 1, 2, 3 }, (3, 3));
-            AssertArray(b, new decimal[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            var b = np.broadcast_to(new Complex[] { 1, 2, 3 }, (3, 3));
+            AssertArray(b, new Complex[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
             AssertStrides(b, 0, 16);
             print(b);
             print(b.shape);
@@ -7179,10 +7181,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_arrays_1_COMPLEX_TODO()
+        public void test_broadcast_arrays_1_COMPLEX()
         {
-            var x = np.array(new decimal[,] { { 1, 2, 3 } });
-            var y = np.array(new decimal[,] { { 4 }, { 5 } });
+            var x = np.array(new Complex[,] { { 1, 2, 3 } });
+            var y = np.array(new Complex[,] { { 4 }, { 5 } });
             var z = np.broadcast_arrays(false, new ndarray[] { x, y });
 
             print(z);
@@ -7190,14 +7192,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_as_strided_1_COMPLEX_TODO()
+        public void test_as_strided_1_COMPLEX()
         {
-            var y = np.zeros((10, 10), np.Decimal);
+            var y = np.zeros((10, 10), np.Complex);
             AssertStrides(y, 160, 16);
             print(y.strides);
 
             var n = 1000;
-            var a = np.arange(n, dtype: np.Decimal);
+            var a = np.arange(n, dtype: np.Complex);
 
             var b = np.as_strided(a, (n, n), (0, 8));
 
@@ -7219,10 +7221,10 @@ namespace NumpyDotNetTests
         #region from IteratorTests
 
         [TestMethod]
-        public void test_nditer_1_COMPLEX_TODO()
+        public void test_nditer_1_COMPLEX()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));
-            var b = np.array(new decimal[] { 7, 8, 9 });
+            var a = np.arange(0.1, 6.1, dtype: np.Complex).reshape((2, 3));
+            var b = np.array(new Complex[] { 7, 8, 9 });
 
             foreach (var aa in new nditer(a))
             {
@@ -7242,9 +7244,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndindex_1_COMPLEX_TODO()
+        public void test_ndindex_1_COMPLEX()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));  // force numpy to be initialized
+            var a = np.arange(0.1, 6.1, dtype: np.Complex).reshape((2, 3)); 
 
             foreach (var aa in new ndindex((2, 3)))
             {
@@ -7265,9 +7267,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndenumerate_1_COMPLEX_TODO()
+        public void test_ndenumerate_1_COMPLEX()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Decimal).reshape((2, 3));
+            var a = np.arange(0.1, 6.1, dtype: np.Complex).reshape((2, 3));
 
             foreach (ValueTuple<long[], object> aa in new ndenumerate(a))
             {
@@ -7279,7 +7281,7 @@ namespace NumpyDotNetTests
         #endregion
 
 
-                [Ignore]
+        [Ignore]
         [TestMethod]
         public void xxx_test_angle_1()
         {
@@ -7308,7 +7310,6 @@ namespace NumpyDotNetTests
 
         }
 
-#endif
 
     }
 }
