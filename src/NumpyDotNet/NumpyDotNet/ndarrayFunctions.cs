@@ -2162,11 +2162,12 @@ namespace NumpyDotNet
             var input = asanyarray(o);
             var output = new bool[input.size];
 
+            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(input.TypeNum);
+
             int oindex = 0;
             foreach (var i in input.Flat)
             {
-                float f = Convert.ToSingle(i);
-                if (float.IsNaN(f) || float.IsInfinity(f))
+                 if (ArrayHandler.IsNan(i) || ArrayHandler.IsInfinity(i))
                     output[oindex] = false;
                 else
                     output[oindex] = true;

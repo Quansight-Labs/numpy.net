@@ -65,7 +65,8 @@ namespace NumpyLib
         int CompareTo(object invalue, object comparevalue);
         npy_intp ArgMax(object ip, npy_intp startIndex, npy_intp endIndex);
         npy_intp ArgMin(object ip, npy_intp startIndex, npy_intp endIndex);
-
+        bool IsNan(object o);
+        bool IsInfinity(object o);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -286,6 +287,14 @@ namespace NumpyLib
             return max_ind;
         }
 
+        public virtual bool IsNan(object o)
+        {
+            return false;
+        }
+        public virtual bool IsInfinity(object o)
+        {
+            return false;
+        }
 
 
         public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
@@ -2119,7 +2128,6 @@ namespace NumpyLib
         {
  
         }
-
         public int ItemSize
         {
             get { return sizeof(float); }
@@ -2132,6 +2140,16 @@ namespace NumpyLib
 
             tmp += (float)((float)ip1[ip1_index / ip1Size] * (float)ip2[ip2_index / ip2Size]);
             return tmp;
+        }
+        public override bool IsNan(object o)
+        {
+            float f = (float)o;
+            return float.IsNaN(f);
+        }
+        public override bool IsInfinity(object o)
+        {
+            float f = (float)o;
+            return float.IsInfinity(f);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2337,6 +2355,16 @@ namespace NumpyLib
 
             tmp += (double)((double)ip1[ip1_index / ip1Size] * (double)ip2[ip2_index / ip2Size]);
             return tmp;
+        }
+        public override bool IsNan(object o)
+        {
+            double d = (double)o;
+            return double.IsNaN(d);
+        }
+        public override bool IsInfinity(object o)
+        {
+            double d = (double)o;
+            return double.IsInfinity(d);
         }
 
         protected override object Add(object bValue, object operand)
