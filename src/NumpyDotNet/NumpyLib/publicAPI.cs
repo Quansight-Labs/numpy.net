@@ -1174,6 +1174,8 @@ namespace NumpyLib
             cmp_priority,
             incref, decref,
             et, dt);
+
+            numpyinternal._intialize_builtin_descrs();
         }
 
         public static void npy_set_ufunc_wrapper_func(npy_interface_ufunc_new_wrapper wrapperFunc)

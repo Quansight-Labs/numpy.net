@@ -48,61 +48,51 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
         const int _MAX_LETTER = 128;
-        static byte []_npy_letter_to_num = new byte[_MAX_LETTER];
+        static byte[] _npy_letter_to_num = new byte[_MAX_LETTER];
 
         static int NotSupportedSizeYet = 8;
+ 
 
-        static NpyArray_Descr npy_BOOL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BOOL) {  kind = 'b'};
-        static NpyArray_Descr npy_BYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BYTE) {  kind = 'i' };
-        static NpyArray_Descr npy_UBYTE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) {  kind = 'u' };
-        static NpyArray_Descr npy_SHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_SHORT) {   kind = 'i' };
-        static NpyArray_Descr npy_USHORT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_USHORT) {  kind = 'u' };
-        static NpyArray_Descr npy_INT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_INT) {  kind = 'i' };
-        static NpyArray_Descr npy_UINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UINT) { kind = 'u' };
-        static NpyArray_Descr npy_LONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_LONG) {  kind = 'i' };
-        static NpyArray_Descr npy_ULONG_Descr = new NpyArray_Descr(NPY_TYPES.NPY_ULONG) {  kind = 'u' };
-        static NpyArray_Descr npy_FLOAT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) {  kind = 'f' };
-        static NpyArray_Descr npy_DOUBLE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) {  kind = 'f' };
-        static NpyArray_Descr npy_DECIMAL_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) {  kind = 'c' };
-        static NpyArray_Descr npy_COMPLEX_Descr = new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) {  kind = 'c' };
-        static NpyArray_Descr npy_BIGINT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'c' };
-        static NpyArray_Descr npy_DATETIME_Descr = new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) {  kind = 'M' };
-        static NpyArray_Descr npy_TIMEDELTA_Descr = new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) {  kind = 'm' };
-        static NpyArray_Descr npy_OBJECT_Descr = new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) {  kind = 'O' };
-        static NpyArray_Descr npy_STRING_Descr = new NpyArray_Descr(NPY_TYPES.NPY_STRING) {  kind = 'S' };
-        static NpyArray_Descr npy_UNICODE_Descr = new NpyArray_Descr(NPY_TYPES.NPY_UNICODE) {  kind = 'U' };
-        static NpyArray_Descr npy_VOID_Descr = new NpyArray_Descr(NPY_TYPES.NPY_VOID) {  kind = 'V' };
-
-        static NpyArray_Descr[] _builtin_descrs = new NpyArray_Descr[]
+        internal static void _intialize_builtin_descrs()
         {
-            npy_BOOL_Descr,
-            npy_BYTE_Descr,
-            npy_UBYTE_Descr,
-            npy_SHORT_Descr,
-            npy_USHORT_Descr,
-            npy_INT_Descr,
-            npy_UINT_Descr,
-            npy_LONG_Descr,
-            npy_ULONG_Descr,
-            npy_FLOAT_Descr,
-            npy_DOUBLE_Descr,
-            npy_DECIMAL_Descr,
-            npy_COMPLEX_Descr,
-            npy_BIGINT_Descr,
-            npy_DATETIME_Descr,
-            npy_TIMEDELTA_Descr,
-            npy_OBJECT_Descr,
-            npy_STRING_Descr,
-            npy_UNICODE_Descr,
-            npy_VOID_Descr,
-        };
-  
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BOOL) { kind = 'b' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BYTE) { kind = 'i' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) { kind = 'u' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_SHORT) { kind = 'i' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_USHORT) { kind = 'u' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT) { kind = 'i' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT) { kind = 'u' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_LONG) { kind = 'i' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_ULONG) { kind = 'u' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) { kind = 'f' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) { kind = 'f' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) { kind = 'c' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) { kind = 'c' });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'c' });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) { kind = 'M' });
+            // _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) { kind = 'm' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) { kind = 'O' });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_STRING) { kind = 'S' });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UNICODE) { kind = 'U' });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_VOID) { kind = 'V' });
+        }
+
+        private static void _register_builtin_descrs(NpyArray_Descr descr)
+        {
+            NPY_TYPES index = descr.type_num;
+
+            _builtin_descrs[(int)index] = descr;
+        }
+
+        static NpyArray_Descr[] _builtin_descrs = new NpyArray_Descr[255];
+   
         internal static NpyArray_Descr _get_builtin_descrs(NPY_TYPES type)
         {
-            var ret = _builtin_descrs.FirstOrDefault(t=>t.type_num == type);
-            if (ret != null)
+
+            var ret = _builtin_descrs[(int)type];
+            if (ret == null)
             {
-                ret.elsize = DefaultArrayHandlers.GetArrayHandler(type).ItemSize;
+                throw new Exception(string.Format("the type '{0}' is not registered as a built in descriptor", type.ToString()));
             }
             return ret;
         }
