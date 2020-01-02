@@ -62,6 +62,11 @@ namespace NumpyLib
             f = numpyinternal.GetArrFuncs(type_num);
             byteorder = numpyinternal.NPY_NATIVE;
             this.type_num = type_num;
+
+            this.elsize = DefaultArrayHandlers.GetArrayHandler(type_num).ItemSize;
+
+            this.f.nonzero = DefaultArrayHandlers.GetArrayHandler(type_num).NonZero;
+
         }
 
         public char kind;              /* kind for this type */

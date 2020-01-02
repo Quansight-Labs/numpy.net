@@ -2878,7 +2878,11 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
-
+        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        {
+            decimal[] bp = vp.datap as decimal[];
+            return (bp[vp.data_offset / npa.ItemSize] != 0);
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -3137,7 +3141,11 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
-
+        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        {
+            System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
+            return (bp[vp.data_offset / npa.ItemSize] != 0);
+        }
 
 
         System.Numerics.Complex ConvertToComplex(object o)

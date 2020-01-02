@@ -106,7 +106,7 @@ namespace NumpyLib
             f = descr.f;
             if (f.nonzero == null)
             {
-                f.nonzero = NpyArray_NonzeroFunc;
+                f.nonzero = DefaultArrayHandlers.GetArrayHandler(typenum).NonZero;
             }
             if (f.copyswapn == null)
             {
