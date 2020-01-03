@@ -112,6 +112,9 @@ namespace NumpyLib
             NpyArray[] mps = new NpyArray[npy_defs.NPY_MAXARGS];
             NpyArray result;
 
+            if (retArray == null)
+                retArray = inputArray;
+
             Debug.Assert(Validate(op));
             Debug.Assert(Validate(inputArray));
             Debug.Assert(Validate(retArray));
@@ -281,13 +284,19 @@ namespace NumpyLib
             VoidPtr Operand2 = bufPtr[1];
             VoidPtr Result = bufPtr[2];
 
+            if (Operand2 == null)
+                Operand2 = Operand1;
+            if (Result == null)
+                Result = Operand1;
+
             long O1_sizeData = GetTypeSize(Operand1);
             long O2_sizeData = GetTypeSize(Operand2);
             long R_sizeData = GetTypeSize(Result);
 
-            long O1_Offset = bufPtr[0].data_offset;
-            long O2_Offset = bufPtr[1].data_offset;
-            long R_Offset = bufPtr[2].data_offset;
+            long O1_Offset = Operand1.data_offset;
+            long O2_Offset = Operand2.data_offset;
+            long R_Offset = Result.data_offset;
+
 
             long O1_Step = steps[0];
             long O2_Step = steps[1];
