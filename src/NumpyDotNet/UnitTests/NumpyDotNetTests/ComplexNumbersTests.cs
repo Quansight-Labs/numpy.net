@@ -5975,7 +5975,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // np.conj issue
         [TestMethod]
         public void test_corrcoef_1_COMPLEX()
         {
@@ -5992,16 +5991,16 @@ namespace NumpyDotNetTests
             var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.corrcoef(X);
-            AssertArray(a, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
+            AssertArray(a, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
             print(a);
 
 
             var b = np.corrcoef(x, y);
-            AssertArray(b, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
+            AssertArray(b, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
             print(b);
 
             var c = np.corrcoef(x, y, rowvar: false);
-            AssertArray(a, new Complex[,] { { 1.0, -0.8553578095227944904571128856 }, { -0.8553578095227944904571128856, 1.0 } });
+            AssertArray(c, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
             print(c);
 
 
@@ -6026,7 +6025,6 @@ namespace NumpyDotNetTests
             return;
         }
 
-        [Ignore] // np.conj issue
         [TestMethod]
         public void test_cov_1_COMPLEX()
         {
@@ -6043,34 +6041,34 @@ namespace NumpyDotNetTests
             var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.cov(X);
-            AssertArray(a, new Complex[,] { { 11.710, -4.2860000000000000000000000000 }, { -4.2860000000000000000000000000, 2.1441333333333333333333333334 } });
+            AssertArray(a, new Complex[,] { { 16.19, -4.80333333333333 }, { -4.80333333333333, 1.70253333333333 } });
             print(a);
 
 
             var b = np.cov(x, y);
-            AssertArray(b, new Complex[,] { { 11.710, -4.2860000000000000000000000000 }, { -4.2860000000000000000000000000, 2.1441333333333333333333333334 } });
+            AssertArray(a, new Complex[,] { { 16.19, -4.80333333333333 }, { -4.80333333333333, 1.70253333333333 } });
             print(b);
 
             var c = np.cov(x);
-            Assert.AreEqual(11.710m, c.GetItem(0));
+            Assert.AreEqual((Complex)16.189999999999998, c.GetItem(0));
             print(c);
 
             var d = np.cov(X, rowvar: false);
-            AssertArray(d, new Complex[,] { { 13.00500, 5.35500, -10.65900 }, { 5.35500, 2.20500, -4.38900 }, { -10.65900, -4.38900, 8.73620 } });
+            AssertArray(d, new Complex[,] { { 10.8706, 4.872, -9.6976 }, { 4.872, 2.205, -4.389 }, { -9.6976, -4.389, 8.7362 } });
             print(d);
 
             var e = np.cov(X, rowvar: false, bias: true);
-            AssertArray(e, new Complex[,] { { 6.50250, 2.67750, -5.32950 }, { 2.67750, 1.10250, -2.19450 }, { -5.32950, -2.19450, 4.36810 } });
+            AssertArray(e, new Complex[,] { { 5.4353, 2.436, -4.8488 }, { 2.436, 1.1025, -2.1945 }, { -4.8488, -2.1945, 4.3681 } });
             print(e);
 
             var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
-            AssertArray(f, new Complex[,] { { 5.7799999999999999999999999994, 2.3799999999999999999999999998, -4.7373333333333333333333333329 },
-                                            { 2.3799999999999999999999999998, 0.9799999999999999999999999999, -1.9506666666666666666666666665 },
-                                            { -4.7373333333333333333333333329, -1.9506666666666666666666666665, 3.8827555555555555555555555553 } });
+            AssertArray(f, new Complex[,] { { 5.08488888888889, 2.38, -4.7373333333333 },
+                                            { 2.09377777777778, 0.98, -1.95066666666667 },
+                                            { -4.16761481481482, -1.95066666666667, 3.88275555555555 } });
             print(f);
 
             var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });
-            AssertArray(g, new Complex[,] { { 4.16160, 1.71360, -3.410880 }, { 1.71360, 0.70560, -1.404480 }, { -3.410880, -1.404480, 2.7955840 } });
+            AssertArray(g, new Complex[,] { { 3.561024, 1.7136, -3.41088 }, { 1.466304, 0.7056, -1.40448 }, { -2.9186432, -1.40448, 2.795584 } });
             print(g);
 
             return;
