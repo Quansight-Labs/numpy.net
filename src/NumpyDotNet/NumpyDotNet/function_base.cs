@@ -1794,7 +1794,7 @@ namespace NumpyDotNet
                 return np.divide(c , c);
             }
 
-            var stddev = np.sqrt(d.real);
+            var stddev = np.sqrt(d);
 
             //var s1 = stddev[":", null, null, null];
             //var s2 = stddev[null, ":"];
