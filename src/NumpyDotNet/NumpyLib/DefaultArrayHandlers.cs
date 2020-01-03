@@ -3457,7 +3457,7 @@ namespace NumpyLib
             var arr = data.datap as System.Numerics.Complex[];
             Quick_Sort(arr, offset, offset + length-1);
         }
-        static void Quick_Sort(System.Numerics.Complex[] array, int low, int high)
+        void Quick_Sort(System.Numerics.Complex[] array, int low, int high)
         {
             if (low < high)
             {
@@ -3468,7 +3468,7 @@ namespace NumpyLib
                 Quick_Sort(array, partitionIndex + 1, high);
             }
         }
-        static int Partition(System.Numerics.Complex[] array, int low, int high)
+        int Partition(System.Numerics.Complex[] array, int low, int high)
         {
             //1. Select a pivot point.
             double pivot = array[high].Real;
@@ -3514,5 +3514,16 @@ namespace NumpyLib
 
             return 0;
         }
+        protected override object Conjugate(object invalue, object operand)
+        {
+            if (invalue is System.Numerics.Complex)
+            {
+                var cc = (System.Numerics.Complex)invalue;
+                cc = new System.Numerics.Complex(cc.Real, -cc.Imaginary);
+                return cc;
+            }
+            return invalue;
+        }
+
     }
 }
