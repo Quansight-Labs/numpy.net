@@ -285,10 +285,20 @@ namespace NumpyLib
             VoidPtr Operand2 = bufPtr[1];
             VoidPtr Result = bufPtr[2];
 
+            long O1_Step = steps[0];
+            long O2_Step = steps[1];
+            long R_Step = steps[2];
+
             if (Operand2 == null)
+            {
                 Operand2 = Operand1;
+                O2_Step = O1_Step;
+            }
             if (Result == null)
+            {
                 Result = Operand1;
+                R_Step = O1_Step;
+            }
 
             long O1_sizeData = GetTypeSize(Operand1);
             long O2_sizeData = GetTypeSize(Operand2);
@@ -299,9 +309,7 @@ namespace NumpyLib
             long R_Offset = Result.data_offset;
 
 
-            long O1_Step = steps[0];
-            long O2_Step = steps[1];
-            long R_Step = steps[2];
+  
 
             for (int i = 0; i < N; i++)
             {
