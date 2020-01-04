@@ -629,7 +629,7 @@ namespace NumpyLib
     public delegate void NpyArray_CopySwapNFunc(VoidPtr Dest, npy_intp dstrides, VoidPtr Src, npy_intp sstrides, npy_intp len, bool swap, NpyArray npa);
     public delegate void NpyArray_CopySwapFunc(VoidPtr Dest, VoidPtr Src, bool swap, NpyArray npa);
 
-    public delegate bool NpyArray_NonzeroFunc(VoidPtr vp, NpyArray npa);
+    public delegate bool NpyArray_NonzeroFunc(VoidPtr vp, npy_intp index);
 
     /*
     * These assume aligned and notswapped data -- a buffer will be used

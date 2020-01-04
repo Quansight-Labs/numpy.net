@@ -153,7 +153,8 @@ namespace NumpyLib
             n = NpyArray_SIZE(mp);
             if (n == 1)
             {
-                return NpyArray_DESCR(mp).f.nonzero(NpyArray_BYTES(mp), mp) ? 1 : 0;
+                var vp = NpyArray_BYTES(mp);
+                return NpyArray_DESCR(mp).f.nonzero(vp, vp.data_offset/ mp.ItemSize) ? 1 : 0;
             }
             else if (n == 0)
             {

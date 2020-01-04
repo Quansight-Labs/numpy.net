@@ -77,7 +77,7 @@ namespace NumpyLib
         object GetPositiveInfinity();
         object GetNegativeInfinity();
         object GetNaN();
-        bool NonZero(VoidPtr vp, NpyArray npa);
+        bool NonZero(VoidPtr vp, long index);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
@@ -382,10 +382,10 @@ namespace NumpyLib
             return new VoidPtr(src, vp.type_num);
         }
 
-        public virtual bool NonZero(VoidPtr vp, NpyArray npa)
+        public virtual bool NonZero(VoidPtr vp, long index)
         {
             T[] bp = vp.datap as T[];
-            return !(bp[vp.data_offset / npa.ItemSize].Equals(0));
+            return !(bp[index].Equals(0));
         }
 
         public void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
@@ -768,10 +768,10 @@ namespace NumpyLib
             return tmp;
         }
 
-        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        public override bool NonZero(VoidPtr vp, long index)
         {
             bool[] bp = vp.datap as bool[];
-            return (bp[vp.data_offset / npa.ItemSize]);
+            return (bp[index]);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2878,10 +2878,10 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
-        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        public override bool NonZero(VoidPtr vp, long index)
         {
             decimal[] bp = vp.datap as decimal[];
-            return (bp[vp.data_offset / npa.ItemSize] != 0);
+            return (bp[index] != 0);
         }
 
         protected override object Add(object bValue, object operand)
@@ -3141,10 +3141,10 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
-        public override bool NonZero(VoidPtr vp, NpyArray npa)
+        public override bool NonZero(VoidPtr vp, long index)
         {
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
-            return (bp[vp.data_offset / npa.ItemSize] != 0);
+            return (bp[index] != 0);
         }
 
 
