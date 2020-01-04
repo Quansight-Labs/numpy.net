@@ -1095,7 +1095,7 @@ namespace NumpyDotNet
         #endregion
 
         #region angle
-        public static ndarray angle(ndarray x, bool deg = false)
+        public static ndarray angle(object z, bool deg = false)
         {
             /*
             Return the angle of the complex argument.
@@ -1125,7 +1125,35 @@ namespace NumpyDotNet
             >>> np.angle(1+1j, deg=True)                  # in degrees
             45.0             
             */
-            throw new NotImplementedException();
+
+
+            double fact;
+
+            if (deg)
+            {
+                fact = 180 / Math.PI;
+            }
+            else
+            {
+                fact = 1.0;
+            }
+            var za = asanyarray(z);
+
+            ndarray zimag = null;
+            ndarray zreal = null;
+
+            if (za.IsComplex)
+            {
+                zimag = za.Imag;
+                zreal = za.Real;
+            }
+            else
+            {
+                za = za.astype(np.Float64);
+                zimag = np.zeros_like(za);
+                zreal = za;
+            }
+            return arctan2(zimag, zreal) * fact;
         }
 
 

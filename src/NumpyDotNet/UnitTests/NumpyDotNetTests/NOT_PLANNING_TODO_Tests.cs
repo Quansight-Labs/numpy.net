@@ -19,13 +19,13 @@ namespace NumpyDotNetTests
             // look for functions with NOT_PLANNING_TODO
         }
 
-
+        #if NOT_PLANNING_TODO
         [Ignore]
         [TestMethod]
         public void xxx_spacing_Placeholder()
         {
         }
-
+        #endif
 
 
     }

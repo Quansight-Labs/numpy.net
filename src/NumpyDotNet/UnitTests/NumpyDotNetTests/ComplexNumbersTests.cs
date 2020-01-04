@@ -7287,62 +7287,75 @@ namespace NumpyDotNetTests
 
 
         #region COMPLEX number specific tests
-        [Ignore]
         [TestMethod]
-        public void xxx_test_angle_1_COMPLEX()
+        public void test_angle_1_COMPLEX()
         {
+            var a = np.angle(new Complex[] { new Complex(1.0, 0), new Complex(0, 1), new Complex(1, 1) });
+            print(a);
+            AssertArray(a, new double[] { 0, 1.57079633, 0.78539816 });
+
+            var b = np.angle(new Complex[] { new Complex(1.0, 1) }, deg: true);
+            print(b);
+            Assert.AreEqual((double)45, b.GetItem(0));
+
+            var c = np.angle(new int[] { -1, 2, -3 });
+            print(c);
+            AssertArray(c, new double[] { 3.14159265, 0.0, 3.14159265 });
         }
 
         [TestMethod]
         public void test_real_1_COMPLEX()
         {
-            // .NET System.Numeric.Complex variables do not support taking a view at just the 'Real'
-            // portion of the number.  It also does not allow modifying the Real portion without allocating
-            // a new Complex.  Therefore, we can only return the full Complex variable array.
-
             var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
 
             var Real = x1.Real;
-            print(x1);
-            AssertArray(Real, new Complex[,] { { 0, 1, 2 }, { 2, 1, 0} });
+            print(Real);
+            AssertArray(Real, new double[,] { { 0, 1, 2 }, { 2, 1, 0} });
 
         }
 
         [TestMethod]
         public void test_image_1_COMPLEX()
         {
-            // .NET System.Numeric.Complex variables do not support taking a view at just the 'Imag'
-            // portion of the number.  It also does not allow modifying the Imag portion without allocating
-            // a new Complex.  Therefore, we can only return the full Complex variable array.
+            var x1 = np.array(new Complex[,] { { new Complex(0, 123), new Complex(2, 234) }, { new Complex(1,789), new Complex(1,678) }, { new Complex(2, 456), new Complex(0, 222) } }).T;
 
-            var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var Imag = x1.Imag;
 
-            var real = x1.Imag;
+            print(Imag);
 
-            print(x1);
-
-            AssertArray(real, new Complex[,] { { 0, 1, 2 }, { 2, 1, 0 } });
+            AssertArray(Imag, new double[,] { { 123, 789, 456 }, { 234, 678, 222 } });
         }
 
         [TestMethod]
         public void test_conj_1_COMPLEX()
         {
-            var a = np.arange(new Complex(0, -10), new Complex(10, -5), dtype: np.Complex);
+            var a = np.arange(new Complex(0, -10), new Complex(10, 0), dtype: np.Complex);
             print(a);
+            AssertArray(a, new Complex[] { new Complex(0, -10), new Complex(1, -10), new Complex(2, -10), new Complex(3, -10), new Complex(4, -10),
+                                           new Complex(5, -10), new Complex(6, -10), new Complex(7, -10), new Complex(8, -10), new Complex(9, -10), });
 
             var b = np.conj(a);
             print(b);
+            AssertArray(b, new Complex[] { new Complex(0, 10), new Complex(1, 10), new Complex(2, 10), new Complex(3, 10), new Complex(4, 10),
+                                           new Complex(5, 10), new Complex(6, 10), new Complex(7, 10), new Complex(8, 10), new Complex(9, 10), });
+
 
             var c = np.conjugate(a);
             print(c);
+            AssertArray(c, new Complex[] { new Complex(0, 10), new Complex(1, 10), new Complex(2, 10), new Complex(3, 10), new Complex(4, 10),
+                                           new Complex(5, 10), new Complex(6, 10), new Complex(7, 10), new Complex(8, 10), new Complex(9, 10), });
+
 
         }
+
+#if NOT_PLANNING_TODO
         [Ignore]
         [TestMethod]
         public void test_real_if_close_1_COMPLEX()
         {
 
         }
+#endif
         #endregion
 
     }
