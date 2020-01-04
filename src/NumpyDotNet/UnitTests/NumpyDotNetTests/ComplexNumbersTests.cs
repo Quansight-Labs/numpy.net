@@ -3446,7 +3446,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_negative_1_COMPLEX()
         {
-            var d = np.negative(new Complex[] { -1, -0, 1 });
+            var a = np.array(new Complex[] { -1, -0, 1 });
+            var d = np.negative(a);
             AssertArray(d, new Complex[] { 1, 0, -1 });
             print(d);
 
@@ -6008,16 +6009,16 @@ namespace NumpyDotNetTests
             var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.corrcoef(X);
-            AssertArray(a, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
+            AssertArray(a, new Complex[,] { { 1.0, -0.8553578095227944904571128856, }, { -0.8553578095227944904571128856, 1.0 } });
             print(a);
 
 
             var b = np.corrcoef(x, y);
-            AssertArray(b, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
+            AssertArray(b, new Complex[,] { { 1.0, -0.8553578095227944904571128856, }, { -0.8553578095227944904571128856, 1.0 } });
             print(b);
 
             var c = np.corrcoef(x, y, rowvar: false);
-            AssertArray(c, new Complex[,] { { 1.0, -0.914895496731525, }, { -0.914895496731525, 1.0 } });
+            AssertArray(c, new Complex[,] { { 1.0, -0.8553578095227944904571128856, }, { -0.8553578095227944904571128856, 1.0 } });
             print(c);
 
 
@@ -6058,34 +6059,35 @@ namespace NumpyDotNetTests
             var y = new Complex[] { 3, 1.1, 0.12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.cov(X);
-            AssertArray(a, new Complex[,] { { 16.19, -4.80333333333333 }, { -4.80333333333333, 1.70253333333333 } });
+            AssertArray(a, new Complex[,] { { 11.710, -4.286 }, { -4.286, 2.1441333333333333333333333334 } });
             print(a);
 
 
             var b = np.cov(x, y);
-            AssertArray(a, new Complex[,] { { 16.19, -4.80333333333333 }, { -4.80333333333333, 1.70253333333333 } });
+            AssertArray(b, new Complex[,] { { 11.710, -4.286 }, { -4.286, 2.1441333333333333333333333334 } });
             print(b);
 
             var c = np.cov(x);
-            Assert.AreEqual((Complex)16.189999999999998, c.GetItem(0));
+            Assert.AreEqual((Complex)11.709999999999999, c.GetItem(0));
             print(c);
 
             var d = np.cov(X, rowvar: false);
-            AssertArray(d, new Complex[,] { { 10.8706, 4.872, -9.6976 }, { 4.872, 2.205, -4.389 }, { -9.6976, -4.389, 8.7362 } });
+            AssertArray(d, new Complex[,] { { 13.00500, 5.35500, -10.65900 }, { 5.35500, 2.20500, -4.38900 }, { -10.65900, -4.38900, 8.73620 } });
             print(d);
 
             var e = np.cov(X, rowvar: false, bias: true);
-            AssertArray(e, new Complex[,] { { 5.4353, 2.436, -4.8488 }, { 2.436, 1.1025, -2.1945 }, { -4.8488, -2.1945, 4.3681 } });
+            AssertArray(e, new Complex[,] { { 6.50250, 2.67750, -5.32950 }, { 2.67750, 1.10250, -2.19450 }, { -5.32950, -2.19450, 4.36810 } });
             print(e);
 
             var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
-            AssertArray(f, new Complex[,] { { 5.08488888888889, 2.38, -4.7373333333333 },
-                                            { 2.09377777777778, 0.98, -1.95066666666667 },
-                                            { -4.16761481481482, -1.95066666666667, 3.88275555555555 } });
+            AssertArray(f, new Complex[,] { { 5.7799999999999999999999999994, 2.3799999999999999999999999998, -4.7373333333333333333333333329 },
+                                            { 2.3799999999999999999999999998, 0.9799999999999999999999999999, -1.9506666666666666666666666665 },
+                                            { -4.7373333333333333333333333329, -1.9506666666666666666666666665, 3.8827555555555555555555555553 } });
+
             print(f);
 
             var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });
-            AssertArray(g, new Complex[,] { { 3.561024, 1.7136, -3.41088 }, { 1.466304, 0.7056, -1.40448 }, { -2.9186432, -1.40448, 2.795584 } });
+            AssertArray(g, new Complex[,] { { 4.16160, 1.71360, -3.410880 }, { 1.71360, 0.70560, -1.404480 }, { -3.410880, -1.404480, 2.7955840 } });
             print(g);
 
             return;
@@ -7284,29 +7286,55 @@ namespace NumpyDotNetTests
         #endregion
 
 
+        #region COMPLEX number specific tests
         [Ignore]
         [TestMethod]
         public void xxx_test_angle_1_COMPLEX()
         {
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_real_1_COMPLEX()
+        public void test_real_1_COMPLEX()
         {
+            // .NET System.Numeric.Complex variables do not support taking a view at just the 'Real'
+            // portion of the number.  It also does not allow modifying the Real portion without allocating
+            // a new Complex.  Therefore, we can only return the full Complex variable array.
+
+            var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+
+            var Real = x1.Real;
+            print(x1);
+            AssertArray(Real, new Complex[,] { { 0, 1, 2 }, { 2, 1, 0} });
+
         }
 
-        [Ignore]
         [TestMethod]
-        public void xxx_test_image_1_COMPLEX()
+        public void test_image_1_COMPLEX()
         {
+            // .NET System.Numeric.Complex variables do not support taking a view at just the 'Imag'
+            // portion of the number.  It also does not allow modifying the Imag portion without allocating
+            // a new Complex.  Therefore, we can only return the full Complex variable array.
+
+            var x1 = np.array(new Complex[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+
+            var real = x1.Imag;
+
+            print(x1);
+
+            AssertArray(real, new Complex[,] { { 0, 1, 2 }, { 2, 1, 0 } });
         }
-        [Ignore]
+
         [TestMethod]
-        public void xxx_test_conj_1_COMPLEX()
+        public void test_conj_1_COMPLEX()
         {
-            var a = np.arange(0, 10, dtype: np.Complex);
-            //var b = np.conj
+            var a = np.arange(new Complex(0, -10), new Complex(10, -5), dtype: np.Complex);
+            print(a);
+
+            var b = np.conj(a);
+            print(b);
+
+            var c = np.conjugate(a);
+            print(c);
 
         }
         [Ignore]
@@ -7315,7 +7343,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
+        #endregion
 
     }
 }

@@ -498,11 +498,11 @@ namespace NumpyDotNetTests
             print("Original array:x ", x);
             print("Original array:y ", y);
             print("Real part of the array:");
-            print(x.real);
-            print(y.real);
+            print(x.Real);
+            print(y.Real);
             print("Imaginary part of the array:");
-            print(x.imag);
-            print(y.imag);
+            print(x.Imag);
+            print(y.Imag);
 
         }
 

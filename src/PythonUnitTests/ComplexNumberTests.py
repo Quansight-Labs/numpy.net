@@ -27,6 +27,15 @@ class ComplexNumbersTests(unittest.TestCase):
 
        print(G)
 
+    def test_conj_1(self):
+
+        fvalues = [0-1j, 12-1.1j, 45.21+45.3456j, 34+87j, 99.91+789J]
+        F = np.array(fvalues, dtype=np.complex)
+
+        E = np.conj(F);
+
+        print(F)
+        print(E)
 
 
     def test_angle_1(self):
