@@ -100,6 +100,8 @@ namespace NumpyLib
             SetArrayHandler(NPY_TYPES.NPY_DOUBLE, new DoubleHandlers());
             SetArrayHandler(NPY_TYPES.NPY_DECIMAL, new DecimalHandlers());
             SetArrayHandler(NPY_TYPES.NPY_COMPLEX, new ComplexHandlers());
+            SetArrayHandler(NPY_TYPES.NPY_COMPLEXREAL, new DoubleHandlers());
+            SetArrayHandler(NPY_TYPES.NPY_COMPLEXIMAG, new DoubleHandlers());
             SetArrayHandler(NPY_TYPES.NPY_OBJECT, new ObjectHandlers());
         }
 

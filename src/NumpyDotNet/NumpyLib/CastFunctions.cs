@@ -108,6 +108,12 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     DefaultCastsToComplex(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_COMPLEXREAL:
+                    DefaultCastsToComplexReal(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEXIMAG:
+                    DefaultCastsToComplexImag(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
             return;
@@ -717,6 +723,29 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+
+        }
+
+        static void DefaultCastsToComplexReal(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                 case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToComplexReal(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+        }
+
+        static void DefaultCastsToComplexImag(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToComplexImag(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
 
@@ -2972,6 +3001,32 @@ namespace NumpyLib
                 index++;
             }
         }
+
+        static void CastComplexToComplexReal(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as double[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (double)(s[index + src_offset].Real);
+                index++;
+            }
+        }
+        static void CastComplexToComplexImag(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as double[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (double)(s[index + src_offset].Imaginary);
+                index++;
+            }
+        }
+
         #endregion
 
         #region Experimental Generic code

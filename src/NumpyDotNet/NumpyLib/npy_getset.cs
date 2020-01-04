@@ -176,38 +176,21 @@ namespace NumpyLib
 
         static NpyArray _get_part(NpyArray self, bool imag)
         {
-            return self;
+            // cast to special types so that casting functions convert properly
+            NpyArray ret = null;
+            if (imag)
+            {
+                ret = NpyArray_CastToType(self, NpyArray_DescrNew(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEXIMAG)), false);
+            }
+            else
+            {
+                ret = NpyArray_CastToType(self, NpyArray_DescrNew(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEXREAL)), false);
+            }
 
-            // .NET complex variables do not allow the ability to map into a view like python
-            // Even if we could figure out a way, the real/imaginary fields are not changable directly.
-            // The only way to access or modify them is a complete System.Numeric.Complex
-
-
-            //NpyArray_Descr type;
-            //int offset;
-
-
-            //type = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-
-            //if (imag)
-            //    offset = sizeof(double);
-            //else
-            //    offset = 0;
-
-
-            //if (!NpyArray_ISNBO(self))
-            //{
-            //    NpyArray_Descr nw;
-            //    nw = NpyArray_DescrNew(type);
-            //    nw.byteorder = self.descr.byteorder;
-            //    Npy_DECREF(type);
-            //    type = nw;
-            //}
-            //return NpyArray_NewView(type,
-            //                        self.nd,
-            //                        self.dimensions,
-            //                        self.strides,
-            //                        self, (npy_intp)offset, false);
+            // hack it back to what the application is expecting.
+            ret.descr.type_num = NPY_TYPES.NPY_DOUBLE;
+            ret.data.type_num = NPY_TYPES.NPY_DOUBLE;
+            return ret;
         }
     }
 

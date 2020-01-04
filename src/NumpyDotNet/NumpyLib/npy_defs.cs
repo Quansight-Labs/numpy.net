@@ -124,6 +124,8 @@ namespace NumpyLib
         NPY_DOUBLE,
         NPY_DECIMAL,
         NPY_COMPLEX,
+        NPY_COMPLEXREAL,
+        NPY_COMPLEXIMAG,
         NPY_BIGINT,
         NPY_DATETIME,
         NPY_TIMEDELTA,

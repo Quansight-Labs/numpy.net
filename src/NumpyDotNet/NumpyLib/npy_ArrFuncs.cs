@@ -207,6 +207,8 @@ namespace NumpyLib
                     arrFuncs.setitem = FLOAT_SetItemFunc;
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEXREAL:
+                case NPY_TYPES.NPY_COMPLEXIMAG:
                     arrFuncs.copyswap = Common_copyswap<double>;
                     arrFuncs.getitem = DOUBLE_GetItemFunc;
                     arrFuncs.setitem = DOUBLE_SetItemFunc;
