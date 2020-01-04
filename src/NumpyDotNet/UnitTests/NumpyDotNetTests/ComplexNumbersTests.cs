@@ -238,7 +238,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_F2C_1_COMPLEX()
         {
-            Complex[] fvalues = new Complex[] { 0, 12, 45.21, 34, 99.91 };
+            Complex[] fvalues = new Complex[] { new Complex(0,-1), new Complex(12,-1.1), new Complex(45.21, 45.3456), new Complex(34, 87), new Complex(99.91, 789) };
             ndarray F = (ndarray)np.array(fvalues);
             print("Values in Fahrenheit degrees:");
             print(F);
@@ -247,10 +247,27 @@ namespace NumpyDotNetTests
             ndarray C = 5 * F / 9 - 5 * 32 / 9;
             print(C);
 
-            AssertArray(C, new Complex[] { -17, -10.33333333333333333333333333300, 08.11666666666666666666666666700,
-                                            01.88888888888888888888888888900, 38.50555555555555555555555555600 });
+            AssertArray(C, new Complex[] { new Complex(-17, -0.555555555555556), new Complex(-10.3333333333333, -0.611111111111111),
+                            new Complex(8.11666666666667, 25.192), new Complex(1.88888888888889, 48.3333333333333), new Complex(38.5055555555556, 438.333333333333) });
+        }
+
+        [TestMethod]
+        public void test_multiply_1x_COMPLEX()
+        {
+            Complex[] fvalues = new Complex[] { new Complex(0, -1), new Complex(12, -1.1), new Complex(45.21, 45.3456), new Complex(34, 87), new Complex(99.91, 789) };
+            ndarray F = (ndarray)np.array(fvalues);
+
+            Complex[] evalues = new Complex[] { new Complex(5, -1.567), new Complex(-12.56, -2.1), new Complex(145.21, 415.3456), new Complex(-34, 87), new Complex(99.91, 7189) };
+            ndarray E = (ndarray)np.array(evalues);
+
+            ndarray G = F * E;
+
+            print(G);
+            AssertArray(G, new Complex[] { new Complex(-1.567, -5), new Complex(-153.03, -11.384), new Complex(-12269.15133936, 25362.409152),
+                                        new Complex(-8725, 0), new Complex(-5662138.9919, 797081.98) });
 
         }
+
 
         [TestMethod]
         public void test_ArrayStats_1_COMPLEX()
@@ -7288,6 +7305,9 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void xxx_test_conj_1_COMPLEX()
         {
+            var a = np.arange(0, 10, dtype: np.Complex);
+            //var b = np.conj
+
         }
         [Ignore]
         [TestMethod]
