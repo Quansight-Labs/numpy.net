@@ -1689,7 +1689,7 @@ namespace NumpyDotNet
             {
                 X_T = (X * w).T;
             }
-            var c = np.dot(X, X_T.conj());
+            var c = np.dot(X, np.conj(X_T));
 
             if (c.IsDecimal)
             {

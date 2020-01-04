@@ -176,30 +176,38 @@ namespace NumpyLib
 
         static NpyArray _get_part(NpyArray self, bool imag)
         {
-            NpyArray_Descr type;
-            int offset;
+            return self;
 
-            type = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-
-            if (imag)
-                offset = sizeof(double);
-            else
-                offset = 0;
+            // .NET complex variables do not allow the ability to map into a view like python
+            // Even if we could figure out a way, the real/imaginary fields are not changable directly.
+            // The only way to access or modify them is a complete System.Numeric.Complex
 
 
-            if (!NpyArray_ISNBO(self))
-            {
-                NpyArray_Descr nw;
-                nw = NpyArray_DescrNew(type);
-                nw.byteorder = self.descr.byteorder;
-                Npy_DECREF(type);
-                type = nw;
-            }
-            return NpyArray_NewView(type,
-                                    self.nd,
-                                    self.dimensions,
-                                    self.strides,
-                                    self, (npy_intp)offset, false);
+            //NpyArray_Descr type;
+            //int offset;
+
+
+            //type = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
+
+            //if (imag)
+            //    offset = sizeof(double);
+            //else
+            //    offset = 0;
+
+
+            //if (!NpyArray_ISNBO(self))
+            //{
+            //    NpyArray_Descr nw;
+            //    nw = NpyArray_DescrNew(type);
+            //    nw.byteorder = self.descr.byteorder;
+            //    Npy_DECREF(type);
+            //    type = nw;
+            //}
+            //return NpyArray_NewView(type,
+            //                        self.nd,
+            //                        self.dimensions,
+            //                        self.strides,
+            //                        self, (npy_intp)offset, false);
         }
     }
 

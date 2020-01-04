@@ -1649,7 +1649,7 @@ namespace NumpyDotNet
             arr = np.subtract(arr, avg);
             arr = _copyto(arr, 0, mask);
             if (arr.IsComplex)
-                sqr = np.multiply(arr, arr.conj()).real as ndarray;
+                sqr = np.multiply(arr, np.conj(arr)).Real;
             else
                 sqr = np.multiply(arr, arr);
 

@@ -1770,10 +1770,6 @@ namespace NumpyDotNet
 
         #endregion
 
-
-
-
-
         #region Misc
 
         public static ndarray sign(object x, object where = null)
@@ -2053,6 +2049,20 @@ namespace NumpyDotNet
             return correlate(a_arr, v_arr["::-1"], mode);
         }
 
+        public static ndarray conj(object a, ndarray @out = null, object where = null)
+        {
+            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), NpyArray_Ops.npy_op_conjugate, 0, UseSrcAsDest: false);
+            if (@out != null)
+            {
+                np.copyto(@out, result);
+            }
+            return result;
+        }
+
+        public static ndarray conjugate(object x1, ndarray @out = null, object where = null)
+        {
+            return conj(x1, @out, where);
+        }
 
         #endregion
 

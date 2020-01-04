@@ -44,21 +44,17 @@ namespace NumpyDotNet
     interface IArray
     {
         ndarray byteswap(bool inplace = false);
-        ndarray conj(ndarray @out = null);
-        ndarray conjugate(ndarray @out = null);
         object copy(NumpyLib.NPY_ORDER order = NumpyLib.NPY_ORDER.NPY_KORDER);
         object dtype { get; }
         void fill(object scalar);
         flagsobj flags { get; }
         object flat { get; set; }
         ndarray flatten(NumpyLib.NPY_ORDER order = NumpyLib.NPY_ORDER.NPY_CORDER);
-        object imag { get; set; }
         object item(params object[] args);
         void itemset(params object[] args);
         int ndim { get; }
         ndarray newbyteorder(string endian = null);
         ndarray ravel(NumpyLib.NPY_ORDER order = NumpyLib.NPY_ORDER.NPY_CORDER);
-        object real { get; set; }
         void setflags(object write = null, object align = null, object uic = null);
         shape shape { get; }
         npy_intp size { get; }

@@ -201,10 +201,6 @@ namespace NumpyDotNet
             }
 
         }
-
-        internal ndarray Conjugate(ndarray ret = null)
-        {
-            return NpyCoreApi.Conjugate(this, ret);
-        }
+          
     }
 }

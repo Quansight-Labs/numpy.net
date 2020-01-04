@@ -95,14 +95,7 @@ namespace NumpyDotNet
                 return ToArray().byteswap(false);
             }
         }
-
-        public ndarray conj(ndarray @out = null) {
-            return ToArray().conj(@out);
-        }
-
-        public ndarray conjugate(ndarray @out = null) {
-            return ToArray().conjugate(@out);
-        }
+        
 
         public object copy(NPY_ORDER order = NPY_ORDER.NPY_KORDER) {
             return ToArray().copy(order);
@@ -142,7 +135,7 @@ namespace NumpyDotNet
 
         public virtual object imag {
             get {
-                return ndarray.ArrayReturn((ndarray)ToArray().imag);
+                return ndarray.ArrayReturn((ndarray)ToArray().Imag);
             }
             set {
                 throw new ArgumentTypeException("array-scalars are immutable");
@@ -185,7 +178,7 @@ namespace NumpyDotNet
 
         public virtual object real {
             get {
-                return ndarray.ArrayReturn((ndarray)ToArray().real);
+                return ndarray.ArrayReturn((ndarray)ToArray().Real);
             }
             set {
                 throw new ArgumentTypeException("array-scalars are immutable");

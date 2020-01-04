@@ -1186,35 +1186,6 @@ namespace NumpyLib
         }
 
 
-        internal static NpyArray NpyArray_Conjugate(NpyArray self, NpyArray outPtr)
-        {
-            if (NpyArray_ISCOMPLEX(self))
-            {
-                return NpyArray_GenericUnaryFunction(
-                    self,
-                    numpyAPI.NpyArray_GetNumericOp(NpyArray_Ops.npy_op_conjugate),
-                    outPtr);
-            }
-            else
-            {
-                NpyArray ret;
-                if (null != outPtr)
-                {
-                    if (NpyArray_CopyAnyInto(outPtr, self) < 0)
-                    {
-                        return null;
-                    }
-                    ret = outPtr;
-                }
-                else
-                {
-                    ret = self;
-                }
-                Npy_INCREF(ret);
-                return ret;
-            }
-        }
-
         internal static NpyArray NpyArray_Max(NpyArray srcArray, int axis, NpyArray outPtr, bool keepdims)
         {
             NpyArray ret = null;

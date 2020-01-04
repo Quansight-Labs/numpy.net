@@ -1424,16 +1424,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray Conjugate(ndarray arr, ndarray ret = null)
-        {
-            #if ENABLELOCKING
-            lock (GlobalIterpLock)
-            #endif
-            {
-                return new ndarray(numpyAPI.NpyArray_Conjugate(arr.Array, (ret == null ? null : ret.Array)));
-            }
-        }
-
         internal static ndarray Correlate(ndarray arr1, ndarray arr2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             #if ENABLELOCKING
@@ -1441,16 +1431,6 @@ namespace NumpyDotNet {
             #endif
             {
                 return new ndarray(numpyAPI.NpyArray_Correlate(arr1.Array, arr2.Array, typenum, mode));
-            }
-        }
-
-        internal static ndarray Correlate2(ndarray arr1, ndarray arr2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
-        {
-            #if ENABLELOCKING
-            lock (GlobalIterpLock)
-            #endif
-            {
-                return new ndarray(numpyAPI.NpyArray_Correlate2(arr1.Array, arr2.Array, typenum, mode));
             }
         }
 

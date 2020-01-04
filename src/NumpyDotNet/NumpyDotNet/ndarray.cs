@@ -800,39 +800,7 @@ namespace NumpyDotNet
             }
         }
 
- 
   
-        public object real {
-            get {
-                return NpyCoreApi.GetReal(this);
-            }
-            set {
-                ndarray val = np.FromAny(value, null, 0, 0, 0, null);
-                NpyCoreApi.MoveInto(NpyCoreApi.GetReal(this), val);
-            }
-        }
-
-        public object imag {
-            get {
-                if (IsComplex) {
-                    return NpyCoreApi.GetImag(this);
-                } else {
-                    // TODO: np.zeros_like when we have it.
-                    ndarray result = Copy();
-                    result.flat = 0;
-                    return result;
-                }
-            }
-            set {
-                if (IsComplex) {
-                    ndarray val = np.FromAny(value, null, 0, 0, 0, null);
-                    NpyCoreApi.MoveInto(NpyCoreApi.GetImag(this), val);
-                } else {
-                    throw new ArgumentTypeException("array does not have an imaginary part to set.");
-                }
-            }
-        }
-
         public object flat {
             get {
                 return NpyCoreApi.IterNew(this);
@@ -915,15 +883,6 @@ namespace NumpyDotNet
         }
 
         private static string[] chooseArgNames = { "out", "mode" };
-
-
-        public ndarray conj(ndarray @out = null) {
-            return conjugate(@out);
-        }
-
-        public ndarray conjugate(ndarray @out = null) {
-            return Conjugate(@out);
-        }
 
         public object copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return ArrayReturn(Copy(order));
@@ -1179,12 +1138,14 @@ namespace NumpyDotNet
         public override string ToString() {
             return StrFunction(this);
         }
+  
 
         public flatiter Flat {
             get {
                 return NpyCoreApi.IterNew(this);
             }
         }
+
 
         public ndarray NewCopy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return NpyCoreApi.NewCopy(this, order);

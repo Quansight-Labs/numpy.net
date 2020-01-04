@@ -977,50 +977,6 @@ namespace NumpyLib
             return ret;
         }
 
-        internal static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
-        {
-            NpyArray ret = null;
-            NpyArray cap2 = null;
-            int inverted = 0;
-            int status;
-
-            if (NpyArray_ISCOMPLEX(ap2))
-            {
-                /* FIXME: PyArray_Conjugate need to be replaced by NpyArray_Conjugate,
-                          once NpyArray_Conjugate is created, which can be done once
-                          the ufunc stuff is in the core.
-                 */
-                ap2 = NpyArray_Conjugate(ap2, null);
-                if (null == ap2)
-                {
-                    return null;
-                }
-                cap2 = ap2;
-            }
-
-            ret = _npyarray_correlate(ap1, ap2, typenum, mode, ref inverted);
-            if (ret == null)
-            {
-                goto done;
-            }
-
-            /* If we inverted input orders, we need to reverse the output array (i.e.
-               ret = ret[::-1]) */
-            if (inverted != 0)
-            {
-                status = _npyarray_revert(ret);
-                if (status != 0)
-                {
-                    Npy_DECREF(ret);
-                    ret = null;
-                    goto done;
-                }
-            }
-            done:
-            Npy_XDECREF(cap2);
-            return ret;
-        }
-
         internal static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             int unused = 0;

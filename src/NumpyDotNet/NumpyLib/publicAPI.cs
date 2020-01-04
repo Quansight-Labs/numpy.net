@@ -367,11 +367,6 @@ namespace NumpyLib
             return numpyinternal.NpyArray_ArgMin(op, axis, _out);
         }
 
-        public static NpyArray NpyArray_Conjugate(NpyArray self, NpyArray _out)
-        {
-            return numpyinternal.NpyArray_Conjugate(self, _out);
-        }
-
         public static NpyArray NpyArray_Max(NpyArray self, int axis, NpyArray _out, bool keepdims)
         {
             return numpyinternal.NpyArray_Max(self, axis, _out, keepdims);
@@ -1248,11 +1243,6 @@ namespace NumpyLib
             return numpyinternal.NpyArray_CopyAndTranspose(arr);
         }
 
-        public static NpyArray NpyArray_Correlate2(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
-        {
-            return numpyinternal.NpyArray_Correlate2(ap1, ap2, typenum, mode);
-        }
-
         public static NpyArray NpyArray_Correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
             return numpyinternal.NpyArray_Correlate(ap1, ap2, typenum, mode);
@@ -1302,11 +1292,6 @@ namespace NumpyLib
         public static NpyArray NpyArray_GenericBinaryFunction(NpyArray m1, NpyArray m2, NpyUFuncObject op, NpyArray _out)
         {
             return numpyinternal.NpyArray_GenericBinaryFunction(m1, m2, op, _out);
-        }
-
-        public static NpyArray NpyArray_GenericUnaryFunction(NpyArray m1, NpyUFuncObject op, NpyArray _out)
-        {
-            return numpyinternal.NpyArray_GenericUnaryFunction(m1, op, _out);
         }
 
         public static int NpyArray_Bool(NpyArray mp)
