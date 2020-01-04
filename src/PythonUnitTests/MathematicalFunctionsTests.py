@@ -990,7 +990,7 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     def test_exp_1(self):
 
-        x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
+        x = np.array([1e-10, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
         a = np.exp(x)
         print(a)
 
@@ -1004,7 +1004,7 @@ class MathematicalFunctionsTests(unittest.TestCase):
 
     def test_expm1_1(self):
 
-        x = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
+        x = np.array([1e-10, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0, -4.2])
         a = np.expm1(x)
         print(a)
 

@@ -803,32 +803,62 @@ namespace NumpyDotNet
 
         public static ndarray expm1(object x, object where = null)
         {
-
-            /* from numpy C code
-            
-            nc_expm1@c@(@ctype@ *x, @ctype@ *r)
+            var xa = asanyarray(x);
+            if (xa.IsComplex)
             {
-                @ftype@ a = npy_exp@c@(x->real);
-                r->real = a*npy_cos@c@(x->imag) - 1.0@c@;
-                r->imag = a*npy_sin@c@(x->imag);
-                return;
+                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    var x1 = ch.X1(i);
+                    if (System.Numerics.Complex.Abs(x1) < 1e-05)
+                    {
+                        ch.results[i] = x1 + 0.5*x1*x1;
+
+                    }
+                    else
+                    {
+                        ch.results[i] = System.Numerics.Complex.Exp(ch.X1(i)) - 1.0;
+                    }
+
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
-            */
-
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            else
             {
-                ch.results[i] = Math.Exp(ch.X1(i));
+                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+
+                for (int i = 0; i < ch.expectedLength; i++)
+                {
+                    var x1 = ch.X1(i);
+                    if (Math.Abs(x1) < 1e-05)
+                    {
+                        ch.results[i] = x1 + 0.5 * x1 * x1;
+
+                    }
+                    else
+                    {
+                        ch.results[i] = Math.Exp(ch.X1(i)) - 1.0;
+                    }
+
+                }
+
+                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                if (where != null)
+                {
+                    ret[np.invert(where)] = np.NaN;
+                }
+
+                return ret;
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray exp2(object x, object where = null)
