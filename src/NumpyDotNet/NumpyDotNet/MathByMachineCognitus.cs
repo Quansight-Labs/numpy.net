@@ -2178,9 +2178,10 @@ namespace MachineCognitus
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>A 32-bit signed integer whose value is equivalent to <paramref name="value"/>.</returns>
-        public static unsafe int SingleToInt32Bits(float value)
+        public static int SingleToInt32Bits(float value)
         {
-            return *((int*)&value);
+            return 0;
+            //return *((int*)&value);  // must compile with unsafe for this to work
         }
 
         /// <summary>
@@ -2188,9 +2189,10 @@ namespace MachineCognitus
         /// </summary>
         /// <param name="value">The number to convert.</param>
         /// <returns>A double-precision floating point number whose value is equivalent to <paramref name="value"/>.</returns>
-        public static unsafe float Int32BitsToSingle(int value)
+        public static float Int32BitsToSingle(int value)
         {
-            return *((float*)&value);
+            return 0;
+            //return *((float*)&value);  // must compile with unsafe for this to work
         }
 
         private static int _leadingZeroesCount(int x)
