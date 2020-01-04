@@ -252,24 +252,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_multiply_1x_COMPLEX()
-        {
-            Complex[] fvalues = new Complex[] { new Complex(0, -1), new Complex(12, -1.1), new Complex(45.21, 45.3456), new Complex(34, 87), new Complex(99.91, 789) };
-            ndarray F = (ndarray)np.array(fvalues);
-
-            Complex[] evalues = new Complex[] { new Complex(5, -1.567), new Complex(-12.56, -2.1), new Complex(145.21, 415.3456), new Complex(-34, 87), new Complex(99.91, 7189) };
-            ndarray E = (ndarray)np.array(evalues);
-
-            ndarray G = F * E;
-
-            print(G);
-            AssertArray(G, new Complex[] { new Complex(-1.567, -5), new Complex(-153.03, -11.384), new Complex(-12269.15133936, 25362.409152),
-                                        new Complex(-8725, 0), new Complex(-5662138.9919, 797081.98) });
-
-        }
-
-
-        [TestMethod]
         public void test_ArrayStats_1_COMPLEX()
         {
             var x = np.array(new Complex[] { 1, 2, 3 }, dtype: np.Complex);
@@ -1349,6 +1331,24 @@ namespace NumpyDotNetTests
             print(c);
             print("****");
             AssertArray(c, new Complex[,] { { -65, -77 }, { -63, -75 } });
+
+        }
+
+
+        [TestMethod]
+        public void test_multiply_1x_COMPLEX()
+        {
+            Complex[] fvalues = new Complex[] { new Complex(0, -1), new Complex(12, -1.1), new Complex(45.21, 45.3456), new Complex(34, 87), new Complex(99.91, 789) };
+            ndarray F = (ndarray)np.array(fvalues);
+
+            Complex[] evalues = new Complex[] { new Complex(5, -1.567), new Complex(-12.56, -2.1), new Complex(145.21, 415.3456), new Complex(-34, 87), new Complex(99.91, 7189) };
+            ndarray E = (ndarray)np.array(evalues);
+
+            ndarray G = F * E;
+
+            print(G);
+            AssertArray(G, new Complex[] { new Complex(-1.567, -5), new Complex(-153.03, -11.384), new Complex(-12269.15133936, 25362.409152),
+                                        new Complex(-8725, 0), new Complex(-5662138.9919, 797081.98) });
 
         }
 
