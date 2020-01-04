@@ -994,7 +994,7 @@ namespace NumpyDotNet
         #endregion
 
         #region interp
-        public static ndarray interp(ndarray x, float[] xp, float[] fp, float? left = null, float? right = null, float? period = null)
+        public static ndarray interp(object x, float[] xp, float[] fp, float? left = null, float? right = null, float? period = null)
         {
             /*
             One-dimensional linear interpolation.

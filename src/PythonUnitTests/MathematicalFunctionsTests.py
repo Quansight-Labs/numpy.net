@@ -1734,6 +1734,20 @@ class MathematicalFunctionsTests(unittest.TestCase):
         #g = np.nan_to_num(y, nan=111111, posinf=222222)
         #print(g)
 
+    def test_interp_1(self):
+
+        xp = xp = [1, 2, 3]
+        fp = [3, 2, 0]
+        a = np.interp(2.5, xp, fp)
+        print(a)
+
+        b = np.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)
+        print(b)
+
+        UNDEF = -99.0
+        c = np.interp(3.14, xp, fp, right=UNDEF)
+        print(c)
+
 
     #endregion
 
