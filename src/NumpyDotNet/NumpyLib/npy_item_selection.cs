@@ -1540,22 +1540,22 @@ namespace NumpyLib
         }
 
 
-        private static dynamic MaxValue(NPY_TYPES type)
+        private static dynamic ArgSortMaxValue(NPY_TYPES type)
         {
-            return DefaultArrayHandlers.GetArrayHandler(type).GetMaxValue();
+            return DefaultArrayHandlers.GetArrayHandler(type).GetArgSortMaxValue();
         }
 
-        private static dynamic MinValue(NPY_TYPES type)
+        private static dynamic ArgSortMinValue(NPY_TYPES type)
         {
-            return DefaultArrayHandlers.GetArrayHandler(type).GetMinValue();
+            return DefaultArrayHandlers.GetArrayHandler(type).GetArgSortMinValue();
 
         }
 
 
         private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, long startingIndex)
         {
-            dynamic lastLowest = MinValue(sortData.type_num);
-            dynamic _MaxValue = MaxValue(sortData.type_num);
+            dynamic lastLowest = ArgSortMinValue(sortData.type_num);
+            dynamic _MaxValue = ArgSortMaxValue(sortData.type_num);
 
             for (int i = 0; i < m; )
             {

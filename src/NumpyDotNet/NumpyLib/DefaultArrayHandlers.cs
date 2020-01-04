@@ -72,8 +72,8 @@ namespace NumpyLib
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
         NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
-        object GetMinValue();
-        object GetMaxValue();
+        object GetArgSortMinValue();
+        object GetArgSortMaxValue();
         object GetPositiveInfinity();
         object GetNegativeInfinity();
         object GetNaN();
@@ -341,11 +341,11 @@ namespace NumpyLib
             }
         }
 
-        public virtual object GetMinValue()
+        public virtual object GetArgSortMinValue()
         {
             return double.MinValue;
         }
-        public virtual object GetMaxValue()
+        public virtual object GetArgSortMaxValue()
         {
             return double.MaxValue;
         }
@@ -2329,11 +2329,11 @@ namespace NumpyLib
             tmp += (float)((float)ip1[ip1_index / ip1Size] * (float)ip2[ip2_index / ip2Size]);
             return tmp;
         }
-        public override object GetMinValue()
+        public override object GetArgSortMinValue()
         {
             return float.MinValue;
         }
-        public override object GetMaxValue()
+        public override object GetArgSortMaxValue()
         {
             return float.MaxValue;
         }
@@ -2591,11 +2591,11 @@ namespace NumpyLib
             return tmp;
         }
 
-        public override object GetMinValue()
+        public override object GetArgSortMinValue()
         {
             return double.MinValue;
         }
-        public override object GetMaxValue()
+        public override object GetArgSortMaxValue()
         {
             return double.MaxValue;
         }
@@ -2839,11 +2839,11 @@ namespace NumpyLib
             return;
         }
 
-        public override object GetMinValue()
+        public override object GetArgSortMinValue()
         {
             return decimal.MinValue;
         }
-        public override object GetMaxValue()
+        public override object GetArgSortMaxValue()
         {
             return decimal.MaxValue;
         }
@@ -3092,11 +3092,11 @@ namespace NumpyLib
         }
 
 
-        public override object GetMinValue()
+        public override object GetArgSortMinValue()
         {
             return (System.Numerics.Complex)double.MinValue;
         }
-        public override object GetMaxValue()
+        public override object GetArgSortMaxValue()
         {
             return (System.Numerics.Complex)double.MaxValue;
         }

@@ -156,12 +156,12 @@ namespace NumpyDotNet
 
         private static object _getmin(ndarray dest)
         {
-            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetMinValue();
+            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetArgSortMinValue();
         }
 
         private static object _getmax(ndarray dest)
         {
-            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetMaxValue();
+            return DefaultArrayHandlers.GetArrayHandler(dest.TypeNum).GetArgSortMaxValue();
         }
     }
 }
