@@ -71,6 +71,7 @@ namespace NumpyLib
         object ConvertToUpgradedValue(object o);
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
+        int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset);
         NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
         object GetArgSortMinValue();
         object GetArgSortMaxValue();

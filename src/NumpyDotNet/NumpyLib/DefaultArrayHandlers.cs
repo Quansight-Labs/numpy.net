@@ -155,6 +155,17 @@ namespace NumpyLib
                 array[i] = fillValue;
             }
         }
+        public virtual int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset)
+        {
+            T[] destp = dest.datap as T[];
+            T[] scalarp = scalar.datap as T[];
+            if (destp == null || scalarp == null)
+                return -1;
+
+            Fill<T>(destp, (T)(scalarp[fill_offset]), dest_offset, length + dest_offset);
+            return 0;
+        }
+
 
         public virtual object GetArgSortMinValue()
         {
@@ -542,7 +553,7 @@ namespace NumpyLib
             Fill(adata, FillValue, 0, adata.Length);
             return;
         }
-
+  
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             throw new NotImplementedException("This array handler does not implement DOT");

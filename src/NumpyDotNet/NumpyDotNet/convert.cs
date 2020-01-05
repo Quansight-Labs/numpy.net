@@ -41,22 +41,27 @@ namespace NumpyDotNet
 {
     public partial class ndarray
     {
-        internal byte[] ToString(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
+        internal byte[] ToString(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
+        {
             long nbytes = Size * ItemSize;
             byte[] data = new byte[nbytes];
             NpyCoreApi.GetBytes(this, data, order);
             return data;
         }
 
-        internal void FillWithScalar(object scalar) {
-            if (Dtype.IsObject) {
+        internal void FillWithScalar(object scalar)
+        {
+            if (Dtype.IsObject)
+            {
                 NpyCoreApi.FillWithObject(this, scalar);
-            } else {
+            }
+            else
+            {
                 ndarray zero_d_array = np.FromAny(scalar, Dtype, flags: NPYARRAYFLAGS.NPY_ALIGNED);
                 NpyCoreApi.FillWithScalar(this, zero_d_array);
             }
         }
 
- 
+
     }
 }

@@ -981,110 +981,20 @@ namespace NumpyLib
             return 2;
         }
 
+        #region FillWithScalarFunc
         internal static int NpyArray_FillFunc(VoidPtr dest, npy_intp length, NpyArray arr)
         {
             return NpyArray_FillWithScalarFunc(dest, length, arr.data, arr);
         }
 
-        #region FillWithScalarFunc
         internal static int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
         {
-            switch (dest.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return BOOL_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_BYTE:
-                    return BYTE_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_UBYTE:
-                    return UBYTE_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_INT16:
-                    return INT16_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_UINT16:
-                    return UINT16_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_INT32:
-                    return INT32_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_UINT32:
-                    return UINT32_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_INT64:
-                    return INT64_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_UINT64:
-                    return UINT64_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_FLOAT:
-                    return FLOAT_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return DOUBLE_fillwithscalar(dest, length, scalar, arr);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return DECIMAL_fillwithscalar(dest, length, scalar, arr);
-            }
-
-            return -1;
-        }
-
-        private static int BOOL_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<bool>(dest, length, scalar, arr);
-        }
-        private static int BYTE_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<sbyte>(dest, length, scalar, arr);
-        }
-        private static int UBYTE_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<byte>(dest, length, scalar, arr);
-        }
-        private static int INT16_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<Int16>(dest, length, scalar, arr);
-        }
-        private static int UINT16_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<UInt16>(dest, length, scalar, arr);
-        }
-        private static int INT32_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<Int32>(dest, length, scalar, arr);
-        }
-        private static int UINT32_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<UInt32>(dest, length, scalar, arr);
-        }
-        private static int INT64_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<Int64>(dest, length, scalar, arr);
-        }
-        private static int UINT64_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<UInt64>(dest, length, scalar, arr);
-        }
-        private static int FLOAT_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<float>(dest, length, scalar, arr);
-        }
-        private static int DOUBLE_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<double>(dest, length, scalar, arr);
-        }
-        private static int DECIMAL_fillwithscalar(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            return Common_Fillwithscalar<decimal>(dest, length, scalar, arr);
-        }
-        private static int Common_Fillwithscalar<T>(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
-        {
-            T[] destp = dest.datap as T[];
-            T[] scalarp = scalar.datap as T[];
-            if (destp == null || scalarp == null)
-                return -1;
-
             npy_intp dest_offset = dest.data_offset / arr.ItemSize;
             npy_intp scalar_offset = scalar.data_offset / arr.ItemSize;
 
-            for (int i = 0; i < length; i++)
-            {
-                destp[i + dest_offset] = scalarp[0 + scalar_offset];
-            }
-
-            return 0;
+            return DefaultArrayHandlers.GetArrayHandler(dest.type_num).ArrayFill(dest, scalar, (int)length, (int)dest_offset, (int)scalar_offset);
         }
+
         #endregion
 
         internal static int NpyArray_SortFunc(object o1, npy_intp length, NpyArray NOTUSED)

@@ -552,6 +552,37 @@ namespace NumpyDotNetTests
                                          19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
         }
 
+
+        [TestMethod]
+        public void test_ndarray_fill()
+        {
+            var x = np.arange(0,9, dtype: np.Float64).reshape(new shape(3, 3));
+            x.fill(33);
+            print(x);
+            AssertArray(x, new double[,] { { 33.0, 33.0, 33.0 },  { 33.0, 33.0, 33.0 },  { 33.0, 33.0, 33.0 } } );
+
+            var y = x["1:2", "1:2"] as ndarray;
+            print(y);
+
+            y.fill(44);
+            print(x);
+
+            y.fill("AAAA");
+            print(x);
+
+            x = np.arange(0, 9, dtype: np.Complex).reshape(new shape(3, 3));
+            x.fill(123);
+            print(x);
+
+            x = np.arange(0, 9, dtype: np.Decimal).reshape(new shape(3, 3));
+            x.fill(166);
+            print(x);
+
+            //y.fill(new Complex(11, 11));
+            //print(x);
+
+        }
+
         [TestMethod]
         public void test_ndarray_flatten()
         {
