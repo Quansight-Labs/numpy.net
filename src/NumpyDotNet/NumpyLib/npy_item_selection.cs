@@ -1846,11 +1846,19 @@ namespace NumpyLib
 
         private static npy_intp[] ConvertToIntP(VoidPtr data)
         {
-            #if NPY_INTP_64
-            return ConvertToInt64(data);
-            #else
-            return ConvertToInt32(data);
-            #endif
+            try
+            {
+                #if NPY_INTP_64
+                return ConvertToInt64(data);
+                #else
+                return ConvertToInt32(data);
+                #endif
+            }
+            catch
+            {
+                throw new Exception(string.Format("{0} can't be converted to integers", data.type_num.ToString()));
+            }
+   
         }
 
         private static Int32[] ConvertToInt32(VoidPtr data)

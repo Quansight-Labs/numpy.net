@@ -317,20 +317,7 @@ namespace NumpyLib
                 {
                     if (NpyArray_ISFLOAT(operandArray))
                     {
-                        switch (operandArray.descr.type_num)
-                        {
-                            case NPY_TYPES.NPY_DECIMAL:
-                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DECIMAL);
-                                break;
-                            case NPY_TYPES.NPY_COMPLEX:
-                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_COMPLEX);
-                                break;
-                            default:
-                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_DOUBLE);
-                                break;
-
-                        }
-                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(NpyArray_Ops.npy_op_special_operand_is_float));
+                         newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(NpyArray_Ops.npy_op_special_operand_is_float));
                     }
                 }
             }
