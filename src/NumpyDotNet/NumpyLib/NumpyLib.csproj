@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyLib</AssemblyName>
     <RootNamespace>NumpyLib</RootNamespace>
-    <Version>0.9.08</Version>
+    <Version>0.9.10</Version>
     <Authors>Kevin McKenna</Authors>
     <Company>Baseline Software Solutions, Inc.</Company>
     <Description>This library contains the lower level 'engine' of the NumpyDotNet system.   This library is typically accessed via the higher  level NumpyDotNet.dll</Description>
@@ -13,8 +13,8 @@
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>NumPy, .NET, C#, Financial, Matrix</PackageTags>
-    <PackageReleaseNotes>Adding support for Decimal data types, performance improvements and small bug fixes.</PackageReleaseNotes>
+    <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
+    <PackageReleaseNotes>Adding support for System.Numerics.Complex data types.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
