@@ -70,6 +70,43 @@ namespace NumpyLib
             }
         }
 
+        public virtual object GetItem(VoidPtr data, long index)
+        {
+            T[] dp = data.datap as T[];
+
+            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+            }
+
+            return dp[AdjustedIndex];
+        }
+        public virtual object GetItemDifferentType(VoidPtr vp, long index, NPY_TYPES ItemType, int ItemSize)
+        {
+            return 0;
+        }
+
+
+        public virtual int SetItem(VoidPtr data, long index, object value)
+        {
+            T[] dp = data.datap as T[];
+
+            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+            }
+
+            dp[AdjustedIndex] = (T)value;
+            return 1;
+        }
+        public virtual int SetItemDifferentType(VoidPtr data, long index, object value)
+        {
+            throw new Exception(string.Format("Arrays of {0} are not programmed to set items of this type", data.type_num));
+        }
+
         public System.Array ToArray(Array ssrc)
         {
             return ssrc.Cast<T>().ToArray();
@@ -2915,6 +2952,50 @@ namespace NumpyLib
         public override int ItemSize
         {
             get { return sizeof(double) * 2; }
+        }
+
+        public override int SetItem(VoidPtr data, long index, object value)
+        {
+            System.Numerics.Complex[] dp = data.datap as System.Numerics.Complex[];
+
+            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+            }
+            if (value is System.Numerics.Complex)
+            {
+                dp[AdjustedIndex] = (System.Numerics.Complex)value;
+            }
+            else
+            {
+                dp[AdjustedIndex] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+            }
+
+            return 1;
+        }
+        public override int SetItemDifferentType(VoidPtr data, long index, object value)
+        {
+            System.Numerics.Complex cvalue;
+
+            if (value is System.Numerics.Complex)
+            {
+                cvalue = (System.Numerics.Complex)value;
+            }
+            else
+            {
+                try
+                {
+                    cvalue = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+                }
+                catch
+                {
+                    throw new Exception("unable to convert {0} to a Complex value");
+                }
+
+            }
+
+            return SetItem(data, index, cvalue);
         }
 
 

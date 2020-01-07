@@ -79,6 +79,10 @@ namespace NumpyLib
         object GetNegativeInfinity();
         object GetNaN();
         bool NonZero(VoidPtr vp, long index);
+        object GetItem(VoidPtr vp, long index);
+        object GetItemDifferentType(VoidPtr vp, long index, NPY_TYPES ItemType, int ItemSize);
+        int SetItem(VoidPtr vp, long index, object value);
+        int SetItemDifferentType(VoidPtr vp, long index, object value);
     }
 
     public delegate object NumericOperation(object bValue, object operand);
