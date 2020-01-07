@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5CC17297-5738-4960-97A0-7213C2E8B0BA}</ProjectGuid>
+    <ProjectGuid>{34910E30-2C2D-46F4-89C5-D827016E7193}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DoubleVsDecimal</RootNamespace>
-    <AssemblyName>DoubleVsDecimal</AssemblyName>
+    <RootNamespace>DoubleVsComplex</RootNamespace>
+    <AssemblyName>DoubleVsComplex</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

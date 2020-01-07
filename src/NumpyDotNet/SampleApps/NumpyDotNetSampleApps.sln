@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleVsDecimal", "DoubleVsDecimal\DoubleVsDecimal.csproj", "{5CC17297-5738-4960-97A0-7213C2E8B0BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleVsComplex", "DoubleVsComplex\DoubleVsComplex.csproj", "{34910E30-2C2D-46F4-89C5-D827016E7193}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5CC17297-5738-4960-97A0-7213C2E8B0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CC17297-5738-4960-97A0-7213C2E8B0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CC17297-5738-4960-97A0-7213C2E8B0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34910E30-2C2D-46F4-89C5-D827016E7193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34910E30-2C2D-46F4-89C5-D827016E7193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34910E30-2C2D-46F4-89C5-D827016E7193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34910E30-2C2D-46F4-89C5-D827016E7193}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
