@@ -1802,13 +1802,6 @@ namespace NumpyDotNetTests
 
         }
 
-
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_sort_complex_1()
-        {
-
-        }
 #endif
 
         private void UpdateArrayByAxis(ndarray a, int axis, int v)

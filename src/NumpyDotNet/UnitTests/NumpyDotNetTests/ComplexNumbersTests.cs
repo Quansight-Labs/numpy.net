@@ -7348,6 +7348,14 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [Ignore] // not implemented yet
+        [TestMethod]
+        public void test_sort_complex_1()
+        {
+
+        }
+
 #if NOT_PLANNING_TODO
         [Ignore]
         [TestMethod]
