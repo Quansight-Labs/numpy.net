@@ -114,6 +114,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEXIMAG:
                     DefaultCastsToComplexImag(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    DefaultCastsToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
             return;
@@ -166,6 +169,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToBools(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToBools(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -211,6 +217,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToBytes(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToBytes(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -258,6 +267,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToUBytes(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToUBytes(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -303,6 +315,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToInt16s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToInt16s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -350,6 +365,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToUInt16s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToUInt16s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -395,6 +413,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToInt32s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToInt32s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -442,6 +463,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToUInt32s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToUInt32s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -487,6 +511,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToInt64s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToInt64s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
         }
@@ -534,6 +561,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToUInt64s(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToUInt64s(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -579,6 +609,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToFloats(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToFloats(Src, src_offset, Dest, dest_offset, srclen);
                     break;
 
             }
@@ -628,6 +661,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToDoubles(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToDoubles(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
 
@@ -676,6 +712,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToDecimals(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToDecimals(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
 
@@ -723,6 +762,60 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     CastComplexToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToComplex(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+
+        }
+
+        static void DefaultCastsToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    CastBoolsToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    CastBytesToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    CastUBytesToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    CastInt16sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    CastUInt16sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    CastInt32sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    CastUInt32sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    CastInt64sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    CastUInt64sToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    CastFloatsToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    CastDoublesToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    CastDecimalsToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToBigInt(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToBigInt(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
 
@@ -912,6 +1005,18 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToBools(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as bool[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (bool)(s[index + src_offset] != 0 ? true : false);
+                index++;
+            }
+        }
         #endregion
 
         #region Bytes specific casts
@@ -1079,6 +1184,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToSByte(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = SByte.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastBigIntToBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as sbyte[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (sbyte)s[index + src_offset];
                 }
                 catch
                 {
@@ -1263,6 +1388,26 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToUBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as byte[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (Byte)s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = Byte.MinValue;
+                }
+
+                index++;
+            }
+        }
         #endregion
 
         #region Int16 specific casts
@@ -1436,6 +1581,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as Int16[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] =  (Int16)s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int16.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt16 specific casts
@@ -1601,6 +1765,25 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt16(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt16.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastBigIntToUInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as UInt16[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (UInt16)s[index + src_offset];
                 }
                 catch
                 {
@@ -1783,6 +1966,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as Int32[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (Int32)s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int32.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt32 specific casts
@@ -1948,6 +2150,25 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt32(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt32.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastBigIntToUInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as UInt32[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (UInt32)s[index + src_offset];
                 }
                 catch
                 {
@@ -2130,6 +2351,25 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as Int64[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (Int64)s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = Int64.MinValue;
+                }
+                index++;
+            }
+        }
         #endregion
 
         #region UInt64 specific casts
@@ -2296,6 +2536,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToUInt64(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = UInt64.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastBigIntToUInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as UInt64[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (UInt64)s[index + src_offset];
                 }
                 catch
                 {
@@ -2480,6 +2740,26 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToFloats(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as float[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (float)s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = Single.MinValue;
+                }
+
+                index++;
+            }
+        }
         #endregion
 
         #region Double specific casts
@@ -2646,6 +2926,26 @@ namespace NumpyLib
                 try
                 {
                     d[index + dest_offset] = Convert.ToDouble(s[index + src_offset].Real);
+                }
+                catch
+                {
+                    d[index + dest_offset] = Double.MinValue;
+                }
+
+                index++;
+            }
+        }
+        static void CastBigIntToDoubles(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as double[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = (double)s[index + src_offset];
                 }
                 catch
                 {
@@ -2828,6 +3128,18 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToDecimals(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as decimal[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (decimal)s[index + src_offset];
+                index++;
+            }
+        }
         #endregion
 
         #region Complex specific casts
@@ -3001,6 +3313,18 @@ namespace NumpyLib
                 index++;
             }
         }
+        static void CastBigIntToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as System.Numerics.Complex[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (double)s[index + src_offset];
+                index++;
+            }
+        }
 
         static void CastComplexToComplexReal(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3023,6 +3347,192 @@ namespace NumpyLib
             while (srclen-- > 0)
             {
                 d[index + dest_offset] = (double)(s[index + src_offset].Imaginary);
+                index++;
+            }
+        }
+
+        #endregion
+
+        #region BigInt specific casts
+        static void CastBoolsToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as bool[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset] == true ? 1 : 0);
+                index++;
+            }
+        }
+        static void CastBytesToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as sbyte[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUBytesToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as byte[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt16sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int16[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt16sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt16[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt32sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int32[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt32sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt32[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastInt64sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int64[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastUInt64sToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt64[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastFloatsToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as float[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = new System.Numerics.BigInteger(float.MinValue);
+                }
+                index++;
+            }
+        }
+        static void CastDoublesToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as double[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                }
+                catch
+                {
+                    d[index + dest_offset] = new System.Numerics.BigInteger(double.MinValue);
+                }
+                index++;
+            }
+        }
+        static void CastDecimalsToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as decimal[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset]);
+                index++;
+            }
+        }
+        static void CastComplexToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = new System.Numerics.BigInteger(s[index + src_offset].Real);
+                index++;
+            }
+        }
+        static void CastBigIntToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as System.Numerics.BigInteger[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (System.Numerics.BigInteger)(s[index + src_offset]);
                 index++;
             }
         }
