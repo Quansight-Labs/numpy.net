@@ -3538,7 +3538,7 @@ namespace NumpyLib
         }
         public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
         {
-            return NPY_TYPES.NPY_COMPLEX;
+            return NPY_TYPES.NPY_BIGINT;
         }
         public override bool NonZero(VoidPtr vp, long index)
         {
@@ -3619,7 +3619,7 @@ namespace NumpyLib
         protected override object Power(object bValue, object operand)
         {
             BigInteger dValue = (BigInteger)bValue;
-            return BigInteger.Pow(dValue, Convert.ToInt32(operand));
+            return BigInteger.Pow(dValue, (int)ConvertToBigInt(operand));
         }
         protected override object Square(object bValue, object operand)
         {

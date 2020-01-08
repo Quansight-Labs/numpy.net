@@ -168,6 +168,11 @@ namespace NumpyLib
             datap = obj;
             type_num = NPY_TYPES.NPY_COMPLEX;
         }
+        public VoidPtr(System.Numerics.BigInteger[] obj)
+        {
+            datap = obj;
+            type_num = NPY_TYPES.NPY_BIGINT;
+        }
         public VoidPtr()
         {
             datap = null;

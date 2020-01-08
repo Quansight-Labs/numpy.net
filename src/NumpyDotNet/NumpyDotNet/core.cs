@@ -131,7 +131,7 @@ namespace NumpyDotNet
                     }
                     if (o is System.Numerics.BigInteger)
                     {
-                        //return new VoidPtr(new System.Numerics.BigInteger[] { (System.Numerics.BigInteger)o });
+                        return new VoidPtr(new System.Numerics.BigInteger[] { (System.Numerics.BigInteger)o });
                     }
                     throw new Exception("Unable to convert numeric type");
             }
