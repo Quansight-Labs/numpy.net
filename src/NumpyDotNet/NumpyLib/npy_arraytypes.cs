@@ -68,7 +68,7 @@ namespace NumpyLib
             _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) { kind = 'f' });
             _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) { kind = 'c' });
             _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) { kind = 'c' });
-            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'c' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'c' });
             //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) { kind = 'M' });
             // _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) { kind = 'm' });
             _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) { kind = 'O' });

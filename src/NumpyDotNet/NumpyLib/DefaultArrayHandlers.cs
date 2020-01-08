@@ -3433,4 +3433,444 @@ namespace NumpyLib
         }
 
     }
+
+    internal class BigIntHandlers : ArrayHandlerBase<System.Numerics.BigInteger>, IArrayHandlers
+    {
+        public BigIntHandlers()
+        {
+
+        }
+
+        public override int ItemSize
+        {
+            get { return sizeof(double) * 4; }
+        }
+
+        public override int SetItem(VoidPtr data, long index, object value)
+        {
+            System.Numerics.BigInteger[] dp = data.datap as System.Numerics.BigInteger[];
+
+            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+            }
+            if (value is System.Numerics.BigInteger)
+            {
+                dp[AdjustedIndex] = (System.Numerics.BigInteger)value;
+            }
+            else
+            {
+                dp[AdjustedIndex] = new System.Numerics.BigInteger(Convert.ToDouble(value));
+            }
+
+            return 1;
+        }
+        public override int SetItemDifferentType(VoidPtr data, long index, object value)
+        {
+            System.Numerics.BigInteger bivalue;
+
+            if (value is System.Numerics.BigInteger)
+            {
+                bivalue = (System.Numerics.BigInteger)value;
+            }
+            else
+            {
+                try
+                {
+                    bivalue = new System.Numerics.BigInteger(Convert.ToDouble(value));
+                }
+                catch
+                {
+                    throw new Exception("unable to convert {0} to a BigInt value");
+                }
+
+            }
+
+            return SetItem(data, index, bivalue);
+        }
+
+
+        public override object GetArgSortMinValue()
+        {
+            return (System.Numerics.BigInteger)double.MinValue;
+        }
+        public override object GetArgSortMaxValue()
+        {
+            return (System.Numerics.BigInteger)double.MaxValue;
+        }
+        public override object GetPositiveInfinity()
+        {
+            return (System.Numerics.BigInteger)double.PositiveInfinity;
+        }
+        public override object GetNegativeInfinity()
+        {
+            return (System.Numerics.BigInteger)double.NegativeInfinity;
+        }
+        public override object GetNaN()
+        {
+            return (System.Numerics.BigInteger)double.NaN;
+        }
+
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            System.Numerics.BigInteger[] adata = vp.datap as System.Numerics.BigInteger[];
+
+            if (FillValue is System.Numerics.BigInteger)
+                Fill(adata, (System.Numerics.BigInteger)FillValue, 0, adata.Length);
+            else
+                Fill(adata, new System.Numerics.BigInteger(Convert.ToDouble(FillValue)), 0, adata.Length);
+
+            return;
+        }
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            var tmp = (System.Numerics.BigInteger)otmp;
+            var ip1 = op1 as System.Numerics.BigInteger[];
+            var ip2 = op2 as System.Numerics.BigInteger[];
+
+            tmp += (System.Numerics.BigInteger)((System.Numerics.BigInteger)ip1[ip1_index / ip1Size] * (System.Numerics.BigInteger)ip2[ip2_index / ip2Size]);
+            return tmp;
+        }
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return ConvertToBigInt(o);
+        }
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_COMPLEX;
+        }
+        public override bool NonZero(VoidPtr vp, long index)
+        {
+            System.Numerics.BigInteger[] bp = vp.datap as System.Numerics.BigInteger[];
+            return (bp[index] != 0);
+        }
+
+
+        System.Numerics.BigInteger ConvertToBigInt(object o)
+        {
+            if (o is System.Numerics.BigInteger)
+            {
+                System.Numerics.BigInteger c = (System.Numerics.BigInteger)o;
+                return c;
+            }
+            else
+            {
+                return new System.Numerics.BigInteger(Convert.ToDouble(o));
+            }
+        }
+
+        protected override object Add(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue + (BigInteger)operand;
+        }
+        protected override object Subtract(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue - (BigInteger)operand;
+        }
+        protected override object Multiply(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue * (BigInteger)operand;
+        }
+        protected override object Divide(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            BigInteger doperand = (BigInteger)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue / doperand;
+        }
+        protected override object Remainder(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            BigInteger doperand = (BigInteger)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            var rem = dValue % doperand;
+            if ((dValue > 0) == (doperand > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + doperand;
+            }
+        }
+        protected override object FMod(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            BigInteger doperand = (BigInteger)operand;
+            if (doperand == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return dValue % doperand;
+        }
+        protected override object Power(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return BigInteger.Pow(dValue, Convert.ToInt32(operand));
+        }
+        protected override object Square(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue * dValue;
+        }
+        protected override object Reciprocal(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return 1 / dValue;
+        }
+        protected override object Sqrt(object bValue, object operand)
+        {
+            throw new NotImplementedException("figure out sqrt bigint");
+            //return BigInteger.Sqrt((BigInteger)bValue);
+        }
+        protected override object Negative(object bValue, object operand)
+        {
+            return BigInteger.Negate((BigInteger)bValue);
+        }
+        protected override object Absolute(object bValue, object operand)
+        {
+            return BigInteger.Abs((BigInteger)bValue);
+        }
+        protected override object Invert(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue;
+        }
+        protected override object LeftShift(object bValue, object operand)
+        {
+            BigInteger cValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+
+            UInt64 rValue = (UInt64)cValue;
+            rValue = rValue << Convert.ToInt32(oValue);
+
+
+            return new BigInteger(rValue);
+        }
+        protected override object RightShift(object bValue, object operand)
+        {
+            BigInteger cValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+
+            UInt64 rValue = (UInt64)cValue;
+            rValue = rValue >> Convert.ToInt32(oValue);
+
+            return new BigInteger(rValue);
+        }
+        protected override object BitWiseAnd(object bValue, object operand)
+        {
+            BigInteger cValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+
+            UInt64 rValue = (UInt64)cValue;
+            rValue = rValue & Convert.ToUInt64(oValue);
+
+            return new BigInteger(rValue);
+        }
+        protected override object BitWiseXor(object bValue, object operand)
+        {
+            BigInteger cValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+
+            UInt64 rValue = (UInt64)cValue;
+            rValue = rValue ^ Convert.ToUInt64(oValue);
+
+            return new BigInteger(rValue);
+        }
+        protected override object BitWiseOr(object bValue, object operand)
+        {
+            BigInteger cValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+
+            UInt64 rValue = (UInt64)cValue;
+            rValue = rValue | Convert.ToUInt64(oValue);
+
+            return new BigInteger(rValue);
+        }
+        protected override object Less(object bValue, object operand)
+        {
+            BigInteger cOperand = (BigInteger)operand;
+            BigInteger dValue = (BigInteger)bValue;
+
+            return dValue < cOperand;
+        }
+        protected override object LessEqual(object bValue, object operand)
+        {
+            BigInteger cOperand = (BigInteger)operand;
+            BigInteger dValue = (BigInteger)bValue;
+ 
+            return dValue <= cOperand;
+        }
+        protected override object Equal(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue == (BigInteger)operand;
+        }
+        protected override object NotEqual(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue != (BigInteger)operand;
+        }
+        protected override object Greater(object bValue, object operand)
+        {
+            BigInteger cOperand = (BigInteger)operand;
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue > cOperand;
+        }
+        protected override object GreaterEqual(object bValue, object operand)
+        {
+            BigInteger cOperand = (BigInteger)operand;
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue >= cOperand;
+        }
+        protected override object IsNAN(object bValue, object operand)
+        {
+            return false;
+        }
+        protected override object FloorDivide(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            BigInteger oValue = (BigInteger)operand;
+            if (oValue == 0)
+            {
+                dValue = 0;
+                return dValue;
+            }
+            return (dValue / oValue);
+        }
+        protected override object Floor(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue;
+        }
+        protected override object Ceiling(object bValue, object operand)
+        {
+            BigInteger dValue = (BigInteger)bValue;
+            return dValue;
+        }
+        protected override object Maximum(object bValue, object operand)
+        {
+            BigInteger a = (BigInteger)bValue;
+            BigInteger b = (BigInteger)operand;
+
+            return BigInteger.Max(a, b);
+        }
+        protected override object FMax(object bValue, object operand)
+        {
+            BigInteger a = (BigInteger)bValue;
+            BigInteger b = (BigInteger)operand;
+
+            return BigInteger.Max(a, b);
+        }
+        protected override object Minimum(object bValue, object operand)
+        {
+            BigInteger a = (BigInteger)bValue;
+            BigInteger b = (BigInteger)operand;
+
+            return BigInteger.Min(a, b);
+        }
+        protected override object FMin(object bValue, object operand)
+        {
+            BigInteger a = (BigInteger)bValue;
+            BigInteger b = (BigInteger)operand;
+
+            return BigInteger.Min(a, b);
+        }
+        protected override object Rint(object bValue, object operand)
+        {
+            BigInteger a = (BigInteger)bValue;
+            BigInteger b = (BigInteger)operand;
+            return a;
+        }
+        protected override object Heaviside(object bValue, object operand)
+        {
+            BigInteger x = ConvertToBigInt(bValue);
+
+            if (x == 0)
+                return ConvertToBigInt(operand);
+
+            if (x < 0)
+                return (BigInteger)0;
+
+            return (BigInteger)1;
+
+        }
+        public override void SortArray(VoidPtr data, int offset, int length)
+        {
+            var arr = data.datap as System.Numerics.BigInteger[];
+            Quick_Sort(arr, offset, offset + length - 1);
+        }
+        void Quick_Sort(System.Numerics.BigInteger[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                int partitionIndex = Partition(array, low, high);
+
+                //3. Recursively continue sorting the array
+                Quick_Sort(array, low, partitionIndex - 1);
+                Quick_Sort(array, partitionIndex + 1, high);
+            }
+        }
+        int Partition(System.Numerics.BigInteger[] array, int low, int high)
+        {
+            //1. Select a pivot point.
+            BigInteger pivot = array[high];
+
+            int lowIndex = (low - 1);
+
+            //2. Reorder the collection.
+            for (int j = low; j < high; j++)
+            {
+                if (array[j] <= pivot)
+                {
+                    lowIndex++;
+
+                    var temp = array[lowIndex];
+                    array[lowIndex] = array[j];
+                    array[j] = temp;
+                }
+            }
+
+            var temp1 = array[lowIndex + 1];
+            array[lowIndex + 1] = array[high];
+            array[high] = temp1;
+
+            return lowIndex + 1;
+        }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is System.Numerics.BigInteger)
+            {
+                System.Numerics.BigInteger cin = (System.Numerics.BigInteger)invalue;
+
+                if (comparevalue is System.Numerics.BigInteger)
+                {
+                    System.Numerics.BigInteger ccin = (System.Numerics.BigInteger)comparevalue;
+                    return cin.CompareTo(ccin);
+                }
+                if (comparevalue is IComparable)
+                {
+                    return cin.CompareTo(comparevalue);
+                }
+            }
+
+            return 0;
+        }
+  
+
+    }
 }
