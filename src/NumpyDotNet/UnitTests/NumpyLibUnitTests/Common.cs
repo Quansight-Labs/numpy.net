@@ -671,26 +671,61 @@ namespace NumpyLibTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_ULONGLONG:
-                    {
-                        UInt64[] bdata = new UInt64[dataLen];
+                case NPY_TYPES.NPY_COMPLEX:
+                {
+                    var bdata = new System.Numerics.Complex[dataLen];
 
-                        for (int i = 0; i < bdata.Length; i++)
+                    for (int i = 0; i < bdata.Length; i++)
+                    {
+                        if (UseFillData)
                         {
-                            if (UseFillData)
+                            if (UseMaxValue)
                             {
-                                bdata[i] = (UInt64)FillData;
+                                bdata[i] = double.MaxValue;
                             }
                             else
                             {
-                                bdata[i] = (UInt64)(i + ArrayDataAdjust);
+                                bdata[i] = (double)FillData;
                             }
                         }
-
-                        data = new VoidPtr(bdata);
-                        break;
+                        else
+                        {
+                            bdata[i] = (double)(i + ArrayDataAdjust);
+                        }
                     }
+
+                    data = new VoidPtr(bdata);
+                    break;
+                }
+
+                case NPY_TYPES.NPY_BIGINT:
+                {
+                    var bdata = new System.Numerics.BigInteger[dataLen];
+
+                    for (int i = 0; i < bdata.Length; i++)
+                    {
+                        if (UseFillData)
+                        {
+                            if (UseMaxValue)
+                            {
+                                bdata[i] =  (System.Numerics.BigInteger) double.MaxValue;
+                            }
+                            else
+                            {
+                                bdata[i] = (System.Numerics.BigInteger)FillData;
+                            }
+                        }
+                        else
+                        {
+                            bdata[i] = (System.Numerics.BigInteger)(i + ArrayDataAdjust);
+                        }
+                    }
+
+                    data = new VoidPtr(bdata);
+                    break;
+                }
+
+
 
                 // not sure about these yet.  Not really supported
                 case NPY_TYPES.NPY_DATETIME:
@@ -715,29 +750,7 @@ namespace NumpyLibTests
                     }
 
 
-                // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_LONGDOUBLE:
-                case NPY_TYPES.NPY_CFLOAT:
-                case NPY_TYPES.NPY_CDOUBLE:
-                case NPY_TYPES.NPY_CLONGDOUBLE:
-                    {
-                        UInt64[] bdata = new UInt64[dataLen];
-
-                        for (int i = 0; i < bdata.Length; i++)
-                        {
-                            if (UseFillData)
-                            {
-                                bdata[i] = (UInt64)FillData;
-                            }
-                            else
-                            {
-                                bdata[i] = (UInt64)(i + ArrayDataAdjust);
-                            }
-                        }
-
-                        data = new VoidPtr(bdata);
-                        break;
-                    }
+       
 
                 default:
                     throw new Exception(string.Format("GetArrayOfData: Unexpected item_type {0}", item_type));
@@ -753,6 +766,8 @@ namespace NumpyLibTests
 
         internal static int GetDefaultItemSize(NPY_TYPES npy_type)
         {
+            System.Numerics.BigInteger bb;
+
             switch (npy_type)
             {
                 case NPY_TYPES.NPY_BOOL:
@@ -768,9 +783,7 @@ namespace NumpyLibTests
                 case NPY_TYPES.NPY_LONG:
                 case NPY_TYPES.NPY_ULONG:
                     return 8;
-                case NPY_TYPES.NPY_LONGLONG:
-                case NPY_TYPES.NPY_ULONGLONG:
-                    return NotSupportedSizeYet;
+  
                 case NPY_TYPES.NPY_FLOAT:
                     return 4;
 
@@ -779,8 +792,11 @@ namespace NumpyLibTests
                 case NPY_TYPES.NPY_DECIMAL:
                     return sizeof(decimal);
 
-                case NPY_TYPES.NPY_LONGDOUBLE:
-                    return NotSupportedSizeYet;
+                case NPY_TYPES.NPY_COMPLEX:
+                    return sizeof(double) * 2;
+
+                case NPY_TYPES.NPY_BIGINT:
+                    return sizeof(double) * 4;
 
                 case NPY_TYPES.NPY_USERDEF:
                     return NotSupportedSizeYet;

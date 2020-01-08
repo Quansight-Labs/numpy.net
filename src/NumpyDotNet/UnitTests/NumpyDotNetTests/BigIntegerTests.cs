@@ -36,21 +36,21 @@ namespace NumpyDotNetTests
 
         }
 
-#if COMPLEX_NUMBERS_UNIT_TESTS_TODO
+#if  true// COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         #region from ArrayCreationTests
         [TestMethod]
-        public void test_asfarray_BIGINT_TODO()
+        public void test_asfarray_BIGINT()
         {
-            var a = np.asfarray(new decimal[] { 2, 3 });
+            var a = np.asfarray(new BigInteger[] { 2, 3 });
             AssertArray(a, new double[] { 2, 3 });
             print(a);
 
-            var b = np.asfarray(new decimal[] { 2, 3 }, dtype: np.Float32);
+            var b = np.asfarray(new BigInteger[] { 2, 3 }, dtype: np.Float32);
             AssertArray(b, new float[] { 2, 3 });
             print(b);
 
-            var c = np.asfarray(new decimal[] { 2, 3 }, dtype: np.Int8);
+            var c = np.asfarray(new BigInteger[] { 2, 3 }, dtype: np.Int8);
             AssertArray(c, new double[] { 2, 3 });
             print(c);
 
@@ -59,9 +59,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copy_1_BIGINT_TODO()
+        public void test_copy_1_BIGINT()
         {
-            var x = np.array(new decimal[] { 1, 2, 3 });
+            var x = np.array(new BigInteger[] { 1, 2, 3 });
             var y = x;
 
             var z = np.copy(x);
@@ -70,44 +70,48 @@ namespace NumpyDotNetTests
 
             x[0] = 10;
 
-            Assert.AreEqual(10m, y[0]);
+            Assert.AreEqual((BigInteger)10, y[0]);
 
-            Assert.AreEqual(1m, z[0]);
+            Assert.AreEqual((BigInteger)1, z[0]);
 
             return;
         }
 
         [TestMethod]
-        public void test_linspace_1_BIGINT_TODO()
+        public void test_linspace_1_BIGINT()
         {
-            decimal retstep = 0;
+            BigInteger retstep = 0;
 
-            var a = np.linspace(2.0m, 3.0m, ref retstep, num: 5);
-            AssertArray(a, new decimal[] { 2.0m, 2.25m, 2.5m, 2.75m, 3.0m });
+            var a = np.linspace(2, 3, ref retstep, num: 5);
+            AssertArray(a, new BigInteger[] { 2, 2, 2, 2, 3 });
             print(a);
 
-            var b = np.linspace(2.0m, 3.0m, ref retstep, num: 5, endpoint: false);
-            AssertArray(b, new decimal[] { 2.0m, 2.2m, 2.4m, 2.6m, 2.8m });
+            var b = np.linspace(2, 3, ref retstep, num: 5, endpoint: false);
+            AssertArray(b, new BigInteger[] { 2, 2, 2, 2, 2 });
             print(b);
 
-            var c = np.linspace(2.0m, 3.0m, ref retstep, num: 5);
-            AssertArray(c, new decimal[] { 2.0m, 2.25m, 2.5m, 2.75m, 3.0m });
+            var c = np.linspace(2, 3, ref retstep, num: 5);
+            AssertArray(c, new BigInteger[] { 2, 2, 2, 2, 3 });
             print(c);
         }
 
         [TestMethod]
-        public void test_logspace_1_BIGINT_TODO()
+        public void test_logspace_1_BIGINT()
         {
-            var a = np.logspace(2.0m, 3.0m, num: 4);
-            AssertArray(a, new decimal[] { 100, 215.44346900318800000000000000000m, 464.15888336127800000000000000000m, 1000 });
+            var a1 = np.logspace(2, 3, num: 4);
+            AssertArray(a1, new BigInteger[] { 100, 215, 464, 1000 });
+            print(a1);
+
+            var a = np.logspace((BigInteger)2.0, (BigInteger)3.0, num: 4);
+            AssertArray(a, new BigInteger[] { 100, 215, 464, 1000 });
             print(a);
 
-            var b = np.logspace(2.0m, 3.0m, num: 4, endpoint: false);
-            AssertArray(b, new decimal[] { 100, 177.82794100389200000000000000000m, 316.22776601683800000000000000000m, 562.34132519034900000000000000000m });
+            var b = np.logspace((BigInteger)2.0m, (BigInteger)3.0m, num: 4, endpoint: false);
+            AssertArray(b, new BigInteger[] { 100, 177, 316, 562 });
             print(b);
 
-            var c = np.logspace(2.0m, 3.0m, num: 4, _base: 2.0m);
-            AssertArray(c, new decimal[] { 4, 05.03968419957949000000000000000m, 06.34960420787280000000000000000m, 8 });
+            var c = np.logspace((BigInteger)2.0m, (BigInteger)3.0m, num: 4, _base: 2.0);
+            AssertArray(c, new BigInteger[] { 4, 05, 06, 8 });
             print(c);
         }
 
