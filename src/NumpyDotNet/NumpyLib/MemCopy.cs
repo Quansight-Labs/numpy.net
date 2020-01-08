@@ -112,6 +112,8 @@ namespace NumpyLib
                     return MemCpyToDecimals(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_COMPLEX:
                     return MemCpyToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_BIGINT:
+                    return MemCpyToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
             }
             return false;
         }
@@ -532,10 +534,50 @@ namespace NumpyLib
                     return MemCpyDoublesToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_DECIMAL:
                     return MemCpyDecimalsToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
-                default:
-                    throw new Exception("Attempt to copy non complex to complex number");
                 case NPY_TYPES.NPY_COMPLEX:
                     return MemCpyComplexToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                default:
+                    throw new Exception("Attempt to copy non complex to complex number");
+
+
+            }
+            return false;
+        }
+
+        private static bool MemCpyToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return MemCpyBoolsToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_BYTE:
+                    return MemCpyBytesToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_UBYTE:
+                    return MemCpyUBytesToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_INT16:
+                    return MemCpyInt16ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_UINT16:
+                    return MemCpyUInt16ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_INT32:
+                    return MemCpyInt32ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_UINT32:
+                    return MemCpyUInt32ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_INT64:
+                    return MemCpyInt64ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_UINT64:
+                    return MemCpyUInt64ToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_FLOAT:
+                    return MemCpyFloatsToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_DOUBLE:
+                    return MemCpyDoublesToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_DECIMAL:
+                    return MemCpyDecimalsToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return MemCpyComplexToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_BIGINT:
+                    return MemCpyBigIntToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                default:
+                    throw new Exception("Attempt to copy value to BigInt number");
 
             }
             return false;
@@ -2721,6 +2763,78 @@ namespace NumpyLib
                 //    MemoryAccess.SetByte(destArray, i + DestOffset, data);
                 //}
             }
+            return true;
+        }
+
+        #endregion
+
+        #region BigInt specific
+        private static bool MemCpyBoolsToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyBytesToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyUBytesToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyInt16ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyUInt16ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyInt32ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyUInt32ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyInt64ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyUInt64ToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyFloatsToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+        private static bool MemCpyDoublesToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+
+        private static bool MemCpyDecimalsToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            return true;
+        }
+
+        private static bool MemCpyComplexToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+             return true;
+        }
+
+        private static bool MemCpyBigIntToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            System.Numerics.BigInteger[] sourceArray = Src.datap as System.Numerics.BigInteger[];
+            System.Numerics.BigInteger[] destArray = Dest.datap as System.Numerics.BigInteger[];
+            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+
+            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
+            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+
+            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+
             return true;
         }
 
