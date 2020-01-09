@@ -564,5 +564,163 @@ namespace NumpyDotNetTests
             print(abigint);
 
         }
+
+        [TestMethod]
+        public void test_AsInt64()
+        {
+            var TestData = new Int64[] { 6, 0, 10, 23, Int64.MaxValue };
+
+            var a = np.array(TestData);
+
+            var abool = np.array(a.AsBoolArray());
+            AssertArray(abool, new bool[] { true, false, true, true, true });
+            AssertArray(np.array(abool.AsInt64Array()), new Int64[] { 1, 0, 1, 1, 1 });
+            print(abool);
+
+            var aSByte = np.array(a.AsSByteArray());
+            AssertArray(aSByte, new sbyte[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aSByte.AsInt64Array()), new Int64[] { 6, 0, 10, 23, -1});
+            print(aSByte);
+
+            var aUByte = np.array(a.AsByteArray());
+            AssertArray(aUByte, new byte[] { 6, 0, 10, 23, 255 });
+            AssertArray(np.array(aUByte.AsInt64Array()), new Int64[] { 6, 0, 10, 23, 255 });
+            print(aUByte);
+
+            var aInt16 = np.array(a.AsInt16Array());
+            AssertArray(aInt16, new Int16[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aInt16.AsInt64Array()), new Int64[] { 6, 0, 10, 23, -1 });
+            print(aInt16);
+
+            var aUInt16 = np.array(a.AsUInt16Array());
+            AssertArray(aUInt16, new UInt16[] { 6, 0, 10, 23, 65535 });
+            AssertArray(np.array(aUInt16.AsInt64Array()), new Int64[] { 6, 0, 10, 23, 65535 });
+            print(aUInt16);
+
+            var aInt32 = np.array(a.AsInt32Array());
+            AssertArray(aInt32, new Int32[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aInt32.AsInt64Array()), new Int64[] { 6, 0, 10, 23, -1 });
+            print(aInt32);
+
+            var aUInt32 = np.array(a.AsUInt32Array());
+            AssertArray(aUInt32, new UInt32[] { 6, 0, 10, 23, UInt32.MaxValue });
+            AssertArray(np.array(aUInt32.AsInt64Array()), new Int64[] { 6, 0, 10, 23, UInt32.MaxValue });
+            print(aUInt32);
+
+            var aInt64 = np.array(a.AsInt64Array());
+            AssertArray(aInt64, TestData);
+            AssertArray(np.array(aInt64.AsInt64Array()), TestData);
+            print(aInt64);
+
+            var aUInt64 = np.array(a.AsUInt64Array());
+            AssertArray(aUInt64, new UInt64[] { 6, 0, 10, 23, Int64.MaxValue });
+            AssertArray(np.array(aUInt64.AsInt64Array()), new Int64[] { 6, 0, 10, 23, Int64.MaxValue });
+            print(aUInt64);
+
+            var afloat = np.array(a.AsFloatArray());
+            AssertArray(afloat, new float[] { 6f, 0f, 10f, 23f, (float)Int64.MaxValue });
+            AssertArray(np.array(afloat.AsInt64Array()), new Int64[] { 6, 0, 10, 23, Int64.MinValue });
+            print(afloat);
+
+            var adouble = np.array(a.AsDoubleArray());
+            AssertArray(adouble, new double[] { 6, 0, 10, 23, Int64.MaxValue });
+            AssertArray(np.array(adouble.AsInt64Array()), new Int64[] { 6, 0, 10, 23, Int64.MinValue });
+            print(adouble);
+
+            var adecimal = np.array(a.AsDecimalArray());
+            AssertArray(adecimal, new decimal[] { 6, 0, 10, 23, Int64.MaxValue });
+            AssertArray(np.array(adecimal.AsInt64Array()), TestData);
+            print(adecimal);
+
+            var acomplex = np.array(a.AsComplexArray());
+            AssertArray(acomplex, new Complex[] { 6, 0, 10, 23, Int64.MaxValue });
+            AssertArray(np.array(acomplex.AsInt64Array()), new Int64[] { 6, 0, 10, 23, Int64.MinValue });
+            print(acomplex);
+
+            var abigint = np.array(a.AsBigIntArray());
+            AssertArray(abigint, new BigInteger[] { 6, 0, 10, 23, Int64.MaxValue });
+            AssertArray(np.array(abigint.AsInt64Array()), TestData);
+            print(abigint);
+
+        }
+
+        [TestMethod]
+        public void test_AsUInt64()
+        {
+            var TestData = new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue };
+
+            var a = np.array(TestData);
+
+            var abool = np.array(a.AsBoolArray());
+            AssertArray(abool, new bool[] { true, false, true, true, true });
+            AssertArray(np.array(abool.AsUInt64Array()), new UInt64[] { 1, 0, 1, 1, 1 });
+            print(abool);
+
+            var aSByte = np.array(a.AsSByteArray());
+            AssertArray(aSByte, new sbyte[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aSByte.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue });
+            print(aSByte);
+
+            var aUByte = np.array(a.AsByteArray());
+            AssertArray(aUByte, new byte[] { 6, 0, 10, 23, 255 });
+            AssertArray(np.array(aUByte.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, 255 });
+            print(aUByte);
+
+            var aInt16 = np.array(a.AsInt16Array());
+            AssertArray(aInt16, new Int16[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aInt16.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue });
+            print(aInt16);
+
+            var aUInt16 = np.array(a.AsUInt16Array());
+            AssertArray(aUInt16, new UInt16[] { 6, 0, 10, 23, 65535 });
+            AssertArray(np.array(aUInt16.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, 65535 });
+            print(aUInt16);
+
+            var aInt32 = np.array(a.AsInt32Array());
+            AssertArray(aInt32, new Int32[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aInt32.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue });
+            print(aInt32);
+
+            var aUInt32 = np.array(a.AsUInt32Array());
+            AssertArray(aUInt32, new UInt32[] { 6, 0, 10, 23, UInt32.MaxValue });
+            AssertArray(np.array(aUInt32.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt32.MaxValue });
+            print(aUInt32);
+
+            var aInt64 = np.array(a.AsInt64Array());
+            AssertArray(aInt64, new Int64[] { 6, 0, 10, 23, -1 });
+            AssertArray(np.array(aInt64.AsUInt64Array()), TestData);
+            print(aInt64);
+
+            var aUInt64 = np.array(a.AsUInt64Array());
+            AssertArray(aUInt64, new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue });
+            AssertArray(np.array(aUInt64.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MaxValue });
+            print(aUInt64);
+
+            var afloat = np.array(a.AsFloatArray());
+            AssertArray(afloat, new float[] { 6f, 0f, 10f, 23f, (float)UInt64.MaxValue });
+            AssertArray(np.array(afloat.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MinValue });
+            print(afloat);
+
+            var adouble = np.array(a.AsDoubleArray());
+            AssertArray(adouble, new double[] { 6, 0, 10, 23, UInt64.MaxValue });
+            AssertArray(np.array(adouble.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MinValue });
+            print(adouble);
+
+            var adecimal = np.array(a.AsDecimalArray());
+            AssertArray(adecimal, new decimal[] { 6, 0, 10, 23, UInt64.MaxValue });
+            AssertArray(np.array(adecimal.AsUInt64Array()), TestData);
+            print(adecimal);
+
+            var acomplex = np.array(a.AsComplexArray());
+            AssertArray(acomplex, new Complex[] { 6, 0, 10, 23, UInt64.MaxValue });
+            AssertArray(np.array(acomplex.AsUInt64Array()), new UInt64[] { 6, 0, 10, 23, UInt64.MinValue });
+            print(acomplex);
+
+            var abigint = np.array(a.AsBigIntArray());
+            AssertArray(abigint, new BigInteger[] { 6, 0, 10, 23, UInt64.MaxValue });
+            AssertArray(np.array(abigint.AsUInt64Array()), TestData);
+            print(abigint);
+
+        }
     }
 }
