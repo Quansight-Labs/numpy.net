@@ -959,5 +959,163 @@ namespace NumpyDotNetTests
             print(abigint);
 
         }
+
+        [TestMethod]
+        public void test_AsComplex()
+        {
+            var TestData = new Complex[] { 6, 0, 10, 23, -25 };
+
+            var a = np.array(TestData);
+
+            var abool = np.array(a.AsBoolArray());
+            AssertArray(abool, new bool[] { true, false, true, true, true });
+            AssertArray(np.array(abool.AsComplexArray()), new Complex[] { 1, 0, 1, 1, 1 });
+            print(abool);
+
+            var aSByte = np.array(a.AsSByteArray());
+            AssertArray(aSByte, new sbyte[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aSByte.AsComplexArray()), TestData);
+            print(aSByte);
+
+            var aUByte = np.array(a.AsByteArray());
+            AssertArray(aUByte, new byte[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUByte.AsComplexArray()), new Complex[] { 6, 0, 10, 23, 0 });
+            print(aUByte);
+
+            var aInt16 = np.array(a.AsInt16Array());
+            AssertArray(aInt16, new Int16[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt16.AsComplexArray()), TestData);
+            print(aInt16);
+
+            var aUInt16 = np.array(a.AsUInt16Array());
+            AssertArray(aUInt16, new UInt16[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt16.AsComplexArray()), new Complex[] { 6, 0, 10, 23, 0 });
+            print(aUInt16);
+
+            var aInt32 = np.array(a.AsInt32Array());
+            AssertArray(aInt32, new Int32[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt32.AsComplexArray()), TestData);
+            print(aInt32);
+
+            var aUInt32 = np.array(a.AsUInt32Array());
+            AssertArray(aUInt32, new UInt32[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt32.AsComplexArray()), new Complex[] { 6, 0, 10, 23, 0 });
+            print(aUInt32);
+
+            var aInt64 = np.array(a.AsInt64Array());
+            AssertArray(aInt64, new Int64[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt64.AsComplexArray()), TestData);
+            print(aInt64);
+
+            var aUInt64 = np.array(a.AsUInt64Array());
+            AssertArray(aUInt64, new UInt64[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt64.AsComplexArray()), new Complex[] { 6, 0, 10, 23, 0 });
+            print(aUInt64);
+
+            var afloat = np.array(a.AsFloatArray());
+            AssertArray(afloat, new float[] { 6f, 0f, 10f, 23f, -25 });
+            AssertArray(np.array(afloat.AsComplexArray()), TestData);
+            print(afloat);
+
+            var adouble = np.array(a.AsDoubleArray());
+            AssertArray(adouble, new double[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(adouble.AsComplexArray()), TestData);
+            print(adouble);
+
+            var adecimal = np.array(a.AsDecimalArray());
+            AssertArray(adecimal, new decimal[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(adecimal.AsComplexArray()), TestData);
+            print(adecimal);
+
+            var acomplex = np.array(a.AsComplexArray());
+            AssertArray(acomplex, new Complex[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(acomplex.AsComplexArray()), TestData);
+            print(acomplex);
+
+            var abigint = np.array(a.AsBigIntArray());
+            AssertArray(abigint, new BigInteger[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(abigint.AsComplexArray()), TestData);
+            print(abigint);
+
+        }
+
+        [TestMethod]
+        public void test_AsBigInt()
+        {
+            var TestData = new BigInteger[] { 6, 0, 10, 23, -25 };
+
+            var a = np.array(TestData);
+
+            var abool = np.array(a.AsBoolArray());
+            AssertArray(abool, new bool[] { true, false, true, true, true });
+            AssertArray(np.array(abool.AsBigIntArray()), new BigInteger[] { 1, 0, 1, 1, 1 });
+            print(abool);
+
+            var aSByte = np.array(a.AsSByteArray());
+            AssertArray(aSByte, new sbyte[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aSByte.AsBigIntArray()), TestData);
+            print(aSByte);
+
+            var aUByte = np.array(a.AsByteArray());
+            AssertArray(aUByte, new byte[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUByte.AsBigIntArray()), new BigInteger[] { 6, 0, 10, 23, 0 });
+            print(aUByte);
+
+            var aInt16 = np.array(a.AsInt16Array());
+            AssertArray(aInt16, new Int16[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt16.AsBigIntArray()), TestData);
+            print(aInt16);
+
+            var aUInt16 = np.array(a.AsUInt16Array());
+            AssertArray(aUInt16, new UInt16[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt16.AsBigIntArray()), new BigInteger[] { 6, 0, 10, 23, 0 });
+            print(aUInt16);
+
+            var aInt32 = np.array(a.AsInt32Array());
+            AssertArray(aInt32, new Int32[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt32.AsBigIntArray()), TestData);
+            print(aInt32);
+
+            var aUInt32 = np.array(a.AsUInt32Array());
+            AssertArray(aUInt32, new UInt32[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt32.AsBigIntArray()), new BigInteger[] { 6, 0, 10, 23, 0 });
+            print(aUInt32);
+
+            var aInt64 = np.array(a.AsInt64Array());
+            AssertArray(aInt64, new Int64[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(aInt64.AsBigIntArray()), TestData);
+            print(aInt64);
+
+            var aUInt64 = np.array(a.AsUInt64Array());
+            AssertArray(aUInt64, new UInt64[] { 6, 0, 10, 23, 0 });
+            AssertArray(np.array(aUInt64.AsBigIntArray()), new BigInteger[] { 6, 0, 10, 23, 0 });
+            print(aUInt64);
+
+            var afloat = np.array(a.AsFloatArray());
+            AssertArray(afloat, new float[] { 6f, 0f, 10f, 23f, -25 });
+            AssertArray(np.array(afloat.AsBigIntArray()), TestData);
+            print(afloat);
+
+            var adouble = np.array(a.AsDoubleArray());
+            AssertArray(adouble, new double[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(adouble.AsBigIntArray()), TestData);
+            print(adouble);
+
+            var adecimal = np.array(a.AsDecimalArray());
+            AssertArray(adecimal, new decimal[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(adecimal.AsBigIntArray()), TestData);
+            print(adecimal);
+
+            var acomplex = np.array(a.AsComplexArray());
+            AssertArray(acomplex, new Complex[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(acomplex.AsBigIntArray()), TestData);
+            print(acomplex);
+
+            var abigint = np.array(a.AsBigIntArray());
+            AssertArray(abigint, new BigInteger[] { 6, 0, 10, 23, -25 });
+            AssertArray(np.array(abigint.AsBigIntArray()), TestData);
+            print(abigint);
+
+        }
     }
 }
