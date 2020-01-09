@@ -458,6 +458,10 @@ namespace NumpyDotNet
             return Math.Sqrt(variance);
         }
 
+        public static bool[] AsBoolArray(this ndarray a)
+        {
+            return np.AsBoolArray(a);
+        }
         public static sbyte[] AsSByteArray(this ndarray a)
         {
             return np.AsSByteArray(a);
@@ -617,6 +621,17 @@ namespace NumpyDotNet
     {
         #region as(.NET System.Array)
 
+        public static bool[] AsBoolArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.TypeNum != NPY_TYPES.NPY_BOOL)
+            {
+                a = a.astype(np.Bool);
+            }
+
+            return a.rawdata(0).datap as bool[];
+        }
         public static sbyte[] AsSByteArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -700,7 +715,7 @@ namespace NumpyDotNet
 
             if (a.TypeNum != NPY_TYPES.NPY_UINT64)
             {
-                a = a.astype(np.UInt32);
+                a = a.astype(np.UInt64);
             }
 
             return a.rawdata(0).datap as UInt64[];
