@@ -1928,6 +1928,43 @@ namespace NumpyDotNet
 
             return result.astype(dtype);
         }
+        public static ndarray geomspace(System.Numerics.BigInteger start, System.Numerics.BigInteger stop, int num = 50, bool endpoint = true, dtype dtype = null)
+        {
+
+            if (start == 0 || stop == 0)
+            {
+                throw new ValueError("Geometric sequence cannot include zero");
+            }
+
+            dtype dt = np.BigInt; // result_type(start, stop, float(num))
+            if (dtype == null)
+            {
+                dtype = dt;
+            }
+
+            System.Numerics.BigInteger out_sign = 1;
+  
+            if (start < 0 && stop < 0)
+            {
+                start = -start;
+                stop = -stop;
+                out_sign = -out_sign;
+            }
+
+            // Promote both arguments to the same dtype in case, for instance, one is
+            // complex and another is negative and log would produce NaN otherwise
+            start = start + (stop - stop);
+            stop = stop + (start - start);
+ 
+
+            var log_start = System.Numerics.BigInteger.Log10(start);
+            var log_stop = System.Numerics.BigInteger.Log10(stop);
+
+            var result = out_sign * logspace(log_start, log_stop, num: num,
+                                         endpoint: endpoint, _base: 10.0, dtype: dtype);
+
+            return result.astype(dtype);
+        }
 
         #endregion
 

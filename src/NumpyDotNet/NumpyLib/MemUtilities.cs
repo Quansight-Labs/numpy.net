@@ -601,6 +601,12 @@ namespace NumpyLib
                 MemCopy.MemCpy(Temp, 0, src, src_offset, len);
                 MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
             }
+            else if (dest.type_num == NPY_TYPES.NPY_BIGINT)
+            {
+                VoidPtr Temp = new VoidPtr(new System.Numerics.BigInteger[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize]);
+                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+            }
             else
             {
                 VoidPtr Temp = new VoidPtr(new byte[len]);

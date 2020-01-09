@@ -506,6 +506,10 @@ namespace NumpyDotNet
         {
             return np.AsComplexArray(a);
         }
+        public static System.Numerics.BigInteger[] AsBigIntArray(this ndarray a)
+        {
+            return np.AsBigIntArray(a);
+        }
     }
 
     public partial class np
@@ -744,6 +748,17 @@ namespace NumpyDotNet
             }
 
             return a.rawdata(0).datap as System.Numerics.Complex[];
+        }
+        public static System.Numerics.BigInteger[] AsBigIntArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.TypeNum != NPY_TYPES.NPY_BIGINT)
+            {
+                a = a.astype(np.BigInt);
+            }
+
+            return a.rawdata(0).datap as System.Numerics.BigInteger[];
         }
 
         private static ndarray ConvertToFlattenedArray(object input)
