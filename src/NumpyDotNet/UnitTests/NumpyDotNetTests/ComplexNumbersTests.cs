@@ -83,8 +83,8 @@ namespace NumpyDotNetTests
         {
             Complex retstep = 0;
 
-            var a = np.linspace(new Complex(2.0, 0), new Complex(3.0, 0), ref retstep, num: 5);
-            AssertArray(a, new Complex[] { 2.0, 2.25, 2.5, 2.75, 3.0 });
+            var a = np.linspace(new Complex(2.0, 1.3), new Complex(3.0, 5.6), ref retstep, num: 5);
+            AssertArray(a, new Complex[] { new Complex(2.0, 1.3), new Complex(2.25, 2.375), new Complex(2.5, 3.45), new Complex(2.75, 4.525) , new Complex(3.0, 5.26) });
             print(a);
 
             var b = np.linspace(new Complex(2.0, 0), new Complex(3.0, 0), ref retstep, num: 5, endpoint: false);

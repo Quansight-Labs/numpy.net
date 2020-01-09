@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumpyLibTests", "UnitTests\NumpyLibUnitTests\NumpyLibTests.csproj", "{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,12 +50,21 @@ Global
 		{BA8706A0-3EFB-4C81-BC2D-E6BF25283D03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA8706A0-3EFB-4C81-BC2D-E6BF25283D03}.Release|x64.ActiveCfg = Release|Any CPU
 		{BA8706A0-3EFB-4C81-BC2D-E6BF25283D03}.Release|x64.Build.0 = Release|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Debug|x64.Build.0 = Debug|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1D52F5DD-58CB-42A2-A4D1-140F3CAD71EE} = {E113DEDE-6941-487E-90E6-BF93DBE5FAB7}
+		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766} = {E113DEDE-6941-487E-90E6-BF93DBE5FAB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3CDBB85-F316-4E6B-85B4-CF0A491F27E3}

@@ -63,6 +63,16 @@ class ArrayCreationTests(unittest.TestCase):
         c = np.linspace(2.0, 3.0, num=5, retstep=True)
         print(c)
 
+    def test_linspace_2(self):
+        a = np.linspace(2+1.3j, 3+5.6j, num=5, dtype=np.complex)
+        print(a)
+
+        b = np.linspace(2.0, 3.0, num=5, endpoint=False)
+        print(b)
+
+        c = np.linspace(2.0, 3.0, num=5, retstep=True)
+        print(c)
+
     def test_logspace_1(self):
         a = np.logspace(2.0, 3.0, num=4)
         print(a)
