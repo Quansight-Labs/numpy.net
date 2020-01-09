@@ -73,6 +73,17 @@ class ArrayCreationTests(unittest.TestCase):
         c = np.linspace(2.0, 3.0, num=5, retstep=True)
         print(c)
 
+    def test_linspace_3(self):
+        a = np.linspace(2.0, 3.0, num=5, dtype= np.longlong)
+        print(a)
+
+        b = np.linspace(2.0, 3.0, num=5, endpoint=False, dtype= np.longlong)
+        print(b)
+
+        c = np.linspace(2.0, 3.0, num=5, retstep=True, dtype= np.longlong)
+        print(c)
+
+
     def test_logspace_1(self):
         a = np.logspace(2.0, 3.0, num=4)
         print(a)
@@ -81,6 +92,16 @@ class ArrayCreationTests(unittest.TestCase):
         print(b)
 
         c = np.logspace(2.0, 3.0, num=4, base=2.0)
+        print(c)
+
+    def test_logspace_2(self):
+        a = np.logspace(2, 3, num=4, dtype=np.longlong)
+        print(a)
+
+        b = np.logspace(2.0, 3.0, num=4, endpoint=False, dtype=np.longlong)
+        print(b)
+
+        c = np.logspace(2.0, 3.0, num=4, base=2.0, dtype=np.longlong)
         print(c)
 
 
@@ -123,6 +144,39 @@ class ArrayCreationTests(unittest.TestCase):
 
         x = np.arange(-5, 5, 1)
         y = np.arange(-5, 5, 1)
+        xx, yy = np.meshgrid(x, y, sparse=True)
+        print(xx)
+        print(yy)
+
+        print("************")
+
+
+    def test_meshgrid_1_longlong(self):
+        nx = 3
+        ny = 2
+
+        x = np.linspace(0, 100, nx, dtype=np.longlong)
+        y = np.linspace(0, 100, ny, dtype=np.longlong)
+
+        xv = np.meshgrid(x)
+        print(xv)
+
+        print("************")
+
+        xv, yv = np.meshgrid(x, y)
+        print(xv)
+        print(yv)
+
+        print("************")
+
+        xv, yv = np.meshgrid(x, y, sparse=True)
+        print(xv)
+        print(yv)
+
+        print("************")
+
+        x = np.arange(-5, 5, 1, dtype=np.longlong)
+        y = np.arange(-5, 5, 1, dtype=np.longlong)
         xx, yy = np.meshgrid(x, y, sparse=True)
         print(xx)
         print(yy)
@@ -285,6 +339,18 @@ class ArrayCreationTests(unittest.TestCase):
 
     def test_ndarray_flatten(self):
       x = np.arange(0.73,25.73, dtype= np.double).reshape(5,5)
+      y = x.flatten()
+      print(x)
+      print(y)
+
+      y = x.flatten(order='F')
+      print(y)
+
+      y = x.flatten(order='K')
+      print(y)
+
+    def test_ndarray_flatten_longlong(self):
+      x = np.arange(7,32, dtype= np.longlong).reshape(5,5)
       y = x.flatten()
       print(x)
       print(y)
