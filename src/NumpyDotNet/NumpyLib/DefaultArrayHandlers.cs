@@ -298,6 +298,23 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
+        public virtual object MathOpConvertOperand(object srcValue, object operValue)
+        {
+            if (operValue is System.Numerics.Complex)
+            {
+                System.Numerics.Complex c = (System.Numerics.Complex)operValue;
+                return Convert.ToDouble(c.Real);
+            }
+            if (operValue is System.Numerics.BigInteger)
+            {
+                System.Numerics.BigInteger c = (System.Numerics.BigInteger)operValue;
+                return c;
+            }
+
+            return Convert.ToDouble(operValue);
+        }
+
+
 
 
         public NumericOperation AddOperation { get; set; }
@@ -2741,6 +2758,12 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
+
+        public override object MathOpConvertOperand(object srcValue, object operValue)
+        {
+            return Convert.ToDecimal(operValue);
+        }
+
         public override bool NonZero(VoidPtr vp, long index)
         {
             decimal[] bp = vp.datap as decimal[];
@@ -3048,6 +3071,18 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
+        public override object MathOpConvertOperand(object srcValue, object operValue)
+        {
+            if (operValue is System.Numerics.Complex)
+            {
+                return operValue;
+            }
+            else
+            {
+                return new System.Numerics.Complex(Convert.ToDouble(operValue), 0);
+            }
+        }
+
         public override bool NonZero(VoidPtr vp, long index)
         {
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
@@ -3540,6 +3575,18 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_BIGINT;
         }
+        public override object MathOpConvertOperand(object srcValue, object operValue)
+        {
+            if (operValue is System.Numerics.BigInteger)
+            {
+                return operValue;
+            }
+            else
+            {
+                return new System.Numerics.BigInteger(Convert.ToDouble(operValue));
+            }
+        }
+
         public override bool NonZero(VoidPtr vp, long index)
         {
             System.Numerics.BigInteger[] bp = vp.datap as System.Numerics.BigInteger[];

@@ -73,6 +73,7 @@ namespace NumpyLib
         void ArrayFill(VoidPtr vp, object FillValue);
         int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset);
         NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
+        object MathOpConvertOperand(object srcValue, object operValue);
         object GetArgSortMinValue();
         object GetArgSortMaxValue();
         object GetPositiveInfinity();
@@ -169,6 +170,7 @@ namespace NumpyLib
         }
         public NpyArray_GetItemFunc srcGetItem;
         public NpyArray_SetItemFunc srcSetItem;
+        public NumericOperation ConvertOperand;
 
         public NpyArray_GetItemFunc destGetItem;
         public NpyArray_SetItemFunc destSetItem;
@@ -188,6 +190,7 @@ namespace NumpyLib
             {
                 operations.srcGetItem = srcArray.descr.f.getitem;
                 operations.srcSetItem = srcArray.descr.f.setitem;
+                operations.ConvertOperand = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType).MathOpConvertOperand;
             }
 
             if (destArray != null)
@@ -205,6 +208,7 @@ namespace NumpyLib
 
             return operations;
         }
+  
     }
 
 }

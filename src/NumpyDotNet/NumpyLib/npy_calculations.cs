@@ -539,7 +539,7 @@ namespace NumpyLib
                 var srcValue = operation.srcGetItem(src_offset, srcArray);
                 object destValue = null;
 
-                destValue = operation.operation(srcValue, ConvertBySrcValue(srcValue, operand));
+                destValue = operation.operation(srcValue, operation.ConvertOperand(srcValue, operand));
 
                 try
                 {
@@ -573,7 +573,7 @@ namespace NumpyLib
                 var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
                 object destValue = null;
 
-                destValue = operations.operation(srcValue, ConvertBySrcValue(srcValue, operand));
+                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operand));
 
                 try
                 {
@@ -611,7 +611,7 @@ namespace NumpyLib
 
                 object destValue = null;
 
-                destValue = operations.operation(srcValue,  ConvertBySrcValue(srcValue, operValue));
+                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
 
                 try
                 {
@@ -628,7 +628,7 @@ namespace NumpyLib
             }
         }
 
-        private static object ConvertBySrcValue(object srcValue, object operValue)
+        private static object ConvertBySrcValue2(object srcValue, object operValue)
         {
             if (srcValue is Decimal)
                 return Convert.ToDecimal(operValue);
@@ -693,7 +693,7 @@ namespace NumpyLib
                 {
                     var bValue = operations.srcGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
 
-                    object destValue = operations.operation(aValue, ConvertBySrcValue(aValue, bValue));
+                    object destValue = operations.operation(aValue, operations.ConvertOperand(aValue, bValue));
 
                     try
                     {
@@ -732,7 +732,7 @@ namespace NumpyLib
                 {
                     var aValue =  operations.srcGetItem(srcPtr.data_offset, srcArray);
 
-                    var destValue = operations.operation(aValue, ConvertBySrcValue(aValue, operand));
+                    var destValue = operations.operation(aValue, operations.ConvertOperand(aValue, operand));
                     try
                     {
                         operations.destSetItem(destPtr.data_offset, destValue, destArray);
@@ -769,7 +769,7 @@ namespace NumpyLib
                 {
                     var aValue = operations.srcGetItem(srcIter.dataptr.data_offset, srcArray);
 
-                    var destValue = operations.operation(aValue, ConvertBySrcValue(aValue, operand));
+                    var destValue = operations.operation(aValue, operations.ConvertOperand(aValue, operand));
                     operations.destSetItem(destIter.dataptr.data_offset, destValue, destArray);
                     NpyArray_ITER_NEXT(srcIter);
                     NpyArray_ITER_NEXT(destIter);
@@ -872,7 +872,7 @@ namespace NumpyLib
 
                 var operandValue = operation.operandGetItem(operandArray.GetIndex(), operandArray.array);
 
-                object destValue = operation.operation(srcValue, ConvertBySrcValue(srcValue, operandValue));
+                object destValue = operation.operation(srcValue, operation.ConvertOperand(srcValue, operandValue));
 
                 try
                 {
@@ -1375,7 +1375,7 @@ namespace NumpyLib
             {
                 var srcValue = operation.srcGetItem(src_offset, srcArray);
 
-                cumsum = operation.operation(srcValue, ConvertBySrcValue(srcValue, cumsum));
+                cumsum = operation.operation(srcValue, operation.ConvertOperand(srcValue, cumsum));
 
                 try
                 {
