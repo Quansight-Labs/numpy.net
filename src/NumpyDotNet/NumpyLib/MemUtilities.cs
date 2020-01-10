@@ -93,6 +93,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     var complex1 = obj.datap as System.Numerics.Complex[];
                     return complex1[index];
+                case NPY_TYPES.NPY_BIGINT:
+                    var bigint1 = obj.datap as System.Numerics.BigInteger[];
+                    return bigint1[index];
                 default:
                     throw new Exception("Unsupported data type");
             }
@@ -557,6 +560,22 @@ namespace NumpyLib
                         else
                         {
                             complex1[index] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+                        }
+                        break;
+                    case NPY_TYPES.NPY_BIGINT:
+                        var bigint1 = obj.datap as System.Numerics.BigInteger[];
+                        if (value is System.Numerics.BigInteger)
+                        {
+                            bigint1[index] = (System.Numerics.BigInteger)value;
+                        }
+                        else if (value is System.Numerics.Complex)
+                        {
+                            var cc = (System.Numerics.Complex)value;
+                            bigint1[index] = (System.Numerics.BigInteger)cc.Real;
+                        }
+                        else
+                        {
+                            bigint1[index] = new System.Numerics.BigInteger(Convert.ToDouble(value));
                         }
                         break;
                     default:
