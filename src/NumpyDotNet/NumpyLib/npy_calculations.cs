@@ -628,47 +628,6 @@ namespace NumpyLib
             }
         }
 
-        private static object ConvertBySrcValue2(object srcValue, object operValue)
-        {
-            if (srcValue is Decimal)
-                return Convert.ToDecimal(operValue);
-
-            if (srcValue is System.Numerics.Complex)
-            {
-                if (operValue is System.Numerics.Complex)
-                {
-                    return operValue;
-                }
-                else
-                {
-                    return new System.Numerics.Complex(Convert.ToDouble(operValue), 0);
-                }
-            }
-            if (srcValue is System.Numerics.BigInteger)
-            {
-                if (operValue is System.Numerics.BigInteger)
-                {
-                    return operValue;
-                }
-                else
-                {
-                    return new System.Numerics.BigInteger(Convert.ToDouble(operValue));
-                }
-            }
-            if (operValue is System.Numerics.Complex)
-            {
-                System.Numerics.Complex c = (System.Numerics.Complex)operValue;
-                return Convert.ToDouble(c.Real);
-            }
-            if (operValue is System.Numerics.BigInteger)
-            {
-                System.Numerics.BigInteger c = (System.Numerics.BigInteger)operValue;
-                return c;
-            }
-
-            return Convert.ToDouble(operValue);
-        }
-
         private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperations operations)
         {
             var destSize = NpyArray_Size(destArray);
