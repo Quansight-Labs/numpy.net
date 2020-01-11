@@ -2310,23 +2310,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copyto_1_BIGINT_TODO()
+        public void test_copyto_1_BIGINT()
         {
-            var a = np.zeros((10, 5), dtype: np.Decimal);
+            var a = np.zeros((10, 5), dtype: np.BigInt);
             var b = new int[] { 11, 22, 33, 44, 55 };
             np.copyto(a, b);
 
             AssertShape(a, 10, 5);
-            Assert.AreEqual(1650m, a.Sum().GetItem(0));
+            Assert.AreEqual((BigInteger)1650, a.Sum().GetItem(0));
             print(a);
 
-            a = np.zeros((10, 5), dtype: np.Decimal);
+            a = np.zeros((10, 5), dtype: np.BigInt);
             np.copyto(a, 99);
             AssertShape(a, 10, 5);
-            Assert.AreEqual(4950m, a.Sum().GetItem(0));
+            Assert.AreEqual((BigInteger)4950, a.Sum().GetItem(0));
             print(a);
 
-            a = np.zeros((10, 5), dtype: np.Decimal);
+            a = np.zeros((10, 5), dtype: np.BigInt);
             var c = np.arange(11, 60, 11);
 
             try
@@ -2344,13 +2344,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copyto_2_BIGINT_TODO()
+        public void test_copyto_2_BIGINT()
         {
-            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.Decimal);
+            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.BigInt);
             var b = new int[] { 1, 2 };
             np.copyto(a, b);
 
-            AssertArray(a, new decimal[,,,,] { { { { { 1.0m, 2.0m } }, { { 1.0m, 2.0m } } }, { { { 1.0m, 2.0m } }, { { 1.0m, 2.0m, } } } } });
+            AssertArray(a, new BigInteger[,,,,] { { { { { 1, 2 } }, { { 1, 2 } } }, { { { 1, 2 } }, { { 1, 2, } } } } });
 
         }
 
