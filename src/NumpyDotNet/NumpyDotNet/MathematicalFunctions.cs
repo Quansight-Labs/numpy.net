@@ -189,6 +189,45 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region Templated common functions
+ 
+        private static ndarray MathFunction<T>(object x, object where, T NAN, Func<T, T> mathfunc)
+        {
+            var ch = new MathFunctionHelper<T>(x);
+
+            for (int i = 0; i < ch.expectedLength; i++)
+            {
+                ch.results[i] = mathfunc(ch.X1(i));
+            }
+
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+            if (where != null)
+            {
+                ret[np.invert(where)] = NAN;
+            }
+
+            return ret;
+        }
+        private static ndarray MathFunction<T>(object x1, object x2, object where, T NAN, Func<T, T, T> mathfunc)
+        {
+            var ch = new MathFunctionHelper<T>(x1, x2);
+
+            for (int i = 0; i < ch.expectedLength; i++)
+            {
+                ch.results[i] = mathfunc(ch.X1(i), ch.X2(i));
+            }
+
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+            if (where != null)
+            {
+                ret[np.invert(where)] = NAN;
+            }
+
+            return ret;
+        }
+
+        #endregion
+
         #region Trigonometric Functions
 
         public static ndarray sin(object x, object where = null)
@@ -196,40 +235,15 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Sin(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Sin(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Sin(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Sin(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
-
-  
+ 
         }
 
         public static ndarray cos(object x, object where = null)
@@ -237,37 +251,13 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Cos(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Cos(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Cos(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Cos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
   
         }
@@ -277,37 +267,13 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Tan(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Tan(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Tan(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Tan(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
  
         }
@@ -317,37 +283,13 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Asin(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Asin(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Asin(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Asin(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
  
         }
@@ -357,38 +299,13 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Acos(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Acos(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Acos(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
-
+                Func<double, double> mathfunc = (value) => { return Math.Acos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
         }
 
@@ -397,37 +314,13 @@ namespace NumpyDotNet
             var xa = asanyarray(x);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Atan(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Atan(value); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Atan(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Atan(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
         }
@@ -459,43 +352,17 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Atan2(ch.X1(i).Real, ch.X2(i).Real);
-                }
-
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value1, value2) => { return Math.Atan2(value1.Real, value2.Real); };
+                return MathFunction<System.Numerics.Complex>(x1, x2, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Atan2(ch.X1(i), ch.X2(i));
-                }
-
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double, double> mathfunc = (value1, value2) => { return Math.Atan2(value1, value2); };
+                return MathFunction<double>(x1, x2, where, DNAN, mathfunc);
             }
 
         }
-
+ 
         public static ndarray rad2deg(object x, object where = null)
         {
             return degrees(x, where);
@@ -504,41 +371,17 @@ namespace NumpyDotNet
         public static ndarray degrees(object x, object where = null)
         {
             var xa = asanyarray(x);
+
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = ch.X1(i) * (180 / Math.PI);
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return value * (180 / Math.PI); };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = ch.X1(i) * (180 / Math.PI);
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return value * (180 / Math.PI); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
-
  
         }
   
@@ -550,42 +393,18 @@ namespace NumpyDotNet
         public static ndarray radians(object x, object where = null)
         {
             var xa = asanyarray(x);
+
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.PI * ch.X1(i) / 180;
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = CNAN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return Math.PI * value / 180; };
+                return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.PI * ch.X1(i) / 180;
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = DNAN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.PI * value / 180; };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
-
- 
+            
         }
 
         #endregion
