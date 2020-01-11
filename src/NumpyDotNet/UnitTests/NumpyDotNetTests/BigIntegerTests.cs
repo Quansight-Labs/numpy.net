@@ -5706,20 +5706,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_median_2_BIGINT_TODO()
+        public void test_median_2_BIGINT()
         {
-            var a = np.arange(0, 64, 1, np.Decimal).reshape((4, 4, 4));
+            var a = np.arange(0, 64, 1, np.BigInt).reshape((4, 4, 4));
 
             var b = np.median(a, axis: new int[] { 0, 2 }, keepdims: true);
-            AssertArray(b, new decimal[,,] { { { 25.5m }, { 29.5m }, { 33.5m }, { 37.5m } } });
+            AssertArray(b, new double[,,] { { { 25.5 }, { 29.5 }, { 33.5 }, { 37.5 } } });
             print(b);
 
             var c = np.median(a, new int[] { 0, 1 }, keepdims: true);
-            AssertArray(c, new decimal[,,] { { { 30, 31, 32, 33 } } });
+            AssertArray(c, new double[,,] { { { 30, 31, 32, 33 } } });
             print(c);
 
             var d = np.median(a, new int[] { 1, 2 }, keepdims: true);
-            AssertArray(d, new decimal[,,] { { { 7.5m } }, { { 23.5m } }, { { 39.5m } }, { { 55.5m } } });
+            AssertArray(d, new double[,,] { { { 7.5 } }, { { 23.5 } }, { { 39.5} }, { { 55.5 } } });
             print(d);
 
             return;
