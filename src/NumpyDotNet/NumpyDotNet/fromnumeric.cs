@@ -3038,19 +3038,17 @@ namespace NumpyDotNet
             ndarray scl = null;
 
             var arr = asanyarray(a);
+            dtype result_dtype = result_type(arr.TypeNum);
 
             if (weights == null)
             {
                 avg =  mean(arr, axis);
 
-                dtype result_dtype = result_type(arr.TypeNum);
                 scl = asanyarray(arr.size / avg.size).astype(result_dtype);
             }
             else
             {
                 var wgt = np.asanyarray(weights);
-
-                dtype result_dtype = result_type(arr.TypeNum);
 
                 // Sanity checks
                 if (arr.shape != wgt.shape)
@@ -3087,7 +3085,8 @@ namespace NumpyDotNet
 
                 }
 
-                avg = np.divide(np.multiply(a, wgt).Sum(axis),scl);
+                var ax = np.multiply(a, wgt).Sum(axis).astype(result_dtype);
+                avg = np.divide(ax, scl);
 
             }
 
@@ -3415,9 +3414,16 @@ namespace NumpyDotNet
                 Console.WriteLine("Degrees of freedom <= 0 for slice");
             }
 
-            if (dtype == null && (NpyDefs.IsInteger(arr.TypeNum) || NpyDefs.IsBool(arr.TypeNum)))
+            if (dtype == null)
             {
-                dtype = np.Float32;
+                if (NpyDefs.IsBool(arr.TypeNum))
+                {
+                    dtype = np.Float32;
+                }
+                else
+                {
+                    dtype = result_type(arr.TypeNum);
+                }
             }
 
             // Compute the mean.
@@ -3426,7 +3432,7 @@ namespace NumpyDotNet
 
             // Compute sum of squared deviations from mean
 
-            var x = asanyarray(arr - arrmean);
+            var x = asanyarray(arr.astype(dtype) - arrmean);
             x = np.multiply(x, x);
 
             var ret = np.sum(x, axis, dtype, keepdims: keep_dims);
