@@ -541,6 +541,19 @@ class StatisticsTests(unittest.TestCase):
         print(c)
 
         return
+
+    def test_correlate_BIGINT(self): 
+        
+        a = np.correlate([1, 2, 3], [0, 1, 5])
+        print(a)
+
+        b = np.correlate([1, 2, 3], [0, 1, 5], "same")
+        print(b)
+
+        c = np.correlate([1, 2, 3], [0, 1, 5], "full")
+        print(c)
+
+        return
  
     def test_cov_1(self): 
 

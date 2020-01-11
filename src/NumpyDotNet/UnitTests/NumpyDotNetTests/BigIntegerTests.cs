@@ -5883,31 +5883,31 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_corrcoef_1_BIGINT_TODO()
+        public void test_corrcoef_1_BIGINT()
         {
-            var x1 = np.array(new decimal[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new BigInteger[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
             print(x1);
 
             // Note how  increases while  decreases. The covariance matrix shows this clearly:
 
             var a = np.corrcoef(x1);
-            AssertArray(a, new decimal[,] { { 1, -1 }, { -1, 1 } });
+            AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
             print(a);
 
-            var x = new decimal[] { -2.1m, -1, 4.3m };
-            var y = new decimal[] { 3, 1.1m, 0.12m };
+            var x = new BigInteger[] { -21, -1, 43 };
+            var y = new BigInteger[] { 3, 11, 12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.corrcoef(X);
-            AssertArray(a, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(a, new double[,] { { 1.0, 0.804905985486053 }, { 0.804905985486053, 1.0 }  });
             print(a);
 
 
             var b = np.corrcoef(x, y);
-            AssertArray(b, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(b, new double[,] { { 1.0, 0.804905985486053 }, { 0.804905985486053, 1.0 } });
             print(b);
 
             var c = np.corrcoef(x, y, rowvar: false);
-            AssertArray(a, new decimal[,] { { 1.0m, -0.8553578095227944904571128856m }, { -0.8553578095227944904571128856m, 1.0m } });
+            AssertArray(c, new double[,] { { 1.0, 0.804905985486053 }, { 0.804905985486053, 1.0 } });
             print(c);
 
 
@@ -5915,18 +5915,36 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_correlate_1_BIGINT_TODO()
+        public void test_correlate_1_BIGINT()
         {
-            var a = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f });
-            AssertArray(a, new decimal[] { 3.5m });
+            var a = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 });
+            AssertArray(a, new BigInteger[] { 17 });
             print(a);
 
-            var b = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new decimal[] { 2.0m, 3.5m, 3.0m });
+            var b = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new BigInteger[] { 11, 17, 3 });
             print(b);
 
-            var c = np.correlate(new decimal[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
-            AssertArray(c, new decimal[] { 0.5m, 2.0m, 3.5m, 3.0m, 0.0m });
+            var c = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            AssertArray(c, new BigInteger[] {5, 11, 17, 3, 0 } );
+            print(c);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_correlate_1_Int64()
+        {
+            var a = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 });
+            AssertArray(a, new Int64[] { 17 });
+            print(a);
+
+            var b = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new Int64[] { 11, 17, 3 });
+            print(b);
+
+            var c = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            AssertArray(c, new Int64[] { 5, 11, 17, 3, 0 });
             print(c);
 
             return;
