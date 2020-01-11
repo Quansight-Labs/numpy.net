@@ -4891,14 +4891,12 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
-
         #region from NumericTests
 
         [TestMethod]
-        public void test_zeros_1_BIGINT_TODO()
+        public void test_zeros_1_BIGINT()
         {
-            var x = np.zeros(new shape(10), dtype: np.Decimal);
+            var x = np.zeros(new shape(10), dtype: np.BigInt);
             print(x);
             print("Update sixth value to 11");
             x[6] = 11;
@@ -4906,27 +4904,27 @@ namespace NumpyDotNetTests
             print(x.shape);
             print(x.strides);
 
-            AssertArray(x, new decimal[] { 0, 0, 0, 0, 0, 0, 11, 0, 0, 0 });
+            AssertArray(x, new BigInteger[] { 0, 0, 0, 0, 0, 0, 11, 0, 0, 0 });
             AssertShape(x, 10);
-            AssertStrides(x, sizeof(decimal));
+            AssertStrides(x, SizeOfBigInt);
         }
 
         [TestMethod]
-        public void test_zeros_like_2_BIGINT_TODO()
+        public void test_zeros_like_2_BIGINT()
         {
-            var a = new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+            var a = new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } };
             var b = np.zeros_like(a);
             b[1, 2] = 99;
 
-            AssertArray(b, new decimal[,] { { 0, 0, 0 }, { 0, 0, 99 } });
+            AssertArray(b, new BigInteger[,] { { 0, 0, 0 }, { 0, 0, 99 } });
 
             return;
         }
 
         [TestMethod]
-        public void test_ones_1_BIGINT_TODO()
+        public void test_ones_1_BIGINT()
         {
-            var x = np.ones(new shape(10), dtype: np.Decimal);
+            var x = np.ones(new shape(10), dtype: np.BigInt);
             print(x);
             print("Update sixth value to 11");
             x[6] = 11;
@@ -4934,53 +4932,53 @@ namespace NumpyDotNetTests
             print(x.shape);
             print(x.strides);
 
-            AssertArray(x, new decimal[] { 1, 1, 1, 1, 1, 1, 11, 1, 1, 1 });
+            AssertArray(x, new BigInteger[] { 1, 1, 1, 1, 1, 1, 11, 1, 1, 1 });
             AssertShape(x, 10);
-            AssertStrides(x, sizeof(decimal));
+            AssertStrides(x, SizeOfBigInt);
         }
 
         [TestMethod]
-        public void test_ones_like_3_BIGINT_TODO()
+        public void test_ones_like_3_BIGINT()
         {
-            var a = new decimal[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var a = new BigInteger[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
             var b = np.ones_like(a);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new decimal[,,] { { { 1, 1, 99 }, { 1, 88, 1 } } });
+            AssertArray(b, new BigInteger[,,] { { { 1, 1, 99 }, { 1, 88, 1 } } });
 
             return;
         }
 
         [TestMethod]
-        public void test_empty_BIGINT_TODO()
+        public void test_empty_BIGINT()
         {
             var a = np.empty((2, 3));
             AssertShape(a, 2, 3);
             Assert.AreEqual(a.Dtype.TypeNum, NPY_TYPES.NPY_DOUBLE);
 
-            var b = np.empty((2, 4), np.Decimal);
+            var b = np.empty((2, 4), np.BigInt);
             AssertShape(b, 2, 4);
-            Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_DECIMAL);
+            Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_BIGINT);
         }
 
         [TestMethod]
-        public void test_empty_like_3_BIGINT_TODO()
+        public void test_empty_like_3_BIGINT()
         {
-            var a = new decimal[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var a = new BigInteger[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
             var b = np.empty_like(a);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new decimal[,,] { { { 0, 0, 99 }, { 0, 88, 0 } } });
+            AssertArray(b, new BigInteger[,,] { { { 0, 0, 99 }, { 0, 88, 0 } } });
 
             return;
         }
 
         [TestMethod]
-        public void test_full_2_BIGINT_TODO()
+        public void test_full_2_BIGINT()
         {
-            var x = np.full((100), 99, dtype: np.Decimal).reshape(new shape(10, 10));
+            var x = np.full((100), 99, dtype: np.BigInt).reshape(new shape(10, 10));
             print(x);
             print("Update sixth value to 11");
             x[6] = 55;
@@ -4999,21 +4997,21 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_count_nonzero_1_BIGINT_TODO()
+        public void test_count_nonzero_1_BIGINT()
         {
-            var a = np.count_nonzero_i(np.eye(4, dtype: np.Decimal));
+            var a = np.count_nonzero_i(np.eye(4, dtype: np.BigInt));
             Assert.AreEqual(4, a);
             print(a);
 
-            var b = np.count_nonzero_i(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
+            var b = np.count_nonzero_i(new BigInteger[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
             Assert.AreEqual(5, b);
             print(b);
 
-            var c = np.count_nonzero(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 0);
+            var c = np.count_nonzero(new BigInteger[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 0);
             AssertArray(c, new int[] { 1, 1, 1, 1, 1 });
             print(c);
 
-            var d = np.count_nonzero(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 1);
+            var d = np.count_nonzero(new BigInteger[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 1);
             AssertArray(d, new int[] { 2, 3 });
             print(d);
 
@@ -5021,23 +5019,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_asarray_1_BIGINT_TODO()
+        public void test_asarray_1_BIGINT()
         {
-            var a = new decimal[] { 1, 2 };
+            var a = new BigInteger[] { 1, 2 };
             var b = np.asarray(a);
 
-            AssertArray(b, new decimal[] { 1, 2 });
+            AssertArray(b, new BigInteger[] { 1, 2 });
             print(b);
 
-            var c = np.array(new decimal[] { 1.0m, 2.0m }, dtype: np.Decimal);
-            var d = np.asarray(c, dtype: np.Decimal);
+            var c = np.array(new BigInteger[] { 1, 2 }, dtype: np.BigInt);
+            var d = np.asarray(c, dtype: np.BigInt);
 
-            c[0] = 3.0f;
-            AssertArray(d, new decimal[] { 3.0m, 2.0m });
+            c[0] = 3;
+            AssertArray(d, new BigInteger[] { 3, 2 });
             print(d);
 
-            var e = np.asarray(a, dtype: np.Decimal);
-            AssertArray(e, new decimal[] { 1.0m, 2.0m });
+            var e = np.asarray(a, dtype: np.BigInt);
+            AssertArray(e, new BigInteger[] { 1, 2 });
 
             print(e);
 
@@ -5045,12 +5043,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ascontiguousarray_1_BIGINT_TODO()
+        public void test_ascontiguousarray_1_BIGINT()
         {
-            var x = np.arange(6, dtype: np.Decimal).reshape((2, 3));
-            var y = np.ascontiguousarray(x, dtype: np.Decimal);
+            var x = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            var y = np.ascontiguousarray(x, dtype: np.BigInt);
 
-            AssertArray(y, new decimal[,] { { 0m, 1m, 2m }, { 3m, 4m, 5m } });
+            AssertArray(y, new BigInteger[,] { { 0, 1, 2 }, { 3, 4, 5 } });
             print(y);
 
             Assert.AreEqual(x.flags.c_contiguous, true);
@@ -5060,12 +5058,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_asfortranarray_1_BIGINT_TODO()
+        public void test_asfortranarray_1_BIGINT()
         {
-            var x = np.arange(6, dtype: np.Decimal).reshape((2, 3));
-            var y = np.asfortranarray(x, dtype: np.Decimal);
+            var x = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            var y = np.asfortranarray(x, dtype: np.BigInt);
 
-            AssertArray(y, new decimal[,] { { 0m, 1m, 2m }, { 3m, 4m, 5m } });
+            AssertArray(y, new BigInteger[,] { { 0, 1, 2 }, { 3, 4, 5 } });
             print(y);
 
             Assert.AreEqual(x.flags.f_contiguous, false);
@@ -5075,20 +5073,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_isfortran_1_BIGINT_TODO()
+        public void test_isfortran_1_BIGINT()
         {
 
-            var a = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var a = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
             var a1 = np.isfortran(a);
             Assert.AreEqual(false, a1);
             print(a1);
 
-            var b = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_FORTRANORDER);
+            var b = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_FORTRANORDER);
             var b1 = np.isfortran(b);
             Assert.AreEqual(true, b1);
             print(b1);
 
-            var c = np.array(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var c = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
             var c1 = np.isfortran(c);
             Assert.AreEqual(false, c1);
             print(c1);
@@ -5100,7 +5098,7 @@ namespace NumpyDotNetTests
 
             // C-ordered arrays evaluate as False even if they are also FORTRAN-ordered.
 
-            var e1 = np.isfortran(np.array(new decimal[] { 1, 2 }, order: NPY_ORDER.NPY_FORTRANORDER));
+            var e1 = np.isfortran(np.array(new BigInteger[] { 1, 2 }, order: NPY_ORDER.NPY_FORTRANORDER));
             Assert.AreEqual(false, e1);
             print(e1);
 
@@ -5109,9 +5107,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_argwhere_1_BIGINT_TODO()
+        public void test_argwhere_1_BIGINT()
         {
-            var x = np.arange(6, dtype: np.Decimal).reshape((2, 3));
+            var x = np.arange(6, dtype: np.BigInt).reshape((2, 3));
             var y = np.argwhere(x > 1);
 
             var ExpectedY = new Int64[,] { { 0, 2 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
@@ -5133,9 +5131,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_flatnonzero_1_BIGINT_TODO()
+        public void test_flatnonzero_1_BIGINT()
         {
-            var x = np.arange(-2, 3, dtype: np.Decimal);
+            var x = np.arange(-2, 3, dtype: np.BigInt);
 
             var y = np.flatnonzero(x);
             AssertArray(y, new Int64[] { 0, 1, 3, 4 });
@@ -5144,20 +5142,20 @@ namespace NumpyDotNetTests
             // Use the indices of the non-zero elements as an index array to extract these elements:
 
             var z = x.ravel()[np.flatnonzero(x)] as ndarray;
-            AssertArray(z, new decimal[] { -2, -1, 1, 2 });
+            AssertArray(z, new BigInteger[] { -2, -1, 1, 2 });
             print(z);
 
             return;
         }
 
         [TestMethod]
-        public void test_outer_1_BIGINT_TODO()
+        public void test_outer_1_BIGINT()
         {
-            var a = np.arange(2, 10, dtype: np.Decimal).reshape((2, 4));
-            var b = np.arange(12, 20, dtype: np.Decimal).reshape((2, 4));
+            var a = np.arange(2, 10, dtype: np.BigInt).reshape((2, 4));
+            var b = np.arange(12, 20, dtype: np.BigInt).reshape((2, 4));
             var c = np.outer(a, b);
 
-            var ExpectedDataC = new decimal[,]
+            var ExpectedDataC = new BigInteger[,]
                 {{24,  26,  28,  30,  32,  34,  36,  38},
                  {36,  39,  42,  45,  48,  51,  54,  57},
                  {48,  52,  56,  60,  64,  68,  72,  76},
@@ -5185,34 +5183,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_inner_1_BIGINT_TODO()
+        public void test_inner_1_BIGINT()
         {
-            var a = np.arange(1, 5, dtype: np.Decimal).reshape((2, 2));
-            var b = np.arange(11, 15, dtype: np.Decimal).reshape((2, 2));
+            var a = np.arange(1, 5, dtype: np.BigInt).reshape((2, 2));
+            var b = np.arange(11, 15, dtype: np.BigInt).reshape((2, 2));
             var c = np.inner(a, b);
-            AssertArray(c, new decimal[,] { { 35, 41 }, { 81, 95 } });
+            AssertArray(c, new BigInteger[,] { { 35, 41 }, { 81, 95 } });
             print(c);
 
 
-            a = np.arange(2, 10, dtype: np.Decimal).reshape((2, 4));
-            b = np.arange(12, 20, dtype: np.Decimal).reshape((2, 4));
+            a = np.arange(2, 10, dtype: np.BigInt).reshape((2, 4));
+            b = np.arange(12, 20, dtype: np.BigInt).reshape((2, 4));
             c = np.inner(a, b);
             print(c);
-            AssertArray(c, new decimal[,] { { 194, 250 }, { 410, 530 } });
+            AssertArray(c, new BigInteger[,] { { 194, 250 }, { 410, 530 } });
             print(c.shape);
 
             return;
         }
 
         [TestMethod]
-        public void test_tensordot_2_BIGINT_TODO()
+        public void test_tensordot_2_BIGINT()
         {
-            var a = np.arange(12.0, dtype: np.Decimal).reshape((3, 4));
-            var b = np.arange(24.0, dtype: np.Decimal).reshape((4, 3, 2));
+            var a = np.arange(12.0, dtype: np.BigInt).reshape((3, 4));
+            var b = np.arange(24.0, dtype: np.BigInt).reshape((4, 3, 2));
             var c = np.tensordot(a, b, axis: 1);
             AssertShape(c, 3, 3, 2);
             print(c.shape);
-            AssertArray(c, new decimal[,,] { { { 84, 90 }, { 96, 102 }, { 108, 114 } }, { { 228, 250 }, { 272, 294 }, { 316, 338 } }, { { 372, 410 }, { 448, 486 }, { 524, 562 } } });
+            AssertArray(c, new BigInteger[,,] { { { 84, 90 }, { 96, 102 }, { 108, 114 } }, { { 228, 250 }, { 272, 294 }, { 316, 338 } }, { { 372, 410 }, { 448, 486 }, { 524, 562 } } });
 
 
             c = np.tensordot(a, b, axis: 0);
@@ -5223,23 +5221,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_dot_1_BIGINT_TODO()
+        public void test_dot_1_BIGINT()
         {
-            var a = new decimal[,] { { 1, 0 }, { 0, 1 } };
-            var b = new decimal[,] { { 4, 1 }, { 2, 2 } };
+            var a = new BigInteger[,] { { 1, 0 }, { 0, 1 } };
+            var b = new BigInteger[,] { { 4, 1 }, { 2, 2 } };
             var c = np.dot(a, b);
-            AssertArray(c, new decimal[,] { { 4, 1 }, { 2, 2 } });
+            AssertArray(c, new BigInteger[,] { { 4, 1 }, { 2, 2 } });
             print(c);
 
-            var d = np.dot(3m, 4m);
-            Assert.AreEqual(12m, d.GetItem(0));
+            var d = np.dot((BigInteger)3, (BigInteger)4);
+            Assert.AreEqual((BigInteger)12, d.GetItem(0));
             print(d);
 
-            var e = np.arange(3 * 4 * 5 * 6, dtype: np.Decimal).reshape((3, 4, 5, 6));
-            var f = np.arange(3 * 4 * 5 * 6, dtype: np.Decimal).A("::-1").reshape((5, 4, 6, 3));
+            var e = np.arange(3 * 4 * 5 * 6, dtype: np.BigInt).reshape((3, 4, 5, 6));
+            var f = np.arange(3 * 4 * 5 * 6, dtype: np.BigInt).A("::-1").reshape((5, 4, 6, 3));
             var g = np.dot(e, f);
             AssertShape(g.shape, 3, 4, 5, 5, 4, 3);
-            Assert.AreEqual(695768400m, g.Sum().GetItem(0));
+            Assert.AreEqual((BigInteger)695768400, g.Sum().GetItem(0));
 
             // TODO: NOTE: this crazy indexing is not currently working
             //g = g.A(2, 3, 2, 1, 2, 2);
@@ -5249,9 +5247,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_roll_forward_BIGINT_TODO()
+        public void test_roll_forward_BIGINT()
         {
-            var a = np.arange(10, dtype: np.Decimal);
+            var a = np.arange(10, dtype: np.BigInt);
 
             print("A");
             print(a);
@@ -5263,7 +5261,7 @@ namespace NumpyDotNetTests
             print(b);
             print(b.shape);
             print(b.strides);
-            AssertArray(b, new decimal[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            AssertArray(b, new BigInteger[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
             AssertShape(b, 10);
 
             var c = np.roll(b, 2);
@@ -5271,15 +5269,15 @@ namespace NumpyDotNetTests
             print(c);
             print(c.shape);
             print(c.strides);
-            AssertArray(c, new decimal[] { 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 });
+            AssertArray(c, new BigInteger[] { 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 });
             AssertShape(c, 10);
 
         }
 
         [TestMethod]
-        public void test_roll_backward_BIGINT_TODO()
+        public void test_roll_backward_BIGINT()
         {
-            var a = np.arange(10, dtype: np.Decimal);
+            var a = np.arange(10, dtype: np.BigInt);
 
             print("A");
             print(a);
@@ -5291,7 +5289,7 @@ namespace NumpyDotNetTests
             print(b);
             print(b.shape);
             print(b.strides);
-            AssertArray(b, new decimal[] { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 });
+            AssertArray(b, new BigInteger[] { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 });
             AssertShape(b, 10);
 
             var c = np.roll(b, -6);
@@ -5299,14 +5297,14 @@ namespace NumpyDotNetTests
             print(c);
             print(c.shape);
             print(c.strides);
-            AssertArray(c, new decimal[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            AssertArray(c, new BigInteger[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
             AssertShape(c, 10);
         }
 
         [TestMethod]
-        public void test_ndarray_rollaxis_BIGINT_TODO()
+        public void test_ndarray_rollaxis_BIGINT()
         {
-            var a = np.ones((3, 4, 5, 6), dtype: np.Decimal);
+            var a = np.ones((3, 4, 5, 6), dtype: np.BigInt);
             var b = np.rollaxis(a, 3, 1).shape;
             AssertShape(b, 3, 6, 4, 5);
             print(b);
@@ -5321,9 +5319,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_moveaxis_BIGINT_TODO()
+        public void test_ndarray_moveaxis_BIGINT()
         {
-            var x = np.zeros((3, 4, 5), np.Decimal);
+            var x = np.zeros((3, 4, 5), np.BigInt);
             var b = np.moveaxis(x, 0, -1).shape;
             AssertShape(b, 4, 5, 3);
             print(b);
@@ -5351,48 +5349,38 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_indices_1_BIGINT_TODO()
+        public void test_indices_1_BIGINT()
         {
-            var grid = np.indices((2, 3), dtype: np.Decimal);
+            var grid = np.indices((2, 3), dtype: np.BigInt);
             AssertShape(grid, 2, 2, 3);
             print(grid.shape);
-            AssertArray(grid[0] as ndarray, new decimal[,] { { 0, 0, 0 }, { 1, 1, 1 } });
+            AssertArray(grid[0] as ndarray, new BigInteger[,] { { 0, 0, 0 }, { 1, 1, 1 } });
             print(grid[0]);
-            AssertArray(grid[1] as ndarray, new decimal[,] { { 0, 1, 2 }, { 0, 1, 2 } });
+            AssertArray(grid[1] as ndarray, new BigInteger[,] { { 0, 1, 2 }, { 0, 1, 2 } });
             print(grid[1]);
 
-            var x = np.arange(20, dtype: np.Decimal).reshape((5, 4));
+            var x = np.arange(20, dtype: np.BigInt).reshape((5, 4));
 
-            bool CaughtException = false;
-            try
-            {
-                var y = x[grid[0], grid[1]];
-                AssertArray(y as ndarray, new decimal[,] { { 0, 1, 2 }, { 4, 5, 6 } });
-                print(y);
-            }
-            catch
-            {
-                CaughtException = true;
-            }
-
-            Assert.IsTrue(CaughtException, "indexing with decimal should have thrown an exception");
+            var y = x[grid[0], grid[1]];
+            AssertArray(y as ndarray, new BigInteger[,] { { 0, 1, 2 }, { 4, 5, 6 } });
+            print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_isscalar_1_BIGINT_TODO()
+        public void test_isscalar_1_BIGINT()
         {
 
-            bool a = np.isscalar(3.1m);
+            bool a = np.isscalar((BigInteger)3);
             Assert.AreEqual(true, a);
             print(a);
 
-            bool b = np.isscalar(np.array(3.1m));
+            bool b = np.isscalar(np.array((BigInteger)3));
             Assert.AreEqual(false, b);
             print(b);
 
-            bool c = np.isscalar(new decimal[] { 3.1m });
+            bool c = np.isscalar(new BigInteger[] { 3 });
             Assert.AreEqual(false, c);
             print(c);
 
@@ -5408,30 +5396,30 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_identity_1_BIGINT_TODO()
+        public void test_identity_1_BIGINT()
         {
-            ndarray a = np.identity(2, dtype: np.Decimal);
+            ndarray a = np.identity(2, dtype: np.BigInt);
 
             print(a);
             print(a.shape);
             print(a.strides);
 
-            var ExpectedDataA = new decimal[2, 2]
+            var ExpectedDataA = new BigInteger[2, 2]
             {
                 { 1,0 },
                 { 0,1 },
             };
             AssertArray(a, ExpectedDataA);
             AssertShape(a, 2, 2);
-            AssertStrides(a, sizeof(decimal) * 2, sizeof(decimal) * 1);
+            AssertStrides(a, SizeOfBigInt * 2, SizeOfBigInt * 1);
 
-            ndarray b = np.identity(5, dtype: np.Decimal);
+            ndarray b = np.identity(5, dtype: np.BigInt);
 
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new decimal[5, 5]
+            var ExpectedDataB = new BigInteger[5, 5]
             {
                 { 1, 0, 0, 0, 0 },
                 { 0, 1, 0, 0, 0 },
@@ -5441,7 +5429,7 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB);
             AssertShape(b, 5, 5);
-            AssertStrides(b, sizeof(decimal) * 5, sizeof(decimal) * 1);
+            AssertStrides(b, SizeOfBigInt * 5, SizeOfBigInt * 1);
         }
 
         [TestMethod]
@@ -5470,91 +5458,54 @@ namespace NumpyDotNetTests
             return;
         }
 
+    
         [TestMethod]
-        public void test_isclose_1_BIGINT_TODO()
+        public void test_array_equal_1_BIGINT()
         {
-            var a = np.isclose(new decimal[] { 1e10m, 1e-7m }, new decimal[] { 1.00001e10m, 1e-8m });
-            AssertArray(a, new bool[] { true, false });
-            print(a);
-
-            var b = np.isclose(new decimal[] { 1e10m, 1e-8m }, new decimal[] { 1.00001e10m, 1e-9m });
-            AssertArray(b, new bool[] { true, true });
-            print(b);
-
-            var c = np.isclose(new decimal[] { 1e10m, 1e-8m }, new decimal[] { 1.0001e10m, 1e-9m });
-            AssertArray(c, new bool[] { false, true });
-            print(c);
-
-            //var d = np.isclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN });
-            //AssertArray(d, new bool[] { true, false });
-            //print(d);
-
-            //var e = np.isclose(new double[] { 1.0, np.NaN }, new double[] { 1.0, np.NaN }, equal_nan: true);
-            //AssertArray(e, new bool[] { true, true });
-            //print(e);
-
-            var f = np.isclose(new decimal[] { 1e-8m, 1e-7m }, new decimal[] { 0.0m, 0.0m });
-            AssertArray(f, new bool[] { true, false });
-            print(f);
-
-            var g = np.isclose(new decimal[] { 1e-100m, 1e-7m }, new decimal[] { 0.0m, 0.0m }, atol: 0.0);
-            //AssertArray(g, new bool[] { false, false });
-            print(g);
-
-            var h = np.isclose(new decimal[] { 1e-10m, 1e-10m }, new decimal[] { 1e-20m, 0.0m });
-            AssertArray(h, new bool[] { true, true });
-            print(h);
-
-            var i = np.isclose(new decimal[] { 1e-10m, 1e-10m }, new decimal[] { 1e-20m, 0.999999e-10m }, atol: 0.0);
-            AssertArray(i, new bool[] { false, true });
-            print(i);
-        }
-
-        [TestMethod]
-        public void test_array_equal_1_BIGINT_TODO()
-        {
-            var a = np.array_equal(new decimal[] { 1, 2 }, new decimal[] { 1, 2 });
+            var a = np.array_equal(new BigInteger[] { 1, 2 }, new BigInteger[] { 1, 2 });
             Assert.AreEqual(true, a);
             print(a);
 
-            var b = np.array_equal(np.array(new decimal[] { 1, 2 }), np.array(new decimal[] { 1, 2 }));
+            var b = np.array_equal(np.array(new BigInteger[] { 1, 2 }), np.array(new BigInteger[] { 1, 2 }));
             Assert.AreEqual(true, b);
             print(b);
 
-            var c = np.array_equal(new decimal[] { 1, 2 }, new decimal[] { 1, 2, 3 });
+            var c = np.array_equal(new BigInteger[] { 1, 2 }, new BigInteger[] { 1, 2, 3 });
             Assert.AreEqual(false, c);
             print(c);
 
-            var d = np.array_equal(new decimal[] { 1, 2 }, new decimal[] { 1, 4 });
+            var d = np.array_equal(new BigInteger[] { 1, 2 }, new BigInteger[] { 1, 4 });
             Assert.AreEqual(false, d);
             print(d);
         }
 
         [TestMethod]
-        public void test_array_equiv_1_BIGINT_TODO()
+        public void test_array_equiv_1_BIGINT()
         {
-            var a = np.array_equiv(new decimal[] { 1, 2 }, new decimal[] { 1, 2 });
+            var a = np.array_equiv(new BigInteger[] { 1, 2 }, new BigInteger[] { 1, 2 });
             Assert.AreEqual(true, a);
             print(a);
 
-            var b = np.array_equiv(new decimal[] { 1, 2 }, new decimal[] { 1, 3 });
+            var b = np.array_equiv(new BigInteger[] { 1, 2 }, new BigInteger[] { 1, 3 });
             Assert.AreEqual(false, b);
             print(b);
 
-            var c = np.array_equiv(new decimal[] { 1, 2 }, new decimal[,] { { 1, 2 }, { 1, 2 } });
+            var c = np.array_equiv(new BigInteger[] { 1, 2 }, new BigInteger[,] { { 1, 2 }, { 1, 2 } });
             Assert.AreEqual(true, c);
             print(c);
 
-            var d = np.array_equiv(new decimal[] { 1, 2 }, new decimal[,] { { 1, 2, 1, 2 }, { 1, 2, 1, 2 } });
+            var d = np.array_equiv(new BigInteger[] { 1, 2 }, new BigInteger[,] { { 1, 2, 1, 2 }, { 1, 2, 1, 2 } });
             Assert.AreEqual(false, d);
             print(d);
 
-            var e = np.array_equiv(new decimal[] { 1, 2 }, new decimal[,] { { 1, 2 }, { 1, 3 } });
+            var e = np.array_equiv(new BigInteger[] { 1, 2 }, new BigInteger[,] { { 1, 2 }, { 1, 3 } });
             Assert.AreEqual(false, e);
             print(e);
         }
 
         #endregion
+
+#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
 
         #region from NANFunctionsTests
 
