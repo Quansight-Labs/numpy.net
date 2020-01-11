@@ -226,6 +226,43 @@ namespace NumpyDotNet
             return ret;
         }
 
+        private static ndarray MathFunction<T, I>(object x1, I n, object where, T NAN, Func<T, I, T> mathfunc)
+        {
+            var ch = new MathFunctionHelper<T>(x1);
+
+            for (int i = 0; i < ch.expectedLength; i++)
+            {
+                ch.results[i] = mathfunc(ch.X1(i), n);
+            }
+
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+            if (where != null)
+            {
+                ret[np.invert(where)] = NAN;
+            }
+
+            return ret;
+        }
+
+        private static ndarray MathFunction<T,I>(object x1, object x2, I n, object where, T NAN, Func<T, T, I, T> mathfunc)
+        {
+            var ch = new MathFunctionHelper<T>(x1, x2);
+
+            for (int i = 0; i < ch.expectedLength; i++)
+            {
+                ch.results[i] = mathfunc(ch.X1(i), ch.X2(i), n);
+            }
+
+            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+            if (where != null)
+            {
+                ret[np.invert(where)] = NAN;
+            }
+
+            return ret;
+        }
+
+
         #endregion
 
         #region Trigonometric Functions
@@ -413,113 +450,106 @@ namespace NumpyDotNet
 
         public static ndarray sinh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Sinh(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Sinh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Sinh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray cosh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Cosh(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Cosh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Cosh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray tanh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Tanh(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Tanh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Tanh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray arcsinh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-
-                ch.results[i] = MathHelper.HArcsin(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArcsin(value.Real); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArcsin(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray arccosh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = MathHelper.HArccos(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArccos(value.Real); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArccos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
  
 
 
         public static ndarray arctanh(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = MathHelper.HArctan(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArctan(value.Real); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArctan(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
 
@@ -582,100 +612,53 @@ namespace NumpyDotNet
         public static ndarray exp(object x, object where = null)
         {
             var xa = asanyarray(x);
+
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Exp(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Exp(value); };
+                return MathFunction(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Exp(ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Exp(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
-
   
         }
 
         public static ndarray expm1(object x, object where = null)
         {
             var xa = asanyarray(x);
+
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => 
                 {
-                    var x1 = ch.X1(i);
-                    if (System.Numerics.Complex.Abs(x1) < 1e-05)
+                    if (System.Numerics.Complex.Abs(value) < 1e-05)
                     {
-                        ch.results[i] = x1 + 0.5*x1*x1;
-
+                        return value + 0.5 * value * value;
                     }
                     else
                     {
-                        ch.results[i] = System.Numerics.Complex.Exp(ch.X1(i)) - 1.0;
+                        return System.Numerics.Complex.Exp(value) - 1.0;
                     }
-
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                };
+                return MathFunction(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
+                Func<double, double> mathfunc = (value) => 
                 {
-                    var x1 = ch.X1(i);
-                    if (Math.Abs(x1) < 1e-05)
+                    if (Math.Abs(value) < 1e-05)
                     {
-                        ch.results[i] = x1 + 0.5 * x1 * x1;
-
+                        return  value + 0.5 * value * value;
                     }
                     else
                     {
-                        ch.results[i] = Math.Exp(ch.X1(i)) - 1.0;
+                        return Math.Exp(value) - 1.0;
                     }
-
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
         }
@@ -683,197 +666,172 @@ namespace NumpyDotNet
         public static ndarray exp2(object x, object where = null)
         {
             var xa = asanyarray(x);
+
             if (xa.IsComplex)
             {
-                MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = System.Numerics.Complex.Pow(2, ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Pow(2, value); };
+                return MathFunction(x, where, CNAN, mathfunc);
             }
             else
             {
-                MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-                for (int i = 0; i < ch.expectedLength; i++)
-                {
-                    ch.results[i] = Math.Pow(2, ch.X1(i));
-                }
-
-                var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                if (where != null)
-                {
-                    ret[np.invert(where)] = np.NaN;
-                }
-
-                return ret;
+                Func<double, double> mathfunc = (value) => { return Math.Pow(2, value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
   
         }
 
         public static ndarray log(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log(value); };
+                return MathFunction(x, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Log(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray log10(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log10(ch.X1(i));
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log10(value); };
+                return MathFunction(x, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Log10(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray log2(object x, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(ch.X1(i), 2);
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log(value, 2); };
+                return MathFunction(x, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Log(value, 2); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray logn(object x, int n, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
+            var xa = asanyarray(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(ch.X1(i), n);
+                Func<System.Numerics.Complex, int, System.Numerics.Complex> mathfunc = (value, n1) => { return System.Numerics.Complex.Log(value, n1); };
+                return MathFunction(x, n, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double,int,double> mathfunc = (value, n1) => { return Math.Log(value, n1); };
+                return MathFunction(x, n, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray log1p(object x, object where = null)
         {
-            /* from numpy C code
-            static void
-            nc_log1p@c@(@ctype@ *x, @ctype@ *r)
+            var xa = asanyarray(x);
+
+            if (xa.IsComplex)
             {
-                @ftype@ l = npy_hypot@c@(x->real + 1, x->imag);
-                r->imag = npy_atan2@c@(x->imag, x->real + 1);
-                r->real = npy_log@c@(l);
-                return;
+                Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log(value); };
+                return MathFunction(x, where, CNAN, mathfunc);
             }
-            */
-
-
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x);
-
-            for (int i = 0; i < ch.expectedLength; i++)
+            else
             {
-                ch.results[i] = Math.Log(ch.X1(i));
+                Func<double, double> mathfunc = (value) => { return Math.Log(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray logaddexp(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            var xa = asanyarray(x1);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(Math.Exp(ch.X1(i)) + Math.Exp(ch.X2(i)));
+                Func<System.Numerics.Complex, System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value1, value2) => 
+                {
+                    return System.Numerics.Complex.Exp(value1) + System.Numerics.Complex.Exp(value2);
+                };
+                return MathFunction(x1, x2, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double,double> mathfunc = (value1, value2) => 
+                {
+                    return Math.Log(Math.Exp(value1) + Math.Exp(value2));
+                };
+                return MathFunction(x1, x2, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray logaddexp2(object x1, object x2, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            var xa = asanyarray(x1);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(Math.Pow(2, ch.X1(i)) + Math.Pow(2, ch.X2(i)), 2);
+                Func<System.Numerics.Complex, System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value1, value2) =>
+                {
+                    return System.Numerics.Complex.Log(System.Numerics.Complex.Pow(2, value1) + System.Numerics.Complex.Pow(2, value2), 2);
+                };
+                return MathFunction(x1, x2, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double, double> mathfunc = (value1, value2) =>
+                {
+                    return Math.Log(Math.Pow(2, value1) + Math.Pow(2, value2), 2);
+                };
+                return MathFunction(x1, x2, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
         public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
         {
-            MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+            var xa = asanyarray(x1);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            if (xa.IsComplex)
             {
-                ch.results[i] = Math.Log(Math.Pow(n, ch.X1(i)) + Math.Pow(n, ch.X2(i)), 2);
+                Func<System.Numerics.Complex, System.Numerics.Complex, int, System.Numerics.Complex> mathfunc = (value1, value2, n1) =>
+                {
+                    return System.Numerics.Complex.Log(System.Numerics.Complex.Pow(n1, value1) + System.Numerics.Complex.Pow(n1, value2), 2);
+                };
+                return MathFunction(x1, x2, n, where, CNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double, int, double> mathfunc = (value1, value2, n1) =>
+                {
+                    return Math.Log(Math.Pow(n1, value1) + Math.Pow(n1, value2), 2);
+                };
+                return MathFunction(x1, x2, n, where, DNAN, mathfunc);
             }
 
-            var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-            if (where != null)
-            {
-                ret[np.invert(where)] = np.NaN;
-            }
-
-            return ret;
         }
 
 
