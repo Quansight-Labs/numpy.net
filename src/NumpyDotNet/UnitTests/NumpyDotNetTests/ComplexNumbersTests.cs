@@ -2653,6 +2653,164 @@ namespace NumpyDotNetTests
 
         }
 
+        #region Hyperbolic functions
+
+        [TestMethod]
+        public void test_sinh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { 0.0, 3.62686040784702, 27.2899171971278, 201.713157370279, 1490.47882578955 };
+
+            var a = np.arange(0, 10, dtype: np.Complex);
+            a = a["::2"] as ndarray;
+            var b = np.sinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+        }
+
+        [TestMethod]
+        public void test_cosh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { 1.0, 3.76219569108363, 27.3082328360165, 201.715636122456, 1490.47916125218 };
+
+            var a = np.arange(0, 10, dtype: np.Complex);
+            a = a["::2"] as ndarray;
+            var b = np.cosh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+ 
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Complex).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.cosh(a);
+
+            var ExpectedDataB = new Complex[,,]
+                {{{ 1.0,               1.54308063481524, 3.76219569108363, 10.0676619957778, 27.3082328360165},
+                  { 74.2099485247878, 201.715636122456, 548.317035155212, 1490.47916125218, 4051.54202549259}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+
+        }
+
+        [TestMethod]
+        public void test_tanh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { 0.0, 0.964027580075817, 0.999329299739067, 0.999987711650796, 0.999999774929676 };
+
+            var a = np.arange(0, 10, dtype: np.Complex);
+            a = a["::2"] as ndarray;
+            var b = np.tanh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+            print("********");
+
+            a = np.arange(0, 10, dtype: np.Complex).reshape((1, 2, 5));
+            a = a["::2"] as ndarray;
+            b = np.tanh(a);
+
+            var ExpectedDataB = new Complex[,,]
+                {{{ 0.0, 0.761594155955765, 0.964027580075817, 0.99505475368673, 0.999329299739067},
+                  { 0.999909204262595, 0.999987711650796, 0.999998336943945, 0.999999774929676, 0.999999969540041}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+        }
+
+        [TestMethod]
+        public void test_arcsinh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { -0.881373587019543, -0.7468029948789, -0.599755399970846, -0.440191235352683,
+                                                -0.26945474934928, -0.090784335188522, 0.0907843351885222, 0.269454749349279,
+                                                 0.440191235352683, 0.599755399970846, 0.7468029948789, 0.881373587019543 };
+
+            Complex ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arcsinh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arcsinh(a);
+
+            var ExpectedDataB = new Complex[,,]
+                {{{ -0.881373587019543, -0.7468029948789, -0.599755399970846},
+                  { -0.440191235352683, -0.26945474934928, -0.090784335188522}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+             
+        }
+
+        [TestMethod]
+        public void test_arccosh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { 0.0, 0.423235459210748, 0.594240703336901, 0.722717193587915,
+                                                0.82887090230963, 0.920606859928063, 1.00201733044986, 1.07555476344184,
+                                                1.1428302089675, 1.20497120816827, 1.26280443110946, 1.31695789692482 };
+
+            Complex ref_step = 0;
+            var a = np.linspace(1.0, 2.0, ref ref_step, 12);
+            var b = np.arccosh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(1.0, 2.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arccosh(a);
+
+            var ExpectedDataB = new Complex[,,]
+                {{{0.0, 0.423235459210748, 0.594240703336901},
+                  {0.722717193587915, 0.82887090230963, 0.920606859928063}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+  
+        }
+
+        [TestMethod]
+        public void test_arctanh_1_COMPLEX()
+        {
+            var ExpectedResult = new Complex[] { double.NegativeInfinity, -1.15129254649702, -0.752038698388137, -0.490414626505863,
+                                                     -0.279807893967711, -0.0911607783969772, 0.0911607783969772, 0.279807893967711,
+                                                      0.490414626505863, 0.752038698388137, 1.15129254649702, double.PositiveInfinity };
+
+            Complex ref_step = 0;
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            var b = np.arctanh(a);
+            AssertArray(b, ExpectedResult);
+            print(b);
+
+
+            print("********");
+
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = a["::2"] as ndarray;
+            b = np.arctanh(a);
+
+            var ExpectedDataB = new Complex[,,]
+                {{{double.NegativeInfinity, -1.15129254649702, -0.752038698388137},
+                  {-0.490414626505863, -0.279807893967711, -0.0911607783969772}}};
+
+            AssertArray(b, ExpectedDataB);
+            print(b);
+
+        }
+
+        #endregion
+
         [TestMethod]
         public void test_degrees_1_COMPLEX()
         {
@@ -6985,7 +7143,6 @@ namespace NumpyDotNetTests
 
         #endregion
 
-
         #region from IndexTricksTests
 
         [TestMethod]
@@ -7284,7 +7441,6 @@ namespace NumpyDotNetTests
         }
 
         #endregion
-
 
         #region COMPLEX number specific tests
         [TestMethod]
