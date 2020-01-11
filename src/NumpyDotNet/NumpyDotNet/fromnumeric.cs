@@ -3017,10 +3017,8 @@ namespace NumpyDotNet
 
             if (dtype == null)
             {
-                if (NpyDefs.IsInteger(arr.TypeNum) || NpyDefs.IsBool(arr.TypeNum))
-                {
-                    dtype = np.Float64;
-                }
+                var return_type = DefaultArrayHandlers.GetArrayHandler(arr.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide);
+                dtype = NpyCoreApi.DescrFromType(return_type);
             }
 
             var ret = np.sum(arr, axis, dtype, keepdims: keepdims);
