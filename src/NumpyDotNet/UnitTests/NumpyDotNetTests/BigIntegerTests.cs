@@ -1860,7 +1860,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwise_xor_BIGINT_TODO()
+        public void test_bitwise_xor_BIGINT()
         {
             var a = np.bitwise_xor(13, 17);
             Assert.AreEqual(28, a.GetItem(0));
@@ -5505,35 +5505,33 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
-
         #region from NANFunctionsTests
 
         [TestMethod]
-        public void test_nanprod_1_BIGINT_TODO()
+        public void test_nanprod_1_BIGINT()
         {
 
-            var x = np.nanprod(1m);
-            Assert.AreEqual(1m, x.GetItem(0));
+            var x = np.nanprod((BigInteger)1);
+            Assert.AreEqual((BigInteger)1, x.GetItem(0));
             print(x);
 
-            var y = np.nanprod(new decimal[] { 1 });
-            Assert.AreEqual(1m, y.GetItem(0));
+            var y = np.nanprod(new BigInteger[] { 1 });
+            Assert.AreEqual((BigInteger)1, y.GetItem(0));
             print(y);
 
 
 
-            var a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
             var b = np.nanprod(a);
-            Assert.AreEqual(24.0m, b.GetItem(0));
+            Assert.AreEqual((BigInteger)24.0, b.GetItem(0));
             print(b);
 
             var c = np.nanprod(a, axis: 0);
-            AssertArray(c, new decimal[] { 3, 8 });
+            AssertArray(c, new BigInteger[] { 3, 8 });
             print(c);
 
             var d = np.nanprod(a, axis: 1);
-            AssertArray(d, new decimal[] { 2, 12 });
+            AssertArray(d, new BigInteger[] { 2, 12 });
             print(d);
 
             return;
@@ -5541,28 +5539,30 @@ namespace NumpyDotNetTests
 
         #endregion
 
+#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
+
         #region from StatisticsTests
 
         [TestMethod]
-        public void test_amin_2_BIGINT_TODO()
+        public void test_amin_2_BIGINT()
         {
-            ndarray a = np.arange(30.25m, 46.25m).reshape(new shape(4, 4));
+            ndarray a = np.arange((BigInteger)30, (BigInteger)46).reshape(new shape(4, 4));
             print(a);
             print("*****");
 
             ndarray b = np.amin(a);          // Minimum of the flattened array
             print(b);
-            Assert.AreEqual(30.25m, b.GetItem(0));
+            Assert.AreEqual((BigInteger)30, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amin(a, axis: 0);  // Minimum along the first axis
             print(c);
-            AssertArray(c, new decimal[] { 30.25m, 31.25m, 32.25m, 33.25m });
+            AssertArray(c, new BigInteger[] { 30, 31, 32, 33 });
             print("*****");
 
             ndarray d = np.amin(a, axis: 1);   // Minimum along the second axis
             print(d);
-            AssertArray(d, new decimal[] { 30.25m, 34.25m, 38.25m, 42.25m });
+            AssertArray(d, new BigInteger[] { 30, 34, 38, 42 });
             print("*****");
 
             // decimals don't support NAN
@@ -5576,25 +5576,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_amax_2_BIGINT_TODO()
+        public void test_amax_2_BIGINT()
         {
-            ndarray a = np.arange(30.25m, 46.25m).reshape(new shape(4, 4));
+            ndarray a = np.arange((BigInteger)30, (BigInteger)46).reshape(new shape(4, 4));
             print(a);
             print("*****");
 
             ndarray b = np.amax(a);          // Maximum of the flattened array
             print(b);
-            Assert.AreEqual(45.25m, b.GetItem(0));
+            Assert.AreEqual((BigInteger)45, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amax(a, axis: 0);  // Maxima along the first axis
             print(c);
-            AssertArray(c, new decimal[] { 42.25m, 43.25m, 44.25m, 45.25m });
+            AssertArray(c, new BigInteger[] { 42, 43, 44, 45 });
             print("*****");
 
             ndarray d = np.amax(a, axis: 1);   // Maxima along the second axis
             print(d);
-            AssertArray(d, new decimal[] { 33.25m, 37.25m, 41.25m, 45.25m });
+            AssertArray(d, new BigInteger[] { 33, 37, 41, 45 });
             print("*****");
 
             // decimals don't support NAN
@@ -5610,24 +5610,24 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ptp_1_BIGINT_TODO()
+        public void test_ptp_1_BIGINT()
         {
-            ndarray a = np.arange(4, dtype: np.Decimal).reshape(new shape(2, 2));
+            ndarray a = np.arange(4, dtype: np.BigInt).reshape(new shape(2, 2));
             print(a);
             print("*****");
 
             ndarray b = np.ptp(a, axis: 0);
             print(b);
-            AssertArray(b, new decimal[] { 2, 2 });
+            AssertArray(b, new BigInteger[] { 2, 2 });
             print("*****");
 
             ndarray c = np.ptp(a, axis: 1);
             print(c);
-            AssertArray(c, new decimal[] { 1, 1 });
+            AssertArray(c, new BigInteger[] { 1, 1 });
 
             ndarray d = np.ptp(a);
             print(d);
-            Assert.AreEqual(3m, d.GetItem(0));
+            Assert.AreEqual((BigInteger)3, d.GetItem(0));
         }
 
         [TestMethod]
