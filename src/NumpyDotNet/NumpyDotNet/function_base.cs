@@ -1283,7 +1283,7 @@ namespace NumpyDotNet
 
                 foreach (var ii in filt)
                 {
-                    if (!ArrayHandler.IsValueZero(ii))
+                    if (ArrayHandler.NonZero(filt.Array.data, first))
                         break;
                     else
                         first = first + 1;
@@ -1299,7 +1299,7 @@ namespace NumpyDotNet
                 {
                     var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(filt.TypeNum);
 
-                    if (!ArrayHandler.IsValueZero(ii))
+                    if (ArrayHandler.NonZero(filt.Array.data, last-1))
                         break;
                     else
                         last = last - 1;

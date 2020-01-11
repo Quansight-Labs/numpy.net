@@ -86,7 +86,6 @@ namespace NumpyLib
         int SetItem(VoidPtr vp, long index, object value);
         int SetIndex(VoidPtr obj, long index, object invalue);
         int SetItemDifferentType(VoidPtr vp, long index, object value);
-        bool IsValueZero(object value);
     }
 
     public delegate object NumericOperation(object bValue, object operand);

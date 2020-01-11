@@ -341,13 +341,6 @@ namespace NumpyLib
             return Convert.ToDouble(operValue);
         }
 
-        public virtual bool IsValueZero(object value)
-        {
-            double d = Convert.ToDouble(value);
-            return d == 0;
-        }
-
-
 
         public NumericOperation AddOperation { get; set; }
         public NumericOperation SubtractOperation { get; set; }
@@ -3238,7 +3231,7 @@ namespace NumpyLib
         public override bool NonZero(VoidPtr vp, long index)
         {
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
-            return (bp[index] != 0);
+            return (bp[index] != System.Numerics.Complex.Zero);
         }
 
 
@@ -3619,17 +3612,6 @@ namespace NumpyLib
             return invalue;
         }
 
-        public override bool IsValueZero(object value)
-        {
-            if (value is System.Numerics.Complex)
-            {
-                System.Numerics.Complex c = (System.Numerics.Complex)value;
-                if (c == System.Numerics.Complex.Zero)
-                    return true;
-                return false;
-            }
-            return false;
-        }
 
     }
 
@@ -3773,7 +3755,7 @@ namespace NumpyLib
         public override bool NonZero(VoidPtr vp, long index)
         {
             System.Numerics.BigInteger[] bp = vp.datap as System.Numerics.BigInteger[];
-            return (bp[index] != 0);
+            return (bp[index] != System.Numerics.BigInteger.Zero);
         }
 
 
@@ -4099,18 +4081,6 @@ namespace NumpyLib
             }
 
             return 0;
-        }
-
-        public override bool IsValueZero(object value)
-        {
-            if (value is System.Numerics.BigInteger)
-            {
-                System.Numerics.BigInteger c = (System.Numerics.BigInteger)value;
-                if (c == System.Numerics.BigInteger.Zero)
-                    return true;
-                return false;
-            }
-            return false;
         }
 
 

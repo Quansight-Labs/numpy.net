@@ -1180,8 +1180,6 @@ namespace NumpyDotNetTests
 
         #endregion
 
-#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
-
         #region from NumericalOperationsTests
 
         [TestMethod]
@@ -2356,6 +2354,7 @@ namespace NumpyDotNetTests
 
         #endregion
 
+#if true //COMPLEX_NUMBERS_UNIT_TESTS_TODO
         #region from MathematicalFunctionsTests
 
         [TestMethod]
