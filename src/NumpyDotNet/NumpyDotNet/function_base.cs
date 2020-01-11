@@ -1216,23 +1216,13 @@ namespace NumpyDotNet
             slice1[axis] = new Slice(1, null);
             var ddmod = mod(dd + Math.PI, 2 * Math.PI) - Math.PI;
             copyto(ddmod, Math.PI, where : (ddmod == -Math.PI) & (dd > 0));
-            var ph_correct = ddmod - dd;
+            var ph_correct = ddmod - dd.astype(ddmod.Dtype);
             copyto(ph_correct, 0, where: absolute(dd) < discont);
 
-            dtype dtype = null;
-            if (arrp.IsDecimal)
-            {
-                dtype = np.Decimal;
-            }
-            else if (arrp.IsComplex)
-            {
-                dtype = np.Complex;
-            }
-            else
-            {
-                dtype = np.Float64;
-            }
 
+            var dtype_typenum = numpyAPI.GetArrayHandler(arrp.TypeNum).MathOpReturnType(NpyArray_Ops.npy_op_multiply);
+            dtype dtype = new dtype(numpyAPI.NpyArray_DescrFromType(dtype_typenum));
+  
             var up = array(p, copy: true, dtype: dtype);
 
             up[slice1] = arrp.A(slice1) + ph_correct.cumsum(axis);
