@@ -3899,38 +3899,9 @@ namespace NumpyLib
         }
         protected override object Sqrt(object bValue, object operand)
         {
-            return Sqrt((BigInteger)bValue);
+            return Math.Pow(Math.E, BigInteger.Log((BigInteger)bValue) / 2);
         }
-        private static BigInteger Sqrt(BigInteger number)
-        {
-            BigInteger n = 0, p = 0;
-            if (number == BigInteger.Zero)
-            {
-                return BigInteger.Zero;
-            }
-            var high = number >> 1;
-            var low = BigInteger.Zero;
-
-            while (high > low + 1)
-            {
-                n = (high + low) >> 1;
-                p = n * n;
-                if (number < p)
-                {
-                    high = n;
-                }
-                else if (number > p)
-                {
-                    low = n;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return number == p ? n : low;
-        }
-
+  
         protected override object Negative(object bValue, object operand)
         {
             return BigInteger.Negate((BigInteger)bValue);
