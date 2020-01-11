@@ -1782,6 +1782,9 @@ namespace NumpyDotNet
             if (source is System.Numerics.Complex)
                 return true;
 
+            if (source is System.Numerics.BigInteger)
+                return true;
+
             return false;
         }
 
