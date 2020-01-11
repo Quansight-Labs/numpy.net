@@ -3017,8 +3017,7 @@ namespace NumpyDotNet
 
             if (dtype == null)
             {
-                var return_type = DefaultArrayHandlers.GetArrayHandler(arr.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide);
-                dtype = NpyCoreApi.DescrFromType(return_type);
+                dtype = result_type(arr.TypeNum);
             }
 
             var ret = np.sum(arr, axis, dtype, keepdims: keepdims);
@@ -3044,30 +3043,14 @@ namespace NumpyDotNet
             {
                 avg =  mean(arr, axis);
 
-                if (arr.IsDecimal)
-                {
-                    scl = asanyarray((decimal)(arr.size / avg.size));
-                }
-                else if (arr.IsComplex)
-                {
-                    scl = asanyarray((System.Numerics.Complex)(arr.size / avg.size));
-                }
-                else
-                {
-                    scl = asanyarray((double)(arr.size / avg.size));
-                }
+                dtype result_dtype = result_type(arr.TypeNum);
+                scl = asanyarray(arr.size / avg.size).astype(result_dtype);
             }
             else
             {
                 var wgt = np.asanyarray(weights);
 
-                dtype result_dtype = null;
-
-                if (arr.IsInteger || arr.TypeNum == NPY_TYPES.NPY_BOOL)
-                    result_dtype = np.result_type(arr.Dtype, wgt.Dtype, "f8");
-                else
-                    result_dtype = np.result_type(arr.Dtype, wgt.Dtype);
-
+                dtype result_dtype = result_type(arr.TypeNum);
 
                 // Sanity checks
                 if (arr.shape != wgt.shape)

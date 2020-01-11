@@ -3131,7 +3131,7 @@ namespace NumpyDotNet
 
 
             var qa = asanyarray(q);
-            var d = NpyCoreApi.DescrFromType(DefaultArrayHandlers.GetArrayHandler(qa.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide));
+            var d = result_type(qa.TypeNum);
             qa = qa.astype(d);
 
             var aa = asanyarray(a);
@@ -3344,7 +3344,7 @@ namespace NumpyDotNet
             }
 
             var qa = asanyarray(q);
-            var d = NpyCoreApi.DescrFromType(DefaultArrayHandlers.GetArrayHandler(qa.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide));
+            var d = result_type(qa.TypeNum);
             qa = qa.astype(d);
 
             var aa = asanyarray(a);

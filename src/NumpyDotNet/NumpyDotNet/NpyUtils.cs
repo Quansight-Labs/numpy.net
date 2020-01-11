@@ -75,6 +75,13 @@ namespace NumpyDotNet {
             return np.Float64;
         }
 
+        public static dtype result_type(NPY_TYPES type_num)
+        {
+            var return_type = DefaultArrayHandlers.GetArrayHandler(type_num).MathOpFloatingType(NpyArray_Ops.npy_op_divide);
+            dtype result_dtype = NpyCoreApi.DescrFromType(return_type);
+            return result_dtype;
+        }
+
         // todo: big task to reimplement this.
         public static dtype promote_types(dtype type1, dtype type2)
         {
