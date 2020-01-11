@@ -341,6 +341,11 @@ namespace NumpyLib
             return Convert.ToDouble(operValue);
         }
 
+        public virtual bool IsValueZero(object value)
+        {
+            double d = Convert.ToDouble(value);
+            return d == 0;
+        }
 
 
 
@@ -3614,6 +3619,18 @@ namespace NumpyLib
             return invalue;
         }
 
+        public override bool IsValueZero(object value)
+        {
+            if (value is System.Numerics.Complex)
+            {
+                System.Numerics.Complex c = (System.Numerics.Complex)value;
+                if (c == System.Numerics.Complex.Zero)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+
     }
 
     internal class BigIntHandlers : ArrayHandlerBase<System.Numerics.BigInteger>, IArrayHandlers
@@ -4083,7 +4100,19 @@ namespace NumpyLib
 
             return 0;
         }
-  
+
+        public override bool IsValueZero(object value)
+        {
+            if (value is System.Numerics.BigInteger)
+            {
+                System.Numerics.BigInteger c = (System.Numerics.BigInteger)value;
+                if (c == System.Numerics.BigInteger.Zero)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+
 
     }
 }
