@@ -68,11 +68,13 @@ namespace NumpyLib
         npy_intp ArgMin(object ip, npy_intp startIndex, npy_intp endIndex);
         bool IsNan(object o);
         bool IsInfinity(object o);
+        bool IsInRange(object o, double low, double high);
         object ConvertToUpgradedValue(object o);
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
         int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset);
         NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
+        NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation);
         object MathOpConvertOperand(object srcValue, object operValue);
         object GetArgSortMinValue();
         object GetArgSortMaxValue();

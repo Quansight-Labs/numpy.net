@@ -259,6 +259,16 @@ namespace NumpyLib
         {
             return false;
         }
+        public virtual bool IsInRange(object o, double low, double high)
+        {
+            var qd = Convert.ToDouble(o);
+            if (qd < low || qd > high)
+                return false;
+            return true;
+        }
+
+
+
         public virtual object ConvertToUpgradedValue(object o)
         {
             return Convert.ToDouble(o);
@@ -323,6 +333,14 @@ namespace NumpyLib
                 }
             }
             return NPY_TYPES.NPY_DOUBLE;
+        }
+
+        public virtual NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            if (ItemSize > 4)
+                return NPY_TYPES.NPY_DOUBLE;
+            else
+                return NPY_TYPES.NPY_FLOAT;
         }
 
         public virtual object MathOpConvertOperand(object srcValue, object operValue)
@@ -2374,6 +2392,11 @@ namespace NumpyLib
             return NPY_TYPES.NPY_FLOAT;
         }
 
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+             return NPY_TYPES.NPY_FLOAT;
+        }
+
         protected override object Add(object bValue, object operand)
         {
             float dValue = (float)bValue;
@@ -2633,6 +2656,10 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DOUBLE;
+        }
 
         protected override object Add(object bValue, object operand)
         {
@@ -2889,6 +2916,10 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DECIMAL;
+        }
 
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
@@ -2899,6 +2930,13 @@ namespace NumpyLib
         {
             decimal[] bp = vp.datap as decimal[];
             return (bp[index] != 0);
+        }
+        public override bool IsInRange(object o, double low, double high)
+        {
+            var qc = Convert.ToDecimal(o);
+            if (qc < Convert.ToDecimal(low) || qc > Convert.ToDecimal(high))
+                return false;
+            return true;
         }
 
         protected override object Add(object bValue, object operand)
@@ -3216,6 +3254,11 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_COMPLEX;
+        }
+
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
             if (operValue is System.Numerics.Complex)
@@ -3232,6 +3275,14 @@ namespace NumpyLib
         {
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
             return (bp[index] != System.Numerics.Complex.Zero);
+        }
+        public override bool IsInRange(object o, double low, double high)
+        {
+            var cc = (System.Numerics.Complex)o;
+            var qd = cc.Real;
+            if (qd < low || qd > high)
+                return false;
+            return true;
         }
 
 
@@ -3459,6 +3510,7 @@ namespace NumpyLib
         {
             return false;
         }
+
         protected override object FloorDivide(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
@@ -3740,6 +3792,11 @@ namespace NumpyLib
         {
             return NPY_TYPES.NPY_BIGINT;
         }
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DOUBLE;
+        }
+
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
             if (operValue is System.Numerics.BigInteger)
