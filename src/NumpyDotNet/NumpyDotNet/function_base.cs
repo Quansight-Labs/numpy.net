@@ -1722,6 +1722,11 @@ namespace NumpyDotNet
                 System.Numerics.Complex c = (System.Numerics.Complex)value;
                 return c.Real;
             }
+            if (value is System.Numerics.BigInteger)
+            {
+                System.Numerics.BigInteger c = (System.Numerics.BigInteger)value;
+                return (double)c;
+            }
 
             return Convert.ToDouble(value);
         }

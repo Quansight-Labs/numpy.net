@@ -163,6 +163,13 @@ namespace NumpyDotNet
                     {
                         typ = np.Complex;
                     }
+                    else
+                    if (BigIntValue(step) ||
+                        BigIntValue(start) ||
+                        BigIntValue(key[k].Stop))
+                    {
+                        typ = np.BigInt;
+                    }
 
                 }
 
@@ -216,6 +223,10 @@ namespace NumpyDotNet
                         {
                             nnarray[k] = nnarray[k] *  ConvertToComplex(step) + ConvertToComplex(start);
                         }
+                        if (typ.TypeNum == NPY_TYPES.NPY_BIGINT)
+                        {
+                            nnarray[k] = nnarray[k] * ConvertToBigInt(step) + ConvertToBigInt(start);
+                        }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
                             nnarray[k] = nnarray[k] * Convert.ToInt32(step) + Convert.ToInt32(start);
@@ -238,6 +249,10 @@ namespace NumpyDotNet
                         if (typ.TypeNum == NPY_TYPES.NPY_COMPLEX)
                         {
                             nn[k] = ((nn[k] as ndarray) * ConvertToComplex(step) + ConvertToComplex(start));
+                        }
+                        if (typ.TypeNum == NPY_TYPES.NPY_BIGINT)
+                        {
+                            nn[k] = ((nn[k] as ndarray) * ConvertToBigInt(step) + ConvertToBigInt(start));
                         }
                         if (typ.TypeNum == NPY_TYPES.NPY_INT32)
                         {
@@ -338,17 +353,35 @@ namespace NumpyDotNet
                     }
                     else
                     {
-                        Int64? iStart = null;
-                        Int64? iStop = null;
-                        Int64? iStep = null;
-                        if (start != null)
-                            iStart = Convert.ToInt64(start);
-                        if (stop != null)
-                            iStop = Convert.ToInt64(stop);
-                        if (step != null)
-                            iStep = Convert.ToInt64(step);
+                        if (tt.IsBigInt)
+                        {
+                            System.Numerics.BigInteger? iStart = null;
+                            System.Numerics.BigInteger? iStop = null;
+                            System.Numerics.BigInteger? iStep = null;
+                            if (start != null)
+                                iStart = (System.Numerics.BigInteger)start;
+                            if (stop != null)
+                                iStop = (System.Numerics.BigInteger)stop;
+                            if (step != null)
+                                iStep = (System.Numerics.BigInteger)step;
 
-                        return arange(iStart.Value, iStop, iStep);
+                            return arange(iStart.Value, iStop, iStep);
+                        }
+                        else
+                        {
+                            Int64? iStart = null;
+                            Int64? iStop = null;
+                            Int64? iStep = null;
+                            if (start != null)
+                                iStart = Convert.ToInt64(start);
+                            if (stop != null)
+                                iStop = Convert.ToInt64(stop);
+                            if (step != null)
+                                iStep = Convert.ToInt64(step);
+
+                            return arange(iStart.Value, iStop, iStep);
+                        }
+    
                     }
                 }
     
@@ -367,7 +400,22 @@ namespace NumpyDotNet
                 return new System.Numerics.Complex(Convert.ToDouble(value), 0);
             }
 
-            return (System.Numerics.Complex)0;
+            return System.Numerics.Complex.Zero;
+
+        }
+
+        private static System.Numerics.BigInteger ConvertToBigInt(object value)
+        {
+            if (value is System.Numerics.BigInteger)
+            {
+                return (System.Numerics.BigInteger)value;
+            }
+            if (value is IComparable)
+            {
+                return new System.Numerics.BigInteger(Convert.ToDouble(value));
+            }
+
+            return System.Numerics.BigInteger.Zero;
 
         }
 
@@ -389,6 +437,12 @@ namespace NumpyDotNet
         private static bool ComplexValue(object value)
         {
             if (value is System.Numerics.Complex)
+                return true;
+            return false;
+        }
+        private static bool BigIntValue(object value)
+        {
+            if (value is System.Numerics.BigInteger)
                 return true;
             return false;
         }
