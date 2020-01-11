@@ -3129,12 +3129,20 @@ namespace NumpyDotNet
                 IsQArray = true;
             }
 
-            var q1 = np.true_divide(asanyarray(q), 100.0);  // handles the asarray for us too
+
+            var qa = asanyarray(q);
+            var d = NpyCoreApi.DescrFromType(DefaultArrayHandlers.GetArrayHandler(qa.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide));
+            qa = qa.astype(d);
+
+            var aa = asanyarray(a);
+            aa = aa.astype(d);
+
+            var q1 = np.true_divide(qa, 100.0);  // handles the asarray for us too
             if (!_quantile_is_valid(q1))
             {
                 throw new ValueError("Percentiles must be in the range [0, 100]");
             }
-            return _quantile_unchecked(asanyarray(a), q1,IsQArray, axis, overwrite_input, interpolation, keepdims);
+            return _quantile_unchecked(aa, q1,IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
         public static ndarray quantile(object a, object q, int? axis = null,
@@ -3335,14 +3343,20 @@ namespace NumpyDotNet
                 IsQArray = true;
             }
 
-            var qa = np.asanyarray(q);
+            var qa = asanyarray(q);
+            var d = NpyCoreApi.DescrFromType(DefaultArrayHandlers.GetArrayHandler(qa.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide));
+            qa = qa.astype(d);
+
+            var aa = asanyarray(a);
+            aa = aa.astype(d);
+
 
             if (!_quantile_is_valid(qa))
             {
                 throw new ValueError("Quantiles must be in the range [0, 1]");
             }
 
-            return _quantile_unchecked(asanyarray(a), qa, IsQArray, axis, overwrite_input, interpolation, keepdims);
+            return _quantile_unchecked(aa, qa, IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
         private static ndarray _quantile_unchecked(ndarray a, ndarray q, bool IsQArray, int? axis = null,
@@ -3381,31 +3395,11 @@ namespace NumpyDotNet
             //# avoid expensive reductions, relevant for arrays with < O(1000) elements
             if (q.ndim == 1 && q.size < 10)
             {
-                bool IsDecimal = q.IsDecimal;
-                bool IsComplex = q.IsComplex;
-
                 for (int i = 0; i < q.size; i++)
                 {
-                    if (IsDecimal)
-                    {
-                        var qc = Convert.ToDecimal(q[i]);
-                        if (qc < 0.0m || qc > 1.0m)
-                            return false;
-                    }
-                    else if (IsComplex)
-                    {
-                        var cc = (System.Numerics.Complex)q[i];
-                        var qd = cc.Real;
-                        if (qd < 0.0 || qd > 1.0)
-                            return false;
-                    }
-                    else
-                    {
-                        var qd = Convert.ToDouble(q[i]);
-                        if (qd < 0.0 || qd > 1.0)
-                            return false;
-                    }
-    
+                    bool bValue = DefaultArrayHandlers.GetArrayHandler(q.TypeNum).IsInRange(q[i], 0.0, 1.0);
+                    if (bValue == false)
+                        return false;
                 }
             }
             else
