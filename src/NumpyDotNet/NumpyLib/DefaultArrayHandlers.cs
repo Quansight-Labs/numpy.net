@@ -3868,7 +3868,7 @@ namespace NumpyLib
             BigInteger oValue = (BigInteger)operand;
 
             UInt64 rValue = (UInt64)cValue;
-            rValue = rValue << Convert.ToInt32(oValue);
+            rValue = rValue << Convert.ToInt32((Int64)oValue);
 
 
             return new BigInteger(rValue);
@@ -3879,7 +3879,7 @@ namespace NumpyLib
             BigInteger oValue = (BigInteger)operand;
 
             UInt64 rValue = (UInt64)cValue;
-            rValue = rValue >> Convert.ToInt32(oValue);
+            rValue = rValue >> Convert.ToInt32((Int64)oValue);
 
             return new BigInteger(rValue);
         }
@@ -3889,7 +3889,7 @@ namespace NumpyLib
             BigInteger oValue = (BigInteger)operand;
 
             UInt64 rValue = (UInt64)cValue;
-            rValue = rValue & Convert.ToUInt64(oValue);
+            rValue = rValue & Convert.ToUInt64((UInt64)oValue);
 
             return new BigInteger(rValue);
         }
@@ -3899,7 +3899,7 @@ namespace NumpyLib
             BigInteger oValue = (BigInteger)operand;
 
             UInt64 rValue = (UInt64)cValue;
-            rValue = rValue ^ Convert.ToUInt64(oValue);
+            rValue = rValue ^ Convert.ToUInt64((UInt64)oValue);
 
             return new BigInteger(rValue);
         }
@@ -3909,7 +3909,7 @@ namespace NumpyLib
             BigInteger oValue = (BigInteger)operand;
 
             UInt64 rValue = (UInt64)cValue;
-            rValue = rValue | Convert.ToUInt64(oValue);
+            rValue = rValue | Convert.ToUInt64((UInt64)oValue);
 
             return new BigInteger(rValue);
         }
