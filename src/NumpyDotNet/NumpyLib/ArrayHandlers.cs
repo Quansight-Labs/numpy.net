@@ -81,8 +81,10 @@ namespace NumpyLib
         object GetNaN();
         bool NonZero(VoidPtr vp, long index);
         object GetItem(VoidPtr vp, long index);
+        object GetIndex(VoidPtr vp, long index);
         object GetItemDifferentType(VoidPtr vp, long index, NPY_TYPES ItemType, int ItemSize);
         int SetItem(VoidPtr vp, long index, object value);
+        int SetIndex(VoidPtr obj, long index, object invalue);
         int SetItemDifferentType(VoidPtr vp, long index, object value);
     }
 

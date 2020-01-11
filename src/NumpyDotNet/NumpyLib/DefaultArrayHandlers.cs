@@ -83,6 +83,13 @@ namespace NumpyLib
 
             return dp[AdjustedIndex];
         }
+
+        public virtual object GetIndex(VoidPtr data, long index)
+        {
+            T[] dp = data.datap as T[];
+            return dp[index];
+        }
+
         public virtual object GetItemDifferentType(VoidPtr vp, long index, NPY_TYPES ItemType, int ItemSize)
         {
             return 0;
@@ -105,6 +112,12 @@ namespace NumpyLib
         public virtual int SetItemDifferentType(VoidPtr data, long index, object value)
         {
             throw new Exception(string.Format("Arrays of {0} are not programmed to set items of this type", data.type_num));
+        }
+        public virtual int SetIndex(VoidPtr data, long index, object value)
+        {
+            T[] dp = data.datap as T[];
+            dp[index] = (T)value;
+            return 1;
         }
 
         public System.Array ToArray(Array ssrc)
@@ -596,7 +609,7 @@ namespace NumpyLib
             _t = new object[1] { new object() };
         }
 
-        public int ItemSize
+        public override int ItemSize
         {
             get { return IntPtr.Size; }
         }
@@ -607,7 +620,13 @@ namespace NumpyLib
             Fill(adata, FillValue, 0, adata.Length);
             return;
         }
-  
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            object[] dp = data.datap as object[];
+            dp[index] = (object)value;
+            return 1;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             throw new NotImplementedException("This array handler does not implement DOT");
@@ -632,7 +651,12 @@ namespace NumpyLib
             Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
             return;
         }
-
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dbool = data.datap as bool[];
+            dbool[index] = Convert.ToBoolean(value);
+            return 1;
+        }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -794,6 +818,12 @@ namespace NumpyLib
             sbyte[] adata = vp.datap as sbyte[];
             Fill(adata, Convert.ToSByte(FillValue), 0, adata.Length);
             return;
+        }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dsbyte = data.datap as sbyte[];
+            dsbyte[index] = Convert.ToSByte(value);
+            return 1;
         }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
@@ -971,7 +1001,12 @@ namespace NumpyLib
             Fill(adata, Convert.ToByte(FillValue), 0, adata.Length);
             return;
         }
-
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dbyte = data.datap as byte[];
+            dbyte[index] = Convert.ToByte(value);
+            return 1;
+        }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -1150,6 +1185,12 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt16(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dint16 = data.datap as Int16[];
+            dint16[index] = Convert.ToInt16(value);
+            return 1;
+        }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -1326,6 +1367,12 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt16(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var duint16 = data.datap as UInt16[];
+            duint16[index] = Convert.ToUInt16(value);
+            return 1;
+        }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -1500,6 +1547,12 @@ namespace NumpyLib
             Int32[] adata = vp.datap as Int32[];
             Fill(adata, Convert.ToInt32(FillValue), 0, adata.Length);
             return;
+        }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dint32 = data.datap as Int32[];
+            dint32[index] = Convert.ToInt32(value);
+            return 1;
         }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
@@ -1677,6 +1730,12 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt32(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var duint32 = data.datap as UInt32[];
+            duint32[index] = Convert.ToUInt32(value);
+            return 1;
+        }
 
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
@@ -1852,6 +1911,13 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt64(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var dint64 = data.datap as Int64[];
+            dint64[index] = Convert.ToInt64(value);
+            return 1;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             Int64 tmp = (Int64)otmp;
@@ -2026,6 +2092,13 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt64(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var duint64 = data.datap as UInt64[];
+            duint64[index] = Convert.ToUInt64(value);
+            return 1;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             UInt64 tmp = (UInt64)otmp;
@@ -2200,6 +2273,13 @@ namespace NumpyLib
             Fill(adata, Convert.ToSingle(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var float1 = data.datap as float[];
+            float1[index] = Convert.ToSingle(value);
+            return 1;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             float tmp = (float)otmp;
@@ -2461,6 +2541,13 @@ namespace NumpyLib
             Fill(adata, Convert.ToDouble(FillValue), 0, adata.Length);
             return;
         }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var double1 = data.datap as double[];
+            double1[index] = Convert.ToDouble(value);
+            return 1;
+        }
+
         protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
             double tmp = (double)otmp;
@@ -2717,6 +2804,12 @@ namespace NumpyLib
             decimal[] adata = vp.datap as decimal[];
             Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
             return;
+        }
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var decimal1 = data.datap as decimal[];
+            decimal1[index] = Convert.ToDecimal(value);
+            return 1;
         }
 
         public override object GetArgSortMinValue()
@@ -3020,7 +3113,19 @@ namespace NumpyLib
 
             return SetItem(data, index, cvalue);
         }
-
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var complex1 = data.datap as System.Numerics.Complex[];
+            if (value is System.Numerics.Complex)
+            {
+                complex1[index] = (System.Numerics.Complex)value;
+            }
+            else
+            {
+                complex1[index] = new System.Numerics.Complex(Convert.ToDouble(value), 0);
+            }
+            return 1;
+        }
 
         public override object GetArgSortMinValue()
         {
@@ -3524,7 +3629,24 @@ namespace NumpyLib
 
             return SetItem(data, index, bivalue);
         }
-
+        public override int SetIndex(VoidPtr data, long index, object value)
+        {
+            var bigint1 = data.datap as System.Numerics.BigInteger[];
+            if (value is System.Numerics.BigInteger)
+            {
+                bigint1[index] = (System.Numerics.BigInteger)value;
+            }
+            else if (value is System.Numerics.Complex)
+            {
+                var cc = (System.Numerics.Complex)value;
+                bigint1[index] = (System.Numerics.BigInteger)cc.Real;
+            }
+            else
+            {
+                bigint1[index] = new System.Numerics.BigInteger(Convert.ToDouble(value));
+            }
+            return 1;
+        }
 
         public override object GetArgSortMinValue()
         {
