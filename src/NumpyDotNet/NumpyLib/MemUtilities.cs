@@ -64,8 +64,6 @@ namespace NumpyLib
                 index = dyndatap.Length - Math.Abs(index);
             }
 
-            var value = invalue; // CoerceValue(invalue, obj.type_num);
-
             try
             {
                 DefaultArrayHandlers.GetArrayHandler(data.type_num).SetIndex(data, index, invalue);

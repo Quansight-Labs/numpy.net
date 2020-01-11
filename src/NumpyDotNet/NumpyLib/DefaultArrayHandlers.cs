@@ -86,6 +86,8 @@ namespace NumpyLib
 
         public virtual object GetIndex(VoidPtr data, long index)
         {
+            index = AdjustNegativeIndex(data, index);
+
             T[] dp = data.datap as T[];
             return dp[index];
         }
@@ -115,10 +117,22 @@ namespace NumpyLib
         }
         public virtual int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             T[] dp = data.datap as T[];
             dp[index] = (T)value;
             return 1;
         }
+        protected long AdjustNegativeIndex(VoidPtr data, long index)
+        {
+            if (index < 0)
+            {
+                T[] dp = data.datap as T[];
+                index = dp.Length - Math.Abs(index);
+            }
+            return index;
+        }
+
 
         public System.Array ToArray(Array ssrc)
         {
@@ -622,6 +636,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             object[] dp = data.datap as object[];
             dp[index] = (object)value;
             return 1;
@@ -653,6 +669,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dbool = data.datap as bool[];
             dbool[index] = Convert.ToBoolean(value);
             return 1;
@@ -821,6 +839,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dsbyte = data.datap as sbyte[];
             dsbyte[index] = Convert.ToSByte(value);
             return 1;
@@ -1003,6 +1023,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dbyte = data.datap as byte[];
             dbyte[index] = Convert.ToByte(value);
             return 1;
@@ -1187,6 +1209,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dint16 = data.datap as Int16[];
             dint16[index] = Convert.ToInt16(value);
             return 1;
@@ -1369,6 +1393,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var duint16 = data.datap as UInt16[];
             duint16[index] = Convert.ToUInt16(value);
             return 1;
@@ -1550,6 +1576,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dint32 = data.datap as Int32[];
             dint32[index] = Convert.ToInt32(value);
             return 1;
@@ -1732,6 +1760,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var duint32 = data.datap as UInt32[];
             duint32[index] = Convert.ToUInt32(value);
             return 1;
@@ -1913,6 +1943,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var dint64 = data.datap as Int64[];
             dint64[index] = Convert.ToInt64(value);
             return 1;
@@ -2094,6 +2126,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var duint64 = data.datap as UInt64[];
             duint64[index] = Convert.ToUInt64(value);
             return 1;
@@ -2275,6 +2309,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var float1 = data.datap as float[];
             float1[index] = Convert.ToSingle(value);
             return 1;
@@ -2543,6 +2579,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var double1 = data.datap as double[];
             double1[index] = Convert.ToDouble(value);
             return 1;
@@ -2807,6 +2845,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var decimal1 = data.datap as decimal[];
             decimal1[index] = Convert.ToDecimal(value);
             return 1;
@@ -3115,6 +3155,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var complex1 = data.datap as System.Numerics.Complex[];
             if (value is System.Numerics.Complex)
             {
@@ -3631,6 +3673,8 @@ namespace NumpyLib
         }
         public override int SetIndex(VoidPtr data, long index, object value)
         {
+            index = AdjustNegativeIndex(data, index);
+
             var bigint1 = data.datap as System.Numerics.BigInteger[];
             if (value is System.Numerics.BigInteger)
             {

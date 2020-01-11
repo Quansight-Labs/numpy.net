@@ -300,16 +300,19 @@ namespace NumpyLib
                 R_Step = O1_Step;
             }
 
-            long O1_sizeData = GetTypeSize(Operand1);
-            long O2_sizeData = GetTypeSize(Operand2);
-            long R_sizeData = GetTypeSize(Result);
+            var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
+            var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
+            var ResultHandler = DefaultArrayHandlers.GetArrayHandler(Result.type_num);
+
+            long O1_sizeData = Operand1Handler.ItemSize;
+            long O2_sizeData = Operand2Handler.ItemSize;
+            long R_sizeData = ResultHandler.ItemSize;
 
             long O1_Offset = Operand1.data_offset;
             long O2_Offset = Operand2.data_offset;
             long R_Offset = Result.data_offset;
 
 
-  
 
             for (int i = 0; i < N; i++)
             {
@@ -317,11 +320,21 @@ namespace NumpyLib
                 long O2_Index  = ((i * O2_Step) + O2_Offset) / O2_sizeData;
                 long R_Index = ((i * R_Step) + R_Offset) / R_sizeData;
 
-                var O1 = GetIndex(Operand1, O1_Index);  // get operand 1
-                var O2 = GetIndex(Operand2, O2_Index);  // get operand 2
-                var R = Operation(O1, ConvertBySrcValue(O1, O2));              // calculate result
-
-                SetIndex(Result, R_Index, R);
+                try
+                {
+                    var O1 = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
+                    var O2 = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
+                    var R = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
+                    ResultHandler.SetIndex(Result, R_Index, R);
+                }
+                catch (System.OverflowException oe)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
+                }
+                catch (Exception ex)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                }
             }
 
             return;
