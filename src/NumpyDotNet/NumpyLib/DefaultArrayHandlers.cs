@@ -337,10 +337,7 @@ namespace NumpyLib
 
         public virtual NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
         {
-            if (ItemSize > 4)
-                return NPY_TYPES.NPY_DOUBLE;
-            else
-                return NPY_TYPES.NPY_FLOAT;
+            return NPY_TYPES.NPY_DOUBLE;
         }
 
         public virtual object MathOpConvertOperand(object srcValue, object operValue)
