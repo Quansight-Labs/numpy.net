@@ -7076,7 +7076,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             AssertStrides(b, 0, 8);
             print(b.strides);
-            Assert.AreEqual(320000000, b.nbytes);
+            Assert.AreEqual(32000000, b.nbytes);
             print(b.nbytes);
 
         }
