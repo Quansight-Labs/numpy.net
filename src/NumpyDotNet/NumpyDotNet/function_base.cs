@@ -1575,7 +1575,7 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("y has more than 2 dimensions");
                 }
-                dtype = np.result_type(marr, yarr, np.Float64);
+                dtype = np.result_type(marr.TypeNum);
             }
 
             var X = array(marr, ndmin : 2, dtype : dtype);
