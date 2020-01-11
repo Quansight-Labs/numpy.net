@@ -1279,9 +1279,11 @@ namespace NumpyDotNet
             trim = trim.ToUpper();
             if (trim.Contains("F"))
             {
+                var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(filt.TypeNum);
+
                 foreach (var ii in filt)
                 {
-                    if (!IsValueZero(ii))
+                    if (!ArrayHandler.IsValueZero(ii))
                         break;
                     else
                         first = first + 1;
@@ -1295,7 +1297,9 @@ namespace NumpyDotNet
                 ndarray tempFilt = filt.A("::-1").ravel();
                 foreach (var ii in tempFilt)
                 {
-                    if (!IsValueZero(ii))
+                    var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(filt.TypeNum);
+
+                    if (!ArrayHandler.IsValueZero(ii))
                         break;
                     else
                         last = last - 1;
@@ -1305,21 +1309,7 @@ namespace NumpyDotNet
             return filt.A(first.ToString() + ":" + last.ToString());
         }
 
-        private static bool IsValueZero(object value)
-        {
-            if (value is System.Numerics.Complex)
-            {
-                System.Numerics.Complex c = (System.Numerics.Complex)value;
-                if (c == System.Numerics.Complex.Zero)
-                    return true;
-                return false;
-            }
-            else
-            {
-                double d = Convert.ToDouble(value);
-                return d == 0;
-            }
-        }
+ 
 
         #endregion
 
