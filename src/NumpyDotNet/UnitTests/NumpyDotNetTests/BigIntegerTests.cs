@@ -1649,7 +1649,7 @@ namespace NumpyDotNetTests
 
             var ExpectedDataB1 = new BigInteger[]
             {
-               0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5
+               0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5
             };
 
             AssertArray(b, ExpectedDataB1);
@@ -5726,161 +5726,158 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_average_3_BIGINT_TODO()
+        public void test_average_3_BIGINT()
         {
 
-            var a = np.array(new decimal[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            var a = np.array(new BigInteger[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
             var w = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
             var x1 = np.average(a, axis: null, weights: null, returned: true);
-            Assert.AreEqual(5.5m, x1.retval.GetItem(0));
-            Assert.AreEqual(10.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual(5.5, x1.retval.GetItem(0));
+            Assert.AreEqual((double)10.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a, axis: null, weights: w, returned: true);
-            Assert.AreEqual(4.0m, x1.retval.GetItem(0));
-            Assert.AreEqual(55.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual(4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: null, weights: np.array(w).reshape((2, -1)), returned: true);
-            Assert.AreEqual(4.0m, x1.retval.GetItem(0));
-            Assert.AreEqual(55.0m, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual(4.0, x1.retval.GetItem(0));
+            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 0, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.retval, new decimal[] { 2.6666666666666666666666666667m, 3.5384615384615384615384615385m, 4.3636363636363636363636363636m,
-                                                   5.1111111111111111111111111111m, 5.7142857142857142857142857143m });
-            AssertArray(x1.sum_of_weights, new decimal[] { 15.0m, 13.0m, 11.0m, 9.0m, 7.0m });
+            AssertArray(x1.retval, new double[] { 2.66666666666667, 3.53846153846154, 4.36363636363636, 5.11111111111111, 5.71428571428571 });
+            AssertArray(x1.sum_of_weights, new double[] { 15.0, 13.0, 11.0, 9.0, 7.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 1, weights: np.array(w).reshape((2, -1)), returned: true);
-            AssertArray(x1.retval, new decimal[] { 2.75m, 7.3333333333333333333333333333m });
-            AssertArray(x1.sum_of_weights, new decimal[] { 40.0m, 15.0m });
+            AssertArray(x1.retval, new double[] { 2.75, 7.33333333333333 });
+            AssertArray(x1.sum_of_weights, new double[] { 40.0, 15.0 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, 2, -1, 1)), axis: 1, weights: np.array(w).reshape((1, 2, -1, 1)), returned: true);
-            AssertArray(x1.retval, new decimal[,,] { { { 2.6666666666666666666666666667m }, { 3.5384615384615384615384615385m }, { 4.3636363636363636363636363636m },
-                                                      { 5.1111111111111111111111111111m }, { 5.7142857142857142857142857143m } } });
-            AssertArray(x1.sum_of_weights, new decimal[,,] { { { 15.0m }, { 13.0m }, { 11.0m }, { 9.0m }, { 7.0m } } });
+            AssertArray(x1.retval, new double[,,] { { { 2.66666666666667 }, { 3.53846153846154 }, { 4.36363636363636 }, { 5.11111111111111 }, { 5.71428571428571 } } });
+            AssertArray(x1.sum_of_weights, new double[,,] { { { 15.0 }, { 13.0 }, { 11.0 }, { 9.0 }, { 7.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, -1, 2, 1)), axis: 1, weights: np.array(w).reshape((1, -1, 2, 1)), returned: true);
-            AssertArray(x1.retval, new decimal[,,] { { { 3.6666666666666666666666666667m }, { 4.4m } } });
-            AssertArray(x1.sum_of_weights, new decimal[,,] { { { 30.0m }, { 25.0m } } });
+            AssertArray(x1.retval, new double[,,] { { { 3.66666666666667 }, { 4.4 } } });
+            AssertArray(x1.sum_of_weights, new double[,,] { { { 30.0 }, { 25.0 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1, 1, 1)), axis: 1, weights: np.array(w).reshape((2, -1, 1, 1)), returned: false);
-            AssertArray(x1.retval, new decimal[,,] { { { 2.75m } }, { { 7.3333333333333333333333333333m } } });
+            AssertArray(x1.retval, new double[,,] { { { 2.75 } }, { { 7.33333333333333 } } });
             Assert.AreEqual(null, x1.sum_of_weights);
             print(x1);
-
         }
 
         [TestMethod]
-        public void test_mean_1_BIGINT_TODO()
+        public void test_mean_1_BIGINT()
         {
-            decimal[] TestData = new decimal[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.Decimal).reshape(new shape(3, 2, -1));
+            BigInteger[] TestData = new BigInteger[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.BigInt).reshape(new shape(3, 2, -1));
             x = x * 3;
             print(x);
 
             var y = np.mean(x);
             print(y);
-            Assert.AreEqual(131.5m, y.GetItem(0));
+            Assert.AreEqual(131.5, y.GetItem(0));
 
             y = np.mean(x, axis: 0);
             print(y);
-            AssertArray(y, new decimal[,] { { 113, 150 }, { 113, 150 } });
+            AssertArray(y, new double[,] { { 113, 150 }, { 113, 150 } });
 
             y = np.mean(x, axis: 1);
             print(y);
-            AssertArray(y, new decimal[,] { { 52.5m, 90 }, { 132, 157.5m }, { 154.5m, 202.5m } });
+            AssertArray(y, new double[,] { { 52.5, 90 }, { 132, 157.5 }, { 154.5, 202.5 } });
 
             y = np.mean(x, axis: 2);
             print(y);
-            AssertArray(y, new decimal[,] { { 37.5m, 105 }, { 252, 37.5m }, { 105, 252 } });
+            AssertArray(y, new double[,] { { 37.5, 105 }, { 252, 37.5 }, { 105, 252 } });
 
         }
 
         [TestMethod]
-        public void test_mean_2_BIGINT_TODO()
+        public void test_mean_2_BIGINT()
         {
-            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
+            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             ndarray b = np.mean(a);
             print(b);
-            Assert.AreEqual(0.55m, (decimal)b.GetItem(0));
+            Assert.AreEqual(0.5, (double)b.GetItem(0));
 
-            ndarray c = np.mean(a, dtype: np.Decimal);
+            ndarray c = np.mean(a, dtype: np.BigInt);
             print(c);
-            Assert.AreEqual(0.55m, c.GetItem(0));
+            Assert.AreEqual((BigInteger)0, c.GetItem(0));
         }
 
         [TestMethod]
-        public void test_std_1_BIGINT_TODO()
+        public void test_std_1_BIGINT()
         {
-            ndarray a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.std(a);
             print(b);
-            Assert.AreEqual(1.1180339887498948482045868344m, (decimal)b.GetItem(0));
+            Assert.AreEqual(1.1180339887498949, (double)b.GetItem(0));
 
             ndarray c = np.std(a, axis: 0);
             print(c);
-            AssertArray(c, new decimal[] { 1.0m, 1.0m });
+            AssertArray(c, new double[] { 1.0, 1.0 });
 
             ndarray d = np.std(a, axis: 1);
             print(d);
-            AssertArray(d, new decimal[] { 1.1180339887498948482045868344m, 1.1180339887498948482045868344m }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new double[] { 1.1180339887498949, 1.1180339887498949 }); // NOTES: TODO: slightly different than python. keepdims issue
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
-            a[0, ":"] = 1.0;
-            a[1, ":"] = 0.1;
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
+            a[0, ":"] = 1;
+            a[1, ":"] = 0;
             b = np.std(a);
             print(b);
-            Assert.AreEqual(0.45m, b.GetItem(0));
+            Assert.AreEqual(0.5, b.GetItem(0));
             // Computing the standard deviation in float64 is more accurate:
-            c = np.std(a, dtype: np.Decimal);
+            c = np.std(a);
             print(c);
-            Assert.AreEqual(0.45m, c.GetItem(0));
+            Assert.AreEqual(0.5, c.GetItem(0));
 
         }
 
         [TestMethod]
-        public void test_var_1_BIGINT_TODO()
+        public void test_var_1_BIGINT()
         {
-            ndarray a = np.array(new decimal[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
-            Assert.AreEqual(1.25m, b.GetItem(0));
+            Assert.AreEqual(1.25, b.GetItem(0));
             print(b);
 
             ndarray c = np.var(a, axis: 0);
-            AssertArray(c, new decimal[] { 1.0m, 1.0m });
+            AssertArray(c, new double[] { 1.0, 1.0 });
             print(c);
 
             ndarray d = np.var(a, axis: 1);
-            AssertArray(d, new decimal[] { 1.25m, 1.25m }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new double[] { 1.25, 1.25 });
             print(d);
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.Decimal);
-            a[0, ":"] = 1.0m;
-            a[1, ":"] = 0.1m;
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
+            a[0, ":"] = 1;
+            a[1, ":"] = 0;
             b = np.var(a);
-            Assert.AreEqual(0.2025m, b.GetItem(0));
+            Assert.AreEqual(0.25, b.GetItem(0));
             print(b);
 
             // Computing the standard deviation in float64 is more accurate:
-            c = np.var(a, dtype: np.Decimal);
-            Assert.AreEqual(0.2025m, c.GetItem(0));
+            c = np.var(a, dtype: np.Float64);
+            Assert.AreEqual(0.25, c.GetItem(0));
             print(c);
 
         }
@@ -5972,9 +5969,9 @@ namespace NumpyDotNetTests
             print(e);
 
             var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
-            AssertArray(f, new decimal[,] { { 5.7799999999999999999999999994m, 2.3799999999999999999999999998m, -4.7373333333333333333333333329m },
-                                            { 2.3799999999999999999999999998m, 0.9799999999999999999999999999m, -1.9506666666666666666666666665m },
-                                            { -4.7373333333333333333333333329m, -1.9506666666666666666666666665m, 3.8827555555555555555555555553m } });
+            AssertArray(f, new decimal[,] { { 5.7799999999999999999999999994m, 2.3799999999999999999999999998m, -4.7373333333333389999999999995m },
+                                            { 2.3799999999999999999999999998m, 0.9799999999999999999999999999m, -1.9506666666666689999999999998m },
+                                            { -4.7373333333333333333333333329m, -1.9506666666666666666666666665m, 3.8827555555555601999999999996m }});
             print(f);
 
             var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });

@@ -628,7 +628,7 @@ namespace NumpyDotNetTests
             a[1, ":"] = 0.1;
             b = np.std(a);
             print(b);
-            Assert.AreEqual(0.450010849825055, (double)b.GetItem(0), 0.0000001);
+            Assert.AreEqual(0.45172946707416706, (double)b.GetItem(0), 0.0000001);
             // Computing the standard deviation in float64 is more accurate:
             c = np.std(a, dtype: np.Float64);
             print(c);
@@ -657,7 +657,7 @@ namespace NumpyDotNetTests
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             b = np.var(a);
-            Assert.AreEqual((double)0.202509764960269, Convert.ToDouble(b.GetItem(0)), 0.00000001);
+            Assert.AreEqual((double)0.20405951142311096, Convert.ToDouble(b.GetItem(0)), 0.00000001);
             print(b);
 
             // Computing the standard deviation in float64 is more accurate:
