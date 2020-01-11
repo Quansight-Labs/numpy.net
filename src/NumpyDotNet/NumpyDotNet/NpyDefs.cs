@@ -260,6 +260,17 @@ namespace NumpyDotNet {
             }
         }
 
+        public static bool IsBigInt(NPY_TYPES type)
+        {
+            switch (type)
+            {
+                case NPY_TYPES.NPY_BIGINT:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 
         public static bool IsDecimal(NPY_TYPES type)
         {

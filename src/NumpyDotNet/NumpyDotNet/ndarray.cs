@@ -1309,6 +1309,10 @@ namespace NumpyDotNet
         internal bool IsComplex {
             get { return NpyDefs.IsComplex(TypeNum); }
         }
+        internal bool IsBigInt
+        {
+            get { return NpyDefs.IsBigInt(TypeNum); }
+        }
 
         internal bool IsDecimal
         {
