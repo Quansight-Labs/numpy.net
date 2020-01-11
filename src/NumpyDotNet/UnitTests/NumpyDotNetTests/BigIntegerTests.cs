@@ -5631,24 +5631,24 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_percentile_2_BIGINT_TODO()
+        public void test_percentile_2_BIGINT()
         {
-            var a = np.array(new decimal[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new BigInteger[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.percentile(a, new decimal[] { 50, 75 });
-            AssertArray(b, new decimal[] { 3.5m, 6.25m });
+            var b = np.percentile(a, new BigInteger[] { 50, 75 });
+            AssertArray(b, new double[] { 3.5, 6.25 });
             print(b);
 
-            var c = np.percentile(a, new decimal[] { 50, 75 }, axis: 0);
-            AssertArray(c, new decimal[,] { { 6.5m, 4.5m, 2.5m }, { 8.25m, 5.75m, 3.25m } });
+            var c = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 0);
+            AssertArray(c, new double[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            var d = np.percentile(a, new decimal[] { 50, 75 }, axis: 1);
-            AssertArray(d, new decimal[,] { { 7.0m, 2.0m }, { 8.5m, 2.5m } });
+            var d = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 1);
+            AssertArray(d, new double[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
             print(d);
 
-            var e = np.percentile(a, new decimal[] { 50, 75 }, axis: 1, keepdims: true);
-            AssertArray(e, new decimal[,,] { { { 7.0m }, { 2.0m } }, { { 8.5m }, { 2.5m } } });
+            var e = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 1, keepdims: true);
+            AssertArray(e, new double[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
             print(e);
 
             // note: we dont support the out parameter
@@ -5668,24 +5668,24 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_quantile_2_BIGINT_TODO()
+        public void test_quantile_2_BIGINT()
         {
-            var a = np.array(new decimal[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new BigInteger[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.quantile(a, new decimal[] { 0.5m, 0.75m });
-            AssertArray(b, new decimal[] { 3.5m, 6.25m });
+            var b = np.quantile(a, new double[] { 0.5, 0.75 });
+            AssertArray(b, new double[] { 3.5, 6.25 });
             print(b);
 
-            var c = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 0);
-            AssertArray(c, new decimal[,] { { 6.5m, 4.5m, 2.5m }, { 8.25m, 5.75m, 3.25m } });
+            var c = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 0);
+            AssertArray(c, new double[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            var d = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 1);
-            AssertArray(d, new decimal[,] { { 7.0m, 2.0m }, { 8.5m, 2.5m } });
+            var d = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 1);
+            AssertArray(d, new double[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
             print(d);
 
-            var e = np.quantile(a, new decimal[] { 0.5m, 0.75m }, axis: 1, keepdims: true);
-            AssertArray(e, new decimal[,,] { { { 7.0m }, { 2.0m } }, { { 8.5m }, { 2.5m } } });
+            var e = np.quantile(a, new double[] { 0.5, 0.75 }, axis: 1, keepdims: true);
+            AssertArray(e, new double[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
             print(e);
 
             // note: we dont support the out parameter
