@@ -122,6 +122,9 @@ namespace NumpyLib
                     return partition_introselect<decimal>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_COMPLEX:
                     return partition_introselect<System.Numerics.Complex>(v, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_BIGINT:
+                    return partition_introselect<System.Numerics.BigInteger>(v, num, kth, pivots, ref npiv, true);
+
             }
             return 0;
         }
@@ -156,6 +159,9 @@ namespace NumpyLib
                     return argpartition_introselect<decimal>(v, tosort, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_COMPLEX:
                     return argpartition_introselect<System.Numerics.Complex>(v, tosort, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_BIGINT:
+                    return argpartition_introselect<System.Numerics.BigInteger>(v, tosort, num, kth, pivots, ref npiv, true);
+
             }
             return 0;
         }
