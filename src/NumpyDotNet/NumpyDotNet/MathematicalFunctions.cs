@@ -1439,56 +1439,29 @@ namespace NumpyDotNet
         {
             return a / _gcdb(a, b) * b;
         }
-
+ 
         public static ndarray lcm(object x1, object x2, object where = null)
         {
             ndarray ret;
-
+             
             var xa = asanyarray(x1);
             if (xa.IsInteger)
             {
                 if (xa.IsBigInt)
                 {
-                    MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _lcmb(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger> mathfunc = (value1, value2) => { return _lcmb(value1, value2);};
+                    return MathFunction<System.Numerics.BigInteger>(x1, x2, where, BNAN, mathfunc);
                 }
                 else
                 if (xa.ItemSize <= sizeof(Int32))
                 {
-                    MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _lcmi(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<Int32, Int32, Int32> mathfunc = (value1, value2) => { return _lcmi(value1, value2);};
+                    return MathFunction<Int32>(x1, x2, where, 0, mathfunc);
                 }
                 else
                 {
-                    MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _lcml(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<Int64, Int64, Int64> mathfunc = (value1, value2) => { return _lcml(value1, value2);};
+                    return MathFunction<Int64>(x1, x2, where, 0, mathfunc);
                 }
             }
             else
@@ -1496,7 +1469,6 @@ namespace NumpyDotNet
                 throw new ValueError("This function only operates on integer type values");
             }
 
-            return ret;
         }
 
         public static ndarray gcd(object x1, object x2, object where = null)
@@ -1508,46 +1480,19 @@ namespace NumpyDotNet
             {
                 if (xa.IsBigInt)
                 {
-                    MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _gcdb(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger> mathfunc = (value1, value2) => { return _gcdb(value1, value2); };
+                    return MathFunction<System.Numerics.BigInteger>(x1, x2, where, BNAN, mathfunc);
                 }
                 else
                 if (xa.ItemSize <= sizeof(Int32))
                 {
-                    MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _gcdi(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<Int32, Int32, Int32> mathfunc = (value1, value2) => { return _gcdi(value1, value2); };
+                    return MathFunction<Int32>(x1, x2, where, 0, mathfunc);
                 }
                 else
                 {
-                    MathFunctionHelper<Int64> ch = new MathFunctionHelper<Int64>(x1, x2);
-
-                    for (int i = 0; i < ch.expectedLength; i++)
-                    {
-                        ch.results[i] = _gcdl(ch.X1(i), ch.X2(i));
-                    }
-                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
-                    if (where != null)
-                    {
-                        ret[np.invert(where)] = np.NaN;
-                    }
+                    Func<Int64, Int64, Int64> mathfunc = (value1, value2) => { return _gcdl(value1, value2); };
+                    return MathFunction<Int64>(x1, x2, where, 0, mathfunc);
                 }
             }
             else
@@ -1555,7 +1500,6 @@ namespace NumpyDotNet
                 throw new ValueError("This function only operates on integer type values");
             }
 
-            return ret;
         }
 
         #endregion
