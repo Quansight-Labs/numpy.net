@@ -3521,49 +3521,46 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_power_operations_BIGINT_TODO()
+        public void test_power_operations_BIGINT()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Decimal);
+            var a = np.arange(0, 32, 1, dtype: np.BigInt);
             print(a);
 
-            var b = np.power(a, 3.23m);
+            var b = np.power(a, 3);
             print(b);
 
-            var ExpectedDataB1 = new decimal[]
-            { 0.0m, 1.0m, 9.38267959385503m, 34.7617516700826m, 88.0346763609436m, 180.997724101542m,
-              326.15837804154m, 536.619770563306m, 826.001161443457m, 1208.37937917249m, 1698.24365246174m,
-              2310.45956851781m, 3060.23955801521m, 3963.11822364251m, 5034.9313709235m, 6291.79793806794m,
-              7750.10424197608m, 9426.49010646868m, 11337.836542597m, 13501.2547250997m, 15934.0760633466m,
-              18653.8432055784m, 21678.3018459592m, 25025.3932276144m, 28713.2472532973m, 32760.176129938m,
-              37184.6684850056m, 42005.3839020428m, 47241.1478304245m, 52910.9468307066m, 59033.9241221692m,
-              65629.3754035258m
+            var ExpectedDataB1 = new BigInteger[]
+            {
+                0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197,
+                2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648, 12167, 13824,
+                15625, 17576, 19683, 21952, 24389, 27000, 29791
             };
 
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Decimal);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
             print(a);
 
-            b = np.power(a, 4m);
+            b = np.power(a, 4);
             print(b);
 
-            var ExpectedDataB2 = new decimal[]
+            var ExpectedDataB2 = new BigInteger[]
             {
-             17592186044416, 17626570956801, 17661006250000, 17695491973201,
-             17730028175616, 17764614906481, 17799252215056, 17833940150625,
-             17868678762496, 17903468100001, 17938308212496, 17973199149361,
-             18008140960000, 18043133693841, 18078177400336, 18113272128961,
-             18148417929216, 18183614850625, 18218862942736, 18254162255121,
-             18289512837376, 18324914739121, 18360368010000, 18395872699681,
-             18431428857856, 18467036534241, 18502695778576, 18538406640625,
-             18574169170176, 18609983417041, 18645849431056, 18681767262081
-            };
+                System.Numerics.BigInteger.Pow(2048, 4), 17626570956801, 17661006250000, 17695491973201,
+                17730028175616, 17764614906481, 17799252215056, 17833940150625,
+                17868678762496, 17903468100001, 17938308212496, 17973199149361,
+                18008140960000, 18043133693841, 18078177400336, 18113272128961,
+                18148417929216, 18183614850625, 18218862942736, 18254162255121,
+                18289512837376, 18324914739121, 18360368010000, 18395872699681,
+                18431428857856, 18467036534241, 18502695778576, 18538406640625,
+                18574169170176, 18609983417041, 18645849431056, 18681767262081 };
+
 
             AssertArray(b, ExpectedDataB2);
 
             b = np.power(a, 0m);
             print(b);
-            var ExpectedDataB3 = new decimal[]
+            var ExpectedDataB3 = new BigInteger[]
             {
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
@@ -3571,69 +3568,69 @@ namespace NumpyDotNetTests
             AssertArray(b, ExpectedDataB3);
 
 
-            b = np.power(a, 0.5m);
+            b = np.power(a, 1);
             print(b);
 
-            var ExpectedDataB4 = new decimal[]
+            var ExpectedDataB4 = new BigInteger[]
             {
-                45.254833995939m, 45.2658811910251m, 45.2769256906871m, 45.287967496897m, 45.2990066116245m,
-                45.3100430368368m, 45.3210767744986m, 45.3321078265725m, 45.3431361950185m, 45.3541618817943m,
-                45.365184888855m, 45.3762052181537m, 45.3872228716409m, 45.3982378512647m, 45.4092501589709m,
-                45.4202597967031m, 45.4312667664022m, 45.442271070007m, 45.453272709454m, 45.4642716866772m,
-                45.4752680036083m, 45.4862616621766m, 45.4972526643093m, 45.508241011931m, 45.5192267069642m,
-                45.5302097513288m, 45.5411901469428m, 45.5521678957215m, 45.5631429995781m, 45.5741154604234m,
-                45.5850852801659m, 45.596052460712m
+                //45.254833995939m, 45.2658811910251m, 45.2769256906871m, 45.287967496897m, 45.2990066116245m,
+                //45.3100430368368m, 45.3210767744986m, 45.3321078265725m, 45.3431361950185m, 45.3541618817943m,
+                //45.365184888855m, 45.3762052181537m, 45.3872228716409m, 45.3982378512647m, 45.4092501589709m,
+                //45.4202597967031m, 45.4312667664022m, 45.442271070007m, 45.453272709454m, 45.4642716866772m,
+                //45.4752680036083m, 45.4862616621766m, 45.4972526643093m, 45.508241011931m, 45.5192267069642m,
+                //45.5302097513288m, 45.5411901469428m, 45.5521678957215m, 45.5631429995781m, 45.5741154604234m,
+                //45.5850852801659m, 45.596052460712m
             };
 
-            AssertArray(b, ExpectedDataB4);
+            //AssertArray(b, ExpectedDataB4);
 
         }
 
         [TestMethod]
-        public void test_subtract_1_BIGINT_TODO()
+        public void test_subtract_1_BIGINT()
         {
-            var a = np.subtract(1.0m, 4.0m);
-            Assert.AreEqual(-3.0m, a.GetItem(0));
+            var a = np.subtract((BigInteger)1, (BigInteger)4);
+            Assert.AreEqual((BigInteger)(-3), a.GetItem(0));
             print(a);
 
-            var b = np.arange(9.0, dtype: np.Decimal).reshape((3, 3));
-            var c = np.arange(3.0, dtype: np.Decimal);
+            var b = np.arange(9.0, dtype: np.BigInt).reshape((3, 3));
+            var c = np.arange(3.0, dtype: np.BigInt);
             var d = np.subtract(b, c);
-            AssertArray(d, new decimal[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            AssertArray(d, new BigInteger[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
             print(d);
         }
 
         [TestMethod]
-        public void test_true_divide_BIGINT_TODO()
+        public void test_true_divide_BIGINT()
         {
-            var a = np.true_divide(7m, 3m);
-            Assert.AreEqual(2.3333333333333333333333333333m, a.GetItem(0));
+            var a = np.true_divide((BigInteger)7, (BigInteger)3);
+            Assert.AreEqual((BigInteger)2, a.GetItem(0));
             print(a);
 
-            var b = np.true_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
-            AssertArray(b, new decimal[] { 0.4m, 0.8m, 1.2m, 1.6m });
+            var b = np.true_divide(new BigInteger[] { 10, 20, 30, 40 }, 2.5m);
+            AssertArray(b, new BigInteger[] { 5, 10, 15, 20 });
             print(b);
 
-            var c = np.true_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
-            AssertArray(c, new decimal[] { 2.0m, 0.8m, 1.2m, 1.1428571428571428571428571429m });
+            var c = np.true_divide(new BigInteger[] { 10, 20, 30, 40 }, new decimal[] { 5, 10, 15, 4 });
+            AssertArray(c, new BigInteger[] { 2,2,2,10 });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_floor_divide_BIGINT_TODO()
+        public void test_floor_divide_BIGINT()
         {
-            var a = np.floor_divide(7m, 3m);
-            Assert.AreEqual(2.0m, a.GetItem(0));
+            var a = np.floor_divide((BigInteger)7, (BigInteger)3);
+            Assert.AreEqual((BigInteger)2, a.GetItem(0));
             print(a);
 
-            var b = np.floor_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, 2.5m);
-            AssertArray(b, new decimal[] { 0, 0, 1, 1 });
+            var b = np.floor_divide(new BigInteger[] { 10, 20, 30, 40 }, 2);
+            AssertArray(b, new BigInteger[] { 5, 10, 15, 20 });
             print(b);
 
-            var c = np.floor_divide(new decimal[] { 1.0m, 2.0m, 3.0m, 4.0m }, new decimal[] { 0.5m, 2.5m, 2.5m, 3.5m });
-            AssertArray(c, new decimal[] { 2, 0, 1, 1 });
+            var c = np.floor_divide(new BigInteger[] { 10, 20, 30, 40 }, new BigInteger[] { 5, 10, 15, 4 });
+            AssertArray(c, new BigInteger[] { 2, 2, 2, 10 });
             print(c);
 
             return;
@@ -3641,20 +3638,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_float_power_BIGINT_TODO()
+        public void test_float_power_BIGINT()
         {
-            var x1 = new decimal[] { 0, 1, 2, 3, 4, 5 };
+            var x1 = new BigInteger[] { 0, 1, 2, 3, 4, 5 };
 
             var a = np.float_power(x1, 3m);
             AssertArray(a, new double[] { 0.0, 1.0, 8.0, 27.0, 64.0, 125.0 });
             print(a);
 
-            var x2 = new decimal[] { 1.0m, 2.0m, 3.0m, 3.0m, 2.0m, 1.0m };
+            var x2 = new BigInteger[] { 1, 2, 3, 3, 2, 1 };
             var b = np.float_power(x1, x2);
             AssertArray(b, new double[] { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 });
             print(b);
 
-            var x3 = np.array(new decimal[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
+            var x3 = np.array(new BigInteger[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
             var c = np.float_power(x1, x3);
             AssertArray(c, new double[,] { { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 }, { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 } });
             print(c);
@@ -3663,44 +3660,44 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fmod_2_BIGINT_TODO()
+        public void test_fmod_2_BIGINT()
         {
-            var x = np.fmod(new decimal[] { -4, -7 }, new decimal[] { 2, 3 });
-            AssertArray(x, new decimal[] { 0, -1 });
+            var x = np.fmod(new BigInteger[] { -4, -7 }, new BigInteger[] { 2, 3 });
+            AssertArray(x, new BigInteger[] { 0, -1 });
             print(x);
 
-            var y = np.fmod(np.arange(7, dtype: np.Decimal), -5m);
-            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.fmod(np.arange(7, dtype: np.BigInt), -5);
+            AssertArray(y, new BigInteger[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_mod_1_BIGINT_TODO()
+        public void test_mod_1_BIGINT()
         {
-            var x = np.mod(new decimal[] { 4, 7 }, new decimal[] { 2, 3 });
-            AssertArray(x, new decimal[] { 0, 1 });
+            var x = np.mod(new BigInteger[] { 4, 7 }, new BigInteger[] { 2, 3 });
+            AssertArray(x, new BigInteger[] { 0, 1 });
             print(x);
 
-            var y = np.mod(np.arange(7, dtype: np.Decimal), 5m);
-            AssertArray(y, new decimal[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.mod(np.arange(7, dtype: np.BigInt), 5);
+            AssertArray(y, new BigInteger[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             return;
         }
 
         [TestMethod]
-        public void test_modf_1_BIGINT_TODO()
+        public void test_modf_1_BIGINT()
         {
-            var x = np.modf(new decimal[] { 0, 3.5m });
-            AssertArray(x[0], new decimal[] { 0m, 0.5m });
-            AssertArray(x[1], new decimal[] { 0m, 3.0m });
+            var x = np.modf(new BigInteger[] { 0, 3 });
+            AssertArray(x[0], new double[] { 0, 0 });
+            AssertArray(x[1], new double[] { 0, 3 });
             print(x);
 
-            var y = np.modf(np.arange(7, dtype: np.Decimal));
-            AssertArray(y[0], new decimal[] { 0, 0, 0, 0, 0, 0, 0 });
-            AssertArray(y[1], new decimal[] { 0, 1, 2, 3, 4, 5, 6 });
+            var y = np.modf(np.arange(7, dtype: np.BigInt));
+            AssertArray(y[0], new double[] { 0, 0, 0, 0, 0, 0, 0 });
+            AssertArray(y[1], new double[] { 0, 1, 2, 3, 4, 5, 6 });
             print(y);
 
             return;
