@@ -1415,6 +1415,16 @@ namespace NumpyDotNet
             }
             return a;
         }
+        private static System.Numerics.BigInteger _gcdb(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
+        {
+            while (b != 0)
+            {
+                var tempb = b;
+                b = a % b;
+                a = tempb;
+            }
+            return a;
+        }
 
 
         private static long _lcml(long a, long b)
@@ -1425,6 +1435,10 @@ namespace NumpyDotNet
         {
             return a / _gcdi(a, b) * b;
         }
+        private static System.Numerics.BigInteger _lcmb(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
+        {
+            return a / _gcdb(a, b) * b;
+        }
 
         public static ndarray lcm(object x1, object x2, object where = null)
         {
@@ -1433,6 +1447,21 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsInteger)
             {
+                if (xa.IsBigInt)
+                {
+                    MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
+
+                    for (int i = 0; i < ch.expectedLength; i++)
+                    {
+                        ch.results[i] = _lcmb(ch.X1(i), ch.X2(i));
+                    }
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
+                else
                 if (xa.ItemSize <= sizeof(Int32))
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
@@ -1477,6 +1506,21 @@ namespace NumpyDotNet
             var xa = asanyarray(x1);
             if (xa.IsInteger)
             {
+                if (xa.IsBigInt)
+                {
+                    MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
+
+                    for (int i = 0; i < ch.expectedLength; i++)
+                    {
+                        ch.results[i] = _gcdb(ch.X1(i), ch.X2(i));
+                    }
+                    ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
+                    if (where != null)
+                    {
+                        ret[np.invert(where)] = np.NaN;
+                    }
+                }
+                else
                 if (xa.ItemSize <= sizeof(Int32))
                 {
                     MathFunctionHelper<Int32> ch = new MathFunctionHelper<Int32>(x1, x2);
