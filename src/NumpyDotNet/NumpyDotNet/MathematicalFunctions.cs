@@ -54,6 +54,7 @@ namespace NumpyDotNet
         private static double DNAN = double.NaN;
         private static float FNAN = float.NaN;
         private static System.Numerics.Complex CNAN = new System.Numerics.Complex(double.NaN, double.NaN);
+        private static System.Numerics.BigInteger BNAN = new System.Numerics.BigInteger(0);
 
         #region MathFunctionHelper
 
@@ -276,8 +277,14 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
             {
                 Func<double, double> mathfunc = (value) => { return Math.Sin(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Sin(value);};
                 return MathFunction(x, where, DNAN, mathfunc);
             }
  
@@ -292,11 +299,17 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
             {
                 Func<double, double> mathfunc = (value) => { return Math.Cos(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
             }
-  
+            else
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Cos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+
         }
 
         public static ndarray tan(object x, object where = null)
@@ -306,6 +319,12 @@ namespace NumpyDotNet
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Tan(value); };
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Tan(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
             else
             {
@@ -324,6 +343,12 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Asin(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return Math.Asin(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -340,6 +365,12 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Acos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return Math.Acos(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -353,6 +384,12 @@ namespace NumpyDotNet
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Atan(value); };
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Atan(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
             else
             {
@@ -374,8 +411,20 @@ namespace NumpyDotNet
                 return hypot;
             }
             else
+            if (xa.IsBigInt)
+            {
+                MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
+
+                var kevin = np.power(x1, 2) + np.power(x2, 2);
+                var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
+
+                return hypot;
+            }
+            else
             {
                 MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
+
+                var kevin = np.power(x1, 2) + np.power(x2, 2);
 
                 var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
 
