@@ -721,6 +721,11 @@ namespace NumpyDotNet
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Exp(value); };
                 return MathFunction(x, where, CNAN, mathfunc);
             }
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Exp(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
             else
             {
                 Func<double, double> mathfunc = (value) => { return Math.Exp(value); };
