@@ -442,6 +442,12 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x1, x2, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double, double> mathfunc = (value1, value2) => { return Math.Atan2(value1, value2); };
+                return MathFunction<double>(x1, x2, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double, double> mathfunc = (value1, value2) => { return Math.Atan2(value1, value2); };
                 return MathFunction<double>(x1, x2, where, DNAN, mathfunc);
@@ -462,6 +468,12 @@ namespace NumpyDotNet
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return value * (180 / Math.PI); };
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return value * (180 / Math.PI); };
+                return MathFunction(x, where, DNAN, mathfunc);
             }
             else
             {
@@ -486,6 +498,12 @@ namespace NumpyDotNet
                 return MathFunction<System.Numerics.Complex>(x, where, CNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.PI * value / 180; };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return Math.PI * value / 180; };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -507,6 +525,12 @@ namespace NumpyDotNet
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Sinh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return Math.Sinh(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -521,6 +545,12 @@ namespace NumpyDotNet
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Cosh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Cosh(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
@@ -541,6 +571,12 @@ namespace NumpyDotNet
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return Math.Tanh(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return Math.Tanh(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -555,6 +591,12 @@ namespace NumpyDotNet
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArcsin(value.Real); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArcsin(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
@@ -575,6 +617,12 @@ namespace NumpyDotNet
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArccos(value); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
             {
                 Func<double, double> mathfunc = (value) => { return MathHelper.HArccos(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
@@ -591,6 +639,12 @@ namespace NumpyDotNet
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArctan(value.Real); };
+                return MathFunction(x, where, DNAN, mathfunc);
+            }
+            else
+            if (xa.IsBigInt)
+            {
+                Func<double, double> mathfunc = (value) => { return MathHelper.HArctan(value); };
                 return MathFunction(x, where, DNAN, mathfunc);
             }
             else
