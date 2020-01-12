@@ -1651,16 +1651,9 @@ namespace NumpyDotNet
         {
             ndarray[] results = new ndarray[2];
 
-            dtype ret_type = np.Float64;
             var x1a = asanyarray(x1);
-            if (x1a.IsDecimal)
-            {
-                ret_type = np.Decimal;
-            }
-            if (x1a.IsComplex)
-            {
-                ret_type = np.Complex;
-            }
+
+            dtype ret_type = result_type(x1a.TypeNum);
 
             results[1] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_floor_divide, asanyarray(x1).astype(ret_type), asanyarray(1), @out1, asanyarray(where));
             results[0] = NpyCoreApi.PerformUFUNC(NpyArray_Ops.npy_op_remainder, asanyarray(x1).astype(ret_type), asanyarray(1), @out2, asanyarray(where));

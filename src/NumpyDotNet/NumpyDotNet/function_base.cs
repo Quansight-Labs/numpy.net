@@ -2400,8 +2400,7 @@ namespace NumpyDotNet
 
             var xa = asanyarray(x);
 
-            var return_type = DefaultArrayHandlers.GetArrayHandler(xa.TypeNum).MathOpFloatingType(NpyArray_Ops.npy_op_divide);
-            dtype result_dtype = NpyCoreApi.DescrFromType(return_type);
+            dtype result_dtype = result_type(xa.TypeNum); 
 
             xa = atleast_1d(xa.astype(result_dtype)).ElementAt(0).Copy();
             var y = empty_like(xa);
