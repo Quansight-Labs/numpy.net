@@ -1775,7 +1775,7 @@ namespace NumpyDotNetTests
         public void test_i0_1()
         {
             var a = np.i0(5);
-            Assert.AreEqual(27, a.GetItem(0));
+            Assert.AreEqual(27.239871823604442, a.GetItem(0));
             print(a);
 
             a = np.i0(5.0);
