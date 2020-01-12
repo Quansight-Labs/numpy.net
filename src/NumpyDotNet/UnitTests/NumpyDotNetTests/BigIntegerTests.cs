@@ -2581,15 +2581,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arctan2_1_BIGINT_TODO()
+        public void test_arctan2_1_BIGINT()
         {
-            var x = np.array(new decimal[] { -1, +1, +1, -1 });
-            var y = np.array(new decimal[] { -1, -1, +1, +1 });
+            var x = np.array(new BigInteger[] { -1, +1, +1, -1 });
+            var y = np.array(new BigInteger[] { -1, -1, +1, +1 });
             var z = np.arctan2(y, x) * 180 / Math.PI;
             AssertArray(z, new double[] { -135.0, -45.0, 45.0, 135.0 });
             print(z);
 
-            var a = np.arctan2(new decimal[] { 1.0m, -1.0m }, new decimal[] { 0.0m, 0.0m });
+            var a = np.arctan2(new BigInteger[] { 1, -1 }, new BigInteger[] { 0, 0 });
             AssertArray(a, new double[] { 1.5707963267949, -1.5707963267949 });
             print(a);
 
@@ -2598,11 +2598,11 @@ namespace NumpyDotNetTests
         #region Hyperbolic functions
 
         [TestMethod]
-        public void test_sinh_1_BIGINT_TODO()
+        public void test_sinh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { 0.0, 3.62686040784702, 27.2899171971278, 201.713157370279, 1490.47882578955 };
+            var ExpectedResult = new double[] { 0.0, 3.62686040784702, 27.2899171971278, 201.713157370279, 1490.47882578955 };
 
-            var a = np.arange(0, 10, dtype: np.Complex);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.sinh(a);
             AssertArray(b, ExpectedResult);
@@ -2610,11 +2610,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cosh_1_BIGINT_TODO()
+        public void test_cosh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { 1.0, 3.76219569108363, 27.3082328360165, 201.715636122456, 1490.47916125218 };
+            var ExpectedResult = new double[] { 1.0, 3.76219569108363, 27.3082328360165, 201.715636122456, 1490.47916125218 };
 
-            var a = np.arange(0, 10, dtype: np.Complex);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.cosh(a);
             AssertArray(b, ExpectedResult);
@@ -2623,11 +2623,11 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Complex).reshape((1, 2, 5));
+            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.cosh(a);
 
-            var ExpectedDataB = new Complex[,,]
+            var ExpectedDataB = new double[,,]
                 {{{ 1.0,               1.54308063481524, 3.76219569108363, 10.0676619957778, 27.3082328360165},
                   { 74.2099485247878, 201.715636122456, 548.317035155212, 1490.47916125218, 4051.54202549259}}};
 
@@ -2638,11 +2638,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tanh_1_BIGINT_TODO()
+        public void test_tanh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { 0.0, 0.964027580075817, 0.999329299739067, 0.999987711650796, 0.999999774929676 };
+            var ExpectedResult = new double[] { 0.0, 0.964027580075817, 0.999329299739067, 0.999987711650796, 0.999999774929676 };
 
-            var a = np.arange(0, 10, dtype: np.Complex);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.tanh(a);
             AssertArray(b, ExpectedResult);
@@ -2650,11 +2650,11 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Complex).reshape((1, 2, 5));
+            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.tanh(a);
 
-            var ExpectedDataB = new Complex[,,]
+            var ExpectedDataB = new double[,,]
                 {{{ 0.0, 0.761594155955765, 0.964027580075817, 0.99505475368673, 0.999329299739067},
                   { 0.999909204262595, 0.999987711650796, 0.999998336943945, 0.999999774929676, 0.999999969540041}}};
 
@@ -2664,14 +2664,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arcsinh_1_BIGINT_TODO()
+        public void test_arcsinh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { -0.881373587019543, -0.7468029948789, -0.599755399970846, -0.440191235352683,
-                                                -0.26945474934928, -0.090784335188522, 0.0907843351885222, 0.269454749349279,
-                                                 0.440191235352683, 0.599755399970846, 0.7468029948789, 0.881373587019543 };
+            var ExpectedResult = new double[] { -0.881373587019543, -0.881373587019543, -0.881373587019543,
+                                                -0.881373587019543, -0.881373587019543, -0.881373587019543,
+                                                -0.881373587019543, -0.881373587019543, -0.881373587019543,
+                                                -0.881373587019543, -0.881373587019543, 0.881373587019543 };
 
-            Complex ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            BigInteger ref_step = 0;
+            var a = np.linspace(-1, 1, ref ref_step, 12);
             var b = np.arcsinh(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2679,13 +2680,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = np.linspace(-1, 1, ref ref_step, 12).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arcsinh(a);
 
-            var ExpectedDataB = new Complex[,,]
-                {{{ -0.881373587019543, -0.7468029948789, -0.599755399970846},
-                  { -0.440191235352683, -0.26945474934928, -0.090784335188522}}};
+            var ExpectedDataB = new double[,,]
+                {{{  -0.881373587019543, -0.881373587019543, -0.881373587019543},
+                  {  -0.881373587019543, -0.881373587019543, -0.881373587019543}}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
@@ -2693,14 +2694,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arccosh_1_BIGINT_TODO()
+        public void test_arccosh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { 0.0, 0.423235459210748, 0.594240703336901, 0.722717193587915,
-                                                0.82887090230963, 0.920606859928063, 1.00201733044986, 1.07555476344184,
-                                                1.1428302089675, 1.20497120816827, 1.26280443110946, 1.31695789692482 };
+            var ExpectedResult = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.31695789692482 };
 
-            Complex ref_step = 0;
-            var a = np.linspace(1.0, 2.0, ref ref_step, 12);
+            BigInteger ref_step = 0;
+            var a = np.linspace(1, 2, ref ref_step, 12);
             var b = np.arccosh(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2708,13 +2707,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(1.0, 2.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = np.linspace(1, 2, ref ref_step, 12).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arccosh(a);
 
-            var ExpectedDataB = new Complex[,,]
-                {{{0.0, 0.423235459210748, 0.594240703336901},
-                  {0.722717193587915, 0.82887090230963, 0.920606859928063}}};
+            var ExpectedDataB = new double[,,]
+                {{{0.0, 0.0, 0.0 },
+                  {0.0, 0.0, 0.0 }}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
@@ -2723,14 +2722,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arctanh_1_BIGINT_TODO()
+        public void test_arctanh_1_BIGINT()
         {
-            var ExpectedResult = new Complex[] { double.NegativeInfinity, -1.15129254649702, -0.752038698388137, -0.490414626505863,
-                                                     -0.279807893967711, -0.0911607783969772, 0.0911607783969772, 0.279807893967711,
-                                                      0.490414626505863, 0.752038698388137, 1.15129254649702, double.PositiveInfinity };
+            var ExpectedResult = new double[] { double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity,
+                                                double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity,
+                                                double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.PositiveInfinity };
 
-            Complex ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12);
+            BigInteger ref_step = 0;
+            var a = np.linspace(-1, 1, ref ref_step, 12);
             var b = np.arctanh(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2738,13 +2737,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12).reshape((2, 2, 3));
+            a = np.linspace(-1, 1, ref ref_step, 12).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arctanh(a);
 
-            var ExpectedDataB = new Complex[,,]
-                {{{double.NegativeInfinity, -1.15129254649702, -0.752038698388137},
-                  {-0.490414626505863, -0.279807893967711, -0.0911607783969772}}};
+            var ExpectedDataB = new double[,,]
+                {{{double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity},
+                  {double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity}}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
@@ -2754,11 +2753,14 @@ namespace NumpyDotNetTests
         #endregion
 
         [TestMethod]
-        public void test_degrees_1_BIGINT_TODO()
+        public void test_degrees_1_BIGINT()
         {
-            var rad = np.arange(12.0, dtype: np.Decimal) * Math.PI / 6;
+            var rad = np.arange(12.0, dtype: np.BigInt) * Math.PI / 6;
             var a = np.degrees(rad);
-            AssertArray(a, new double[] { 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330 });
+            AssertArray(a, new double[] { 0.0, 28.6478897565412, 57.2957795130823, 85.9436692696235,
+                                          114.591559026165, 143.239448782706, 171.887338539247,
+                                          200.535228295788, 229.183118052329, 257.83100780887,
+                                          286.478897565412, 315.126787321953 });
             print(a);
 
             //var _out = np.zeros((rad.shape));
@@ -2768,9 +2770,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_radians_1_BIGINT_TODO()
+        public void test_radians_1_BIGINT()
         {
-            var deg = np.arange(12.0, dtype: np.Decimal) * 30.0;
+            var deg = np.arange(12.0, dtype: np.BigInt) * 30.0;
             var a = np.radians(deg);
             AssertArray(a, new double[] { 0.0, 0.523598775598299, 1.0471975511966, 1.5707963267949, 2.0943951023932,
                                          2.61799387799149, 3.14159265358979, 3.66519142918809, 4.18879020478639,
