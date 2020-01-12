@@ -2321,20 +2321,19 @@ namespace NumpyDotNetTests
         #region from MathematicalFunctionsTests
 
         [TestMethod]
-        public void test_sin_1_BIGINT_TODO()
+        public void test_sin_1_BIGINT()
         {
             var ExpectedResult = new double[] { 0, 0.909297426825682, -0.756802495307928, -0.279415498198926, 0.989358246623382 };
 
-            var a = np.arange(0, 10, dtype: np.Decimal);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.sin(a);
             AssertArray(b, ExpectedResult);
             print(b);
 
-
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Decimal).reshape((1, 2, 5));
+            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.sin(a);
 
@@ -2347,13 +2346,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.sin(a, where: a > 2);
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.141120008059867, -0.756802495307928 } });
             print(b);
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.sin(a, where: new bool[,] { { false, false, false, true, true } });
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, 0.141120008059867, -0.756802495307928 } });
@@ -2362,11 +2361,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cos_1_BIGINT_TODO()
+        public void test_cos_1_BIGINT()
         {
             var ExpectedResult = new double[] { 1.0, -0.416146836547142, -0.653643620863612, 0.960170286650366, -0.145500033808614 };
 
-            var a = np.arange(0, 10, dtype: np.Decimal);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.cos(a);
             AssertArray(b, ExpectedResult);
@@ -2374,7 +2373,7 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Decimal).reshape((1, 2, 5));
+            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.cos(a);
 
@@ -2387,13 +2386,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.cos(a, where: a > 2);
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
             print(b);
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.cos(a, where: new bool[,] { { false, false, false, true, true } });
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
@@ -2402,11 +2401,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tan_1_BIGINT_TODO()
+        public void test_tan_1_BIGINT()
         {
             var ExpectedResult = new double[] { 0.0, -2.18503986326152, 1.15782128234958, -0.291006191384749, -6.79971145522038 };
 
-            var a = np.arange(0, 10, dtype: np.Decimal);
+            var a = np.arange(0, 10, dtype: np.BigInt);
             a = a["::2"] as ndarray;
             var b = np.tan(a);
             AssertArray(b, ExpectedResult);
@@ -2415,7 +2414,7 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.arange(0, 10, dtype: np.Decimal).reshape((1, 2, 5));
+            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
             a = a["::2"] as ndarray;
             b = np.tan(a);
 
@@ -2428,13 +2427,13 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.tan(a, where: a > 2);
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
             print(b);
 
-            a = np.array(new decimal[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
+            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
             a = a["::2"] as ndarray;
             b = np.tan(a, where: new bool[,] { { false, false, false, true, true } });
             AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
@@ -2443,14 +2442,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arcsin_1_BIGINT_TODO()
+        public void test_arcsin_1_BIGINT()
         {
-            var ExpectedResult = new double[] { -1.5707963267949, -0.958241588455558, -0.6897750007855, -0.471861837279642,
-                                                -0.276226630763592, -0.091034778037415, 0.091034778037415, 0.276226630763592,
-                                                 0.471861837279642, 0.6897750007855, 0.958241588455558, 1.5707963267949 };
+            var ExpectedResult = new double[] { double.NaN, double.NaN, double.NaN, double.NaN, -1.5707963267949, 0.0, 1.5707963267949, double.NaN, double.NaN, double.NaN };
 
-            double ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            var a = np.arange(-5, 5, dtype: np.BigInt);
             var b = np.arcsin(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2458,42 +2454,43 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal).reshape((2, 2, 3));
+            a = np.arange(-6, 6, dtype: np.BigInt).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arcsin(a);
 
             var ExpectedDataB = new double[,,]
-                {{{ -1.5707963267949, -0.958241588455558, -0.6897750007855},
-                  { -0.471861837279642, -0.276226630763592, -0.091034778037415}}};
+                {{{ double.NaN,double.NaN, double.NaN},
+                  { double.NaN, double.NaN, -1.5707963267949 }}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.arange(-5, 5, dtype: np.BigInt);
             a = a.A("::2");
             b = np.arcsin(a, where: a > -0.5);
-            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558 });
+            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, 1.5707963267949, double.NaN });
             print(b);
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.arange(-5, 5, dtype: np.BigInt);
             a = a.A("::2");
-            b = np.arcsin(a, where: new bool[] { false, false, true, true, true, true });
-            AssertArray(b, new double[] { np.NaN, np.NaN, -0.276226630763592, 0.091034778037415, 0.471861837279642, 0.958241588455558 });
+            b = np.arcsin(a, where: new bool[] { false, false, true, true, true });
+            AssertArray(b, new double[] { double.NaN, double.NaN, -1.5707963267949, 1.5707963267949, double.NaN });
             print(b);
 
         }
 
         [TestMethod]
-        public void test_arccos_1_BIGINT_TODO()
+        public void test_arccos_1_BIGINT()
         {
-            var ExpectedResult = new double[] { 3.14159265358979, 2.52903791525045, 2.2605713275804, 2.04265816407454,
-                                                1.84702295755849, 1.66183110483231, 1.47976154875748, 1.29456969603131,
-                                                1.09893448951525, 0.881021326009397, 0.612554738339339, 0.0 };
+            var ExpectedResult = new double[] { 3.14159265358979, 1.5707963267949, 1.5707963267949,
+                                                1.5707963267949, 1.5707963267949, 1.5707963267949,
+                                                1.5707963267949, 1.5707963267949, 1.5707963267949,
+                                                1.5707963267949, 1.5707963267949, 0.0 };
 
             double ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             var b = np.arccos(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2501,42 +2498,40 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal).reshape((2, 2, 3));
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arccos(a);
 
             var ExpectedDataB = new double[,,]
-                {{{3.14159265358979, 2.52903791525045, 2.2605713275804},
-                  {2.04265816407454, 1.84702295755849, 1.66183110483231}}};
+                {{{3.14159265358979, 1.5707963267949, 1.5707963267949},
+                  {1.5707963267949, 1.5707963267949, 1.5707963267949}}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             a = a.A("::2");
             b = np.arccos(a, where: a > -0.5);
-            AssertArray(b, new double[] { np.NaN, np.NaN, 1.84702295755849, 1.47976154875748, 1.09893448951525, 0.612554738339339 });
+            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN });
             print(b);
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             a = a.A("::2");
             b = np.arccos(a, where: new bool[] { false, false, true, true, true, true });
-            AssertArray(b, new double[] { np.NaN, np.NaN, 1.84702295755849, 1.47976154875748, 1.09893448951525, 0.612554738339339 });
+            AssertArray(b, new double[] { double.NaN, double.NaN, 1.5707963267949, 1.5707963267949, 1.5707963267949, 1.5707963267949 });
             print(b);
 
         }
 
         [TestMethod]
-        public void test_arctan_1_BIGINT_TODO()
+        public void test_arctan_1_BIGINT()
         {
-            var ExpectedResult = new double[] { -0.785398163397448, -0.685729510906286, -0.566729217523506, -0.426627493126876,
-                                                -0.266252049150925, -0.090659887200745, 0.090659887200745,   0.266252049150925,
-                                                 0.426627493126876, 0.566729217523506, 0.685729510906286, 0.785398163397448 };
+            var ExpectedResult = new double[] { -0.785398163397448, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.785398163397448 };
 
             double ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             var b = np.arctan(a);
             AssertArray(b, ExpectedResult);
             print(b);
@@ -2544,44 +2539,44 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal).reshape((2, 2, 3));
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt).reshape((2, 2, 3));
             a = a["::2"] as ndarray;
             b = np.arctan(a);
 
             var ExpectedDataB = new double[,,]
-                {{{-0.785398163397448, -0.685729510906286, -0.566729217523506},
-                  {-0.426627493126876, -0.266252049150925, -0.090659887200745}}};
+                {{{ -0.785398163397448, 0.0, 0.0},
+                  {0.0, 0.0, 0.0 }}};
 
             AssertArray(b, ExpectedDataB);
             print(b);
 
             print("********");
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             a = a.A("::2");
             b = np.arctan(a, where: a > -0.5);
-            AssertArray(b, new double[] { np.NaN, np.NaN, -0.266252049150925, 0.090659887200745, 0.426627493126876, 0.685729510906286 });
+            AssertArray(b, new double[] { double.NaN, double.NaN, -double.NaN, double.NaN, double.NaN, double.NaN });
             print(b);
 
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.Decimal);
+            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
             a = a.A("::2");
             b = np.arctan(a, where: new bool[] { false, false, true, true, true, true });
-            AssertArray(b, new double[] { np.NaN, np.NaN, -0.266252049150925, 0.090659887200745, 0.426627493126876, 0.685729510906286 });
+            AssertArray(b, new double[] { double.NaN, double.NaN, 0.0, 0.0, 0.0, 0.0 });
             print(b);
 
         }
 
         [TestMethod]
-        public void test_hypot_1_BIGINT_TODO()
+        public void test_hypot_1_BIGINT()
         {
 
-            var a = np.hypot(np.ones((3, 3), dtype: np.Decimal) * 3, np.ones((3, 3), dtype: np.Decimal) * 4);
+            var a = np.hypot(np.ones((3, 3), dtype: np.BigInt) * 3, np.ones((3, 3), dtype: np.BigInt) * 4);
             print(a);
-            AssertArray(a, new decimal[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
+            AssertArray(a, new BigInteger[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
 
-            var b = np.hypot(np.ones((3, 3), dtype: np.Decimal) * 3, new decimal[] { 4 });
+            var b = np.hypot(np.ones((3, 3), dtype: np.BigInt) * 3, new BigInteger[] { 4 });
             print(b);
-            AssertArray(b, new decimal[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
+            AssertArray(b, new BigInteger[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
 
         }
 
