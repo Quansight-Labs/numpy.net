@@ -3255,13 +3255,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sinc_1_BIGINT_TODO()
+        public void test_sinc_1_BIGINT()
         {
             double retstep = 0;
-            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Decimal);
+            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Int64);
             var a = np.sinc(x);
-            AssertArray(a, new double[] {-3.89817183e-17, -3.49934120e-02,  9.20725429e-02, -2.06748336e-01, 7.05316598e-01,
-                                          7.05316598e-01, -2.06748336e-01,  9.20725429e-02, -3.49934120e-02, -3.89817183e-17 });
+            AssertArray(a, new double[] { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17,
+                                           3.89804309105148E-17, 1.0, 1.0, 3.89804309105148E-17, -3.89804309105148E-17,
+                                           3.89804309105148E-17, -3.89804309105148E-17 });
             print(a);
 
             print("********");
@@ -3271,26 +3272,24 @@ namespace NumpyDotNetTests
 
             var ExpectedDataB = new double[,]
 
-                {{-3.89817183e-17,  2.51898785e-02,  1.22476942e-02, -5.16870839e-02, -1.15090679e-01,
-                  -1.15090679e-01, -5.16870839e-02,  1.22476942e-02,  2.51898785e-02, -3.89817183e-17},
-                 { 2.51898785e-02, -2.78216241e-02,  1.23470027e-02,  3.44387931e-02, -2.14755666e-01,
-                  -2.14755666e-01,  3.44387931e-02,  1.23470027e-02, -2.78216241e-02,  2.51898785e-02},
-                 { 1.22476942e-02,  1.23470027e-02,  1.24217991e-02,  1.24718138e-02,  1.24968663e-02,
-                   1.24968663e-02,  1.24718138e-02,  1.24217991e-02,  1.23470027e-02,  1.22476942e-02},
-                 {-5.16870839e-02,  3.44387931e-02,  1.24718138e-02, -1.15090679e-01,  5.14582086e-01,
-                   5.14582086e-01, -1.15090679e-01,  1.24718138e-02,  3.44387931e-02, -5.16870839e-02},
-                 {-1.15090679e-01, -2.14755666e-01,  1.24968663e-02,  5.14582086e-01,  9.37041792e-01,
-                   9.37041792e-01,  5.14582086e-01,  1.24968663e-02, -2.14755666e-01, -1.15090679e-01},
-                 {-1.15090679e-01, -2.14755666e-01,  1.24968663e-02,  5.14582086e-01,  9.37041792e-01,
-                   9.37041792e-01,  5.14582086e-01,  1.24968663e-02, -2.14755666e-01, -1.15090679e-01},
-                 {-5.16870839e-02,  3.44387931e-02,  1.24718138e-02, -1.15090679e-01,  5.14582086e-01,
-                   5.14582086e-01, -1.15090679e-01,  1.24718138e-02,  3.44387931e-02, -5.16870839e-02},
-                 { 1.22476942e-02,  1.23470027e-02,  1.24217991e-02,  1.24718138e-02,  1.24968663e-02,
-                   1.24968663e-02,  1.24718138e-02,  1.24217991e-02,  1.23470027e-02,  1.22476942e-02},
-                 { 2.51898785e-02, -2.78216241e-02,  1.23470027e-02,  3.44387931e-02, -2.14755666e-01,
-                  -2.14755666e-01,  3.44387931e-02,  1.23470027e-02, -2.78216241e-02,  2.51898785e-02},
-                 { -3.89817183e-17,  2.51898785e-02,  1.22476942e-02, -5.16870839e-02, -1.15090679e-01,
-                  -1.15090679e-01, -5.16870839e-02,  1.22476942e-02,  2.51898785e-02, -3.89817183e-17} };
+          { { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
+              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
+               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
+              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
+               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
+            { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
+            { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
+            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
+               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
+              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
+               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
+            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
+              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 } };
 
             AssertArray(b, ExpectedDataB);
 
@@ -3299,54 +3298,54 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_signbit_1_BIGINT_TODO()
+        public void test_signbit_1_BIGINT()
         {
-            var a = np.signbit(-1.2m);
+            var a = np.signbit((BigInteger)(-12));
             Assert.AreEqual(true, a.GetItem(0));
             print(a);
 
-            var b = np.signbit(np.array(new decimal[] { 1, -2.3m, 2.1m }));
+            var b = np.signbit(np.array(new BigInteger[] { 1, -23, 21 }));
             AssertArray(b, new bool[] { false, true, false });
             print(b);
 
-            var c = np.signbit(np.array(new decimal[] { +0.0m, -0.0m }));  // note: different result than python.  No such thing as -0.0
+            var c = np.signbit(np.array(new BigInteger[] { +0, -0 }));  // note: different result than python.  No such thing as -0.0
             AssertArray(c, new bool[] { false, false });
             print(c);
 
-            var f = np.signbit(np.array(new decimal[] { -1, 0, 1 }));
+            var f = np.signbit(np.array(new BigInteger[] { -1, 0, 1 }));
             AssertArray(f, new bool[] { true, false, false });
             print(f);
         }
 
         [TestMethod]
-        public void test_copysign_1_BIGINT_TODO()
+        public void test_copysign_1_BIGINT()
         {
-            var a = np.copysign(1.3m, -1m);
-            Assert.AreEqual(-1.3, a.GetItem(0));
+            var a = np.copysign((BigInteger)13, (BigInteger)(-1));
+            Assert.AreEqual((BigInteger)(-13), a.GetItem(0));
             print(a);
 
-            var b = np.divide(1, np.copysign(0m, 1m));
-            Assert.AreEqual((double)0, b.GetItem(0));  // note: python gets a np.inf value here
+            var b = np.divide((BigInteger)1, np.copysign((BigInteger)0, (BigInteger)1));
+            Assert.AreEqual((BigInteger)0, b.GetItem(0));  // note: python gets a np.inf value here
             print(b);
 
-            var c = 1 / np.copysign(0m, -1m);
-            Assert.AreEqual((double)0, c.GetItem(0));  // note: python gets a -np.inf value here
+            var c = 1 / np.copysign((BigInteger)0, (BigInteger)(-1));
+            Assert.AreEqual((BigInteger)0, c.GetItem(0));  // note: python gets a -np.inf value here
             print(c);
 
 
-            var d = np.copysign(new decimal[] { -1, 0, 1 }, -1.1m);
-            AssertArray(d, new double[] { -1, 0, -1 });
+            var d = np.copysign(new BigInteger[] { -1, 0, 1 }, -1.1);
+            AssertArray(d, new BigInteger[] { -1, 0, -1 });
             print(d);
 
-            var e = np.copysign(new decimal[] { -1, 0, 1 }, np.arange(3) - 1);
-            AssertArray(e, new double[] { -1, 0, 1 });
+            var e = np.copysign(new BigInteger[] { -1, 0, 1 }, np.arange(3) - 1);
+            AssertArray(e, new BigInteger[] { -1, 0, 1 });
             print(e);
         }
 
         [TestMethod]
-        public void test_frexp_1_BIGINT_TODO()
+        public void test_frexp_1_BIGINT()
         {
-            var x = np.arange(9, dtype: np.Decimal);
+            var x = np.arange(9, dtype: np.BigInt);
             var results = np.frexp(x);
 
             AssertArray(results[0], new double[] { 0.0, 0.5, 0.5, 0.75, 0.5, 0.625, 0.75, 0.875, 0.5 });
@@ -3358,7 +3357,7 @@ namespace NumpyDotNetTests
             print("***************");
 
 
-            x = np.arange(9, dtype: np.Decimal).reshape((3, 3));
+            x = np.arange(9, dtype: np.BigInt).reshape((3, 3));
             results = np.frexp(x, where: x < 5);
 
             AssertArray(results[0], new double[,] { { 0.0, 0.5, 0.5 }, { 0.75, 0.5, double.NaN }, { double.NaN, double.NaN, double.NaN } });
@@ -3369,102 +3368,55 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ldexp_1_BIGINT_TODO()
+        public void test_ldexp_1_BIGINT()
         {
-            var a = np.ldexp(5m, np.arange(4, dtype: np.Decimal));
+            var a = np.ldexp((BigInteger)5, np.arange(4, dtype: np.BigInt));
             AssertArray(a, new double[] { 5.0f, 10.0f, 20.0f, 40.0f });
             print(a);
 
-            var b = np.ldexp(np.arange(4, dtype: np.Decimal), 5m);
+            var b = np.ldexp(np.arange(4, dtype: np.BigInt), (BigInteger)5);
             AssertArray(b, new double[] { 0.0, 32.0, 64.0, 96.0 });
             print(b);
         }
 
         [TestMethod]
-        public void test_lcm_1_BIGINT_TODO()
+        public void test_lcm_1_BIGINT()
         {
-            int success = 0;
-            try
-            {
-                var a = np.lcm(12m, 20m);
-                Assert.AreEqual(60m, a.GetItem(0));
-                print(a);
-                success++;
-            }
-            catch
-            { }
+            var a = np.lcm((BigInteger)12, (BigInteger)20);
+            Assert.AreEqual((BigInteger)60, a.GetItem(0));
+            print(a);
 
-            try
-            {
-                var d = np.lcm(np.arange(6, dtype: np.Decimal), new decimal[] { 20 });
-                AssertArray(d, new decimal[] { 0, 20, 20, 60, 20, 20 });
-                print(d);
-                success++;
-            }
-            catch
-            { }
+            var d = np.lcm(np.arange(6, dtype: np.BigInt), new BigInteger[] { 20 });
+            AssertArray(d, new BigInteger[] { 0, 20, 20, 60, 20, 20 });
+            print(d);
 
-            try
-            {
+            var e = np.lcm(new BigInteger[] { 20, 21 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
+            AssertArray(e, new BigInteger[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
+            print(e);
 
-            }
-            catch
-            {
-                var e = np.lcm(new decimal[] { 20, 21 }, np.arange(6, dtype: np.Decimal).reshape((3, 2)));
-                AssertArray(e, new decimal[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
-                print(e);
-                success++;
-            }
-
-            Assert.AreEqual(0, success, "Did not catch all exceptions as expected");
+            var f = np.lcm(new BigInteger[] { 20, 21 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
+            AssertArray(f, new BigInteger[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
+            print(f);
         }
 
         [TestMethod]
-        public void test_gcd_1_BIGINT_TODO()
+        public void test_gcd_1_BIGINT()
         {
-            int success = 0;
+            var a = np.gcd((BigInteger)12, (BigInteger)20);
+            Assert.AreEqual((BigInteger)4, a.GetItem(0));
+            print(a);
 
-            try
-            {
-                var a = np.gcd(12m, 20m);
-                Assert.AreEqual(4, a.GetItem(0));
-                print(a);
-                success++;
-            }
-            catch
-            { }
+            var d = np.gcd(np.arange(6, dtype: np.BigInt), new BigInteger[] { 20 });
+            AssertArray(d, new BigInteger[] { 20, 1, 2, 1, 4, 5 });
+            print(d);
 
-            try
-            {
-                var d = np.gcd(np.arange(6, dtype: np.Decimal), new decimal[] { 20 });
-                AssertArray(d, new int[] { 20, 1, 2, 1, 4, 5 });
-                print(d);
-                success++;
-            }
-            catch
-            { }
+            var e = np.gcd(new BigInteger[] { 20, 20 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
+            AssertArray(e, new BigInteger[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
+            print(e);
 
-            try
-            {
-                var e = np.gcd(new decimal[] { 20, 20 }, np.arange(6, dtype: np.Decimal).reshape((3, 2)));
-                AssertArray(e, new int[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
-                print(e);
-                success++;
-            }
-            catch
-            { }
-
-            try
-            {
-                var f = np.gcd(new decimal[] { 20, 20 }, np.arange(6, dtype: np.Decimal).reshape((3, 2)));
-                AssertArray(f, new long[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
-                print(f);
-                success++;
-            }
-            catch
-            { }
-
-            Assert.AreEqual(0, success, "Did not catch all exceptions as expected");
+            var f = np.gcd(new BigInteger[] { 20, 20 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
+            AssertArray(f, new BigInteger[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
+            print(f);
         }
 
         [TestMethod]
