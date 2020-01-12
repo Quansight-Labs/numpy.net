@@ -3506,7 +3506,7 @@ namespace NumpyDotNetTests
         public void test_divide_BIGINT()
         {
             var a = np.divide((BigInteger)7, (BigInteger)3);
-            Assert.AreEqual((double)2.3333333333333333333333333333, a.GetItem(0));
+            Assert.AreEqual((BigInteger)2, a.GetItem(0));
             print(a);
 
             var b = np.divide(new BigInteger[] { 1, 2, 3, 4 }, 2);
