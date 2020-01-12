@@ -3899,7 +3899,7 @@ namespace NumpyLib
         }
         protected override object Sqrt(object bValue, object operand)
         {
-            return Math.Pow(Math.E, BigInteger.Log((BigInteger)bValue) / 2);
+            return Math.Round(Math.Pow(Math.E, BigInteger.Log((BigInteger)bValue) / 2));
         }
   
         protected override object Negative(object bValue, object operand)
