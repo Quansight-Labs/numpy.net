@@ -719,6 +719,8 @@ namespace NumpyDotNet
                 otype = np.Float64;
             }
 
+            f1 = f1.astype(otype);
+
             for (int i = 0; i < axes.Count; i++)
             {
                 int axis = axes[i];
@@ -3681,6 +3683,7 @@ namespace NumpyDotNet
 
      
             yarr = asanyarray(y);
+            yarr = yarr.astype(result_type(yarr.TypeNum));
 
             if (axis < 0)
                 axis += yarr.ndim;
