@@ -83,6 +83,7 @@ namespace NumpyDotNet
         public static readonly dtype Decimal = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
         public static readonly dtype Complex = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
         public static readonly dtype BigInt = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BIGINT);
+        public static readonly dtype Object = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
 
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
         public static readonly dtype None = null;
@@ -102,10 +103,14 @@ namespace NumpyDotNet
         {
             NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
 
-            if (Get_NPYType(arr) != arrayType)
+            if (arrayType != NPY_TYPES.NPY_OBJECT)
             {
-                throw new Exception("Mismatch data types between input array and dtype");
+                if (Get_NPYType(arr) != arrayType)
+                {
+                    throw new Exception("Mismatch data types between input array and dtype");
+                }
             }
+  
 
             var arrayDescr = numpyAPI.NpyArray_DescrFromType(arrayType);
             if (arrayDescr == null)

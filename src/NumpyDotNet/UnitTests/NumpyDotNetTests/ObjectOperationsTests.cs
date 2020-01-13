@@ -19,6 +19,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void xxx_Test_ObjectOperations_Placeholder()
         {
+            string[] TestData = new string[] { "A", "B", "C", "D" };
+
+            var a = np.array(TestData, dtype: np.Object);
+
+            print(a);
+
+            a = a.reshape((2, 2));
+            print(a);
+
+            a = a * 2;
+            print(a);
+
         }
     }
 }

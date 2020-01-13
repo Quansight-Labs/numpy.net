@@ -114,6 +114,8 @@ namespace NumpyLib
                     return MemCpyToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_BIGINT:
                     return MemCpyToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_OBJECT:
+                    return MemCpyToObject(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
             }
             return false;
         }
@@ -582,6 +584,20 @@ namespace NumpyLib
             }
             return false;
         }
+
+        private static bool MemCpyToObject(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_OBJECT:
+                    return MemCpyObjectToObject(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                default:
+                    throw new Exception("Attempt to copy non object value to object array");
+
+            }
+            return false;
+        }
+
         #endregion
 
         #region Common functions
@@ -2840,6 +2856,23 @@ namespace NumpyLib
 
         #endregion
 
+        #region Object specific
+
+        private static bool MemCpyObjectToObject(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            object[] sourceArray = Src.datap as object[];
+            object[] destArray = Dest.datap as object[];
+            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+
+            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
+            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+
+            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+
+            return true;
+        }
+
+        #endregion
     }
 
     class MemSet
