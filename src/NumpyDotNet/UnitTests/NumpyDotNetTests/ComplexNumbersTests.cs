@@ -7504,11 +7504,28 @@ namespace NumpyDotNetTests
 
         }
 
-
-        [Ignore] // not implemented yet
         [TestMethod]
         public void test_sort_complex_1()
         {
+            var IntTestData = new Int32[] { 5, 3, 6, 2, 1 };
+            var ComplexTextData = new Complex[] { new Complex(3, -2), new Complex(1, 2), new Complex(2,-1), new Complex(3,-3),new Complex(3,5) };
+            var ComplexSortedData = new Complex[] { new Complex(1, 2), new Complex(2, -1), new Complex(3, -3), new Complex(3, -2),  new Complex(3, 5) };
+
+            var a = np.sort(IntTestData);
+            print(a);
+            AssertArray(a, new Int32[] { 1,2,3,5,6});
+
+            var b = np.sort_complex(IntTestData);
+            print(b);
+            AssertArray(b, new Complex[] { 1, 2, 3, 5, 6 });
+
+            var c = np.sort(ComplexTextData);
+            print(c);
+            AssertArray(c, ComplexSortedData);
+
+            var d = np.sort_complex(ComplexTextData);
+            print(d);
+            AssertArray(d, ComplexSortedData);
 
         }
 

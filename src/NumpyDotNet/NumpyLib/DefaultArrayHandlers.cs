@@ -3607,20 +3607,31 @@ namespace NumpyLib
         int Partition(System.Numerics.Complex[] array, int low, int high)
         {
             //1. Select a pivot point.
-            double pivot = array[high].Real;
+            System.Numerics.Complex pivot = array[high];
 
             int lowIndex = (low - 1);
 
-            //2. Reorder the collection.
+            //2. Reorder the collection. sort by Real first, then Imaginary.
             for (int j = low; j < high; j++)
             {
-                if (array[j].Real <= pivot)
+                if (array[j].Real == pivot.Real && array[j].Imaginary <= pivot.Imaginary)
                 {
                     lowIndex++;
 
                     var temp = array[lowIndex];
                     array[lowIndex] = array[j];
                     array[j] = temp;
+                }
+                else
+                if (array[j].Real < pivot.Real)
+                {
+
+                    lowIndex++;
+
+                    var temp = array[lowIndex];
+                    array[lowIndex] = array[j];
+                    array[j] = temp;
+
                 }
             }
 

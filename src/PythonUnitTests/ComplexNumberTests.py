@@ -49,6 +49,24 @@ class ComplexNumbersTests(unittest.TestCase):
         c = np.angle([-1,2,-3])
         print(c)
 
+    def test_sort_complex_1(self):
+
+        IntTestData = [5, 3, 6, 2, 1]
+        ComplexTextData = [1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j]
+
+        a = np.sort(IntTestData)
+        print(a)
+
+        b = np.sort_complex(IntTestData)
+        print(b)
+
+        c = np.sort(ComplexTextData)
+        print(c)
+
+        d = np.sort_complex(ComplexTextData)
+        print(d)
+
+
 
 if __name__ == '__main__':
     unittest.main()

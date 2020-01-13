@@ -785,7 +785,7 @@ namespace NumpyDotNet
 
         #region sort
 
-        public static ndarray sort(ndarray a, int? axis = -1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT, IEnumerable<string> order= null)
+        public static ndarray sort(object o, int? axis = -1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT, IEnumerable<string> order= null)
         {
             /*
             Return a sorted copy of an array.
@@ -894,14 +894,15 @@ namespace NumpyDotNet
                   dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
             */
 
+            ndarray a = null;
             if (axis == null)
             {
                 axis = 0;
-                a = asanyarray(a).flatten();
+                a = asanyarray(o).flatten();
             }
             else
             {
-                a = asanyarray(a).Copy();
+                a = asanyarray(o).Copy();
             }
 
             NpyCoreApi.Sort(a, axis.Value, kind);
