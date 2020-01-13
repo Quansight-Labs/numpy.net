@@ -45,11 +45,13 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 * System.Double
 * System.Decimal (exclusive feature!)
 * System.Numerics.Complex (exclusive feature!)
+* System.Numerics.BigInteger (exclusive feature!)
 
 ##### Future plans include support for:
 
-
-* System.Numerics.BigInteger (coming soon)
+* System.Object data type
+* System.String data type
+* DateTime/TimeDiff data types ??
 * User defined data types
 
 ## Accessing the underlying array
