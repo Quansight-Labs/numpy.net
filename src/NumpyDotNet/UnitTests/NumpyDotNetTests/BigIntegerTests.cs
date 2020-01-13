@@ -7215,6 +7215,40 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region BigInt specific tests
+
+        [TestMethod]
+        public void test_BIGNUMBER_operations_BIGINT()
+        {
+            BigInteger start = UInt64.MaxValue;
+            start++;
+            BigInteger end = start + 32;
+
+            var a = np.arange(start, end, 1);
+            a = a.reshape(new shape(8, -1));
+            print(a);
+
+            var b = a * 2;
+            print(b);
+
+
+            a = np.arange(start, end, 1);
+            a = a.reshape(new shape(4, -1));
+            print(a);
+
+            b = a + 2400;
+            print(b);
+
+            b -= UInt64.MaxValue;
+            print(b);
+
+            var c = a / 2;
+            print(c);
+                       
+
+        }
+
+        #endregion
 
     }
 }
