@@ -50,12 +50,24 @@ namespace NumpyLib
 
     public class NpyUFuncObject : NpyObject_HEAD
     {
+        public NpyUFuncObject(NpyUFuncGenericFunction f)
+        {
+            _function = f;
+        }
         public NpyArray_Ops ops;
         public int nin, nout, nargs;
         public NpyUFuncIdentity identity;
-        public NpyUFuncGenericFunction []functions;
+ 
         public byte[] data;
-        public int ntypes;
+        public int ntypes
+        {
+            get
+            {
+                if (types == null)
+                    return 0;
+                return types.Length;
+            }
+        }
         public int check_return;
         public string name;
         public NPY_TYPES[] types;
@@ -75,6 +87,14 @@ namespace NumpyLib
         public int[] core_offsets;     /* positions of 1st core dimensions of each
                             argument in core_dim_ixs */
         public string core_signature;  /* signature string for printing purpose */
+
+        private NpyUFuncGenericFunction _function;
+        public NpyUFuncGenericFunction GetFunction(int index)
+        {
+            return _function;
+        }
+
+
     };
 
     public class NpyUFuncLoopObject : NpyObject_HEAD
@@ -2808,7 +2828,7 @@ namespace NumpyLib
             {
                 data = null;
             }
-            function = self.functions[i];
+            function = self.GetFunction(i);
 
             return 0;
         }
@@ -2895,7 +2915,7 @@ namespace NumpyLib
                 }
                 if (i == nargs)
                 {
-                    function = self.functions[j];
+                    function = self.GetFunction(j);
                     data = self.data[j];
                     for (i = 0; i < nargs; i++)
                     {

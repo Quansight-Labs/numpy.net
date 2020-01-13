@@ -110,15 +110,6 @@ namespace NumpyDotNet
             }
         }
 
-        public int ntypes
-        {
-            get
-            {
-                CheckValid();
-                return core.ntypes;
-            }
-        }
-
         public bool CoreEnabled
         {
             get

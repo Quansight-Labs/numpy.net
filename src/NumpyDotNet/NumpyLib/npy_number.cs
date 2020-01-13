@@ -253,28 +253,22 @@ namespace NumpyLib
 
         private static NpyUFuncObject DefaultOpControl(NpyArray_Ops ops, NpyUFuncGenericFunction UFunc)
         {
-            const int numTypes = 13;
-
-            var loc = new NpyUFuncObject()
+            var loc = new NpyUFuncObject(UFunc)
             {
                 ops = ops,
                 name = "add",
                 identity = NpyUFuncIdentity.NpyUFunc_Zero,
                 nin = 1,
                 nargs = 1,
-                types = new NPY_TYPES[numTypes] {NPY_TYPES.NPY_BYTE, NPY_TYPES.NPY_UBYTE,
-                                                 NPY_TYPES.NPY_INT16, NPY_TYPES.NPY_UINT16,
-                                                 NPY_TYPES.NPY_INT32, NPY_TYPES.NPY_UINT32,
-                                                 NPY_TYPES.NPY_INT64, NPY_TYPES.NPY_UINT64,
-                                                 NPY_TYPES.NPY_FLOAT, NPY_TYPES.NPY_DOUBLE,
-                                                 NPY_TYPES.NPY_DECIMAL, NPY_TYPES.NPY_COMPLEX, NPY_TYPES.NPY_BIGINT},
+                types = new NPY_TYPES[] {NPY_TYPES.NPY_BYTE, NPY_TYPES.NPY_UBYTE,
+                                         NPY_TYPES.NPY_INT16, NPY_TYPES.NPY_UINT16,
+                                         NPY_TYPES.NPY_INT32, NPY_TYPES.NPY_UINT32,
+                                         NPY_TYPES.NPY_INT64, NPY_TYPES.NPY_UINT64,
+                                         NPY_TYPES.NPY_FLOAT, NPY_TYPES.NPY_DOUBLE,
+                                         NPY_TYPES.NPY_DECIMAL, NPY_TYPES.NPY_COMPLEX,
+                                         NPY_TYPES.NPY_BIGINT},
 
-                ntypes = numTypes,
-                functions = new NpyUFuncGenericFunction[numTypes]
-                {
-                    UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc, UFunc,
-                }
-            };
+             };
 
             return loc;
         }
