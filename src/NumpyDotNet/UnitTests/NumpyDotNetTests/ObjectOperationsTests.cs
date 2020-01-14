@@ -15,7 +15,6 @@ namespace NumpyDotNetTests
     [TestClass]
     public class ObjectOperationsTests : TestBaseClass
     {
-        [Ignore]
         [TestMethod]
         public void xxx_Test_ObjectOperations_Placeholder()
         {
@@ -37,145 +36,64 @@ namespace NumpyDotNetTests
 
         #region from ArrayCreationTests
         [TestMethod]
-        public void test_asfarray_OBJECT_TODO()
+        public void test_asfarray_OBJECT()
         {
-            var a = np.asfarray(new BigInteger[] { 2, 3 });
+            var a = np.asfarray(new Object[] { 2, 3 });
             AssertArray(a, new double[] { 2, 3 });
             print(a);
 
-            var b = np.asfarray(new BigInteger[] { 2, 3 }, dtype: np.Float32);
-            AssertArray(b, new float[] { 2, 3 });
-            print(b);
+            try
+            {
+                var b = np.asfarray(new Object[] { "2", "3" }, dtype: np.Object);
+                AssertArray(a, new double[] { 2, 3 });
+                print(a);
+                Assert.Fail("This function should have thrown exception");
+            }
+            catch (Exception ex)
+            {
 
-            var c = np.asfarray(new BigInteger[] { 2, 3 }, dtype: np.Int8);
-            AssertArray(c, new double[] { 2, 3 });
-            print(c);
+            }
 
 
             return;
         }
 
         [TestMethod]
-        public void test_copy_1_OBJECT_TODO()
+        public void test_copy_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { 1, 2, 3 });
+            var x = np.array(new Object[] { "1", "2", "3" });
             var y = x;
 
             var z = np.copy(x);
 
             // Note that, when we modify x, y changes, but not z:
 
-            x[0] = 10;
+            x[0] = "10";
 
-            Assert.AreEqual((BigInteger)10, y[0]);
+            Assert.AreEqual((Object)"10", y[0]);
 
-            Assert.AreEqual((BigInteger)1, z[0]);
+            Assert.AreEqual((Object)"1", z[0]);
 
             return;
         }
 
+  
         [TestMethod]
-        public void test_linspace_1_OBJECT_TODO()
+        public void test_meshgrid_1_OBJECT()
         {
-            BigInteger retstep = 0;
-
-            var a = np.linspace(2, 3, ref retstep, num: 5);
-            AssertArray(a, new BigInteger[] { 2, 2, 2, 2, 3 });
-            print(a);
-
-            var b = np.linspace(2, 3, ref retstep, num: 5, endpoint: false);
-            AssertArray(b, new BigInteger[] { 2, 2, 2, 2, 2 });
-            print(b);
-
-            var c = np.linspace(2, 3, ref retstep, num: 5);
-            AssertArray(c, new BigInteger[] { 2, 2, 2, 2, 3 });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_logspace_1_OBJECT_TODO()
-        {
-            var a = np.logspace((BigInteger)2.0, (BigInteger)3.0, num: 4);
-            AssertArray(a, new BigInteger[] { 100, 100, 100, 1000 });
-            print(a);
-
-            var a1 = np.logspace(2, 3, num: 4, dtype: np.BigInt);
-            AssertArray(a1, new BigInteger[] { 100, 215, 464, 1000 });
-            print(a1);
-
-            var b = np.logspace((BigInteger)2.0m, (BigInteger)3.0m, num: 4, endpoint: false);
-            AssertArray(b, new BigInteger[] { 100, 100, 100, 100 });
-            print(b);
-
-            var b1 = np.logspace(2.0, 3.0, num: 4, endpoint: false, dtype: np.BigInt);
-            AssertArray(b1, new BigInteger[] { 100, 177, 316, 562 });
-            print(b1);
-
-            var c = np.logspace((BigInteger)2.0m, (BigInteger)3.0m, num: 4, _base: 2.0);
-            AssertArray(c, new BigInteger[] { 4, 4, 4, 8 });
-            print(c);
-
-            var c1 = np.logspace(2.0, 3.0, num: 4, _base: 2.0, dtype: np.BigInt);
-            AssertArray(c1, new BigInteger[] { 4, 5, 6, 8 });
-            print(c1);
-        }
-
-        [TestMethod]
-        public void test_geomspace_1_OBJECT_TODO()
-        {
-            var a = np.geomspace((BigInteger)1, (BigInteger)1000, num: 4);
-            AssertArray(a, new BigInteger[] { 1, 9, 99, 999 });
-            print(a);
-            var a1 = np.geomspace(1, 1000, num: 4, dtype: np.BigInt);
-            AssertArray(a1, new BigInteger[] { 1, 10, 100, 1000 });
-            print(a1);
-
-            var b = np.geomspace((BigInteger)1, (BigInteger)1000, num: 3, endpoint: false);
-            AssertArray(b, new BigInteger[] { 1, 9, 99 });
-            print(b);
-
-            var b1 = np.geomspace(1, 1000, num: 3, endpoint: false, dtype: np.BigInt);
-            AssertArray(b1, new BigInteger[] { 1, 10, 100 });
-            print(b1);
-
-            var c = np.geomspace((BigInteger)1, (BigInteger)1000, num: 4, endpoint: false);
-            AssertArray(c, new BigInteger[] { 1, 5, 31, 177 });
-            print(c);
-
-            var c1 = np.geomspace(1, 1000, num: 4, endpoint: false, dtype: np.BigInt);
-            AssertArray(c1, new BigInteger[] { 1, 5, 31, 177 });
-            print(c1);
-
-            var d = np.geomspace((BigInteger)1, (BigInteger)256, num: 9);
-            AssertArray(d, new BigInteger[] { 1, 1, 3, 7, 15, 31, 63, 127, 255 });
-            print(d);
-
-            var d1 = np.geomspace(1, 256, num: 9, dtype: np.BigInt);
-            AssertArray(d1, new BigInteger[] { 1, 2, 4, 7, 16, 32, 63, 127, 256 });
-            print(d1);
-
-        }
-
-        [TestMethod]
-        public void test_meshgrid_1_OBJECT_TODO()
-        {
-            int nx = 3;
-            int ny = 2;
-
-            BigInteger ret = 0;
-
-            var x = np.linspace(0, 100, ref ret, nx);
-            var y = np.linspace(0, 100, ref ret, ny);
+            
+            var x = np.array(new object[] { "0", "50", "100" });
+            var y = np.array(new object[] { "0", "100" });
 
             ndarray[] xv = np.meshgrid(new ndarray[] { x });
-            AssertArray(xv[0], new BigInteger[] { 0, 50, 100 });
+            AssertArray(xv[0], new object[] { "0", "50", "100" });
             print(xv[0]);
 
             print("************");
 
             ndarray[] xyv = np.meshgrid(new ndarray[] { x, y });
-            AssertArray(xyv[0], new BigInteger[,] { { 0, 50, 100 }, { 0, 50, 100 } });
-            AssertArray(xyv[1], new BigInteger[,] { { 0, 0, 0 }, { 100, 100, 100 } });
+            AssertArray(xyv[0], new object[,] { { "0", "50", "100" }, { "0", "50", "100" } });
+            AssertArray(xyv[1], new object[,] { { "0", "0", "0" }, { "100", "100", "100" } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -183,20 +101,20 @@ namespace NumpyDotNetTests
             print("************");
 
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
-            AssertArray(xyv[0], new BigInteger[,] { { 0, 50, 100 } });
-            AssertArray(xyv[1], new BigInteger[,] { { 0 }, { 100 } });
+            AssertArray(xyv[0], new object[,] { { "0", "50", "100" } });
+            AssertArray(xyv[1], new object[,] { { "0" }, { "100" } });
 
             print(xyv[0]);
             print(xyv[1]);
 
             print("************");
 
-            x = np.arange(-5, 5, 1, dtype: np.BigInt);
-            y = np.arange(-5, 5, 1, dtype: np.BigInt);
+            x = np.array(new object[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
+            y = np.array(new object[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
 
-            AssertArray(xyv[0], new BigInteger[,] { { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4 } });
-            AssertArray(xyv[1], new BigInteger[,] { { -5 }, { -4 }, { -3 }, { -2 }, { -1 }, { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(xyv[0], new object[,] { { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" } });
+            AssertArray(xyv[1], new object[,] { { "-5" }, { "-4" }, { "-3" }, { "-2" }, { "-1" }, { "0" }, { "1" }, { "2" }, { "3" }, { "4" } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -207,9 +125,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_OneDimensionalArray_OBJECT_TODO()
+        public void test_OneDimensionalArray_OBJECT()
         {
-            BigInteger[] l = new BigInteger[] { 12, 13, 100, 36 };
+            object[] l = new object[] { 12, 13, 100, 36 };
             print("Original List:", l);
             var a = np.array(l);
             print("One-dimensional numpy array: ", a);
@@ -222,9 +140,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_reverse_array_OBJECT_TODO()
+        public void test_reverse_array_OBJECT()
         {
-            var x = np.arange(0, 40, dtype: np.BigInt);
+            var x = np.array(new object[] { "-5A", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4H" });
             print("Original array:");
             print(x);
             print("Reverse array:");
@@ -232,8 +150,8 @@ namespace NumpyDotNetTests
             x = (ndarray)x["::-1"];
             print(x);
 
-            AssertArray(x, new BigInteger[] { 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 });
-            AssertShape(x, 40);
+            AssertArray(x, new object[] { "4H", "3", "2", "1", "0", "-1", "-2", "-3", "-4", "-5A" });
+            AssertShape(x, 10);
             AssertStrides(x, -SizeOfObject);
 
             var y = x + 100;
@@ -244,25 +162,24 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_checkerboard_1_OBJECT_TODO()
+        public void test_checkerboard_1_OBJECT()
         {
-            var x = np.ones((3, 3), dtype: np.BigInt);
             print("Checkerboard pattern:");
-            x = np.zeros((8, 8), dtype: np.BigInt);
-            x["1::2", "::2"] = 1;
-            x["::2", "1::2"] = 1;
+            var x = np.full((8, 8), "X", dtype: np.Object);
+            x["1::2", "::2"] = "Y";
+            x["::2", "1::2"] = "Y";
             print(x);
 
-            var ExpectedData = new BigInteger[8, 8]
+            var ExpectedData = new object[8, 8]
             {
-                 { 0, 1, 0, 1, 0, 1, 0, 1 },
-                 { 1, 0, 1, 0, 1, 0, 1, 0 },
-                 { 0, 1, 0, 1, 0, 1, 0, 1 },
-                 { 1, 0, 1, 0, 1, 0, 1, 0 },
-                 { 0, 1, 0, 1, 0, 1, 0, 1, },
-                 { 1, 0, 1, 0, 1, 0, 1, 0, },
-                 { 0, 1, 0, 1, 0, 1, 0, 1, },
-                 { 1, 0, 1, 0, 1, 0, 1, 0, },
+                 { "X", "Y", "X", "Y", "X", "Y", "X", "Y" },
+                 { "Y", "X", "Y", "X", "Y", "X", "Y", "X" },
+                 { "X", "Y", "X", "Y", "X", "Y", "X", "Y" },
+                 { "Y", "X", "Y", "X", "Y", "X", "Y", "X" },
+                 { "X", "Y", "X", "Y", "X", "Y", "X", "Y" },
+                 { "Y", "X", "Y", "X", "Y", "X", "Y", "X" },
+                 { "X", "Y", "X", "Y", "X", "Y", "X", "Y" },
+                 { "Y", "X", "Y", "X", "Y", "X", "Y", "X" },
             };
 
             AssertArray(x, ExpectedData);
@@ -271,26 +188,11 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void test_F2C_1_OBJECT_TODO()
-        {
-            BigInteger[] fvalues = new BigInteger[] { 0, 12, 45, 34, 99 };
-            ndarray F = (ndarray)np.array(fvalues);
-            print("Values in Fahrenheit degrees:");
-            print(F);
-            print("Values in  Centigrade degrees:");
-
-            ndarray C = 5 * F / 9 - 5 * 32 / 9;
-            print(C);
-
-            AssertArray(C, new BigInteger[] { -17, -11, 08, 01, 38 });
-
-        }
 
         [TestMethod]
-        public void test_ArrayStats_1_OBJECT_TODO()
+        public void test_ArrayStats_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { 1, 2, 3 }, dtype: np.BigInt);
+            var x = np.array(new object[] { 1, 2, 3 }, dtype: np.Object);
             print("Size of the array: ", x.size);
             print("Length of one array element in bytes: ", x.ItemSize);
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
@@ -302,40 +204,40 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_flatten_OBJECT_TODO()
+        public void test_ndarray_flatten_OBJECT()
         {
-            var x = np.arange(7, 32, dtype: np.BigInt).reshape(new shape(5, 5));
+            var x = np.array(new object[] { "A", "B", "C", "D"}, dtype: np.Object).reshape(new shape(2, 2));
             var y = x.flatten();
             print(x);
             print(y);
-            AssertArray(y, new BigInteger[] { 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 });
+            AssertArray(y, new object[] { "A", "B", "C", "D" });
 
             y = x.flatten(order: NPY_ORDER.NPY_FORTRANORDER);
             print(y);
-            AssertArray(y, new BigInteger[] { 7, 12, 17, 22, 27, 8, 13, 18, 23, 28, 9, 14, 19, 24, 29, 10, 15, 20, 25, 30, 11, 16, 21, 26, 31 });
+            AssertArray(y, new object[] { "A",  "C", "B", "D" });
 
             y = x.flatten(order: NPY_ORDER.NPY_KORDER);
             print(y);
-            AssertArray(y, new BigInteger[] { 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 });
+            AssertArray(y, new object[] {"A", "B", "C", "D" });
 
         }
 
         [TestMethod]
-        public void test_ndarray_byteswap_OBJECT_TODO()
+        public void test_ndarray_byteswap_OBJECT()
         {
-            var x = np.arange(32, 64, dtype: np.BigInt);
+            var x = np.array(new object[] { "A", "B", "C", "D" }, dtype: np.Object);
             print(x);
             var y = x.byteswap(true);
             print(y);
 
-            // BigInt can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsBigIntArray());
+            // Objects can't be swapped.  Data should be unchanged
+            AssertArray(y, x.AsObjectArray());
 
             y = x.byteswap(false);
             print(y);
 
-            // BigInt can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsBigIntArray());
+            // Objects can't be swapped.  Data should be unchanged
+            AssertArray(y, x.AsObjectArray());
 
         }
 
