@@ -150,6 +150,7 @@ namespace NumpyLib
                     return MemCpyDoublesToBools(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_DECIMAL:
                     return MemCpyDecimalsToBools(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+   
             }
             return false;
         }
@@ -538,8 +539,8 @@ namespace NumpyLib
                     return MemCpyDecimalsToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_COMPLEX:
                     return MemCpyComplexToComplex(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
-                default:
-                    throw new Exception("Attempt to copy non complex to complex number");
+                //default:
+                //    throw new Exception("Attempt to copy non complex to complex number");
 
 
             }
@@ -578,8 +579,8 @@ namespace NumpyLib
                     return MemCpyComplexToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_BIGINT:
                     return MemCpyBigIntToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
-                default:
-                    throw new Exception("Attempt to copy value to BigInt number");
+                //default:
+                //    throw new Exception("Attempt to copy value to BigInt number");
 
             }
             return false;
@@ -788,6 +789,7 @@ namespace NumpyLib
             }
             return true;
         }
+  
         #endregion
 
         #region byte specific
