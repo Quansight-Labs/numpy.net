@@ -117,6 +117,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_BIGINT:
                     DefaultCastsToBigInt(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_OBJECT:
+                    DefaultCastsToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
             return;
@@ -821,6 +824,61 @@ namespace NumpyLib
 
 
         }
+
+        static void DefaultCastsToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    CastBoolsToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    CastBytesToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    CastUBytesToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    CastInt16sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    CastUInt16sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    CastInt32sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    CastUInt32sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    CastInt64sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    CastUInt64sToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    CastFloatsToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    CastDoublesToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    CastDecimalsToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_OBJECT:
+                    CastObjectToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+
+        }
+
 
         static void DefaultCastsToComplexReal(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3533,6 +3591,204 @@ namespace NumpyLib
             while (srclen-- > 0)
             {
                 d[index + dest_offset] = (System.Numerics.BigInteger)(s[index + src_offset]);
+                index++;
+            }
+        }
+
+        #endregion
+
+        #region Object specific casts
+        static void CastBoolsToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as bool[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset] == true ? 1 : 0;
+                index++;
+            }
+        }
+        static void CastBytesToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as sbyte[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastUBytesToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as byte[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastInt16sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int16[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastUInt16sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt16[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastInt32sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int32[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastUInt32sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt32[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastInt64sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int64[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastUInt64sToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt64[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastFloatsToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as float[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = float.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastDoublesToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as double[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = s[index + src_offset];
+                }
+                catch
+                {
+                    d[index + dest_offset] = double.MinValue;
+                }
+                index++;
+            }
+        }
+        static void CastDecimalsToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as decimal[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastComplexToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastBigIntToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+        static void CastObjectToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as object[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
                 index++;
             }
         }
