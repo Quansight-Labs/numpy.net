@@ -133,6 +133,10 @@ namespace NumpyDotNet
                     {
                         return new VoidPtr(new System.Numerics.BigInteger[] { (System.Numerics.BigInteger)o });
                     }
+                    if (o is object)
+                    {
+                        return new VoidPtr(new object[] { (object)o });
+                    }
                     throw new Exception("Unable to convert numeric type");
             }
         }

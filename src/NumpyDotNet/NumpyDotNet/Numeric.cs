@@ -512,6 +512,22 @@ namespace NumpyDotNet
                 return ret;
             }
 
+            //if (a is string)
+            //{
+            //    ndarray ret = np.array(GetSingleElementArray(new object()), null);
+            //    ret.SetItem(a, 0);
+            //    ret.Array.IsScalar = false;
+            //    return ret;
+            //}
+
+            if (a is object)
+            {
+                ndarray ret = np.array(GetSingleElementArray(new object()), null);
+                ret.SetItem(a, 0);
+                ret.Array.IsScalar = false;
+                return ret;
+            }
+
             throw new Exception("Unable to convert object to ndarray");
         }
         #endregion
