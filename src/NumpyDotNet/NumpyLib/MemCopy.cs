@@ -2863,6 +2863,12 @@ namespace NumpyLib
         private static bool MemCpyObjectToObject(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             object[] sourceArray = Src.datap as object[];
+
+            if (sourceArray == null)
+            {
+                throw new Exception(string.Format("Unable to copy array of this type to object array"));
+            }
+
             object[] destArray = Dest.datap as object[];
             npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
 
