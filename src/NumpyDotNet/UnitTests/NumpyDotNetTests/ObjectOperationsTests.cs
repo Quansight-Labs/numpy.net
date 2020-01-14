@@ -242,14 +242,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_view_OBJECT_TODO()
+        public void test_ndarray_view_OBJECT()
         {
-            var x = np.arange(256 + 32, 256 + 64, dtype: np.BigInt);
+            var x = np.arange(256 + 32, 256 + 64, dtype: np.Int32);
+            x = np.array(x.AsObjectArray());
             print(x);
             print(x.shape);
             print(x.Dtype);
 
-            AssertArray(x, new BigInteger[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
+            AssertArray(x, new Object[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
@@ -257,26 +258,28 @@ namespace NumpyDotNetTests
             var y = x.view(np.UInt64);
             Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
 
-            y = x.view(np.BigInt);
-            AssertArray(y, y.AsBigIntArray());
+            y = x.view(np.Object);
+            AssertArray(y, y.AsObjectArray());
 
             y[5] = 1000;
 
-            AssertArray(x, new BigInteger[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
+            AssertArray(x, new Object[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
         }
-
+               
         [TestMethod]
-        public void test_ndarray_delete1_OBJECT_TODO()
+        public void test_ndarray_delete1_OBJECT()
         {
-            var x = np.arange(0, 32, dtype: np.BigInt).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4));
+            x = np.array(x.AsObjectArray()).reshape(new shape(8, 4));
+
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new BigInteger[8, 4]
+            var ExpectedDataX = new Object[8, 4]
             {
                     { 0, 1, 2, 3},
                     { 4, 5, 6, 7},
@@ -297,7 +300,7 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new BigInteger[8, 3]
+            var ExpectedDataY = new Object[8, 3]
             {
                     { 1, 2, 3},
                     { 99, 99, 99},
@@ -321,14 +324,16 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_delete2_OBJECT_TODO()
+        public void test_ndarray_delete2_OBJECT()
         {
-            var x = np.arange(0, 32, dtype: np.BigInt);
+            var x = np.arange(0, 32, dtype: np.Int32);
+            x = np.array(x.AsObjectArray());
+
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new BigInteger[] {0,  1,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataX = new object[] {0,  1,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
                                              24, 25, 26, 27, 28, 29, 30, 31 };
@@ -340,7 +345,7 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new BigInteger[] {0,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataY = new object[] {0,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
                                              24, 25, 26, 27, 28, 29, 30, 31 };
@@ -354,14 +359,16 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_delete3_OBJECT_TODO()
+        public void test_ndarray_delete3_OBJECT()
         {
-            var x = np.arange(0, 32, dtype: np.BigInt).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4));
+            x = np.array(x.AsObjectArray()).reshape(new shape(8, 4));
+
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new BigInteger[8, 4]
+            var ExpectedDataX = new object[8, 4]
             {
                 { 0, 1, 2, 3},
                 { 4, 5, 6, 7},
@@ -400,7 +407,7 @@ namespace NumpyDotNetTests
             print("Y");
             print(y);
 
-            var ExpectedDataY = new BigInteger[8, 3]
+            var ExpectedDataY = new object[8, 3]
             {
                 { 1, 2, 3},
                 { 5, 6, 7},
@@ -424,9 +431,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_unique_1_OBJECT_TODO()
+        public void test_ndarray_unique_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 });
+            var x = np.array(new Object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 });
 
             print("X");
             print(x);
@@ -439,7 +446,7 @@ namespace NumpyDotNetTests
 
             print("uvalues");
             print(uvalues);
-            AssertArray(uvalues, new BigInteger[] { 1, 2, 3, 4, 5 });
+            AssertArray(uvalues, new Object[] { 1, 2, 3, 4, 5 });
 
             print("indexes");
             print(indexes);
@@ -455,9 +462,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_1_OBJECT_TODO()
+        public void test_ndarray_where_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new Object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
 
             print("X");
             print(x);
@@ -470,9 +477,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_2_OBJECT_TODO()
+        public void test_ndarray_where_2_OBJECT()
         {
-            var x = np.array(new BigInteger[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
 
             print("X");
             print(x);
@@ -488,13 +495,14 @@ namespace NumpyDotNetTests
             var z = x.SliceMe(y) as ndarray;
             print("Z");
             print(z);
-            AssertArray(z, new BigInteger[] { 3, 3 });
+            AssertArray(z, new object[] { 3, 3 });
         }
 
         [TestMethod]
-        public void test_ndarray_where_3_OBJECT_TODO()
+        public void test_ndarray_where_3_OBJECT()
         {
-            var x = np.arange(0, 1000, dtype: np.BigInt).reshape(new shape(-1, 10));
+            var x = np.arange(0, 1000, dtype: np.Int32).reshape(new shape(-1, 10));
+            x = np.array(x.AsObjectArray()).reshape(new shape(-1, 10));
 
             //print("X");
             //print(x);
@@ -507,7 +515,7 @@ namespace NumpyDotNetTests
             print("Z");
             print(z);
 
-            var ExpectedDataZ = new BigInteger[]
+            var ExpectedDataZ = new object[]
             {
                 0,  10,  20,  30,  40,  50,  60,  70,  80,
                 90, 100, 110, 120, 130, 140, 150, 160, 170,
@@ -527,42 +535,45 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_4_OBJECT_TODO()
+        public void test_ndarray_where_4_OBJECT()
         {
-            var x = np.arange(0, 3000000, dtype: np.BigInt);
+            var x = np.arange(0, 3000000, dtype: np.Int32);
+            x = np.array(x.AsObjectArray());
 
             var y = np.where(x % 7 == 0);
-            //print("Y");
-            //print(y);
+            print("Y");
+            print(y);
 
             var z = x[y] as ndarray;
-            var m = np.mean(z, dtype: np.BigInt);
-            print("M");
-            Assert.AreEqual((BigInteger)1499998.5, m.GetItem(0));
-            print(m);
+            print(z);
+            //var m = np.mean(z);
+            //print("M");
+            //Assert.AreEqual((Object)1499998.5, m.GetItem(0));
+            //print(m);
 
             return;
         }
 
         [TestMethod]
-        public void test_ndarray_where_5_OBJECT_TODO()
+        public void test_ndarray_where_5_OBJECT()
         {
-            var a = np.arange(10, dtype: np.BigInt);
+            var a = np.arange(10, dtype: np.Int32);
+            a = np.array(a.AsObjectArray());
 
             var b = np.where(a < 5, a, 10 * a) as ndarray;
-            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
+            AssertArray(b, new object[] { 0, 1, 2, 3, 4, (double)50, (double)60, (double)70, (double)80, (double)90 });
             print(b);
 
-            a = np.array(new BigInteger[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
+            a = np.array(new object[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
             b = np.where(a < 4, a, -1) as ndarray;  // -1 is broadcast
-            AssertArray(b, new BigInteger[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
+            AssertArray(b, new object[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
             print(b);
 
             var c = np.where(new bool[,] { { true, false }, { true, true } },
-                                    new BigInteger[,] { { 1, 2 }, { 3, 4 } },
-                                    new BigInteger[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
+                                    new object[,] { { 1, 2 }, { 3, 4 } },
+                                    new object[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
 
-            AssertArray(c, new BigInteger[,] { { 1, 8 }, { 3, 4 } });
+            AssertArray(c, new object[,] { { 1, 8 }, { 3, 4 } });
 
             print(c);
 
@@ -570,9 +581,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arange_slice_1_OBJECT_TODO()
+        public void test_arange_slice_1_OBJECT()
         {
-            var a = np.arange(0, 1024, dtype: np.BigInt).reshape(new shape(2, 4, -1));
+            var a = np.arange(0, 1024, dtype: np.Int32).reshape(new shape(2, 4, -1));
+            a = np.array(a.AsObjectArray()).reshape(new shape(2, 4, -1));
 
             print("A");
             // print(a);
@@ -588,7 +600,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new BigInteger[2, 4]
+            var ExpectedDataB = new object[2, 4]
             {
                 { 122, 250, 378, 506},
                 { 634, 762, 890, 1018 },
@@ -604,7 +616,7 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            var ExpectedDataC = new BigInteger[2, 4, 1]
+            var ExpectedDataC = new object[2, 4, 1]
             {
                 {
                     { 122 },
@@ -631,7 +643,7 @@ namespace NumpyDotNetTests
             print(d.shape);
             print(d.strides);
 
-            var ExpectedDataD = new BigInteger[2, 4, 2]
+            var ExpectedDataD = new object[2, 4, 2]
             {
                 {
                     { 122, 123 },
