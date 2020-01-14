@@ -667,9 +667,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arange_slice_2A_OBJECT_TODO()
+        public void test_arange_slice_2A_OBJECT()
         {
-            var a = np.arange(0, 32, dtype: np.BigInt).reshape(new shape(2, 4, -1));
+            var a = np.arange(0, 32, dtype: np.Int32).reshape(new shape(2, 4, -1));
+            a = np.array(a.AsObjectArray()).reshape(new shape(2, 4, -1));
 
             print("A");
             // print(a);
@@ -682,7 +683,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new BigInteger[,,,]
+            var ExpectedDataB = new object[,,,]
                 {{{{1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1},
                    {1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3},
                    {1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3}},
@@ -720,12 +721,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_insert_1_OBJECT_TODO()
+        public void test_insert_1_OBJECT()
         {
-            BigInteger[,] TestData = new BigInteger[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
-            ndarray a = np.array(TestData, dtype: np.BigInt);
+            object[,] TestData = new object[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+            ndarray a = np.array(TestData, dtype: np.Int32);
+            a = np.array(a.AsObjectArray());
+
             ndarray b = np.insert(a, 1, 5);
-            ndarray c = np.insert(a, 0, new BigInteger[] { 999, 100, 101 });
+            ndarray c = np.insert(a, 0, new object[] { 999, 100, 101 });
 
             print(a);
             print(a.shape);
@@ -735,7 +738,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new BigInteger[] { 1, 5, 1, 2, 2, 3, 3 });
+            AssertArray(b, new int[] { 1, 5, 1, 2, 2, 3, 3 });
             AssertShape(b, 7);
             //AssertStrides(b, 16);
 
@@ -744,19 +747,23 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new BigInteger[] { 999, 100, 101, 1, 1, 2, 2, 3, 3 });
+            AssertArray(c, new int[] { 999, 100, 101, 1, 1, 2, 2, 3, 3 });
             AssertShape(c, 9);
             //AssertStrides(c, 16);
         }
 
         [TestMethod]
-        public void test_insert_2_OBJECT_TODO()
+        public void test_insert_2_OBJECT()
         {
-            BigInteger[] TestData1 = new BigInteger[] { 1, 1, 2, 2, 3, 3 };
-            BigInteger[] TestData2 = new BigInteger[] { 90, 91, 92, 92, 93, 93 };
+            int[] TestData1 = new int[] { 1, 1, 2, 2, 3, 3 };
+            int[] TestData2 = new int[] { 90, 91, 92, 92, 93, 93 };
 
-            ndarray a = np.array(TestData1, dtype: np.BigInt);
-            ndarray b = np.array(TestData2, dtype: np.BigInt);
+            ndarray a = np.array(TestData1, dtype: np.Int32);
+            a = np.array(a.AsObjectArray());
+
+            ndarray b = np.array(TestData2, dtype: np.Int32);
+            b = np.array(b.AsObjectArray());
+
             ndarray c = np.insert(a, new Slice(null), b);
 
             print(a);
@@ -767,7 +774,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new BigInteger[] { 90, 91, 92, 92, 93, 93 });
+            AssertArray(b, new object[] { 90, 91, 92, 92, 93, 93 });
             AssertShape(b, 6);
             //AssertStrides(b, 4);
 
@@ -776,18 +783,20 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new BigInteger[] { 90, 1, 91, 1, 92, 2, 92, 2, 93, 3, 93, 3 });
+            AssertArray(c, new object[] { 90, 1, 91, 1, 92, 2, 92, 2, 93, 3, 93, 3 });
             AssertShape(c, 12);
             //AssertStrides(c, 4);
 
         }
 
         [TestMethod]
-        public void test_append_1_OBJECT_TODO()
+        public void test_append_1_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { 1, 1, 2, 2, 3, 3 };
-            ndarray a = np.array(TestData, dtype: np.BigInt);
-            ndarray b = np.append(a, (BigInteger)1);
+            int[] TestData = new int[] { 1, 1, 2, 2, 3, 3 };
+            ndarray a = np.array(TestData, dtype: np.Int32);
+            a = np.array(a.AsObjectArray());
+
+            ndarray b = np.append(a, (object)1);
 
             print(a);
             print(a.shape);
@@ -796,18 +805,19 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new BigInteger[] { 1, 1, 2, 2, 3, 3, 1 });
+            AssertArray(b, new object[] { 1, 1, 2, 2, 3, 3, 1 });
             AssertShape(b, 7);
             //AssertStrides(b, 16);
         }
 
         [TestMethod]
-        public void test_append_3_OBJECT_TODO()
+        public void test_append_3_OBJECT()
         {
-            BigInteger[] TestData1 = new BigInteger[] { 1, 1, 2, 2, 3, 3 };
-            BigInteger[] TestData2 = new BigInteger[] { 4, 4, 5, 5, 6, 6 };
-            ndarray a = np.array(TestData1, dtype: np.BigInt);
-            ndarray b = np.array(TestData2, dtype: np.BigInt);
+            object[] TestData1 = new object[] { "1", "1", "2", "2", "3", "3" };
+            object[] TestData2 = new object[] { "4", "4", "5", "5", "6", "6" };
+            ndarray a = np.array(TestData1, dtype: np.Object);
+            ndarray b = np.array(TestData2, dtype: np.Object);
+
 
             ndarray c = np.append(a, b);
 
@@ -821,18 +831,18 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new BigInteger[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 });
+            AssertArray(c, new object[] { "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6" });
             AssertShape(c, 12);
             //AssertStrides(c, 16);
         }
 
         [TestMethod]
-        public void test_append_4_OBJECT_TODO()
+        public void test_append_4_OBJECT()
         {
-            BigInteger[] TestData1 = new BigInteger[] { 1, 1, 2, 2, 3, 3 };
-            BigInteger[] TestData2 = new BigInteger[] { 4, 4, 5, 5, 6, 6 };
-            ndarray a = np.array(TestData1, dtype: np.BigInt).reshape((2, -1));
-            ndarray b = np.array(TestData2, dtype: np.BigInt).reshape((2, -1));
+            object[] TestData1 = new object[] { "1", "1", "2", "2", "3", "3" };
+            object[] TestData2 = new object[] { "4", "4", "5", "5", "6", "6" };
+            ndarray a = np.array(TestData1, dtype: np.Object).reshape((2, -1));
+            ndarray b = np.array(TestData2, dtype: np.Object).reshape((2, -1));
 
             ndarray c = np.append(a, b, axis: 1);
 
@@ -849,10 +859,10 @@ namespace NumpyDotNetTests
             print(c.strides);
             print("");
 
-            var ExpectedDataC = new BigInteger[,]
+            var ExpectedDataC = new object[,]
             {
-                { 1, 1, 2, 4, 4, 5 },
-                { 2, 3, 3, 5, 6, 6 },
+                { "1", "1", "2", "4", "4", "5" },
+                { "2", "3", "3", "5", "6", "6" },
             };
 
             AssertArray(c, ExpectedDataC);
