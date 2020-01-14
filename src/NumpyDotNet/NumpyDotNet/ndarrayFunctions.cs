@@ -97,6 +97,27 @@ namespace NumpyDotNet
             return initialized;
         }
 
+        #region Assertions
+
+        private static void AssertConvertableToFloating(object a, dtype dtype)
+        {
+            if (dtype != null)
+            {
+                switch (dtype.TypeNum)
+                {
+                    case NPY_TYPES.NPY_OBJECT:
+                        throw new Exception(string.Format("This function doesn't support {0} data types", dtype.TypeNum.ToString().Substring(4)));
+                }
+            }
+  
+   
+        }
+
+
+
+        #endregion
+
+
         #region array
 
         public static ndarray array<T>(T[] arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
@@ -168,6 +189,8 @@ namespace NumpyDotNet
                     return array(arr.datap as System.Numerics.Complex[], dtype, copy, order, subok, ndmin);
                 case NPY_TYPES.NPY_BIGINT:
                     return array(arr.datap as System.Numerics.BigInteger[], dtype, copy, order, subok, ndmin);
+                case NPY_TYPES.NPY_OBJECT:
+                    return array(arr.datap as object[], dtype, copy, order, subok, ndmin);
             }
 
             throw new Exception("unrecognized array type");
@@ -2926,6 +2949,11 @@ namespace NumpyDotNet
 
         private static NPY_TYPES Get_NPYType<T>(T[] _Array)
         {
+            if (typeof(T) == typeof(Object))
+            {
+                return NPY_TYPES.NPY_OBJECT;
+            }
+
             if (_Array.Length == 0)
             {
                 T[] tt = new T[1];

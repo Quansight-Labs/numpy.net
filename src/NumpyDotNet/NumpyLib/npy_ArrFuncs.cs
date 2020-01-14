@@ -885,17 +885,14 @@ namespace NumpyLib
 
                     }
 
+                // these data types can't be swapped
                 case NPY_TYPES.NPY_DECIMAL:
-                    {
-                        // decimals can't be swapped
-                        return;
-                    }
-
                 case NPY_TYPES.NPY_COMPLEX:
-                {
-                    // complex can't be swapped
-                    return;
-                }
+                case NPY_TYPES.NPY_BIGINT:
+                case NPY_TYPES.NPY_OBJECT:
+                     return;
+
+
 
             }
         }

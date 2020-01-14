@@ -600,6 +600,7 @@ namespace NumpyDotNet
 
         public static ndarray asfarray(object a, dtype dtype = null)
         {
+            AssertConvertableToFloating(a, dtype);
 
             var a1 = asanyarray(a);
 
@@ -617,6 +618,7 @@ namespace NumpyDotNet
             return asarray(a1, dtype: dtype);
         }
 
+  
         #endregion
 
         #region require

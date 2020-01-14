@@ -173,6 +173,11 @@ namespace NumpyLib
             datap = obj;
             type_num = NPY_TYPES.NPY_BIGINT;
         }
+        public VoidPtr(object[] obj)
+        {
+            datap = obj;
+            type_num = NPY_TYPES.NPY_OBJECT;
+        }
         public VoidPtr()
         {
             datap = null;
