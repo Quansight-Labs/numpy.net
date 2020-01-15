@@ -1257,427 +1257,273 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cos_1_OBJECT_TODO()
+        public void test_cos_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 1.0, -0.416146836547142, -0.653643620863612, 0.960170286650366, -0.145500033808614 };
-
-            var a = np.arange(0, 10, dtype: np.BigInt);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            var b = np.cos(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
 
-            print("********");
-
-            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
-            a = a["::2"] as ndarray;
-            b = np.cos(a);
-
-            var ExpectedDataB = new double[,,]
-                {{{ 1.0,               0.54030230586814, -0.416146836547142, -0.989992496600445, -0.653643620863612},
-                  { 0.283662185463226, 0.960170286650366, 0.753902254343305, -0.145500033808614, -0.911130261884677}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
-            print("********");
-
-            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
-            a = a["::2"] as ndarray;
-            b = np.cos(a, where: a > 2);
-            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
-            print(b);
-
-            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
-            a = a["::2"] as ndarray;
-            b = np.cos(a, where: new bool[,] { { false, false, false, true, true } });
-            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.989992496600445, -0.65364362086361 } });
-            print(b);
+            try
+            {
+                var b = np.cos(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_tan_1_OBJECT_TODO()
+        public void test_tan_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 0.0, -2.18503986326152, 1.15782128234958, -0.291006191384749, -6.79971145522038 };
-
-            var a = np.arange(0, 10, dtype: np.BigInt);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            var b = np.tan(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
 
-
-            print("********");
-
-            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
-            a = a["::2"] as ndarray;
-            b = np.tan(a);
-
-            var ExpectedDataB = new double[,,]
-                {{{ 0.0, 1.5574077246549, -2.18503986326152, -0.142546543074278, 1.15782128234958},
-                  { -3.38051500624659, -0.291006191384749, 0.871447982724319, -6.79971145522038, -0.45231565944181}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
-            print("********");
-
-            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
-            a = a["::2"] as ndarray;
-            b = np.tan(a, where: a > 2);
-            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
-            print(b);
-
-            a = np.array(new BigInteger[,] { { 0, 1, 2, 3, 4 }, { 5, 6, 7, 8, 9 } });
-            a = a["::2"] as ndarray;
-            b = np.tan(a, where: new bool[,] { { false, false, false, true, true } });
-            AssertArray(b, new double[,] { { np.NaN, np.NaN, np.NaN, -0.142546543074278, 1.15782128234958 } });
-            print(b);
+            try
+            {
+                var b = np.tan(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arcsin_1_OBJECT_TODO()
+        public void test_arcsin_1_OBJECT()
         {
-            var ExpectedResult = new double[] { double.NaN, double.NaN, double.NaN, double.NaN, -1.5707963267949, 0.0, 1.5707963267949, double.NaN, double.NaN, double.NaN };
-
-            var a = np.arange(-5, 5, dtype: np.BigInt);
-            var b = np.arcsin(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.arange(-6, 6, dtype: np.BigInt).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arcsin(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{ double.NaN,double.NaN, double.NaN},
-                  { double.NaN, double.NaN, -1.5707963267949 }}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
-            print("********");
-
-            a = np.arange(-5, 5, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arcsin(a, where: a > -0.5);
-            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, 1.5707963267949, double.NaN });
-            print(b);
-
-            a = np.arange(-5, 5, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arcsin(a, where: new bool[] { false, false, true, true, true });
-            AssertArray(b, new double[] { double.NaN, double.NaN, -1.5707963267949, 1.5707963267949, double.NaN });
-            print(b);
+            try
+            {
+                var b = np.arcsin(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arccos_1_OBJECT_TODO()
+        public void test_arccos_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 3.14159265358979, 1.5707963267949, 1.5707963267949,
-                                                1.5707963267949, 1.5707963267949, 1.5707963267949,
-                                                1.5707963267949, 1.5707963267949, 1.5707963267949,
-                                                1.5707963267949, 1.5707963267949, 0.0 };
-
-            double ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            var b = np.arccos(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arccos(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{3.14159265358979, 1.5707963267949, 1.5707963267949},
-                  {1.5707963267949, 1.5707963267949, 1.5707963267949}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
-            print("********");
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arccos(a, where: a > -0.5);
-            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN });
-            print(b);
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arccos(a, where: new bool[] { false, false, true, true, true, true });
-            AssertArray(b, new double[] { double.NaN, double.NaN, 1.5707963267949, 1.5707963267949, 1.5707963267949, 1.5707963267949 });
-            print(b);
+            try
+            {
+                var b = np.arccos(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arctan_1_OBJECT_TODO()
+        public void test_arctan_1_OBJECT()
         {
-            var ExpectedResult = new double[] { -0.785398163397448, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.785398163397448 };
-
-            double ref_step = 0;
-            var a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            var b = np.arctan(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arctan(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{ -0.785398163397448, 0.0, 0.0},
-                  {0.0, 0.0, 0.0 }}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
-            print("********");
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arctan(a, where: a > -0.5);
-            AssertArray(b, new double[] { double.NaN, double.NaN, -double.NaN, double.NaN, double.NaN, double.NaN });
-            print(b);
-
-            a = np.linspace(-1.0, 1.0, ref ref_step, 12, dtype: np.BigInt);
-            a = a.A("::2");
-            b = np.arctan(a, where: new bool[] { false, false, true, true, true, true });
-            AssertArray(b, new double[] { double.NaN, double.NaN, 0.0, 0.0, 0.0, 0.0 });
-            print(b);
+            try
+            {
+                var b = np.arctan(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_hypot_1_OBJECT_TODO()
+        public void test_hypot_1_OBJECT()
         {
-
-            var a = np.hypot(np.ones((3, 3), dtype: np.BigInt) * 3, np.ones((3, 3), dtype: np.BigInt) * 4);
-            print(a);
-            AssertArray(a, new BigInteger[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
-
-            var b = np.hypot(np.ones((3, 3), dtype: np.BigInt) * 3, new BigInteger[] { 4 });
-            print(b);
-            AssertArray(b, new BigInteger[,] { { 5, 5, 5 }, { 5, 5, 5 }, { 5, 5, 5 } });
-
+            try
+            {
+                var b = np.hypot(np.ones((3, 3), dtype: np.Object) * 3, np.ones((3, 3), dtype: np.Object) * 4);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
+            
         }
 
         [TestMethod]
-        public void test_arctan2_1_OBJECT_TODO()
+        public void test_arctan2_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { -1, +1, +1, -1 });
-            var y = np.array(new BigInteger[] { -1, -1, +1, +1 });
-            var z = np.arctan2(y, x) * 180 / Math.PI;
-            AssertArray(z, new double[] { -135.0, -45.0, 45.0, 135.0 });
-            print(z);
-
-            var a = np.arctan2(new BigInteger[] { 1, -1 }, new BigInteger[] { 0, 0 });
-            AssertArray(a, new double[] { 1.5707963267949, -1.5707963267949 });
-            print(a);
+            try
+            {
+                var x = np.array(new Object[] { -1, +1, +1, -1 });
+                var y = np.array(new Object[] { -1, -1, +1, +1 });
+                var z = np.arctan2(y, x);
+                print(z);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         #region Hyperbolic functions
 
         [TestMethod]
-        public void test_sinh_1_OBJECT_TODO()
+        public void test_sinh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 0.0, 3.62686040784702, 27.2899171971278, 201.713157370279, 1490.47882578955 };
-
-            var a = np.arange(0, 10, dtype: np.BigInt);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            var b = np.sinh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
+
+            try
+            {
+                var b = np.sinh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
         }
 
         [TestMethod]
-        public void test_cosh_1_OBJECT_TODO()
+        public void test_cosh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 1.0, 3.76219569108363, 27.3082328360165, 201.715636122456, 1490.47916125218 };
-
-            var a = np.arange(0, 10, dtype: np.BigInt);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            var b = np.cosh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
 
-
-            print("********");
-
-            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
-            a = a["::2"] as ndarray;
-            b = np.cosh(a);
-
-            var ExpectedDataB = new double[,,]
-                {{{ 1.0,               1.54308063481524, 3.76219569108363, 10.0676619957778, 27.3082328360165},
-                  { 74.2099485247878, 201.715636122456, 548.317035155212, 1490.47916125218, 4051.54202549259}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
+            try
+            {
+                var b = np.cosh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
 
         }
 
         [TestMethod]
-        public void test_tanh_1_OBJECT_TODO()
+        public void test_tanh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 0.0, 0.964027580075817, 0.999329299739067, 0.999987711650796, 0.999999774929676 };
-
-            var a = np.arange(0, 10, dtype: np.BigInt);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            var b = np.tanh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
 
-            print("********");
-
-            a = np.arange(0, 10, dtype: np.BigInt).reshape((1, 2, 5));
-            a = a["::2"] as ndarray;
-            b = np.tanh(a);
-
-            var ExpectedDataB = new double[,,]
-                {{{ 0.0, 0.761594155955765, 0.964027580075817, 0.99505475368673, 0.999329299739067},
-                  { 0.999909204262595, 0.999987711650796, 0.999998336943945, 0.999999774929676, 0.999999969540041}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
+            try
+            {
+                var b = np.tanh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arcsinh_1_OBJECT_TODO()
+        public void test_arcsinh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { -0.881373587019543, -0.881373587019543, -0.881373587019543,
-                                                -0.881373587019543, -0.881373587019543, -0.881373587019543,
-                                                -0.881373587019543, -0.881373587019543, -0.881373587019543,
-                                                -0.881373587019543, -0.881373587019543, 0.881373587019543 };
-
-            BigInteger ref_step = 0;
-            var a = np.linspace(-1, 1, ref ref_step, 12);
-            var b = np.arcsinh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.linspace(-1, 1, ref ref_step, 12).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arcsinh(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{  -0.881373587019543, -0.881373587019543, -0.881373587019543},
-                  {  -0.881373587019543, -0.881373587019543, -0.881373587019543}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
+            try
+            {
+                var b = np.arcsinh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arccosh_1_OBJECT_TODO()
+        public void test_arccosh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.31695789692482 };
-
-            BigInteger ref_step = 0;
-            var a = np.linspace(1, 2, ref ref_step, 12);
-            var b = np.arccosh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.linspace(1, 2, ref ref_step, 12).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arccosh(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{0.0, 0.0, 0.0 },
-                  {0.0, 0.0, 0.0 }}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
-
+            try
+            {
+                var b = np.arccosh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_arctanh_1_OBJECT_TODO()
+        public void test_arctanh_1_OBJECT()
         {
-            var ExpectedResult = new double[] { double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity,
-                                                double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity,
-                                                double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity, double.PositiveInfinity };
-
-            BigInteger ref_step = 0;
-            var a = np.linspace(-1, 1, ref ref_step, 12);
-            var b = np.arctanh(a);
-            AssertArray(b, ExpectedResult);
-            print(b);
-
-
-            print("********");
-
-            a = np.linspace(-1, 1, ref ref_step, 12).reshape((2, 2, 3));
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
             a = a["::2"] as ndarray;
-            b = np.arctanh(a);
 
-            var ExpectedDataB = new double[,,]
-                {{{double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity},
-                  {double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity}}};
-
-            AssertArray(b, ExpectedDataB);
-            print(b);
+            try
+            {
+                var b = np.arctanh(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         #endregion
 
         [TestMethod]
-        public void test_degrees_1_OBJECT_TODO()
+        public void test_degrees_1_OBJECT()
         {
-            var rad = np.arange(12.0, dtype: np.BigInt) * Math.PI / 6;
-            var a = np.degrees(rad);
-            AssertArray(a, new double[] { 0.0, 28.6478897565412, 57.2957795130823, 85.9436692696235,
-                                          114.591559026165, 143.239448782706, 171.887338539247,
-                                          200.535228295788, 229.183118052329, 257.83100780887,
-                                          286.478897565412, 315.126787321953 });
-            print(a);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            a = a["::2"] as ndarray;
 
-            //var _out = np.zeros((rad.shape));
-            //var r = np.degrees(rad, _out);
-            //print(np.all(r == _out));
+            try
+            {
+                var b = np.degrees(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
         [TestMethod]
-        public void test_radians_1_OBJECT_TODO()
+        public void test_radians_1_OBJECT()
         {
-            var deg = np.arange(12.0, dtype: np.BigInt) * 30.0;
-            var a = np.radians(deg);
-            AssertArray(a, new double[] { 0.0, 0.523598775598299, 1.0471975511966, 1.5707963267949, 2.0943951023932,
-                                         2.61799387799149, 3.14159265358979, 3.66519142918809, 4.18879020478639,
-                                        4.71238898038469, 5.23598775598299, 5.75958653158129 });
-            print(a);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            a = a["::2"] as ndarray;
 
-            //var _out = np.zeros((deg.shape));
-            //var r = np.radians(deg, _out);
-            //print(np.all(r == _out));
+            try
+            {
+                var b = np.radians(a);
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
         }
 
