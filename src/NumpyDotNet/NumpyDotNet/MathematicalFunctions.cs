@@ -271,6 +271,12 @@ namespace NumpyDotNet
         public static ndarray sin(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Sin(value); };
@@ -293,6 +299,12 @@ namespace NumpyDotNet
         public static ndarray cos(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Cos(value); };
@@ -315,6 +327,12 @@ namespace NumpyDotNet
         public static ndarray tan(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Tan(value); };
@@ -337,6 +355,12 @@ namespace NumpyDotNet
         public static ndarray arcsin(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Asin(value); };
@@ -359,6 +383,12 @@ namespace NumpyDotNet
         public static ndarray arccos(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Acos(value); };
@@ -380,6 +410,12 @@ namespace NumpyDotNet
         public static ndarray arctan(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Atan(value); };
@@ -402,6 +438,12 @@ namespace NumpyDotNet
         public static ndarray hypot(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
@@ -436,6 +478,12 @@ namespace NumpyDotNet
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value1, value2) => { return Math.Atan2(value1.Real, value2.Real); };
@@ -463,6 +511,11 @@ namespace NumpyDotNet
         public static ndarray degrees(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -492,6 +545,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return Math.PI * value / 180; };
@@ -519,6 +577,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Sinh(value); };
@@ -541,6 +604,11 @@ namespace NumpyDotNet
         public static ndarray cosh(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -565,6 +633,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Tanh(value); };
@@ -588,6 +661,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArcsin(value.Real); };
@@ -610,6 +688,11 @@ namespace NumpyDotNet
         public static ndarray arccosh(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -636,6 +719,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return MathHelper.HArctan(value.Real); };
@@ -654,8 +742,6 @@ namespace NumpyDotNet
             }
 
         }
-
-
         #endregion
 
         #region Rounding Functions
@@ -663,6 +749,11 @@ namespace NumpyDotNet
         public static ndarray rint(object x, object where = null)
         {
             var a = asanyarray(x);
+
+            if (!a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a);
+            }
 
             var ret = NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_rint, 0);
             ret = ret.reshape(new shape(a.dims));
@@ -677,6 +768,12 @@ namespace NumpyDotNet
         public static ndarray fix(object x)
         {
             var a = asanyarray(x);
+
+            if (!a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a);
+            }
+
             var y1 = np.floor(a);
             var y2 = np.ceil(a);
 
@@ -687,6 +784,11 @@ namespace NumpyDotNet
         public static ndarray ceil(object x, object where = null)
         {
             var a = asanyarray(x);
+
+            if (!a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a);
+            }
 
             var ret = NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_ceil, 0);
             ret = ret.reshape(new shape(a.dims));
@@ -701,6 +803,12 @@ namespace NumpyDotNet
         public static ndarray trunc(object x)
         {
             var a = asanyarray(x);
+
+            if (!a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a);
+            }
+
             var y1 = np.floor(a);
             var y2 = np.ceil(a);
 
@@ -715,6 +823,11 @@ namespace NumpyDotNet
         public static ndarray exp(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -737,6 +850,11 @@ namespace NumpyDotNet
         public static ndarray expm1(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -775,6 +893,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Pow(2, value); };
@@ -791,6 +914,11 @@ namespace NumpyDotNet
         public static ndarray log(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -809,6 +937,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log10(value); };
@@ -825,6 +958,11 @@ namespace NumpyDotNet
         public static ndarray log2(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -843,6 +981,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, int, System.Numerics.Complex> mathfunc = (value, n1) => { return System.Numerics.Complex.Log(value, n1); };
@@ -860,6 +1003,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value) => { return System.Numerics.Complex.Log(value); };
@@ -876,6 +1024,11 @@ namespace NumpyDotNet
         public static ndarray logaddexp(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -900,6 +1053,11 @@ namespace NumpyDotNet
         {
             var xa = asanyarray(x1);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 Func<System.Numerics.Complex, System.Numerics.Complex, System.Numerics.Complex> mathfunc = (value1, value2) =>
@@ -922,6 +1080,11 @@ namespace NumpyDotNet
         public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
         {
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -954,6 +1117,12 @@ namespace NumpyDotNet
         public static ndarray signbit(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
@@ -1083,6 +1252,12 @@ namespace NumpyDotNet
         public static ndarray copysign(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
@@ -1201,6 +1376,12 @@ namespace NumpyDotNet
         public static ndarray[] frexp(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x);
@@ -1287,6 +1468,15 @@ namespace NumpyDotNet
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
 
+            if (!a1.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a1);
+            }
+            if (!a2.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a2);
+            }
+
             if (a1.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex>(x1, x2);
@@ -1347,6 +1537,15 @@ namespace NumpyDotNet
         {
             var a1 = asanyarray(x1);
             var a2 = asanyarray(x2);
+
+            if (!a1.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a1);
+            }
+            if (!a2.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a2);
+            }
 
             bool a1b = !a1.IsAScalar && a1.IsFloatingPoint && a1.ItemSize <= sizeof(float);
             bool a2b = !a2.IsAScalar && a2.IsFloatingPoint && a2.ItemSize <= sizeof(float);
@@ -1442,9 +1641,13 @@ namespace NumpyDotNet
  
         public static ndarray lcm(object x1, object x2, object where = null)
         {
-            ndarray ret;
-             
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsInteger)
             {
                 if (xa.IsBigInt)
@@ -1473,9 +1676,13 @@ namespace NumpyDotNet
 
         public static ndarray gcd(object x1, object x2, object where = null)
         {
-            ndarray ret;
-
             var xa = asanyarray(x1);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             if (xa.IsInteger)
             {
                 if (xa.IsBigInt)
@@ -1671,6 +1878,11 @@ namespace NumpyDotNet
         public static ndarray sign(object x, object where = null)
         {
             var xa = asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             if (xa.IsComplex)
             {
@@ -1962,6 +2174,15 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region Error handling
+
+        private static void ArrayTypeNotSupported(ndarray a, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "")
+        {
+            string arrayType = a.TypeNum.ToString().Substring(4);
+            throw new Exception(string.Format("Arrays of type {0} are not supported by {1}", arrayType, "np." + memberName));
+        }
+
+        #endregion
     }
 
     #region MathHelper

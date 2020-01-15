@@ -1309,6 +1309,7 @@ namespace NumpyDotNet
         internal bool IsComplex {
             get { return NpyDefs.IsComplex(TypeNum); }
         }
+               
         internal bool IsBigInt
         {
             get { return NpyDefs.IsBigInt(TypeNum); }
@@ -1336,6 +1337,25 @@ namespace NumpyDotNet
         public bool IsFlexible {
             get { return NpyDefs.IsFlexible(TypeNum); }
         }
+
+        public bool IsMathFunctionCapable
+        {
+            get
+            {
+                switch (TypeNum)
+                {
+                    case NPY_TYPES.NPY_OBJECT:
+                    case NPY_TYPES.NPY_STRING:
+                    case NPY_TYPES.NPY_DATETIME:
+                    case NPY_TYPES.NPY_TIMEDELTA:
+                    case NPY_TYPES.NPY_VOID:
+                        return false;
+                    default:
+                        return true;
+                }
+            }
+        }
+
 
         internal bool IsMatrix
         {
