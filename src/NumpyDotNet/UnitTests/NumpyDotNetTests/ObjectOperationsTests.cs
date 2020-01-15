@@ -1129,1113 +1129,82 @@ namespace NumpyDotNetTests
 
         #region from NumericalOperationsTests
 
-        [TestMethod]
-        public void test_add_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a + 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new BigInteger[,]
-            {{8,  9, 10, 11},
-             {12, 13, 14, 15},
-             {16, 17, 18, 19},
-             {20, 21, 22, 23},
-             {24, 25, 26, 27}
-            };
-            AssertArray(b, ExpectedDataB);
-
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a + 2400;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            ExpectedDataB = new BigInteger[,]
-            {{2400, 2401, 2402, 2403},
-             {2404, 2405, 2406, 2407},
-             {2408, 2409, 2410, 2411},
-             {2412, 2413, 2414, 2415},
-             {2416, 2417, 2418, 2419}
-            };
-            AssertArray(b, ExpectedDataB);
-
-        }
 
         [TestMethod]
-        public void test_add_operations_OBJECT_TODO_2()
+        public void test_rot90_1_OBJECT()
         {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-
-            var ExpectedDataA = new BigInteger[,]
-                {{0,  1,  2,  3},
-                 {4,  5,  6,  7},
-                 {8,  9, 10, 11},
-                 {12, 13, 14, 15},
-                 {16, 17, 18, 19}};
-            AssertArray(a, ExpectedDataA);
-
-            var b = np.array(new BigInteger[] { 2 });
-            var c = a + b;
-            print(c);
-
-            var ExpectedDataC = new BigInteger[,]
-                {{2,  3,  4,  5},
-                 {6,  7,  8,  9},
-                 {10, 11, 12, 13},
-                 {14, 15, 16, 17},
-                 {18, 19, 20, 21}};
-            AssertArray(c, ExpectedDataC);
-
-
-            b = np.array(new BigInteger[] { 10, 20, 30, 40 });
-            var d = a + b;
-            print(d);
-
-            var ExpectedDataD = new BigInteger[,]
-                {{10, 21, 32, 43},
-                 {14, 25, 36, 47},
-                 {18, 29, 40, 51},
-                 {22, 33, 44, 55},
-                 {26, 37, 48, 59}};
-            AssertArray(d, ExpectedDataD);
-        }
-
-        [TestMethod]
-        public void test_subtract_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a - 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new BigInteger[,]
-            {{-8, -7, -6, -5},
-             {-4, -3, -2, -1},
-             {0,  1,  2,  3},
-             {4,  5,  6,  7},
-             {8,  9, 10, 11}
-            };
-            AssertArray(b, ExpectedDataB);
-
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a - 2400;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            ExpectedDataB = new BigInteger[,]
-            {{-2400, -2399, -2398, -2397},
-             {-2396, -2395, -2394, -2393},
-             {-2392, -2391, -2390, -2389},
-             {-2388, -2387, -2386, -2385},
-             {-2384, -2383, -2382, -2381}
-            };
-
-            AssertArray(b, ExpectedDataB);
-
-        }
-
-        [TestMethod]
-        public void test_subtract_operations_OBJECT_TODO_2()
-        {
-            var a = np.arange(100, 102, 1, dtype: np.BigInt);
-            var b = np.array(new BigInteger[] { 1, 63 });
-            var c = a - b;
-            print(a);
-            print("****");
-            print(b);
-            print("****");
-            print(c);
-            print("****");
-            AssertArray(c, new BigInteger[] { 99, 38 });
-
-
-            a = np.arange(0, 4, 1, dtype: np.BigInt).reshape(new shape(2, 2));
-            b = np.array(new BigInteger[] { 65, 78 }).reshape(new shape(1, 2));
-            c = a - b;
-            print(a);
-            print("****");
-            print(b);
-            print("****");
-            print(c);
-            print("****");
-            AssertArray(c, new BigInteger[,] { { -65, -77 }, { -63, -75 } });
-
-        }
-
-        [TestMethod]
-        public void test_multiply_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger multiplierB1 = 9023;
-            var b = a * multiplierB1;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
-            {
-                {0*multiplierB1,  1*multiplierB1,  2*multiplierB1,  3*multiplierB1},
-                {4*multiplierB1,  5*multiplierB1,  6*multiplierB1,  7*multiplierB1},
-                {8*multiplierB1,  9*multiplierB1,  10*multiplierB1, 11*multiplierB1},
-                {12*multiplierB1, 13*multiplierB1, 14*multiplierB1, 15*multiplierB1},
-                {16*multiplierB1, 17*multiplierB1, 18*multiplierB1, 19*multiplierB1}
-            };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger multiplierB2 = 990425023;
-            b = a * multiplierB2;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {0*multiplierB2,  1*multiplierB2,  2*multiplierB2,  3*multiplierB2},
-                {4*multiplierB2,  5*multiplierB2,  6*multiplierB2,  7*multiplierB2},
-                {8*multiplierB2,  9*multiplierB2,  10*multiplierB2, 11*multiplierB2},
-                {12*multiplierB2, 13*multiplierB2, 14*multiplierB2, 15*multiplierB2},
-                {16*multiplierB2, 17*multiplierB2, 18*multiplierB2, 19*multiplierB2}
-            };
-            AssertArray(b, ExpectedDataB2);
-        }
-
-        [TestMethod]
-        public void test_division_operations_OBJECT_TODO()
-        {
-            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger divisorB1 = 611;
-            var b = a / divisorB1;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
-            {
-                {20000/divisorB1, 20001/divisorB1, 20002/divisorB1, 20003/divisorB1},
-                {20004/divisorB1, 20005/divisorB1, 20006/divisorB1, 20007/divisorB1},
-                {20008/divisorB1, 20009/divisorB1, 20010/divisorB1, 20011/divisorB1},
-                {20012/divisorB1, 20013/divisorB1, 20014/divisorB1, 20015/divisorB1},
-                {20016/divisorB1, 20017/divisorB1, 20018/divisorB1, 20019/divisorB1}
-            };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2000000, 2000020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger divisorB2 = 2411;
-            b = a / divisorB2;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {2000000/divisorB2, 2000001/divisorB2, 2000002/divisorB2, 2000003/divisorB2},
-                {2000004/divisorB2, 2000005/divisorB2, 2000006/divisorB2, 2000007/divisorB2},
-                {2000008/divisorB2, 2000009/divisorB2, 2000010/divisorB2, 2000011/divisorB2},
-                {2000012/divisorB2, 2000013/divisorB2, 2000014/divisorB2, 2000015/divisorB2},
-                {2000016/divisorB2, 2000017/divisorB2, 2000018/divisorB2, 2000019/divisorB2},
-            };
-            AssertArray(b, ExpectedDataB2);
-        }
-
-        [TestMethod]
-        public void test_leftshift_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a << 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
-            {
-                {0,  256,  512,  768},
-                {1024, 1280, 1536, 1792},
-                {2048, 2304, 2560, 2816},
-                {3072, 3328, 3584, 3840},
-                {4096, 4352, 4608, 4864}
-            };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a << 24;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {0,  16777216,  33554432,  50331648},
-                {67108864,  83886080, 100663296, 117440512},
-                {134217728, 150994944, 167772160, 184549376},
-                {201326592, 218103808, 234881024, 251658240},
-                {268435456, 285212672, 301989888, 318767104}
-            };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_rightshift_operations_OBJECT_TODO()
-        {
-            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a >> 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
-            {
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78}
-            };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2123450, 2123470, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a >> 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 }
-            };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_bitwiseand_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a & 0x0f;
-            print(b);
-
-            var ExpectedDataB1 = new BigInteger[]
-            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
-              0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = a & 0xFF;
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
-              16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_bitwiseor_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a | 0x100;
-            print(b);
-
-            var ExpectedDataB1 = new BigInteger[]
-            { 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
-              272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287 };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = a | 0x1000;
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            { 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 6152, 6153, 6154, 6155, 6156, 6157,
-              6158, 6159, 6160, 6161, 6162, 6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171,
-              6172, 6173, 6174, 6175 };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_bitwisexor_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a ^ 0xAAA;
-            print(b);
-
-            var ExpectedDataB1 = new BigInteger[]
-            { 2730, 2731, 2728, 2729, 2734, 2735, 2732, 2733, 2722, 2723, 2720, 2721, 2726, 2727, 2724,
-              2725, 2746, 2747, 2744, 2745, 2750, 2751, 2748, 2749, 2738, 2739, 2736, 2737, 2742, 2743, 2740, 2741 };
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = a ^ 0xAAAA;
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
-              41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
-              41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_remainder_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a % 6;
-            print(b);
-
-            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3,
-                                         4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1 });
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = a % 6;
-            print(b);
-
-            AssertArray(b, new BigInteger[] { 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,
-                                         0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
-
-        }
-
-        [TestMethod]
-        public void test_sqrt_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = np.sqrt(a);
-            print(b);
-
-            var ExpectedDataB1 = new BigInteger[]
-            {
-               0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6
-            };
-
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = np.sqrt(a);
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            {
-                45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46
-            };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_cbrt_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = np.cbrt(a);
-            print(b);
-
-            var ExpectedDataB1 = new BigInteger[]
-            {
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-            };
-
-            AssertArray(b, ExpectedDataB1);
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = np.cbrt(a);
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            {
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-            };
-            AssertArray(b, ExpectedDataB2);
-        }
-
-        [TestMethod]
-        public void test_negative_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 12, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = -a;
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
-            {
-                 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11
-            };
-            AssertArray(b, ExpectedDataB2);
-
-        }
-
-        [TestMethod]
-        public void test_invert_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-32, 32, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = ~a;
-            print(b);
-
-            // this should not be changed at all.  BigInts can't be inverted.
-            AssertArray(b, a.AsBigIntArray());
-
-        }
-
-        [TestMethod]
-        public void test_LESS_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a < -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_LESSEQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a <= -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_EQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a == -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_NOTEQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a != -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
-        }
-
-        [TestMethod]
-        public void test_GREATER_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a > -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, false, true, true, true, true, true, true });
-
-        }
-
-        [TestMethod]
-        public void test_GREATEREQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a >= -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, true, true, true, true, true, true, true });
-
-        }
-
-        [TestMethod]
-        public void test_arrayarray_or_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            var b = np.arange(33, 33 + 32, 1, dtype: np.BigInt);
-            var c = a | b;
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] {33, 35, 35, 39, 37, 39, 39, 47, 41, 43, 43, 47,
-                                        45, 47, 47, 63, 49, 51, 51, 55, 53, 55, 55, 63,
-                                        57, 59, 59, 63, 61, 63, 63, 95 });
-        }
-
-        [TestMethod]
-        public void test_bitwise_and_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.bitwise_and(x, 0x3FF);
-            var z = x & 0x3FF;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
-            {
-                { 1023, 0, 1,  2,  3,  4,  5,  6 },
-                {  7, 8, 9, 10, 11, 12, 13, 14 }
-            };
-
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
-        }
-
-        [TestMethod]
-        public void test_bitwise_or_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.bitwise_or(x, 0x10);
-            var z = x | 0x10;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
-            {
-                { 1023, 1040, 1041, 1042, 1043, 1044, 1045, 1046 },
-                { 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054 }
-            };
-
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
-        }
-
-        [TestMethod]
-        public void test_bitwise_xor_OBJECT_TODO()
-        {
-            var a = np.bitwise_xor(13, 17);
-            Assert.AreEqual(28, a.GetItem(0));
-            print(a);
-
-            var b = np.bitwise_xor(31, 5);
-            Assert.AreEqual(26, b.GetItem(0));
-            print(b);
-
-            var c = np.bitwise_xor(new BigInteger[] { 31, 3 }, 5);
-            AssertArray(c, new BigInteger[] { 26, 6 });
-            print(c);
-
-            var d = np.bitwise_xor(new BigInteger[] { 31, 3 }, new BigInteger[] { 5, 6 });
-            AssertArray(d, new BigInteger[] { 26, 5 });
-            print(d);
-
-            var e = np.bitwise_xor(new bool[] { true, true }, new bool[] { false, true });
-            AssertArray(e, new bool[] { true, false });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_bitwise_not_OBJECT_TODO()
-        {
-            var a = np.bitwise_not(13);
-            Assert.AreEqual(-14, a.GetItem(0));
-            print(a);
-
-            var b = np.bitwise_not(31);
-            Assert.AreEqual(-32, b.GetItem(0));
-            print(b);
-
-            // can't inverse a BigInteger
-            var c = np.bitwise_not(new BigInteger[] { 31, 3 });
-            AssertArray(c, new BigInteger[] { 31, 3 });
-            print(c);
-
-            // can't inverse a BigInteger
-            var d = np.bitwise_not(new BigInteger[] { 31, 3 });
-            AssertArray(d, new BigInteger[] { 31, 3 });
-            print(d);
-
-            var e = np.bitwise_not(new bool[] { true, false });
-            AssertArray(e, new bool[] { false, true });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_invert_OBJECT_TODO()
-        {
-            var a = np.invert(13);
-            Assert.AreEqual(-14, a.GetItem(0));
-            print(a);
-
-            var b = np.invert(31);
-            Assert.AreEqual(-32, b.GetItem(0));
-            print(b);
-
-            // can't inverse a BigInteger
-            var c = np.invert(new BigInteger[] { 31, 3 });
-            AssertArray(c, new BigInteger[] { 31, 3 });
-            print(c);
-
-            // can't inverse a BigInteger
-            var d = np.invert(new BigInteger[] { 31, 3 });
-            AssertArray(d, new BigInteger[] { 31, 3 });
-            print(d);
-
-            var e = np.invert(new bool[] { true, false });
-            AssertArray(e, new bool[] { false, true });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_right_shift_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.right_shift(x, 2);
-            var z = x >> 2;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
-            {
-                { 255, 256, 256, 256, 256, 257, 257, 257 },
-                { 257, 258, 258, 258, 258, 259, 259, 259 }
-            };
-
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
-        }
-
-        [TestMethod]
-        public void test_left_shift_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.left_shift(x, 2);
-            var z = x << 2;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
-            {
-                { 4092, 4096, 4100, 4104, 4108, 4112, 4116, 4120 },
-                { 4124, 4128, 4132, 4136, 4140, 4144, 4148, 4152 }
-            };
-
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
-        }
-
-        [TestMethod]
-        public void test_min_OBJECT_TODO()
-        {
-            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
-            var x = np.array(TestData);
-            BigInteger y = (BigInteger)np.min(x);
-
-            print(x);
-            print(y);
-
-            Assert.AreEqual((BigInteger)(-17), y);
-        }
-
-        [TestMethod]
-        public void test_max_OBJECT_TODO()
-        {
-            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
-            var x = np.array(TestData);
-            BigInteger y = (BigInteger)np.max(x);
-
-            print(x);
-            print(y);
-
-            Assert.AreEqual((BigInteger)25, y);
-        }
-
-        [TestMethod]
-        public void test_isnan_OBJECT_TODO()
-        {
-            BigInteger[] TestData = new BigInteger[] { -17, 0, 0, 02, 15, 0, 20 };
-            var x = np.array(TestData);
-            var y = np.isnan(x);
-
-            print(x);
-            print(y);
-
-            // BigInteger don't support NAN so must be false
-            AssertArray(y, new bool[] { false, false, false, false, false, false, false });
-
-        }
-
-        [TestMethod]
-        public void test_setdiff1d_OBJECT_TODO()
-        {
-            BigInteger[] TestDataA = new BigInteger[] { 1, 2, 3, 2, 4, };
-            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
-
-            var a = np.array(TestDataA);
-            var b = np.array(TestDataB);
-            ndarray c = np.setdiff1d(a, b);
-
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] { 1, 2 });
-
-        }
-
-        [TestMethod]
-        public void test_setdiff1d_2_OBJECT_TODO()
-        {
-            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
-
-            var a = np.arange(1, 39, dtype: np.BigInt).reshape(new shape(2, -1));
-            var b = np.array(TestDataB);
-            ndarray c = np.setdiff1d(a, b);
-
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-                                         17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-                                         29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
-
-        }
-
-        [TestMethod]
-        public void test_rot90_1_OBJECT_TODO()
-        {
-            ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }, np.BigInt);
+            ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }, np.Object);
             print(m);
             print("************");
 
             ndarray n = np.rot90(m);
             print(n);
-            AssertArray(n, new BigInteger[,] { { 2, 4 }, { 1, 3 }, });
+            AssertArray(n, new Object[,] { { 2, 4 }, { 1, 3 }, });
             print("************");
 
             n = np.rot90(m, 2);
             print(n);
-            AssertArray(n, new BigInteger[,] { { 4, 3 }, { 2, 1 }, });
+            AssertArray(n, new Object[,] { { 4, 3 }, { 2, 1 }, });
             print("************");
 
-            m = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             n = np.rot90(m, 1, new int[] { 1, 2 });
             print(n);
-            AssertArray(n, new BigInteger[,,] { { { 1, 3 }, { 0, 2 } }, { { 5, 7 }, { 4, 6 } } });
+            AssertArray(n, new Object[,,] { { { 1, 3 }, { 0, 2 } }, { { 5, 7 }, { 4, 6 } } });
 
         }
 
         [TestMethod]
-        public void test_flip_1_OBJECT_TODO()
+        public void test_flip_1_OBJECT()
         {
-            ndarray A = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            ndarray A = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             ndarray B = np.flip(A, 0);
             print(A);
             print("************");
             print(B);
-            AssertArray(B, new BigInteger[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
+            AssertArray(B, new Object[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
 
             print("************");
             ndarray C = np.flip(A, 1);
             print(C);
-            AssertArray(C, new BigInteger[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
+            AssertArray(C, new Object[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
             print("************");
 
         }
 
         [TestMethod]
-        public void test_trim_zeros_1_OBJECT_TODO()
+        public void test_trim_zeros_1()
         {
-            ndarray a = np.array(new BigInteger[] { 0, 0, 0, 1, 2, 3, 0, 2, 1, 0 });
+            ndarray a = np.array(new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1, 0 });
 
             var b = np.trim_zeros(a);
             print(b);
-            AssertArray(b, new BigInteger[] { 1, 2, 3, 0, 2, 1 });
+            AssertArray(b, new Object[] { 1, 2, 3, 0, 2, 1 });
 
             var c = np.trim_zeros(a, "b");
             print(c);
-            AssertArray(c, new BigInteger[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
+            AssertArray(c, new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
         }
 
-        [TestMethod]
-        public void test_logical_and_1_OBJECT_TODO()
-        {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_and(x > 1, x < 4);
-            AssertArray(c, new bool[] { false, false, true, true, false });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_and(y > 1, y < 4);
-            AssertArray(d, new bool[,] { { false, false, true }, { true, false, false } });
-            print(d);
-        }
+  
 
         [TestMethod]
-        public void test_logical_or_1_OBJECT_TODO()
+        public void test_copyto_1_OBJECT()
         {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_or(x < 1, x > 3);
-            AssertArray(c, new bool[] { true, false, false, false, true });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_or(y < 1, y > 3);
-            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
-            print(d);
-        }
-
-        [TestMethod]
-        public void test_logical_xor_1_OBJECT_TODO()
-        {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_xor(x < 1, x > 3);
-            AssertArray(c, new bool[] { true, false, false, false, true });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_xor(y < 1, y > 3);
-            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
-            print(d);
-
-            var e = np.logical_xor((BigInteger)0, np.eye(2, dtype: np.BigInt));
-            AssertArray(e, new bool[,] { { true, false }, { false, true } });
-        }
-
-        [TestMethod]
-        public void test_logical_not_1_OBJECT_TODO()
-        {
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_not(x < 3);
-            AssertArray(c, new bool[] { false, false, false, true, true });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_greater_1_OBJECT_TODO()
-        {
-            var a = np.greater(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, false, false });
-            print(a);
-
-            var b = np.greater(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, false });
-            print(b);
-
-            var c = np.greater((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, false, true });
-            print(c);
-
-        }
-
-        [TestMethod]
-        public void test_greater_equal_1_OBJECT_TODO()
-        {
-            var a = np.greater_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, true, false });
-            print(a);
-
-            var b = np.greater_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, true });
-            print(b);
-
-            var c = np.greater_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, true, true });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_less_1_OBJECT_TODO()
-        {
-            var a = np.less(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, false, true });
-            print(a);
-
-            var b = np.less(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, false });
-            print(b);
-
-            var c = np.less((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, false, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_less_equal_1_OBJECT_TODO()
-        {
-            var a = np.less_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, true, true });
-            print(a);
-
-            var b = np.less_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, true });
-            print(b);
-
-            var c = np.less_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, true, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_equal_1_OBJECT_TODO()
-        {
-            var a = np.equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, true, false });
-            print(a);
-
-            var b = np.equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, true });
-            print(b);
-
-            var c = np.equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, true, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_not_equal_1_OBJECT_TODO()
-        {
-            var a = np.not_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, false, true });
-            print(a);
-
-            var b = np.not_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, false });
-            print(b);
-
-            var c = np.not_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, false, true });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_copyto_1_OBJECT_TODO()
-        {
-            var a = np.zeros((10, 5), dtype: np.BigInt);
+            var a = np.zeros((2, 5), dtype: np.Object);
             var b = new int[] { 11, 22, 33, 44, 55 };
             np.copyto(a, b);
 
-            AssertShape(a, 10, 5);
-            Assert.AreEqual((BigInteger)1650, a.Sum().GetItem(0));
+            AssertShape(a, 2, 5);
+            AssertArray(a, new Object[,] { { 11, 22, 33, 44, 55 }, { 11, 22, 33, 44, 55 } });
             print(a);
 
-            a = np.zeros((10, 5), dtype: np.BigInt);
+            a = np.zeros((4, 5), dtype: np.Object);
             np.copyto(a, 99);
-            AssertShape(a, 10, 5);
-            Assert.AreEqual((BigInteger)4950, a.Sum().GetItem(0));
+            AssertArray(a, new Object[,] { { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 } });
             print(a);
 
-            a = np.zeros((10, 5), dtype: np.BigInt);
+            a = np.zeros((10, 5), dtype: np.Object);
             var c = np.arange(11, 60, 11);
 
             try
@@ -2253,13 +1222,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copyto_2_OBJECT_TODO()
+        public void test_copyto_2_OBJECT()
         {
-            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.BigInt);
+            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.Object);
             var b = new int[] { 1, 2 };
             np.copyto(a, b);
 
-            AssertArray(a, new BigInteger[,,,,] { { { { { 1, 2 } }, { { 1, 2 } } }, { { { 1, 2 } }, { { 1, 2, } } } } });
+            AssertArray(a, new Object[,,,,] { { { { { 1, 2 } }, { { 1, 2 } } }, { { { 1, 2 } }, { { 1, 2, } } } } });
 
         }
 
@@ -7162,39 +6131,988 @@ namespace NumpyDotNetTests
 
         #endregion
 
-        #region BigInt specific tests
+        #region very cool object unique tests
+
+        // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading
+
+        // build a class that supports these overloads and see how the default object class dynamic keyword
+        // handles them.  It may not be necessary to have user defined types.
+
 
         [TestMethod]
-        public void test_BIGNUMBER_operations_OBJECT_TODO()
+        public void test_add_operations_OBJECT()
         {
-            BigInteger start = UInt64.MaxValue;
-            start++;
-            BigInteger end = start + 32;
+            var a = np.arange(0, 20, 1, dtype: np.Int32);
+            a = a.astype(np.Object);
 
-            var a = np.arange(start, end, 1);
-            a = a.reshape(new shape(8, -1));
+            a = a.reshape(new shape(5, -1));
             print(a);
+            print(a.shape);
+            print(a.strides);
 
-            var b = a * 2;
+            a[1] = "XXX";
+            print(a);
+            //return;
+            var b = a * 8;
             print(b);
+            print(b.shape);
+            print(b.strides);
 
+            var ExpectedDataB = new object[,]
+            {{8,  9, 10, 11},
+             {12, 13, 14, 15},
+             {16, 17, 18, 19},
+             {20, 21, 22, 23},
+             {24, 25, 26, 27}
+            };
+            AssertArray(b, ExpectedDataB);
 
-            a = np.arange(start, end, 1);
-            a = a.reshape(new shape(4, -1));
+            a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
             print(a);
+            print(a.shape);
+            print(a.strides);
 
             b = a + 2400;
             print(b);
+            print(b.shape);
+            print(b.strides);
 
-            b -= UInt64.MaxValue;
-            print(b);
-
-            var c = a / 2;
-            print(c);
-
+            ExpectedDataB = new object[,]
+            {{2400, 2401, 2402, 2403},
+             {2404, 2405, 2406, 2407},
+             {2408, 2409, 2410, 2411},
+             {2412, 2413, 2414, 2415},
+             {2416, 2417, 2418, 2419}
+            };
+            AssertArray(b, ExpectedDataB);
 
         }
 
+        [TestMethod]
+        public void test_add_operations_OBJECT_TODO_2()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+
+            var ExpectedDataA = new BigInteger[,]
+                {{0,  1,  2,  3},
+                 {4,  5,  6,  7},
+                 {8,  9, 10, 11},
+                 {12, 13, 14, 15},
+                 {16, 17, 18, 19}};
+            AssertArray(a, ExpectedDataA);
+
+            var b = np.array(new BigInteger[] { 2 });
+            var c = a + b;
+            print(c);
+
+            var ExpectedDataC = new BigInteger[,]
+                {{2,  3,  4,  5},
+                 {6,  7,  8,  9},
+                 {10, 11, 12, 13},
+                 {14, 15, 16, 17},
+                 {18, 19, 20, 21}};
+            AssertArray(c, ExpectedDataC);
+
+
+            b = np.array(new BigInteger[] { 10, 20, 30, 40 });
+            var d = a + b;
+            print(d);
+
+            var ExpectedDataD = new BigInteger[,]
+                {{10, 21, 32, 43},
+                 {14, 25, 36, 47},
+                 {18, 29, 40, 51},
+                 {22, 33, 44, 55},
+                 {26, 37, 48, 59}};
+            AssertArray(d, ExpectedDataD);
+        }
+
+        [TestMethod]
+        public void test_subtract_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a - 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB = new BigInteger[,]
+            {{-8, -7, -6, -5},
+             {-4, -3, -2, -1},
+             {0,  1,  2,  3},
+             {4,  5,  6,  7},
+             {8,  9, 10, 11}
+            };
+            AssertArray(b, ExpectedDataB);
+
+            a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a - 2400;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            ExpectedDataB = new BigInteger[,]
+            {{-2400, -2399, -2398, -2397},
+             {-2396, -2395, -2394, -2393},
+             {-2392, -2391, -2390, -2389},
+             {-2388, -2387, -2386, -2385},
+             {-2384, -2383, -2382, -2381}
+            };
+
+            AssertArray(b, ExpectedDataB);
+
+        }
+
+        [TestMethod]
+        public void test_subtract_operations_OBJECT_TODO_2()
+        {
+            var a = np.arange(100, 102, 1, dtype: np.BigInt);
+            var b = np.array(new BigInteger[] { 1, 63 });
+            var c = a - b;
+            print(a);
+            print("****");
+            print(b);
+            print("****");
+            print(c);
+            print("****");
+            AssertArray(c, new BigInteger[] { 99, 38 });
+
+
+            a = np.arange(0, 4, 1, dtype: np.BigInt).reshape(new shape(2, 2));
+            b = np.array(new BigInteger[] { 65, 78 }).reshape(new shape(1, 2));
+            c = a - b;
+            print(a);
+            print("****");
+            print(b);
+            print("****");
+            print(c);
+            print("****");
+            AssertArray(c, new BigInteger[,] { { -65, -77 }, { -63, -75 } });
+
+        }
+
+        [TestMethod]
+        public void test_multiply_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            BigInteger multiplierB1 = 9023;
+            var b = a * multiplierB1;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new BigInteger[,]
+            {
+                {0*multiplierB1,  1*multiplierB1,  2*multiplierB1,  3*multiplierB1},
+                {4*multiplierB1,  5*multiplierB1,  6*multiplierB1,  7*multiplierB1},
+                {8*multiplierB1,  9*multiplierB1,  10*multiplierB1, 11*multiplierB1},
+                {12*multiplierB1, 13*multiplierB1, 14*multiplierB1, 15*multiplierB1},
+                {16*multiplierB1, 17*multiplierB1, 18*multiplierB1, 19*multiplierB1}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            BigInteger multiplierB2 = 990425023;
+            b = a * multiplierB2;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new BigInteger[,]
+            {
+                {0*multiplierB2,  1*multiplierB2,  2*multiplierB2,  3*multiplierB2},
+                {4*multiplierB2,  5*multiplierB2,  6*multiplierB2,  7*multiplierB2},
+                {8*multiplierB2,  9*multiplierB2,  10*multiplierB2, 11*multiplierB2},
+                {12*multiplierB2, 13*multiplierB2, 14*multiplierB2, 15*multiplierB2},
+                {16*multiplierB2, 17*multiplierB2, 18*multiplierB2, 19*multiplierB2}
+            };
+            AssertArray(b, ExpectedDataB2);
+        }
+
+        [TestMethod]
+        public void test_division_operations_OBJECT_TODO()
+        {
+            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            BigInteger divisorB1 = 611;
+            var b = a / divisorB1;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new BigInteger[,]
+            {
+                {20000/divisorB1, 20001/divisorB1, 20002/divisorB1, 20003/divisorB1},
+                {20004/divisorB1, 20005/divisorB1, 20006/divisorB1, 20007/divisorB1},
+                {20008/divisorB1, 20009/divisorB1, 20010/divisorB1, 20011/divisorB1},
+                {20012/divisorB1, 20013/divisorB1, 20014/divisorB1, 20015/divisorB1},
+                {20016/divisorB1, 20017/divisorB1, 20018/divisorB1, 20019/divisorB1}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2000000, 2000020, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            BigInteger divisorB2 = 2411;
+            b = a / divisorB2;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new BigInteger[,]
+            {
+                {2000000/divisorB2, 2000001/divisorB2, 2000002/divisorB2, 2000003/divisorB2},
+                {2000004/divisorB2, 2000005/divisorB2, 2000006/divisorB2, 2000007/divisorB2},
+                {2000008/divisorB2, 2000009/divisorB2, 2000010/divisorB2, 2000011/divisorB2},
+                {2000012/divisorB2, 2000013/divisorB2, 2000014/divisorB2, 2000015/divisorB2},
+                {2000016/divisorB2, 2000017/divisorB2, 2000018/divisorB2, 2000019/divisorB2},
+            };
+            AssertArray(b, ExpectedDataB2);
+        }
+
+        [TestMethod]
+        public void test_leftshift_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a << 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new BigInteger[,]
+            {
+                {0,  256,  512,  768},
+                {1024, 1280, 1536, 1792},
+                {2048, 2304, 2560, 2816},
+                {3072, 3328, 3584, 3840},
+                {4096, 4352, 4608, 4864}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a << 24;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new BigInteger[,]
+            {
+                {0,  16777216,  33554432,  50331648},
+                {67108864,  83886080, 100663296, 117440512},
+                {134217728, 150994944, 167772160, 184549376},
+                {201326592, 218103808, 234881024, 251658240},
+                {268435456, 285212672, 301989888, 318767104}
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_rightshift_operations_OBJECT_TODO()
+        {
+            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            var b = a >> 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB1 = new BigInteger[,]
+            {
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78},
+                {78, 78, 78, 78}
+            };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2123450, 2123470, 1, dtype: np.BigInt);
+            a = a.reshape(new shape(5, -1));
+            print(a);
+            print(a.shape);
+            print(a.strides);
+
+            b = a >> 8;
+            print(b);
+            print(b.shape);
+            print(b.strides);
+
+            var ExpectedDataB2 = new BigInteger[,]
+            {
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 },
+                {8294 , 8294 , 8294 , 8294 }
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_bitwiseand_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a & 0x0f;
+            print(b);
+
+            var ExpectedDataB1 = new BigInteger[]
+            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
+              0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            print(a);
+
+            b = a & 0xFF;
+            print(b);
+
+            var ExpectedDataB2 = new BigInteger[]
+            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
+              16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_bitwiseor_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a | 0x100;
+            print(b);
+
+            var ExpectedDataB1 = new BigInteger[]
+            { 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
+              272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            print(a);
+
+            b = a | 0x1000;
+            print(b);
+
+            var ExpectedDataB2 = new BigInteger[]
+            { 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 6152, 6153, 6154, 6155, 6156, 6157,
+              6158, 6159, 6160, 6161, 6162, 6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171,
+              6172, 6173, 6174, 6175 };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_bitwisexor_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a ^ 0xAAA;
+            print(b);
+
+            var ExpectedDataB1 = new BigInteger[]
+            { 2730, 2731, 2728, 2729, 2734, 2735, 2732, 2733, 2722, 2723, 2720, 2721, 2726, 2727, 2724,
+              2725, 2746, 2747, 2744, 2745, 2750, 2751, 2748, 2749, 2738, 2739, 2736, 2737, 2742, 2743, 2740, 2741 };
+            AssertArray(b, ExpectedDataB1);
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            print(a);
+
+            b = a ^ 0xAAAA;
+            print(b);
+
+            var ExpectedDataB2 = new BigInteger[]
+            { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
+              41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
+              41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_remainder_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0, 32, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a % 6;
+            print(b);
+
+            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3,
+                                         4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1 });
+
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            print(a);
+
+            b = a % 6;
+            print(b);
+
+            AssertArray(b, new BigInteger[] { 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,
+                                         0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
+
+        }
+
+        [TestMethod]
+        public void test_negative_operations_OBJECT_TODO()
+        {
+            var a = np.arange(0, 12, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = -a;
+            print(b);
+
+            var ExpectedDataB2 = new BigInteger[]
+            {
+                 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11
+            };
+            AssertArray(b, ExpectedDataB2);
+
+        }
+
+        [TestMethod]
+        public void test_invert_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-32, 32, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = ~a;
+            print(b);
+
+            // this should not be changed at all.  BigInts can't be inverted.
+            AssertArray(b, a.AsBigIntArray());
+
+        }
+
+        [TestMethod]
+        public void test_LESS_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a < -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
+        }
+
+        [TestMethod]
+        public void test_LESSEQUAL_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a <= -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
+        }
+
+        [TestMethod]
+        public void test_EQUAL_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a == -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
+        }
+
+        [TestMethod]
+        public void test_NOTEQUAL_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a != -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
+        }
+
+        [TestMethod]
+        public void test_GREATER_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a > -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, false, true, true, true, true, true, true });
+
+        }
+
+        [TestMethod]
+        public void test_GREATEREQUAL_operations_OBJECT_TODO()
+        {
+            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
+            print(a);
+
+            var b = a >= -2;
+            print(b);
+
+            AssertArray(b, new Boolean[] { false, false, false, true, true, true, true, true, true, true });
+
+        }
+
+        [TestMethod]
+        public void test_arrayarray_or_OBJECT_TODO()
+        {
+            var a = np.arange(0, 32, 1, dtype: np.BigInt);
+            var b = np.arange(33, 33 + 32, 1, dtype: np.BigInt);
+            var c = a | b;
+            print(a);
+            print(b);
+            print(c);
+
+            AssertArray(c, new BigInteger[] {33, 35, 35, 39, 37, 39, 39, 47, 41, 43, 43, 47,
+                                        45, 47, 47, 63, 49, 51, 51, 55, 53, 55, 55, 63,
+                                        57, 59, 59, 63, 61, 63, 63, 95 });
+        }
+
+        [TestMethod]
+        public void test_bitwise_and_OBJECT_TODO()
+        {
+            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
+            var y = np.bitwise_and(x, 0x3FF);
+            var z = x & 0x3FF;
+
+            print(x);
+            print(y);
+            print(z);
+
+            var ExpectedData = new BigInteger[,]
+            {
+                { 1023, 0, 1,  2,  3,  4,  5,  6 },
+                {  7, 8, 9, 10, 11, 12, 13, 14 }
+            };
+
+            AssertArray(y, ExpectedData);
+            AssertArray(z, ExpectedData);
+        }
+
+        [TestMethod]
+        public void test_bitwise_or_OBJECT_TODO()
+        {
+            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
+            var y = np.bitwise_or(x, 0x10);
+            var z = x | 0x10;
+
+            print(x);
+            print(y);
+            print(z);
+
+            var ExpectedData = new BigInteger[,]
+            {
+                { 1023, 1040, 1041, 1042, 1043, 1044, 1045, 1046 },
+                { 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054 }
+            };
+
+            AssertArray(y, ExpectedData);
+            AssertArray(z, ExpectedData);
+        }
+
+        [TestMethod]
+        public void test_bitwise_xor_OBJECT_TODO()
+        {
+            var a = np.bitwise_xor(13, 17);
+            Assert.AreEqual(28, a.GetItem(0));
+            print(a);
+
+            var b = np.bitwise_xor(31, 5);
+            Assert.AreEqual(26, b.GetItem(0));
+            print(b);
+
+            var c = np.bitwise_xor(new BigInteger[] { 31, 3 }, 5);
+            AssertArray(c, new BigInteger[] { 26, 6 });
+            print(c);
+
+            var d = np.bitwise_xor(new BigInteger[] { 31, 3 }, new BigInteger[] { 5, 6 });
+            AssertArray(d, new BigInteger[] { 26, 5 });
+            print(d);
+
+            var e = np.bitwise_xor(new bool[] { true, true }, new bool[] { false, true });
+            AssertArray(e, new bool[] { true, false });
+            print(e);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_bitwise_not_OBJECT_TODO()
+        {
+            var a = np.bitwise_not(13);
+            Assert.AreEqual(-14, a.GetItem(0));
+            print(a);
+
+            var b = np.bitwise_not(31);
+            Assert.AreEqual(-32, b.GetItem(0));
+            print(b);
+
+            // can't inverse a BigInteger
+            var c = np.bitwise_not(new BigInteger[] { 31, 3 });
+            AssertArray(c, new BigInteger[] { 31, 3 });
+            print(c);
+
+            // can't inverse a BigInteger
+            var d = np.bitwise_not(new BigInteger[] { 31, 3 });
+            AssertArray(d, new BigInteger[] { 31, 3 });
+            print(d);
+
+            var e = np.bitwise_not(new bool[] { true, false });
+            AssertArray(e, new bool[] { false, true });
+            print(e);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_invert_OBJECT_TODO()
+        {
+            var a = np.invert(13);
+            Assert.AreEqual(-14, a.GetItem(0));
+            print(a);
+
+            var b = np.invert(31);
+            Assert.AreEqual(-32, b.GetItem(0));
+            print(b);
+
+            // can't inverse a BigInteger
+            var c = np.invert(new BigInteger[] { 31, 3 });
+            AssertArray(c, new BigInteger[] { 31, 3 });
+            print(c);
+
+            // can't inverse a BigInteger
+            var d = np.invert(new BigInteger[] { 31, 3 });
+            AssertArray(d, new BigInteger[] { 31, 3 });
+            print(d);
+
+            var e = np.invert(new bool[] { true, false });
+            AssertArray(e, new bool[] { false, true });
+            print(e);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_right_shift_OBJECT_TODO()
+        {
+            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
+            var y = np.right_shift(x, 2);
+            var z = x >> 2;
+
+            print(x);
+            print(y);
+            print(z);
+
+            var ExpectedData = new BigInteger[,]
+            {
+                { 255, 256, 256, 256, 256, 257, 257, 257 },
+                { 257, 258, 258, 258, 258, 259, 259, 259 }
+            };
+
+            AssertArray(y, ExpectedData);
+            AssertArray(z, ExpectedData);
+        }
+
+        [TestMethod]
+        public void test_left_shift_OBJECT_TODO()
+        {
+            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
+            var y = np.left_shift(x, 2);
+            var z = x << 2;
+
+            print(x);
+            print(y);
+            print(z);
+
+            var ExpectedData = new BigInteger[,]
+            {
+                { 4092, 4096, 4100, 4104, 4108, 4112, 4116, 4120 },
+                { 4124, 4128, 4132, 4136, 4140, 4144, 4148, 4152 }
+            };
+
+            AssertArray(y, ExpectedData);
+            AssertArray(z, ExpectedData);
+        }
+
+
+        [TestMethod]
+        public void test_min_OBJECT_TODO()
+        {
+            // would have to rewrite object implementation of Minimum to use <= >= etc.
+
+            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var x = np.array(TestData);
+            BigInteger y = (BigInteger)np.min(x);
+
+            print(x);
+            print(y);
+
+            Assert.AreEqual((BigInteger)(-17), y);
+        }
+
+        [TestMethod]
+        public void test_max_OBJECT_TODO()
+        {
+            // would have to rewrite object implementation of Minimum to use <= >= etc.
+
+            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var x = np.array(TestData);
+            BigInteger y = (BigInteger)np.max(x);
+
+            print(x);
+            print(y);
+
+            Assert.AreEqual((BigInteger)25, y);
+        }
+
+
+        [TestMethod]
+        public void test_setdiff1d_OBJECT_TODO()
+        {
+            // setdiff1d seems to have support for objects.  Let's see if we can make it work
+            BigInteger[] TestDataA = new BigInteger[] { 1, 2, 3, 2, 4, };
+            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
+
+            var a = np.array(TestDataA);
+            var b = np.array(TestDataB);
+            ndarray c = np.setdiff1d(a, b);
+
+            print(a);
+            print(b);
+            print(c);
+
+            AssertArray(c, new BigInteger[] { 1, 2 });
+
+        }
+
+        [TestMethod]
+        public void test_setdiff1d_2_OBJECT_TODO()
+        {
+            // setdiff1d seems to have support for objects.  Let's see if we can make it work
+
+            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
+
+            var a = np.arange(1, 39, dtype: np.BigInt).reshape(new shape(2, -1));
+            var b = np.array(TestDataB);
+            ndarray c = np.setdiff1d(a, b);
+
+            print(a);
+            print(b);
+            print(c);
+
+            AssertArray(c, new BigInteger[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                         17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                                         29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
+
+        }
+
+        [TestMethod]
+        public void test_logical_and_1_OBJECT_TODO()
+        {
+
+            var x = np.arange(5, dtype: np.BigInt);
+            var c = np.logical_and(x > 1, x < 4);
+            AssertArray(c, new bool[] { false, false, true, true, false });
+            print(c);
+
+            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            var d = np.logical_and(y > 1, y < 4);
+            AssertArray(d, new bool[,] { { false, false, true }, { true, false, false } });
+            print(d);
+        }
+
+        [TestMethod]
+        public void test_logical_or_1_OBJECT_TODO()
+        {
+
+            var x = np.arange(5, dtype: np.BigInt);
+            var c = np.logical_or(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            var d = np.logical_or(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
+        }
+
+        [TestMethod]
+        public void test_logical_xor_1_OBJECT_TODO()
+        {
+
+            var x = np.arange(5, dtype: np.BigInt);
+            var c = np.logical_xor(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            var d = np.logical_xor(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
+
+            var e = np.logical_xor((BigInteger)0, np.eye(2, dtype: np.BigInt));
+            AssertArray(e, new bool[,] { { true, false }, { false, true } });
+        }
+
+        [TestMethod]
+        public void test_logical_not_1_OBJECT_TODO()
+        {
+            var x = np.arange(5, dtype: np.BigInt);
+            var c = np.logical_not(x < 3);
+            AssertArray(c, new bool[] { false, false, false, true, true });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_greater_1_OBJECT_TODO()
+        {
+            var a = np.greater(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, false, false });
+            print(a);
+
+            var b = np.greater(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, false });
+            print(b);
+
+            var c = np.greater((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, false, true });
+            print(c);
+
+        }
+
+        [TestMethod]
+        public void test_greater_equal_1_OBJECT_TODO()
+        {
+            var a = np.greater_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, true, false });
+            print(a);
+
+            var b = np.greater_equal(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, true });
+            print(b);
+
+            var c = np.greater_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, true, true });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_less_1_OBJECT_TODO()
+        {
+            var a = np.less(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, false, true });
+            print(a);
+
+            var b = np.less(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, false });
+            print(b);
+
+            var c = np.less((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, false, false });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_less_equal_1_OBJECT_TODO()
+        {
+            var a = np.less_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, true, true });
+            print(a);
+
+            var b = np.less_equal(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, true });
+            print(b);
+
+            var c = np.less_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, true, false });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_equal_1_OBJECT_TODO()
+        {
+            var a = np.equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { false, true, false });
+            print(a);
+
+            var b = np.equal(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { false, false, true });
+            print(b);
+
+            var c = np.equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { false, true, false });
+            print(c);
+        }
+
+        [TestMethod]
+        public void test_not_equal_1_OBJECT_TODO()
+        {
+            var a = np.not_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
+            AssertArray(a, new bool[] { true, false, true });
+            print(a);
+
+            var b = np.not_equal(new BigInteger[] { 4, 2, 1 }, 1);
+            AssertArray(b, new bool[] { true, true, false });
+            print(b);
+
+            var c = np.not_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
+            AssertArray(c, new bool[] { true, false, true });
+            print(c);
+        }
+
         #endregion
+
     }
 }
