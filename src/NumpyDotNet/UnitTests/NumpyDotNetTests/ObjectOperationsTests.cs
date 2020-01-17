@@ -1528,38 +1528,47 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_around_1_OBJECT_TODO()
+        public void test_around_1_OBJECT()
         {
-            ndarray a = np.around(np.array(new BigInteger[] { 37, 164 }));
+            ndarray a = np.around(np.array(new Object[] { (int)37, (double)164.2 }));
             print(a);
-            AssertArray(a, new BigInteger[] { 37, 164 });
+            AssertArray(a, new Object[] { (double)37, (double)164 });
 
-            ndarray b = np.around(np.array(new BigInteger[] { 37, 164 }), decimals: 1);
+            ndarray b = np.around(np.array(new Object[] { 37.22, 164.22 }), decimals: 1);
             print(b);
-            AssertArray(b, new BigInteger[] { 37, 164 });
+            AssertArray(b, new Object[] { (double)37.2, (double)164.2 });
 
-            ndarray c = np.around(np.array(new BigInteger[] { 5, 15, 25, 35, 45 })); // rounds to nearest even value
+            ndarray c = np.around(np.array(new Object[] { 5.1, 15.49, 25.499, 35.4999, 44.89 })); // rounds to nearest even value
             print(c);
-            AssertArray(c, new BigInteger[] { 5, 15, 25, 35, 45 });
+            AssertArray(c, new Object[] { (double)5, (double)15, (double)25, (double)35, (double)45 });
 
-            ndarray d = np.around(np.array(new BigInteger[] { 1, 2, 3, 11 }), decimals: 1); // ndarray of ints is returned
+            ndarray d = np.around(np.array(new Object[] { 1.23, 2.34, 3.45, 11.56 }), decimals: 1); // ndarray of ints is returned
             print(d);
-            AssertArray(d, new BigInteger[] { 1, 2, 3, 11 });
+            AssertArray(d, new Object[] { (double)1.2, (double)2.3, (double)3.4, (double)11.6 });
 
-            ndarray e = np.around(np.array(new BigInteger[] { 1, 2, 3, 11 }), decimals: -1);
-            print(e);
-            AssertArray(e, new BigInteger[] { 0, 0, 0, 10 });
+
+            try
+            {
+                ndarray e = np.around(np.array(new Object[] { "A", "B", "C", "D" }), decimals: -1);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+   
         }
 
         [TestMethod]
-        public void test_round_1_OBJECT_TODO()
+        public void test_round_1_OBJECT()
         {
-            BigInteger ref_step = 0;
-            var a = np.linspace(-2, 10, ref ref_step, 12).reshape((2, 2, 3));
+            double ref_step = 0;
+            var a = np.linspace(-2, 10, ref ref_step, 12).reshape((2, 2, 3)).astype(np.Object);
             print(a);
 
-            var ExpectedData1 = new BigInteger[,,] { { { -2, -1, 0 }, { 1, 2, 3 } }, { { 4, 5, 6 }, { 7, 8, 10 } } };
-
+            var ExpectedData1 = new object[,,] {{ { (double)-2, (double)-0.91, (double)0.18 }, { (double)1.27, (double)2.36, (double)3.45 } }, 
+                                                { { (double)4.55, (double)5.64, (double)6.73 }, { (double)7.82, (double)8.91, (double)10 } } };
+        
             print("********");
             var b = np.round_(a, 2);
             AssertArray(b, ExpectedData1);
@@ -1567,23 +1576,20 @@ namespace NumpyDotNetTests
 
             print("********");
 
-            var c = np.round(a, 2);
-            AssertArray(c, ExpectedData1);
-            print(c);
+            a[1,1,1] = "X";
 
-            var ExpectedData2 = new BigInteger[,,] { { { -2, -1, 0 }, { 1, 2, 3 } }, { { 4, 5, 6 }, { 7, 8, 10 } } };
+            try
+            {
+                var c = np.round(a, 2);
+                Assert.Fail("This should have thrown an exception");
 
-            print("********");
-            b = np.round_(a, 4);
-            AssertArray(b, ExpectedData2);
-            print(b);
+            }
+            catch (Exception ex)
+            {
 
-            print("********");
-
-            c = np.round(a, 4);
-            AssertArray(c, ExpectedData2);
-            print(c);
-
+            }
+            print(a);
+  
         }
 
         [TestMethod]
