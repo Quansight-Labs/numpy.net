@@ -1066,12 +1066,12 @@ namespace NumpyLib
                     while (loop.index < loop.size)
                     {
                         /* Copy first element to output */
-                        if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        {
-                            VoidPtr pDest = loop.bufptr[0];
-                            pDest = NpyInterface_INCREF(loop.it.dataptr);
-                        }
-                        else
+                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
+                        //{
+                        //    VoidPtr pDest = loop.bufptr[0];
+                        //    pDest = NpyInterface_INCREF(loop.it.dataptr);
+                        //}
+                        //else
                         {
                             memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         }

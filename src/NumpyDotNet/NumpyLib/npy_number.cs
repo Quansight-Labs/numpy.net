@@ -266,7 +266,7 @@ namespace NumpyLib
                                          NPY_TYPES.NPY_INT64, NPY_TYPES.NPY_UINT64,
                                          NPY_TYPES.NPY_FLOAT, NPY_TYPES.NPY_DOUBLE,
                                          NPY_TYPES.NPY_DECIMAL, NPY_TYPES.NPY_COMPLEX,
-                                         NPY_TYPES.NPY_BIGINT},
+                                         NPY_TYPES.NPY_BIGINT, NPY_TYPES.NPY_OBJECT},
 
              };
 
