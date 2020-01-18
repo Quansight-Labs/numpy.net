@@ -1734,30 +1734,42 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cumprod_2_OBJECT_TODO()
+        public void test_cumprod_2_OBJECT()
         {
-            ndarray a = np.array(new BigInteger[] { 1, 2, 3 });
+            ndarray a = np.array(new Object[] { 1, 2, 3 });
             ndarray b = np.cumprod(a);          // intermediate results 1, 1*2
                                                 // total product 1*2*3 = 6
             print(b);
-            AssertArray(b, new BigInteger[] { 1, 2, 6 });
+            AssertArray(b, new Object[] { (Int32)1, (double)2, (double)6 });
             print("*****");
 
-            a = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } });
-            ndarray c = np.cumprod(a, dtype: np.BigInt); //specify type of output
+            a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, dtype: np.Object);
+            ndarray c = np.cumprod(a, dtype: np.Object); //specify type of output
             print(c);
-            AssertArray(c, new BigInteger[] { 1, 2, 6, 24, 120, 720 });
+            AssertArray(c, new Object[] { (Int32)1, (double)2, (double)6, (double)24, (double)120, (double)720 });
             print("*****");
 
             ndarray d = np.cumprod(a, axis: 0);
             print(d);
-            AssertArray(d, new BigInteger[,] { { 1, 2, 3 }, { 4, 10, 18 } });
+            AssertArray(d, new Object[,] { { (Int32)1, (Int32)2, (Int32)3 }, { (double)4, (double)10, (double)18 } });
             print("*****");
 
             ndarray e = np.cumprod(a, axis: 1);
             print(e);
-            AssertArray(e, new BigInteger[,] { { 1, 2, 6 }, { 4, 20, 120 } });
+            AssertArray(e, new Object[,] { { (Int32)1, (double)2, (double)6 }, { (Int32)4, (double)20, (double)120 } });
             print("*****");
+
+
+            try
+            {
+                a[0] = "X";
+                ndarray f = np.cumprod(a, axis: 1);
+                Assert.Fail("Should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
 
@@ -6010,7 +6022,6 @@ namespace NumpyDotNetTests
             print(a.shape);
             print(a.strides);
 
-            a[1] = "XXX";
             print(a);
             //return;
             var b = a * 8;
