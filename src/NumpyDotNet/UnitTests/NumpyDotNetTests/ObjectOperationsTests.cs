@@ -1647,31 +1647,31 @@ namespace NumpyDotNetTests
             Assert.AreEqual((Int32)3, b.GetItem(0));
             print(b);
 
-            var c = np.trunc(new object[] { 21, 29, -21, -29 });
-            AssertArray(c, new Int32[] { 21, 29, -21, -29 });
+            var c = np.trunc(np.array(new object[] { 21, 29f, -21, -29 }));
+            AssertArray(c, new double[] { 21, 29, -21, -29 });
             print(c);
         }
 
         [TestMethod]
         public void test_prod_2_OBJECT_TODO()
         {
-            ndarray a = np.prod(np.array(new BigInteger[] { 1, 2 }));
+            ndarray a = np.prod(np.array(new object[] { 1, 2 }));
             print(a);
-            Assert.AreEqual((BigInteger)2, a.GetItem(0));
+            Assert.AreEqual((double)2, a.GetItem(0));
             print("*****");
 
-            ndarray b = np.prod(np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } }));
+            ndarray b = np.prod(np.array(new object[,] { { 1, 2 }, { 3, 4 } }));
             print(b);
-            Assert.AreEqual((BigInteger)24, b.GetItem(0));
+            Assert.AreEqual((Int64)24, b.GetItem(0));
             print("*****");
 
-            ndarray c = np.prod(np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } }), axis: 1);
+            ndarray c = np.prod(np.array(new object[,] { { 1, 2 }, { 3, 4 } }), axis: 1);
             print(c);
-            AssertArray(c, new BigInteger[] { 2, 12 });
+            AssertArray(c, new Int64[] { 2, 12 });
             print("*****");
 
-            ndarray d = np.array(new BigInteger[] { 1, 2, 3 }, dtype: np.BigInt);
-            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_BIGINT;
+            ndarray d = np.array(new object[] { 1, 2, 3 }, dtype: np.Object);
+            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_OBJECT;
             print(e);
             Assert.AreEqual(true, e);
             print("*****");
