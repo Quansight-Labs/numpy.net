@@ -1653,7 +1653,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_prod_2_OBJECT_TODO()
+        public void test_prod_2_OBJECT()
         {
             ndarray a = np.prod(np.array(new object[] { 1, 2 }));
             print(a);
@@ -1676,32 +1676,60 @@ namespace NumpyDotNetTests
             Assert.AreEqual(true, e);
             print("*****");
 
+
+            try
+            {
+                a = np.array(new object[,] { { 1, 2 }, { 3, 4 } }, dtype: np.Object);
+                a[1, 1] = "X";
+
+                b = np.prod(a);
+                Assert.Fail("Should have throw exception");
+            }
+            catch
+            {
+
+            }
+    
+
+
         }
 
         [TestMethod]
-        public void test_sum_2_OBJECT_TODO()
+        public void test_sum_2_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.BigInt).reshape(new shape(3, 2, -1));
+            Object[] TestData = new Object[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Object).reshape(new shape(3, 2, -1));
             x = x * 3;
 
             var y = np.sum(x, axis: 0);
             print(y);
-            AssertArray(y, new BigInteger[,] { { 339, 450 }, { 339, 450 } });
+            AssertArray(y, new Object[,] { { (double)339, (double)450 }, { (double)339, (double)450 } });
 
             print("*****");
 
             y = np.sum(x, axis: 1);
             print(y);
-            AssertArray(y, new BigInteger[,] { { 105, 180 }, { 264, 315 }, { 309, 405 } });
+            AssertArray(y, new Object[,] { { (double)105, (double)180 }, { (double)264, (double)315 }, { (double)309, (double)405 } });
 
             print("*****");
 
             y = np.sum(x, axis: 2);
             print(y);
-            AssertArray(y, new BigInteger[,] { { 75, 210 }, { 504, 75 }, { 210, 504 } });
+            AssertArray(y, new Object[,] { { (double)75, (double)210 }, { (double)504, (double)75 }, { (double)210, (double)504 } });
 
             print("*****");
+
+            try
+            {
+                x[0, 1, 1] = "X";
+                y = np.sum(x, axis: 2);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
         }
 
