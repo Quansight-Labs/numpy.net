@@ -785,11 +785,7 @@ namespace NumpyDotNet
         {
             var a = asanyarray(x);
 
-            if (!a.IsMathFunctionCapable)
-            {
-                ArrayTypeNotSupported(a);
-            }
-
+ 
             var ret = NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_ceil, 0);
             ret = ret.reshape(new shape(a.dims));
             if (where != null)
@@ -803,11 +799,7 @@ namespace NumpyDotNet
         public static ndarray trunc(object x)
         {
             var a = asanyarray(x);
-
-            if (!a.IsMathFunctionCapable)
-            {
-                ArrayTypeNotSupported(a);
-            }
+ 
 
             var y1 = np.floor(a);
             var y2 = np.ceil(a);

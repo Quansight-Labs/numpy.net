@@ -1593,62 +1593,62 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fix_1_OBJECT_TODO()
+        public void test_fix_1_OBJECT()
         {
-            var a = np.fix((BigInteger)3.14);
-            Assert.AreEqual((BigInteger)3, a.GetItem(0));
+            var a = np.fix((object)3.14);
+            Assert.AreEqual((double)3, a.GetItem(0));
             print(a);
 
-            var b = np.fix((BigInteger)3);
-            Assert.AreEqual((BigInteger)3, b.GetItem(0));
+            var b = np.fix((object)3);
+            Assert.AreEqual((Int32)3, b.GetItem(0));
             print(b);
 
-            var c = np.fix(new BigInteger[] { 21, 29, -21, -29 });
-            AssertArray(c, new BigInteger[] { 21, 29, -21, -29 });
+            var c = np.fix(new object[] { 21, 29, -21, -29 });
+            AssertArray(c, new Int32[] { 21, 29, -21, -29 });
             print(c);
         }
 
         [TestMethod]
-        public void test_floor_1_OBJECT_TODO()
+        public void test_floor_1_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { -17, -15, -02, 02, 15, 17, 20 };
+            object[] TestData = new object[] { -17, -15, -02, 02, 15, 17, 20 };
             var x = np.array(TestData);
             var y = np.floor(x);
 
             print(x);
             print(y);
 
-            AssertArray(y, new BigInteger[] { -17, -15, -02, 02, 15, 17, 20 });
+            AssertArray(y, new double[] { -17, -15, -02, 02, 15, 17, 20 });
 
         }
 
         [TestMethod]
-        public void test_ceil_1_OBJECT_TODO()
+        public void test_ceil_1_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { -17, -15, -02, 02, 15, 17, 20 };
+            object[] TestData = new object[] { -17, -15, -02, 02, 15, 17, 20 };
             var x = np.array(TestData);
             var y = np.ceil(x);
 
             print(x);
             print(y);
 
-            AssertArray(y, new BigInteger[] { -17, -15, -02, 02, 15, 17, 20 });
+            AssertArray(y, new double[] { -17, -15, -02, 02, 15, 17, 20 });
 
         }
 
         [TestMethod]
-        public void test_trunc_1_OBJECT_TODO()
+        public void test_trunc_1_OBJECT()
         {
-            var a = np.trunc((BigInteger)3.14);
-            Assert.AreEqual((BigInteger)3.0, a.GetItem(0));
+            var a = np.trunc((object)3.14);
+            Assert.AreEqual((double)3.0, a.GetItem(0));
             print(a);
 
-            var b = np.trunc((BigInteger)3m);
-            Assert.AreEqual((BigInteger)3m, b.GetItem(0));
+            var b = np.trunc((object)3);
+            Assert.AreEqual((Int32)3, b.GetItem(0));
             print(b);
 
-            var c = np.trunc(new BigInteger[] { 21, 29, -21, -29 });
-            AssertArray(c, new BigInteger[] { 21, 29, -21, -29 });
+            var c = np.trunc(new object[] { 21, 29, -21, -29 });
+            AssertArray(c, new Int32[] { 21, 29, -21, -29 });
             print(c);
         }
 
