@@ -209,7 +209,7 @@ namespace NumpyLib
         public virtual void ArrayFill(VoidPtr vp, object FillValue)
         {
             var adata = vp.datap as object[];
-            Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
+            Fill(adata, FillValue, 0, adata.Length);
             return;
         }
         protected void Fill<T>(T[] array, T fillValue, int startIndex, int count)
@@ -656,11 +656,18 @@ namespace NumpyLib
             return 1;
         }
 
-        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        public override object MathOpConvertOperand(object srcValue, object operValue)
         {
-            throw new NotImplementedException("This array handler does not implement DOT");
-            return otmp;
+            return operValue;
         }
+
+        //protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        //{
+        //    throw new NotImplementedException("This array handler does not implement DOT");
+        //    return otmp;
+        //}
+
+
 
     }
 
