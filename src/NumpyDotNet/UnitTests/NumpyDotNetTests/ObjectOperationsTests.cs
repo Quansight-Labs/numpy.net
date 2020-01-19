@@ -1774,33 +1774,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cumsum_3_OBJECT_TODO()
+        public void test_cumsum_3_OBJECT()
         {
-            ndarray a = np.array(new BigInteger[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, 3, -1));
+            ndarray a = np.array(new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, 3, -1));
             print(a);
             print("*****");
 
             ndarray b = np.cumsum(a);
             print(b);
-            AssertArray(b, new BigInteger[] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78 });
+            AssertArray(b, new Object[] { 1, (double)3, (double)6, (double)10, (double)15, (double)21, (double)28,
+                                         (double)36, (double)45, (double)55, (double)66, (double)78 });
             print("*****");
 
-            ndarray c = np.cumsum(a, dtype: np.BigInt);     // specifies type of output value(s)
+            ndarray c = np.cumsum(a, dtype: np.Object);     // specifies type of output value(s)
             print(c);
-            AssertArray(c, new BigInteger[] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78 });
+            AssertArray(c, new Object[] { 1, (double)3, (double)6, (double)10, (double)15, (double)21, (double)28,
+                                             (double)36, (double)45, (double)55, (double)66, (double)78 });
             print("*****");
 
             ndarray d = np.cumsum(a, axis: 0);     // sum over rows for each of the 3 columns
             print(d);
 
-            var ExpectedDataD = new BigInteger[,,]
+            var ExpectedDataD = new Object[,,]
             {{{1,  2},
               {3,  4},
               {5,  6}},
 
-             {{ 8, 10},
-              {12, 14},
-              {16, 18}}};
+             {{(double)8, (double)10},
+              {(double)12, (double)14},
+              {(double)16, (double)18}}};
 
             AssertArray(d, ExpectedDataD);
             print("*****");
@@ -1810,120 +1812,110 @@ namespace NumpyDotNetTests
             ndarray e = np.cumsum(a, axis: 1);    // sum over columns for each of the 2 rows
             print(e);
 
-            var ExpectedDataE = new BigInteger[,,]
+            var ExpectedDataE = new Object[,,]
             {{{1,  2},
-              {4,  6},
-              {9,  12}},
+              {(double)4,  (double)6},
+              {(double)9,  (double)12}},
 
-             {{ 7, 8},
-              {16, 18},
-              {27, 30}}};
+             {{7, 8},
+              {(double)16, (double)18},
+              {(double)27, (double)30}}};
 
             AssertArray(e, ExpectedDataE);
             print("*****");
 
-            ndarray f = np.cumsum(a, axis: 2);    // sum over columns for each of the 2 rows
-            print(f);
+            try
+            {
+                a[1, 1, 1] = "X";
+                ndarray f = np.cumsum(a, axis: 2);    // sum over columns for each of the 2 rows
+                Assert.Fail("this should have thrown exception");
+            }
+            catch (Exception ex)
+            {
 
-            var ExpectedDataF = new BigInteger[,,]
-            {{{1,  3},
-              {3,  7},
-              {5,  11}},
-
-             {{7, 15},
-              {9, 19},
-              {11, 23}}};
-
-            AssertArray(f, ExpectedDataF);
-            print("*****");
+            }
+ 
 
         }
 
         [TestMethod]
-        public void test_diff_3_OBJECT_TODO()
+        public void test_diff_3_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.BigInt).reshape(new shape(3, 2, -1));
+            Object[] TestData = new Object[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Object).reshape(new shape(3, 2, -1));
             x = x * 3;
             var y = np.diff(x, axis: 2);
 
             print(x);
             print(y);
 
-            var ExpectedData = new BigInteger[,,]
+            var ExpectedData = new Object[,,]
                 {
-                 {{15},
-                  {60}},
+                 {{(double)15},
+                  {(double)60}},
 
-                 {{36},
-                  {15}},
+                 {{(double)36},
+                  {(double)15}},
 
-                 {{60},
-                  {36}}
+                 {{(double)60},
+                  {(double)36}}
                 };
 
             AssertArray(y, ExpectedData);
 
-        }
-
-        [TestMethod]
-        public void test_ediff1d_1_OBJECT_TODO()
-        {
-            ndarray x = np.array(new BigInteger[] { 1, 2, 4, 7, 0 });
-            ndarray y = np.ediff1d(x);
-            print(y);
-            AssertArray(y, new BigInteger[] { 1, 2, 3, -7 });
-
-            y = np.ediff1d(x, to_begin: np.array(new BigInteger[] { -99 }), to_end: np.array(new BigInteger[] { 88, 99 }));
-            print(y);
-            AssertArray(y, new BigInteger[] { -99, 1, 2, 3, -7, 88, 99 });
-
-            x = np.array(new BigInteger[,] { { 1, 2, 4 }, { 1, 6, 24 } });
-            y = np.ediff1d(x);
-            print(y);
-            AssertArray(y, new BigInteger[] { 1, 2, -3, 5, 18 });
-
-        }
-
-        [TestMethod]
-        public void test_gradient_1_OBJECT_TODO()
-        {
-            var f = np.array(new BigInteger[] { 1, 2, 4, 7, 11, 16 }, dtype: np.BigInt);
-            var a = np.gradient(f);
-            AssertArray(a[0], new double[] { 1, 1.5, 2.5, 3.5, 4.5, 5 });
-            print(a[0]);
-            print("***********");
-
-            var b = np.gradient(f, new object[] { 2 });
-            AssertArray(b[0], new double[] { 0.5, 0.75, 1.25, 1.75, 2.25, 2.5 });
-            print(b[0]);
-            print("***********");
-
-            // Spacing can be also specified with an array that represents the coordinates
-            // of the values F along the dimensions.
-            // For instance a uniform spacing:
-
-            var x = np.arange(f.size);
-            var c = np.gradient(f, new object[] { x });
-            AssertArray(c[0], new double[] { 1.0, 1.5, 2.5, 3.5, 4.5, 5.0 });
-            print(c[0]);
-            print("***********");
-
-            // Or a non uniform one:
-
-            x = np.array(new BigInteger[] { 0, 1, 15, 35, 40, 60 }, dtype: np.BigInt);
             try
             {
-                var d = np.gradient(f, new object[] { x });
-                AssertArray(d[0], new double[] { 1.0, 3.0, 3.5, 6.7, 6.9, 2.5 });
-                print(d[0]);
+                x[0] = "X";
+                y = np.diff(x, axis: 2);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        [TestMethod]
+        public void test_ediff1d_1_OBJECT()
+        {
+            ndarray x = np.array(new Object[] { 1, 2, 4, 7, 0 });
+            ndarray y = np.ediff1d(x);
+            print(y);
+            AssertArray(y, new Object[] { (double)1, (double)2, (double)3, (double)-7 });
+
+            y = np.ediff1d(x, to_begin: np.array(new Object[] { -99 }), to_end: np.array(new Object[] { 88, 99 }));
+            print(y);
+            AssertArray(y, new Object[] { -99, (double)1, (double)2, (double)3, (double)-7, 88, 99 });
+
+            x = np.array(new Object[,] { { 1, 2, 4 }, { 1, 6, 24 } });
+            y = np.ediff1d(x);
+            print(y);
+            AssertArray(y, new Object[] { 1, 2, -3, 5, 18 });
+
+            try
+            {
+                x[0] = "X";
+                y = np.ediff1d(x);
+                Assert.Fail("This should have thrown an error");
             }
             catch
             {
 
             }
 
+        }
 
+        [TestMethod]
+        public void test_gradient_1_OBJECT()
+        {
+            // note: This function requires that all values be cast to doubles.
+            // since objects get cast to 0 in this case, effectively this function does not work with objects
+            var f = np.array(new object[] { 1, 2, 4, 7, 11, 16 }, dtype: np.Object);
+            var a = np.gradient(f);
+            AssertArray(a[0], new double[] { 0, 0, 0, 0, 0, 0});
+            print(a[0]);
+            print("***********");
         }
 
         [TestMethod]
