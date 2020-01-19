@@ -561,7 +561,7 @@ namespace NumpyDotNetTests
             a = np.array(a.AsObjectArray());
 
             var b = np.where(a < 5, a, 10 * a) as ndarray;
-            AssertArray(b, new object[] { 0, 1, 2, 3, 4, (double)50, (double)60, (double)70, (double)80, (double)90 });
+            AssertArray(b, new object[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
             print(b);
 
             a = np.array(new object[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
@@ -1657,7 +1657,7 @@ namespace NumpyDotNetTests
         {
             ndarray a = np.prod(np.array(new object[] { 1, 2 }));
             print(a);
-            Assert.AreEqual((double)2, a.GetItem(0));
+            Assert.AreEqual(2, a.GetItem(0));
             print("*****");
 
             ndarray b = np.prod(np.array(new object[,] { { 1, 2 }, { 3, 4 } }));
@@ -1703,19 +1703,19 @@ namespace NumpyDotNetTests
 
             var y = np.sum(x, axis: 0);
             print(y);
-            AssertArray(y, new Object[,] { { (double)339, (double)450 }, { (double)339, (double)450 } });
+            AssertArray(y, new Object[,] { { 339, 450 }, { 339, 450 } });
 
             print("*****");
 
             y = np.sum(x, axis: 1);
             print(y);
-            AssertArray(y, new Object[,] { { (double)105, (double)180 }, { (double)264, (double)315 }, { (double)309, (double)405 } });
+            AssertArray(y, new Object[,] { { 105, 180 }, { 264, 315 }, { 309, 405 } });
 
             print("*****");
 
             y = np.sum(x, axis: 2);
             print(y);
-            AssertArray(y, new Object[,] { { (double)75, (double)210 }, { (double)504, (double)75 }, { (double)210, (double)504 } });
+            AssertArray(y, new Object[,] { { 75, 210 }, { 504, 75 }, { 210, 504 } });
 
             print("*****");
 
@@ -1740,23 +1740,23 @@ namespace NumpyDotNetTests
             ndarray b = np.cumprod(a);          // intermediate results 1, 1*2
                                                 // total product 1*2*3 = 6
             print(b);
-            AssertArray(b, new Object[] { (Int32)1, (double)2, (double)6 });
+            AssertArray(b, new Object[] { 1, 2, 6 });
             print("*****");
 
             a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, dtype: np.Object);
             ndarray c = np.cumprod(a, dtype: np.Object); //specify type of output
             print(c);
-            AssertArray(c, new Object[] { (Int32)1, (double)2, (double)6, (double)24, (double)120, (double)720 });
+            AssertArray(c, new Object[] { 1, 2, 6, 24, 120, 720 });
             print("*****");
 
             ndarray d = np.cumprod(a, axis: 0);
             print(d);
-            AssertArray(d, new Object[,] { { (Int32)1, (Int32)2, (Int32)3 }, { (double)4, (double)10, (double)18 } });
+            AssertArray(d, new Object[,] { { 1, 2, 3 }, { 4, 10, 18 } });
             print("*****");
 
             ndarray e = np.cumprod(a, axis: 1);
             print(e);
-            AssertArray(e, new Object[,] { { (Int32)1, (double)2, (double)6 }, { (Int32)4, (double)20, (double)120 } });
+            AssertArray(e, new Object[,] { { 1, 2, 6 }, { 4, 20, 120 } });
             print("*****");
 
 
@@ -1782,14 +1782,14 @@ namespace NumpyDotNetTests
 
             ndarray b = np.cumsum(a);
             print(b);
-            AssertArray(b, new Object[] { 1, (double)3, (double)6, (double)10, (double)15, (double)21, (double)28,
-                                         (double)36, (double)45, (double)55, (double)66, (double)78 });
+            AssertArray(b, new Object[] { 1, 3, 6, 10, 15, 21, 28,
+                                         36, 45, 55, 66, 78 });
             print("*****");
 
             ndarray c = np.cumsum(a, dtype: np.Object);     // specifies type of output value(s)
             print(c);
-            AssertArray(c, new Object[] { 1, (double)3, (double)6, (double)10, (double)15, (double)21, (double)28,
-                                             (double)36, (double)45, (double)55, (double)66, (double)78 });
+            AssertArray(c, new Object[] { 1, 3, 6, 10, 15, 21, 28,
+                                             36, 45, 55, 66, 78 });
             print("*****");
 
             ndarray d = np.cumsum(a, axis: 0);     // sum over rows for each of the 3 columns
@@ -1800,9 +1800,9 @@ namespace NumpyDotNetTests
               {3,  4},
               {5,  6}},
 
-             {{(double)8, (double)10},
-              {(double)12, (double)14},
-              {(double)16, (double)18}}};
+             {{8, 10},
+              {12, 14},
+              {16, 18}}};
 
             AssertArray(d, ExpectedDataD);
             print("*****");
@@ -1814,12 +1814,12 @@ namespace NumpyDotNetTests
 
             var ExpectedDataE = new Object[,,]
             {{{1,  2},
-              {(double)4,  (double)6},
-              {(double)9,  (double)12}},
+              {4,  6},
+              {9,  12}},
 
              {{7, 8},
-              {(double)16, (double)18},
-              {(double)27, (double)30}}};
+              {16, 18},
+              {27, 30}}};
 
             AssertArray(e, ExpectedDataE);
             print("*****");
@@ -1851,14 +1851,14 @@ namespace NumpyDotNetTests
 
             var ExpectedData = new Object[,,]
                 {
-                 {{(double)15},
-                  {(double)60}},
+                 {{15},
+                  {60}},
 
-                 {{(double)36},
-                  {(double)15}},
+                 {{36},
+                  {15}},
 
-                 {{(double)60},
-                  {(double)36}}
+                 {{60},
+                  {36}}
                 };
 
             AssertArray(y, ExpectedData);
@@ -1882,13 +1882,13 @@ namespace NumpyDotNetTests
             ndarray x = np.array(new Object[] { 1, 2, 4, 7, 0 });
             ndarray y = np.ediff1d(x);
             print(y);
-            AssertArray(y, new Object[] { (double)1, (double)2, (double)3, (double)-7 });
+            AssertArray(y, new Object[] { 1, 2, 3, -7 });
 
             y = np.ediff1d(x, to_begin: np.array(new Object[] { -99 }), to_end: np.array(new Object[] { 88, 99 }));
             print(y);
-            AssertArray(y, new Object[] { -99, (double)1, (double)2, (double)3, (double)-7, 88, 99 });
+            AssertArray(y, new Object[] { -99, 1, 2, 3, -7, 88, 99 });
 
-            x = np.array(new Object[,] { { 1, 2, 4 }, { 1, 6, 24 } });
+            x = np.array(new Object[,] { { 1, 2, 4 }, { 1, 6, 24 } }, dtype: np.Object);
             y = np.ediff1d(x);
             print(y);
             AssertArray(y, new Object[] { 1, 2, -3, 5, 18 });
@@ -6015,8 +6015,8 @@ namespace NumpyDotNetTests
             print(a.strides);
 
             print(a);
-            //return;
-            var b = a * 8;
+
+            var b = a + 8;
             print(b);
             print(b.shape);
             print(b.strides);
@@ -6030,7 +6030,7 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB);
 
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
+            a = np.arange(0, 20, 1, dtype: np.Int32).astype(np.Object);
             a = a.reshape(new shape(5, -1));
             print(a);
             print(a.shape);
