@@ -1919,55 +1919,55 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cross_2_OBJECT_TODO()
+        public void test_cross_2_OBJECT()
         {
             // Multiple vector cross-products. Note that the direction of the cross
             // product vector is defined by the `right-hand rule`.
 
-            var x = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 } });
-            var y = np.array(new BigInteger[,] { { 4, 5, 6 }, { 1, 2, 3 } });
+            var x = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var y = np.array(new Object[,] { { 4, 5, 6 }, { 1, 2, 3 } });
             var a = np.cross(x, y);
-            AssertArray(a, new BigInteger[,] { { -3, 6, -3 }, { 3, -6, 3 } });
+            AssertArray(a, new Object[,] { { -3, 6, -3 }, { 3, -6, 3 } });
             print(a);
 
 
             // The orientation of `c` can be changed using the `axisc` keyword.
 
             var b = np.cross(x, y, axisc: 0);
-            AssertArray(b, new BigInteger[,] { { -3, 3 }, { 6, -6 }, { -3, 3 } });
+            AssertArray(b, new Object[,] { { -3, 3 }, { 6, -6 }, { -3, 3 } });
             print(b);
 
             // Change the vector definition of `x` and `y` using `axisa` and `axisb`.
 
-            x = np.array(new BigInteger[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
-            y = np.array(new BigInteger[,] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } });
+            x = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            y = np.array(new Object[,] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } });
             a = np.cross(x, y);
-            AssertArray(a, new BigInteger[,] { { -6, 12, -6 }, { 0, 0, 0 }, { 6, -12, 6 } });
+            AssertArray(a, new Object[,] { { -6, 12, -6 }, { 0, 0, 0 }, { 6, -12, 6 } });
             print(a);
 
             b = np.cross(x, y, axisa: 0, axisb: 0);
-            AssertArray(b, new BigInteger[,] { { -24, 48, -24 }, { -30, 60, -30 }, { -36, 72, -36 } });
+            AssertArray(b, new Object[,] { { -24, 48, -24 }, { -30, 60, -30 }, { -36, 72, -36 } });
             print(b);
 
             return;
         }
 
         [TestMethod]
-        public void test_trapz_1_OBJECT_TODO()
+        public void test_trapz_1_OBJECT()
         {
-            var a = np.trapz(new BigInteger[] { 1, 2, 3 });
+            var a = np.trapz(new Object[] { 1, 2, 3 });
             Assert.AreEqual((double)4.0, a.GetItem(0));
             print(a);
 
-            var b = np.trapz(new BigInteger[] { 1, 2, 3 }, x: new int[] { 4, 6, 8 });
+            var b = np.trapz(new Object[] { 1, 2, 3 }, x: new int[] { 4, 6, 8 });
             Assert.AreEqual((double)8.0, b.GetItem(0));
             print(b);
 
-            var c = np.trapz(new BigInteger[] { 1, 2, 3 }, dx: 2);
+            var c = np.trapz(new Object[] { 1, 2, 3 }, dx: 2);
             Assert.AreEqual((double)8.0, c.GetItem(0));
             print(c);
 
-            a = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            a = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
             b = np.trapz(a, axis: 0);
             AssertArray(b, new double[] { 1.5, 2.5, 3.5 });
             print(b);
@@ -1978,62 +1978,52 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_exp_1_OBJECT_TODO()
+        public void test_exp_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { -17, -15, -02, 02, 15, 17, 20, -42 });
-            var a = np.exp(x);
-            AssertArray(a, new double[] { 4.13993771878517E-08, 3.05902320501826E-07, 0.135335283236613,
-                                          7.38905609893065, 3269017.37247211, 24154952.7535753,
-                                          485165195.40979028, 5.74952226429356E-19 });
-            print(a);
+     
+            var x = np.array(new object[] { -17, -15, -02, 02, 15, 17, 20, -42 });
 
+            try
+            {
+                var a = np.exp(x);
+                Assert.Fail("This should throw an exception");
+            }
+            catch
+            {
 
-            a = np.exp(x.reshape((2, -1)));
-            AssertArray(a, new double[,] { {4.13993771878517E-08, 3.05902320501826E-07, 0.135335283236613, 7.38905609893065 },
-                                           {3269017.37247211, 24154952.7535753, 485165195.40979028, 5.74952226429356E-19 } });
-            print(a);
-
-            a = np.exp(x, where: x > 0);
-            AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 7.38905609893065, 3269017.37247211,
-                                         24154952.7535753, 485165195.40979028, double.NaN });
-            print(a);
+            }
+     
 
         }
 
         [TestMethod]
-        public void test_exp2_1_OBJECT_TODO()
+        public void test_exp2_1_OBJECT()
         {
-            var x = np.array(new BigInteger[] { -17, -15, -02, 02, 15, 17, 20, -42 });
-            var a = np.exp2(x);
-            AssertArray(a, new double[] { 7.62939453125E-06, 3.0517578125E-05, 0.25, 4.0,
-                                         32768.0, 131072.0, 1048576.0, 2.27373675443232E-13 });
-            print(a);
+            var x = np.array(new object[] { -17, -15, -02, 02, 15, 17, 20, -42 });
+            try
+            {
+                var a = np.exp2(x);
+                Assert.Fail("This should throw an exception");
+            }
+            catch
+            {
 
-
-            a = np.exp2(x.reshape((2, -1)));
-            AssertArray(a, new double[,] { {7.62939453125E-06, 3.0517578125E-05, 0.25, 4.0 },
-                                           { 32768.0, 131072.0, 1048576.0, 2.27373675443232E-13  } });
-            print(a);
-
-            a = np.exp2(x, where: x > 0);
-            AssertArray(a, new double[] { double.NaN, double.NaN, double.NaN, 4.0, 32768.0,
-                                          131072.0, 1048576.0,  double.NaN });
-            print(a);
+            }
 
         }
 
         [TestMethod]
-        public void test_i0_1_OBJECT_TODO()
+        public void test_i0_1_OBJECT()
         {
-            var a = np.i0((BigInteger)5);
+            var a = np.i0((Object)5);
             Assert.AreEqual(27.239871823604442, a.GetItem(0));
             print(a);
 
-            a = np.i0(new BigInteger[] { 5, 6 });
+            a = np.i0(new Object[] { 5, 6 });
             AssertArray(a, new double[] { 27.239871823604442, 67.234406976478 });
             print(a);
 
-            a = np.i0(new double[,] { { 27.239871823604442, 67.234406976478 }, { 389.40628328, 427.56411572 } });
+            a = np.i0(new Object[,] { { 27.239871823604442, 67.234406976478 }, { 389.40628328, 427.56411572 } });
             AssertArray(a, new double[,] { { 51935526724.290375, 7.7171998335650329E+27 }, { 2.6475747102348978E+167, 9.4248115430920975E+183 } });
             print(a);
 
@@ -2042,10 +2032,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sinc_1_OBJECT_TODO()
+        public void test_sinc_1_OBJECT()
         {
             double retstep = 0;
-            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Int64);
+            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Int64).astype(np.Object);
             var a = np.sinc(x);
             AssertArray(a, new double[] { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17,
                                            3.89804309105148E-17, 1.0, 1.0, 3.89804309105148E-17, -3.89804309105148E-17,
@@ -2082,88 +2072,78 @@ namespace NumpyDotNetTests
 
             print(b);
 
+
         }
 
         [TestMethod]
-        public void test_signbit_1_OBJECT_TODO()
+        public void test_signbit_1_OBJECT()
         {
-            var a = np.signbit((BigInteger)(-12));
+            var a = np.signbit((Object)(-12));
             Assert.AreEqual(true, a.GetItem(0));
             print(a);
 
-            var b = np.signbit(np.array(new BigInteger[] { 1, -23, 21 }));
-            AssertArray(b, new bool[] { false, true, false });
-            print(b);
+            try
+            {
+                var b = np.signbit(np.array(new Object[] { 1, -23, 21 }));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var c = np.signbit(np.array(new BigInteger[] { +0, -0 }));  // note: different result than python.  No such thing as -0.0
-            AssertArray(c, new bool[] { false, false });
-            print(c);
+            }
 
-            var f = np.signbit(np.array(new BigInteger[] { -1, 0, 1 }));
-            AssertArray(f, new bool[] { true, false, false });
-            print(f);
         }
 
         [TestMethod]
-        public void test_copysign_1_OBJECT_TODO()
+        public void test_copysign_1_OBJECT()
         {
-            var a = np.copysign((BigInteger)13, (BigInteger)(-1));
-            Assert.AreEqual((BigInteger)(-13), a.GetItem(0));
+            var a = np.copysign((Object)13, (Object)(-1));
+            Assert.AreEqual((Object)(-13), a.GetItem(0));
             print(a);
+    
+            try
+            {
+                var d = np.copysign(np.array(new Object[] { -1, 0, 1 }, dtype: np.Object), -1.1);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var b = np.divide((BigInteger)1, np.copysign((BigInteger)0, (BigInteger)1));
-            Assert.AreEqual((BigInteger)0, b.GetItem(0));  // note: python gets a np.inf value here
-            print(b);
+            }
 
-            var c = 1 / np.copysign((BigInteger)0, (BigInteger)(-1));
-            Assert.AreEqual((BigInteger)0, c.GetItem(0));  // note: python gets a -np.inf value here
-            print(c);
-
-
-            var d = np.copysign(new BigInteger[] { -1, 0, 1 }, -1.1);
-            AssertArray(d, new BigInteger[] { -1, 0, -1 });
-            print(d);
-
-            var e = np.copysign(new BigInteger[] { -1, 0, 1 }, np.arange(3) - 1);
-            AssertArray(e, new BigInteger[] { -1, 0, 1 });
-            print(e);
         }
 
         [TestMethod]
-        public void test_frexp_1_OBJECT_TODO()
+        public void test_frexp_1_OBJECT()
         {
-            var x = np.arange(9, dtype: np.BigInt);
-            var results = np.frexp(x);
+            var x = np.arange(9, dtype: np.Int32).astype(np.Object);
 
-            AssertArray(results[0], new double[] { 0.0, 0.5, 0.5, 0.75, 0.5, 0.625, 0.75, 0.875, 0.5 });
-            AssertArray(results[1], new int[] { 0, 1, 2, 2, 3, 3, 3, 3, 4 });
+            try
+            {
+                var results = np.frexp(x);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            print(results[0]);
-            print(results[1]);
+            }
 
-            print("***************");
-
-
-            x = np.arange(9, dtype: np.BigInt).reshape((3, 3));
-            results = np.frexp(x, where: x < 5);
-
-            AssertArray(results[0], new double[,] { { 0.0, 0.5, 0.5 }, { 0.75, 0.5, double.NaN }, { double.NaN, double.NaN, double.NaN } });
-            AssertArray(results[1], new int[,] { { 0, 1, 2 }, { 2, 3, 0 }, { 0, 0, 0 } });
-
-            print(results[0]);
-            print(results[1]);
+  
         }
 
         [TestMethod]
-        public void test_ldexp_1_OBJECT_TODO()
+        public void test_ldexp_1_OBJECT()
         {
-            var a = np.ldexp((BigInteger)5, np.arange(4, dtype: np.BigInt));
-            AssertArray(a, new double[] { 5.0f, 10.0f, 20.0f, 40.0f });
-            print(a);
+            try
+            {
+                var a = np.ldexp((Object)5, np.arange(4, dtype: np.Int32)).astype(np.Object);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var b = np.ldexp(np.arange(4, dtype: np.BigInt), (BigInteger)5);
-            AssertArray(b, new double[] { 0.0, 32.0, 64.0, 96.0 });
-            print(b);
+            }
+
         }
 
         [TestMethod]
