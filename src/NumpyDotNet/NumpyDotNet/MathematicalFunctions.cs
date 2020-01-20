@@ -1766,6 +1766,16 @@ namespace NumpyDotNet
         public static ndarray float_power(object x1, object x2, object where = null)
         {
             var x1a = asanyarray(x1);
+
+            if (!x1a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(x1a);
+            }
+            if (!asanyarray(x2).IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(asanyarray(x2));
+            }
+
             if (x1a.IsComplex)
             {
                 MathFunctionHelper<System.Numerics.Complex> ch = new MathFunctionHelper<System.Numerics.Complex> (x1, x2);
