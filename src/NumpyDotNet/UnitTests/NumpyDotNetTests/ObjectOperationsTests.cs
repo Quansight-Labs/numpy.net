@@ -2147,112 +2147,159 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_lcm_1_OBJECT_TODO()
+        public void test_lcm_1_OBJECT()
         {
-            var a = np.lcm((BigInteger)12, (BigInteger)20);
-            Assert.AreEqual((BigInteger)60, a.GetItem(0));
-            print(a);
-
-            var d = np.lcm(np.arange(6, dtype: np.BigInt), new BigInteger[] { 20 });
-            AssertArray(d, new BigInteger[] { 0, 20, 20, 60, 20, 20 });
-            print(d);
-
-            var e = np.lcm(new BigInteger[] { 20, 21 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
-            AssertArray(e, new BigInteger[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
-            print(e);
-
-            var f = np.lcm(new BigInteger[] { 20, 21 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
-            AssertArray(f, new BigInteger[,] { { 0, 21 }, { 20, 21 }, { 20, 105 } });
-            print(f);
+            try
+            {
+                var d = np.lcm(np.arange(6, dtype: np.Int32).astype(np.Object), new Object[] { 20 });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+            }
+ 
         }
 
         [TestMethod]
-        public void test_gcd_1_OBJECT_TODO()
+        public void test_gcd_1_OBJECT()
         {
-            var a = np.gcd((BigInteger)12, (BigInteger)20);
-            Assert.AreEqual((BigInteger)4, a.GetItem(0));
-            print(a);
-
-            var d = np.gcd(np.arange(6, dtype: np.BigInt), new BigInteger[] { 20 });
-            AssertArray(d, new BigInteger[] { 20, 1, 2, 1, 4, 5 });
-            print(d);
-
-            var e = np.gcd(new BigInteger[] { 20, 20 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
-            AssertArray(e, new BigInteger[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
-            print(e);
-
-            var f = np.gcd(new BigInteger[] { 20, 20 }, np.arange(6, dtype: np.BigInt).reshape((3, 2)));
-            AssertArray(f, new BigInteger[,] { { 20, 1 }, { 2, 1 }, { 4, 5 } });
-            print(f);
+            try
+            {
+                var d = np.gcd(np.arange(6, dtype: np.Int32).astype(np.Object), new Object[] { 20 });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+            }
+  
         }
 
         [TestMethod]
-        public void test_add_1_OBJECT_TODO()
+        public void test_add_1_OBJECT()
         {
-            var a = np.add((BigInteger)1, (BigInteger)4);
-            Assert.AreEqual((BigInteger)5, a.GetItem(0));
+            var a = np.add(1, 4).astype(np.Object);
+            Assert.AreEqual((Object)5, a.GetItem(0));
             print(a);
 
-            var b = np.arange(9, dtype: np.BigInt).reshape((3, 3));
-            var c = np.arange(3, dtype: np.BigInt);
+            var b = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Object);
+            var c = np.arange(3, dtype: np.Int32).astype(np.Object);
             var d = np.add(b, c);
-            AssertArray(d, new BigInteger[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
+            AssertArray(d, new Object[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
             print(d);
 
+            try
+            {
+                b[0] = new StringBuilder();
+                d = np.add(b, c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+  
         }
 
         [TestMethod]
-        public void test_reciprocal_operations_OBJECT_TODO()
+        public void test_reciprocal_operations_OBJECT()
         {
-            var a = np.arange(1, 32, 1, dtype: np.BigInt);
+            var a = np.arange(1, 32, 1, dtype: np.Float32).astype(np.Object);
             print(a);
 
             var b = np.reciprocal(a);
             print(b);
 
-            var ExpectedDataB1 = new BigInteger[]
+            var ExpectedDataB1 = new float[]
             {
-                1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                1.0f, 0.5f,        0.33333334f, 0.25f,       0.2f,        0.16666667f,
+                0.14285715f,       0.125f,      0.11111111f, 0.1f,        0.09090909f, 0.08333334f,
+                0.07692308f,       0.07142857f, 0.06666667f, 0.0625f,     0.05882353f, 0.05555556f,
+                0.05263158f,       0.05f,       0.04761905f, 0.04545455f, 0.04347826f, 0.04166667f,
+                0.04f,             0.03846154f, 0.03703704f, 0.03571429f, 0.03448276f, 0.03333334f,
+                0.03225806f
             };
 
             AssertArray(b, ExpectedDataB1);
 
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Float64).astype(np.Object);
             print(a);
 
             b = np.reciprocal(a);
             print(b);
 
-            var ExpectedDataB2 = new BigInteger[]
-            {
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-            };
+            var ExpectedDataB2 = new double[]
+             {
+                0.00048828, 0.00048804, 0.0004878,  0.00048757, 0.00048733, 0.00048709,
+                0.00048685, 0.00048662, 0.00048638, 0.00048614, 0.00048591, 0.00048567,
+                0.00048544, 0.0004852,  0.00048497, 0.00048473, 0.0004845,  0.00048426,
+                0.00048403, 0.00048379, 0.00048356, 0.00048333, 0.00048309, 0.00048286,
+                0.00048263, 0.00048239, 0.00048216, 0.00048193, 0.0004817,  0.00048146,
+                0.00048123, 0.000481
+             };
             AssertArray(b, ExpectedDataB2);
+
+
+            try
+            {
+                a[4] = "X";
+                b = np.reciprocal(a);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
         [TestMethod]
-        public void test_positive_1_OBJECT_TODO()
+        public void test_positive_1_OBJECT()
         {
-            var d = np.positive(new BigInteger[] { -1, -0, 1 });
-            AssertArray(d, new BigInteger[] { -1, -0, 1 });
+            var d = np.positive(np.array(new Int32[] { -1, -0, 1 }).astype(np.Object));
+            AssertArray(d, new object[] { -1, -0, 1 });
             print(d);
 
-            var e = np.positive(new BigInteger[,] { { 1, 0, -1 }, { -2, 3, -4 } });
-            AssertArray(e, new BigInteger[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            var e = np.positive(np.array(new Int32[,] { { 1, 0, -1 }, { -2, 3, -4 } }).astype(np.Object));
+            AssertArray(e, new object[,] { { 1, 0, -1 }, { -2, 3, -4 } });
             print(e);
+
+            try
+            {
+                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Object);
+                d[1] = "X";
+                d = np.positive(d);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
         }
 
         [TestMethod]
-        public void test_negative_1_OBJECT_TODO()
+        public void test_negative_1_OBJECT()
         {
-            var d = np.negative(new BigInteger[] { -1, -0, 1 });
-            AssertArray(d, new BigInteger[] { 1, 0, -1 });
+            var d = np.negative(np.array(new object[] { -1, -0, 1 }).astype(np.Object));
+            AssertArray(d, new Int32[] { 1, 0, -1 });
             print(d);
 
-            var e = np.negative(new BigInteger[,] { { 1, 0, -1 }, { -2, 3, -4 } });
-            AssertArray(e, new BigInteger[,] { { -1, 0, 1 }, { 2, -3, 4 } });
+            var e = np.negative(np.array(new Int32[,] { { 1, 0, -1 }, { -2, 3, -4 } }).astype(np.Object));
+            AssertArray(e, new Int32[,] { { -1, 0, 1 }, { 2, -3, 4 } });
             print(e);
+
+            try
+            {
+                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Object);
+                d[1] = "X";
+                d = np.negative(d);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
         [TestMethod]
