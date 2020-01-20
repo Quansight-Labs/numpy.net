@@ -2653,73 +2653,86 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_convolve_1_OBJECT_TODO()
+        public void test_convolve_1_OBJECT()
         {
-            var a = np.convolve(new BigInteger[] { 1, 2, 3 }, new float[] { 0, 1, 1 });
-            AssertArray(a, new BigInteger[] { 0, 1, 3, 5, 3 });
+            var a = np.convolve(np.array(new int[] { 1, 2, 3 }).astype(np.Object), np.array(new float[] { 0, 1, 0.5f }).astype(np.Object));
+            AssertArray(a, new float[] { 0.0f, 1.0f, 2.5f, 4.0f, 1.5f });
             print(a);
 
-            var b = np.convolve(new BigInteger[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new BigInteger[] { 1, 2, 3 });
+            var b = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new double[] { 1.0, 2.5, 4.0 });
             print(b);
 
-            var c = np.convolve(new BigInteger[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
-            AssertArray(c, new BigInteger[] { 2 });
+            var c = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            AssertArray(c, new double[] { 2.5 });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_clip_2_OBJECT_TODO()
+        public void test_clip_2_OBJECT()
         {
-            ndarray a = np.arange(16, dtype: np.BigInt).reshape(new shape(4, 4));
+            ndarray a = np.arange(16).reshape(new shape(4, 4)).astype(np.Object);
             print(a);
             print("*****");
 
             ndarray b = np.clip(a, 1, 8);
             print(b);
             print("*****");
-            AssertArray(b, new BigInteger[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, new double[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
             ndarray c = np.clip(a, 3, 6, @out: a);
             print(c);
-            AssertArray(c, new BigInteger[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(c, new double[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
             print(a);
-            AssertArray(a, new BigInteger[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(a, new double[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
             print("*****");
 
-            a = np.arange(16, dtype: np.BigInt).reshape(new shape(4, 4));
+            a = np.arange(16).reshape(new shape(4, 4)).astype(np.Object);
             print(a);
-            b = np.clip(a, np.array(new BigInteger[] { 3, 4, 1, 1 }), 8);
+            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Object), 8);
             print(b);
-            AssertArray(b, new BigInteger[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, new double[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+
+            a["...", "..."] = "X";
+            print(a);
+            try
+            {
+                b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Object), 8);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
 
         }
 
         [TestMethod]
-        public void test_square_operations_OBJECT_TODO()
+        public void test_square_operations_OBJECT()
         {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
+            var a = np.arange(0, 32, 1, dtype: np.Int32).astype(np.Object);
             print(a);
 
             var b = np.square(a);
             print(b);
 
-            var ExpectedDataB1 = new BigInteger[]
+            var ExpectedDataB1 = new Int32[]
             {
                 0,   1,   4,   9,  16,  25,  36,  49,  64,  81, 100, 121, 144, 169, 196, 225, 256, 289,
                 324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961
             };
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int64).astype(np.Object);
             print(a);
 
             b = np.square(a);
             print(b);
 
-            var ExpectedDataB2 = new BigInteger[]
+            var ExpectedDataB2 = new Int64[]
             {
                 4194304, 4198401, 4202500, 4206601, 4210704, 4214809, 4218916, 4223025, 4227136,
                 4231249, 4235364, 4239481, 4243600, 4247721, 4251844, 4255969, 4260096, 4264225,
@@ -2728,18 +2741,32 @@ namespace NumpyDotNetTests
             };
             AssertArray(b, ExpectedDataB2);
 
+            //////////////////////
+
+            a["..."] = "X";
+            print(a);
+            try
+            {
+                b = np.square(a);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
         [TestMethod]
-        public void test_absolute_operations_OBJECT_TODO()
+        public void test_absolute_operations_OBJECT()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.BigInt);
+            var a = np.arange(-32, 32, 1, dtype: np.Int16).astype(np.Object);
             print(a);
 
             var b = np.absolute(a);
             print(b);
 
-            var ExpectedDataB = new BigInteger[]
+            var ExpectedDataB = new Int16[]
             {
                 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
                 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
@@ -2747,18 +2774,34 @@ namespace NumpyDotNetTests
                 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
                 28, 29, 30, 31
             };
+
+
+            //////////////////////
+
+            a["..."] = "X";
+            print(a);
+            try
+            {
+                b = np.absolute(a);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
         [TestMethod]
-        public void test_fabs_1_OBJECT_TODO()
+        public void test_fabs_1_OBJECT()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.BigInt);
+            var a = np.arange(-32, 32, 1, dtype: np.Int16).astype(np.Object);
             print(a);
 
             var b = np.fabs(a);
             print(b);
 
-            var ExpectedDataB = new BigInteger[]
+            var ExpectedDataB = new Int16[]
             {
                 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
                 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
@@ -2766,70 +2809,129 @@ namespace NumpyDotNetTests
                 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
                 28, 29, 30, 31
             };
+
+            //////////////////////
+
+            a["..."] = "X";
+            print(a);
+            try
+            {
+                b = np.fabs(a);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
         [TestMethod]
-        public void test_sign_1_OBJECT_TODO()
+        public void test_sign_1_OBJECT()
         {
-            var a = np.sign((BigInteger)(-199));
+            var a = np.sign((Object)(-199));
             Assert.AreEqual((Int64)(-1), a.GetItem(0));
             print(a);
 
-            var b = np.sign(np.array(new BigInteger[] { 1, -23, 21 }));
-            AssertArray(b, new Int64[] { 1, -1, 1 });
+            try
+            {
+                var b = np.sign(np.array(new Object[] { 1, -23, 21 }).astype(np.Object));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+  
+        }
+
+        [TestMethod]
+        public void test_heaviside_1_OBJECT()
+        {
+            var a = np.heaviside(np.array(new Int32[] { -15, 0, 20 }).astype(np.Object), 5);
+            AssertArray(a, new double[] { 0, 5, 1 });
+            print(a);
+
+            var b = np.heaviside(np.array(new Int32[] { -15, 0, 20 }).astype(np.Object), 1);
+            AssertArray(b, new double[] { 0, 1, 1 });
             print(b);
 
-            var c = np.sign(np.array(new BigInteger[] { +0, -0 }));
-            AssertArray(c, new Int64[] { 0, 0 });
+            var c = np.heaviside(np.array(new Int32[] { -1, 0, 2 }).astype(np.Object), 1);
+            AssertArray(c, new double[] { 0, 1, 1 });
             print(c);
 
+            //////////////////////
 
-            var f = np.sign(np.array(new BigInteger[] { -1, 0, 1 }));
-            AssertArray(f, new Int64[] { -1, 0, 1 });
-            print(f);
-        }
-
-        [TestMethod]
-        public void test_heaviside_1_OBJECT_TODO()
-        {
-            var a = np.heaviside(new BigInteger[] { -15, 0, 20 }, 5);
-            AssertArray(a, new BigInteger[] { 0, 5, 1 });
+            a = np.array(new object[] { "A", "B", "C"});
             print(a);
+            try
+            {
+                b = np.heaviside(a,1);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var b = np.heaviside(new BigInteger[] { -15, 0, 20 }, 1);
-            AssertArray(b, new BigInteger[] { 0, 1, 1 });
-            print(b);
+            }
 
-            var c = np.heaviside(new BigInteger[] { -1, 0, 2 }, 1);
-            AssertArray(c, new BigInteger[] { 0, 1, 1 });
-            print(c);
 
         }
 
         [TestMethod]
-        public void test_maximum_1_OBJECT_TODO()
+        public void test_maximum_1_OBJECT()
         {
-            var a = np.maximum(new BigInteger[] { 2, 3, 4 }, new BigInteger[] { 1, 5, 2 });
-            AssertArray(a, new BigInteger[] { 2, 5, 4 });
+            var a = np.maximum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
+            AssertArray(a, new double[] { 2, 5, 4 });
             print(a);
 
-            var b = np.maximum(np.eye(2, dtype: np.BigInt), new BigInteger[] { 5, 2 }); // broadcasting
-            AssertArray(b, new BigInteger[,] { { 5, 2 }, { 5, 2 } });
+            var b = np.maximum(np.eye(2, dtype: np.Object), new Object[] { 5, 2 }); // broadcasting
+            AssertArray(b, new double[,] { { 5, 2 }, { 5, 2 } });
             print(b);
+
+            //////////////////////
+
+            a = np.array(new object[] { "A", "B", "C" });
+            print(a);
+            try
+            {
+                b = np.maximum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
+
 
         }
 
 
         [TestMethod]
-        public void test_minimum_1_OBJECT_TODO()
+        public void test_minimum_1_OBJECT()
         {
-            var a = np.minimum(new BigInteger[] { 2, 3, 4 }, new BigInteger[] { 1, 5, 2 });
-            AssertArray(a, new BigInteger[] { 1, 3, 2 });
+            var a = np.minimum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
+            AssertArray(a, new double[] { 1, 3, 2 });
             print(a);
 
-            var b = np.minimum(np.eye(2, dtype: np.BigInt), new BigInteger[] { 5, 2 }); // broadcasting
-            AssertArray(b, new BigInteger[,] { { 1, 0 }, { 0, 1 } });
+            var b = np.minimum(np.eye(2, dtype: np.Object), np.array(new Int32[] { 5, 2 }).astype(np.Object)); // broadcasting
+            AssertArray(b, new double[,] { { 1, 0 }, { 0, 1 } });
             print(b);
+
+            //////////////////////
+
+            a = np.array(new object[] { "A", "B", "C" });
+            print(a);
+            try
+            {
+                b = np.minimum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
 
         }
 
