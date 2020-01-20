@@ -312,9 +312,11 @@ namespace NumpyLib
         }
         protected virtual object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
         {
-            System.Numerics.Complex tmp = (System.Numerics.Complex)otmp;
-            System.Numerics.Complex[] ip1 = op1 as System.Numerics.Complex[];
-            System.Numerics.Complex[] ip2 = op2 as System.Numerics.Complex[];
+            dynamic tmp = (dynamic)otmp;
+            if (tmp == null) tmp = 0;
+
+            dynamic[] ip1 = op1 as dynamic[];
+            dynamic[] ip2 = op2 as dynamic[];
 
             tmp += (ip1[ip1_index / ip1Size] * ip2[ip2_index / ip2Size]);
             return tmp;
