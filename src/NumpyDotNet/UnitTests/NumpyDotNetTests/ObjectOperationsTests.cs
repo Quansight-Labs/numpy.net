@@ -2504,81 +2504,149 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fmod_2_OBJECT_TODO()
+        public void test_fmod_2_OBJECT()
         {
-            var x = np.fmod(new BigInteger[] { -4, -7 }, new BigInteger[] { 2, 3 });
-            AssertArray(x, new BigInteger[] { 0, -1 });
+            var x = np.fmod(new object[] { -4, -7 }, new object[] { 2, 3 });
+            AssertArray(x, new int[] { 0, -1 });
             print(x);
 
-            var y = np.fmod(np.arange(7, dtype: np.BigInt), -5);
-            AssertArray(y, new BigInteger[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.fmod(np.arange(7).astype(np.Object), -5);
+            AssertArray(y, new object[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
+
+            try
+            {
+                x = np.arange(7).astype(np.Object);
+                x[2] = "X";
+                var a = np.fmod(x, 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
 
             return;
         }
 
         [TestMethod]
-        public void test_mod_1_OBJECT_TODO()
+        public void test_mod_1_OBJECT()
         {
-            var x = np.mod(new BigInteger[] { 4, 7 }, new BigInteger[] { 2, 3 });
-            AssertArray(x, new BigInteger[] { 0, 1 });
+            var x = np.mod(new object[] { 4, 7 }, new object[] { 2, 3 });
+            AssertArray(x, new int[] { 0, 1 });
             print(x);
 
-            var y = np.mod(np.arange(7, dtype: np.BigInt), 5);
-            AssertArray(y, new BigInteger[] { 0, 1, 2, 3, 4, 0, 1 });
+            var y = np.mod(np.arange(7).astype(np.Object), 5);
+            AssertArray(y, new object[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
+
+            try
+            {
+                x = np.arange(7).astype(np.Object);
+                x[2] = "X";
+                var a = np.mod(x, 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
 
             return;
         }
 
         [TestMethod]
-        public void test_modf_1_OBJECT_TODO()
+        public void test_modf_1_OBJECT()
         {
-            var x = np.modf(new BigInteger[] { 0, 3 });
-            AssertArray(x[0], new double[] { 0, 0 });
-            AssertArray(x[1], new double[] { 0, 3 });
+            var x = np.modf(np.array(new double[] { 0, 3.5 }).astype(np.Object));
+            AssertArray(x[0], new double[] { 0, 0.5 });
+            AssertArray(x[1], new double[] { 0, 3.0 });
             print(x);
 
-            var y = np.modf(np.arange(7, dtype: np.BigInt));
-            AssertArray(y[0], new double[] { 0, 0, 0, 0, 0, 0, 0 });
+            var y = np.modf(np.arange(7.0).astype(np.Object));
+            AssertArray(y[0], new float[] { 0, 0, 0, 0, 0, 0, 0 });
             AssertArray(y[1], new double[] { 0, 1, 2, 3, 4, 5, 6 });
             print(y);
 
+            /////////////////////////////
+            
+            var x1 = np.arange(7.0).astype(np.Object);
+            x1[2] = "X";
+
+            try
+            {
+                var a = np.mod(x1, 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
             return;
         }
 
         [TestMethod]
-        public void test_remainder_2_OBJECT_TODO()
+        public void test_remainder_2_OBJECT()
         {
-            var x = np.remainder(new BigInteger[] { -4, -7 }, new BigInteger[] { 2, 3 });
-            AssertArray(x, new BigInteger[] { 0, 2 });
+            var x = np.remainder(np.array(new int[] { -4, -7 }).astype(np.Object), np.array(new int[] { 2, 3 }).astype(np.Object));
+            AssertArray(x, new int[] { 0, 2 });
             print(x);
 
-            var y = np.remainder(np.arange(7, dtype: np.BigInt), -5);
-            AssertArray(y, new BigInteger[] { 0, -4, -3, -2, -1, 0, -4 });
+            var y = np.remainder(np.arange(7).astype(np.Object), -5);
+            AssertArray(y, new int[] { 0, -4, -3, -2, -1, 0, -4 });
             print(y);
+
+            /////////////////////////////
+
+            var x1 = np.arange(7).astype(np.Object);
+            x1[2] = "X";
+
+            try
+            {
+                var a = np.remainder(x1, 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
 
             return;
         }
 
         [TestMethod]
-        public void test_divmod_1_OBJECT_TODO()
+        public void test_divmod_1_OBJECT()
         {
-            var a = np.divmod((BigInteger)7, (BigInteger)3);
-            Assert.AreEqual((BigInteger)2, a[0].GetItem(0));
-            Assert.AreEqual((BigInteger)1, a[1].GetItem(0));
+            var a = np.divmod((object)7, (object)3);
+            Assert.AreEqual(2, a[0].GetItem(0));
+            Assert.AreEqual(1, a[1].GetItem(0));
 
             print(a);
 
-            var b = np.divmod(new BigInteger[] { 12, 24, 36, 48 }, 10);
-            AssertArray(b[0], new BigInteger[] { 1, 2, 3, 4 });
-            AssertArray(b[1], new BigInteger[] { 2, 4, 6, 8 });
+            var b = np.divmod(new object[] { 1.0, 2.0, 3.0, 4.0 }, 2.5);
+            AssertArray(b[0], new double[] { 0, 0, 1, 1 });
+            AssertArray(b[1], new double[] { 1, 2, 0.5, 1.5 });
             print(b);
 
-            var c = np.divmod(new BigInteger[] { 10, 20, 30, 40 }, new BigInteger[] { 5, 25, 5, 5 });
-            AssertArray(c[0], new BigInteger[] { 2, 0, 6, 8 });
-            AssertArray(c[1], new BigInteger[] { 0, 20, 0, 0 });
+            var c = np.divmod(new object[] { 1.0, 2.0, 3.0, 4.0 }, new object[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c[0], new double[] { 2, 0, 1, 1 });
+            AssertArray(c[1], new double[] { 0, 2, 0.5, 0.5 });
             print(c);
+
+            /////////////////////////////
+
+            var x1 = np.arange(7).astype(np.Object);
+            x1[2] = "X";
+
+            try
+            {
+                a = np.divmod(x1, 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+            }
 
             return;
 
