@@ -2936,45 +2936,73 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fmax_1_OBJECT_TODO()
+        public void test_fmax_1_OBJECT()
         {
-            var a = np.fmax(new BigInteger[] { 2, 3, 4 }, new BigInteger[] { 1, 5, 2 });
-            AssertArray(a, new BigInteger[] { 2, 5, 4 });
+            var a = np.fmax(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
+            AssertArray(a, new double[] { 2, 5, 4 });
             print(a);
 
-            var b = np.fmax(np.eye(2, dtype: np.BigInt), new BigInteger[] { 5, 2 }); // broadcasting
-            AssertArray(b, new BigInteger[,] { { 5, 2 }, { 5, 2 } });
+            var b = np.fmax(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
+            AssertArray(b, new double[,] { { 1, 2 }, { 0.5, 2.0 } });
             print(b);
 
-        }
+            var c = np.fmax(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
+            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            print(c);
 
-        [TestMethod]
-        public void test_fmin_1_OBJECT_TODO()
-        {
-            var a = np.fmin(new BigInteger[] { 2, 3, 4 }, new BigInteger[] { 1, 5, 2 });
-            AssertArray(a, new BigInteger[] { 1, 3, 2 });
-            print(a);
-
-            var b = np.fmin(np.eye(2, dtype: np.BigInt), new BigInteger[] { 5, 2 }); // broadcasting
-            AssertArray(b, new BigInteger[,] { { 1, 0 }, { 0, 1 } });
-            print(b);
-
-        }
-
-        [TestMethod]
-        public void test_nan_to_num_1_OBJECT_TODO()
-        {
-            BigInteger a1 = (BigInteger)np.nan_to_num((BigInteger)2);
-            Assert.AreEqual(a1, (BigInteger)2);
-            print(a1);
-
-            ndarray x = np.array(new BigInteger[] { 1, 2, 3, -128, 128 });
-            ndarray d = np.nan_to_num(x);
-            AssertArray(d, new BigInteger[] { 1, 2, 3, -128, 128 });
+            var d = np.fmax(double.PositiveInfinity, 1);
+            Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
             print(d);
 
+            //////////////////////
+
+            a = np.array(new object[] { "A", "B", "C" });
+            print(a);
+            try
+            {
+                b = np.fmax(a, np.array(new int[] { 1, 5, 2 }).astype(np.Object));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
         }
 
+        [TestMethod]
+        public void test_fmin_1_OBJECT()
+        {
+            var a = np.fmin(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
+            AssertArray(a, new double[] { 1, 3, 2 });
+            print(a);
+
+            var b = np.fmin(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
+            AssertArray(b, new double[,] { { 0.5, 0.0 }, { 0.0, 1.0 } });
+            print(b);
+
+            var c = np.fmin(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
+            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            print(c);
+
+            //////////////////////
+
+            a = np.array(new object[] { "A", "B", "C" });
+            print(a);
+            try
+            {
+                b = np.fmin(a, np.array(new int[] { 1, 5, 2 }).astype(np.Object));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+   
+
+        }
+
+ 
         #endregion
 
         #region from FromNumericTests
