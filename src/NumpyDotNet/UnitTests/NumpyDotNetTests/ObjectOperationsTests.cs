@@ -2303,47 +2303,71 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_multiply_1_OBJECT_TODO()
+        public void test_multiply_1_OBJECT()
         {
-            var a = np.multiply((BigInteger)2, (BigInteger)4);
-            Assert.AreEqual((BigInteger)8, a.GetItem(0));
+            var a = np.multiply((object)2, (object)4);
+            Assert.AreEqual((object)8, a.GetItem(0));
             print(a);
 
-            var b = np.arange((BigInteger)9).reshape((3, 3));
-            var c = np.arange((BigInteger)3);
+            var b = np.arange(9).reshape((3, 3)).astype(np.Object);
+            var c = np.arange(3).astype(np.Object);
             var d = np.multiply(b, c);
-            AssertArray(d, new BigInteger[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
+            AssertArray(d, new object[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
             print(d);
+
+            try
+            {
+                c[1] = "X";
+                d = np.multiply(b, c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
         }
 
         [TestMethod]
-        public void test_divide_OBJECT_TODO()
+        public void test_divide_OBJECT()
         {
-            var a = np.divide((BigInteger)7, (BigInteger)3);
-            Assert.AreEqual((BigInteger)2, a.GetItem(0));
+            var a = np.divide((object)7, (object)3);
+            Assert.AreEqual((object)2, a.GetItem(0));
             print(a);
 
-            var b = np.divide(new BigInteger[] { 1, 2, 3, 4 }, 2);
-            AssertArray(b, new BigInteger[] { 0, 1, 1, 2 });
+            var b = np.divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), 2);
+            AssertArray(b, new object[] { 0, 1, 1, 2 });
             print(b);
 
-            var c = np.divide(new BigInteger[] { 2, 4, 6, 8 }, new BigInteger[] { 1, 2, 3, 4 });
-            AssertArray(c, new BigInteger[] { 2, 2, 2, 2 });
+            var c = np.divide(np.array(new Int32[] { 2, 4, 6, 8 }).astype(np.Object), np.array(new object[] { 1, 2, 3, 4 }).astype(np.Object));
+            AssertArray(c, new object[] { 2, 2, 2, 2 });
             print(c);
 
+
+            try
+            {
+                c[1] = "X";
+                var d = np.divide(b, c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
             return;
+
+
         }
 
         [TestMethod]
-        public void test_power_operations_OBJECT_TODO()
+        public void test_power_operations_OBJECT()
         {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
+            var a = np.arange(0, 32, 1, dtype: np.Int32).astype(np.Object);
             print(a);
 
             var b = np.power(a, 3);
             print(b);
 
-            var ExpectedDataB1 = new BigInteger[]
+            var ExpectedDataB1 = new double[]
             {
                 0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197,
                 2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648, 12167, 13824,
@@ -2352,15 +2376,15 @@ namespace NumpyDotNetTests
 
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
+            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int32).astype(np.Object);
             print(a);
 
             b = np.power(a, 4);
             print(b);
 
-            var ExpectedDataB2 = new BigInteger[]
+            var ExpectedDataB2 = new double[]
             {
-                System.Numerics.BigInteger.Pow(2048, 4), 17626570956801, 17661006250000, 17695491973201,
+                Math.Pow(2048, 4), 17626570956801, 17661006250000, 17695491973201,
                 17730028175616, 17764614906481, 17799252215056, 17833940150625,
                 17868678762496, 17903468100001, 17938308212496, 17973199149361,
                 18008140960000, 18043133693841, 18078177400336, 18113272128961,
@@ -2372,79 +2396,88 @@ namespace NumpyDotNetTests
 
             AssertArray(b, ExpectedDataB2);
 
-            b = np.power(a, 0m);
+            b = np.power(a, 0);
             print(b);
-            var ExpectedDataB3 = new BigInteger[]
+            var ExpectedDataB3 = new double[]
             {
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
             };
             AssertArray(b, ExpectedDataB3);
 
-
-            b = np.power(a, 1);
-            print(b);
-
-            var ExpectedDataB4 = new BigInteger[]
+            try
             {
-                //45.254833995939m, 45.2658811910251m, 45.2769256906871m, 45.287967496897m, 45.2990066116245m,
-                //45.3100430368368m, 45.3210767744986m, 45.3321078265725m, 45.3431361950185m, 45.3541618817943m,
-                //45.365184888855m, 45.3762052181537m, 45.3872228716409m, 45.3982378512647m, 45.4092501589709m,
-                //45.4202597967031m, 45.4312667664022m, 45.442271070007m, 45.453272709454m, 45.4642716866772m,
-                //45.4752680036083m, 45.4862616621766m, 45.4972526643093m, 45.508241011931m, 45.5192267069642m,
-                //45.5302097513288m, 45.5411901469428m, 45.5521678957215m, 45.5631429995781m, 45.5741154604234m,
-                //45.5850852801659m, 45.596052460712m
-            };
+                a[1] = "X";
+                var d = np.power(a, 1);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            //AssertArray(b, ExpectedDataB4);
+            }
+            return;
+
 
         }
 
         [TestMethod]
-        public void test_subtract_1_OBJECT_TODO()
+        public void test_subtract_1_OBJECT()
         {
-            var a = np.subtract((BigInteger)1, (BigInteger)4);
-            Assert.AreEqual((BigInteger)(-3), a.GetItem(0));
+            var a = np.subtract((object)1, (object)4);
+            Assert.AreEqual((object)(-3), a.GetItem(0));
             print(a);
 
-            var b = np.arange(9.0, dtype: np.BigInt).reshape((3, 3));
-            var c = np.arange(3.0, dtype: np.BigInt);
+            var b = np.arange(9.0, dtype: np.Int32).reshape((3, 3)).astype(np.Object);
+            var c = np.arange(3.0, dtype: np.Int32).astype(np.Object);
             var d = np.subtract(b, c);
-            AssertArray(d, new BigInteger[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            AssertArray(d, new object[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
             print(d);
+
+            try
+            {
+                c[1] = "X";
+                d = np.subtract(b, c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+            return;
         }
 
         [TestMethod]
-        public void test_true_divide_OBJECT_TODO()
+        public void test_true_divide_OBJECT()
         {
-            var a = np.true_divide((BigInteger)7, (BigInteger)3);
-            Assert.AreEqual((BigInteger)2, a.GetItem(0));
+            var a = np.true_divide((object)7, (object)3);
+            Assert.AreEqual(2.3333333333333335, a.GetItem(0));
             print(a);
 
-            var b = np.true_divide(new BigInteger[] { 10, 20, 30, 40 }, 2.5m);
-            AssertArray(b, new BigInteger[] { 5, 10, 15, 20 });
+            var b = np.true_divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), 2.5);
+            AssertArray(b, new object[] { 0.4, 0.8, 1.2, 1.6 });
             print(b);
 
-            var c = np.true_divide(new BigInteger[] { 10, 20, 30, 40 }, new decimal[] { 5, 10, 15, 4 });
-            AssertArray(c, new BigInteger[] { 2, 2, 2, 10 });
+            var c = np.true_divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), new double[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c, new double[] { 2.0, 0.8, 1.2, 1.14285714 });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_floor_divide_OBJECT_TODO()
+        public void test_floor_divide_OBJECT()
         {
-            var a = np.floor_divide((BigInteger)7, (BigInteger)3);
-            Assert.AreEqual((BigInteger)2, a.GetItem(0));
+            var a = np.floor_divide((object)7, (object)3);
+            Assert.AreEqual(2, a.GetItem(0));
             print(a);
 
-            var b = np.floor_divide(new BigInteger[] { 10, 20, 30, 40 }, 2);
-            AssertArray(b, new BigInteger[] { 5, 10, 15, 20 });
+            var b = np.floor_divide(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).astype(np.Object), 2.5);
+            AssertArray(b, new double[] { 0, 0, 1, 1 });
             print(b);
 
-            var c = np.floor_divide(new BigInteger[] { 10, 20, 30, 40 }, new BigInteger[] { 5, 10, 15, 4 });
-            AssertArray(c, new BigInteger[] { 2, 2, 2, 10 });
+            var c = np.floor_divide(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).astype(np.Object), 
+                                    np.array(new double[] { 0.5, 2.5, 2.5, 3.5 }).astype(np.Object));
+            AssertArray(c, new double[] { 2, 0, 1, 1 });
             print(c);
 
             return;
@@ -2452,23 +2485,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_float_power_OBJECT_TODO()
+        public void test_float_power_OBJECT()
         {
-            var x1 = new BigInteger[] { 0, 1, 2, 3, 4, 5 };
+            var x1 = new int[] { 0, 1, 2, 3, 4, 5 };
 
-            var a = np.float_power(x1, 3m);
-            AssertArray(a, new double[] { 0.0, 1.0, 8.0, 27.0, 64.0, 125.0 });
-            print(a);
+            try
+            {
+                var a = np.float_power(np.array(x1).astype(np.Object), 3);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var x2 = new BigInteger[] { 1, 2, 3, 3, 2, 1 };
-            var b = np.float_power(x1, x2);
-            AssertArray(b, new double[] { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 });
-            print(b);
-
-            var x3 = np.array(new BigInteger[,] { { 1, 2, 3, 3, 2, 1 }, { 1, 2, 3, 3, 2, 1 } });
-            var c = np.float_power(x1, x3);
-            AssertArray(c, new double[,] { { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 }, { 0.0, 1.0, 8.0, 27.0, 16.0, 5.0 } });
-            print(c);
+            }
+     
 
             return;
         }
