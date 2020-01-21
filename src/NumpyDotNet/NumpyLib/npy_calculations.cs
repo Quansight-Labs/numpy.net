@@ -561,35 +561,7 @@ namespace NumpyLib
                 }
             }
         }
-
-        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, double operand, NumericOperations operations)
-        {
-            var srcSize = NpyArray_Size(srcArray);
-            var SrcIter = NpyArray_BroadcastToShape(srcArray, srcArray.dimensions, srcArray.nd);
-            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
-
-            for (long i = 0; i < srcSize; i++)
-            {
-                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset-srcArray.data.data_offset, srcArray);
-                object destValue = null;
-
-                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operand));
-
-                try
-                {
-                    operations.destSetItem(DestIter.dataptr.data_offset-destArray.data.data_offset, destValue, destArray);
-                }
-                catch
-                {
-                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
-                }
-
-                NpyArray_ITER_NEXT(SrcIter);
-                NpyArray_ITER_NEXT(DestIter);
-            }
-        }
-
-
+  
         private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations)
         {
             var destSize = NpyArray_Size(destArray);
@@ -604,10 +576,77 @@ namespace NumpyLib
             var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
             var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
 
+            long taskSize = 1000;
+            int taskCnt = 0;
+            long[] srcOffsets = new npy_intp[taskSize];
+            long[] destOffsets = new npy_intp[taskSize];
+            long[] operOffsets = new npy_intp[taskSize];
+
+            List<Task> TaskList = new List<Task>();
+
             for (long i = 0; i < destSize; i++)
             {
-                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
-                var operValue = operations.operandGetItem(OperIter.dataptr.data_offset - operArray.data.data_offset, operArray);
+                srcOffsets[taskCnt] = SrcIter.dataptr.data_offset - srcArray.data.data_offset;
+                destOffsets[taskCnt] = DestIter.dataptr.data_offset - destArray.data.data_offset;
+                operOffsets[taskCnt++] = OperIter.dataptr.data_offset - operArray.data.data_offset;
+
+                if (taskCnt == taskSize || i == destSize-1)
+                {
+                    var taskData = new NumericOpTaskData()
+                    {
+                        operations = operations,
+                        srcArray = srcArray,
+                        destArray = destArray,
+                        operArray = operArray,
+                        srcOffsets = srcOffsets,
+                        destOffsets = destOffsets,
+                        operOffsets = operOffsets,
+                        taskCnt = taskCnt,
+                    };
+
+                    var newTask = new TaskFactory().StartNew(new Action<object>((_taskData) =>
+                    {
+                        var td = _taskData as NumericOpTaskData;
+                        NumericOpTask(td.srcArray, td.destArray, td.operArray, td.operations, td.srcOffsets, td.destOffsets, td.operOffsets, td.taskCnt);
+                    }), taskData);
+  
+                    TaskList.Add(newTask);
+
+                    srcOffsets = new npy_intp[taskSize];
+                    destOffsets = new npy_intp[taskSize];
+                    operOffsets = new npy_intp[taskSize];
+                    taskCnt = 0;
+                }
+
+
+                NpyArray_ITER_NEXT(SrcIter);
+                NpyArray_ITER_NEXT(DestIter);
+                NpyArray_ITER_NEXT(OperIter);
+            }
+
+            Task.WaitAll(TaskList.ToArray());
+        }
+
+        class NumericOpTaskData
+        {
+            public NpyArray srcArray;
+            public NpyArray destArray;
+            public NpyArray operArray;
+            public NumericOperations operations;
+            public long[] srcOffsets;
+            public long[] destOffsets;
+            public long[] operOffsets;
+            public int taskCnt;
+        }
+
+
+
+        private static void NumericOpTask(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, long[] srcOffsets, long[] destOffsets, long[] operOffsets, int taskCnt)
+        {
+            for (int i = 0; i < taskCnt; i++)
+            {
+                var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
+                var operValue = operations.operandGetItem(operOffsets[i], operArray);
 
                 object destValue = null;
 
@@ -615,17 +654,14 @@ namespace NumpyLib
 
                 try
                 {
-                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                    operations.destSetItem(destOffsets[i], destValue, destArray);
                 }
                 catch
                 {
-                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                    operations.destSetItem(destOffsets[i], 0, destArray);
                 }
-
-                NpyArray_ITER_NEXT(SrcIter);
-                NpyArray_ITER_NEXT(DestIter);
-                NpyArray_ITER_NEXT(OperIter);
             }
+
         }
 
         private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperations operations)
