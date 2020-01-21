@@ -551,6 +551,81 @@ namespace NumpyLib
   
         }
 
+        internal static npy_intp[] GetOffsets(NpyArrayIterObject it, NpyArray array, long count)
+        {
+            npy_intp []Offsets = new npy_intp[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                Offsets[i] = GetOffset(it, array, i);
+            }
+
+            return Offsets;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static npy_intp GetOffset(NpyArrayIterObject it, NpyArray array, long offset)
+        {
+            npy_intp data_offset = it.dataptr.data_offset - array.data.data_offset;
+
+            if (it.contiguous)
+            {
+                data_offset += (npy_intp)it.ao.descr.elsize * offset;
+            }
+            else
+            if (it.nd_m1 == 0)
+            {
+                data_offset += it.strides[0] * offset;
+            }
+            else
+            {
+                npy_intp[] coordinates = new npy_intp[it.coordinates.Length];
+                Array.Copy(it.coordinates, coordinates, coordinates.Length);
+
+                for (int index = 0; index < offset; index++)
+                {
+                    if (it.nd_m1 == 1)
+                    {
+                        if (coordinates[1] < it.dims_m1[1])
+                        {
+                            coordinates[1]++;
+                            data_offset += it.strides[1];
+                        }
+                        else
+                        {
+                            coordinates[1] = 0;
+                            coordinates[0]++;
+                            data_offset += it.strides[0] - it.backstrides[1];
+                        }
+                    }
+                    else
+                    {
+                        int i;
+                        for (i = it.nd_m1; i >= 0; i--)
+                        {
+                            if (coordinates[i] < it.dims_m1[i])
+                            {
+                                coordinates[i]++;
+                                data_offset += it.strides[i];
+                                break;
+                            }
+                            else
+                            {
+                                coordinates[i] = 0;
+                                data_offset -= it.backstrides[i];
+                            }
+                        }
+                    }
+
+                }
+
+            }
+     
+
+            return data_offset;
+
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT1(NpyArrayIterObject it)
         {

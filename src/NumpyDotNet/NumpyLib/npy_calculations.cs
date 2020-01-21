@@ -587,9 +587,28 @@ namespace NumpyLib
             for (long i = 0; i < destSize; )
             {
                 long offset_cnt = Math.Min(taskSize, destSize-i);
+
+                System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
+                sw1.Start();
+                long[] srcTestOffsets = GetOffsets(SrcIter, srcArray, offset_cnt);
+                long[] destTestOffsets = GetOffsets(DestIter, destArray, offset_cnt);
+                long[] operTestOffsets = GetOffsets(OperIter, operArray, offset_cnt);
+                sw1.Stop();
+
+                System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+                sw2.Start();
                 NpyArray_ITER_NEXT(SrcIter, srcArray, srcOffsets, offset_cnt);
                 NpyArray_ITER_NEXT(DestIter, destArray, destOffsets, offset_cnt);
                 NpyArray_ITER_NEXT(OperIter, operArray, operOffsets, offset_cnt);
+                sw2.Stop();
+
+                System.Diagnostics.Trace.WriteLine(string.Format("sw1 = {0}", sw1.ElapsedMilliseconds.ToString()));
+                System.Diagnostics.Trace.WriteLine(string.Format("sw2 = {0}", sw2.ElapsedMilliseconds.ToString()));
+
+                CompareArrays(srcOffsets, srcTestOffsets);
+                CompareArrays(destOffsets, destTestOffsets);
+                CompareArrays(operOffsets, operTestOffsets);
+
                 i += offset_cnt;
 
                 if (true) //taskCnt == taskSize || i == destSize)
@@ -606,6 +625,7 @@ namespace NumpyLib
                         taskCnt = (int)offset_cnt,
                     };
 
+                    // task creation is taking huge time
                     var newTask = new TaskFactory().StartNew(new Action<object>((_taskData) =>
                     {
                         var td = _taskData as NumericOpTaskData;
@@ -629,6 +649,15 @@ namespace NumpyLib
             Task.WaitAll(TaskList.ToArray());
         }
 
+        private static void CompareArrays(long[] origOffsets, long[] testOffsets)
+        {
+            for (int i = 0; i < testOffsets.Length; i++)
+            {
+                if (origOffsets[i] != testOffsets[i])
+                    throw new Exception("Algorithm not working");
+            }
+        }
+
         class NumericOpTaskData
         {
             public NpyArray srcArray;
@@ -647,21 +676,21 @@ namespace NumpyLib
         {
             for (int i = 0; i < taskCnt; i++)
             {
-                //var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
-                //var operValue = operations.operandGetItem(operOffsets[i], operArray);
+                var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
+                var operValue = operations.operandGetItem(operOffsets[i], operArray);
 
-                //object destValue = null;
+                object destValue = null;
 
-                //destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
+                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
 
-                //try
-                //{
-                //    operations.destSetItem(destOffsets[i], destValue, destArray);
-                //}
-                //catch
-                //{
-                //    operations.destSetItem(destOffsets[i], 0, destArray);
-                //}
+                try
+                {
+                    operations.destSetItem(destOffsets[i], destValue, destArray);
+                }
+                catch
+                {
+                    operations.destSetItem(destOffsets[i], 0, destArray);
+                }
             }
 
         }
