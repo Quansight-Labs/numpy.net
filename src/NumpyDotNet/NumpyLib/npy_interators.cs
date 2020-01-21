@@ -34,6 +34,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 #if NPY_INTP_64
@@ -467,9 +468,10 @@ namespace NumpyLib
             return ret;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it)
         {
-            Debug.Assert(Validate(it));
+            //Debug.Assert(Validate(it));
 
             it.index++;
             if (it.nd_m1 == 0)
@@ -504,6 +506,7 @@ namespace NumpyLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT1(NpyArrayIterObject it)
         {
             Debug.Assert(Validate(it));
@@ -511,6 +514,8 @@ namespace NumpyLib
             it.dataptr.data_offset += it.strides[0];
             it.coordinates[0]++;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT2(NpyArrayIterObject it)
         {
             Debug.Assert(Validate(it));
@@ -527,7 +532,7 @@ namespace NumpyLib
                 it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
             }
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT3(NpyArrayIterObject it)
         {
             Debug.Assert(Validate(it));

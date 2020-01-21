@@ -282,6 +282,7 @@ namespace NumpyLib
             return GetIndex(DestArray, 0);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long AdjustedIndex_GetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
             long AdjustedIndex = 0;
