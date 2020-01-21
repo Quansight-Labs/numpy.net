@@ -507,9 +507,54 @@ namespace NumpyLib
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it, NpyArray array, npy_intp[] offsets, long offset_cnt)
+        {
+            //Debug.Assert(Validate(it));
+            offsets[0] = it.dataptr.data_offset - array.data.data_offset;
+
+            for (int index = 1; index < offset_cnt; index++)
+            {
+                it.index++;
+                if (it.nd_m1 == 0)
+                {
+                    _NpyArray_ITER_NEXT1(it);
+                }
+                else if (it.contiguous)
+                {
+                    it.dataptr.data_offset += (npy_intp)it.ao.descr.elsize;
+                }
+                else if (it.nd_m1 == 1)
+                {
+                    _NpyArray_ITER_NEXT2(it);
+                }
+                else
+                {
+                    int i;
+                    for (i = it.nd_m1; i >= 0; i--)
+                    {
+                        if (it.coordinates[i] < it.dims_m1[i])
+                        {
+                            it.coordinates[i]++;
+                            it.dataptr.data_offset += it.strides[i];
+                            break;
+                        }
+                        else
+                        {
+                            it.coordinates[i] = 0;
+                            it.dataptr.data_offset -= it.backstrides[i];
+                        }
+                    }
+                }
+
+                offsets[index] = it.dataptr.data_offset - array.data.data_offset;
+            }
+  
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT1(NpyArrayIterObject it)
         {
-            Debug.Assert(Validate(it));
+            //Debug.Assert(Validate(it));
 
             it.dataptr.data_offset += it.strides[0];
             it.coordinates[0]++;
@@ -518,7 +563,7 @@ namespace NumpyLib
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT2(NpyArrayIterObject it)
         {
-            Debug.Assert(Validate(it));
+            //Debug.Assert(Validate(it));
 
             if (it.coordinates[1] < it.dims_m1[1])
             {
@@ -535,7 +580,7 @@ namespace NumpyLib
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT3(NpyArrayIterObject it)
         {
-            Debug.Assert(Validate(it));
+            //Debug.Assert(Validate(it));
 
             if (it.coordinates[2] < it.dims_m1[2])
             {

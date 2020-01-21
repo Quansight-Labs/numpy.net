@@ -584,13 +584,15 @@ namespace NumpyLib
 
             List<Task> TaskList = new List<Task>();
 
-            for (long i = 0; i < destSize; i++)
+            for (long i = 0; i < destSize; )
             {
-                srcOffsets[taskCnt] = SrcIter.dataptr.data_offset - srcArray.data.data_offset;
-                destOffsets[taskCnt] = DestIter.dataptr.data_offset - destArray.data.data_offset;
-                operOffsets[taskCnt++] = OperIter.dataptr.data_offset - operArray.data.data_offset;
+                long offset_cnt = Math.Min(taskSize, destSize-i);
+                NpyArray_ITER_NEXT(SrcIter, srcArray, srcOffsets, offset_cnt);
+                NpyArray_ITER_NEXT(DestIter, destArray, destOffsets, offset_cnt);
+                NpyArray_ITER_NEXT(OperIter, operArray, operOffsets, offset_cnt);
+                i += offset_cnt;
 
-                if (taskCnt == taskSize || i == destSize-1)
+                if (true) //taskCnt == taskSize || i == destSize)
                 {
                     var taskData = new NumericOpTaskData()
                     {
@@ -601,7 +603,7 @@ namespace NumpyLib
                         srcOffsets = srcOffsets,
                         destOffsets = destOffsets,
                         operOffsets = operOffsets,
-                        taskCnt = taskCnt,
+                        taskCnt = (int)offset_cnt,
                     };
 
                     var newTask = new TaskFactory().StartNew(new Action<object>((_taskData) =>
@@ -618,10 +620,10 @@ namespace NumpyLib
                     taskCnt = 0;
                 }
 
-
                 NpyArray_ITER_NEXT(SrcIter);
                 NpyArray_ITER_NEXT(DestIter);
                 NpyArray_ITER_NEXT(OperIter);
+
             }
 
             Task.WaitAll(TaskList.ToArray());
@@ -645,21 +647,21 @@ namespace NumpyLib
         {
             for (int i = 0; i < taskCnt; i++)
             {
-                var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
-                var operValue = operations.operandGetItem(operOffsets[i], operArray);
+                //var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
+                //var operValue = operations.operandGetItem(operOffsets[i], operArray);
 
-                object destValue = null;
+                //object destValue = null;
 
-                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
+                //destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
 
-                try
-                {
-                    operations.destSetItem(destOffsets[i], destValue, destArray);
-                }
-                catch
-                {
-                    operations.destSetItem(destOffsets[i], 0, destArray);
-                }
+                //try
+                //{
+                //    operations.destSetItem(destOffsets[i], destValue, destArray);
+                //}
+                //catch
+                //{
+                //    operations.destSetItem(destOffsets[i], 0, destArray);
+                //}
             }
 
         }
