@@ -584,30 +584,16 @@ namespace NumpyLib
 
             List<Task> TaskList = new List<Task>();
 
+            // try to move this to Parallel.For style code.  The new GetOffset
+            // function 
+
             for (long i = 0; i < destSize; )
             {
                 long offset_cnt = Math.Min(taskSize, destSize-i);
 
-                System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
-                sw1.Start();
-                long[] srcTestOffsets = GetOffsets(SrcIter, srcArray, offset_cnt);
-                long[] destTestOffsets = GetOffsets(DestIter, destArray, offset_cnt);
-                long[] operTestOffsets = GetOffsets(OperIter, operArray, offset_cnt);
-                sw1.Stop();
-
-                System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
-                sw2.Start();
                 NpyArray_ITER_NEXT(SrcIter, srcArray, srcOffsets, offset_cnt);
                 NpyArray_ITER_NEXT(DestIter, destArray, destOffsets, offset_cnt);
                 NpyArray_ITER_NEXT(OperIter, operArray, operOffsets, offset_cnt);
-                sw2.Stop();
-
-                System.Diagnostics.Trace.WriteLine(string.Format("sw1 = {0}", sw1.ElapsedMilliseconds.ToString()));
-                System.Diagnostics.Trace.WriteLine(string.Format("sw2 = {0}", sw2.ElapsedMilliseconds.ToString()));
-
-                CompareArrays(srcOffsets, srcTestOffsets);
-                CompareArrays(destOffsets, destTestOffsets);
-                CompareArrays(operOffsets, operTestOffsets);
 
                 i += offset_cnt;
 
@@ -649,14 +635,6 @@ namespace NumpyLib
             Task.WaitAll(TaskList.ToArray());
         }
 
-        private static void CompareArrays(long[] origOffsets, long[] testOffsets)
-        {
-            for (int i = 0; i < testOffsets.Length; i++)
-            {
-                if (origOffsets[i] != testOffsets[i])
-                    throw new Exception("Algorithm not working");
-            }
-        }
 
         class NumericOpTaskData
         {
@@ -691,7 +669,7 @@ namespace NumpyLib
                 {
                     operations.destSetItem(destOffsets[i], 0, destArray);
                 }
-            }
+            };
 
         }
 
