@@ -285,9 +285,7 @@ namespace NumpyLib
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long AdjustedIndex_GetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
-            long AdjustedIndex = 0;
-
-            AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
+            long AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
 
             if (AdjustedIndex < 0)
             {
@@ -480,9 +478,7 @@ namespace NumpyLib
 
         internal static long AdjustedIndex_SetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
-            long AdjustedIndex = 0;
-
-            AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
+            long AdjustedIndex = AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
 
             if (AdjustedIndex < 0)
             {
@@ -596,8 +592,7 @@ namespace NumpyLib
             if (npa.ItemType == npa.data.type_num)
             {
                 Int64[] dp = npa.data.datap as Int64[];
-                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
-                dp[AdjustedIndex] = (Int64)value;
+                dp[AdjustedIndex_SetItemFunction(index, npa, dp.Length)] = (Int64)value;
                 return 1;
             }
             else
