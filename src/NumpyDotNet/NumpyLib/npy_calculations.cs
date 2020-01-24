@@ -268,44 +268,6 @@ namespace NumpyLib
             return outArray;
         }
 
-
-        private static void CompareArrays(NpyArray a1, NpyArray a2)
-        {
-            if (a1.nd != a2.nd)
-            {
-                throw new Exception("gotcha");
-            }
-
-            for (int i = 0; i < a1.nd; i++)
-            {
-                if (a1.dimensions[i] !=a2.dimensions[i])
-                {
-                    throw new Exception("gotcha");
-                }
-            }
-
-            for (int i = 0; i < a1.nd; i++)
-            {
-                if (a1.strides[i] != a2.strides[i])
-                {
-                    throw new Exception("gotcha");
-                }
-            }
-
-            var Length = a1.GetElementCount();
-            for (int i = 0; i < Length; i++)
-            {
-                var a1data = GetIndex(a1.data, i);
-                var a2data = GetIndex(a2.data, i);
-
-                if (Convert.ToDouble(a1data) != Convert.ToDouble(a2data))
-                {
-                    throw new Exception("gotcha");
-                }
-            }
-
-        }
-
         private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, NpyArray_Ops operationType)
         {
             NpyArray_Descr newtype = srcArray.descr;
@@ -323,8 +285,7 @@ namespace NumpyLib
                     }
                 }
             }
-  
-            
+           
 
             switch (operationType)
             {
@@ -1173,50 +1134,7 @@ namespace NumpyLib
             return ret;
         }
 
-        /// <summary>
-        /// Recursively walks the array and appends a representation of each element
-        /// to the passed string builder.  Square brackets delimit each array dimension.
-        /// </summary>
-        /// <param name="dimensions">Array of size of each dimension</param>
-        /// <param name="src_strides">Offset in bytes to reach next element in each dimension</param>
-        /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
-        /// <param name="src_offset">Byte offset into data array, starts at 0</param>
-        private static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArrayWrapper operandArray, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, long operand_offset, NumericOperations operation)
-        {
-            if (dimIdx == destArray.nd)
-            {
-
-                var srcValue = operation.srcGetItem(src_offset, srcArray);
-
-                var operandValue = operation.operandGetItem(operandArray.GetIndex(), operandArray.array);
-
-                object destValue = operation.operation(srcValue, operation.ConvertOperand(srcValue, operandValue));
-
-                try
-                {
-                    operation.destSetItem(dest_offset, destValue, destArray);
-                }
-                catch
-                {
-                    operation.destSetItem(dest_offset, 0, destArray);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < dimensions[dimIdx]; i++)
-                {
-                    long lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
-                    long ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
-
-                    operandArray.operand_offset = operand_offset;
-                    operandArray.dimIdx = dimIdx;
-                    operandArray.i = i;
-
-                    PerformNumericOpArray(srcArray, destArray, operandArray, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operandArray.GetIndex(), operation);
-                }
-            }
-        }
-
+   
         private class NpyArrayWrapper
         {
             public NpyArray array = null;
