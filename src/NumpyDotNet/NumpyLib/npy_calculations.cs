@@ -849,7 +849,8 @@ namespace NumpyLib
             }
             else
             {
-                var operOffsets = new Int32[NpyArray_Size(destArray)];
+                var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
+                var operOffsets = new Int32[IterableArraySize];
                 NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
 
                 Parallel.For(0, loopCount, index =>
@@ -873,6 +874,13 @@ namespace NumpyLib
                 throw exceptions.ElementAt(0);
             }
 
+        }
+
+        // TODO: figure out how to calculate the smallest possible array that allows
+        // Array to be correctly broadcasted into destArray
+        private static long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
+        {
+            return NpyArray_Size(destArray);
         }
 
         public class Countdown : IDisposable
