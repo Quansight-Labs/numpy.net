@@ -587,9 +587,9 @@ namespace NumpyLib
 
             long taskSize = 1000;
             int taskCnt = 0;
-            long[] srcOffsets = new npy_intp[taskSize];
-            long[] destOffsets = new npy_intp[taskSize];
-            long[] operOffsets = new npy_intp[taskSize];
+            var srcOffsets = new Int32[taskSize];
+            var destOffsets = new Int32[taskSize];
+            var operOffsets = new Int32[taskSize];
 
             Countdown countDown = new Countdown();
             List<Exception> caughtExceptions = new List<Exception>();
@@ -598,9 +598,9 @@ namespace NumpyLib
             {
                 long offset_cnt = Math.Min(taskSize, destSize - i);
 
-                NpyArray_ITER_NEXT(SrcIter, srcArray, srcOffsets, offset_cnt);
-                NpyArray_ITER_NEXT(DestIter, destArray, destOffsets, offset_cnt);
-                NpyArray_ITER_NEXT(OperIter, operArray, operOffsets, offset_cnt);
+                NpyArray_ITER_TOARRAY(SrcIter, srcArray, srcOffsets, offset_cnt);
+                NpyArray_ITER_TOARRAY(DestIter, destArray, destOffsets, offset_cnt);
+                NpyArray_ITER_TOARRAY(OperIter, operArray, operOffsets, offset_cnt);
 
                 i += offset_cnt;
 
@@ -637,9 +637,9 @@ namespace NumpyLib
 
                     //TaskList.Add(newTask);
 
-                    srcOffsets = new npy_intp[taskSize];
-                    destOffsets = new npy_intp[taskSize];
-                    operOffsets = new npy_intp[taskSize];
+                    srcOffsets = new Int32[taskSize];
+                    destOffsets = new Int32[taskSize];
+                    operOffsets = new Int32[taskSize];
                     taskCnt = 0;
                 }
 
@@ -823,16 +823,17 @@ namespace NumpyLib
             D[] dest = destArray.data.datap as D[];
             O[] oper = operArray.data.datap as O[];
 
+
+            int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
+            int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
+
+            var exceptions = new ConcurrentQueue<Exception>();
+
             var loopCount = NpyArray_Size(destArray);
 
-            if (NpyArray_Size(operArray) == 1)
+            if (!operArray.IsASlice && NpyArray_Size(operArray) == 1)
             {
-                int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-                int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
-
                 object operand = operations.ConvertOperand(src[0], oper[0]);
-
-                var exceptions = new ConcurrentQueue<Exception>();
 
                 Parallel.For(0, loopCount, index =>
                 {
@@ -845,32 +846,33 @@ namespace NumpyLib
                         exceptions.Enqueue(ex);
                     }
                 });
-
-                if (exceptions.Count > 0)
-                {
-                    throw exceptions.ElementAt(0); 
-                }
-
             }
             else
             {
-                int operSize = operArray.ItemSize;
+                var operOffsets = new Int32[NpyArray_Size(destArray)];
+                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
 
-                int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-                int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
-
-                operIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
-                for (int index = 0; index < loopCount; index++)
+                Parallel.For(0, loopCount, index =>
                 {
-                    long operandIndex = (operIter.dataptr.data_offset - operArray.data.data_offset) / operSize;
-                    object operand = operations.ConvertOperand(src[0], oper[operandIndex]);
-
-                    dest[index - destAdjustment] = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
-
-                    NpyArray_ITER_NEXT(operIter);
-                };
-
+                    try
+                    {
+                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+                        dest[index - destAdjustment] = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Enqueue(ex);
+                    }
+                });
+               
             }
+
+            if (exceptions.Count > 0)
+            {
+                throw exceptions.ElementAt(0);
+            }
+
         }
 
         public class Countdown : IDisposable
@@ -913,9 +915,9 @@ namespace NumpyLib
             public NpyArray destArray;
             public NpyArray operArray;
             public NumericOperations operations;
-            public long[] srcOffsets;
-            public long[] destOffsets;
-            public long[] operOffsets;
+            public Int32[] srcOffsets;
+            public Int32[] destOffsets;
+            public Int32[] operOffsets;
             public int taskCnt;
             public Countdown countDown;
             public List<Exception> caughtExceptions;
@@ -981,7 +983,7 @@ namespace NumpyLib
             return;
         }
 
-        private static void NumericOpTask(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, long[] srcOffsets, long[] destOffsets, long[] operOffsets, int taskCnt)
+        private static void NumericOpTask(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, Int32[] srcOffsets, Int32[] destOffsets, Int32[] operOffsets, int taskCnt)
         {
             for (int i = 0; i < taskCnt; i++)
             {

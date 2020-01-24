@@ -508,10 +508,10 @@ namespace NumpyLib
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it, NpyArray array, npy_intp[] offsets, long offset_cnt)
+        internal static void NpyArray_ITER_TOARRAY(NpyArrayIterObject it, NpyArray array, Int32[] offsets, long offset_cnt)
         {
             //Debug.Assert(Validate(it));
-            offsets[0] = it.dataptr.data_offset - array.data.data_offset;
+            offsets[0] = (Int32)(it.dataptr.data_offset - array.data.data_offset);
 
             for (int index = 1; index < offset_cnt; index++)
             {
@@ -547,7 +547,7 @@ namespace NumpyLib
                     }
                 }
 
-                offsets[index] = it.dataptr.data_offset - array.data.data_offset;
+                offsets[index] = (Int32)(it.dataptr.data_offset - array.data.data_offset);
             }
   
         }
