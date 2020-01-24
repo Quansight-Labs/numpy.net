@@ -1134,52 +1134,8 @@ namespace NumpyLib
             return ret;
         }
 
-   
-        private class NpyArrayWrapper
-        {
-            public NpyArray array = null;
-            public long offset = 0;
-            public long operand_offset = 0;
-            public int dimIdx = 0;
-            public int i = 0;
-
-            public NpyArrayWrapper(NpyArray array)
-            {
-                this.array = array;
-                this.offset = 0;
-            }
-
-            public long GetIndex()
-            {
-                if (array == null || array.strides == null || array.strides.Length == 0)
-                    return 0;
-
-                if (dimIdx >= array.strides.Length)
-                {
-                    dimIdx = dimIdx % array.strides.Length;
-                    operand_offset = 0;
-                }
-
-                long calculatedOffset =  operand_offset + array.strides[dimIdx] * i;
-                //Console.WriteLine("x:{0},{1}, {2}", calculatedOffset, operand_offset, i);
-
-                npy_intp ArraySize = NpyArray_SIZE(array);
-                npy_intp ItemSize = NpyArray_ITEMSIZE(array);
-                npy_intp MaxOffset = ArraySize * ItemSize;
-
-                if (calculatedOffset >= MaxOffset)
-                {
-                    calculatedOffset = calculatedOffset % MaxOffset;
-                }
-
-                return calculatedOffset;
-            }
-        }
 
         #endregion
-  
-   
-
  
   
         internal static NpyArray NpyArray_ArgMax(NpyArray op, int axis, NpyArray outPtr)
