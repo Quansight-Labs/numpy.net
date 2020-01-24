@@ -831,7 +831,7 @@ namespace NumpyLib
 
             var loopCount = NpyArray_Size(destArray);
 
-            if (!operArray.IsASlice && NpyArray_Size(operArray) == 1)
+            if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
@@ -839,7 +839,15 @@ namespace NumpyLib
                 {
                     try
                     {
-                        dest[index - destAdjustment] = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                        try
+                        {
+                            var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                            dest[index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(D);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -857,16 +865,26 @@ namespace NumpyLib
                 {
                     try
                     {
-                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
-                        dest[index - destAdjustment] = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                        try
+                        {
+                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+
+                            D dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+
+                            dest[index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(D);
+                        }
                     }
                     catch (Exception ex)
                     {
                         exceptions.Enqueue(ex);
                     }
                 });
-               
+
             }
 
             if (exceptions.Count > 0)
