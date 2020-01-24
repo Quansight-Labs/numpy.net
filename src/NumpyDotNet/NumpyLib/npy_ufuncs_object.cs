@@ -323,8 +323,6 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
 
-        internal const int NPY_UFUNC_OBJ_ISOBJECT = 1;
-        internal const int NPY_UFUNC_OBJ_NEEDS_API = 2;
 
         internal delegate int npy_prepare_outputs_func(NpyUFuncObject self, ref NpyArray mps, VoidPtr data);
 
@@ -518,8 +516,7 @@ namespace NumpyLib
                         {
                             copyswapn[i] = NpyArray_DESCR(mps[i]).f.copyswapn;
                             mpselsize[i] = NpyArray_DESCR(mps[i]).elsize;
-                            //pyobject[i] = ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0
-                            //               && (NpyArray_TYPE(mps[i]) == NPY_TYPES.NPY_OBJECT));
+  
                             laststrides[i] = iters[i].strides[loop.lastdim];
                             if (steps[i] != 0 && laststrides[i] != mpselsize[i])
                             {
@@ -1031,15 +1028,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
                     for (i = 0; i < loop.size; i++)
                     {
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.idptr);
-                        //}
-                        //else
-                        {
-                            memmove(loop.bufptr[0], loop.idptr, loop.outsize);
-                        }
+                        memmove(loop.bufptr[0], loop.idptr, loop.outsize);
                         loop.bufptr[0] += loop.outsize;
                     }
                     break;
@@ -1047,15 +1036,7 @@ namespace NumpyLib
                     /*fprintf(stderr, "ONEDIM..%d\n", loop.size); */
                     while (loop.index < loop.size)
                     {
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.it.dataptr);
-                        //}
-                        //else
-                        {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
-                        }
+                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
@@ -1065,16 +1046,8 @@ namespace NumpyLib
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
                     while (loop.index < loop.size)
                     {
-                        /* Copy first element to output */
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.it.dataptr);
-                        //}
-                        //else
-                        {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
-                        }
+ 
+                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
                         loop.function(ref loop.bufptr, ref loop.N,
@@ -1112,20 +1085,7 @@ namespace NumpyLib
                             NpyArray_DESCR(arr).f.copyswap(loop.buffer, loop.inptr,
                                                              loop.swap, null);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
-                            //if (((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0) && !NpyArray_ISOBJECT(arr))
-                            //{
-                            //    /*
-                            //     * In this case the cast function is creating
-                            //     * an object reference so we need to incref
-                            //     * it since we care copying it to bufptr[0].
-                            //     */
-                            //    VoidPtr pDest = loop.bufptr[0];
-                            //    pDest = NpyInterface_INCREF(loop.castbuf);
-                            //}
-                            //else
-                            {
-                                memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
-                            }
+                            memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
                         }
                         else
                         {
@@ -1168,33 +1128,6 @@ namespace NumpyLib
                         loop.index++;
                     }
 
-                    //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                    //{
-                    //    /*
-                    //     * DECREF left-over objects if buffering was used.
-                    //     * There are 2 cases here.
-                    //     * 1. The output is an object. In this case the
-                    //     * castfunc will produce objects and castbuf needs
-                    //     * to be decrefed.
-                    //     * 2. The input is an object array.  In this case
-                    //     * the copyswap will produce object references and
-                    //     * the buffer needs to be decrefed.
-                    //     */
-                    //    if (!NpyArray_ISOBJECT(arr))
-                    //    {
-                    //        for (i = 0; i < loop.bufsize; i++)
-                    //        {
-                    //            NpyInterface_CLEAR(loop.castbuf);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        for (i = 0; i < loop.bufsize; i++)
-                    //        {
-                    //            NpyInterface_CLEAR(loop.buffer);
-                    //        }
-                    //    }
-                    //}
                     break;
             }
 
@@ -1243,15 +1176,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
                     for (i = 0; i < loop.size; i++)
                     {
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.idptr);
-                        //}
-                        //else
-                        {
-                            memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
-                        }
+                        memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
                         loop.bufptr[0] += loop.outsize;
                     }
                     break;
@@ -1260,15 +1185,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
                     while (loop.index < loop.size)
                     {
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.it.dataptr);
-                        //}
-                        //else
-                        {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
-                        }
+                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
@@ -1279,16 +1196,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
                     while (loop.index < loop.size)
                     {
-                        /* Copy first element to output */
-                        //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                        //{
-                        //    VoidPtr pDest = loop.bufptr[0];
-                        //    pDest = NpyInterface_INCREF(loop.it.dataptr);
-                        //}
-                        //else
-                        {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
-                        }
+                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
                         loop.function(ref loop.bufptr, ref loop.N,
@@ -1327,15 +1235,7 @@ namespace NumpyLib
                             NpyArray_DESCR(arr).f.copyswap(loop.buffer, loop.inptr,
                                                              loop.swap, null);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
-                            //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                            //{
-                            //    VoidPtr pDest = loop.bufptr[0];
-                            //    pDest = NpyInterface_INCREF(loop.castbuf);
-                            //}
-                            //else
-                            {
-                                memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
-                            }
+                            memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
                         }
                         else
                         {
@@ -1380,24 +1280,6 @@ namespace NumpyLib
                         loop.index++;
                     }
 
-                    /*
-                     * DECREF left-over objects if buffering was used.
-                     * It is needed when casting created new objects in
-                     * castbuf.  Intermediate copying into castbuf (via
-                     * loop.function) decref'd what was already there.
-
-                     * It's the final copy into the castbuf that needs a DECREF.
-                     */
-
-                    /* Only when casting needed and it is from a non-object array */
-                    //if (((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0) && loop.cast != null &&
-                    //    (!NpyArray_ISOBJECT(arr)))
-                    //{
-                    //    for (i = 0; i < loop.bufsize; i++)
-                    //    {
-                    //        NpyInterface_CLEAR(loop.castbuf);
-                    //    }
-                    //}
                     break;
 
             }
@@ -1473,15 +1355,8 @@ namespace NumpyLib
                         for (i = 0; i < nn; i++)
                         {
                             loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
-                            //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                            //{
-                            //    VoidPtr pDest = loop.bufptr[0];
-                            //    pDest = NpyInterface_INCREF(loop.bufptr[1]);
-                            //}
-                            //else
-                            {
-                                memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
-                            }
+                            memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
+
                             mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] :
                                   ptr[i + 1] - ptr[i]) - 1;
                             if (mm > 0)
@@ -1513,15 +1388,7 @@ namespace NumpyLib
                         ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
                         for (i = 0; i < nn; i++)
                         {
-                            //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                            //{
-                            //    VoidPtr pDest = loop.bufptr[0];
-                            //    pDest = NpyInterface_INCREF(loop.idptr);
-                            //}
-                            //else
-                            {
-                                memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
-                            }
+                            memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
                             n = 0;
                             mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] :
                                    ptr[i + 1] - ptr[i]) - 1;
@@ -1566,25 +1433,6 @@ namespace NumpyLib
                         loop.bufptr[0] = loop.rit.dataptr;
                         loop.index++;
                     }
-
-                    /*
-                     * DECREF left-over objects if buffering was used.
-                     * It is needed when casting created new objects in
-                     * castbuf.  Intermediate copying into castbuf (via
-                     * loop.function) decref'd what was already there.
-
-                     * It's the final copy into the castbuf that needs a DECREF.
-                     */
-
-                    /* Only when casting needed and it is from a non-object array */
-                    //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0 && loop.cast != null &&
-                    //    (!NpyArray_ISOBJECT(arr)))
-                    //{
-                    //    for (i = 0; i < loop.bufsize; i++)
-                    //    {
-                    //        NpyInterface_CLEAR(loop.castbuf);
-                    //    }
-                    //}
 
                     break;
             }
@@ -2038,28 +1886,9 @@ namespace NumpyLib
                     loop.meth = UFuncLoopMethod.BUFFER_UFUNCLOOP;
                     loop.needbuffer[i] = true;
                 }
-                //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) == 0
-                //    && ((NpyArray_TYPE(mps[i]) == NPY_TYPES.NPY_OBJECT)
-                //        || (arg_types[i] == NPY_TYPES.NPY_OBJECT)))
-                //{
-                //    loop.obj = NPY_UFUNC_OBJ_ISOBJECT | NPY_UFUNC_OBJ_NEEDS_API;
-                //}
-                //if ((loop.obj & NPY_UFUNC_OBJ_NEEDS_API) == 0
-                //    && ((NpyArray_TYPE(mps[i]) == NPY_TYPES.NPY_DATETIME)
-                //        || (NpyArray_TYPE(mps[i]) == NPY_TYPES.NPY_TIMEDELTA)
-                //        || (arg_types[i] == NPY_TYPES.NPY_DATETIME)
-                //        || (arg_types[i] == NPY_TYPES.NPY_TIMEDELTA)))
-                //{
-                //    loop.obj = NPY_UFUNC_OBJ_NEEDS_API;
-                //}
+ 
             }
 
-            //if (self.core_enabled != 0 && (loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-            //{
-            //    NpyErr_SetString(npyexc_type.NpyExc_TypeError,
-            //                     "Object type not allowed in ufunc with signature");
-            //    return -1;
-            //}
             if (loop.meth == UFuncLoopMethod.NO_UFUNCLOOP)
             {
                 loop.meth = UFuncLoopMethod.ONE_UFUNCLOOP;
@@ -2294,10 +2123,7 @@ namespace NumpyLib
                     NpyErr_MEMORY();
                     return -1;
                 }
-                //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                //{
-                //    memset(loop.buffer[0], 0, memsize);
-                //}
+ 
                 castptr = loop.buffer[0] + loop.bufsize * cnt + scbufsize * scnt;
                 bufptr = loop.buffer[0];
                 loop.objfunc = 0;
@@ -2334,13 +2160,7 @@ namespace NumpyLib
                     {
                         loop.bufptr[i] = loop.buffer[i];
                     }
-                    //if (loop.objfunc == 0 && (loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                    //{
-                    //    if (arg_types[i] == NPY_TYPES.NPY_OBJECT)
-                    //    {
-                    //        loop.objfunc = 1;
-                    //    }
-                    //}
+   
                 }
 
 
@@ -2477,22 +2297,8 @@ namespace NumpyLib
                 loop.swap = !(NpyArray_ISNOTSWAPPED(aar));
             }
 
-            /* Determine if object arrays are involved */
-            //if (otype == NPY_TYPES.NPY_OBJECT || NpyArray_TYPE(aar) == NPY_TYPES.NPY_OBJECT)
-            //{
-            //    loop.obj = NPY_UFUNC_OBJ_ISOBJECT | NPY_UFUNC_OBJ_NEEDS_API;
-            //}
-            //else if ((otype == NPY_TYPES.NPY_DATETIME)
-            //         || (NpyArray_TYPE(aar) == NPY_TYPES.NPY_DATETIME)
-            //         || (otype == NPY_TYPES.NPY_TIMEDELTA)
-            //         || (NpyArray_TYPE(aar) == NPY_TYPES.NPY_TIMEDELTA))
-            //{
-            //    loop.obj = NPY_UFUNC_OBJ_NEEDS_API;
-            //}
-            //else
-            {
-                loop.obj = 0;
-            }
+            loop.obj = 0;
+
             if ((loop.meth == UFuncLoopMethod.ZERO_EL_REDUCELOOP)
                 || ((operation == GenericReductionOp.NPY_UFUNC_REDUCEAT)
                     && (loop.meth == UFuncLoopMethod.BUFFER_UFUNCLOOP)))
@@ -2670,10 +2476,7 @@ namespace NumpyLib
                     {
                         goto fail;
                     }
-                    //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                    //{
-                    //    memset(loop.buffer, 0, _size);
-                    //}
+
                     loop.castbuf = loop.buffer + loop.bufsize * NpyArray_ITEMSIZE(aar);
                     loop.bufptr[1] = loop.castbuf;
                     loop.cast = NpyArray_GetCastFunc(NpyArray_DESCR(aar), otype);
@@ -2690,10 +2493,7 @@ namespace NumpyLib
                     {
                         goto fail;
                     }
-                    //if ((loop.obj & NPY_UFUNC_OBJ_ISOBJECT) != 0)
-                    //{
-                    //    memset(loop.buffer, 0, _size);
-                    //}
+
                     loop.bufptr[1] = loop.buffer;
                 }
             }
@@ -3381,8 +3181,8 @@ namespace NumpyLib
         {
             do
             {
-                if ((((loop.obj & NPY_UFUNC_OBJ_NEEDS_API) != 0) && NpyErr_Occurred()) ||
-                      (loop.errormask != 0 && NpyUFunc_checkfperr(loop.ufunc.name, loop.errormask, loop.errobj, ref loop.first)))
+                if ((NpyErr_Occurred() ||
+                      (loop.errormask != 0 && NpyUFunc_checkfperr(loop.ufunc.name, loop.errormask, loop.errobj, ref loop.first))))
                 {
                     return false;
                 }
@@ -3395,8 +3195,8 @@ namespace NumpyLib
         {
             do
             {
-                if ((((arg.obj & NPY_UFUNC_OBJ_NEEDS_API) != 0) && NpyErr_Occurred()) ||
-                      (arg.errormask != 0 && NpyUFunc_checkfperr(arg.ufunc.name, arg.errormask, arg.errobj, ref arg.first)))
+                if ((NpyErr_Occurred() ||
+                      (arg.errormask != 0 && NpyUFunc_checkfperr(arg.ufunc.name, arg.errormask, arg.errobj, ref arg.first))))
                 {
                     return false;
                 }
