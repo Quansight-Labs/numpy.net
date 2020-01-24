@@ -206,6 +206,15 @@ namespace NumpyLib
         public NpyArray ao;
         public VoidPtr dataptr = new VoidPtr();                             /* pointer to current item*/
         public bool contiguous;
+        public bool requiresIteration
+        {
+            get
+            {
+                if (ao.base_arr != null || !contiguous)
+                    return true;
+                return false;
+            }
+        }
 
         public npy_intp[,] bounds = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         public npy_intp[,] limits = new npy_intp[npy_defs.NPY_MAXDIMS, 2];

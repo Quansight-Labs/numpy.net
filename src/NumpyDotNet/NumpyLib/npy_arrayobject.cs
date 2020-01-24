@@ -77,6 +77,14 @@ namespace NumpyLib
 
         public bool IsScalar = false;
 
+        public bool IsASlice
+        {
+            get
+            {
+                return base_arr != null;
+            }
+        }
+
         public int ItemSize
         {
             get

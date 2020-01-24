@@ -136,6 +136,8 @@ namespace NumpyLib
             int i, diff, j, k;
             bool compat;
 
+  
+
             // if this is a scalar with no dimensions, let's fake 1 dimension
             if (dims == null)
             {
@@ -171,8 +173,7 @@ namespace NumpyLib
                 return null;
             }
             NpyObject_Init(it, NpyArrayIter_Type);
-            /* Defer creation of the wrapper - will be handled by Npy_INTERFACE. */
-
+  
             NpyArray_UpdateFlags(ao, NPYARRAYFLAGS.NPY_CONTIGUOUS);
             if (NpyArray_ISCONTIGUOUS(ao))
             {
