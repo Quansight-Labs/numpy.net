@@ -515,54 +515,8 @@ namespace NumpyLib
         }
 
         #region scalar numeric functions
-        public static void PerformNumericOpScalar(NpyArray srcArray, NpyArray destArray, double operand, NpyArray_Ops operationType)
-        {
-            NumericOperation operation = GetOperation(ref srcArray, operationType);
-
-            //PerformNumericOpScalarIter(srcArray, destArray, operand, operation);
-
-            NumericOperations numericOperations = NumericOperations.GetOperations(operation, srcArray, destArray, null);
-
-
-            PerformNumericOpScalar(srcArray, destArray, operand, destArray.dimensions, 0, 0, 0, numericOperations);
-
-
-            //PerformNumericOpScalar2(srcArray, destArray, operand, operation);
-
-        }
-
-  
-
-    
-        private static void PerformNumericOpScalar(NpyArray srcArray, NpyArray destArray, double operand, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperations operation)
-        {
-            if (dimIdx == destArray.nd)
-            {
-                var srcValue = operation.srcGetItem(src_offset, srcArray);
-                object destValue = null;
-
-                destValue = operation.operation(srcValue, operation.ConvertOperand(srcValue, operand));
-
-                try
-                {
-                    operation.destSetItem(dest_offset, destValue, destArray);
-                }
-                catch
-                {
-                    operation.destSetItem(dest_offset, 0, destArray);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < dimensions[dimIdx]; i++)
-                {
-                    long lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
-                    long ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
-
-                    PerformNumericOpScalar(srcArray, destArray, operand, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
-                }
-            }
-        }
+ 
+ 
 
         #region PerformNumericOpScalarIter
         private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations)
