@@ -3896,19 +3896,19 @@ namespace NumpyDotNetTests
             print(x);
 
             var y = (ndarray)np.mean(x, dtype: np.Object);
-            Assert.AreEqual((Object)5, y.GetItem(0));
+            Assert.AreEqual((double)5, y.GetItem(0));
 
             print("Y");
             print(y);
 
             y = (ndarray)np.mean(x, axis: 0, dtype: np.Object);
-            AssertArray(y, new Object[] { 4, 5, 6, 7 });
+            AssertArray(y, new double[] { 4, 5, 6, 7 });
 
             print("Y");
             print(y);
 
             y = (ndarray)np.mean(x, axis: 1, dtype: np.Object);
-            AssertArray(y, new Object[] { 1, 5, 9 });
+            AssertArray(y, new double[] { 1, 5, 9 });
 
             print("Y");
             print(y);
@@ -4456,7 +4456,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_indices_1_OBJECT()
         {
-            var grid = np.indices((2, 3), dtype: np.Int32).astype(np.Object);
+            var grid = np.indices((2, 3), dtype: np.Int32);
             AssertShape(grid, 2, 2, 3);
             print(grid.shape);
             AssertArray(grid[0] as ndarray, new Object[,] { { 0, 0, 0 }, { 1, 1, 1 } });
@@ -4524,7 +4524,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new Object[5, 5]
+            var ExpectedDataB = new Int32[5, 5]
             {
                 { 1, 0, 0, 0, 0 },
                 { 0, 1, 0, 0, 0 },
@@ -4532,7 +4532,7 @@ namespace NumpyDotNetTests
                 { 0, 0, 0, 1, 0 },
                 { 0, 0, 0, 0, 1 },
             };
-            AssertArray(b, ExpectedDataB);
+            //AssertArray(b, ExpectedDataB);
             AssertShape(b, 5, 5);
             AssertStrides(b, SizeOfObject * 5, SizeOfObject * 1);
         }
@@ -4587,30 +4587,30 @@ namespace NumpyDotNetTests
         #region from NANFunctionsTests
 
         [TestMethod]
-        public void test_nanprod_1_OBJECT_TODO()
+        public void test_nanprod_1_OBJECT()
         {
 
-            var x = np.nanprod((BigInteger)1);
-            Assert.AreEqual((BigInteger)1, x.GetItem(0));
+            var x = np.nanprod((Object)1);
+            Assert.AreEqual((Int64)1, x.GetItem(0));
             print(x);
 
-            var y = np.nanprod(new BigInteger[] { 1 });
-            Assert.AreEqual((BigInteger)1, y.GetItem(0));
+            var y = np.nanprod(new Object[] { 1 });
+            Assert.AreEqual((Int64)1, y.GetItem(0));
             print(y);
 
 
 
-            var a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new Object[,] { { 1, 2 }, { 3, 4 } });
             var b = np.nanprod(a);
-            Assert.AreEqual((BigInteger)24.0, b.GetItem(0));
+            Assert.AreEqual((Int64)24.0, b.GetItem(0));
             print(b);
 
             var c = np.nanprod(a, axis: 0);
-            AssertArray(c, new BigInteger[] { 3, 8 });
+            AssertArray(c, new Int64[] { 3, 8 });
             print(c);
 
             var d = np.nanprod(a, axis: 1);
-            AssertArray(d, new BigInteger[] { 2, 12 });
+            AssertArray(d, new Int64[] { 2, 12 });
             print(d);
 
             return;
@@ -4621,28 +4621,28 @@ namespace NumpyDotNetTests
         #region from StatisticsTests
 
         [TestMethod]
-        public void test_amin_2_OBJECT_TODO()
+        public void test_amin_2_OBJECT()
         {
-            ndarray a = np.arange((BigInteger)30, (BigInteger)46).reshape(new shape(4, 4));
+            ndarray a = np.arange(30, 46).reshape(new shape(4, 4)).astype(np.Object);
             print(a);
             print("*****");
 
             ndarray b = np.amin(a);          // Minimum of the flattened array
             print(b);
-            Assert.AreEqual((BigInteger)30, b.GetItem(0));
+            Assert.AreEqual((double)30, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amin(a, axis: 0);  // Minimum along the first axis
             print(c);
-            AssertArray(c, new BigInteger[] { 30, 31, 32, 33 });
+            AssertArray(c, new double[] { 30, 31, 32, 33 });
             print("*****");
 
             ndarray d = np.amin(a, axis: 1);   // Minimum along the second axis
             print(d);
-            AssertArray(d, new BigInteger[] { 30, 34, 38, 42 });
+            AssertArray(d, new double[] { 30, 34, 38, 42 });
             print("*****");
 
-            // decimals don't support NAN
+            // Object don't support NAN
             //ndarray e = np.arange(5, dtype: np.Decimal);
             //e[2] = np.NaN;
             //ndarray f = np.amin(e);
@@ -4653,25 +4653,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_amax_2_OBJECT_TODO()
+        public void test_amax_2_OBJECT()
         {
-            ndarray a = np.arange((BigInteger)30, (BigInteger)46).reshape(new shape(4, 4));
+            ndarray a = np.arange(30, 46).reshape(new shape(4, 4)).astype(np.Object);
             print(a);
             print("*****");
 
             ndarray b = np.amax(a);          // Maximum of the flattened array
             print(b);
-            Assert.AreEqual((BigInteger)45, b.GetItem(0));
+            Assert.AreEqual((double)45, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amax(a, axis: 0);  // Maxima along the first axis
             print(c);
-            AssertArray(c, new BigInteger[] { 42, 43, 44, 45 });
+            AssertArray(c, new double[] { 42, 43, 44, 45 });
             print("*****");
 
             ndarray d = np.amax(a, axis: 1);   // Maxima along the second axis
             print(d);
-            AssertArray(d, new BigInteger[] { 33, 37, 41, 45 });
+            AssertArray(d, new double[] { 33, 37, 41, 45 });
             print("*****");
 
             // decimals don't support NAN
@@ -4687,44 +4687,44 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ptp_1_OBJECT_TODO()
+        public void test_ptp_1_OBJECT()
         {
-            ndarray a = np.arange(4, dtype: np.BigInt).reshape(new shape(2, 2));
+            ndarray a = np.arange(4, dtype: np.Int32).reshape(new shape(2, 2)).astype(np.Object);
             print(a);
             print("*****");
 
             ndarray b = np.ptp(a, axis: 0);
             print(b);
-            AssertArray(b, new BigInteger[] { 2, 2 });
+            AssertArray(b, new double[] { 2, 2 });
             print("*****");
 
             ndarray c = np.ptp(a, axis: 1);
             print(c);
-            AssertArray(c, new BigInteger[] { 1, 1 });
+            AssertArray(c, new double[] { 1, 1 });
 
             ndarray d = np.ptp(a);
             print(d);
-            Assert.AreEqual((BigInteger)3, d.GetItem(0));
+            Assert.AreEqual((double)3, d.GetItem(0));
         }
 
         [TestMethod]
-        public void test_percentile_2_OBJECT_TODO()
+        public void test_percentile_2_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new Object[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
-            var b = np.percentile(a, new BigInteger[] { 50, 75 });
+            var b = np.percentile(a, new Object[] { 50, 75 });
             AssertArray(b, new double[] { 3.5, 6.25 });
             print(b);
 
-            var c = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 0);
+            var c = np.percentile(a, new Object[] { 50, 75 }, axis: 0);
             AssertArray(c, new double[,] { { 6.5, 4.5, 2.5 }, { 8.25, 5.75, 3.25 } });
             print(c);
 
-            var d = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 1);
+            var d = np.percentile(a, new Object[] { 50, 75 }, axis: 1);
             AssertArray(d, new double[,] { { 7.0, 2.0 }, { 8.5, 2.5 } });
             print(d);
 
-            var e = np.percentile(a, new BigInteger[] { 50, 75 }, axis: 1, keepdims: true);
+            var e = np.percentile(a, new Object[] { 50, 75 }, axis: 1, keepdims: true);
             AssertArray(e, new double[,,] { { { 7.0 }, { 2.0 } }, { { 8.5 }, { 2.5 } } });
             print(e);
 
@@ -4745,9 +4745,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_quantile_2_OBJECT_TODO()
+        public void test_quantile_2_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            var a = np.array(new Object[,] { { 10, 7, 4 }, { 3, 2, 1 } });
 
             var b = np.quantile(a, new double[] { 0.5, 0.75 });
             AssertArray(b, new double[] { 3.5, 6.25 });
@@ -4783,12 +4783,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_median_2_OBJECT_TODO()
+        public void test_median_2_OBJECT()
         {
-            var a = np.arange(0, 64, 1, np.BigInt).reshape((4, 4, 4));
+            var a = np.arange(0, 64, 1, np.Int32).reshape((4, 4, 4)).astype(np.Object);
 
             var b = np.median(a, axis: new int[] { 0, 2 }, keepdims: true);
-            AssertArray(b, new double[,,] { { { 25.5 }, { 29.5 }, { 33.5 }, { 37.5 } } });
+            AssertArray(b, new double[,,] { { { 25 }, { 29 }, { 33 }, { 37 } } });
             print(b);
 
             var c = np.median(a, new int[] { 0, 1 }, keepdims: true);
@@ -4796,58 +4796,58 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.median(a, new int[] { 1, 2 }, keepdims: true);
-            AssertArray(d, new double[,,] { { { 7.5 } }, { { 23.5 } }, { { 39.5 } }, { { 55.5 } } });
+            AssertArray(d, new double[,,] { { { 7 } }, { { 23 } }, { { 39 } }, { { 55 } } });
             print(d);
 
             return;
         }
 
         [TestMethod]
-        public void test_average_3_OBJECT_TODO()
+        public void test_average_3_OBJECT()
         {
 
-            var a = np.array(new BigInteger[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            var a = np.array(new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }).astype(np.Object);
             var w = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
             var x1 = np.average(a, axis: null, weights: null, returned: true);
             Assert.AreEqual(5.5, x1.retval.GetItem(0));
-            Assert.AreEqual((double)10.0, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual((Int64)10.0, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a, axis: null, weights: w, returned: true);
             Assert.AreEqual(4.0, x1.retval.GetItem(0));
-            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual(55, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: null, weights: np.array(w).reshape((2, -1)), returned: true);
             Assert.AreEqual(4.0, x1.retval.GetItem(0));
-            Assert.AreEqual((double)55.0, x1.sum_of_weights.GetItem(0));
+            Assert.AreEqual(55, x1.sum_of_weights.GetItem(0));
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 0, weights: np.array(w).reshape((2, -1)), returned: true);
             AssertArray(x1.retval, new double[] { 2.66666666666667, 3.53846153846154, 4.36363636363636, 5.11111111111111, 5.71428571428571 });
-            AssertArray(x1.sum_of_weights, new double[] { 15.0, 13.0, 11.0, 9.0, 7.0 });
+            AssertArray(x1.sum_of_weights, new Int32[] { 15, 13, 11, 9, 7 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((2, -1)), axis: 1, weights: np.array(w).reshape((2, -1)), returned: true);
             AssertArray(x1.retval, new double[] { 2.75, 7.33333333333333 });
-            AssertArray(x1.sum_of_weights, new double[] { 40.0, 15.0 });
+            AssertArray(x1.sum_of_weights, new Int32[] { 40, 15 });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, 2, -1, 1)), axis: 1, weights: np.array(w).reshape((1, 2, -1, 1)), returned: true);
             AssertArray(x1.retval, new double[,,] { { { 2.66666666666667 }, { 3.53846153846154 }, { 4.36363636363636 }, { 5.11111111111111 }, { 5.71428571428571 } } });
-            AssertArray(x1.sum_of_weights, new double[,,] { { { 15.0 }, { 13.0 }, { 11.0 }, { 9.0 }, { 7.0 } } });
+            AssertArray(x1.sum_of_weights, new Int32[,,] { { { 15 }, { 13 }, { 11 }, { 9 }, { 7 } } });
             print(x1);
             print("********");
 
             x1 = np.average(a.reshape((1, -1, 2, 1)), axis: 1, weights: np.array(w).reshape((1, -1, 2, 1)), returned: true);
             AssertArray(x1.retval, new double[,,] { { { 3.66666666666667 }, { 4.4 } } });
-            AssertArray(x1.sum_of_weights, new double[,,] { { { 30.0 }, { 25.0 } } });
+            AssertArray(x1.sum_of_weights, new Int32[,,] { { { 30 }, { 25 } } });
             print(x1);
             print("********");
 
@@ -4858,16 +4858,16 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_mean_1_OBJECT_TODO()
+        public void test_mean_1_OBJECT()
         {
-            BigInteger[] TestData = new BigInteger[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.BigInt).reshape(new shape(3, 2, -1));
+            Int32[] TestData = new Int32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.Int32).reshape(new shape(3, 2, -1)).astype(np.Object);
             x = x * 3;
             print(x);
 
             var y = np.mean(x);
             print(y);
-            Assert.AreEqual(131.5, y.GetItem(0));
+            Assert.AreEqual((double)131, y.GetItem(0));
 
             y = np.mean(x, axis: 0);
             print(y);
@@ -4875,36 +4875,36 @@ namespace NumpyDotNetTests
 
             y = np.mean(x, axis: 1);
             print(y);
-            AssertArray(y, new double[,] { { 52.5, 90 }, { 132, 157.5 }, { 154.5, 202.5 } });
+            AssertArray(y, new double[,] { { 52, 90 }, { 132, 157 }, { 154, 202 } });
 
             y = np.mean(x, axis: 2);
             print(y);
-            AssertArray(y, new double[,] { { 37.5, 105 }, { 252, 37.5 }, { 105, 252 } });
+            AssertArray(y, new double[,] { { 37, 105 }, { 252, 37 }, { 105, 252 } });
 
         }
 
         [TestMethod]
-        public void test_mean_2_OBJECT_TODO()
+        public void test_mean_2_OBJECT()
         {
-            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
+            ndarray a = np.zeros(new shape(2, 512 * 512), dtype: np.Int32).astype(np.Object);
             a[0, ":"] = 1.0;
             a[1, ":"] = 0.1;
             ndarray b = np.mean(a);
             print(b);
-            Assert.AreEqual(0.5, (double)b.GetItem(0));
+            Assert.AreEqual(0.54999999998835847, (double)b.GetItem(0));
 
-            ndarray c = np.mean(a, dtype: np.BigInt);
+            ndarray c = np.mean(a, dtype: np.Object);
             print(c);
-            Assert.AreEqual((BigInteger)0, c.GetItem(0));
+            Assert.AreEqual(0.54999999998835847, c.GetItem(0));
         }
 
         [TestMethod]
-        public void test_std_1_OBJECT_TODO()
+        public void test_std_1_OBJECT()
         {
-            ndarray a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }).astype(np.Object);
             ndarray b = np.std(a);
             print(b);
-            Assert.AreEqual(1.1180339887498949, (double)b.GetItem(0));
+            Assert.AreEqual(1.2247448713915889, (double)b.GetItem(0));
 
             ndarray c = np.std(a, axis: 0);
             print(c);
@@ -4912,26 +4912,26 @@ namespace NumpyDotNetTests
 
             ndarray d = np.std(a, axis: 1);
             print(d);
-            AssertArray(d, new double[] { 1.1180339887498949, 1.1180339887498949 }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new double[] { 0.70710678118654757, 1.5811388300841898 }); 
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.Int32).astype(np.Object);
             a[0, ":"] = 1;
             a[1, ":"] = 0;
             b = np.std(a);
             print(b);
-            Assert.AreEqual(0.5, b.GetItem(0));
+            Assert.AreEqual(0.70710678118654757, b.GetItem(0));
             // Computing the standard deviation in float64 is more accurate:
             c = np.std(a);
             print(c);
-            Assert.AreEqual(0.5, c.GetItem(0));
+            Assert.AreEqual(0.70710678118654757, c.GetItem(0));
 
         }
 
         [TestMethod]
-        public void test_var_1_OBJECT_TODO()
+        public void test_var_1_OBJECT()
         {
-            ndarray a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
+            ndarray a = np.array(new Object[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = np.var(a);
             Assert.AreEqual(1.25, b.GetItem(0));
             print(b);
@@ -4945,24 +4945,20 @@ namespace NumpyDotNetTests
             print(d);
 
             // In single precision, std() can be inaccurate:
-            a = np.zeros(new shape(2, 512 * 512), dtype: np.BigInt);
+            a = np.zeros(new shape(2, 512 * 512), dtype: np.Object);
             a[0, ":"] = 1;
             a[1, ":"] = 0;
             b = np.var(a);
-            Assert.AreEqual(0.25, b.GetItem(0));
+            Assert.AreEqual(0.5, b.GetItem(0));
             print(b);
 
-            // Computing the standard deviation in float64 is more accurate:
-            c = np.var(a, dtype: np.Float64);
-            Assert.AreEqual(0.25, c.GetItem(0));
-            print(c);
 
         }
 
         [TestMethod]
-        public void test_corrcoef_1_OBJECT_TODO()
+        public void test_corrcoef_1_OBJECT()
         {
-            var x1 = np.array(new BigInteger[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new Object[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
             print(x1);
 
             // Note how  increases while  decreases. The covariance matrix shows this clearly:
@@ -4971,8 +4967,8 @@ namespace NumpyDotNetTests
             AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
             print(a);
 
-            var x = new BigInteger[] { -21, -1, 43 };
-            var y = new BigInteger[] { 3, 11, 12 };
+            var x = new Object[] { -21, -1, 43 };
+            var y = new Object[] { 3, 11, 12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.corrcoef(X);
             AssertArray(a, new double[,] { { 1.0, 0.804905985486053 }, { 0.804905985486053, 1.0 } });
@@ -4992,45 +4988,28 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_correlate_1_OBJECT_TODO()
+        public void test_correlate_1_OBJECT()
         {
-            var a = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 });
-            AssertArray(a, new BigInteger[] { 17 });
+            var a = np.correlate(new Object[] { 1, 2, 3 }, new Object[] { 0, 1, 5 });
+            AssertArray(a, new Object[] { 17 });
             print(a);
 
-            var b = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new BigInteger[] { 11, 17, 3 });
+            var b = np.correlate(new Object[] { 1, 2, 3 }, new Object[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new Object[] { 11, 17, 3 });
             print(b);
 
-            var c = np.correlate(new BigInteger[] { 1, 2, 3 }, new BigInteger[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
-            AssertArray(c, new BigInteger[] { 5, 11, 17, 3, 0 });
+            var c = np.correlate(new Object[] { 1, 2, 3 }, new Object[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            AssertArray(c, new Object[] { 5, 11, 17, 3, 0 });
             print(c);
 
             return;
         }
 
-        [TestMethod]
-        public void test_correlate_1_Int64()
-        {
-            var a = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 });
-            AssertArray(a, new Int64[] { 17 });
-            print(a);
-
-            var b = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new Int64[] { 11, 17, 3 });
-            print(b);
-
-            var c = np.correlate(new Int64[] { 1, 2, 3 }, new Int64[] { 0, 1, 5 }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
-            AssertArray(c, new Int64[] { 5, 11, 17, 3, 0 });
-            print(c);
-
-            return;
-        }
 
         [TestMethod]
-        public void test_cov_1_OBJECT_TODO()
+        public void test_cov_1_OBJECT()
         {
-            var x1 = np.array(new BigInteger[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new Object[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
             print(x1);
 
             // Note how  increases while  decreases. The covariance matrix shows this clearly:
@@ -5039,8 +5018,8 @@ namespace NumpyDotNetTests
             AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
             print(a);
 
-            var x = new BigInteger[] { -21, -1, 43 };
-            var y = new BigInteger[] { 3, 11, 12 };
+            var x = new Object[] { -21, -1, 43 };
+            var y = new Object[] { 3, 11, 12 };
             var X = np.stack(new object[] { x, y }, axis: 0);
             a = np.cov(X);
             AssertArray(a, new double[,] { { 1072.0, 130.0 }, { 130.0, 24.3333333333333 } });
