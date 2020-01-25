@@ -254,7 +254,7 @@ namespace NumpyDotNetTests
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
 
-            // BigInteger can't be mapped by something besides another BigInteger
+            // Object can't be mapped by something besides another Object
             var y = x.view(np.UInt64);
             Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
 
@@ -5375,18 +5375,18 @@ namespace NumpyDotNetTests
         #region from ShapeBaseTests
 
         [TestMethod]
-        public void test_atleast_1d_OBJECT_TODO()
+        public void test_atleast_1d_OBJECT()
         {
-            var a = np.atleast_1d((BigInteger)1.0);
+            var a = np.atleast_1d((Object)1);
             print(a);
-            AssertArray(a.ElementAt(0), new BigInteger[] { 1 });
+            AssertArray(a.ElementAt(0), new Object[] { 1 });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.BigInt).reshape(new shape(3, 3));
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
             var b = np.atleast_1d(x);
             print(b);
 
-            var ExpectedB = new BigInteger[,]
+            var ExpectedB = new Object[,]
                 {{0, 1, 2},
                  {3, 4, 5},
                  {6, 7, 8}};
@@ -5394,27 +5394,27 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            var c = np.atleast_1d(new object[] { (BigInteger)1, new BigInteger[] { 3, 4 } });
+            var c = np.atleast_1d(new object[] { (Object)1, new Object[] { 3, 4 } });
 
-            AssertArray(c.ElementAt(0), new BigInteger[] { 1 });
-            AssertArray(c.ElementAt(1), new BigInteger[] { 3, 4 });
+            AssertArray(c.ElementAt(0), new Object[] { 1 });
+            AssertArray(c.ElementAt(1), new Object[] { 3, 4 });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_2d_OBJECT_TODO()
+        public void test_atleast_2d_OBJECT()
         {
-            var a = np.atleast_2d((BigInteger)1);
+            var a = np.atleast_2d((Object)1);
             print(a);
-            AssertArray(a.ElementAt(0), new BigInteger[,] { { 1 } });
+            AssertArray(a.ElementAt(0), new Object[,] { { 1 } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.BigInt).reshape(new shape(3, 3));
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
             var b = np.atleast_2d(x);
             print(b);
 
-            var ExpectedB = new BigInteger[,]
+            var ExpectedB = new Object[,]
                 {{0, 1, 2},
                  {3, 4, 5},
                  {6, 7, 8}};
@@ -5422,28 +5422,28 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            var c = np.atleast_2d(new object[] { (BigInteger)1, new BigInteger[] { 3, 4 }, new BigInteger[] { 5, 6 } });
+            var c = np.atleast_2d(new object[] { (Object)1, new Object[] { 3, 4 }, new Object[] { 5, 6 } });
 
-            AssertArray(c.ElementAt(0), new BigInteger[,] { { 1 } });
-            AssertArray(c.ElementAt(1), new BigInteger[,] { { 3, 4 } });
-            AssertArray(c.ElementAt(2), new BigInteger[,] { { 5, 6 } });
+            AssertArray(c.ElementAt(0), new Object[,] { { 1 } });
+            AssertArray(c.ElementAt(1), new Object[,] { { 3, 4 } });
+            AssertArray(c.ElementAt(2), new Object[,] { { 5, 6 } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_3d_OBJECT_TODO()
+        public void test_atleast_3d_OBJECT()
         {
-            var a = np.atleast_3d((BigInteger)1);
+            var a = np.atleast_3d((Object)1);
             print(a);
-            AssertArray(a.ElementAt(0), new BigInteger[,,] { { { 1 } } });
+            AssertArray(a.ElementAt(0), new Object[,,] { { { 1 } } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.BigInt).reshape(new shape(3, 3));
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
             var b = np.atleast_3d(x);
             print(b);
 
-            var ExpectedB = new BigInteger[,,]
+            var ExpectedB = new Object[,,]
              {{{0},
                {1},
                {2}},
@@ -5458,89 +5458,89 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            var c = np.atleast_3d(new object[] { new BigInteger[] { 1, 2 }, new BigInteger[] { 3, 4 }, new BigInteger[] { 5, 6 } });
+            var c = np.atleast_3d(new object[] { new Object[] { 1, 2 }, new Object[] { 3, 4 }, new Object[] { 5, 6 } });
 
-            AssertArray(c.ElementAt(0), new BigInteger[,,] { { { 1 }, { 2 } } });
-            AssertArray(c.ElementAt(1), new BigInteger[,,] { { { 3 }, { 4 } } });
-            AssertArray(c.ElementAt(2), new BigInteger[,,] { { { 5 }, { 6 } } });
+            AssertArray(c.ElementAt(0), new Object[,,] { { { 1 }, { 2 } } });
+            AssertArray(c.ElementAt(1), new Object[,,] { { { 3 }, { 4 } } });
+            AssertArray(c.ElementAt(2), new Object[,,] { { { 5 }, { 6 } } });
             print(c);
 
 
         }
 
         [TestMethod]
-        public void test_vstack_2_OBJECT_TODO()
+        public void test_vstack_2_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new BigInteger[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
             var c = np.vstack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c, new Object[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_hstack_2_OBJECT_TODO()
+        public void test_hstack_2_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new BigInteger[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
             var c = np.hstack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new Object[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_stack_1_OBJECT_TODO()
+        public void test_stack_1_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new BigInteger[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
+            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
 
             var c = np.stack(new object[] { a, b }, axis: 0);
-            AssertArray(c, new BigInteger[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
+            AssertArray(c, new Object[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
             print(c);
             print("**************");
 
             var d = np.stack(new object[] { a, b }, axis: 1);
-            AssertArray(d, new BigInteger[,,] { { { 1 }, { 2 } }, { { 2 }, { 3 } }, { { 3 }, { 4 } } });
+            AssertArray(d, new Object[,,] { { { 1 }, { 2 } }, { { 2 }, { 3 } }, { { 3 }, { 4 } } });
             print(d);
             print("**************");
 
             var e = np.stack(new object[] { a, b }, axis: 2);
-            AssertArray(e, new BigInteger[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(e, new Object[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
             print(e);
 
         }
 
         [TestMethod]
-        public void test_block_2_OBJECT_TODO()
+        public void test_block_2_OBJECT()
         {
-            var a = np.array(new BigInteger[] { 1, 2, 3 });
-            var b = np.array(new BigInteger[] { 2, 3, 4 });
+            var a = np.array(new Object[] { 1, 2, 3 });
+            var b = np.array(new Object[] { 2, 3, 4 });
             var c = np.block(new object[] { a, b, 10 });    // hstack([a, b, 10])
 
-            AssertArray(c, new BigInteger[] { 1, 2, 3, 2, 3, 4, 10 });
+            AssertArray(c, new Object[] { 1, 2, 3, 2, 3, 4, 10 });
             print(c);
             print("**************");
 
-            a = np.array(new BigInteger[] { 1, 2, 3 });
-            b = np.array(new BigInteger[] { 2, 3, 4 });
+            a = np.array(new Object[] { 1, 2, 3 });
+            b = np.array(new Object[] { 2, 3, 4 });
             c = np.block(new object[] { new object[] { a }, new object[] { b } });    // vstack([a, b])
 
-            AssertArray(c, new BigInteger[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new Object[,] { { 1, 2, 3 }, { 2, 3, 4 } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_expand_dims_1_OBJECT_TODO()
+        public void test_expand_dims_1_OBJECT()
         {
-            var a = np.array(new BigInteger[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, -1, 2));
+            var a = np.array(new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, -1, 2));
             var b = np.expand_dims(a, axis: 0);
 
-            var ExpectedDataB = new BigInteger[,,,]
+            var ExpectedDataB = new Object[,,,]
             {{{{1,  2}, {3,  4}, {5,  6}},
               {{7,  8}, {9, 10}, {11, 12}}}};
 
@@ -5549,7 +5549,7 @@ namespace NumpyDotNetTests
             print("**************");
 
             var c = np.expand_dims(a, axis: 1);
-            var ExpectedDataC = new BigInteger[,,,]
+            var ExpectedDataC = new Object[,,,]
                 {{{{1,  2}, {3,  4}, {5,  6}}},
                 {{{ 7,  8},{ 9, 10}, {11, 12}}}};
             AssertArray(c, ExpectedDataC);
@@ -5557,7 +5557,7 @@ namespace NumpyDotNetTests
             print("**************");
 
             var d = np.expand_dims(a, axis: 2);
-            var ExpectedDataD = new BigInteger[,,,]
+            var ExpectedDataD = new Object[,,,]
             {{{{1,  2}},{{3,  4}},{{5,  6}}},
              {{{7,  8}},{{9, 10}},{{11, 12}}}};
 
@@ -5567,104 +5567,104 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_column_stack_1_OBJECT_TODO()
+        public void test_column_stack_1_OBJECT()
         {
-            var a = np.array(new BigInteger[] { 1, 2, 3 });
-            var b = np.array(new BigInteger[] { 2, 3, 4 });
+            var a = np.array(new Object[] { 1, 2, 3 });
+            var b = np.array(new Object[] { 2, 3, 4 });
             var c = np.column_stack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new Object[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
             print(c);
         }
 
         [TestMethod]
-        public void test_row_stack_1_OBJECT_TODO()
+        public void test_row_stack_1_OBJECT()
         {
-            var a = np.array(new BigInteger[] { 1, 2, 3 });
-            var b = np.array(new BigInteger[] { 2, 3, 4 });
+            var a = np.array(new Object[] { 1, 2, 3 });
+            var b = np.array(new Object[] { 2, 3, 4 });
             var c = np.row_stack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new Object[,] { { 1, 2, 3 }, { 2, 3, 4 } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_dstack_1_OBJECT_TODO()
+        public void test_dstack_1_OBJECT()
         {
-            var a = np.array(new BigInteger[] { 1, 2, 3 });
-            var b = np.array(new BigInteger[] { 2, 3, 4 });
+            var a = np.array(new Object[] { 1, 2, 3 });
+            var b = np.array(new Object[] { 2, 3, 4 });
             var c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
+            AssertArray(c, new Object[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
             print(c);
 
-            a = np.array(new BigInteger[,] { { 1 }, { 2 }, { 3 } });
-            b = np.array(new BigInteger[,] { { 2 }, { 3 }, { 4 } });
+            a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
+            b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
             c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new BigInteger[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(c, new Object[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_array_split_2_OBJECT_TODO()
+        public void test_array_split_2_OBJECT()
         {
-            var x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(2, 8, 1));
+            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
             var y = np.array_split(x, 3, axis: 0);
 
 
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
             AssertShape(y.ElementAt(2), 0, 8, 1);
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(2, 8, 1));
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
             y = np.array_split(x, 3, axis: 1);
 
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } });
-            AssertArray(y.ElementAt(2), new BigInteger[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } });
+            AssertArray(y.ElementAt(2), new Object[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } });
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(2, 8, 1));
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
             y = np.array_split(x, 3, axis: 2);
 
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
             AssertShape(y.ElementAt(1), 2, 8, 0);
             AssertShape(y.ElementAt(2), 2, 8, 0);
             print(y);
         }
 
         [TestMethod]
-        public void test_split_2_OBJECT_TODO()
+        public void test_split_2_OBJECT()
         {
-            var x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(8, 2, 1));
+            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
             var y = np.split(x, new Int32[] { 2, 3 }, axis: 0);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 4 }, { 5 } } });
-            AssertArray(y.ElementAt(2), new BigInteger[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 4 }, { 5 } } });
+            AssertArray(y.ElementAt(2), new Object[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(8, 2, 1));
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
             y = np.split(x, new int[] { 2, 3 }, axis: 1);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
+            AssertArray(y.ElementAt(0), new Object[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
                                                         {{8},{9}},{{10},{11}}, {{12}, {13}}, {{14}, {15}}});
             AssertShape(y.ElementAt(1), 8, 0, 1);
             AssertShape(y.ElementAt(2), 8, 0, 1);
@@ -5673,11 +5673,11 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.BigInt).reshape(new shape(8, 2, 1));
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
             y = np.split(x, new int[] { 2, 3 }, axis: 2);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
+            AssertArray(y.ElementAt(0), new Object[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
                                                         {{ 8},{ 9}},{{10}, {11}}, {{12}, {13}}, {{14}, {15}}});
             AssertShape(y.ElementAt(1), 8, 2, 0);
             AssertShape(y.ElementAt(2), 8, 2, 0);
@@ -5686,23 +5686,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_hsplit_2_OBJECT_TODO()
+        public void test_hsplit_2_OBJECT()
         {
-            var x = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             var y = np.hsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1 } }, { { 4, 5 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 2, 3 } }, { { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 } }, { { 4, 5 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 2, 3 } }, { { 6, 7 } } });
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             y = np.hsplit(x, new Int32[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
             AssertShape(y.ElementAt(1), 2, 0, 2);
             AssertShape(y.ElementAt(2), 2, 0, 2);
 
@@ -5710,23 +5710,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_vsplit_2_OBJECT_TODO()
+        public void test_vsplit_2_OBJECT()
         {
-            var x = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             var y = np.vsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1 }, { 2, 3 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 4, 5 }, { 6, 7 } } });
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.BigInt).reshape(new shape(2, 2, 2));
+            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
             y = np.vsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
             AssertShape(y.ElementAt(1), 0, 2, 2);
             AssertShape(y.ElementAt(2), 0, 2, 2);
 
@@ -5734,59 +5734,59 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_dsplit_1_OBJECT_TODO()
+        public void test_dsplit_1_OBJECT()
         {
-            var x = np.arange(16, dtype: np.BigInt).reshape(new shape(2, 2, 4));
+            var x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Object);
             var y = np.dsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } });
             print(y);
 
 
             print("**************");
 
-            x = np.arange(16, dtype: np.BigInt).reshape(new shape(2, 2, 4));
+            x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Object);
             y = np.dsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new BigInteger[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } });
-            AssertArray(y.ElementAt(1), new BigInteger[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } });
+            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } });
+            AssertArray(y.ElementAt(1), new Object[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } });
             AssertShape(y.ElementAt(2), 2, 2, 0);
 
             print(y);
         }
 
         [TestMethod]
-        public void test_kron_1_OBJECT_TODO()
+        public void test_kron_1_OBJECT()
         {
 
-            var a = np.kron(new BigInteger[] { 1, 10, 100 }, new BigInteger[] { 5, 6, 7 });
-            AssertArray(a, new BigInteger[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
+            var a = np.kron(new Object[] { 1, 10, 100 }, new Object[] { 5, 6, 7 });
+            AssertArray(a, new Object[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
             print(a);
 
-            var b = np.kron(new BigInteger[] { 5, 6, 7 }, new BigInteger[] { 1, 10, 100 });
-            AssertArray(b, new BigInteger[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
+            var b = np.kron(new Object[] { 5, 6, 7 }, new Object[] { 1, 10, 100 });
+            AssertArray(b, new Object[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
             print(b);
 
-            var x = np.array(new BigInteger[,] { { 2, 3 }, { 4, 5 } });
-            var y = np.array(new BigInteger[,] { { 5, 6 }, { 7, 8 } });
+            var x = np.array(new Object[,] { { 2, 3 }, { 4, 5 } });
+            var y = np.array(new Object[,] { { 5, 6 }, { 7, 8 } });
 
             var c = np.kron(x, y);
-            AssertArray(c, new BigInteger[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
+            AssertArray(c, new Object[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
             print(c);
             print(c.shape);
 
-            c = np.kron(np.eye(2, dtype: np.BigInt), np.ones(new shape(2, 2), dtype: np.BigInt));
-            AssertArray(c, new BigInteger[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
+            c = np.kron(np.eye(2, dtype: np.Object), np.ones(new shape(2, 2), dtype: np.Object));
+            AssertArray(c, new double[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
 
 
-            x = np.array(new BigInteger[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
-            y = np.array(new BigInteger[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
+            x = np.array(new Object[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
+            y = np.array(new Object[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
 
             c = np.kron(x, y);
-            AssertArray(c, new BigInteger[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 },
+            AssertArray(c, new Int32[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 },
                                            { 14, 16, 12, 12, 21, 24, 18, 18, 21, 24, 18, 18 },
                                            { 20, 24, 24, 24, 25, 30, 30, 30, 15, 18, 18, 18 },
                                            { 28, 32, 24, 24, 35, 40, 30, 30, 21, 24, 18, 18 } } });
@@ -5794,30 +5794,30 @@ namespace NumpyDotNetTests
             print(c.shape);
 
 
-            var d = np.kron(np.ones((5, 7, 9, 11), dtype: np.Int32), np.ones((3, 4, 6, 8), dtype: np.Int32));
+            var d = np.kron(np.ones((5, 7, 9, 11), dtype: np.Object), np.ones((3, 4, 6, 8), dtype: np.Object));
             AssertShape(d, 15, 28, 54, 88);
             print(d.shape);
 
         }
 
         [TestMethod]
-        public void test_tile_2_OBJECT_TODO()
+        public void test_tile_2_OBJECT()
         {
-            var a = np.array(new BigInteger[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new Object[,] { { 1, 2 }, { 3, 4 } });
             var b = np.tile(a, 2);
-            AssertArray(b, new BigInteger[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
+            AssertArray(b, new Object[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
             print(b);
             print("**************");
 
             var c = np.tile(a, new Int32[] { 2, 1 });
-            AssertArray(c, new BigInteger[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
+            AssertArray(c, new Object[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
             print(c);
             print("**************");
 
-            var d = np.array(new BigInteger[] { 1, 2, 3, 4 });
+            var d = np.array(new Object[] { 1, 2, 3, 4 });
             var e = np.tile(d, new Int32[] { 4, 1 });
 
-            AssertArray(e, new BigInteger[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
+            AssertArray(e, new Object[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
             print(e);
         }
 
