@@ -5826,98 +5826,98 @@ namespace NumpyDotNetTests
         #region from UFUNCTests
 
         [TestMethod]
-        public void test_UFUNC_AddReduce_1_OBJECT_TODO()
+        public void test_UFUNC_AddReduce_1_OBJECT()
         {
-            var x = np.arange(8, dtype: np.BigInt);
+            var x = np.arange(8, dtype: np.Int32).astype(np.Object);
 
             var a = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
-            Assert.AreEqual((BigInteger)28, a.GetItem(0));
+            Assert.AreEqual((Object)28, a.GetItem(0));
             print(a);
 
-            x = np.arange(8, dtype: np.BigInt).reshape((2, 2, 2));
+            x = np.arange(8, dtype: np.Int32).reshape((2, 2, 2)).astype(np.Object);
             var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
-            AssertArray(b, new BigInteger[,] { { 4, 6 }, { 8, 10 } });
+            AssertArray(b, new Object[,] { { 4, 6 }, { 8, 10 } });
             print(b);
 
             var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
-            AssertArray(c, new BigInteger[,] { { 4, 6 }, { 8, 10 } });
+            AssertArray(c, new Object[,] { { 4, 6 }, { 8, 10 } });
             print(c);
 
             var d = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 1);
-            AssertArray(d, new BigInteger[,] { { 2, 4 }, { 10, 12 } });
+            AssertArray(d, new Object[,] { { 2, 4 }, { 10, 12 } });
             print(d);
 
             var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
-            AssertArray(e, new BigInteger[,] { { 1, 5 }, { 9, 13 } });
+            AssertArray(e, new Object[,] { { 1, 5 }, { 9, 13 } });
             print(e);
 
         }
 
         [TestMethod]
-        public void test_UFUNC_AddAccumulate_1_OBJECT_TODO()
+        public void test_UFUNC_AddAccumulate_1_OBJECT()
         {
-            var x = np.arange(8, dtype: np.BigInt);
+            var x = np.arange(8, dtype: np.Int32).astype(np.Object);
 
             var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
-            AssertArray(a, new BigInteger[] { 0, 1, 3, 6, 10, 15, 21, 28 });
+            AssertArray(a, new Object[] { 0, 1, 3, 6, 10, 15, 21, 28 });
             print(a);
 
-            x = np.arange(8, dtype: np.BigInt).reshape((2, 2, 2));
+            x = np.arange(8, dtype: np.Int32).reshape((2, 2, 2)).astype(np.Object);
             var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
-            AssertArray(b, new BigInteger[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
+            AssertArray(b, new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
             print(b);
 
             var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
-            AssertArray(c, new BigInteger[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
+            AssertArray(c, new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
             print(c);
 
             var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
-            AssertArray(d, new BigInteger[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
+            AssertArray(d, new Object[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
             print(d);
 
             var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
-            AssertArray(e, new BigInteger[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
+            AssertArray(e, new Object[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
             print(e);
 
         }
 
         [TestMethod]
-        public void test_UFUNC_AddReduceAt_1_OBJECT_TODO()
+        public void test_UFUNC_AddReduceAt_1_OBJECT()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8, dtype: np.BigInt), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
-            AssertArray(a, new BigInteger[] { 6, 10, 14, 18 });
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8, dtype: np.Int32), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 }).astype(np.Object)["::2"] as ndarray;
+            AssertArray(a, new Object[] { 6, 10, 14, 18 });
             print(a);
 
             double retstep = 0;
-            var x = np.linspace(0, 15, ref retstep, 16, dtype: np.BigInt).reshape((4, 4));
+            var x = np.linspace(0, 15, ref retstep, 16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
             var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new long[] { 0, 3, 1, 2, 0 });
-            AssertArray(b, new BigInteger[,] {{12, 15, 18, 21},{12, 13, 14, 15}, {4, 5, 6, 7},
+            AssertArray(b, new Object[,] {{12, 15, 18, 21},{12, 13, 14, 15}, {4, 5, 6, 7},
                                           {8, 9, 10, 11}, {24, 28, 32, 36}});
             print(b);
 
             var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3 }, axis: 1);
-            AssertArray(c, new BigInteger[,] { { 0, 3 }, { 120, 7 }, { 720, 11 }, { 2184, 15 } });
+            AssertArray(c, new Object[,] { { 0, 3 }, { 120, 7 }, { 720, 11 }, { 2184, 15 } });
             print(c);
         }
 
         [TestMethod]
-        public void test_UFUNC_AddOuter_1_OBJECT_TODO()
+        public void test_UFUNC_AddOuter_1_OBJECT()
         {
-            var x = np.arange(4, dtype: np.BigInt);
+            var x = np.arange(4, dtype: np.Int32);
 
             var a = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
-            AssertArray(a, new BigInteger[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
+            AssertArray(a, new Object[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
             print(a);
 
-            x = np.arange(6, dtype: np.BigInt).reshape((3, 2));
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
+            x = np.arange(6, dtype: np.Int32).reshape((3, 2)).astype(np.Object);
+            var y = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
             var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
-            var ExpectedDataB = new BigInteger[,,,]
+            var ExpectedDataB = new Object[,,,]
 
                 {{{{0,  1,  2}, {3,  4,  5}}, {{1,  2,  3}, { 4,  5,  6}}},
                  {{{2,  3,  4}, {5,  6,  7}}, {{3,  4,  5}, { 6,  7,  8}}},
@@ -5933,22 +5933,22 @@ namespace NumpyDotNetTests
         #region from IndexTricksTests
 
         [TestMethod]
-        public void test_mgrid_1_OBJECT_TODO()
+        public void test_mgrid_1_OBJECT()
         {
-            var a = (ndarray)np.mgrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)5) });
+            var a = (ndarray)np.mgrid(new Slice[] { new Slice((object)0, (object)5) });
             print(a);
-            AssertArray(a, new BigInteger[] { 0, 1, 2, 3, 4 });
+            AssertArray(a, new Object[] { 0, 1, 2, 3, 4 });
             print("************");
 
-            var b = (ndarray)np.mgrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)6) });
+            var b = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)6) });
             print(b);
-            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 5 });
+            AssertArray(b, new Object[] { 0, 1, 2, 3, 4, 5 });
             print("************");
 
-            var c = (ndarray)np.mgrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)5), new Slice((BigInteger)0, (BigInteger)5) });
+            var c = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)5), new Slice((Object)0, (Object)5) });
             print(c);
 
-            var ExpectedCArray = new BigInteger[,,]
+            var ExpectedCArray = new Object[,,]
                 {{{0, 0, 0, 0, 0},  {1, 1, 1, 1, 1},  {2, 2, 2, 2, 2},  {3, 3, 3, 3, 3},  {4, 4, 4, 4, 4}},
                  {{0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4}}};
             AssertArray(c, ExpectedCArray);
@@ -5956,18 +5956,18 @@ namespace NumpyDotNetTests
 
             print("************");
 
-            var d = (ndarray)np.mgrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)6), new Slice((BigInteger)0, (BigInteger)6) });
+            var d = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)6), new Slice((Object)0, (Object)6) });
             print(d);
-            var ExpectedDArray = new BigInteger[,,]
+            var ExpectedDArray = new Object[,,]
                 {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
                  {{0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 4, 5}}};
             AssertArray(d, ExpectedDArray);
 
             print("************");
 
-            var e = (ndarray)np.mgrid(new Slice[] { new Slice((BigInteger)3, (BigInteger)5), new Slice((BigInteger)4, (BigInteger)6), new Slice((BigInteger)2, (BigInteger)5) });
+            var e = (ndarray)np.mgrid(new Slice[] { new Slice((Object)3, (Object)5), new Slice((Object)4, (Object)6), new Slice((Object)2, (Object)5) });
             print(e);
-            var ExpectedEArray = new BigInteger[,,,]
+            var ExpectedEArray = new Object[,,,]
                 {
                     {{{3, 3, 3}, {3, 3, 3}}, {{4, 4, 4}, {4, 4, 4}}},
                     {{{4, 4, 4}, {5, 5, 5}}, {{4, 4, 4}, {5, 5, 5}}},
@@ -5978,91 +5978,91 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ogrid_1_OBJECT_TODO()
+        public void test_ogrid_1_OBJECT()
         {
-            var a = (ndarray)np.ogrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)5) });
+            var a = (ndarray)np.ogrid(new Slice[] { new Slice((Object)0, (Object)5) });
             print(a);
-            AssertArray(a, new BigInteger[] { 0, 1, 2, 3, 4 });
+            AssertArray(a, new Object[] { 0, 1, 2, 3, 4 });
             print("************");
 
-            var b = (ndarray)np.ogrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)6) });
+            var b = (ndarray)np.ogrid(new Slice[] { new Slice((Object)0, (Object)6) });
             print(b);
-            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 5 });
+            AssertArray(b, new Object[] { 0, 1, 2, 3, 4, 5 });
             print("************");
 
-            var c = (ndarray[])np.ogrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)5), new Slice((BigInteger)0, (BigInteger)5) });
+            var c = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)0, (Object)5), new Slice((Object)0, (Object)5) });
             print(c);
-            AssertArray(c[0], new BigInteger[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
-            AssertArray(c[1], new BigInteger[,] { { 0, 1, 2, 3, 4 } });
+            AssertArray(c[0], new Object[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c[1], new Object[,] { { 0, 1, 2, 3, 4 } });
 
 
             print("************");
 
-            var d = (ndarray[])np.ogrid(new Slice[] { new Slice((BigInteger)0, (BigInteger)6), new Slice((BigInteger)0, (BigInteger)6) });
+            var d = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)0, (Object)6), new Slice((Object)0, (Object)6) });
             print(d);
-            AssertArray(d[0], new BigInteger[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-            AssertArray(d[1], new BigInteger[,] { { 0, 1, 2, 3, 4, 5 } });
+            AssertArray(d[0], new Object[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
+            AssertArray(d[1], new Object[,] { { 0, 1, 2, 3, 4, 5 } });
 
             print("************");
 
-            var e = (ndarray[])np.ogrid(new Slice[] { new Slice((BigInteger)3, (BigInteger)5), new Slice((BigInteger)4, (BigInteger)6), new Slice((BigInteger)2, (BigInteger)5) });
+            var e = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)3, (Object)5), new Slice((Object)4, (Object)6), new Slice((Object)2, (Object)5) });
             print(e);
-            AssertArray(e[0], new BigInteger[,,] { { { 3 } }, { { 4 } } });
-            AssertArray(e[1], new BigInteger[,,] { { { 4 }, { 5 } } });
-            AssertArray(e[2], new BigInteger[,,] { { { 2, 3, 4 } } });
+            AssertArray(e[0], new Object[,,] { { { 3 } }, { { 4 } } });
+            AssertArray(e[1], new Object[,,] { { { 4 }, { 5 } } });
+            AssertArray(e[2], new Object[,,] { { { 2, 3, 4 } } });
 
         }
 
         [TestMethod]
-        public void test_fill_diagonal_1_OBJECT_TODO()
+        public void test_fill_diagonal_1_OBJECT()
         {
-            var a = np.zeros((3, 3), np.BigInt);
+            var a = np.zeros((3, 3), np.Int32).astype(np.Object);
             np.fill_diagonal(a, 5);
-            AssertArray(a, new BigInteger[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
+            AssertArray(a, new Object[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
             print(a);
 
-            a = np.zeros((3, 3, 3, 3), np.BigInt);
+            a = np.zeros((3, 3, 3, 3), np.Int32).astype(np.Object);
             np.fill_diagonal(a, 4);
-            AssertArray(a[0, 0] as ndarray, new BigInteger[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a[0, 0] as ndarray, new Object[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
             print(a[0, 0]);
-            AssertArray(a[1, 1] as ndarray, new BigInteger[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
+            AssertArray(a[1, 1] as ndarray, new Object[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
             print(a[1, 1]);
-            AssertArray(a[2, 2] as ndarray, new BigInteger[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
+            AssertArray(a[2, 2] as ndarray, new Object[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
             print(a[2, 2]);
 
             // tall matrices no wrap
-            a = np.zeros((5, 3), np.BigInt);
+            a = np.zeros((5, 3), np.Int32).astype(np.Object);
             np.fill_diagonal(a, 4);
-            AssertArray(a, new BigInteger[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a, new Object[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
             print(a);
 
             // tall matrices wrap
-            a = np.zeros((5, 3), np.BigInt);
+            a = np.zeros((5, 3), np.Int32).astype(np.Object);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new BigInteger[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
+            AssertArray(a, new Object[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
             print(a);
 
             // wide matrices wrap
-            a = np.zeros((3, 5), np.BigInt);
+            a = np.zeros((3, 5), np.Int32).astype(np.Object);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new BigInteger[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
+            AssertArray(a, new Object[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
             print(a);
 
 
         }
 
         [TestMethod]
-        public void test_diag_indices_1_OBJECT_TODO()
+        public void test_diag_indices_1_OBJECT()
         {
             var di = np.diag_indices(4);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
             print(di);
 
-            var a = np.arange(16, dtype: np.BigInt).reshape((4, 4));
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
             a[di] = 100;
 
-            AssertArray(a, new BigInteger[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
+            AssertArray(a, new Object[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
             print(a);
 
             return;
@@ -6070,9 +6070,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_diag_indices_from_1_OBJECT_TODO()
+        public void test_diag_indices_from_1_OBJECT()
         {
-            var a = np.arange(16, dtype: np.BigInt).reshape((4, 4));
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
             var di = np.diag_indices_from(a);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
