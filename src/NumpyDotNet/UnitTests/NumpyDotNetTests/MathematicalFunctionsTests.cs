@@ -13,6 +13,18 @@ namespace NumpyDotNetTests
     public class MathematicalFunctionsTests : TestBaseClass
     {
         #region Trigonometric Functions
+
+        [TestMethod]
+        public void MATHFUNCTION_PARALLEL_CONVERSION()
+        {
+            Assert.Fail("Convert Math functions to use parallel technology");
+        }
+        [TestMethod]
+        public void ADD_PERFORMANCE_UNITTEST_MODULE()
+        {
+            Assert.Fail("reminder to add performance related unit tests to new module");
+        }
+
         [TestMethod]
         public void test_sin_1()
         {
