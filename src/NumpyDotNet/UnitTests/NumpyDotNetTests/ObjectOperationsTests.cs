@@ -15,23 +15,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class ObjectOperationsTests : TestBaseClass
     {
-        [TestMethod]
-        public void xxx_Test_ObjectOperations_Placeholder()
-        {
-            string[] TestData = new string[] { "A", "B", "C", "D" };
-
-            var a = np.array(TestData, dtype: np.Object);
-
-            print(a);
-
-            a = a.reshape((2, 2));
-            print(a);
-
-            a = a * 2;
-            print(a);
-
-        }
-
+  
         private int SizeOfObject = IntPtr.Size;
 
         #region from ArrayCreationTests
@@ -6084,10 +6068,10 @@ namespace NumpyDotNetTests
         #region from StrideTricksTests
 
         [TestMethod]
-        public void test_broadcast_1_OBJECT_TODO()
+        public void test_broadcast_1_OBJECT()
         {
-            var x = np.array(new BigInteger[,] { { 11 }, { 2 }, { 3 } });
-            var y = np.array(new BigInteger[] { 4, 5, 6 });
+            var x = np.array(new Object[,] { { 11 }, { 2 }, { 3 } });
+            var y = np.array(new Object[] { 4, 5, 6 });
             var b = np.broadcast(x, y);
             Assert.AreEqual(b.shape.iDims.Length, 2);
             Assert.AreEqual(b.shape.iDims[0], 3);
@@ -6107,10 +6091,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_to_1_OBJECT_TODO()
+        public void test_broadcast_to_1_OBJECT()
         {
-            var a = np.broadcast_to((BigInteger)5, (4, 4));
-            AssertArray(a, new BigInteger[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
+            var a = np.broadcast_to((Object)5, (4, 4));
+            AssertArray(a, new Object[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
             AssertStrides(a, 0, 0);
             print(a);
             print(a.shape);
@@ -6118,8 +6102,8 @@ namespace NumpyDotNetTests
             print("*************");
 
 
-            var b = np.broadcast_to(new BigInteger[] { 1, 2, 3 }, (3, 3));
-            AssertArray(b, new BigInteger[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            var b = np.broadcast_to(new Object[] { 1, 2, 3 }, (3, 3));
+            AssertArray(b, new Object[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
             AssertStrides(b, 0, SizeOfObject);
             print(b);
             print(b.shape);
@@ -6130,10 +6114,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_arrays_1_OBJECT_TODO()
+        public void test_broadcast_arrays_1_OBJECT()
         {
-            var x = np.array(new BigInteger[,] { { 1, 2, 3 } });
-            var y = np.array(new BigInteger[,] { { 4 }, { 5 } });
+            var x = np.array(new Object[,] { { 1, 2, 3 } });
+            var y = np.array(new Object[,] { { 4 }, { 5 } });
             var z = np.broadcast_arrays(false, new ndarray[] { x, y });
 
             print(z);
@@ -6141,14 +6125,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_as_strided_1_OBJECT_TODO()
+        public void test_as_strided_1_OBJECT()
         {
-            var y = np.zeros((10, 10), np.BigInt);
+            var y = np.zeros((10, 10), np.Int32).astype(np.Object);
             AssertStrides(y, SizeOfObject * 10, SizeOfObject * 1);
             print(y.strides);
 
             var n = 1000;
-            var a = np.arange(n, dtype: np.BigInt);
+            var a = np.arange(n, dtype: np.Float64).astype(np.Object);
 
             var b = np.as_strided(a, (n, n), (0, 8));
 
@@ -6160,7 +6144,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             AssertStrides(b, 0, 8);
             print(b.strides);
-            Assert.AreEqual(32000000, b.nbytes);
+            Assert.AreEqual(4000000, b.nbytes);
             print(b.nbytes);
 
         }
@@ -6170,10 +6154,10 @@ namespace NumpyDotNetTests
         #region from IteratorTests
 
         [TestMethod]
-        public void test_nditer_1_OBJECT_TODO()
+        public void test_nditer_1_OBJECT()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.BigInt).reshape((2, 3));
-            var b = np.array(new BigInteger[] { 7, 8, 9 });
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
+            var b = np.array(new Object[] { 7, 8, 9 });
 
             foreach (var aa in new nditer(a))
             {
@@ -6193,9 +6177,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndindex_1_OBJECT_TODO()
+        public void test_ndindex_1_OBJECT()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.BigInt).reshape((2, 3));  // force numpy to be initialized
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object); 
 
             foreach (var aa in new ndindex((2, 3)))
             {
@@ -6216,9 +6200,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndenumerate_1_OBJECT_TODO()
+        public void test_ndenumerate_1_OBJECT()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.BigInt).reshape((2, 3));
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
 
             foreach (ValueTuple<long[], object> aa in new ndenumerate(a))
             {
@@ -6230,6 +6214,12 @@ namespace NumpyDotNetTests
         #endregion
 
         #region very cool object unique tests
+
+        [TestMethod]
+        public void OBJECTOPERATIONS_CUSTOMDATA_REMINDER()
+        {
+            Assert.Fail("Reminder to implement Object Custom Data sample");
+        }
 
         // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading
 
