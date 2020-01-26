@@ -755,7 +755,7 @@ namespace NumpyDotNet
 
         public VoidPtr rawdata(npy_intp index = 0)
         {
-            var flattened = this.flatten();
+            var flattened = this.ravel();
             return numpyAPI.NpyArray_Index2Ptr(flattened.Array, index);
         }
 

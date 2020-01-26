@@ -18,8 +18,6 @@ namespace NumpyDotNetTests
         {
             var TestData = new bool[] { true, false, false, true, false };
 
-            Assert.Fail("This Asxxx functions create a copy.  Can this be fixed");
-
             var a = np.array(TestData);
 
             var abool = np.array(a.AsBoolArray());
