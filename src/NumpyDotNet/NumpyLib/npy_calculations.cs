@@ -1061,7 +1061,7 @@ namespace NumpyLib
 
         }
 
-        // TODO: figure out how to calculate the smallest possible array that allows
+        // calculate the smallest possible array that allows
         // Array to be correctly broadcasted into destArray
         private static long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
         {
@@ -1162,6 +1162,9 @@ namespace NumpyLib
                     {
                         NumericOpTask(td.srcArray, td.destArray, td.operArray, td.operations, td.srcOffsets, td.destOffsets, td.operOffsets, td.taskCnt);
                         td.countDown.Signal();
+                        td.srcOffsets = null;
+                        td.destOffsets = null;
+                        td.operOffsets = null;
                     }
                     catch (Exception ex)
                     {
