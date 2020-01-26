@@ -20,23 +20,17 @@ namespace NumpyDotNetTests
 
             var kk = new bool[Int32.MaxValue / 2];
 
-            // get the numeric ops background threads started
-            var x = np.arange(1);
+            var matrix = np.arange(1600000, dtype: np.Int64).reshape((40, -1));
+
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-
             sw.Start();
-
-
-            var matrix = np.arange(1600000).astype(np.Int64).reshape((40, -1));
-
-            // matrix = (ndarray)(matrix / np.arange(40).astype(np.Int32));
 
             //matrix = matrix["1:3:2", "1:-2:3"] as ndarray;
 
             for (int i = 0; i < LoopCount; i++)
             {
                 matrix = matrix / 3;
-                matrix = matrix / 1;
+                matrix = matrix + i;
             }
 
             var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];

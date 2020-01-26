@@ -11,15 +11,15 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 200;
 
-        start = tm.time()
-
         matrix = np.arange(1600000).astype(np.int64).reshape((40, -1));
+
+        start = tm.time()
 
         #matrix = matrix[1:3:2, 1:-2:3]
 
-        for x in range(LoopCount):
+        for i in range(LoopCount):
             matrix = matrix / 3;
-            matrix = matrix + x;
+            matrix = matrix + i;
             
 
         output = matrix[15:25:2, 15:25:2]
