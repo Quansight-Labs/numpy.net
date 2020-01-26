@@ -64,7 +64,7 @@ namespace NumpyDotNet
             private ndarray b;
 
             public shape expectedShape = null;
-            public long expectedLength = 0;
+            public int expectedLength = 0;
 
             private long[] offsets = null;
             private long[] offsets2 = null;
@@ -196,10 +196,10 @@ namespace NumpyDotNet
         {
             var ch = new MathFunctionHelper<T>(x);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            Parallel.For(0, ch.expectedLength, i =>
             {
-                ch.results[i] = mathfunc(ch.X1(i));
-            }
+                ch.results[i] = mathfunc(ch.X1((int)i));
+            });
 
             var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
@@ -213,10 +213,10 @@ namespace NumpyDotNet
         {
             var ch = new MathFunctionHelper<T>(x1, x2);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            Parallel.For(0, ch.expectedLength, i =>
             {
                 ch.results[i] = mathfunc(ch.X1(i), ch.X2(i));
-            }
+            });
 
             var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
@@ -231,10 +231,10 @@ namespace NumpyDotNet
         {
             var ch = new MathFunctionHelper<T>(x1);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            Parallel.For(0, ch.expectedLength, i =>
             {
                 ch.results[i] = mathfunc(ch.X1(i), n);
-            }
+            });
 
             var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
@@ -249,10 +249,10 @@ namespace NumpyDotNet
         {
             var ch = new MathFunctionHelper<T>(x1, x2);
 
-            for (int i = 0; i < ch.expectedLength; i++)
+            Parallel.For(0, ch.expectedLength, i =>
             {
                 ch.results[i] = mathfunc(ch.X1(i), ch.X2(i), n);
-            }
+            });
 
             var ret = np.array(ch.results).reshape(new shape(ch.expectedShape));
             if (where != null)
@@ -457,7 +457,6 @@ namespace NumpyDotNet
             {
                 MathFunctionHelper<System.Numerics.BigInteger> ch = new MathFunctionHelper<System.Numerics.BigInteger>(x1, x2);
 
-                var kevin = np.power(x1, 2) + np.power(x2, 2);
                 var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
 
                 return hypot;
@@ -465,8 +464,6 @@ namespace NumpyDotNet
             else
             {
                 MathFunctionHelper<double> ch = new MathFunctionHelper<double>(x1, x2);
-
-                var kevin = np.power(x1, 2) + np.power(x2, 2);
 
                 var hypot = np.sqrt(np.power(x1, 2) + np.power(x2, 2));
 

@@ -15,17 +15,6 @@ namespace NumpyDotNetTests
         #region Trigonometric Functions
 
         [TestMethod]
-        public void MATHFUNCTION_PARALLEL_CONVERSION()
-        {
-            Assert.Fail("Convert Math functions to use parallel technology");
-        }
-        [TestMethod]
-        public void ADD_PERFORMANCE_UNITTEST_MODULE()
-        {
-            Assert.Fail("reminder to add performance related unit tests to new module");
-        }
-
-        [TestMethod]
         public void test_sin_1()
         {
             var ExpectedResult = new double[] { 0, 0.909297426825682, -0.756802495307928, -0.279415498198926, 0.989358246623382 };
