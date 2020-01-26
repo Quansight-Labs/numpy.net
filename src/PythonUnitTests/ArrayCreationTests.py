@@ -17,31 +17,6 @@ class ArrayCreationTests(unittest.TestCase):
         y *= 99;
         print(x)
 
-    def test_KevinTest(self):
-
-        LoopCount = 200;
-
-        start = tm.time()
-
-        matrix = np.arange(1600000).astype(np.int64).reshape((40, -1));
-
-        #matrix = matrix[1:3:2, 1:-2:3]
-
-        for x in range(LoopCount):
-            matrix = matrix / 3;
-            matrix = matrix + x;
-            
-
-        output = matrix[15:25:2, 15:25:2]
-
-        end = tm.time()
-
-        diff = end-start
-        print("Int64 calculations took %f milliseconds" %(diff))
-        print(output)
-
-
-
     def test_asfarray_1(self):
 
         a = np.asfarray([2, 3])

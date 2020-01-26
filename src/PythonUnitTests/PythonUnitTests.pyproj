@@ -67,6 +67,9 @@
     <Compile Include="IteratorTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PerformanceTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
