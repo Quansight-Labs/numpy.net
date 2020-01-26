@@ -1065,7 +1065,8 @@ namespace NumpyLib
         // Array to be correctly broadcasted into destArray
         private static long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
         {
-            return NpyArray_Size(destArray);
+            var OperIter = NpyArray_BroadcastToShape(Array, destArray.dimensions, destArray.nd);
+            return NpyArray_ITER_COUNT(OperIter);
         }
 
         public class Countdown : IDisposable

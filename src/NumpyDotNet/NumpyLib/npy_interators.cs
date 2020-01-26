@@ -507,6 +507,79 @@ namespace NumpyLib
             }
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int NpyArray_ITER_COUNT(NpyArrayIterObject it)
+        {
+            npy_intp MaxOffsets = NpyArray_SIZE(it.ao);
+            if (MaxOffsets == 1)
+                return 1;
+
+            npy_intp FirstOffset = it.dataptr.data_offset;
+            int FirstOffsetCount = 1;
+
+            while (true)
+            {
+                it.index++;
+                if (it.nd_m1 == 0)
+                {
+                    it.dataptr.data_offset += it.strides[0];
+                    it.coordinates[0]++;
+                }
+                else if (it.contiguous)
+                {
+                    it.dataptr.data_offset += (npy_intp)it.ao.descr.elsize;
+                }
+                else if (it.nd_m1 == 1)
+                {
+                    if (it.coordinates[1] < it.dims_m1[1])
+                    {
+                        it.coordinates[1]++;
+                        it.dataptr.data_offset += it.strides[1];
+                    }
+                    else
+                    {
+                        it.coordinates[1] = 0;
+                        it.coordinates[0]++;
+                        it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                    }
+                }
+                else
+                {
+                    int i;
+                    for (i = it.nd_m1; i >= 0; i--)
+                    {
+                        if (it.coordinates[i] < it.dims_m1[i])
+                        {
+                            it.coordinates[i]++;
+                            it.dataptr.data_offset += it.strides[i];
+                            break;
+                        }
+                        else
+                        {
+                            it.coordinates[i] = 0;
+                            it.dataptr.data_offset -= it.backstrides[i];
+                        }
+                    }
+                }
+
+                if (FirstOffset == it.dataptr.data_offset)
+                {
+                    FirstOffsetCount++;
+                }
+                else
+                {
+                    return (int)(FirstOffsetCount * MaxOffsets);
+                }
+    
+
+            }
+ 
+
+   
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_TOARRAY(NpyArrayIterObject it, NpyArray array, Int32[] offsets, long offset_cnt)
         {
