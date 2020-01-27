@@ -6475,6 +6475,82 @@ namespace NumpyDotNetTests
                 return b;
             }
             #endregion
+
+            #region DIVIDE operations
+            public static ObjectDemoData operator /(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 /= iValue;
+                b.iDouble /= iValue;
+                b.iComplex /= new Complex((double)iValue, 0);
+                b.iBigInt /= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator /(ObjectDemoData a, double dValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 /= (Int64)dValue;
+                b.iDouble /= dValue;
+                b.iComplex /= new Complex((double)dValue, 0);
+                b.iBigInt /= (Int64)dValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator /(ObjectDemoData a, Complex iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 /= (Int64)iValue.Real;
+                b.iDouble /= iValue.Real;
+                b.iComplex /= iValue;
+                b.iBigInt /= (Int64)iValue.Real;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator /(ObjectDemoData a, BigInteger iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 /= (Int64)iValue;
+                b.iDouble /= (Int64)iValue;
+                b.iComplex /= new Complex((double)iValue, 0);
+                b.iBigInt /= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator /(ObjectDemoData a, string sValue)
+            {
+                var b = Copy(a);
+
+                Int64 iValue = 0;
+                Int64.TryParse(sValue, out iValue);
+
+                b.iInt64 /= iValue;
+                b.iDouble /= iValue;
+                b.iComplex /= new Complex((double)iValue, 0);
+                b.iBigInt /= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator /(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 /= iValue.iInt64;
+                b.iDouble /= iValue.iDouble;
+                b.iComplex /= iValue.iComplex;
+                b.iBigInt /= iValue.iBigInt;
+
+                return b;
+            }
+            #endregion
         }
 
 
@@ -6623,7 +6699,6 @@ namespace NumpyDotNetTests
 
 
         }
-
 
         [TestMethod]
         public void test_subtract_operations_CUSTOMOBJECT()
@@ -6888,51 +6963,134 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_division_operations_OBJECT_TODO()
+        public void test_divide_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger divisorB1 = 611;
-            var b = a / divisorB1;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                {20000/divisorB1, 20001/divisorB1, 20002/divisorB1, 20003/divisorB1},
-                {20004/divisorB1, 20005/divisorB1, 20006/divisorB1, 20007/divisorB1},
-                {20008/divisorB1, 20009/divisorB1, 20010/divisorB1, 20011/divisorB1},
-                {20012/divisorB1, 20013/divisorB1, 20014/divisorB1, 20015/divisorB1},
-                {20016/divisorB1, 20017/divisorB1, 20018/divisorB1, 20019/divisorB1}
+                new ObjectDemoData(200), new ObjectDemoData(208),
+                new ObjectDemoData(216), new ObjectDemoData(224)
             };
-            AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2000000, 2000020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData2";
 
-            BigInteger divisorB2 = 2411;
-            b = a / divisorB2;
-            print(b);
-            print(b.shape);
-            print(b.strides);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {2000000/divisorB2, 2000001/divisorB2, 2000002/divisorB2, 2000003/divisorB2},
-                {2000004/divisorB2, 2000005/divisorB2, 2000006/divisorB2, 2000007/divisorB2},
-                {2000008/divisorB2, 2000009/divisorB2, 2000010/divisorB2, 2000011/divisorB2},
-                {2000012/divisorB2, 2000013/divisorB2, 2000014/divisorB2, 2000015/divisorB2},
-                {2000016/divisorB2, 2000017/divisorB2, 2000018/divisorB2, 2000019/divisorB2},
-            };
-            AssertArray(b, ExpectedDataB2);
+            var bb = np.divide(aa, 8);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 25);
+            Assert.AreEqual(bb1.iInt64, 26);
+            Assert.AreEqual(bb2.iInt64, 27);
+            Assert.AreEqual(bb3.iInt64, 28);
+
+            var cc = aa / 5.5;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 40);
+            Assert.AreEqual(cc1.iDouble, 37.81818181818182);
+            Assert.AreEqual(cc2.iComplex, new Complex(39.272727272727273, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(44));
+
+            var dd = aa / new System.Numerics.Complex(7.5, 1.5);
+            dd.Name += " (DD)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, 28);
+            Assert.AreEqual(dd1.iDouble, 27.733333333333334);
+            Assert.AreEqual(dd2.iComplex, new Complex(27.692307692307693, -5.5384615384615392));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(32));
+
+            var ee = aa / new System.Numerics.BigInteger(11);
+            ee.Name += " (EE)";
+            print(ee);
+            AssertShape(ee, 2, 2);
+
+            var ee0 = ee.item(0) as ObjectDemoData;
+            var ee1 = ee.item(1) as ObjectDemoData;
+            var ee2 = ee.item(2) as ObjectDemoData;
+            var ee3 = ee.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ee0.iInt64, 18);
+            Assert.AreEqual(ee1.iDouble, 18.90909090909091);
+            Assert.AreEqual(ee2.iComplex, new Complex(19.636363636363637, 0));
+            Assert.AreEqual(ee3.iBigInt, new BigInteger(20));
+
+            var ff = np.divide(aa, "23");
+            ff.Name += " (FF)";
+            print(ff);
+            AssertShape(ff, 2, 2);
+
+            var ff0 = ff.item(0) as ObjectDemoData;
+            var ff1 = ff.item(1) as ObjectDemoData;
+            var ff2 = ff.item(2) as ObjectDemoData;
+            var ff3 = ff.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ff0.iInt64, 8);
+            Assert.AreEqual(ff1.iDouble, 9.0434782608695645);
+            Assert.AreEqual(ff2.iComplex, new Complex(9.3913043478260878, 0));
+            Assert.AreEqual(ff3.iBigInt, new BigInteger(9));
+
+            var aa0 = aa.item(0) as ObjectDemoData;
+            var aa1 = aa.item(1) as ObjectDemoData;
+            var aa2 = aa.item(2) as ObjectDemoData;
+            var aa3 = aa.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(aa0.iInt64, 200);
+            Assert.AreEqual(aa1.iInt64, 208);
+            Assert.AreEqual(aa2.iInt64, 216);
+            Assert.AreEqual(aa3.iInt64, 224);
+
+            var gg = np.divide(aa, ff2);
+            gg.Name += " (GG)";
+            print(gg);
+            AssertShape(gg, 2, 2);
+
+            var gg0 = gg.item(0) as ObjectDemoData;
+            var gg1 = gg.item(1) as ObjectDemoData;
+            var gg2 = gg.item(2) as ObjectDemoData;
+            var gg3 = gg.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(gg0.iInt64, 22);
+            Assert.AreEqual(gg1.iDouble, 22.148148148148145);
+            Assert.AreEqual(gg2.iComplex, new Complex(22.999999999999996, 0));
+            Assert.AreEqual(gg3.iBigInt, new BigInteger(24));
+
+            var hh = (aa / ff) as ndarray;
+            hh.Name += " (hh)";
+            print(hh);
+            AssertShape(hh, 2, 2);
+
+            var hh0 = hh.item(0) as ObjectDemoData;
+            var hh1 = hh.item(1) as ObjectDemoData;
+            var hh2 = hh.item(2) as ObjectDemoData;
+            var hh3 = hh.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(hh0.iInt64, 25);
+            Assert.AreEqual(hh1.iDouble, 23);
+            Assert.AreEqual(hh2.iComplex, new Complex(22.999999999999996, 0));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(207));
         }
 
         [TestMethod]

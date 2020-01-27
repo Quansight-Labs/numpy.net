@@ -677,6 +677,11 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
+        protected override object Divide(dynamic bValue, dynamic operand)
+        {
+            return bValue / operand;
+        }
+
     }
 
     internal class BoolHandlers : ArrayHandlerBase<bool>, IArrayHandlers
