@@ -56,6 +56,11 @@ namespace NumpyLib
     
     public class NpyArray : NpyObject_HEAD
     {
+        public string Name
+        {
+            get; set;
+        }
+
         public uint RefCount
         {
             get { return nob_refcnt; }
@@ -68,8 +73,22 @@ namespace NumpyLib
                                         * bytes to jump to get to the
                                         * next element in each dimension
                                         */
+        private NpyArray _base_arr;
+        public NpyArray base_arr        /* Base when it's specifically an array object */
+        {
+            get { return _base_arr; }
+        }
+        public void SetBase(NpyArray arr)
+        {
+            _base_arr = arr;
+            if (arr != null)
+            {
+                Name = arr.Name;
 
-        public NpyArray base_arr;     /* Base when it's specifically an array object */
+            }
+        }
+
+
         internal object base_obj;       /* Base when it's an opaque interface object */
 
         public NpyArray_Descr descr;  /* Pointer to type structure */
@@ -473,7 +492,8 @@ namespace NumpyLib
         }
         internal static NpyArray NpyArray_BASE_ARRAY_Update(NpyArray arr, NpyArray newArr)
         {
-            return arr.base_arr = newArr;
+            arr.SetBase(arr);
+            return arr.base_arr;
         }
         internal static object NpyArray_BASE(NpyArray arr)
         {
@@ -746,7 +766,7 @@ namespace NumpyLib
                     }
                     Npy_DECREF(self);
                     Npy_DECREF(self.base_arr);
-                    self.base_arr = null;
+                    self.SetBase(null);
                 }
             }
         }
@@ -1022,7 +1042,7 @@ namespace NumpyLib
                  * to DECREF -- either a view or a buffer object
                  */
                 Npy_DECREF(self.base_arr);
-                self.base_arr = null;
+                self.SetBase(null);
             }
             else if (null != self.base_obj)
             {

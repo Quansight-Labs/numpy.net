@@ -51,9 +51,21 @@ namespace NumpyDotNet
         {
             // Equivalent to array_repr_builtin (arrayobject.c)
             if (repr)
+            {
                 sb.Add("array(");
+            }
             else
-                sb.Add(string.Format("{0}\n", arr.ItemType.ToString().Substring("NPY_".Length)));
+            {
+                string ItemType = arr.ItemType.ToString().Substring("NPY_".Length);
+                if (string.IsNullOrEmpty(arr.Name))
+                {
+                    sb.Add(string.Format("{0}\n", ItemType));
+                }
+                else
+                {
+                    sb.Add(string.Format("{0}:Name({1})\n", ItemType, arr.Name));
+                }
+            }
 
             npy_intp totalElements = numpyAPI.NpyArray_Size(arr);
             DumpArray(arr, sb, arr.dimensions, arr.strides, 0, 0, totalElements, 0, !repr);

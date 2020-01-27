@@ -1792,7 +1792,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            result.base_arr = self;
+            result.SetBase(self);
             Npy_INCREF(self);
             NpyArray_UpdateFlags(result, NPYARRAYFLAGS.NPY_UPDATE_ALL);
             return result;

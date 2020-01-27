@@ -161,7 +161,7 @@ namespace NumpyLib
                 {
                     self.base_arr.flags &= ~NPYARRAYFLAGS.NPY_WRITEABLE;
                     Npy_DECREF(self.base_arr);
-                    self.base_arr = null;
+                    self.SetBase(null);
                 }
                 self.flags &= ~NPYARRAYFLAGS.NPY_UPDATEIFCOPY;
             }
@@ -176,7 +176,7 @@ namespace NumpyLib
         {
             Npy_INCREF(a.descr);
             NpyArray ret = NpyArray_NewFromDescr(a.descr, a.nd, a.dimensions, a.strides, a.data, a.flags, false, null, Npy_INTERFACE(prototype));
-            ret.base_arr = a;
+            ret.SetBase(a);
             Npy_INCREF(a);
 
             return ret;

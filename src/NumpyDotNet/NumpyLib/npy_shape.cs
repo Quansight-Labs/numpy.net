@@ -341,7 +341,7 @@ namespace NumpyLib
             {
                 Npy_INCREF(self);
             }
-            ret.base_arr = self;
+            ret.SetBase(self);
             NpyArray_UpdateFlags(ret, NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORTRAN);
             Debug.Assert(null == ret.base_arr || null == ret.base_obj);
             return ret;

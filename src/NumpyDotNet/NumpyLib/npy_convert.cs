@@ -64,7 +64,7 @@ namespace NumpyLib
                 return null;
             }
 
-            newArr.base_arr = self;
+            newArr.SetBase(self);
             Npy_INCREF(self);
             Debug.Assert(null == newArr.base_obj);
 

@@ -649,7 +649,7 @@ namespace NumpyLib
             }
             self.nob_interface = null;
             self.descr = descr;
-            self.base_arr = null;
+            self.SetBase(null);
             self.base_obj = null;
 
             if (nd > 0)
@@ -922,7 +922,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            result.base_arr = array;
+            result.SetBase(array);
             Npy_INCREF(array);
             NpyArray_UpdateFlags(result, NPYARRAYFLAGS.NPY_UPDATE_ALL);
             return result;
@@ -1017,7 +1017,7 @@ namespace NumpyLib
                     if ((flags & NPYARRAYFLAGS.NPY_UPDATEIFCOPY) > 0)
                     {
                         ret.flags |= NPYARRAYFLAGS.NPY_UPDATEIFCOPY;
-                        ret.base_arr = arr;
+                        ret.SetBase(arr);
                         Debug.Assert(null == ret.base_arr || null == ret.base_obj);
                         ret.base_arr.flags &= ~NPYARRAYFLAGS.NPY_WRITEABLE;
                         Npy_INCREF(arr);
@@ -1083,7 +1083,7 @@ namespace NumpyLib
                 if ((flags & NPYARRAYFLAGS.NPY_UPDATEIFCOPY) > 0)
                 {
                     ret.flags |= NPYARRAYFLAGS.NPY_UPDATEIFCOPY;
-                    ret.base_arr = arr;
+                    ret.SetBase(arr);
                     ret.base_arr.flags &= ~NPYARRAYFLAGS.NPY_WRITEABLE;
                     Npy_INCREF(arr);
                 }

@@ -75,6 +75,18 @@ namespace NumpyDotNet
         private static Func<ndarray, string> reprFunction;
         private static Func<ndarray, string> strFunction;
 
+        public string Name
+        {
+            get
+            {
+                return core.Name;
+            }
+            set
+            {
+                core.Name = value;
+            }
+        }
+
         /// <summary>
         /// Sets a function to be triggered for the repr() operator or null to default to the
         /// built-in version.
@@ -1550,7 +1562,7 @@ namespace NumpyDotNet
             }
             set {
                 lock (this) {
-                    core.base_arr = value.core;
+                    core.SetBase(value.core);
                     NpyCoreApi.Decref(value.core);
                  }
             }
