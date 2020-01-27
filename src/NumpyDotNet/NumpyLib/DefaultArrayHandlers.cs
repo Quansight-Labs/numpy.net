@@ -697,6 +697,10 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue | operand;
         }
+        protected override object Remainder(dynamic bValue, dynamic operand)
+        {
+            return bValue % operand;
+        }
 
     }
 

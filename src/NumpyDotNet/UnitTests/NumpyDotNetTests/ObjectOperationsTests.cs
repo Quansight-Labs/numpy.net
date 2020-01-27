@@ -6656,6 +6656,42 @@ namespace NumpyDotNetTests
                 return b;
             }
             #endregion
+
+            #region REMAINDER operations
+            public static ObjectDemoData operator %(ObjectDemoData a, double iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 %= (Int64)iValue;
+                b.iDouble %= iValue;
+                //b.iComplex %= iValue; 
+                b.iBigInt %= (Int64)iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator %(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 %= iValue;
+                b.iDouble %= iValue;
+                //b.iComplex %= new Complex((double)iValue, 0);
+                b.iBigInt %= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator %(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 %= iValue.iInt64;
+                b.iDouble %= iValue.iDouble;
+                //b.iComplex %= iValue.iComplex;
+                b.iBigInt %= iValue.iBigInt;
+
+                return b;
+            }
+            #endregion
         }
 
 
@@ -7345,7 +7381,7 @@ namespace NumpyDotNetTests
                 new ObjectDemoData(1010), new ObjectDemoData(1011)
             };
             ndarray aa = np.array(DemoData, dtype: np.Object);
-            aa.Name = "ObjectDemoDataBitwiseAnd";
+            aa.Name = "ObjectDemoDataBitwiseOr";
 
             aa = aa.reshape(new shape(2, 2));
             print(aa);
@@ -7390,7 +7426,7 @@ namespace NumpyDotNetTests
                 new ObjectDemoData(1010), new ObjectDemoData(1011)
             };
             ndarray aa = np.array(DemoData, dtype: np.Object);
-            aa.Name = "ObjectDemoDataBitwiseAnd";
+            aa.Name = "ObjectDemoDataBitwiseXor";
 
             aa = aa.reshape(new shape(2, 2));
             print(aa);
@@ -7442,6 +7478,67 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_remainder_operations_CUSTOMOBJECT()
+        {
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataRemainder";
+
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
+
+            var bb = np.remainder(aa, 6);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 0);
+            Assert.AreEqual(bb1.iInt64, 1);
+            Assert.AreEqual(bb2.iInt64, 2);
+            Assert.AreEqual(bb3.iInt64, 3);
+
+            var cc = aa % 6;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 0);
+            Assert.AreEqual(cc1.iDouble, 1);
+            Assert.AreEqual(cc2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(3));
+
+            var dd = aa % new ObjectDemoData(33);
+            dd.Name += " (dd)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, 18);
+            Assert.AreEqual(dd1.iDouble, 19);
+            Assert.AreEqual(dd2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(21));
+
+
+        }
         [TestMethod]
         public void test_remainder_operations_OBJECT_TODO()
         {
