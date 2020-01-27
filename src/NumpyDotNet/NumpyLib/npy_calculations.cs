@@ -275,7 +275,7 @@ namespace NumpyLib
 
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType);
 
-            if (!NpyArray_ISCOMPLEX(srcArray))
+            if (!NpyArray_ISCOMPLEX(srcArray) && !NpyArray_ISOBJECT(srcArray))
             {
                 if (operandArray != null)
                 {

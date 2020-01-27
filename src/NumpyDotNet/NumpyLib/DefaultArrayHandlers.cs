@@ -667,13 +667,15 @@ namespace NumpyLib
             return NPY_TYPES.NPY_OBJECT;
         }
 
-        //protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
-        //{
-        //    throw new NotImplementedException("This array handler does not implement DOT");
-        //    return otmp;
-        //}
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return o;
+        }
 
-
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_OBJECT;
+        }
 
     }
 
