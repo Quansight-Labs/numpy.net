@@ -25,7 +25,36 @@ namespace NumpyDotNetTests
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            //matrix = matrix["1:3:2", "1:-2:3"] as ndarray;
+            //matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                matrix = matrix / 3;
+                matrix = matrix + i;
+            }
+
+            var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("Int64 calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(output.ToString());
+            Console.WriteLine("************\n");
+        }
+
+        [TestMethod]
+        public void test_ScalarOperationPerformance_NotContiguous()
+        {
+            int LoopCount = 200;
+
+            var kk = new bool[Int32.MaxValue / 2];
+
+            var matrix = np.arange(16000000, dtype: np.Int64).reshape((40, -1));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
 
             for (int i = 0; i < LoopCount; i++)
             {
