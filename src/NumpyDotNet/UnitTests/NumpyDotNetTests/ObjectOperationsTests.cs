@@ -2574,11 +2574,11 @@ namespace NumpyDotNetTests
         public void test_remainder_2_OBJECT()
         {
             var x = np.remainder(np.array(new int[] { -4, -7 }).astype(np.Object), np.array(new int[] { 2, 3 }).astype(np.Object));
-            AssertArray(x, new int[] { 0, 2 });
+            AssertArray(x, new int[] { 0, -1 });
             print(x);
 
             var y = np.remainder(np.arange(7).astype(np.Object), -5);
-            AssertArray(y, new int[] { 0, -4, -3, -2, -1, 0, -4 });
+            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
             print(y);
 
             /////////////////////////////
@@ -6692,6 +6692,34 @@ namespace NumpyDotNetTests
                 return b;
             }
             #endregion
+
+            #region NEGATIVE operations
+            public static ObjectDemoData operator -(ObjectDemoData a)
+            {
+                var b = Copy(a);
+
+                b.iInt64 = -b.iInt64;
+                b.iDouble = -b.iDouble;
+                b.iComplex = -b.iComplex;
+                b.iBigInt = -b.iBigInt;
+
+                return b;
+            }
+            #endregion
+
+            #region INVERT operations
+            public static ObjectDemoData operator ~(ObjectDemoData a)
+            {
+                var b = Copy(a);
+
+                b.iInt64 = ~b.iInt64;
+                //b.iDouble = ~b.iDouble;
+                //b.iComplex = ~b.iComplex;
+                b.iBigInt = ~b.iBigInt;
+
+                return b;
+            }
+            #endregion
         }
 
 
@@ -7539,59 +7567,99 @@ namespace NumpyDotNetTests
 
 
         }
-        [TestMethod]
-        public void test_remainder_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a % 6;
-            print(b);
-
-            AssertArray(b, new BigInteger[] { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3,
-                                         4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1 });
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
-
-            b = a % 6;
-            print(b);
-
-            AssertArray(b, new BigInteger[] { 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,
-                                         0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3 });
-
-        }
 
         [TestMethod]
-        public void test_negative_operations_OBJECT_TODO()
+        public void test_negative_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0, 12, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = -a;
-            print(b);
-
-            var ExpectedDataB2 = new BigInteger[]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
             };
-            AssertArray(b, ExpectedDataB2);
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataNegative";
+
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
+
+            var bb = np.negative(aa);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, -1008);
+            Assert.AreEqual(bb1.iInt64, -1009);
+            Assert.AreEqual(bb2.iInt64, -1010);
+            Assert.AreEqual(bb3.iInt64, -1011);
+
+            var cc = -aa;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, -1008);
+            Assert.AreEqual(cc1.iDouble, -1009);
+            Assert.AreEqual(cc2.iComplex, new Complex(-1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(-1011));
 
         }
 
         [TestMethod]
-        public void test_invert_operations_OBJECT_TODO()
+        public void test_invert_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.BigInt);
-            print(a);
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataInvert";
 
-            var b = ~a;
-            print(b);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
+            
+            var bb = np.invert(aa);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
-            // this should not be changed at all.  BigInts can't be inverted.
-            AssertArray(b, a.AsBigIntArray());
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, -1009);
+            Assert.AreEqual(bb1.iInt64, -1010);
+            Assert.AreEqual(bb2.iInt64, -1011);
+            Assert.AreEqual(bb3.iInt64, -1012);
+
+            var cc = ~aa;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, -1009);
+            Assert.AreEqual(cc1.iDouble, 1009);
+            Assert.AreEqual(cc2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(-1012));
 
         }
+
 
         [TestMethod]
         public void test_LESS_operations_OBJECT_TODO()
