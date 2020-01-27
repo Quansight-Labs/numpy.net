@@ -6215,6 +6215,39 @@ namespace NumpyDotNetTests
 
         #region very cool object unique tests
 
+        public class ObjectDemoData
+        {
+            public System.Int64 iData;
+            public System.Numerics.Complex iComplex;
+            public System.Numerics.BigInteger iBigInt;
+            public System.Double iDouble;
+
+            public ObjectDemoData(Int64 iValue)
+            {
+                this.iData = iValue;
+                this.iDouble = iValue;
+                this.iComplex = new Complex((double)iValue, 0);
+                this.iBigInt = iValue;
+            }
+            public override string ToString()
+            {
+                return string.Format("{0}:{1}:{2}:{3}", 
+                    iData.ToString(), iDouble.ToString(), iComplex.ToString(), iBigInt.ToString());
+            }
+
+
+            public static ObjectDemoData operator +(ObjectDemoData a, Int64 iValue)
+            {
+                a.iData += iValue;
+                a.iDouble += iValue;
+                a.iComplex += new Complex((double)iValue, 0);
+                a.iBigInt += iValue;
+
+                return a;
+            }
+        }
+
+
         [TestMethod]
         public void OBJECTOPERATIONS_CUSTOMDATA_REMINDER()
         {
@@ -6230,50 +6263,21 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_add_operations_OBJECT()
         {
-            var a = np.arange(0, 20, 1, dtype: np.Int32);
-            a = a.astype(np.Object);
-
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            print(a);
-
-            var b = a + 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new object[,]
-            {{8,  9, 10, 11},
-             {12, 13, 14, 15},
-             {16, 17, 18, 19},
-             {20, 21, 22, 23},
-             {24, 25, 26, 27}
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(0), new ObjectDemoData(1),
+                new ObjectDemoData(2), new ObjectDemoData(3)
             };
-            AssertArray(b, ExpectedDataB);
 
-            a = np.arange(0, 20, 1, dtype: np.Int32).astype(np.Object);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a + 2400;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            ExpectedDataB = new object[,]
-            {{2400, 2401, 2402, 2403},
-             {2404, 2405, 2406, 2407},
-             {2408, 2409, 2410, 2411},
-             {2412, 2413, 2414, 2415},
-             {2416, 2417, 2418, 2419}
-            };
-            AssertArray(b, ExpectedDataB);
-
+            ndarray dd  = np.array(DemoData, dtype: np.Object);
+            dd.Name = "ObjectDemoData1";
+ 
+            dd = dd.reshape(new shape(2, 2));
+            print(dd);
+       
+            var cc = dd + 8;
+            print(cc);
+     
         }
 
         [TestMethod]
