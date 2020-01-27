@@ -6551,6 +6551,36 @@ namespace NumpyDotNetTests
                 return b;
             }
             #endregion
+
+            #region LEFTSHIFT operations
+            public static ObjectDemoData operator <<(ObjectDemoData a, int iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 <<= iValue;
+                //b.iDouble <<= iValue;
+                //b.iComplex <<= new Complex((double)iValue, 0);
+                b.iBigInt <<= iValue;
+
+                return b;
+            }
+
+            #endregion
+
+            #region RIGHTSHIFT operations
+            public static ObjectDemoData operator >>(ObjectDemoData a, int iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 >>= iValue;
+                //b.iDouble >>= iValue;
+                //b.iComplex >>= new Complex((double)iValue, 0);
+                b.iBigInt >>= iValue;
+
+                return b;
+            }
+
+            #endregion
         }
 
 
@@ -7090,101 +7120,100 @@ namespace NumpyDotNetTests
             Assert.AreEqual(hh0.iInt64, 25);
             Assert.AreEqual(hh1.iDouble, 23);
             Assert.AreEqual(hh2.iComplex, new Complex(22.999999999999996, 0));
-            Assert.AreEqual(hh3.iBigInt, new BigInteger(207));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(24));
         }
 
         [TestMethod]
-        public void test_leftshift_operations_OBJECT_TODO()
+        public void test_leftshift_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a << 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                {0,  256,  512,  768},
-                {1024, 1280, 1536, 1792},
-                {2048, 2304, 2560, 2816},
-                {3072, 3328, 3584, 3840},
-                {4096, 4352, 4608, 4864}
+                new ObjectDemoData(200), new ObjectDemoData(208),
+                new ObjectDemoData(216), new ObjectDemoData(224)
             };
-            AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData2";
 
-            b = a << 24;
-            print(b);
-            print(b.shape);
-            print(b.strides);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {0,  16777216,  33554432,  50331648},
-                {67108864,  83886080, 100663296, 117440512},
-                {134217728, 150994944, 167772160, 184549376},
-                {201326592, 218103808, 234881024, 251658240},
-                {268435456, 285212672, 301989888, 318767104}
-            };
-            AssertArray(b, ExpectedDataB2);
+            var bb = np.left_shift(aa, 8);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 51200);
+            Assert.AreEqual(bb1.iInt64, 53248);
+            Assert.AreEqual(bb2.iInt64, 55296);
+            Assert.AreEqual(bb3.iInt64, 57344);
+
+            var cc = aa << 5;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 6400);
+            Assert.AreEqual(cc1.iDouble, 208);
+            Assert.AreEqual(cc2.iComplex, new Complex(216, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(7168));
         }
 
         [TestMethod]
-        public void test_rightshift_operations_OBJECT_TODO()
+        public void test_rightshift_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(20000, 20020, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
 
-            var b = a >> 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78},
-                {78, 78, 78, 78}
+                new ObjectDemoData(51200), new ObjectDemoData(53248),
+                new ObjectDemoData(55296), new ObjectDemoData(57344)
             };
-            AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2123450, 2123470, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData2";
 
-            b = a >> 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB2 = new BigInteger[,]
-            {
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 },
-                {8294 , 8294 , 8294 , 8294 }
-            };
-            AssertArray(b, ExpectedDataB2);
+            var bb = np.right_shift(aa, 8);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 200);
+            Assert.AreEqual(bb1.iInt64, 208);
+            Assert.AreEqual(bb2.iInt64, 216);
+            Assert.AreEqual(bb3.iInt64, 224);
+
+            var cc = aa >> 5;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 1600);
+            Assert.AreEqual(cc1.iDouble, 53248);
+            Assert.AreEqual(cc2.iComplex, new Complex(55296, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(1792));
         }
 
         [TestMethod]
