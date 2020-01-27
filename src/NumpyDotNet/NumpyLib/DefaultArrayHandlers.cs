@@ -674,7 +674,7 @@ namespace NumpyLib
 
         public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
         {
-            return NPY_TYPES.NPY_OBJECT;
+            return NPY_TYPES.NPY_DOUBLE;
         }
 
     }

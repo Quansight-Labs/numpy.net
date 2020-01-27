@@ -6866,10 +6866,10 @@ namespace NumpyDotNetTests
             var gg2 = gg.item(2) as ObjectDemoData;
             var gg3 = gg.item(3) as ObjectDemoData;
 
-            Assert.AreEqual(gg0.iInt64, 21);
-            Assert.AreEqual(gg1.iDouble, 22);
-            Assert.AreEqual(gg2.iComplex, new Complex(23, 0));
-            Assert.AreEqual(gg3.iBigInt, new BigInteger(24));
+            Assert.AreEqual(gg0.iInt64, 0);
+            Assert.AreEqual(gg1.iDouble, 46);
+            Assert.AreEqual(gg2.iComplex, new Complex(92, 0));
+            Assert.AreEqual(gg3.iBigInt, new BigInteger(138));
 
             var hh = aa * ff;
             hh.Name += " (hh)";
@@ -6881,10 +6881,10 @@ namespace NumpyDotNetTests
             var hh2 = hh.item(2) as ObjectDemoData;
             var hh3 = hh.item(3) as ObjectDemoData;
 
-            Assert.AreEqual(hh0.iInt64, 23);
+            Assert.AreEqual(hh0.iInt64, 0);
             Assert.AreEqual(hh1.iDouble, 23);
-            Assert.AreEqual(hh2.iComplex, new Complex(23, 0));
-            Assert.AreEqual(hh3.iBigInt, new BigInteger(23));
+            Assert.AreEqual(hh2.iComplex, new Complex(92, 0));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(207));
         }
 
         [TestMethod]
