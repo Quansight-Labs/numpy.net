@@ -6720,6 +6720,168 @@ namespace NumpyDotNetTests
                 return b;
             }
             #endregion
+
+            #region LESS operations
+            public static bool operator <(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 < iValue;
+            }
+
+            public static bool operator <(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble < dValue;
+            }
+
+            public static bool operator <(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real < iValue.Real;
+            }
+
+            public static bool operator <(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt < iValue;
+            }
+
+            public static bool operator <(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 < iValue.iInt64;
+            }
+            #endregion
+
+            #region LESSEQUAL operations
+            public static bool operator <=(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 <= iValue;
+            }
+
+            public static bool operator <=(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble <= dValue;
+            }
+
+            public static bool operator <=(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real <= iValue.Real;
+            }
+
+            public static bool operator <=(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt <= iValue;
+            }
+
+            public static bool operator <=(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 <= iValue.iInt64;
+            }
+            #endregion
+
+            #region EQUAL operations
+            public static bool operator ==(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 == iValue;
+            }
+
+            public static bool operator ==(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble == dValue;
+            }
+
+            public static bool operator ==(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real == iValue.Real;
+            }
+
+            public static bool operator ==(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt == iValue;
+            }
+
+            public static bool operator ==(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 == iValue.iInt64;
+            }
+            #endregion
+
+            #region NOTEQUAL operations
+            public static bool operator !=(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 != iValue;
+            }
+
+            public static bool operator !=(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble != dValue;
+            }
+
+            public static bool operator !=(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real != iValue.Real;
+            }
+
+            public static bool operator !=(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt != iValue;
+            }
+
+            public static bool operator !=(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 != iValue.iInt64;
+            }
+            #endregion
+
+            #region GREATER operations
+            public static bool operator >(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 > iValue;
+            }
+
+            public static bool operator >(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble > dValue;
+            }
+
+            public static bool operator >(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real > iValue.Real;
+            }
+
+            public static bool operator >(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt > iValue;
+            }
+
+            public static bool operator >(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 > iValue.iInt64;
+            }
+            #endregion
+
+            #region GREATEREQUAL operations
+            public static bool operator >=(ObjectDemoData a, Int64 iValue)
+            {
+                return a.iInt64 >= iValue;
+            }
+
+            public static bool operator >=(ObjectDemoData a, double dValue)
+            {
+                return a.iDouble >= dValue;
+            }
+
+            public static bool operator >=(ObjectDemoData a, Complex iValue)
+            {
+                return a.iComplex.Real >= iValue.Real;
+            }
+
+            public static bool operator >=(ObjectDemoData a, BigInteger iValue)
+            {
+                return a.iBigInt >= iValue;
+            }
+
+            public static bool operator >=(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                return a.iInt64 >= iValue.iInt64;
+            }
+            #endregion
         }
 
 
@@ -7660,263 +7822,138 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
-        public void test_LESS_operations_OBJECT_TODO()
+        public void test_less_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a < -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, false, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_LESSEQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a <= -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, true, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_EQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a == -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, true, false, false, false, false, false, false });
-        }
-
-        [TestMethod]
-        public void test_NOTEQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a != -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { true, true, true, false, true, true, true, true, true, true });
-        }
-
-        [TestMethod]
-        public void test_GREATER_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a > -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, false, true, true, true, true, true, true });
-
-        }
-
-        [TestMethod]
-        public void test_GREATEREQUAL_operations_OBJECT_TODO()
-        {
-            var a = np.arange(-5, 5, 1, dtype: np.BigInt);
-            print(a);
-
-            var b = a >= -2;
-            print(b);
-
-            AssertArray(b, new Boolean[] { false, false, false, true, true, true, true, true, true, true });
-
-        }
-
-        [TestMethod]
-        public void test_arrayarray_or_OBJECT_TODO()
-        {
-            var a = np.arange(0, 32, 1, dtype: np.BigInt);
-            var b = np.arange(33, 33 + 32, 1, dtype: np.BigInt);
-            var c = a | b;
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] {33, 35, 35, 39, 37, 39, 39, 47, 41, 43, 43, 47,
-                                        45, 47, 47, 63, 49, 51, 51, 55, 53, 55, 55, 63,
-                                        57, 59, 59, 63, 61, 63, 63, 95 });
-        }
-
-        [TestMethod]
-        public void test_bitwise_and_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.bitwise_and(x, 0x3FF);
-            var z = x & 0x3FF;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                { 1023, 0, 1,  2,  3,  4,  5,  6 },
-                {  7, 8, 9, 10, 11, 12, 13, 14 }
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
             };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
 
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
+            var bb = aa < 0;
+            AssertArray(bb, new Boolean[] { true, true, false, false });
+
+            bb = np.less(aa,0);
+            AssertArray(bb, new Boolean[] { true, true, false, false });
+
+            bb = aa < new ObjectDemoData(-1);
+            AssertArray(bb, new Boolean[] { true, false, false, false });
+
         }
 
         [TestMethod]
-        public void test_bitwise_or_OBJECT_TODO()
+        public void test_lessequal_operations_CUSTOMOBJECT()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.bitwise_or(x, 0x10);
-            var z = x | 0x10;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                { 1023, 1040, 1041, 1042, 1043, 1044, 1045, 1046 },
-                { 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054 }
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
             };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
 
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
+            var bb = aa <= -1;
+            AssertArray(bb, new Boolean[] { true, true, false, false });
+
+            bb = np.less_equal(aa, -1);
+            AssertArray(bb, new Boolean[] { true, true, false, false });
+
+            bb = aa <= new ObjectDemoData(-1);
+            AssertArray(bb, new Boolean[] { true, true, false, false });
+
         }
 
         [TestMethod]
-        public void test_bitwise_xor_OBJECT_TODO()
+        public void test_equal_operations_CUSTOMOBJECT()
         {
-            var a = np.bitwise_xor(13, 17);
-            Assert.AreEqual(28, a.GetItem(0));
-            print(a);
-
-            var b = np.bitwise_xor(31, 5);
-            Assert.AreEqual(26, b.GetItem(0));
-            print(b);
-
-            var c = np.bitwise_xor(new BigInteger[] { 31, 3 }, 5);
-            AssertArray(c, new BigInteger[] { 26, 6 });
-            print(c);
-
-            var d = np.bitwise_xor(new BigInteger[] { 31, 3 }, new BigInteger[] { 5, 6 });
-            AssertArray(d, new BigInteger[] { 26, 5 });
-            print(d);
-
-            var e = np.bitwise_xor(new bool[] { true, true }, new bool[] { false, true });
-            AssertArray(e, new bool[] { true, false });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_bitwise_not_OBJECT_TODO()
-        {
-            var a = np.bitwise_not(13);
-            Assert.AreEqual(-14, a.GetItem(0));
-            print(a);
-
-            var b = np.bitwise_not(31);
-            Assert.AreEqual(-32, b.GetItem(0));
-            print(b);
-
-            // can't inverse a BigInteger
-            var c = np.bitwise_not(new BigInteger[] { 31, 3 });
-            AssertArray(c, new BigInteger[] { 31, 3 });
-            print(c);
-
-            // can't inverse a BigInteger
-            var d = np.bitwise_not(new BigInteger[] { 31, 3 });
-            AssertArray(d, new BigInteger[] { 31, 3 });
-            print(d);
-
-            var e = np.bitwise_not(new bool[] { true, false });
-            AssertArray(e, new bool[] { false, true });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_invert_OBJECT_TODO()
-        {
-            var a = np.invert(13);
-            Assert.AreEqual(-14, a.GetItem(0));
-            print(a);
-
-            var b = np.invert(31);
-            Assert.AreEqual(-32, b.GetItem(0));
-            print(b);
-
-            // can't inverse a BigInteger
-            var c = np.invert(new BigInteger[] { 31, 3 });
-            AssertArray(c, new BigInteger[] { 31, 3 });
-            print(c);
-
-            // can't inverse a BigInteger
-            var d = np.invert(new BigInteger[] { 31, 3 });
-            AssertArray(d, new BigInteger[] { 31, 3 });
-            print(d);
-
-            var e = np.invert(new bool[] { true, false });
-            AssertArray(e, new bool[] { false, true });
-            print(e);
-
-            return;
-        }
-
-        [TestMethod]
-        public void test_right_shift_OBJECT_TODO()
-        {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.right_shift(x, 2);
-            var z = x >> 2;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                { 255, 256, 256, 256, 256, 257, 257, 257 },
-                { 257, 258, 258, 258, 258, 259, 259, 259 }
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
             };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
 
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
+            var bb = aa == -1;
+            AssertArray(bb, new Boolean[] { false, true, false, false });
+
+            bb = np.equal(aa, -1);
+            AssertArray(bb, new Boolean[] { false, true, false, false });
+
+            bb = np.equal(aa, new ObjectDemoData(-1));
+            AssertArray(bb, new Boolean[] { false, true, false, false });
+
         }
 
         [TestMethod]
-        public void test_left_shift_OBJECT_TODO()
+        public void test_notequal_operations_CUSTOMOBJECT()
         {
-            var x = np.arange(1023, 1039, 1, dtype: np.BigInt).reshape(new shape(2, -1));
-            var y = np.left_shift(x, 2);
-            var z = x << 2;
-
-            print(x);
-            print(y);
-            print(z);
-
-            var ExpectedData = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                { 4092, 4096, 4100, 4104, 4108, 4112, 4116, 4120 },
-                { 4124, 4128, 4132, 4136, 4140, 4144, 4148, 4152 }
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
             };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
 
-            AssertArray(y, ExpectedData);
-            AssertArray(z, ExpectedData);
+            var bb = aa != -1;
+            AssertArray(bb, new Boolean[] { true, false, true, true });
+
+            bb = np.not_equal(aa, -1);
+            AssertArray(bb, new Boolean[] { true, false, true, true });
+
+            bb = np.not_equal(aa, new ObjectDemoData(-1));
+            AssertArray(bb, new Boolean[] { true, false, true, true });
+
         }
 
+        [TestMethod]
+        public void test_greater_operations_CUSTOMOBJECT()
+        {
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
 
+            var bb = aa > -1;
+            AssertArray(bb, new Boolean[] { false, false, true, true });
+
+            bb = np.greater(aa, -1);
+            AssertArray(bb, new Boolean[] { false, false, true, true });
+
+            bb = np.greater(aa, new ObjectDemoData(-1));
+            AssertArray(bb, new Boolean[] { false, false, true, true });
+
+        }
+
+        [TestMethod]
+        public void test_greaterequal_operations_CUSTOMOBJECT()
+        {
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(-2), new ObjectDemoData(-1),
+                new ObjectDemoData(1), new ObjectDemoData(2)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataLess";
+
+            var bb = aa >= -1;
+            AssertArray(bb, new Boolean[] { false, true, true, true });
+
+            bb = np.greater_equal(aa, -1);
+            AssertArray(bb, new Boolean[] { false, true, true, true });
+
+            bb = np.greater_equal(aa, new ObjectDemoData(-1));
+            AssertArray(bb, new Boolean[] { false, true, true, true });
+
+        }
+  
         [TestMethod]
         public void test_min_OBJECT_TODO()
         {
@@ -8045,102 +8082,6 @@ namespace NumpyDotNetTests
             print(c);
         }
 
-        [TestMethod]
-        public void test_greater_1_OBJECT_TODO()
-        {
-            var a = np.greater(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, false, false });
-            print(a);
-
-            var b = np.greater(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, false });
-            print(b);
-
-            var c = np.greater((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, false, true });
-            print(c);
-
-        }
-
-        [TestMethod]
-        public void test_greater_equal_1_OBJECT_TODO()
-        {
-            var a = np.greater_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, true, false });
-            print(a);
-
-            var b = np.greater_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, true });
-            print(b);
-
-            var c = np.greater_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, true, true });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_less_1_OBJECT_TODO()
-        {
-            var a = np.less(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, false, true });
-            print(a);
-
-            var b = np.less(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, false });
-            print(b);
-
-            var c = np.less((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, false, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_less_equal_1_OBJECT_TODO()
-        {
-            var a = np.less_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, true, true });
-            print(a);
-
-            var b = np.less_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, true });
-            print(b);
-
-            var c = np.less_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, true, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_equal_1_OBJECT_TODO()
-        {
-            var a = np.equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { false, true, false });
-            print(a);
-
-            var b = np.equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { false, false, true });
-            print(b);
-
-            var c = np.equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { false, true, false });
-            print(c);
-        }
-
-        [TestMethod]
-        public void test_not_equal_1_OBJECT_TODO()
-        {
-            var a = np.not_equal(new BigInteger[] { 4, 2, 1 }, new BigInteger[] { 2, 2, 2 });
-            AssertArray(a, new bool[] { true, false, true });
-            print(a);
-
-            var b = np.not_equal(new BigInteger[] { 4, 2, 1 }, 1);
-            AssertArray(b, new bool[] { true, true, false });
-            print(b);
-
-            var c = np.not_equal((BigInteger)2, new BigInteger[] { 4, 2, 1 });
-            AssertArray(c, new bool[] { true, false, true });
-            print(c);
-        }
 
         #endregion
 
