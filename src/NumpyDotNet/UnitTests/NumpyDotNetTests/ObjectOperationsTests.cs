@@ -6217,53 +6217,264 @@ namespace NumpyDotNetTests
 
         public class ObjectDemoData
         {
-            public System.Int64 iData;
+            public System.Int64 iInt64;
             public System.Numerics.Complex iComplex;
             public System.Numerics.BigInteger iBigInt;
             public System.Double iDouble;
 
             public ObjectDemoData(Int64 iValue)
             {
-                this.iData = iValue;
+                this.iInt64 = iValue;
                 this.iDouble = iValue;
                 this.iComplex = new Complex((double)iValue, 0);
                 this.iBigInt = iValue;
             }
+
+            private static ObjectDemoData Copy(ObjectDemoData a)
+            {
+                ObjectDemoData b = new ObjectDemoData(0);
+                b.iInt64 = a.iInt64;
+                b.iDouble = a.iDouble;
+                b.iComplex = a.iComplex;
+                b.iBigInt = a.iBigInt;
+                return b;
+            }
+
             public override string ToString()
             {
                 return string.Format("{0}:{1}:{2}:{3}", 
-                    iData.ToString(), iDouble.ToString(), iComplex.ToString(), iBigInt.ToString());
+                    iInt64.ToString(), iDouble.ToString(), iComplex.ToString(), iBigInt.ToString());
             }
-
+            #region ADD operations
             public static ObjectDemoData operator +(ObjectDemoData a, Int64 iValue)
             {
-                a.iData += iValue;
-                a.iDouble += iValue;
-                a.iComplex += new Complex((double)iValue, 0);
-                a.iBigInt += iValue;
+                var b = Copy(a);
 
-                return a;
+                b.iInt64 += iValue;
+                b.iDouble += iValue;
+                b.iComplex += new Complex((double)iValue, 0);
+                b.iBigInt += iValue;
+
+                return b;
             }
 
             public static ObjectDemoData operator +(ObjectDemoData a, double dValue)
             {
-                a.iData += (Int64)dValue;
-                a.iDouble += dValue;
-                a.iComplex += new Complex((double)dValue, 0);
-                a.iBigInt += (Int64)dValue;
+                var b = Copy(a);
 
-                return a;
+                b.iInt64 += (Int64)dValue;
+                b.iDouble += dValue;
+                b.iComplex += new Complex((double)dValue, 0);
+                b.iBigInt += (Int64)dValue;
+
+                return b;
             }
 
             public static ObjectDemoData operator +(ObjectDemoData a, Complex iValue)
             {
-                a.iData += (Int64)iValue.Real;
-                a.iDouble += iValue.Real;
-                a.iComplex += iValue;
-                a.iBigInt += (Int64)iValue.Real;
+                var b = Copy(a);
 
-                return a;
+                b.iInt64 += (Int64)iValue.Real;
+                b.iDouble += iValue.Real;
+                b.iComplex += iValue;
+                b.iBigInt += (Int64)iValue.Real;
+
+                return b;
             }
+
+            public static ObjectDemoData operator +(ObjectDemoData a, BigInteger iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 += (Int64)iValue;
+                b.iDouble += (Int64)iValue;
+                b.iComplex += new Complex((double)iValue, 0);
+                b.iBigInt += iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator +(ObjectDemoData a, string sValue)
+            {
+                var b = Copy(a);
+
+                Int64 iValue = 0;
+                Int64.TryParse(sValue, out iValue);
+
+                b.iInt64 += iValue;
+                b.iDouble += iValue;
+                b.iComplex += new Complex((double)iValue, 0);
+                b.iBigInt += iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator +(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 += iValue.iInt64;
+                b.iDouble += iValue.iDouble;
+                b.iComplex += iValue.iComplex;
+                b.iBigInt += iValue.iBigInt;
+
+                return b;
+            }
+            #endregion
+
+            #region SUBTRACT operations
+            public static ObjectDemoData operator -(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 -= iValue;
+                b.iDouble -= iValue;
+                b.iComplex -= new Complex((double)iValue, 0);
+                b.iBigInt -= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator -(ObjectDemoData a, double dValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 -= (Int64)dValue;
+                b.iDouble -= dValue;
+                b.iComplex -= new Complex((double)dValue, 0);
+                b.iBigInt -= (Int64)dValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator -(ObjectDemoData a, Complex iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 -= (Int64)iValue.Real;
+                b.iDouble -= iValue.Real;
+                b.iComplex -= iValue;
+                b.iBigInt -= (Int64)iValue.Real;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator -(ObjectDemoData a, BigInteger iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 -= (Int64)iValue;
+                b.iDouble -= (Int64)iValue;
+                b.iComplex -= new Complex((double)iValue, 0);
+                b.iBigInt -= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator -(ObjectDemoData a, string sValue)
+            {
+                var b = Copy(a);
+
+                Int64 iValue = 0;
+                Int64.TryParse(sValue, out iValue);
+
+                b.iInt64 -= iValue;
+                b.iDouble -= iValue;
+                b.iComplex -= new Complex((double)iValue, 0);
+                b.iBigInt -= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator -(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 -= iValue.iInt64;
+                b.iDouble -= iValue.iDouble;
+                b.iComplex -= iValue.iComplex;
+                b.iBigInt -= iValue.iBigInt;
+
+                return b;
+            }
+   
+            #endregion
+
+            #region MULTIPLY operations
+            public static ObjectDemoData operator *(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 *= iValue;
+                b.iDouble *= iValue;
+                b.iComplex *= new Complex((double)iValue, 0);
+                b.iBigInt *= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator *(ObjectDemoData a, double dValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 *= (Int64)dValue;
+                b.iDouble *= dValue;
+                b.iComplex *= new Complex((double)dValue, 0);
+                b.iBigInt *= (Int64)dValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator *(ObjectDemoData a, Complex iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 *= (Int64)iValue.Real;
+                b.iDouble *= iValue.Real;
+                b.iComplex *= iValue;
+                b.iBigInt *= (Int64)iValue.Real;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator *(ObjectDemoData a, BigInteger iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 *= (Int64)iValue;
+                b.iDouble *= (Int64)iValue;
+                b.iComplex *= new Complex((double)iValue, 0);
+                b.iBigInt *= iValue;
+
+                return b;
+            }
+
+            public static ObjectDemoData operator *(ObjectDemoData a, string sValue)
+            {
+                var b = Copy(a);
+
+                Int64 iValue = 0;
+                Int64.TryParse(sValue, out iValue);
+
+                b.iInt64 *= iValue;
+                b.iDouble *= iValue;
+                b.iComplex *= new Complex((double)iValue, 0);
+                b.iBigInt *= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator *(ObjectDemoData a, ObjectDemoData iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 *= iValue.iInt64;
+                b.iDouble *= iValue.iDouble;
+                b.iComplex *= iValue.iComplex;
+                b.iBigInt *= iValue.iBigInt;
+
+                return b;
+            }
+            #endregion
         }
 
 
@@ -6280,7 +6491,7 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_add_operations_OBJECT()
+        public void test_add_operations_CUSTOMOBJECT()
         {
             ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
@@ -6288,191 +6499,392 @@ namespace NumpyDotNetTests
                 new ObjectDemoData(2), new ObjectDemoData(3)
             };
 
-            ndarray dd  = np.array(DemoData, dtype: np.Object);
-            dd.Name = "ObjectDemoData1";
+            ndarray aa  = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData1";
  
-            dd = dd.reshape(new shape(2, 2));
-            print(dd);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
        
-            var cc = dd + 8;
+            var bb = aa + 8;
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 8);
+            Assert.AreEqual(bb1.iInt64, 9);
+            Assert.AreEqual(bb2.iInt64, 10);
+            Assert.AreEqual(bb3.iInt64, 11);
+
+            var cc = aa + (double)5.5;
+            cc.Name += " (CC)";
             print(cc);
+            AssertShape(cc, 2,2);
 
             var cc0 = cc.item(0) as ObjectDemoData;
             var cc1 = cc.item(1) as ObjectDemoData;
             var cc2 = cc.item(2) as ObjectDemoData;
             var cc3 = cc.item(3) as ObjectDemoData;
 
-            Assert.AreEqual(cc0.iData, 8);
-            Assert.AreEqual(cc1.iData, 9);
-            Assert.AreEqual(cc2.iData, 10);
-            Assert.AreEqual(cc3.iData, 11);
+            Assert.AreEqual(cc0.iInt64, 5);
+            Assert.AreEqual(cc1.iDouble, 6.5);
+            Assert.AreEqual(cc2.iComplex, new Complex(7.5, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(8));
 
-            var ee = dd + (double)5.5;
+            var dd = aa + new System.Numerics.Complex(7.5, 1.5);
+            dd.Name += " (DD)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, 7);
+            Assert.AreEqual(dd1.iDouble, 8.5);
+            Assert.AreEqual(dd2.iComplex, new Complex(9.5, 1.5));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(10));
+
+            var ee = aa + new System.Numerics.BigInteger(11);
+            ee.Name += " (EE)";
             print(ee);
-     
-        }
+            AssertShape(ee, 2, 2);
 
-        [TestMethod]
-        public void test_add_operations_OBJECT_TODO_2()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
+            var ee0 = ee.item(0) as ObjectDemoData;
+            var ee1 = ee.item(1) as ObjectDemoData;
+            var ee2 = ee.item(2) as ObjectDemoData;
+            var ee3 = ee.item(3) as ObjectDemoData;
 
-            var ExpectedDataA = new BigInteger[,]
-                {{0,  1,  2,  3},
-                 {4,  5,  6,  7},
-                 {8,  9, 10, 11},
-                 {12, 13, 14, 15},
-                 {16, 17, 18, 19}};
-            AssertArray(a, ExpectedDataA);
+            Assert.AreEqual(ee0.iInt64, 11);
+            Assert.AreEqual(ee1.iDouble, 12);
+            Assert.AreEqual(ee2.iComplex, new Complex(13, 0));
+            Assert.AreEqual(ee3.iBigInt, new BigInteger(14));
 
-            var b = np.array(new BigInteger[] { 2 });
-            var c = a + b;
-            print(c);
+            var ff = np.add(aa,"23");
+            ff.Name += " (FF)";
+            print(ff);
+            AssertShape(ff, 2, 2);
 
-            var ExpectedDataC = new BigInteger[,]
-                {{2,  3,  4,  5},
-                 {6,  7,  8,  9},
-                 {10, 11, 12, 13},
-                 {14, 15, 16, 17},
-                 {18, 19, 20, 21}};
-            AssertArray(c, ExpectedDataC);
+            var ff0 = ff.item(0) as ObjectDemoData;
+            var ff1 = ff.item(1) as ObjectDemoData;
+            var ff2 = ff.item(2) as ObjectDemoData;
+            var ff3 = ff.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ff0.iInt64, 23);
+            Assert.AreEqual(ff1.iDouble, 24);
+            Assert.AreEqual(ff2.iComplex, new Complex(25, 0));
+            Assert.AreEqual(ff3.iBigInt, new BigInteger(26));
+
+            var aa0 = aa.item(0) as ObjectDemoData;
+            var aa1 = aa.item(1) as ObjectDemoData;
+            var aa2 = aa.item(2) as ObjectDemoData;
+            var aa3 = aa.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(aa0.iInt64, 0);
+            Assert.AreEqual(aa1.iInt64, 1);
+            Assert.AreEqual(aa2.iInt64, 2);
+            Assert.AreEqual(aa3.iInt64, 3);
+
+            var gg = np.add(aa, ff2);
+            gg.Name += " (GG)";
+            print(gg);
+            AssertShape(gg, 2, 2);
+
+            var gg0 = gg.item(0) as ObjectDemoData;
+            var gg1 = gg.item(1) as ObjectDemoData;
+            var gg2 = gg.item(2) as ObjectDemoData;
+            var gg3 = gg.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(gg0.iInt64, 25);
+            Assert.AreEqual(gg1.iDouble, 26);
+            Assert.AreEqual(gg2.iComplex, new Complex(27, 0));
+            Assert.AreEqual(gg3.iBigInt, new BigInteger(28));
+
+            var hh = aa + ff;
+            hh.Name += " (hh)";
+            print(hh);
+            AssertShape(hh, 2, 2);
+
+            var hh0 = hh.item(0) as ObjectDemoData;
+            var hh1 = hh.item(1) as ObjectDemoData;
+            var hh2 = hh.item(2) as ObjectDemoData;
+            var hh3 = hh.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(hh0.iInt64, 23);
+            Assert.AreEqual(hh1.iDouble, 25);
+            Assert.AreEqual(hh2.iComplex, new Complex(27, 0));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(29));
 
 
-            b = np.array(new BigInteger[] { 10, 20, 30, 40 });
-            var d = a + b;
-            print(d);
-
-            var ExpectedDataD = new BigInteger[,]
-                {{10, 21, 32, 43},
-                 {14, 25, 36, 47},
-                 {18, 29, 40, 51},
-                 {22, 33, 44, 55},
-                 {26, 37, 48, 59}};
-            AssertArray(d, ExpectedDataD);
-        }
-
-        [TestMethod]
-        public void test_subtract_operations_OBJECT_TODO()
-        {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            var b = a - 8;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB = new BigInteger[,]
-            {{-8, -7, -6, -5},
-             {-4, -3, -2, -1},
-             {0,  1,  2,  3},
-             {4,  5,  6,  7},
-             {8,  9, 10, 11}
-            };
-            AssertArray(b, ExpectedDataB);
-
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            b = a - 2400;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            ExpectedDataB = new BigInteger[,]
-            {{-2400, -2399, -2398, -2397},
-             {-2396, -2395, -2394, -2393},
-             {-2392, -2391, -2390, -2389},
-             {-2388, -2387, -2386, -2385},
-             {-2384, -2383, -2382, -2381}
-            };
-
-            AssertArray(b, ExpectedDataB);
 
         }
 
-        [TestMethod]
-        public void test_subtract_operations_OBJECT_TODO_2()
-        {
-            var a = np.arange(100, 102, 1, dtype: np.BigInt);
-            var b = np.array(new BigInteger[] { 1, 63 });
-            var c = a - b;
-            print(a);
-            print("****");
-            print(b);
-            print("****");
-            print(c);
-            print("****");
-            AssertArray(c, new BigInteger[] { 99, 38 });
-
-
-            a = np.arange(0, 4, 1, dtype: np.BigInt).reshape(new shape(2, 2));
-            b = np.array(new BigInteger[] { 65, 78 }).reshape(new shape(1, 2));
-            c = a - b;
-            print(a);
-            print("****");
-            print(b);
-            print("****");
-            print(c);
-            print("****");
-            AssertArray(c, new BigInteger[,] { { -65, -77 }, { -63, -75 } });
-
-        }
 
         [TestMethod]
-        public void test_multiply_operations_OBJECT_TODO()
+        public void test_subtract_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
-
-            BigInteger multiplierB1 = 9023;
-            var b = a * multiplierB1;
-            print(b);
-            print(b.shape);
-            print(b.strides);
-
-            var ExpectedDataB1 = new BigInteger[,]
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                {0*multiplierB1,  1*multiplierB1,  2*multiplierB1,  3*multiplierB1},
-                {4*multiplierB1,  5*multiplierB1,  6*multiplierB1,  7*multiplierB1},
-                {8*multiplierB1,  9*multiplierB1,  10*multiplierB1, 11*multiplierB1},
-                {12*multiplierB1, 13*multiplierB1, 14*multiplierB1, 15*multiplierB1},
-                {16*multiplierB1, 17*multiplierB1, 18*multiplierB1, 19*multiplierB1}
+                new ObjectDemoData(0), new ObjectDemoData(1),
+                new ObjectDemoData(2), new ObjectDemoData(3)
             };
-            AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(0, 20, 1, dtype: np.BigInt);
-            a = a.reshape(new shape(5, -1));
-            print(a);
-            print(a.shape);
-            print(a.strides);
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData2";
 
-            BigInteger multiplierB2 = 990425023;
-            b = a * multiplierB2;
-            print(b);
-            print(b.shape);
-            print(b.strides);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB2 = new BigInteger[,]
+            var bb = aa - 8;
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, -8);
+            Assert.AreEqual(bb1.iInt64, -7);
+            Assert.AreEqual(bb2.iInt64, -6);
+            Assert.AreEqual(bb3.iInt64, -5);
+
+            var cc = aa - (double)5.5;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, -5);
+            Assert.AreEqual(cc1.iDouble, -4.5);
+            Assert.AreEqual(cc2.iComplex, new Complex(-3.5, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(-2));
+
+            var dd = aa - new System.Numerics.Complex(7.5, 1.5);
+            dd.Name += " (DD)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, -7);
+            Assert.AreEqual(dd1.iDouble, -6.5);
+            Assert.AreEqual(dd2.iComplex, new Complex(-5.5, -1.5));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(-4));
+
+            var ee = aa - new System.Numerics.BigInteger(11);
+            ee.Name += " (EE)";
+            print(ee);
+            AssertShape(ee, 2, 2);
+
+            var ee0 = ee.item(0) as ObjectDemoData;
+            var ee1 = ee.item(1) as ObjectDemoData;
+            var ee2 = ee.item(2) as ObjectDemoData;
+            var ee3 = ee.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ee0.iInt64, -11);
+            Assert.AreEqual(ee1.iDouble, -10);
+            Assert.AreEqual(ee2.iComplex, new Complex(-9, 0));
+            Assert.AreEqual(ee3.iBigInt, new BigInteger(-8));
+
+            var ff = np.subtract(aa, "23");
+            ff.Name += " (FF)";
+            print(ff);
+            AssertShape(ff, 2, 2);
+
+            var ff0 = ff.item(0) as ObjectDemoData;
+            var ff1 = ff.item(1) as ObjectDemoData;
+            var ff2 = ff.item(2) as ObjectDemoData;
+            var ff3 = ff.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ff0.iInt64, -23);
+            Assert.AreEqual(ff1.iDouble, -22);
+            Assert.AreEqual(ff2.iComplex, new Complex(-21, 0));
+            Assert.AreEqual(ff3.iBigInt, new BigInteger(-20));
+
+            var aa0 = aa.item(0) as ObjectDemoData;
+            var aa1 = aa.item(1) as ObjectDemoData;
+            var aa2 = aa.item(2) as ObjectDemoData;
+            var aa3 = aa.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(aa0.iInt64, 0);
+            Assert.AreEqual(aa1.iInt64, 1);
+            Assert.AreEqual(aa2.iInt64, 2);
+            Assert.AreEqual(aa3.iInt64, 3);
+
+            var gg = np.subtract(aa, ff2);
+            gg.Name += " (GG)";
+            print(gg);
+            AssertShape(gg, 2, 2);
+
+            var gg0 = gg.item(0) as ObjectDemoData;
+            var gg1 = gg.item(1) as ObjectDemoData;
+            var gg2 = gg.item(2) as ObjectDemoData;
+            var gg3 = gg.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(gg0.iInt64, 21);
+            Assert.AreEqual(gg1.iDouble, 22);
+            Assert.AreEqual(gg2.iComplex, new Complex(23, 0));
+            Assert.AreEqual(gg3.iBigInt, new BigInteger(24));
+
+            var hh = aa - ff;
+            hh.Name += " (hh)";
+            print(hh);
+            AssertShape(hh, 2, 2);
+
+            var hh0 = hh.item(0) as ObjectDemoData;
+            var hh1 = hh.item(1) as ObjectDemoData;
+            var hh2 = hh.item(2) as ObjectDemoData;
+            var hh3 = hh.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(hh0.iInt64, 23);
+            Assert.AreEqual(hh1.iDouble, 23);
+            Assert.AreEqual(hh2.iComplex, new Complex(23, 0));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(23));
+        }
+
+        [TestMethod]
+        public void test_multiply_operations_CUSTOMOBJECT()
+        {
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
             {
-                {0*multiplierB2,  1*multiplierB2,  2*multiplierB2,  3*multiplierB2},
-                {4*multiplierB2,  5*multiplierB2,  6*multiplierB2,  7*multiplierB2},
-                {8*multiplierB2,  9*multiplierB2,  10*multiplierB2, 11*multiplierB2},
-                {12*multiplierB2, 13*multiplierB2, 14*multiplierB2, 15*multiplierB2},
-                {16*multiplierB2, 17*multiplierB2, 18*multiplierB2, 19*multiplierB2}
+                new ObjectDemoData(0), new ObjectDemoData(1),
+                new ObjectDemoData(2), new ObjectDemoData(3)
             };
-            AssertArray(b, ExpectedDataB2);
+
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoData2";
+
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
+
+            var bb = np.multiply(aa, 8);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
+
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(bb0.iInt64, 0);
+            Assert.AreEqual(bb1.iInt64, 8);
+            Assert.AreEqual(bb2.iInt64, 16);
+            Assert.AreEqual(bb3.iInt64, 24);
+
+            var cc = aa * 5.5;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 0);
+            Assert.AreEqual(cc1.iDouble, 5.5);
+            Assert.AreEqual(cc2.iComplex, new Complex(11, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(15));
+
+            var dd = aa * new System.Numerics.Complex(7.5, 1.5);
+            dd.Name += " (DD)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, 0);
+            Assert.AreEqual(dd1.iDouble, 7.5);
+            Assert.AreEqual(dd2.iComplex, new Complex(15, 3));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(21));
+
+            var ee = aa * new System.Numerics.BigInteger(11);
+            ee.Name += " (EE)";
+            print(ee);
+            AssertShape(ee, 2, 2);
+
+            var ee0 = ee.item(0) as ObjectDemoData;
+            var ee1 = ee.item(1) as ObjectDemoData;
+            var ee2 = ee.item(2) as ObjectDemoData;
+            var ee3 = ee.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ee0.iInt64, 0);
+            Assert.AreEqual(ee1.iDouble, 11);
+            Assert.AreEqual(ee2.iComplex, new Complex(22, 0));
+            Assert.AreEqual(ee3.iBigInt, new BigInteger(33));
+
+            var ff = np.multiply(aa, "23");
+            ff.Name += " (FF)";
+            print(ff);
+            AssertShape(ff, 2, 2);
+
+            var ff0 = ff.item(0) as ObjectDemoData;
+            var ff1 = ff.item(1) as ObjectDemoData;
+            var ff2 = ff.item(2) as ObjectDemoData;
+            var ff3 = ff.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(ff0.iInt64, 0);
+            Assert.AreEqual(ff1.iDouble, 23);
+            Assert.AreEqual(ff2.iComplex, new Complex(46, 0));
+            Assert.AreEqual(ff3.iBigInt, new BigInteger(69));
+
+            var aa0 = aa.item(0) as ObjectDemoData;
+            var aa1 = aa.item(1) as ObjectDemoData;
+            var aa2 = aa.item(2) as ObjectDemoData;
+            var aa3 = aa.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(aa0.iInt64, 0);
+            Assert.AreEqual(aa1.iInt64, 1);
+            Assert.AreEqual(aa2.iInt64, 2);
+            Assert.AreEqual(aa3.iInt64, 3);
+
+            var gg = np.multiply(aa, ff2);
+            gg.Name += " (GG)";
+            print(gg);
+            AssertShape(gg, 2, 2);
+
+            var gg0 = gg.item(0) as ObjectDemoData;
+            var gg1 = gg.item(1) as ObjectDemoData;
+            var gg2 = gg.item(2) as ObjectDemoData;
+            var gg3 = gg.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(gg0.iInt64, 21);
+            Assert.AreEqual(gg1.iDouble, 22);
+            Assert.AreEqual(gg2.iComplex, new Complex(23, 0));
+            Assert.AreEqual(gg3.iBigInt, new BigInteger(24));
+
+            var hh = aa * ff;
+            hh.Name += " (hh)";
+            print(hh);
+            AssertShape(hh, 2, 2);
+
+            var hh0 = hh.item(0) as ObjectDemoData;
+            var hh1 = hh.item(1) as ObjectDemoData;
+            var hh2 = hh.item(2) as ObjectDemoData;
+            var hh3 = hh.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(hh0.iInt64, 23);
+            Assert.AreEqual(hh1.iDouble, 23);
+            Assert.AreEqual(hh2.iComplex, new Complex(23, 0));
+            Assert.AreEqual(hh3.iBigInt, new BigInteger(23));
         }
 
         [TestMethod]
