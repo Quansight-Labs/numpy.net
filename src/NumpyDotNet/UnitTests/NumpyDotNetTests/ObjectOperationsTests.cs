@@ -6235,13 +6235,32 @@ namespace NumpyDotNetTests
                     iData.ToString(), iDouble.ToString(), iComplex.ToString(), iBigInt.ToString());
             }
 
-
             public static ObjectDemoData operator +(ObjectDemoData a, Int64 iValue)
             {
                 a.iData += iValue;
                 a.iDouble += iValue;
                 a.iComplex += new Complex((double)iValue, 0);
                 a.iBigInt += iValue;
+
+                return a;
+            }
+
+            public static ObjectDemoData operator +(ObjectDemoData a, double dValue)
+            {
+                a.iData += (Int64)dValue;
+                a.iDouble += dValue;
+                a.iComplex += new Complex((double)dValue, 0);
+                a.iBigInt += (Int64)dValue;
+
+                return a;
+            }
+
+            public static ObjectDemoData operator +(ObjectDemoData a, Complex iValue)
+            {
+                a.iData += (Int64)iValue.Real;
+                a.iDouble += iValue.Real;
+                a.iComplex += iValue;
+                a.iBigInt += (Int64)iValue.Real;
 
                 return a;
             }
@@ -6277,6 +6296,19 @@ namespace NumpyDotNetTests
        
             var cc = dd + 8;
             print(cc);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iData, 8);
+            Assert.AreEqual(cc1.iData, 9);
+            Assert.AreEqual(cc2.iData, 10);
+            Assert.AreEqual(cc3.iData, 11);
+
+            var ee = dd + (double)5.5;
+            print(ee);
      
         }
 
