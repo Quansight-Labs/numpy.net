@@ -6581,6 +6581,81 @@ namespace NumpyDotNetTests
             }
 
             #endregion
+
+            #region BITWISEAND operations
+            public static ObjectDemoData operator &(ObjectDemoData a, Int32 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 &= iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt &= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator &(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 &= iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt &= iValue;
+
+                return b;
+            }
+            #endregion
+
+            #region BITWISEOR operations
+            public static ObjectDemoData operator |(ObjectDemoData a, Int32 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 |= (UInt32)iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt |= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator |(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 |= iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt |= iValue;
+
+                return b;
+            }
+            #endregion
+
+            #region BITWISEXOR operations
+            public static ObjectDemoData operator ^(ObjectDemoData a, Int32 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 ^= iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt ^= iValue;
+
+                return b;
+            }
+            public static ObjectDemoData operator ^(ObjectDemoData a, Int64 iValue)
+            {
+                var b = Copy(a);
+
+                b.iInt64 ^= iValue;
+                //b.iDouble &= iValue;
+                //b.iComplex &= new Complex((double)iValue, 0);
+                b.iBigInt ^= iValue;
+
+                return b;
+            }
+            #endregion
         }
 
 
@@ -7217,85 +7292,153 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_bitwiseand_operations_OBJECT_TODO()
+        public void test_bitwiseand_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
+           ObjectDemoData[] DemoData = new ObjectDemoData[]
+           {
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
+           };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataBitwiseAnd";
 
-            var b = a & 0x0f;
-            print(b);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB1 = new BigInteger[]
-            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
-              0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15 };
-            AssertArray(b, ExpectedDataB1);
+            var bb = np.bitwise_and(aa, 0x0f);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
 
-            b = a & 0xFF;
-            print(b);
+            Assert.AreEqual(bb0.iInt64, 0);
+            Assert.AreEqual(bb1.iInt64, 1);
+            Assert.AreEqual(bb2.iInt64, 2);
+            Assert.AreEqual(bb3.iInt64, 3);
 
-            var ExpectedDataB2 = new BigInteger[]
-            { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
-              16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-            AssertArray(b, ExpectedDataB2);
+            var cc = aa & (Int64)0xff;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
 
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 240);
+            Assert.AreEqual(cc1.iDouble, 1009);
+            Assert.AreEqual(cc2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(243));
         }
 
         [TestMethod]
-        public void test_bitwiseor_operations_OBJECT_TODO()
+        public void test_bitwiseor_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataBitwiseAnd";
 
-            var b = a | 0x100;
-            print(b);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB1 = new BigInteger[]
-            { 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
-              272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287 };
-            AssertArray(b, ExpectedDataB1);
+            var bb = np.bitwise_or(aa, 0x01);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
 
-            b = a | 0x1000;
-            print(b);
+            Assert.AreEqual(bb0.iInt64, 1009);
+            Assert.AreEqual(bb1.iInt64, 1009);
+            Assert.AreEqual(bb2.iInt64, 1011);
+            Assert.AreEqual(bb3.iInt64, 1011);
 
-            var ExpectedDataB2 = new BigInteger[]
-            { 6144, 6145, 6146, 6147, 6148, 6149, 6150, 6151, 6152, 6153, 6154, 6155, 6156, 6157,
-              6158, 6159, 6160, 6161, 6162, 6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171,
-              6172, 6173, 6174, 6175 };
-            AssertArray(b, ExpectedDataB2);
+            var cc = aa | (Int64)0x1000;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
 
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 5104);
+            Assert.AreEqual(cc1.iDouble, 1009);
+            Assert.AreEqual(cc2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(5107));
         }
 
         [TestMethod]
-        public void test_bitwisexor_operations_OBJECT_TODO()
+        public void test_bitwisexor_operations_CUSTOMOBJECT()
         {
-            var a = np.arange(0.499, 32.499, 1, dtype: np.BigInt);
-            print(a);
+            ObjectDemoData[] DemoData = new ObjectDemoData[]
+            {
+                new ObjectDemoData(1008), new ObjectDemoData(1009),
+                new ObjectDemoData(1010), new ObjectDemoData(1011)
+            };
+            ndarray aa = np.array(DemoData, dtype: np.Object);
+            aa.Name = "ObjectDemoDataBitwiseAnd";
 
-            var b = a ^ 0xAAA;
-            print(b);
+            aa = aa.reshape(new shape(2, 2));
+            print(aa);
 
-            var ExpectedDataB1 = new BigInteger[]
-            { 2730, 2731, 2728, 2729, 2734, 2735, 2732, 2733, 2722, 2723, 2720, 2721, 2726, 2727, 2724,
-              2725, 2746, 2747, 2744, 2745, 2750, 2751, 2748, 2749, 2738, 2739, 2736, 2737, 2742, 2743, 2740, 2741 };
-            AssertArray(b, ExpectedDataB1);
+            var bb = np.bitwise_xor(aa, 0xAAA);
+            bb.Name += " (BB)";
+            print(bb);
+            AssertShape(bb, 2, 2);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.BigInt);
-            print(a);
+            var bb0 = bb.item(0) as ObjectDemoData;
+            var bb1 = bb.item(1) as ObjectDemoData;
+            var bb2 = bb.item(2) as ObjectDemoData;
+            var bb3 = bb.item(3) as ObjectDemoData;
 
-            b = a ^ 0xAAAA;
-            print(b);
+            Assert.AreEqual(bb0.iInt64, 2394);
+            Assert.AreEqual(bb1.iInt64, 2395);
+            Assert.AreEqual(bb2.iInt64, 2392);
+            Assert.AreEqual(bb3.iInt64, 2393);
 
-            var ExpectedDataB2 = new BigInteger[]
-            { 41642, 41643, 41640, 41641, 41646, 41647, 41644, 41645, 41634, 41635, 41632, 41633,
-              41638, 41639, 41636, 41637, 41658, 41659, 41656, 41657, 41662, 41663, 41660, 41661,
-              41650, 41651, 41648, 41649, 41654, 41655, 41652, 41653};
-            AssertArray(b, ExpectedDataB2);
+            var cc = aa ^ (Int64)0xAAAA;
+            cc.Name += " (CC)";
+            print(cc);
+            AssertShape(cc, 2, 2);
+
+            var cc0 = cc.item(0) as ObjectDemoData;
+            var cc1 = cc.item(1) as ObjectDemoData;
+            var cc2 = cc.item(2) as ObjectDemoData;
+            var cc3 = cc.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(cc0.iInt64, 43354);
+            Assert.AreEqual(cc1.iDouble, 1009);
+            Assert.AreEqual(cc2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(cc3.iBigInt, new BigInteger(43353));
+
+            var dd = cc ^ (Int64)0xAAAA;
+            dd.Name += " (dd)";
+            print(dd);
+            AssertShape(dd, 2, 2);
+
+            var dd0 = dd.item(0) as ObjectDemoData;
+            var dd1 = dd.item(1) as ObjectDemoData;
+            var dd2 = dd.item(2) as ObjectDemoData;
+            var dd3 = dd.item(3) as ObjectDemoData;
+
+            Assert.AreEqual(dd0.iInt64, 1008);
+            Assert.AreEqual(dd1.iDouble, 1009);
+            Assert.AreEqual(dd2.iComplex, new Complex(1010, 0));
+            Assert.AreEqual(dd3.iBigInt, new BigInteger(1011));
 
         }
 

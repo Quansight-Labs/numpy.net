@@ -682,6 +682,22 @@ namespace NumpyLib
             return bValue / operand;
         }
 
+        protected override object BitWiseAnd(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue & operand;
+        }
+        protected override object BitWiseXor(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue ^ operand;
+        }
+        protected override object BitWiseOr(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue | operand;
+        }
+
     }
 
     internal class BoolHandlers : ArrayHandlerBase<bool>, IArrayHandlers
