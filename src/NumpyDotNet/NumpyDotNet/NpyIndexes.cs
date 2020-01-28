@@ -155,7 +155,7 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="arr">The array we are assigning to.</param>
         /// <returns>The offset or -1 if this is not a single assignment.</returns>
-        public Int64 SingleAssignOffset(ndarray arr)
+        public npy_intp SingleAssignOffset(ndarray arr)
         {
             // Check to see that there are just newaxis, ellipsis, intp or bool indexes
             for (int i = 0; i < num_indexes; i++)
@@ -175,7 +175,7 @@ namespace NumpyDotNet
             // Bind to the array and calculate the offset.
             NpyIndexes bound = Bind(arr);
             {
-                long offset = 0;
+                npy_intp offset = 0;
                 int nd = 0;
 
                 for (int i = 0; i < bound.num_indexes; i++)
@@ -228,9 +228,9 @@ namespace NumpyDotNet
 
             NpyIndexSlice IndexSlice = new NpyIndexSlice()
             {
-                start = (long)CSTuple.index1,
-                stop = CSTuple.index2 != null ? (long)CSTuple.index2+1 : (long)CSTuple.index1+1,
-                step = CSTuple.index3 != null ? (long)CSTuple.index3 : 1,
+                start = (npy_intp)CSTuple.index1,
+                stop = CSTuple.index2 != null ? (npy_intp)CSTuple.index2+1 : (npy_intp)CSTuple.index1+1,
+                step = CSTuple.index3 != null ? (npy_intp)CSTuple.index3 : 1,
             };
 
             indexes[num_indexes].slice = IndexSlice;

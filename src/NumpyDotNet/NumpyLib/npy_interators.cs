@@ -638,7 +638,7 @@ namespace NumpyLib
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static npy_intp GetOffset(NpyArrayIterObject it, NpyArray array, long offset)
+        internal static npy_intp GetOffset(NpyArrayIterObject it, NpyArray array, npy_intp offset)
         {
             npy_intp data_offset = it.dataptr.data_offset - array.data.data_offset;
 

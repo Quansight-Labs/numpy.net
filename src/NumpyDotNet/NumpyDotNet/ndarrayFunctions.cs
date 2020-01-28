@@ -2214,7 +2214,7 @@ namespace NumpyDotNet
             return a.GetItem(_SanitizeIndex(a, index));
         }
 
-        private static long _SanitizeIndex(ndarray a, int index)
+        private static npy_intp _SanitizeIndex(ndarray a, npy_intp index)
         {
             if (a.Size <= index)
                 return index % a.Size;

@@ -80,12 +80,12 @@ namespace NumpyLib
             return 1;
         }
 
-        private static long GetTypeSize(VoidPtr vp)
+        private static npy_intp GetTypeSize(VoidPtr vp)
         {
             return GetTypeSize(vp.type_num);
         }
 
-        private static long GetTypeSize(NPY_TYPES type_num)
+        private static npy_intp GetTypeSize(NPY_TYPES type_num)
         {
             return numpyAPI.GetArrayHandler(type_num).ItemSize;
         }

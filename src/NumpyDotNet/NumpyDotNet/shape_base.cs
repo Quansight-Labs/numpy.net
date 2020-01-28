@@ -1720,7 +1720,7 @@ namespace NumpyDotNet
             try
             {
                 foreach (var t1 in tup)
-                    tupList.Add(Convert.ToInt64(t1));
+                    tupList.Add(ConvertToIntp(t1));
             }
             catch
             {
@@ -1735,7 +1735,7 @@ namespace NumpyDotNet
                 for (int i = 0; i < c.ndim - d; i++)
                     tupList.Add(1);
                 foreach (var t1 in tup)
-                    tupList.Add(Convert.ToInt64(t1));
+                    tupList.Add(ConvertToIntp(t1));
             }
 
             List<npy_intp> shape_out = new List<npy_intp>();
@@ -1762,6 +1762,15 @@ namespace NumpyDotNet
                 }
             }
             return c.reshape(new shape(shape_out));
+        }
+
+        private static npy_intp ConvertToIntp(object o)
+        {
+#if NPY_INTP_64
+            return Convert.ToInt64(o);
+#else
+            return Convert.ToInt32(o);
+#endif
         }
 
         private static bool ValidateSameShapes(List<ndarray> arrays)

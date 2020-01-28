@@ -2997,7 +2997,7 @@ namespace NumpyLib
             return 0;
         }
 
-        private static long[] _compute_output_dims(NpyUFuncLoopObject loop, int iarg, ref int out_nd, long[] tmp_dims)
+        private static npy_intp[] _compute_output_dims(NpyUFuncLoopObject loop, int iarg, ref int out_nd, npy_intp[] tmp_dims)
         {
             int i;
             NpyUFuncObject ufunc = loop.ufunc;

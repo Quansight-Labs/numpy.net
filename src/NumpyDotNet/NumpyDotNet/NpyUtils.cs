@@ -230,7 +230,16 @@ namespace NumpyDotNet {
         {
             if (o == null) return 0;
             else if (o is int) return (int)o;
-            else return Convert.ToInt64(o);
+            else return ConvertToIntP(o);
+        }
+
+        internal static npy_intp ConvertToIntP(object o)
+        {
+#if NPY_INTP_64
+            return Convert.ToInt64(o);
+#else
+            return Convert.ToInt32(o);
+#endif
         }
 
         internal static int IntConverter(Object o)

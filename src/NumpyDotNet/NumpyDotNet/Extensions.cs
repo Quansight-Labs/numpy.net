@@ -133,7 +133,7 @@ namespace NumpyDotNet
             if (oshape is ValueTuple<long, long, long, long, long>)
             {
                 ValueTuple<long, long, long, long, long> T5 = (ValueTuple<long, long, long, long, long>)oshape;
-                return new shape(new npy_intp[] { T5.Item1, T5.Item2, T5.Item3, T5.Item4, T5.Item5 });
+                return new shape(new long[] { T5.Item1, T5.Item2, T5.Item3, T5.Item4, T5.Item5 });
             }
 
             if (oshape is ValueTuple<int, int, int, int, int, int>)
@@ -144,7 +144,7 @@ namespace NumpyDotNet
             if (oshape is ValueTuple<long, long, long, long, long, long>)
             {
                 ValueTuple<long, long, long, long, long, long> T6 = (ValueTuple<long, long, long, long, long, long>)oshape;
-                return new shape(new npy_intp[] { T6.Item1, T6.Item2, T6.Item3, T6.Item4, T6.Item5, T6.Item6 });
+                return new shape(new long[] { T6.Item1, T6.Item2, T6.Item3, T6.Item4, T6.Item5, T6.Item6 });
             }
 
             if (oshape is ValueTuple<int, int, int, int, int, int, int>)
@@ -155,7 +155,7 @@ namespace NumpyDotNet
             if (oshape is ValueTuple<long, long, long, long, long, long, long>)
             {
                 ValueTuple<long, long, long, long, long, long, long> T7 = (ValueTuple<long, long, long, long, long, long, long>)oshape;
-                return new shape(new npy_intp[] { T7.Item1, T7.Item2, T7.Item3, T7.Item4, T7.Item5, T7.Item6, T7.Item7 });
+                return new shape(new long[] { T7.Item1, T7.Item2, T7.Item3, T7.Item4, T7.Item5, T7.Item6, T7.Item7 });
             }
 
             if (oshape is ValueTuple<int, int, int, int, int, int, int, int>)
@@ -166,7 +166,7 @@ namespace NumpyDotNet
             if (oshape is ValueTuple<long, long, long, long, long, long, long, long>)
             {
                 ValueTuple<long, long, long, long, long, long, long, long> T8 = (ValueTuple<long, long, long, long, long, long, long, long>)oshape;
-                return new shape(new npy_intp[] { T8.Item1, T8.Item2, T8.Item3, T8.Item4, T8.Item5, T8.Item6, T8.Item7, T8.Rest });
+                return new shape(new long[] { T8.Item1, T8.Item2, T8.Item3, T8.Item4, T8.Item5, T8.Item6, T8.Item7, T8.Rest });
             }
             return null;
         }
@@ -356,7 +356,7 @@ namespace NumpyDotNet
             return np.std(a, axis, dtype);
         }
 
-        public static ndarray partition(this ndarray a, long[] kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
+        public static ndarray partition(this ndarray a, npy_intp[] kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             return np.partition(a, kth, axis, kind, order);
         }

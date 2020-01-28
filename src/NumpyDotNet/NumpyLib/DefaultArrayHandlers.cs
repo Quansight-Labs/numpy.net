@@ -70,7 +70,7 @@ namespace NumpyLib
             }
         }
 
-        public virtual object GetItem(VoidPtr data, long index)
+        public virtual object GetItem(VoidPtr data, npy_intp index)
         {
             T[] dp = data.datap as T[];
 
@@ -84,7 +84,7 @@ namespace NumpyLib
             return dp[AdjustedIndex];
         }
 
-        public virtual object GetIndex(VoidPtr data, long index)
+        public virtual object GetIndex(VoidPtr data, npy_intp index)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -92,13 +92,13 @@ namespace NumpyLib
             return dp[index];
         }
 
-        public virtual object GetItemDifferentType(VoidPtr vp, long index, NPY_TYPES ItemType, int ItemSize)
+        public virtual object GetItemDifferentType(VoidPtr vp, npy_intp index, NPY_TYPES ItemType, int ItemSize)
         {
             return 0;
         }
 
 
-        public virtual int SetItem(VoidPtr data, long index, object value)
+        public virtual int SetItem(VoidPtr data, npy_intp index, object value)
         {
             T[] dp = data.datap as T[];
 
@@ -111,11 +111,11 @@ namespace NumpyLib
             dp[AdjustedIndex] = (T)value;
             return 1;
         }
-        public virtual int SetItemDifferentType(VoidPtr data, long index, object value)
+        public virtual int SetItemDifferentType(VoidPtr data, npy_intp index, object value)
         {
             throw new Exception(string.Format("Arrays of {0} are not programmed to set items of this type", data.type_num));
         }
-        public virtual int SetIndex(VoidPtr data, long index, object value)
+        public virtual int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -123,7 +123,7 @@ namespace NumpyLib
             dp[index] = (T)value;
             return 1;
         }
-        protected long AdjustNegativeIndex(VoidPtr data, long index)
+        protected npy_intp AdjustNegativeIndex(VoidPtr data, npy_intp index)
         {
             if (index < 0)
             {
@@ -282,7 +282,7 @@ namespace NumpyLib
             return new VoidPtr(src, vp.type_num);
         }
 
-        public virtual bool NonZero(VoidPtr vp, long index)
+        public virtual bool NonZero(VoidPtr vp, npy_intp index)
         {
             T[] bp = vp.datap as T[];
             return !(bp[index].Equals(0));
@@ -649,7 +649,7 @@ namespace NumpyLib
             Fill(adata, FillValue, 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -768,7 +768,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToBoolean(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -791,7 +791,7 @@ namespace NumpyLib
             return tmp;
         }
 
-        public override bool NonZero(VoidPtr vp, long index)
+        public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             bool[] bp = vp.datap as bool[];
             return (bp[index]);
@@ -938,7 +938,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToSByte(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -1122,7 +1122,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToByte(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -1308,7 +1308,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt16(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -1492,7 +1492,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt16(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -1675,7 +1675,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt32(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -1859,7 +1859,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt32(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -2042,7 +2042,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt64(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -2225,7 +2225,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt64(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -2408,7 +2408,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToSingle(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -2683,7 +2683,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToDouble(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -2953,7 +2953,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToDecimal(FillValue), 0, adata.Length);
             return;
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -3011,7 +3011,7 @@ namespace NumpyLib
             return Convert.ToDecimal(operValue);
         }
 
-        public override bool NonZero(VoidPtr vp, long index)
+        public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             decimal[] bp = vp.datap as decimal[];
             return (bp[index] != 0);
@@ -3231,7 +3231,7 @@ namespace NumpyLib
             get { return sizeof(double) * 2; }
         }
 
-        public override int SetItem(VoidPtr data, long index, object value)
+        public override int SetItem(VoidPtr data, npy_intp index, object value)
         {
             System.Numerics.Complex[] dp = data.datap as System.Numerics.Complex[];
 
@@ -3251,7 +3251,7 @@ namespace NumpyLib
 
             return 1;
         }
-        public override int SetItemDifferentType(VoidPtr data, long index, object value)
+        public override int SetItemDifferentType(VoidPtr data, npy_intp index, object value)
         {
             System.Numerics.Complex cvalue;
 
@@ -3274,7 +3274,7 @@ namespace NumpyLib
 
             return SetItem(data, index, cvalue);
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -3356,7 +3356,7 @@ namespace NumpyLib
             }
         }
 
-        public override bool NonZero(VoidPtr vp, long index)
+        public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
             return (bp[index] != System.Numerics.Complex.Zero);
@@ -3775,7 +3775,7 @@ namespace NumpyLib
             get { return sizeof(double) * 4; }
         }
 
-        public override int SetItem(VoidPtr data, long index, object value)
+        public override int SetItem(VoidPtr data, npy_intp index, object value)
         {
             System.Numerics.BigInteger[] dp = data.datap as System.Numerics.BigInteger[];
 
@@ -3795,7 +3795,7 @@ namespace NumpyLib
 
             return 1;
         }
-        public override int SetItemDifferentType(VoidPtr data, long index, object value)
+        public override int SetItemDifferentType(VoidPtr data, npy_intp index, object value)
         {
             System.Numerics.BigInteger bivalue;
 
@@ -3818,7 +3818,7 @@ namespace NumpyLib
 
             return SetItem(data, index, bivalue);
         }
-        public override int SetIndex(VoidPtr data, long index, object value)
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
 
@@ -3905,7 +3905,7 @@ namespace NumpyLib
             }
         }
 
-        public override bool NonZero(VoidPtr vp, long index)
+        public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             System.Numerics.BigInteger[] bp = vp.datap as System.Numerics.BigInteger[];
             return (bp[index] != System.Numerics.BigInteger.Zero);

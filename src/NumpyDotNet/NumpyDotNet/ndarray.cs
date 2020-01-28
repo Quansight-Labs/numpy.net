@@ -544,13 +544,13 @@ namespace NumpyDotNet
                     if (indexes.IsSingleItem(ndim))
                     {
                         // Optimization for single item index.
-                        long offset = 0;
+                        npy_intp offset = 0;
                         npy_intp[] dims = this.dims;
                         npy_intp[] s = strides;
                         for (int i = 0; i < ndim; i++)
                         {
-                            long d = dims[i];
-                            long val = indexes.GetIntP(i);
+                            npy_intp d = dims[i];
+                            npy_intp val = indexes.GetIntP(i);
                             if (val < 0)
                             {
                                 val += d;
@@ -670,7 +670,7 @@ namespace NumpyDotNet
                     }
 
                     // Special case for single assignment.
-                    long single_offset = indexes.SingleAssignOffset(this);
+                    npy_intp single_offset = indexes.SingleAssignOffset(this);
                     if (single_offset >= 0 && np.IsNumericType(value))
                     {
                         // This is a single item assignment. Use SetItem.
@@ -963,7 +963,7 @@ namespace NumpyDotNet
                     {
                         if (indexes.IsSingleItem(ndim))
                         {
-                            long offset = indexes.SingleAssignOffset(this);
+                            npy_intp offset = indexes.SingleAssignOffset(this);
                             return GetItem(offset / this.ItemSize);
                         }
                         else
@@ -1019,7 +1019,7 @@ namespace NumpyDotNet
                     {
                         if (indexes.IsSingleItem(ndim))
                         {
-                            long offset = indexes.SingleAssignOffset(this);
+                            npy_intp offset = indexes.SingleAssignOffset(this);
                             SetItem(value, offset / this.ItemSize);
                         }
                         else
@@ -1143,7 +1143,7 @@ namespace NumpyDotNet
         #endregion
 
 
-        public long Size {
+        public npy_intp Size {
             get { return NpyCoreApi.ArraySize(this); }
         }
 
@@ -1240,7 +1240,7 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="dimension">Dimension to query</param>
         /// <returns>Data stride in bytes</returns>
-        public long Dim(int dimension)
+        public npy_intp Dim(int dimension)
         {
             return this.Array.dimensions[dimension];
         }
@@ -1252,7 +1252,7 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="dimension">Dimension to query</param>
         /// <returns>Data stride in bytes</returns>
-        public long Stride(int dimension)
+        public npy_intp Stride(int dimension)
         {
             return this.Array.strides[dimension];
         }

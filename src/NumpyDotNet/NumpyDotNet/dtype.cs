@@ -773,7 +773,7 @@ namespace NumpyDotNet {
         /// </summary>
         /// <param name="arr"></param>
         /// <returns></returns>
-        internal object ToScalar(ndarray arr, long offset = 0)
+        internal object ToScalar(ndarray arr, npy_intp offset = 0)
         {
             if (ScalarType == null || ChkFlags(NpyArray_Descr_Flags.NPY_USE_GETITEM))
             {

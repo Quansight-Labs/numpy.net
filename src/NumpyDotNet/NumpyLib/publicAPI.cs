@@ -520,15 +520,15 @@ namespace NumpyLib
                 this.index = 0;
             }
 
-            public long CalculateOffset(long index)
+            public npy_intp CalculateOffset(npy_intp index)
             {
                 this.index = index;
                 return CalculateOffset(srcArray, 0, 0);
             }
 
-            private long CalculateOffset(NpyArray arr, int dimIdx, long offset)
+            private npy_intp CalculateOffset(NpyArray arr, int dimIdx, npy_intp offset)
             {
-                long CalculatedIndex = 0;
+                npy_intp CalculatedIndex = 0;
 
                 //Console.WriteLine(string.Format("dimIdx:{0}, offset:{1}, arr.nd:{2}", dimIdx, offset, arr.nd));
 
@@ -542,7 +542,7 @@ namespace NumpyLib
                 {
                     for (int i = 0; i < arr.dimensions[dimIdx]; i++)
                     {
-                        long lsrc_offset = offset + arr.strides[dimIdx] * i;
+                        npy_intp lsrc_offset = offset + arr.strides[dimIdx] * i;
                         CalculatedIndex = CalculateOffset(arr, dimIdx + 1, lsrc_offset);
                         if (index < 0)
                         {
@@ -566,7 +566,7 @@ namespace NumpyLib
         public static npy_intp SetItem(NpyArray arr, npy_intp index, object value)
         {
             var offsetHelper = new NpyArrayOffsetHelper(arr);
-            long CalculatedOffset = offsetHelper.CalculateOffset(index);
+            npy_intp CalculatedOffset = offsetHelper.CalculateOffset(index);
 
             return arr.descr.f.setitem(CalculatedOffset * arr.ItemSize, value, arr);
         }

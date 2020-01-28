@@ -279,9 +279,9 @@ namespace NumpyLib
             VoidPtr Operand2 = bufPtr[1];
             VoidPtr Result = bufPtr[2];
 
-            long O1_Step = steps[0];
-            long O2_Step = steps[1];
-            long R_Step = steps[2];
+            npy_intp O1_Step = steps[0];
+            npy_intp O2_Step = steps[1];
+            npy_intp R_Step = steps[2];
 
             if (Operand2 == null)
             {
@@ -298,21 +298,21 @@ namespace NumpyLib
             var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
             var ResultHandler = DefaultArrayHandlers.GetArrayHandler(Result.type_num);
 
-            long O1_sizeData = Operand1Handler.ItemSize;
-            long O2_sizeData = Operand2Handler.ItemSize;
-            long R_sizeData = ResultHandler.ItemSize;
+            npy_intp O1_sizeData = Operand1Handler.ItemSize;
+            npy_intp O2_sizeData = Operand2Handler.ItemSize;
+            npy_intp R_sizeData = ResultHandler.ItemSize;
 
-            long O1_Offset = Operand1.data_offset;
-            long O2_Offset = Operand2.data_offset;
-            long R_Offset = Result.data_offset;
+            npy_intp O1_Offset = Operand1.data_offset;
+            npy_intp O2_Offset = Operand2.data_offset;
+            npy_intp R_Offset = Result.data_offset;
 
 
 
             for (int i = 0; i < N; i++)
             {
-                long O1_Index = ((i * O1_Step) + O1_Offset) / O1_sizeData;
-                long O2_Index  = ((i * O2_Step) + O2_Offset) / O2_sizeData;
-                long R_Index = ((i * R_Step) + R_Offset) / R_sizeData;
+                npy_intp O1_Index = ((i * O1_Step) + O1_Offset) / O1_sizeData;
+                npy_intp O2_Index  = ((i * O2_Step) + O2_Offset) / O2_sizeData;
+                npy_intp R_Index = ((i * R_Step) + R_Offset) / R_sizeData;
 
                 try
                 {

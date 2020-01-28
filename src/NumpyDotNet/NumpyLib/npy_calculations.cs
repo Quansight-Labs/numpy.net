@@ -1817,7 +1817,7 @@ namespace NumpyLib
             return ret;
         }
 
-        private static void PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, long src_offset, long dest_offset, NumericOperations operation)
+        private static void PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, npy_intp src_offset, npy_intp dest_offset, NumericOperations operation)
         {
             if (dimIdx == destArray.nd)
             {
@@ -1838,8 +1838,8 @@ namespace NumpyLib
             {
                 for (int i = 0; i < dimensions[dimIdx]; i++)
                 {
-                    long lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
-                    long ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
+                    npy_intp lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
+                    npy_intp ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
 
                     PerformUFunc(srcArray, destArray, ref cumsum, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
                 }

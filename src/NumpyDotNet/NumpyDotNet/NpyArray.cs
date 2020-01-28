@@ -890,7 +890,7 @@ namespace NumpyDotNet {
         }
 
         private static void AssignFromSeq(IEnumerable<Object> seq, ndarray result,
-            int dim, long offset)
+            int dim, npy_intp offset)
         {
             if (dim >= result.ndim)
             {
@@ -910,7 +910,7 @@ namespace NumpyDotNet {
                 throw new RuntimeException("AssignFromSeq: sequence/array shape mismatch.");
             }
 
-            long stride = result.Stride(dim);
+            npy_intp stride = result.Stride(dim);
             if (dim < result.ndim - 1)
             {
                 // Sequence elements should be additional sequences

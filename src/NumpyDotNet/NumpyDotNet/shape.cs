@@ -97,7 +97,7 @@ namespace NumpyDotNet
             return !(s1 == s2);
         }
 
-        public shape(IEnumerable<npy_intp> dim)
+        public shape(IEnumerable<Int32> dim)
         {
             int nd = dim.Count();
             iDims = new npy_intp[nd];
@@ -105,7 +105,19 @@ namespace NumpyDotNet
             int i = 0;
             foreach (var d in dim)
             {
-                iDims[i] = d;
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+        }
+        public shape(IEnumerable<Int64> dim)
+        {
+            int nd = dim.Count();
+            iDims = new npy_intp[nd];
+
+            int i = 0;
+            foreach (var d in dim)
+            {
+                iDims[i] = (npy_intp)d;
                 i++;
             }
         }
@@ -125,32 +137,58 @@ namespace NumpyDotNet
             Array.Copy(s.iDims, iDims, s.iDims.Length);
         }
 
-        public shape(npy_intp Dim1)
+        public shape(Int32 Dim1)
         {
             iDims = new npy_intp[1];
-            iDims[0] = Dim1;
+            iDims[0] = (npy_intp)Dim1;
+        }
+        public shape(Int64 Dim1)
+        {
+            iDims = new npy_intp[1];
+            iDims[0] = (npy_intp)Dim1;
         }
 
-        public shape(npy_intp Dim1, npy_intp Dim2)
+        public shape(Int32 Dim1, Int32 Dim2)
         {
             iDims = new npy_intp[2];
-            iDims[0] = Dim1;
-            iDims[1] = Dim2;
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
         }
-        public shape(npy_intp Dim1, npy_intp Dim2, npy_intp Dim3)
+        public shape(Int64 Dim1, Int64 Dim2)
+        {
+            iDims = new npy_intp[2];
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
+        }
+        public shape(Int32 Dim1, Int32 Dim2, Int32 Dim3)
         {
             iDims = new npy_intp[3];
-            iDims[0] = Dim1;
-            iDims[1] = Dim2;
-            iDims[2] = Dim3;
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
+            iDims[2] = (npy_intp)Dim3;
         }
-        public shape(npy_intp Dim1, npy_intp Dim2, npy_intp Dim3, npy_intp Dim4)
+        public shape(Int64 Dim1, Int64 Dim2, Int64 Dim3)
+        {
+            iDims = new npy_intp[3];
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
+            iDims[2] = (npy_intp)Dim3;
+        }
+        public shape(Int32 Dim1, Int32 Dim2, Int32 Dim3, Int32 Dim4)
         {
             iDims = new npy_intp[4];
-            iDims[0] = Dim1;
-            iDims[1] = Dim2;
-            iDims[2] = Dim3;
-            iDims[3] = Dim4;
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
+            iDims[2] = (npy_intp)Dim3;
+            iDims[3] = (npy_intp)Dim4;
+        }
+        public shape(Int64 Dim1, Int64 Dim2, Int64 Dim3, Int64 Dim4)
+        {
+            iDims = new npy_intp[4];
+            iDims[0] = (npy_intp)Dim1;
+            iDims[1] = (npy_intp)Dim2;
+            iDims[2] = (npy_intp)Dim3;
+            iDims[3] = (npy_intp)Dim4;
         }
 
         public override string ToString()

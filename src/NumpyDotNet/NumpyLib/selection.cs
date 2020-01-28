@@ -718,10 +718,18 @@ namespace NumpyLib
             }
         }
 
+#if NPY_INTP_64
         static int npy_get_msb(npy_intp unum)
         {
             return npy_get_msb(Convert.ToUInt64(unum));
         }
+#else
+        static int npy_get_msb(npy_intp unum)
+        {
+            return npy_get_msb(Convert.ToUInt32(unum));
+        }
+#endif
+
         static int npy_get_msb(npy_uintp unum)
         {
             int depth_limit = 0;

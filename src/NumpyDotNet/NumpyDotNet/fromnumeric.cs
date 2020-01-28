@@ -570,6 +570,7 @@ namespace NumpyDotNet
             return transpose(vstack(a), axes);
         }
 
+#if NPY_INTP_64
         public static ndarray transpose(ndarray a, int[] axes)
         {
             if (axes != null)
@@ -584,6 +585,25 @@ namespace NumpyDotNet
             }
             return transpose(a, (npy_intp[])null);
         }
+#else
+        public static ndarray transpose(ndarray a, long[] axes)
+        {
+            if (axes != null)
+            {
+                List<npy_intp> _axes = new List<npy_intp>();
+                foreach (var axis in axes)
+                {
+                    _axes.Add((npy_intp)axis);
+                }
+
+                return transpose(a, _axes.ToArray());
+            }
+            return transpose(a, (npy_intp[])null);
+        }
+#endif
+
+
+
 
 
 
@@ -690,7 +710,7 @@ namespace NumpyDotNet
 
         public static ndarray partition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
-            return partition(a, new long[1] { kth }, axis, kind, order);
+            return partition(a, new npy_intp[1] { kth }, axis, kind, order);
         }
 
         #endregion
@@ -3070,7 +3090,7 @@ namespace NumpyDotNet
                     }
                     // setup wgt to broadcast along axis
 
-                    List<long> newShape = new List<npy_intp>();
+                    List<npy_intp> newShape = new List<npy_intp>();
                     for (int i = 0; i < arr.ndim-1; i++)
                         newShape.Add(1);
                     newShape.AddRange(wgt.shape.iDims);

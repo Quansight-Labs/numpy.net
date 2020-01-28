@@ -592,7 +592,7 @@ namespace NumpyLib
             throw new NotImplementedException();
         }
 
-        private static void _dec_src_ref_nop(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _dec_src_ref_nop(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             throw new NotImplementedException();
         }

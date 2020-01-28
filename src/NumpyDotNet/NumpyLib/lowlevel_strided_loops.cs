@@ -84,13 +84,13 @@ namespace NumpyLib
                                              npy_intp N, npy_intp src_itemsize,
                                              NpyAuxData transferdata);
 
-        private static void NPY_RAW_ITER_START(int idim, int ndim, long[] coord, long[] shape_it)
+        private static void NPY_RAW_ITER_START(int idim, int ndim, npy_intp[] coord, npy_intp[] shape_it)
         {
-            memset(new VoidPtr(coord), 0, ndim * sizeof(long));
+            memset(new VoidPtr(coord), 0, ndim * sizeof(npy_intp));
         }
 
 
-        private static bool NPY_RAW_ITER_TWO_NEXT(ref int idim, int ndim, long[] coord, long[] shape, VoidPtr dataA, long[] stridesA, VoidPtr dataB, long[] stridesB)
+        private static bool NPY_RAW_ITER_TWO_NEXT(ref int idim, int ndim, npy_intp[] coord, npy_intp[] shape, VoidPtr dataA, npy_intp[] stridesA, VoidPtr dataB, npy_intp[] stridesB)
         {
             for (idim = 1; idim < ndim; ++idim)
             {
@@ -111,10 +111,10 @@ namespace NumpyLib
         }
 
 
-        private static bool NPY_RAW_ITER_THREE_NEXT(ref int idim, int ndim, long[] coord, long[] shape, 
-                                                VoidPtr dataA, long[] stridesA, 
-                                                VoidPtr dataB, long[] stridesB, 
-                                                VoidPtr dataC, long[] stridesC)
+        private static bool NPY_RAW_ITER_THREE_NEXT(ref int idim, int ndim, npy_intp[] coord, npy_intp[] shape, 
+                                                VoidPtr dataA, npy_intp[] stridesA, 
+                                                VoidPtr dataB, npy_intp[] stridesB, 
+                                                VoidPtr dataC, npy_intp[] stridesC)
         {
             for (idim = 1; idim < ndim; ++idim)
             { 
@@ -156,192 +156,192 @@ namespace NumpyLib
         }
 
 
-        private static void _aligned_strided_to_contig_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size1_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size1_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size2_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size2_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size4_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size4_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size8_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size8_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size16_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size16_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_contig_to_strided_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_contig_to_strided_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_contig_to_strided_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_contig_to_strided_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_contig_to_strided_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_contig_to_strided_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_contig_to_strided_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_contig_to_strided_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size1(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size1(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_contig_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_contig_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_contig_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_contig_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_contig_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_contig_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_contig_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_contig_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_contig_to_strided_size1(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_contig_to_strided_size1(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _contig_to_strided_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _contig_to_strided_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _contig_to_strided_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _contig_to_strided_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _contig_to_strided_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _contig_to_strided_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _contig_to_strided_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _contig_to_strided_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_strided_size1(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_strided_size1(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_strided_size2(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_strided_size2(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_strided_size4(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_strided_size4(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_strided_size8(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_strided_size8(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _strided_to_strided_size16(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _strided_to_strided_size16(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _contig_to_contig(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _contig_to_contig(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             memmove(dst, src, src_itemsize * N);
         }
 
-        private static void _aligned_strided_to_contig_size16_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size16_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size4_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size4_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size8_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size8_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size1_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size1_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }
 
-        private static void _aligned_strided_to_contig_size2_srcstride0(VoidPtr dst, long dst_stride, VoidPtr src, long src_stride, long N, long src_itemsize, NpyAuxData transferdata)
+        private static void _aligned_strided_to_contig_size2_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
             _strided_to_strided(dst, dst_stride, src, src_stride, N, src_itemsize, transferdata);
         }

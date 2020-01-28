@@ -2791,7 +2791,7 @@ namespace NumpyDotNet
 
                     // merge reduced axis
 
-                    var newShape = new long[nkeep + 1];
+                    var newShape = new npy_intp[nkeep + 1];
                     for (int i = 0; i < nkeep; i++)
                     {
                         newShape[i] = a.shape.iDims[i];

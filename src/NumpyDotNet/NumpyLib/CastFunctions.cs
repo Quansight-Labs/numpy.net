@@ -55,7 +55,7 @@ namespace NumpyLib
             return;
         }
 
-        private static long AdjustedOffset(VoidPtr vp)
+        private static npy_intp AdjustedOffset(VoidPtr vp)
         {
             var Handler = numpyAPI.GetArrayHandler(vp.type_num);
             return vp.data_offset / Handler.ItemSize;

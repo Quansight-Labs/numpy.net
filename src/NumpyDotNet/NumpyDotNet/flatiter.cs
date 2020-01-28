@@ -124,7 +124,11 @@ namespace NumpyDotNet
         {
             get
             {
+#if NPY_INTP_64
                 return Get(Convert.ToInt64(index));
+#else
+                return Get(Convert.ToInt32(index));
+#endif
             }
             set
             {
@@ -172,7 +176,7 @@ namespace NumpyDotNet
             get
             {
                 int nd = arr.ndim;
-                long[] result = new long[nd];
+                npy_intp[] result = new npy_intp[nd];
                 npy_intp[] coords = NpyCoreApi.IterCoords(this);
                 for (int i = 0; i < nd; i++)
                 {

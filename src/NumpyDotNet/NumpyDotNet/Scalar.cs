@@ -71,7 +71,7 @@ namespace NumpyDotNet
         /// Fill the value with the value from the 0-d array
         /// </summary>
         /// <param name="arr"></param>
-        internal virtual ScalarGeneric FillData(ndarray arr, long offset, bool nativeByteOrder) {
+        internal virtual ScalarGeneric FillData(ndarray arr, npy_intp offset, bool nativeByteOrder) {
             throw new NotImplementedException();
         }
 
@@ -1050,7 +1050,7 @@ namespace NumpyDotNet
             return result;
         }
 
-        internal override ScalarGeneric FillData(ndarray arr, long offset, bool isNativeByteOrder) {
+        internal override ScalarGeneric FillData(ndarray arr, npy_intp offset, bool isNativeByteOrder) {
             value = (byte)numpyAPI.GetItem(arr.Array, (int)offset);
             return this;
         }
@@ -1864,7 +1864,7 @@ namespace NumpyDotNet
             return a;
         }
 
-        internal override ScalarGeneric FillData(ndarray arr, long offset, bool isNativeByteOrder)
+        internal override ScalarGeneric FillData(ndarray arr, npy_intp offset, bool isNativeByteOrder)
         {
             int elsize = arr.ItemSize;
 
@@ -1985,7 +1985,7 @@ namespace NumpyDotNet
             return result;
         }
 
-        internal override ScalarGeneric FillData(ndarray arr, long offset, bool isNativeByteOrder) {
+        internal override ScalarGeneric FillData(ndarray arr, npy_intp offset, bool isNativeByteOrder) {
             value = arr.GetItem(offset);
             return this;
         }

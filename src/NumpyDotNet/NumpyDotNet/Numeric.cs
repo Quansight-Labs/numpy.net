@@ -917,11 +917,11 @@ namespace NumpyDotNet
             return tensordot(a, b, (PythonFunction.range(-axis, 0), PythonFunction.range(0, axis)));
         }
 
-        public static ndarray tensordot(object a, object b, (long[], long[]) axes)
+        public static ndarray tensordot(object a, object b, (npy_intp[], npy_intp[]) axes)
         {
 
-            long[] axes_a = axes.Item1;
-            long[] axes_b = axes.Item2;
+            npy_intp[] axes_a = axes.Item1;
+            npy_intp[] axes_b = axes.Item2;
 
             int na = axes_a.Length;
             int nb = axes_b.Length;
@@ -981,13 +981,13 @@ namespace NumpyDotNet
                 }
             }
 
-            List<long> newaxes_a = new List<long>();
+            List<npy_intp> newaxes_a = new List<npy_intp>();
             foreach (var k in notin)
                 newaxes_a.Add(k);
             foreach (var k in axes_a)
                 newaxes_a.Add(k);
- 
-            long N2 = 1;
+
+            npy_intp N2 = 1;
             foreach (var axis in axes_a)
             {
                 N2 *= as_.iDims[axis];
@@ -1000,9 +1000,9 @@ namespace NumpyDotNet
             }
 
             var multreduce = ufunc.reduce(NpyArray_Ops.npy_op_multiply, asanyarray(asax.ToArray()));
-            var newshape_a = new shape((long)multreduce.GetItem(0), N2);
+            var newshape_a = new shape((npy_intp)multreduce.GetItem(0), N2);
 
-            List<long> olda = new List<npy_intp>();
+            List<npy_intp> olda = new List<npy_intp>();
             foreach (var axis in notin)
             {
                 olda.Add(as_.iDims[axis]);
@@ -1018,7 +1018,7 @@ namespace NumpyDotNet
                     notin.Add(k);
                 }
             }
-            List<long> newaxes_b = new List<long>();
+            List<npy_intp> newaxes_b = new List<npy_intp>();
             foreach (var k in axes_b)
                 newaxes_b.Add(k);
             foreach (var k in notin)
@@ -1030,16 +1030,16 @@ namespace NumpyDotNet
                 N2 *= bs.iDims[axis];
             }
 
-            List<long> bsax = new List<long>();
+            List<npy_intp> bsax = new List<npy_intp>();
             foreach (var ax in notin)
             {
                 bsax.Add(bs.iDims[ax]);
             }
 
             multreduce = ufunc.reduce(NpyArray_Ops.npy_op_multiply, asanyarray(bsax.ToArray()));
-            var newshape_b = new shape(N2, (long)multreduce.GetItem(0));
+            var newshape_b = new shape(N2, (npy_intp)multreduce.GetItem(0));
 
-            List<long> oldb = new List<npy_intp>();
+            List<npy_intp> oldb = new List<npy_intp>();
             foreach (var axis in notin)
             {
                 oldb.Add(bs.iDims[axis]);

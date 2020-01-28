@@ -94,7 +94,7 @@ namespace NumpyDotNet
         /// <param name="strides">Offset in bytes to reach next element in each dimension</param>
         /// <param name="dimIdx">Index of the current dimension (starts at 0, recursively counts up)</param>
         /// <param name="offset">Byte offset into data array, starts at 0</param>
-        private static void DumpArray(NpyArray arr, List<string> sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, long offset, npy_intp totalElements, int IndentCount, bool UseParensForMarkers)
+        private static void DumpArray(NpyArray arr, List<string> sb, npy_intp[] dimensions, npy_intp[] strides, int dimIdx, npy_intp offset, npy_intp totalElements, int IndentCount, bool UseParensForMarkers)
         {
 
             if (dimIdx == arr.nd)

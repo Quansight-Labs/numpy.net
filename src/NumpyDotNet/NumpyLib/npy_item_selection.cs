@@ -1552,7 +1552,7 @@ namespace NumpyLib
         }
 
 
-        private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, long startingIndex)
+        private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, npy_intp startingIndex)
         {
             dynamic lastLowest = ArgSortMinValue(sortData.type_num);
             dynamic _MaxValue = ArgSortMaxValue(sortData.type_num);
