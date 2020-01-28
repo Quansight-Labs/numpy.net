@@ -1115,6 +1115,72 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
+        public void test_min_OBJECT()
+        {
+            Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var x = np.array(TestData);
+            Object y = (Object)np.min(x);
+
+            print(x);
+            print(y);
+
+            Assert.AreEqual((Object)(-17), y);
+        }
+
+        [TestMethod]
+        public void test_max_OBJECT()
+        {
+            // would have to rewrite object implementation of Minimum to use <= >= etc.
+
+            Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var x = np.array(TestData);
+            Object y = (Object)np.max(x);
+
+            print(x);
+            print(y);
+
+            Assert.AreEqual((Object)25, y);
+        }
+
+
+        [TestMethod]
+        public void test_setdiff1d_OBJECT()
+        {
+            Object[] TestDataA = new Object[] { 1, 2, 3, 2, 4, };
+            Object[] TestDataB = new Object[] { 3, 4, 5, 6 };
+
+            var a = np.array(TestDataA);
+            var b = np.array(TestDataB);
+            ndarray c = np.setdiff1d(a, b);
+
+            print(a);
+            print(b);
+            print(c);
+
+            AssertArray(c, new Object[] { 1, 2 });
+
+        }
+
+        [TestMethod]
+        public void test_setdiff1d_2_OBJECT()
+        {
+            Object[] TestDataB = new Object[] { 3, 4, 5, 6 };
+
+            var a = np.arange(1, 39).reshape(new shape(2, -1)).astype(np.Object);
+            var b = np.array(TestDataB);
+            ndarray c = np.setdiff1d(a, b);
+
+            print(a);
+            print(b);
+            print(c);
+
+            AssertArray(c, new Object[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                         17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                                         29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
+
+        }
+
+        [TestMethod]
         public void test_rot90_1_OBJECT()
         {
             ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }, np.Object);
@@ -1170,7 +1236,60 @@ namespace NumpyDotNetTests
             AssertArray(c, new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
         }
 
-  
+        [TestMethod]
+        public void test_logical_and_1_OBJECT()
+        {
+            var x = np.arange(5).astype(np.Object);
+            var c = np.logical_and(x > 1, x < 4);
+            AssertArray(c, new bool[] { false, false, true, true, false });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var d = np.logical_and(y > 1, y < 4);
+            AssertArray(d, new bool[,] { { false, false, true }, { true, false, false } });
+            print(d);
+        }
+
+        [TestMethod]
+        public void test_logical_or_1_OBJECT()
+        {
+            var x = np.arange(5).astype(np.Object);
+            var c = np.logical_or(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var d = np.logical_or(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
+        }
+
+        [TestMethod]
+        public void test_logical_xor_1_OBJECT()
+        {
+            var x = np.arange(5).astype(np.Object);
+            var c = np.logical_xor(x < 1, x > 3);
+            AssertArray(c, new bool[] { true, false, false, false, true });
+            print(c);
+
+            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var d = np.logical_xor(y < 1, y > 3);
+            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
+            print(d);
+
+            var e = np.logical_xor((object)0, np.eye(2).astype(np.Object));
+            AssertArray(e, new bool[,] { { true, false }, { false, true } });
+        }
+
+        [TestMethod]
+        public void test_logical_not_1_OBJECT()
+        {
+            var x = np.arange(5).astype(np.Object);
+            var c = np.logical_not(x < 3);
+            AssertArray(c, new bool[] { false, false, false, true, true });
+            print(c);
+        }
+
 
         [TestMethod]
         public void test_copyto_1_OBJECT()
@@ -2664,20 +2783,20 @@ namespace NumpyDotNetTests
             ndarray b = np.clip(a, 1, 8);
             print(b);
             print("*****");
-            AssertArray(b, new double[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, new Int32[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
             ndarray c = np.clip(a, 3, 6, @out: a);
             print(c);
-            AssertArray(c, new double[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(c, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
             print(a);
-            AssertArray(a, new double[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(a, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
             print("*****");
 
             a = np.arange(16).reshape(new shape(4, 4)).astype(np.Object);
             print(a);
             b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Object), 8);
             print(b);
-            AssertArray(b, new double[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
 
             a["...", "..."] = "X";
             print(a);
@@ -2865,11 +2984,11 @@ namespace NumpyDotNetTests
         public void test_maximum_1_OBJECT()
         {
             var a = np.maximum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new double[] { 2, 5, 4 });
+            AssertArray(a, new int[] { 2, 5, 4 });
             print(a);
 
             var b = np.maximum(np.eye(2, dtype: np.Object), new Object[] { 5, 2 }); // broadcasting
-            AssertArray(b, new double[,] { { 5, 2 }, { 5, 2 } });
+            AssertArray(b, new int[,] { { 5, 2 }, { 5, 2 } });
             print(b);
 
             //////////////////////
@@ -2895,10 +3014,10 @@ namespace NumpyDotNetTests
         public void test_minimum_1_OBJECT()
         {
             var a = np.minimum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new double[] { 1, 3, 2 });
+            AssertArray(a, new int[] { 1, 3, 2 });
             print(a);
 
-            var b = np.minimum(np.eye(2, dtype: np.Object), np.array(new Int32[] { 5, 2 }).astype(np.Object)); // broadcasting
+            var b = np.minimum(np.eye(2).astype(np.Object), np.array(new Int32[] { 5, 2 }).astype(np.Object)); // broadcasting
             AssertArray(b, new double[,] { { 1, 0 }, { 0, 1 } });
             print(b);
 
@@ -2923,7 +3042,7 @@ namespace NumpyDotNetTests
         public void test_fmax_1_OBJECT()
         {
             var a = np.fmax(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new double[] { 2, 5, 4 });
+            AssertArray(a, new int[] { 2, 5, 4 });
             print(a);
 
             var b = np.fmax(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
@@ -2931,7 +3050,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmax(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            AssertArray(c, new float[] { 0, float.NaN, float.NaN });
             print(c);
 
             var d = np.fmax(double.PositiveInfinity, 1);
@@ -2958,7 +3077,7 @@ namespace NumpyDotNetTests
         public void test_fmin_1_OBJECT()
         {
             var a = np.fmin(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new double[] { 1, 3, 2 });
+            AssertArray(a, new int[] { 1, 3, 2 });
             print(a);
 
             var b = np.fmin(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
@@ -2966,7 +3085,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmin(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            AssertArray(c, new float[] { 0, float.NaN, float.NaN });
             print(c);
 
             //////////////////////
@@ -4613,17 +4732,17 @@ namespace NumpyDotNetTests
 
             ndarray b = np.amin(a);          // Minimum of the flattened array
             print(b);
-            Assert.AreEqual((double)30, b.GetItem(0));
+            Assert.AreEqual(30, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amin(a, axis: 0);  // Minimum along the first axis
             print(c);
-            AssertArray(c, new double[] { 30, 31, 32, 33 });
+            AssertArray(c, new Int32[] { 30, 31, 32, 33 });
             print("*****");
 
             ndarray d = np.amin(a, axis: 1);   // Minimum along the second axis
             print(d);
-            AssertArray(d, new double[] { 30, 34, 38, 42 });
+            AssertArray(d, new Int32[] { 30, 34, 38, 42 });
             print("*****");
 
             // Object don't support NAN
@@ -4645,17 +4764,17 @@ namespace NumpyDotNetTests
 
             ndarray b = np.amax(a);          // Maximum of the flattened array
             print(b);
-            Assert.AreEqual((double)45, b.GetItem(0));
+            Assert.AreEqual(45, b.GetItem(0));
             print("*****");
 
             ndarray c = np.amax(a, axis: 0);  // Maxima along the first axis
             print(c);
-            AssertArray(c, new double[] { 42, 43, 44, 45 });
+            AssertArray(c, new Int32[] { 42, 43, 44, 45 });
             print("*****");
 
             ndarray d = np.amax(a, axis: 1);   // Maxima along the second axis
             print(d);
-            AssertArray(d, new double[] { 33, 37, 41, 45 });
+            AssertArray(d, new Int32[] { 33, 37, 41, 45 });
             print("*****");
 
             // decimals don't support NAN
@@ -4679,16 +4798,16 @@ namespace NumpyDotNetTests
 
             ndarray b = np.ptp(a, axis: 0);
             print(b);
-            AssertArray(b, new double[] { 2, 2 });
+            AssertArray(b, new int[] { 2, 2 });
             print("*****");
 
             ndarray c = np.ptp(a, axis: 1);
             print(c);
-            AssertArray(c, new double[] { 1, 1 });
+            AssertArray(c, new int[] { 1, 1 });
 
             ndarray d = np.ptp(a);
             print(d);
-            Assert.AreEqual((double)3, d.GetItem(0));
+            Assert.AreEqual((int)3, d.GetItem(0));
         }
 
         [TestMethod]
@@ -6776,6 +6895,15 @@ namespace NumpyDotNetTests
             #endregion
 
             #region EQUAL operations
+            public override bool Equals(object obj)
+            {
+                return base.Equals(obj);
+            }
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
+
             public static bool operator ==(ObjectDemoData a, Int64 iValue)
             {
                 return a.iInt64 == iValue;
@@ -6803,6 +6931,8 @@ namespace NumpyDotNetTests
             #endregion
 
             #region NOTEQUAL operations
+
+   
             public static bool operator !=(ObjectDemoData a, Int64 iValue)
             {
                 return a.iInt64 != iValue;
@@ -6884,12 +7014,6 @@ namespace NumpyDotNetTests
             #endregion
         }
 
-
-        [TestMethod]
-        public void OBJECTOPERATIONS_CUSTOMDATA_REMINDER()
-        {
-            Assert.Fail("Reminder to implement Object Custom Data sample");
-        }
 
         // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading
 
@@ -7954,135 +8078,6 @@ namespace NumpyDotNetTests
 
         }
   
-        [TestMethod]
-        public void test_min_OBJECT_TODO()
-        {
-            // would have to rewrite object implementation of Minimum to use <= >= etc.
-
-            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
-            var x = np.array(TestData);
-            BigInteger y = (BigInteger)np.min(x);
-
-            print(x);
-            print(y);
-
-            Assert.AreEqual((BigInteger)(-17), y);
-        }
-
-        [TestMethod]
-        public void test_max_OBJECT_TODO()
-        {
-            // would have to rewrite object implementation of Minimum to use <= >= etc.
-
-            BigInteger[] TestData = new BigInteger[] { 25, -17, -15, -02, 02, 15, 17, 20 };
-            var x = np.array(TestData);
-            BigInteger y = (BigInteger)np.max(x);
-
-            print(x);
-            print(y);
-
-            Assert.AreEqual((BigInteger)25, y);
-        }
-
-
-        [TestMethod]
-        public void test_setdiff1d_OBJECT_TODO()
-        {
-            // setdiff1d seems to have support for objects.  Let's see if we can make it work
-            BigInteger[] TestDataA = new BigInteger[] { 1, 2, 3, 2, 4, };
-            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
-
-            var a = np.array(TestDataA);
-            var b = np.array(TestDataB);
-            ndarray c = np.setdiff1d(a, b);
-
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] { 1, 2 });
-
-        }
-
-        [TestMethod]
-        public void test_setdiff1d_2_OBJECT_TODO()
-        {
-            // setdiff1d seems to have support for objects.  Let's see if we can make it work
-
-            BigInteger[] TestDataB = new BigInteger[] { 3, 4, 5, 6 };
-
-            var a = np.arange(1, 39, dtype: np.BigInt).reshape(new shape(2, -1));
-            var b = np.array(TestDataB);
-            ndarray c = np.setdiff1d(a, b);
-
-            print(a);
-            print(b);
-            print(c);
-
-            AssertArray(c, new BigInteger[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-                                         17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-                                         29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
-
-        }
-
-        [TestMethod]
-        public void test_logical_and_1_OBJECT_TODO()
-        {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_and(x > 1, x < 4);
-            AssertArray(c, new bool[] { false, false, true, true, false });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_and(y > 1, y < 4);
-            AssertArray(d, new bool[,] { { false, false, true }, { true, false, false } });
-            print(d);
-        }
-
-        [TestMethod]
-        public void test_logical_or_1_OBJECT_TODO()
-        {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_or(x < 1, x > 3);
-            AssertArray(c, new bool[] { true, false, false, false, true });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_or(y < 1, y > 3);
-            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
-            print(d);
-        }
-
-        [TestMethod]
-        public void test_logical_xor_1_OBJECT_TODO()
-        {
-
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_xor(x < 1, x > 3);
-            AssertArray(c, new bool[] { true, false, false, false, true });
-            print(c);
-
-            var y = np.arange(6, dtype: np.BigInt).reshape((2, 3));
-            var d = np.logical_xor(y < 1, y > 3);
-            AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
-            print(d);
-
-            var e = np.logical_xor((BigInteger)0, np.eye(2, dtype: np.BigInt));
-            AssertArray(e, new bool[,] { { true, false }, { false, true } });
-        }
-
-        [TestMethod]
-        public void test_logical_not_1_OBJECT_TODO()
-        {
-            var x = np.arange(5, dtype: np.BigInt);
-            var c = np.logical_not(x < 3);
-            AssertArray(c, new bool[] { false, false, false, true, true });
-            print(c);
-        }
-
-
         #endregion
 
     }
