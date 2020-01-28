@@ -701,6 +701,54 @@ namespace NumpyLib
         {
             return bValue % operand;
         }
+        protected override object Floor(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Floor(Convert.ToDecimal(bValue));
+            }
+            return Math.Floor(Convert.ToDouble(bValue));
+        }
+        protected override object Ceiling(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Ceiling(Convert.ToDecimal(bValue));
+            }
+            return Math.Ceiling(Convert.ToDouble(bValue));
+        }
+        protected override object Maximum(dynamic bValue, dynamic operand)
+        {
+            if (bValue >= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object FMax(dynamic bValue, dynamic operand)
+        {
+            if (bValue >= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object Minimum(dynamic bValue, dynamic operand)
+        {
+            if (bValue <= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object FMin(dynamic bValue, dynamic operand)
+        {
+            if (bValue <= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object Rint(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Round(Convert.ToDecimal(bValue));
+            }
+            return Math.Round(Convert.ToDouble(bValue));
+        }
 
     }
 
