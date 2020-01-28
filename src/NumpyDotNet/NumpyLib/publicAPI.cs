@@ -558,7 +558,7 @@ namespace NumpyLib
         public static object GetItem(NpyArray arr, npy_intp index)
         {
             var offsetHelper = new NpyArrayOffsetHelper(arr);
-            long CalculatedOffset = offsetHelper.CalculateOffset(index);
+            npy_intp CalculatedOffset = offsetHelper.CalculateOffset(index);
 
             return arr.descr.f.getitem(CalculatedOffset * arr.ItemSize, arr);
         }
