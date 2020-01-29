@@ -95,9 +95,9 @@ namespace NumpyDotNet {
 
         internal static bool IsAligned(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.Npy_IsAligned(arr.Array);
             }
@@ -105,9 +105,9 @@ namespace NumpyDotNet {
 
         internal static bool IsWriteable(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.Npy_IsWriteable(arr.Array);
             }
@@ -125,9 +125,9 @@ namespace NumpyDotNet {
 
         internal static dtype SmallType(dtype t1, dtype t2)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArray_SmallType(t1.Descr, t2.Descr));
             }
@@ -142,9 +142,9 @@ namespace NumpyDotNet {
         /// <param name="src">Source array</param>
         internal static void MoveInto(ndarray dest, ndarray src)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_MoveInto(dest.Array, src.Array) == -1)
                 {
@@ -161,9 +161,9 @@ namespace NumpyDotNet {
         /// <returns></returns>
         internal static ndarray Combine(ndarray dest, ndarray src)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 NpyArray newArray = numpyAPI.NpyArray_Combine(dest.Array, src.Array);
                 if (newArray == null)
@@ -184,9 +184,9 @@ namespace NumpyDotNet {
         /// <returns></returns>
         internal static int CombineInto(ndarray dest, IEnumerable<ndarray> ndarrays)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 List<NpyArray> arrays = new List<NpyArray>();
                 foreach (var ndarray in ndarrays)
@@ -217,9 +217,9 @@ namespace NumpyDotNet {
         /// <returns>Newly allocated array</returns>
         internal static ndarray AllocArray(dtype descr, int numdim, npy_intp[] dimensions, bool fortran)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Alloc(descr.Descr, numdim, dimensions, fortran, null));
             }
@@ -243,9 +243,9 @@ namespace NumpyDotNet {
                 NpyCoreApi.Incref(descr.Descr);
 
 
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_FromArray(src.Array, descr.Descr, flags));
             }
@@ -298,7 +298,7 @@ namespace NumpyDotNet {
                 arr.Array.strides = dim_or_strides;
                 arr.Array.nd = len;
             }
- 
+
         }
 
 
@@ -324,9 +324,9 @@ namespace NumpyDotNet {
         internal static ndarray NewFromDescr(dtype descr, npy_intp[] dims, npy_intp[] strides, NPYARRAYFLAGS flags, object interfaceData)
         {
             Incref(descr.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NewFromDescr(descr.Descr, dims.Length, dims, strides, null, flags, false, null, interfaceData));
             }
@@ -335,9 +335,9 @@ namespace NumpyDotNet {
         internal static ndarray NewFromDescr(dtype descr, npy_intp[] dims, npy_intp[] strides, VoidPtr data, NPYARRAYFLAGS flags, object interfaceData) {
 
             Incref(descr.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NewFromDescr(descr.Descr, dims.Length, dims, strides, data, flags, false, null, interfaceData));
             }
@@ -345,9 +345,9 @@ namespace NumpyDotNet {
 
         internal static flatiter IterNew(ndarray ao)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new flatiter(numpyAPI.NpyArray_IterNew(ao.core));
             }
@@ -356,9 +356,9 @@ namespace NumpyDotNet {
 
         internal static NpyArrayIterObject BroadcastToShape(ndarray ao, npy_intp[] dims, int nd)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_BroadcastToShape(ao.core, dims, nd);
             }
@@ -366,9 +366,9 @@ namespace NumpyDotNet {
 
         internal static ndarray IterSubscript(flatiter iter, NpyIndexes indexes)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_IterSubscript(iter.Iter, indexes.Indexes, indexes.NumIndexes));
             }
@@ -376,9 +376,9 @@ namespace NumpyDotNet {
 
         internal static void IterSubscriptAssign(flatiter iter, NpyIndexes indexes, ndarray val)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_IterSubscriptAssign(iter.Iter, indexes.Indexes, indexes.NumIndexes, val.Array) < 0)
                 {
@@ -389,9 +389,9 @@ namespace NumpyDotNet {
 
         internal static ndarray FlatView(ndarray a)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_FlatView(a.Array));
             }
@@ -413,9 +413,9 @@ namespace NumpyDotNet {
             NpyArray[] coreArrays = arrays.Select(x => { Incref(x.Array); return x.Array; }).ToArray();
             NpyArrayMultiIterObject result;
 
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 result = numpyAPI.NpyArrayAccess_MultiIterFromArrays(coreArrays, coreArrays.Length);
             }
@@ -423,12 +423,12 @@ namespace NumpyDotNet {
             return result;
         }
 
-  
+
         internal static void MultiIterReset(NpyArrayMultiIterObject multi)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_Reset(multi);
             }
@@ -436,9 +436,9 @@ namespace NumpyDotNet {
 
         internal static void MultiIterNext(NpyArrayMultiIterObject multi)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_Next(multi);
             }
@@ -446,9 +446,9 @@ namespace NumpyDotNet {
 
         internal static bool MultiIterDone(NpyArrayMultiIterObject multi)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_NotDone(multi);
             }
@@ -457,9 +457,9 @@ namespace NumpyDotNet {
 
         internal static int MultiIterBroadcast(NpyArrayMultiIterObject multi)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_Broadcast(multi);
             }
@@ -467,9 +467,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, object operand, bool UseSrcAsDest = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 ndarray @out = null;
                 if (UseSrcAsDest)
@@ -484,9 +484,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, ndarray b, bool UseSrcAsDest = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 ndarray @out = null;
                 if (UseSrcAsDest)
@@ -499,9 +499,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformUFUNC(NpyArray_Ops ops, ndarray x1, ndarray x2, ndarray @out, ndarray where)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, x1.Array, x2 != null ? x2.Array : null, @out != null ? @out.Array : null, where != null ? where.Array : null));
             }
@@ -511,9 +511,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformOuterOp(ndarray a, ndarray b, ndarray dest, NpyArray_Ops ops)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_PerformOuterOp(a.Array, b.Array, dest.Array, ops));
             }
@@ -522,9 +522,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformReduceOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_PerformReduceOp(a.Array, axis, ops, rtype, @out == null ? null : @out.Array, keepdims));
             }
@@ -533,9 +533,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformReduceAtOp(ndarray a, ndarray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_PerformReduceAtOp(a.Array, indices.Array, axis, ops, rtype, @out == null ? null : @out.Array));
             }
@@ -544,9 +544,9 @@ namespace NumpyDotNet {
 
         internal static ndarray PerformAccumulateOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_PerformAccumulateOp(a.Array, axis, ops, rtype, @out == null ? null : @out.Array));
             }
@@ -555,9 +555,9 @@ namespace NumpyDotNet {
 
         internal static IArrayHandlers GetArrayHandler(NPY_TYPES ItemType)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.GetArrayHandler(ItemType);
             }
@@ -566,9 +566,9 @@ namespace NumpyDotNet {
 
         internal static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.SetArrayHandler(ItemType, Handlers);
             }
@@ -578,9 +578,9 @@ namespace NumpyDotNet {
         {
             NpyUFuncObject ufuncPtr;
 
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 ufuncPtr = numpyAPI.NpyArray_GetNumericOp(op);
             }
@@ -596,9 +596,9 @@ namespace NumpyDotNet {
             }
 
             ndarray rval;
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 rval = new ndarray(numpyAPI.NpyUFunc_GenericReduction(f.UFunc, arr.Array,
                                     (indices != null) ? indices.Array : null,
@@ -615,9 +615,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Byteswap(ndarray arr, bool inplace)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Byteswap(arr.Array, inplace));
             }
@@ -626,9 +626,9 @@ namespace NumpyDotNet {
         public static ndarray CastToType(ndarray arr, dtype d, bool fortran)
         {
             Incref(d.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CastToType(arr.Array, d.Descr, fortran));
             }
@@ -636,9 +636,9 @@ namespace NumpyDotNet {
 
         internal static ndarray CheckAxis(ndarray arr, ref int axis, NPYARRAYFLAGS flags)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CheckAxis(arr.Array, ref axis, flags));
             }
@@ -646,9 +646,9 @@ namespace NumpyDotNet {
 
         internal static void CopyAnyInto(ndarray dest, ndarray src)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_CopyAnyInto(dest.Array, src.Array) < 0)
                 {
@@ -659,9 +659,9 @@ namespace NumpyDotNet {
 
         internal static void DescrDestroyFields(NpyDict fields)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyDict_Destroy(fields);
             }
@@ -671,9 +671,9 @@ namespace NumpyDotNet {
         internal static ndarray GetField(ndarray arr, dtype d, int offset)
         {
             Incref(d.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_GetField(arr.Array, d.Descr, offset));
             }
@@ -681,9 +681,9 @@ namespace NumpyDotNet {
 
         internal static ndarray GetImag(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_GetImag(arr.Array));
             }
@@ -691,9 +691,9 @@ namespace NumpyDotNet {
 
         internal static ndarray GetReal(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_GetReal(arr.Array));
             }
@@ -708,9 +708,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Newshape(ndarray arr, NpyArray_Dims dims, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Newshape(arr.Array, dims, order));
             }
@@ -718,9 +718,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Newshape(ndarray arr, npy_intp[] dims, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 NpyArray_Dims newDims = new NpyArray_Dims()
                 {
@@ -733,9 +733,9 @@ namespace NumpyDotNet {
 
         internal static void SetShape(ndarray arr, NpyArray_Dims dims)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_SetShape(arr.Array, dims) < 0)
                 {
@@ -746,9 +746,9 @@ namespace NumpyDotNet {
 
         internal static void SetState(ndarray arr, npy_intp[] dims, NPY_ORDER order, string rawdata)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_SetState(arr.Array, dims.Length, dims, order, rawdata, (rawdata != null) ? rawdata.Length : 0);
             }
@@ -760,9 +760,9 @@ namespace NumpyDotNet {
             ndarray arr, npy_intp offset, bool ensure_array)
         {
             Incref(d.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NewView(d.Descr, nd, dims, strides, arr.Array, offset, ensure_array));
             }
@@ -776,9 +776,9 @@ namespace NumpyDotNet {
         /// <returns>New array</returns>
         internal static ndarray NewCopy(ndarray arr, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NewCopy(arr.Array, order));
             }
@@ -786,9 +786,9 @@ namespace NumpyDotNet {
 
         internal static NPY_TYPES TypestrConvert(int elsize, NPY_TYPECHAR letter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_TypestrConvert(elsize, letter);
             }
@@ -797,9 +797,9 @@ namespace NumpyDotNet {
         internal static void AddField(NpyDict fields, List<string> names, int i, string name, dtype fieldType, int offset, string title)
         {
             Incref(fieldType.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArrayAccess_AddField(fields, names, i, name, fieldType.Descr, offset, title) < 0)
                 {
@@ -811,9 +811,9 @@ namespace NumpyDotNet {
         internal static NpyArray_DescrField GetDescrField(dtype d, string name)
         {
             NpyArray_DescrField result = null;
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArrayAccess_GetDescrField(d.Descr, name, ref result) < 0)
                 {
@@ -825,9 +825,9 @@ namespace NumpyDotNet {
 
         internal static dtype DescrNewVoid(NpyDict fields, List<string> names, int elsize, NpyArray_Descr_Flags flags, int alignment)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArrayAccess_DescrNewVoid(fields, names, elsize, flags, alignment));
             }
@@ -835,9 +835,9 @@ namespace NumpyDotNet {
 
         internal static dtype DescrNewSubarray(dtype basetype, npy_intp[] shape)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArray_DescrNewSubarray(basetype.Descr, shape.Length, shape));
             }
@@ -845,9 +845,9 @@ namespace NumpyDotNet {
 
         internal static dtype DescrNew(dtype d)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArray_DescrNew(d.Descr));
             }
@@ -855,9 +855,9 @@ namespace NumpyDotNet {
 
         internal static void GetBytes(ndarray arr, byte[] bytes, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.MemCpy(new VoidPtr(bytes), 0, arr.Array.data, 0, bytes.LongLength);
             }
@@ -865,9 +865,9 @@ namespace NumpyDotNet {
 
         internal static void FillWithObject(ndarray arr, object obj)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_FillWithObject(arr.Array, obj) < 0)
                 {
@@ -879,9 +879,9 @@ namespace NumpyDotNet {
 
         internal static void FillWithScalar(ndarray arr, ndarray zero_d_array)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_FillWithScalar(arr.Array, zero_d_array.Array) < 0)
                 {
@@ -898,9 +898,9 @@ namespace NumpyDotNet {
                 Incref(descr);
             }
 
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (subtype != null)
                 {
@@ -911,14 +911,14 @@ namespace NumpyDotNet {
                     return new ndarray(numpyAPI.NpyArray_View(arr.Array, descr, null));
                 }
             }
-     
+
         }
 
         internal static ndarray ViewLike(ndarray arr, ndarray proto)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArrayAccess_ViewLike(arr.Array, proto.Array));
             }
@@ -926,9 +926,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Subarray(ndarray self, VoidPtr dataptr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Subarray(self.Array, dataptr));
             }
@@ -936,9 +936,9 @@ namespace NumpyDotNet {
 
         internal static IList<npy_intp> IndicesFromAxis(ndarray self, int axis)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_IndexesFromAxis(self.Array, axis);
             }
@@ -946,9 +946,9 @@ namespace NumpyDotNet {
 
         internal static dtype DescrNewByteorder(dtype d, char order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArray_DescrNewByteorder(d.Descr, order));
             }
@@ -956,9 +956,9 @@ namespace NumpyDotNet {
 
         internal static void UpdateFlags(ndarray arr, NPYARRAYFLAGS flagmask)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_UpdateFlags(arr.Array, flagmask);
             }
@@ -971,9 +971,9 @@ namespace NumpyDotNet {
         /// <param name="arr"></param>
         internal static void Fill(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArrayAccess_Fill(arr.Array) < 0)
                 {
@@ -984,9 +984,9 @@ namespace NumpyDotNet {
 
         internal static void SetDateTimeInfo(dtype d, string units, int num, int den, int events)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArrayAccess_SetDateTimeInfo(d.Descr, units, num, den, events) < 0)
                 {
@@ -997,9 +997,9 @@ namespace NumpyDotNet {
 
         internal static dtype InheritDescriptor(dtype t1, dtype other)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new dtype(numpyAPI.NpyArrayAccess_InheritDescriptor(t1.Descr, other.Descr));
             }
@@ -1007,9 +1007,9 @@ namespace NumpyDotNet {
 
         internal static bool EquivTypes(dtype d1, dtype d2)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_EquivTypes(d1.Descr, d2.Descr);
             }
@@ -1017,9 +1017,9 @@ namespace NumpyDotNet {
 
         internal static void CopyTo(ndarray dst, ndarray src, NPY_CASTING casting, ndarray wheremask_in = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_CopyTo(dst.Array, src.Array, casting, wheremask_in != null ? wheremask_in.Array : null);
             }
@@ -1028,9 +1028,9 @@ namespace NumpyDotNet {
 
         internal static void Place(ndarray arr, ndarray mask, ndarray vals)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_Place(arr.Array, mask.Array, vals.Array);
             }
@@ -1040,9 +1040,9 @@ namespace NumpyDotNet {
 
         internal static bool CanCastTo(dtype d1, dtype d2)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_CanCastTo(d1.Descr, d2.Descr);
             }
@@ -1055,9 +1055,9 @@ namespace NumpyDotNet {
         /// <returns>Format string</returns>
         internal static string GetBufferFormatString(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_GetBufferFormatString(arr.Array);
             }
@@ -1077,9 +1077,9 @@ namespace NumpyDotNet {
         /// <returns>Array of file contents</returns>
         internal static ndarray ArrayFromFile(string fileName, dtype type, int count, string sep)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArrayAccess_FromFile(fileName, (type != null) ? type.Descr : null, count, sep));
             }
@@ -1097,9 +1097,9 @@ namespace NumpyDotNet {
         /// <returns>Array of file contents</returns>
         internal static ndarray ArrayFromStream(Stream fileStream, dtype type, int count, string sep)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArrayAccess_FromStream(fileStream, (type != null) ? type.Descr : null, count, sep));
             }
@@ -1114,9 +1114,9 @@ namespace NumpyDotNet {
         /// <param name="format">.NET format string to use for writing values</param>
         internal static void ArrayToFile(ndarray arr, string fileName, string sep, string format)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_ToFile(arr.Array, fileName, sep, format);
             }
@@ -1131,9 +1131,9 @@ namespace NumpyDotNet {
         /// <param name="format">.NET format string to use for writing values</param>
         internal static void ArrayToStream(ndarray arr, Stream fileStream, string sep, string format)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_ToStream(arr.Array, fileStream, sep, format);
             }
@@ -1143,9 +1143,9 @@ namespace NumpyDotNet {
         internal static ndarray ArrayFromString(string data, dtype type, int count, string sep)
         {
             if (type != null) Incref(type.Descr);
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_FromString(data, data.Length, (type != null) ? type.Descr : null, count, sep));
             }
@@ -1161,9 +1161,9 @@ namespace NumpyDotNet {
         internal static ndarray CompareStringArrays(ndarray a1, ndarray a2, NpyDefs.NPY_COMPARE_OP op,
                                                     bool rstrip = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CompareStringArrays(a1.Array, a2.Array, (int)op, rstrip ? 1 : 0));
             }
@@ -1173,9 +1173,9 @@ namespace NumpyDotNet {
         // that at least holds the global interpreter lock (GlobalInterpLock).
         internal static int ElementStrides(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_ElementStrides(arr.Array);
             }
@@ -1183,9 +1183,9 @@ namespace NumpyDotNet {
 
         internal static long[] GetViewOffsets(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.GetViewOffsets(arr.Array);
             }
@@ -1194,19 +1194,19 @@ namespace NumpyDotNet {
 
         internal static long[] GetViewOffsets(NpyArrayIterObject iter, long count)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
-                return numpyAPI.GetViewOffsets(iter,count);
+                return numpyAPI.GetViewOffsets(iter, count);
             }
         }
 
         internal static NpyArray ArraySubscript(ndarray arr, NpyIndexes indexes)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_Subscript(arr.Array, indexes.Indexes, indexes.NumIndexes);
             }
@@ -1214,9 +1214,9 @@ namespace NumpyDotNet {
 
         internal static void IndexDealloc(NpyIndexes indexes)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_IndexDealloc(indexes.Indexes, indexes.NumIndexes);
             }
@@ -1224,9 +1224,9 @@ namespace NumpyDotNet {
 
         internal static npy_intp ArraySize(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_Size(arr.Array);
             }
@@ -1239,9 +1239,9 @@ namespace NumpyDotNet {
         /// <returns>The sub-array.</returns>
         internal static ndarray ArrayItem(ndarray arr, npy_intp index)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_ArrayItem(arr.Array, index));
             }
@@ -1249,9 +1249,9 @@ namespace NumpyDotNet {
 
         internal static ndarray IndexSimple(ndarray arr, NpyIndexes indexes)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 var array = numpyAPI.NpyArray_IndexSimple(arr.Array, indexes.Indexes, indexes.NumIndexes);
                 return array == null ? null : new ndarray(array);
@@ -1260,9 +1260,9 @@ namespace NumpyDotNet {
 
         internal static int IndexFancyAssign(ndarray dest, NpyIndexes indexes, ndarray values)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_IndexFancyAssign(dest.Array, indexes.Indexes, indexes.NumIndexes, values.Array);
             }
@@ -1270,9 +1270,9 @@ namespace NumpyDotNet {
 
         internal static int SetField(ndarray arr, NpyArray_Descr dtype, int offset, ndarray srcArray)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_SetField(arr.Array, dtype, offset, srcArray.Array);
             }
@@ -1280,9 +1280,9 @@ namespace NumpyDotNet {
 
         internal static void SetNumericOp(NpyArray_Ops op, ufunc ufunc)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_SetNumericOp(op, ufunc.UFunc);
             }
@@ -1290,9 +1290,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayAll(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_All(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
@@ -1300,9 +1300,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayAny(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Any(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
@@ -1310,18 +1310,18 @@ namespace NumpyDotNet {
 
         internal static ndarray NpyArray_UpscaleSourceArray(ndarray srcArray, ndarray operandArray)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NumericOpUpscaleSourceArray(srcArray.Array, operandArray.Array));
             }
         }
         internal static ndarray NpyArray_UpscaleSourceArray(ndarray srcArray, shape newshape)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_NumericOpUpscaleSourceArray(srcArray.Array, newshape.iDims, newshape.iDims.Length));
             }
@@ -1329,9 +1329,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayArgMax(ndarray self, int axis, ndarray ret)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_ArgMax(self.Array, axis, (ret == null ? null : ret.Array)));
             }
@@ -1339,9 +1339,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayArgMin(ndarray self, int axis, ndarray ret)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_ArgMin(self.Array, axis, (ret == null ? null : ret.Array)));
             }
@@ -1349,9 +1349,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArgSort(ndarray arr, int axis, NPY_SORTKIND sortkind)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_ArgSort(arr.Array, axis, sortkind));
             }
@@ -1359,9 +1359,9 @@ namespace NumpyDotNet {
 
         internal static int ArrayBool(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_Bool(arr.Array);
             }
@@ -1371,11 +1371,11 @@ namespace NumpyDotNet {
         {
             NpyArray[] coreArrays = arrays.Select(x => { Incref(x.Array); return x.Array; }).ToArray();
             NpyArray result;
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
-                result = numpyAPI.NpyArray_Concatenate(coreArrays, axis, ret != null ? ret.Array: null);
+                result = numpyAPI.NpyArray_Concatenate(coreArrays, axis, ret != null ? ret.Array : null);
             }
             CheckError();
             return new ndarray(result);
@@ -1384,9 +1384,9 @@ namespace NumpyDotNet {
 
         internal static NPY_SCALARKIND ScalarKind(NPY_TYPES typenum, ref NpyArray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_ScalarKind(typenum, ref arr);
             }
@@ -1394,9 +1394,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Choose(ndarray sel, ndarray[] arrays, ndarray ret = null, NPY_CLIPMODE clipMode = NPY_CLIPMODE.NPY_RAISE)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 var coreArrays = arrays.Select(x => x.Array).ToArray();
                 return new ndarray(numpyAPI.NpyArray_Choose(sel.Array, coreArrays, coreArrays.Length, ret == null ? null : ret.Array, clipMode));
@@ -1405,9 +1405,9 @@ namespace NumpyDotNet {
 
         internal static int Partition(ndarray op, ndarray ktharray, int axis, NPY_SELECTKIND which)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_Partition(op.Array, ktharray.Array, axis, which);
             }
@@ -1416,9 +1416,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArgPartition(ndarray op, ndarray ktharray, int axis, NPY_SELECTKIND which)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_ArgPartition(op.Array, ktharray.Array, axis, which));
             }
@@ -1426,9 +1426,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Correlate(ndarray arr1, ndarray arr2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Correlate(arr1.Array, arr2.Array, typenum, mode));
             }
@@ -1436,9 +1436,9 @@ namespace NumpyDotNet {
 
         internal static ndarray CopyAndTranspose(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CopyAndTranspose(arr.Array));
             }
@@ -1446,9 +1446,9 @@ namespace NumpyDotNet {
 
         internal static ndarray CumProd(ndarray arr, int axis, dtype rtype, ndarray ret = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CumProd(arr.Array, axis,
                     (rtype == null ? arr.TypeNum : rtype.TypeNum),
@@ -1458,9 +1458,9 @@ namespace NumpyDotNet {
 
         internal static ndarray CumSum(ndarray arr, int axis, dtype rtype, ndarray ret = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_CumSum(arr.Array, axis,
                         (rtype == null ? arr.TypeNum : rtype.TypeNum),
@@ -1470,9 +1470,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Floor(ndarray arr, ndarray ret = null)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Floor(arr.Array, (ret == null ? null : ret.Array)));
             }
@@ -1480,9 +1480,9 @@ namespace NumpyDotNet {
 
         internal static ndarray IsNaN(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_IsNaN(arr.Array));
             }
@@ -1490,18 +1490,18 @@ namespace NumpyDotNet {
 
         internal static void DestroySubarray(NpyArray_ArrayDescr subarrayPtr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
             }
         }
 
         internal static NpyArray_Descr_Flags DescrFindObjectFlag(dtype type)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_DescrFindObjectFlag(type.Descr);
             }
@@ -1509,9 +1509,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Flatten(ndarray arr, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Flatten(arr.Array, order));
             }
@@ -1519,9 +1519,9 @@ namespace NumpyDotNet {
 
         internal static ndarray InnerProduct(ndarray arr1, ndarray arr2, NPY_TYPES type)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_InnerProduct(arr1.Array, arr2.Array, type));
             }
@@ -1531,20 +1531,20 @@ namespace NumpyDotNet {
         {
             int n = arrays.Length;
             NpyArray[] coreArrays = arrays.Select(x => x.Array).ToArray();
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_LexSort(coreArrays, n, axis));
             }
         }
 
-   
+
         internal static ndarray MatrixProduct(ndarray arr1, ndarray arr2, NPY_TYPES type)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_MatrixProduct(arr1.Array, arr2.Array, type));
             }
@@ -1552,9 +1552,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayMax(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Max(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
@@ -1562,9 +1562,9 @@ namespace NumpyDotNet {
 
         internal static ndarray ArrayMin(ndarray arr, int axis, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Min(arr.Array, axis, (ret == null ? null : ret.Array), keepdims));
             }
@@ -1575,24 +1575,24 @@ namespace NumpyDotNet {
             int nd = arr.ndim;
             NpyArray[] coreArrays = new NpyArray[nd];
 
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_NonZero(arr.Array, coreArrays, arr) < 0)
                 {
                     NpyCoreApi.CheckError();
                 }
             }
-    
+
             return coreArrays.Select(x => new ndarray(x)).ToArray();
         }
 
         internal static ndarray Prod(ndarray arr, int axis, dtype rtype, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Prod(arr.Array, axis,
                         (rtype == null ? ScaleTypeUp(arr.TypeNum) : rtype.TypeNum),
@@ -1630,9 +1630,9 @@ namespace NumpyDotNet {
 
         internal static int PutMask(ndarray arr, ndarray values, ndarray mask)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_PutMask(arr.Array, values.Array, mask.Array);
             }
@@ -1640,9 +1640,9 @@ namespace NumpyDotNet {
 
         internal static int PutTo(ndarray arr, ndarray values, ndarray indices, NPY_CLIPMODE clipmode)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_PutTo(arr.Array, values.Array, indices.Array, clipmode);
             }
@@ -1651,9 +1651,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Ravel(ndarray arr, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Ravel(arr.Array, order));
             }
@@ -1661,9 +1661,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Repeat(ndarray arr, ndarray repeats, int axis)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Repeat(arr.Array, repeats.Array, axis));
             }
@@ -1671,9 +1671,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Searchsorted(ndarray arr, ndarray keys, NPY_SEARCHSIDE side)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_SearchSorted(arr.Array, keys.Array, side));
             }
@@ -1681,9 +1681,9 @@ namespace NumpyDotNet {
 
         internal static void Sort(ndarray arr, int axis, NPY_SORTKIND sortkind)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock) 
-            #endif
+#endif
             {
                 if (numpyAPI.NpyArray_Sort(arr.Array, axis, sortkind) < 0)
                 {
@@ -1694,9 +1694,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Squeeze(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Squeeze(arr.Array));
             }
@@ -1704,9 +1704,9 @@ namespace NumpyDotNet {
 
         internal static ndarray SqueezeSelected(ndarray arr, int axis)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_SqueezeSelected(arr.Array, axis));
             }
@@ -1714,9 +1714,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Sum(ndarray arr, int axis, dtype rtype, ndarray ret = null, bool keepdims = false)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_Sum(arr.Array, axis, (rtype == null ? NPY_TYPES.NPY_NOTYPE : rtype.TypeNum), (ret == null ? null : ret.Array), keepdims));
             }
@@ -1724,9 +1724,9 @@ namespace NumpyDotNet {
 
         internal static ndarray SwapAxis(ndarray arr, int a1, int a2)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_SwapAxes(arr.Array, a1, a2));
             }
@@ -1734,9 +1734,9 @@ namespace NumpyDotNet {
 
         internal static ndarray TakeFrom(ndarray arr, ndarray indices, int axis, ndarray ret, NPY_CLIPMODE clipMode)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return new ndarray(numpyAPI.NpyArray_TakeFrom(arr.Array, indices.Array, axis, (ret != null ? ret.Array : null), clipMode));
             }
@@ -1744,25 +1744,25 @@ namespace NumpyDotNet {
 
         internal static bool DescrIsNative(dtype type)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.npy_arraydescr_isnative(type.Descr);
             }
         }
 
-#endregion
+        #endregion
 
 
 
-#region NpyAccessLib functions
+        #region NpyAccessLib functions
 
         internal static List<string> DescrAllocNames(int n)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_DescrAllocNames(n);
             }
@@ -1770,18 +1770,18 @@ namespace NumpyDotNet {
 
         internal static NpyDict DescrAllocFields()
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_DescrAllocFields();
             }
         }
         internal static void DescrDestroyNames(List<string> p, int n)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_DescrDestroyNames(p, n);
             }
@@ -1790,9 +1790,9 @@ namespace NumpyDotNet {
 
         internal static void ArraySetDescr(ndarray arr, dtype newDescr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_SetDescr(arr.Array, newDescr.Descr);
             }
@@ -1800,9 +1800,9 @@ namespace NumpyDotNet {
 
         internal static long GetArrayDimension(ndarray arr, int dims)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return arr.Array.dimensions[dims];
             }
@@ -1810,9 +1810,9 @@ namespace NumpyDotNet {
 
         internal static long GetArrayStride(ndarray arr, int dims)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return arr.Array.strides[dims];
             }
@@ -1820,9 +1820,9 @@ namespace NumpyDotNet {
 
         internal static int BindIndex(ndarray arr, NpyIndexes indexes, NpyIndexes result)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_IndexBind(indexes.Indexes, indexes.NumIndexes, arr.Array.dimensions, arr.Array.nd, result.Indexes);
             }
@@ -1830,9 +1830,9 @@ namespace NumpyDotNet {
 
         internal static int GetFieldOffset(dtype descr, string fieldName, ref NpyArray_Descr descrPtr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_GetFieldOffset(descr.Descr, fieldName, ref descrPtr);
             }
@@ -1840,9 +1840,9 @@ namespace NumpyDotNet {
 
         internal static void Resize(ndarray arr, npy_intp[] newshape, bool refcheck, NPY_ORDER order)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 NpyArray_Dims newDims = new NpyArray_Dims()
                 {
@@ -1859,9 +1859,9 @@ namespace NumpyDotNet {
 
         internal static ndarray Transpose(ndarray arr, npy_intp[] permute)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 if (permute == null)
                 {
@@ -1881,9 +1881,9 @@ namespace NumpyDotNet {
 
         internal static void ClearUPDATEIFCOPY(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_ClearUPDATEIFCOPY(arr.Array);
             }
@@ -1892,9 +1892,9 @@ namespace NumpyDotNet {
 
         internal static VoidPtr IterNext(NpyArrayIterObject corePtr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_IterNext(corePtr);
             }
@@ -1902,9 +1902,9 @@ namespace NumpyDotNet {
 
         internal static void IterReset(NpyArrayIterObject iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_IterReset(iter);
             }
@@ -1912,9 +1912,9 @@ namespace NumpyDotNet {
 
         internal static NpyArrayMapIterObject IterGetNewMap(NpyIndex[] indexes, int n)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_MapIterNew(indexes, n);
             }
@@ -1923,9 +1923,9 @@ namespace NumpyDotNet {
 
         internal static int IterBindMap(NpyArrayMapIterObject mit, ndarray arr, NpyArray true_array)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArray_MapIterBind(mit, arr.Array, true_array);
             }
@@ -1934,9 +1934,9 @@ namespace NumpyDotNet {
 
         internal static void IterGetMap(NpyArrayMapIterObject iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_GetMap(iter);
             }
@@ -1944,9 +1944,9 @@ namespace NumpyDotNet {
 
         internal static void IterMapReset(NpyArrayMapIterObject iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_MapIterReset(iter);
             }
@@ -1955,9 +1955,9 @@ namespace NumpyDotNet {
 
         internal static void IterMapNext(NpyArrayMapIterObject iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_MapIterNext(iter);
             }
@@ -1967,9 +1967,9 @@ namespace NumpyDotNet {
 
         internal static VoidPtr IterGoto1D(flatiter iter, npy_intp index)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_IterGoto1D(iter.Iter, index);
             }
@@ -1977,9 +1977,9 @@ namespace NumpyDotNet {
 
         internal static npy_intp[] IterCoords(flatiter iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_IterCoords(iter.Iter);
             }
@@ -1987,9 +1987,9 @@ namespace NumpyDotNet {
 
         internal static void DescrReplaceSubarray(dtype descr, dtype baseDescr, npy_intp[] dims)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_DescrReplaceSubarray(descr.Descr, baseDescr.Descr, dims.Length, dims);
             }
@@ -1997,9 +1997,9 @@ namespace NumpyDotNet {
 
         internal static void DescrReplaceFields(dtype descr, List<string> namesPtr, NpyDict fieldsDict)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_DescrReplaceFields(descr.Descr, namesPtr, fieldsDict);
             }
@@ -2007,9 +2007,9 @@ namespace NumpyDotNet {
 
         internal static void ZeroFill(ndarray arr, npy_intp offset)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_ZeroFill(arr.Array, offset);
             }
@@ -2024,9 +2024,9 @@ namespace NumpyDotNet {
         /// <returns>Pointer to zero'd memory</returns>
         internal static VoidPtr DupZeroElem(ndarray arr)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_DupZeroElem(arr.Array);
             }
@@ -2034,9 +2034,9 @@ namespace NumpyDotNet {
 
         internal static void CopySwapIn(ndarray arr, long offset, VoidPtr data, bool swap)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_CopySwapIn(arr.Array, offset, data, swap);
             }
@@ -2044,9 +2044,9 @@ namespace NumpyDotNet {
 
         internal static void CopySwapOut(ndarray arr, long offset, VoidPtr data, bool swap)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_CopySwapOut(arr.Array, offset, data, swap);
             }
@@ -2054,9 +2054,9 @@ namespace NumpyDotNet {
 
         internal static void CopySwapScalar(dtype dtype, VoidPtr dest, VoidPtr src, bool swap)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_CopySwapScalar(dtype.Descr, dest, src, swap);
             }
@@ -2064,9 +2064,9 @@ namespace NumpyDotNet {
 
         internal static void SetNamesList(dtype descr, string[] nameslist)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArray_DescrReplaceNames(descr.Descr, nameslist.ToList());
             }
@@ -2080,9 +2080,9 @@ namespace NumpyDotNet {
         /// <param name="obj">Core NpyObject instance to deallocate</param>
         internal static void Dealloc(NpyObject_HEAD obj)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_Dealloc(obj);
             }
@@ -2093,22 +2093,22 @@ namespace NumpyDotNet {
             float NPY_ABI_VERSION = 2.0f;
             return NPY_ABI_VERSION;
         }
- 
+
         internal static NpyDict_Iter NpyDict_AllocIter()
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 return numpyAPI.NpyArrayAccess_DictAllocIter();
             }
         }
-     
+
         internal static void NpyDict_FreeIter(NpyDict_Iter iter)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
                 numpyAPI.NpyArrayAccess_DictFreeIter(iter);
             }
@@ -2126,11 +2126,11 @@ namespace NumpyDotNet {
         /// <returns>True if an element was returned, false at the end of the sequence</returns>
         internal static bool NpyDict_Next(NpyDict dict, NpyDict_Iter iter, NpyDict_KVPair KVPair)
         {
-            #if ENABLELOCKING
+#if ENABLELOCKING
             lock (GlobalIterpLock)
-            #endif
+#endif
             {
-                return numpyAPI.NpyArrayAccess_DictNext(dict, iter,KVPair);
+                return numpyAPI.NpyArrayAccess_DictNext(dict, iter, KVPair);
             }
         }
 
@@ -2139,10 +2139,10 @@ namespace NumpyDotNet {
             return "%f";
         }
 
-#endregion
+        #endregion
 
 
-#region Callbacks and native access
+        #region Callbacks and native access
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -2153,23 +2153,31 @@ namespace NumpyDotNet {
             internal int events;
         }
 
-   
+
         internal static byte oppositeByteOrder;
 
-       
 
-#region Error handling
+
+        #region Error handling
 
         /// <summary>
         /// Indicates the most recent error code or NpyExc_NoError if nothing pending
         /// </summary>
         [ThreadStatic]
-        private static npyexc_type ErrorCode = npyexc_type.NpyExc_NoError;
+        private static npyexc_type _ErrorCode = npyexc_type.NpyExc_NoError;
+        private static npyexc_type ErrorCode
+        {
+            get { return _ErrorCode; }
+            set
+            {
+                _ErrorCode = value;
+            }
+        }
 
-        /// <summary>
-        /// Stores the most recent error message per-thread
-        /// </summary>
-        [ThreadStatic]
+            /// <summary>
+            /// Stores the most recent error message per-thread
+            /// </summary>
+            [ThreadStatic]
         private static string ErrorMessage = null;
 
         public static void CheckError() {

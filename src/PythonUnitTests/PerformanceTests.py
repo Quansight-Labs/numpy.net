@@ -71,6 +71,27 @@ class PerformanceTests(unittest.TestCase):
         print("1000000 sin calculations took %f milliseconds" %(diff))
 
 
+    def test_xxx(self):
+
+        AASize = 16000000;
+        AADim1 = 4000;
+
+        AA = np.arange(AASize, dtype= np.int32).reshape((AADim1, -1))
+        BB = np.arange(AASize/AADim1, dtype= np.int16);
+
+
+        #AA1 = AA[1:40:2, 1:-2:3]
+
+        AA2 = AA / 3
+        AA3 = AA2 + 1
+        AABB = (AA * BB)
+
+        indexes = np.where(AABB < 100)
+
+        masked = AABB.ravel()[np.flatnonzero(indexes)]
+
+        print(masked)
+
 
 if __name__ == '__main__':
     unittest.main()

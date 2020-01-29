@@ -323,7 +323,8 @@ namespace NumpyLib
     */
     public enum npyexc_type
     {
-        NpyExc_MemoryError = 0,
+        NpyExc_NoError = 0,
+        NpyExc_MemoryError,
         NpyExc_IOError,
         NpyExc_ValueError,
         NpyExc_TypeError,
@@ -335,7 +336,6 @@ namespace NumpyLib
         NpyExc_DotNetException,
         NpyExc_FloatingPointError,
         NpyExc_OverflowError,
-        NpyExc_NoError,
     };
 
     public delegate bool npy_interface_array_new_wrapper(NpyArray newArray, bool ensureArray, bool customStrides, object subtype, object interfaceData, ref object interfaceRet);
