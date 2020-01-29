@@ -488,7 +488,7 @@ namespace NumpyDotNetTests
             // Use the indices of the non-zero elements as an index array to extract these elements:
 
             var z = x.ravel()[np.flatnonzero(x)] as ndarray;
-            AssertArray(z, new npy_intp[] { -2,-1,1,2 });
+            AssertArray(z, new Int32[] { -2,-1,1,2 });
             print(z);
 
             return;
