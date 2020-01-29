@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -670,7 +675,7 @@ namespace NumpyDotNetTests
                 return np.asanyarray((v1 + v2) * 0.5);
             }
 
-            ndarray my_func2(ndarray a, IList<long> indices)
+            ndarray my_func2(ndarray a, IList<npy_intp> indices)
             {
                 var ret = np.multiply(a.ravel().A(indices), 10);
                 return ret;

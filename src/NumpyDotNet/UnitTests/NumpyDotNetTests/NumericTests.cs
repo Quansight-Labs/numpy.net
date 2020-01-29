@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -453,14 +458,14 @@ namespace NumpyDotNetTests
             var x = np.arange(6).reshape((2, 3));
             var y = np.argwhere(x > 1);
 
-            var ExpectedY = new Int64[,] {{0, 2}, {1, 0}, {1, 1}, {1, 2}};
+            var ExpectedY = new npy_intp[,] {{0, 2}, {1, 0}, {1, 1}, {1, 2}};
             AssertArray(y, ExpectedY);
             print(y);
 
             var a = np.arange(12).reshape((2, 3, 2));
             var b = np.argwhere(a > 1);
 
-            var ExpectedB = new Int64[,]
+            var ExpectedB = new npy_intp[,]
                 {{0, 1, 0}, {0, 1, 1}, {0, 2, 0}, {0, 2, 1}, {1, 0, 0},
                  {1, 0, 1}, {1, 1, 0}, {1, 1, 1}, {1, 2, 0}, {1, 2, 1}};
 
@@ -477,13 +482,13 @@ namespace NumpyDotNetTests
             var x = np.arange(-2, 3);
 
             var y = np.flatnonzero(x);
-            AssertArray(y, new Int64[] {0,1,3,4});
+            AssertArray(y, new npy_intp[] {0,1,3,4});
             print(y);
 
             // Use the indices of the non-zero elements as an index array to extract these elements:
 
             var z = x.ravel()[np.flatnonzero(x)] as ndarray;
-            AssertArray(z, new Int32[] { -2,-1,1,2 });
+            AssertArray(z, new npy_intp[] { -2,-1,1,2 });
             print(z);
 
             return;
@@ -570,7 +575,7 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(60.0, dtype: np.Float64).reshape((3, 4, 5));
             var b = np.arange(24.0, dtype: np.Float64).reshape((4, 3, 2));
-            var c = np.tensordot(a, b, axes: (new long[] { 1, 0 },new long[] { 0, 1 }));
+            var c = np.tensordot(a, b, axes: (new npy_intp[] { 1, 0 },new npy_intp[] { 0, 1 }));
             AssertShape(c, 5, 2);
             print(c.shape);
             AssertArray(c, new double[,] { { 4400.0, 4730.0 }, { 4532.0, 4874.0 }, { 4664.0, 5018.0 }, { 4796.0, 5162.0 }, { 4928.0, 5306.0 } });

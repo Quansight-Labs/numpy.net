@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -201,18 +206,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_AddReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8),new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8),new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { 6,10,14,18});
             print(a);
 
             double retstep = 0; 
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{12.0, 15.0, 18.0, 21.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0}, 
                                           {8.0, 9.0, 10.0, 11.0}, {24.0, 28.0, 32.0, 36.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3 }, axis : 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis : 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -307,18 +312,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_SubtractReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, np.arange(8), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { -6, -8, -10, -12 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{-12.0, -13.0, -14.0, -15.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0},
                                           {8.0, 9.0, 10.0, 11.0}, {-24.0, -26.0, -28.0, -30.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -413,18 +418,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_MultiplyReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, np.arange(8), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { 0, 24, 120, 360 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.0, 45.0, 120.0, 231.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0},
                                           {8.0, 9.0, 10.0, 11.0}, {0.0, 585.0, 1680.0, 3465.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -519,13 +524,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_DivideReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, np.arange(8, 16, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, np.arange(8, 16, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 0.00808081, 0.00681818, 0.00582751, 0.00503663 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.00000000e+00, 2.22222222e-02, 3.33333333e-02, 3.89610390e-02},
                                           {1.20000000e+01, 1.30000000e+01, 1.40000000e+01, 1.50000000e+01}, 
                                           {4.00000000e+00, 5.00000000e+00, 6.00000000e+00, 7.00000000e+00},
@@ -533,7 +538,7 @@ namespace NumpyDotNetTests
                                           {0.00000000e+00, 1.70940171e-03, 2.38095238e-03, 2.59740260e-03}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 0.13333333,  7.0  }, { 0.08888889, 11.0  }, { 0.06593407, 15.0  } });
             print(c);
         }
@@ -631,13 +636,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_RemainderReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, np.arange(16, 8, -1, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 1,1,1,1 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0,1,2,3},
                                           {12,13,14,15},
                                           {4,5,6,7},
@@ -645,7 +650,7 @@ namespace NumpyDotNetTests
                                           {0,1,2,3}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0, 3 }, { 4, 7 }, { 8, 11 }, { 12, 15 } });
             print(c);
         }
@@ -743,13 +748,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_FModReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, np.arange(16, 8, -1, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 1, 1, 1, 1 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0,1,2,3},
                                           {12,13,14,15},
                                           {4,5,6,7},
@@ -757,7 +762,7 @@ namespace NumpyDotNetTests
                                           {0,1,2,3}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0, 3 }, { 4, 7 }, { 8, 11 }, { 12, 15 } });
             print(c);
         }
@@ -864,13 +869,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_PowerReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, np.arange(16, 8, -1, dtype: np.Float64), new long[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new long[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.00000000e+000, 1.00000000e+000, 1.152921504606847E+18, 5.4744010894202194E+36},
                                           {1.20000000e+001, 1.30000000e+001, 1.40000000e+001, 1.50000000e+001},
                                           {4.00000000e+000, 5.00000000e+000, 6.00000000e+000, 7.00000000e+000},
@@ -878,7 +883,7 @@ namespace NumpyDotNetTests
                                           {0.00000000e+000, 1.00000000e+000, 7.331559403129590e+252, double.PositiveInfinity}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new long[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.00000000e+000, 3.00000000e+000 }, { 1.152921504606847E+18, 7.00000000e+000 }, 
                                            { 1.8971375900641885E+81, 1.10000000e+001 }, { 2.5762427384904039E+196, 1.50000000e+001 } });
             print(c);

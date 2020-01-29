@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -518,27 +523,27 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new float[,] { { float.NaN, 4 }, { 2, 3 } });
             var b = np.argmin(a);
-            Assert.AreEqual((Int64)0, b.GetItem(0));
+            Assert.AreEqual((npy_intp)0, b.GetItem(0));
             print(b);
 
             var c = np.nanargmin(a);
-            Assert.AreEqual((Int64)2, c.GetItem(0));
+            Assert.AreEqual((npy_intp)2, c.GetItem(0));
             print(c);
 
             var d = np.argmin(a, axis : 0);
-            AssertArray(d, new Int64[] { 0, 1 });
+            AssertArray(d, new npy_intp[] { 0, 1 });
             print(d);
 
             var e = np.nanargmin(a, axis: 0);
-            AssertArray(e, new Int64[] { 1, 1 });
+            AssertArray(e, new npy_intp[] { 1, 1 });
             print(e);
 
             var f = np.argmin(a, axis : 1);
-            AssertArray(f, new Int64[] { 0, 0 });
+            AssertArray(f, new npy_intp[] { 0, 0 });
             print(f);
 
             var g = np.nanargmin(a, axis: 1);
-            AssertArray(g, new Int64[] { 1, 0 });
+            AssertArray(g, new npy_intp[] { 1, 0 });
             print(g);
 
             try
@@ -561,27 +566,27 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new double[,] { { double.NaN, 4 }, { 2, 3 } });
             var b = np.argmax(a);
-            Assert.AreEqual((Int64)1, b.GetItem(0));  // note: different result than python due to how .NET compares NaN numbers
+            Assert.AreEqual((npy_intp)1, b.GetItem(0));  // note: different result than python due to how .NET compares NaN numbers
             print(b);
 
             var c = np.nanargmax(a);
-            Assert.AreEqual((Int64)1, c.GetItem(0));
+            Assert.AreEqual((npy_intp)1, c.GetItem(0));
             print(c);
 
             var d = np.argmax(a, axis: 0);          
-            AssertArray(d, new Int64[] { 1, 0 });    // note: different result than python due to how .NET compares NaN numbers
+            AssertArray(d, new npy_intp[] { 1, 0 });    // note: different result than python due to how .NET compares NaN numbers
             print(d);
 
             var e = np.nanargmax(a, axis: 0);
-            AssertArray(e, new Int64[] { 1, 0 });
+            AssertArray(e, new npy_intp[] { 1, 0 });
             print(e);
 
             var f = np.argmax(a, axis: 1);          // note: different result than python due to how .NET compares NaN numbers
-            AssertArray(f, new Int64[] { 1, 1 });
+            AssertArray(f, new npy_intp[] { 1, 1 });
             print(f);
 
             var g = np.nanargmax(a, axis: 1);
-            AssertArray(g, new Int64[] { 1, 1 });
+            AssertArray(g, new npy_intp[] { 1, 1 });
             print(g);
 
             try

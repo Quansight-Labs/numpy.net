@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -63,7 +68,7 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(0, 6).reshape((2, 3));
 
-            foreach (ValueTuple<long[], object> aa in new ndenumerate(a))
+            foreach (ValueTuple<npy_intp[], object> aa in new ndenumerate(a))
             {
                 print(aa.Item1);
                 print(aa.Item2);

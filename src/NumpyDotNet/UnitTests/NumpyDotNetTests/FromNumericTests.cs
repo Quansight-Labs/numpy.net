@@ -35,6 +35,11 @@ using NumpyDotNet;
 using NumpyLib;
 using System;
 using System.Linq;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -818,7 +823,7 @@ namespace NumpyDotNetTests
             print(b);
             print("********");
 
-            ndarray c = np.partition(a, new long[] { 1, 3 });
+            ndarray c = np.partition(a, new npy_intp[] { 1, 3 });
             AssertArray(c, new int[] { 1, 2, 3, 4 });
             print(c);
         }
@@ -841,7 +846,7 @@ namespace NumpyDotNetTests
             print(b);
             print("********");
 
-            ndarray c = np.partition(a, new long[] { 1, 3 });
+            ndarray c = np.partition(a, new npy_intp[] { 1, 3 });
             AssertArray(c, new float[] { 1.1f, 2.1f, 3.1f, 4.1f });
             print(c);
         }
@@ -911,12 +916,12 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new int[] { 3, 4, 2, 1 });
             ndarray b = np.argpartition(a, 3);
-            AssertArray(b, new long[] {2,3,0,1});
+            AssertArray(b, new npy_intp[] {2,3,0,1});
             print(b);
 
             print("********");
             ndarray c = np.argpartition(a, new Int32[] { 1, 3 });
-            AssertArray(c, new long[] {3, 2, 0, 1 });
+            AssertArray(c, new npy_intp[] {3, 2, 0, 1 });
             print(c);
         }
 
@@ -925,21 +930,21 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
             ndarray b = np.argpartition(a, 3);
-            AssertArray(b, new long[] { 0,3,2,1 });
+            AssertArray(b, new npy_intp[] { 0,3,2,1 });
             print(a);
             print(b);
             print("********");
 
             a = np.array(new float[] { 3.1f, 4.1f, 2.1f, 1.1f });
             b = np.argpartition(a, 0);
-            AssertArray(b, new long[] { 3,1,2,0 });
+            AssertArray(b, new npy_intp[] { 3,1,2,0 });
 
             print(a);
             print(b);
             print("********");
 
             ndarray c = np.argpartition(a, new Int32[] { 1, 3 });
-            AssertArray(c, new long[] { 3, 2, 0, 1 });
+            AssertArray(c, new npy_intp[] { 3, 2, 0, 1 });
             print(c);
         }
 
@@ -948,15 +953,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new Int64[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
+            AssertArray(b, new npy_intp[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new Int64[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
+            AssertArray(c, new npy_intp[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new Int64[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
+            AssertArray(d, new npy_intp[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
@@ -978,15 +983,15 @@ namespace NumpyDotNetTests
         {
             var a = np.arange(22, 10, -1, dtype: np.Float64).reshape((3, 4, 1));
             var b = np.argpartition(a, 1, axis: 0);
-            AssertArray(b, new Int64[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
+            AssertArray(b, new npy_intp[,,] {{{2},{2},{2},{2}},{{1},{1},{1},{1}},{{0},{0},{0},{0}}});
             print(b);
 
             var c = np.argpartition(a, 2, axis: 1);
-            AssertArray(c, new Int64[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
+            AssertArray(c, new npy_intp[,,] {{{3},{2},{1},{0}},{{3},{2},{1},{0}},{{3},{2},{1},{0}}});
             print(c);
 
             var d = np.argpartition(a, 0, axis: 2);
-            AssertArray(d, new Int64[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
+            AssertArray(d, new npy_intp[,,] {{{0},{0},{0},{0}},{{0},{0},{0},{0}},{{0},{0},{0},{0}}});
             print(d);
 
             try
@@ -1108,13 +1113,13 @@ namespace NumpyDotNetTests
             ndarray perm3 = np.argsort(ar);
 
             print(perm1);
-            AssertArray(perm1, new Int64[] { 0, 3, 1, 2, 4, 5, 7, 8, 6 });
+            AssertArray(perm1, new npy_intp[] { 0, 3, 1, 2, 4, 5, 7, 8, 6 });
 
             print(perm2);
-            AssertArray(perm2, new Int64[] { 2,1,0 });
+            AssertArray(perm2, new npy_intp[] { 2,1,0 });
 
             print(perm3);
-            AssertArray(perm3, new Int64[] { 2, 1, 0 });
+            AssertArray(perm3, new npy_intp[] { 2, 1, 0 });
 
         }
 
@@ -1129,7 +1134,7 @@ namespace NumpyDotNetTests
 
             print(perm1);
 
-            var Perm1Expected = new Int64[,]
+            var Perm1Expected = new npy_intp[,]
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
@@ -1138,7 +1143,7 @@ namespace NumpyDotNetTests
             AssertArray(perm1, Perm1Expected);
 
             print(perm2);
-            var Perm2Expected = new Int64[,]
+            var Perm2Expected = new npy_intp[,]
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
@@ -1148,7 +1153,7 @@ namespace NumpyDotNetTests
 
 
             print(perm3);
-            var Perm3Expected = new Int64[,]
+            var Perm3Expected = new npy_intp[,]
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
@@ -1164,17 +1169,17 @@ namespace NumpyDotNetTests
             print(a);
             ndarray b = np.argmax(a);
             print(b);
-            Assert.AreEqual(b.GetItem(0), (Int64)3);
+            Assert.AreEqual(b.GetItem(0), (npy_intp)3);
             print("********");
 
             ndarray c = np.argmax(a, axis: 0);
             print(c);
-            AssertArray(c, new Int64[] { 1, 0, 0 });
+            AssertArray(c, new npy_intp[] { 1, 0, 0 });
             print("********");
 
             ndarray d = np.argmax(a, axis: 1);
             print(d);
-            AssertArray(d, new Int64[] { 2, 0 });
+            AssertArray(d, new npy_intp[] { 2, 0 });
             print("********");
 
         }
@@ -1187,17 +1192,17 @@ namespace NumpyDotNetTests
 
             ndarray b = np.argmin(a);
             print(b);
-            Assert.AreEqual(b.GetItem(0), (Int64)5);
+            Assert.AreEqual(b.GetItem(0), (npy_intp)5);
             print("********");
 
             ndarray c = np.argmin(a, axis: 0);
             print(c);
-            AssertArray(c, new Int64[] { 0, 1, 1 });
+            AssertArray(c, new npy_intp[] { 0, 1, 1 });
             print("********");
 
             ndarray d = np.argmin(a, axis: 1);
             print(d);
-            AssertArray(d, new Int64[] { 0, 2 });
+            AssertArray(d, new npy_intp[] { 0, 2 });
             print("********");
 
         }
@@ -1208,22 +1213,22 @@ namespace NumpyDotNetTests
             ndarray arr = np.array(new Int32[] { 1, 2, 3, 4, 5 });
             ndarray a = np.searchsorted(arr, 3);
             print(a);
-            Assert.AreEqual(a.GetItem(0), (Int64)2);
+            Assert.AreEqual(a.GetItem(0), (npy_intp)2);
 
 
             ndarray b = np.searchsorted(arr, 3, side: NPY_SEARCHSIDE.NPY_SEARCHRIGHT);
             print(b);
-            Assert.AreEqual(b.GetItem(0), (Int64)3);
+            Assert.AreEqual(b.GetItem(0), (npy_intp)3);
 
 
             ndarray c = np.searchsorted(arr, new Int32[] { -10, 10, 2, 3 });
             print(c);
-            AssertArray(c, new Int64[] { 0, 5, 1, 2 });
+            AssertArray(c, new npy_intp[] { 0, 5, 1, 2 });
 
 
             ndarray d = np.searchsorted(np.array(new Int32[] { 15, 14, 13, 12, 11 }), 13);
             print(d);
-            Assert.AreEqual(d.GetItem(0), (Int64)0);
+            Assert.AreEqual(d.GetItem(0), (npy_intp)0);
 
 
         }
@@ -1442,8 +1447,8 @@ namespace NumpyDotNetTests
 
             ndarray[] y = np.nonzero(x);
             print(y);
-            AssertArray(y[0], new Int64[] { 0, 1, 2, 2 });
-            AssertArray(y[1], new Int64[] { 0, 1, 0, 1 });
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
             print("*****");
 
             ndarray z = x.A(np.nonzero(x));

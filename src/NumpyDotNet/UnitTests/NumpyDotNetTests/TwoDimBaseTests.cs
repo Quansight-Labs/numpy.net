@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -246,8 +251,8 @@ namespace NumpyDotNetTests
         public void test_mask_indices()
         {
             var iu = np.mask_indices(3, np.triu);
-            AssertArray(iu[0], new Int64[] { 0, 0, 0, 1, 1, 2 });
-            AssertArray(iu[1], new Int64[] { 0, 1, 2, 1, 2, 2 });
+            AssertArray(iu[0], new npy_intp[] { 0, 0, 0, 1, 1, 2 });
+            AssertArray(iu[1], new npy_intp[] { 0, 1, 2, 1, 2, 2 });
             print(iu);
 
             var a = np.arange(9).reshape((3, 3));
@@ -300,13 +305,13 @@ namespace NumpyDotNetTests
             var a = np.arange(16).reshape((4, 4));
             var il1 = np.tril_indices_from(a, 0);
 
-            AssertArray(il1[0], new Int64[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
-            AssertArray(il1[1], new Int64[] { 0, 0, 1, 0, 1, 2, 0, 1, 2, 3 });
+            AssertArray(il1[0], new npy_intp[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il1[1], new npy_intp[] { 0, 0, 1, 0, 1, 2, 0, 1, 2, 3 });
             print(il1);
 
             var il2 = np.tril_indices_from(a, 2);
-            AssertArray(il2[0], new Int64[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
-            AssertArray(il2[1], new Int64[] { 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
+            AssertArray(il2[0], new npy_intp[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
+            AssertArray(il2[1], new npy_intp[] { 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
 
             print(il2);
 
@@ -349,13 +354,13 @@ namespace NumpyDotNetTests
             var a = np.arange(16).reshape((4, 4));
             var il1 = np.triu_indices_from(a, 0);
 
-            AssertArray(il1[0], new Int64[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
-            AssertArray(il1[1], new Int64[] { 0, 1, 2, 3, 1, 2, 3, 2, 3, 3 });
+            AssertArray(il1[0], new npy_intp[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
+            AssertArray(il1[1], new npy_intp[] { 0, 1, 2, 3, 1, 2, 3, 2, 3, 3 });
             print(il1);
 
             var il2 = np.triu_indices_from(a, 2);
-            AssertArray(il2[0], new Int64[] { 0, 0, 1 });
-            AssertArray(il2[1], new Int64[] { 2, 3, 3 });
+            AssertArray(il2[0], new npy_intp[] { 0, 0, 1 });
+            AssertArray(il2[1], new npy_intp[] { 2, 3, 3 });
 
             print(il2);
 

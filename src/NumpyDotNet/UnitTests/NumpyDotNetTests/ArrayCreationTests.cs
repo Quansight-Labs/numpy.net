@@ -39,6 +39,11 @@ using System.Text;
 using NumpyLib;
 using System.Linq;
 using System.Threading.Tasks;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -1197,15 +1202,15 @@ namespace NumpyDotNetTests
 
             print("indexes");
             print(indexes);
-            AssertArray(indexes, new Int64[] { 0, 1, 2, 5, 6 });
+            AssertArray(indexes, new npy_intp[] { 0, 1, 2, 5, 6 });
 
             print("inverse");
             print(inverse);
-            AssertArray(inverse, new Int64[] { 0, 1, 2, 0, 2, 3, 4, 3, 3 });
+            AssertArray(inverse, new npy_intp[] { 0, 1, 2, 0, 2, 3, 4, 3, 3 });
 
             print("counts");
             print(counts);
-            AssertArray(counts, new Int64[] { 2, 1, 2, 3, 1 });
+            AssertArray(counts, new npy_intp[] { 2, 1, 2, 3, 1 });
 
 
         }
@@ -1238,8 +1243,8 @@ namespace NumpyDotNetTests
             print(y);
 
             Assert.AreEqual(2, y.Length);
-            AssertArray(y[0], new Int64[] { 0, 1 });
-            AssertArray(y[1], new Int64[] { 2, 1 });
+            AssertArray(y[0], new npy_intp[] { 0, 1 });
+            AssertArray(y[1], new npy_intp[] { 2, 1 });
 
             var z = x.SliceMe(y) as ndarray;
             print("Z");
