@@ -468,6 +468,12 @@ namespace NumpyDotNet
             {
                 return a as ndarray;
             }
+            if (a is ndarray[])
+            {
+                var b = np.Concatenate(a as ndarray[]);
+                return b;
+            }
+
             if (a.GetType().IsArray)
             {
                 System.Array ssrc = a as System.Array;

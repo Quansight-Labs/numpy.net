@@ -1795,6 +1795,11 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Ravel(a, order);
         }
+        public static ndarray ravel(object a, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        {
+            return ravel(asanyarray(a), order);
+        }
+
         #endregion
 
         #region nonzero
