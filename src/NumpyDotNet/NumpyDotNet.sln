@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumpyLibTests", "UnitTests\NumpyLibUnitTests\NumpyLibTests.csproj", "{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressTestApp", "StressTestApp\StressTestApp.csproj", "{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,14 @@ Global
 		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|x64.ActiveCfg = Release|Any CPU
 		{DF9D4CF9-607B-48E2-91D2-16DEBCDAF766}.Release|x64.Build.0 = Release|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Debug|x64.Build.0 = Debug|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Release|x64.ActiveCfg = Release|Any CPU
+		{6D8D62D6-F458-49CC-8F2D-7AEE80FB44C5}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

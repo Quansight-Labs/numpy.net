@@ -1,0 +1,35 @@
+﻿<Window x:Class="StressTestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StressTestApp"
+        mc:Ignorable="d"
+        Title="NumpyDotNet Stress Test" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="NumThreadsLabel" Grid.Row="0" Grid.Column="0" Content="Number of Threads:" Margin="10"/>
+        <TextBox x:Name="NumThreads" Grid.Row="0" Grid.Column="1" Text="1" Margin="10" MinWidth="50"/>
+        <Button x:Name="StartTestButton" Grid.Row="0" Grid.Column="2" Content="Start Test" Margin="10" MinWidth="150" HorizontalAlignment="Left" Click="StartTest_Click"/>
+        <Button x:Name="StopTestButton" Grid.Row="0" Grid.Column="3" Content="Stop Test" Margin="10" MinWidth="150" HorizontalAlignment="Left" Click="StopTest_Click"/>
+
+
+        <GroupBox Header="Logs" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="99"  Margin="20" MinHeight="100">
+            <ListBox x:Name="LogOutput"  >
+
+            </ListBox>
+        </GroupBox>
+
+    </Grid>
+</Window>
