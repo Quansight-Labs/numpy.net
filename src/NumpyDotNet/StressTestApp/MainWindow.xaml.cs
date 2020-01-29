@@ -53,7 +53,14 @@ namespace StressTestApp
             StressTestThreadsRunning = true;
             for (int i = 0; i < iNumThreads; i++)
             {
-                Task.Run(() => StressTestTask());
+                if ((i % 2) > 0)
+                {
+                    Task.Run(() => StressTestTask2());
+                }
+                else
+                {
+                    Task.Run(() => StressTestTask1());
+                }
             }
         }
 
@@ -62,9 +69,9 @@ namespace StressTestApp
             StressTestThreadsRunning = false;
         }
 
-        private void StressTestTask()
+        private void StressTestTask1()
         {
-            Thread.CurrentThread.Name = "StressTestTaskThread";
+            Thread.CurrentThread.Name = "StressTestTaskThread1";
 
             int LoopsRun = 0;
             int LoopsToRun = 20;
@@ -111,6 +118,50 @@ namespace StressTestApp
                 sw.Stop();
 
                 string LogMessage = string.Format("stress test #{0} took {1} milliseconds\n", LoopsRun, sw.ElapsedMilliseconds);
+                Log(LogMessage);
+            }
+
+            return;
+        }
+
+        private void StressTestTask2()
+        {
+            Thread.CurrentThread.Name = "StressTestTaskThread2";
+
+            int LoopsRun = 0;
+            int LoopsToRun = 200;
+
+            while (StressTestThreadsRunning)
+            {
+
+                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+                sw.Start();
+
+                try
+                {
+                    var matrix = np.arange(1600000, dtype: np.Int64).reshape((40, -1));
+
+
+                    for (int i = 0; i < LoopsToRun; i++)
+                    {
+                        matrix = matrix / 3;
+                        matrix = matrix + i;
+                    }
+
+                    var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
+
+                    LoopsRun++;
+                }
+                catch (Exception ex)
+                {
+                    string ExMessage = string.Format("stresstest2 threw an exception: {0}", ex.Message);
+                    Log(ExMessage);
+                }
+
+
+                sw.Stop();
+
+                string LogMessage = string.Format("stresstest2 #{0} took {1} milliseconds\n", LoopsRun, sw.ElapsedMilliseconds);
                 Log(LogMessage);
             }
 
