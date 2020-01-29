@@ -53,14 +53,17 @@ namespace StressTestApp
             StressTestThreadsRunning = true;
             for (int i = 0; i < iNumThreads; i++)
             {
-                if ((i % 2) > 0)
-                {
-                    Task.Run(() => StressTestTask2());
-                }
-                else
+                int remainder = i % 2;
+                if (remainder == 0)
                 {
                     Task.Run(() => StressTestTask1());
                 }
+                else if (remainder == 1)
+                {
+                    Task.Run(() => StressTestTask2());
+                }
+  
+    
             }
         }
 
@@ -110,14 +113,14 @@ namespace StressTestApp
                 }
                 catch (Exception ex)
                 {
-                    string ExMessage = string.Format("stress test threw an exception: {0}", ex.Message);
+                    string ExMessage = string.Format("{0} threw an exception: {1}", Thread.CurrentThread.Name, ex.Message);
                     Log(ExMessage);
                 }
    
 
                 sw.Stop();
 
-                string LogMessage = string.Format("stress test #{0} took {1} milliseconds\n", LoopsRun, sw.ElapsedMilliseconds);
+                string LogMessage = string.Format("{0} #{1} took {2} milliseconds\n", Thread.CurrentThread.Name, LoopsRun, sw.ElapsedMilliseconds);
                 Log(LogMessage);
             }
 
@@ -154,19 +157,20 @@ namespace StressTestApp
                 }
                 catch (Exception ex)
                 {
-                    string ExMessage = string.Format("stresstest2 threw an exception: {0}", ex.Message);
+                    string ExMessage = string.Format("{0} threw an exception: {1}", Thread.CurrentThread.Name, ex.Message);
                     Log(ExMessage);
                 }
 
 
                 sw.Stop();
 
-                string LogMessage = string.Format("stresstest2 #{0} took {1} milliseconds\n", LoopsRun, sw.ElapsedMilliseconds);
+                string LogMessage = string.Format("{0} #{1} took {2} milliseconds\n", Thread.CurrentThread.Name, LoopsRun, sw.ElapsedMilliseconds);
                 Log(LogMessage);
             }
 
             return;
         }
+
 
         private void Log(string LogMessage)
         {
