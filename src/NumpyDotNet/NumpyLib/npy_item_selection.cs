@@ -1552,14 +1552,14 @@ namespace NumpyLib
         }
 
 
-        private static void ArgSortIndexes(VoidPtr ip, long m, VoidPtr sortData, npy_intp startingIndex)
+        private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
         {
             dynamic lastLowest = ArgSortMinValue(sortData.type_num);
             dynamic _MaxValue = ArgSortMaxValue(sortData.type_num);
 
             for (int i = 0; i < m; )
             {
-                long endingIndex = m + startingIndex;
+                npy_intp endingIndex = m + startingIndex;
                 lastLowest = getNextLowest(lastLowest, sortData, startingIndex, endingIndex, _MaxValue);
 
                 npy_intp foundIndex = startingIndex;
@@ -1580,16 +1580,16 @@ namespace NumpyLib
             return;
         }
 
-        private static long getMatchingIndex(dynamic nextLowest, VoidPtr sortData, long startingIndex, long endingIndex)
+        private static npy_intp getMatchingIndex(dynamic nextLowest, VoidPtr sortData, npy_intp startingIndex, npy_intp endingIndex)
         {
             dynamic array = sortData.datap;
 
-            long indexAdjustment = sortData.data_offset / GetTypeSize(sortData.type_num);
+            npy_intp indexAdjustment = sortData.data_offset / GetTypeSize(sortData.type_num);
             startingIndex = startingIndex + indexAdjustment;
             endingIndex = endingIndex + indexAdjustment;
 
 
-            for (long i = startingIndex; i < endingIndex; i++)
+            for (npy_intp i = startingIndex; i < endingIndex; i++)
             {
                 if (array[i] == nextLowest)
                     return i-indexAdjustment;

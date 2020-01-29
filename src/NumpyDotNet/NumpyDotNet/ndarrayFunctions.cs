@@ -85,7 +85,11 @@ namespace NumpyDotNet
         public static readonly dtype BigInt = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BIGINT);
         public static readonly dtype Object = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
 
+#if NPY_INTP_64
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
+#else
+        public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT32);
+#endif
         public static readonly dtype None = null;
         public static readonly object newaxis = null;
 

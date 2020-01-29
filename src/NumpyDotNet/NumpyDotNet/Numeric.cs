@@ -993,7 +993,7 @@ namespace NumpyDotNet
                 N2 *= as_.iDims[axis];
             }
 
-            List<long> asax = new List<long>();
+            List<npy_intp> asax = new List<npy_intp>();
             foreach (var ax in notin)
             {
                 asax.Add(as_.iDims[ax]);
