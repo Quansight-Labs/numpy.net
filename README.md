@@ -30,6 +30,15 @@ https://www.nuget.org/packages/NumpyDotNet.SampleApps/
 ## Pure .NET data types
 The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
 
+## High performance calculations
+We recently reworked our calculation engine to take advantage of the .NET Parallel libraries.  This has caused a massive improvement in performance/reduced calculation times. We are approaching the "C" based NumPy in performance now.  We hope to continue to fine tune the performance in future releases.
+
+## Full multi-threading support
+Unlike most NumPy implementations, our library does not require the GIL (Global Interpreter Lock).  This allows us to offer a fully multi-threaded library.  You are free to launch as many threads as you want to manipulate our ndarray objects. If your application can take advantage of that, you may be able to achieve much higher overall performance.
+
+Take note that if multiple threads are manipulating the same ndarray object, you may get unexpected results.  For example, if one thread is adding numbers and another thread is dividing, you may get unexpected calculations.  The original authors of NumPy did a fine job of isolating arrays from each other to make this feature possible.  If you must manipulate the same ndarray from two different threads, it may be necessary to implement some sort of application layer locking on the ndarray object to get the expected results.
+
+
 ##### Our API has full support of the following .NET data types:
 
 * System.Boolean
@@ -46,13 +55,29 @@ The underlying technology uses 100% .NET data types.   If you are working with d
 * System.Decimal (exclusive feature!)
 * System.Numerics.Complex (exclusive feature!)
 * System.Numerics.BigInteger (exclusive feature!)
+* System.Object - A really cool feature! (exclusive feature!)
 
 ##### Future plans include support for:
 
-* System.Object data type
+* additional performance tunings
 * System.String data type
 * DateTime/TimeDiff data types ??
-* User defined data types
+* User defined data types (System.Objects may make this unnecessary!)
+
+## System.Objects - A really cool feature.
+
+As the base class of all .NET classes, System.Object can hold anything.  
+
+You can mix and match data types within the same ndarray such as Int32, Floats, BigInts, strings or custom data objects.  If you try to perform math or comparision operations on these objects we do our best effort to make the operation work.  If you try something like dividing a string by a integer, the system will throw an exception to let you know it can't be done.  
+
+Most NumPy operations have been shown to work really well with these object arrays.  We were pleasantly suprised by how well it worked. Check out the latest unit tests for examples of what can be done.
+
+It is very possible to build custom data types and have them processed by the NumpyDotNet system. If you want the ability to add an integer to your custom data object or to add two custom data objects together, simple define your custom data object class to overide the + sign. This holds true for all of the operators allowed by the C# language (https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading). 
+
+Please see our latest unit tests and sample apps for examples on how to build custom data types with object arrays.
+
+
+
 
 ## Accessing the underlying array
 
