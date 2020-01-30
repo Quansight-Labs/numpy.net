@@ -86,6 +86,7 @@
     <Compile Include="IteratorTests.cs" />
     <Compile Include="UFUNCTests.cs" />
     <Compile Include="PerformanceTests.cs" />
+    <Compile Include="MultithreadedTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +110,7 @@
       <Name>NumpyLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
