@@ -74,7 +74,7 @@
     <Compile Include="PolynomialTests.cs" />
     <Compile Include="RandomSamplingTests.cs" />
     <Compile Include="NANFunctionsTests.cs" />
-    <Compile Include="DateTimeSupportTests.cs" />
+    <Compile Include="NotUsed\DateTimeSupportTests.cs" />
     <Compile Include="StringOperationsTests.cs" />
     <Compile Include="ObjectOperationsTests.cs" />
     <Compile Include="NumericTests.cs" />
