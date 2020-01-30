@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet.SampleApps</id>
-    <version>0.9.12</version>
+    <version>0.9.14</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package provides the sample apps for the NumpyDotNet library.</description>
-    <releaseNotes>Adding support for System.Numerics.BigInteger data types.</releaseNotes>
+    <releaseNotes>Adding support for System.Object data types (a really cool feature).  Huge performance improvements in calculation engine. Fully multithreaded capable with no GIL lock.</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>

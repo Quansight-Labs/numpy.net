@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyLib</AssemblyName>
     <RootNamespace>NumpyLib</RootNamespace>
-    <Version>0.9.12</Version>
+    <Version>0.9.14</Version>
     <Authors>Kevin McKenna</Authors>
     <Company>Baseline Software Solutions, Inc.</Company>
     <Description>This library contains the lower level 'engine' of the NumpyDotNet system.   This library is typically accessed via the higher  level NumpyDotNet.dll</Description>
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>Adding support for System.Numerics.BigInteger data types.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adding support for System.Object data types (a really cool feature).  Huge performance improvements in calculation engine. Fully multithreaded capable with no GIL lock.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
