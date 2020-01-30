@@ -54,7 +54,7 @@ namespace NumpyDotNetTests
 
         }
 
-
+        [Ignore]
         [TestMethod]
         public void MultiThreaded_ExecuteAllUnitTests_10X()
         {

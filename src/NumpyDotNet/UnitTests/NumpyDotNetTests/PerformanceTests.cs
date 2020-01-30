@@ -13,6 +13,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
+        [Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance()
         {
@@ -42,6 +43,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance_NotContiguous()
         {
@@ -71,6 +73,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance_InLine()
         {
@@ -102,6 +105,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance_InLine2()
         {
@@ -141,7 +145,7 @@ namespace NumpyDotNetTests
             return (Int64)src / (double)divisor;
         }
 
-
+        [Ignore]
         [TestMethod]
         public void test_MathOperation_Sin()
         {
