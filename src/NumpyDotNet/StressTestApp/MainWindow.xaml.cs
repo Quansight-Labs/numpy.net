@@ -77,7 +77,7 @@ namespace StressTestApp
             Thread.CurrentThread.Name = "StressTestTaskThread1";
 
             int LoopsRun = 0;
-            int LoopsToRun = 20;
+            int LoopsToRun = 5;
 
             while (StressTestThreadsRunning)
             {
@@ -85,8 +85,8 @@ namespace StressTestApp
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 sw.Start();
 
-                int AASize = 1600000;
-                int AADim1 = 400;
+                int AASize = 16000000;
+                int AADim1 = 4000;
 
                 try
                 {
@@ -104,7 +104,7 @@ namespace StressTestApp
 
                         var indexes = np.where(AABB < 100) as ndarray[];
 
-                        var masked = AABB.ravel()[np.flatnonzero(indexes)] as ndarray;
+                        var masked = AABB.ravel()[np.flatnonzero(indexes[0])] as ndarray;
 
                     }
 

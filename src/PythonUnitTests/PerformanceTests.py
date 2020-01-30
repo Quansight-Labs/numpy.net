@@ -88,7 +88,7 @@ class PerformanceTests(unittest.TestCase):
 
         indexes = np.where(AABB < 100)
 
-        masked = AABB.ravel()[np.flatnonzero(indexes)]
+        masked = AABB.ravel()[np.flatnonzero(indexes[0])]
 
         print(masked)
 
