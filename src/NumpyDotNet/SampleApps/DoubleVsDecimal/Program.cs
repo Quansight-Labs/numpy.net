@@ -18,6 +18,7 @@ namespace DoubleVsDecimal
 
             sw.Start();
             var matrix = np.arange(0, 1600, dtype: np.Float64).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_Doubles";
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -26,6 +27,7 @@ namespace DoubleVsDecimal
             }
 
             var output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
+            output.Name = "SampleApp_Doubles(View)";
 
             sw.Stop();
 
@@ -37,6 +39,7 @@ namespace DoubleVsDecimal
             sw.Start();
 
             matrix = np.arange(0, 1600, dtype: np.Decimal).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_Decimal";
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -45,6 +48,7 @@ namespace DoubleVsDecimal
             }
 
             output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
+            output.Name = "SampleApp_Decimal(View)";
 
             sw.Stop();
 

@@ -19,6 +19,7 @@ namespace Int64VsBigInteger
 
             sw.Start();
             var matrix = np.arange(0, 1600, dtype: np.Int64).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_Int64";
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -27,6 +28,7 @@ namespace Int64VsBigInteger
             }
 
             var output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
+            output.Name = "SampleApp_Int64(View)";
 
             sw.Stop();
 
@@ -38,6 +40,7 @@ namespace Int64VsBigInteger
             sw.Start();
 
             matrix = np.arange(0, 1600, dtype: np.BigInt).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_BitInteger";
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -46,6 +49,7 @@ namespace Int64VsBigInteger
             }
 
             output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
+            output.Name = "SampleApp_BitInteger(View)";
 
             sw.Stop();
 

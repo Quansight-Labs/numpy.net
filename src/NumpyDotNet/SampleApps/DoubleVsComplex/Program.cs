@@ -19,6 +19,7 @@ namespace DoubleVsComplex
 
             sw.Start();
             var matrix = np.arange(0, 1600, dtype: np.Float64).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_Doubles";
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -27,7 +28,7 @@ namespace DoubleVsComplex
             }
 
             var output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
-
+            output.Name = "SampleApp_Doubles(View)";
             sw.Stop();
 
             Console.WriteLine(string.Format("DOUBLE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
@@ -38,6 +39,7 @@ namespace DoubleVsComplex
             sw.Start();
 
             matrix = np.arange(0, 1600, dtype: np.Complex).reshape(new shape(40, -1));
+            matrix.Name = "SampleApp_Complex";
 
             Complex A = new Complex(3, -2.66);
             Complex B = new Complex(3, +1.67);
@@ -49,6 +51,7 @@ namespace DoubleVsComplex
             }
 
             output = matrix.A(new Slice(15, 25, 2), new Slice(15, 25, 2));
+            output.Name = "SampleApp_Complex(View)";
 
             sw.Stop();
 
