@@ -75,7 +75,7 @@
     <Compile Include="NotImplementedYet\RandomSamplingTests.cs" />
     <Compile Include="NANFunctionsTests.cs" />
     <Compile Include="NotImplementedYet\DateTimeSupportTests.cs" />
-    <Compile Include="NotImplementedYet\StringOperationsTests.cs" />
+    <Compile Include="StringOperationsTests.cs" />
     <Compile Include="ObjectOperationsTests.cs" />
     <Compile Include="NumericTests.cs" />
     <Compile Include="ComplexNumbersTests.cs" />
