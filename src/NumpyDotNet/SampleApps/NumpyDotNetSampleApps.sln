@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleVsComplex", "DoubleVs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Int64VsBigInteger", "Int64VsBigInteger\Int64VsBigInteger.csproj", "{326D4742-7800-4950-921D-72F55A799566}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadingWithObjects", "MultiThreadingWithObjects\MultiThreadingWithObjects.csproj", "{2B36ADA4-02B2-4A28-8F95-5FA8263A5401}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{326D4742-7800-4950-921D-72F55A799566}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{326D4742-7800-4950-921D-72F55A799566}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{326D4742-7800-4950-921D-72F55A799566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B36ADA4-02B2-4A28-8F95-5FA8263A5401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B36ADA4-02B2-4A28-8F95-5FA8263A5401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B36ADA4-02B2-4A28-8F95-5FA8263A5401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B36ADA4-02B2-4A28-8F95-5FA8263A5401}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
