@@ -1239,12 +1239,7 @@ namespace NumpyLib
             {
                 return typenum1 == typenum2 && _equivalent_subarrays(typ1.subarray, typ2.subarray);
             }
-
-            if (typenum1 == NPY_TYPES.NPY_VOID || typenum2 == NPY_TYPES.NPY_VOID)
-            {
-                return ((typenum1 == typenum2)
-                        && _equivalent_fields(typ1.fields, typ2.fields));
-            }
+  
             if (typenum1 == NPY_TYPES.NPY_DATETIME
                 || typenum1 == NPY_TYPES.NPY_DATETIME
                 || typenum2 == NPY_TYPES.NPY_TIMEDELTA

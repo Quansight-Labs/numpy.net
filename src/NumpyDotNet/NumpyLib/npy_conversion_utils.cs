@@ -176,7 +176,7 @@ namespace NumpyLib
             }
             return newtype;
 #endif
-            return NPY_TYPES.NPY_VOID;
+            return NPY_TYPES.NPY_OBJECT;
         }
 
         static string npy_casting_to_string(NPY_CASTING casting)

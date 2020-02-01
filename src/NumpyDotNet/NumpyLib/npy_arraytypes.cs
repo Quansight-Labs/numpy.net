@@ -105,15 +105,6 @@ namespace NumpyLib
             {
                 ret = NpyArray_DescrNew(_get_builtin_descrs(type));
             }
-            else if (type == NPY_TYPES.NPY_NOTYPE)
-            {
-                /*
-                 * This needs to not raise an error so
-                 * that NpyArray_DescrFromType(NpyArray_NOTYPE)
-                 * works for backwards-compatible C-API
-                 */
-                return null;
-            }
             else if ((type == NPY_TYPES.NPY_CHAR) || ((int)type == (int)NPY_TYPECHAR.NPY_CHARLTR))
             {
                 ret = NpyArray_DescrNew(_get_builtin_descrs(NPY_TYPES.NPY_STRING));

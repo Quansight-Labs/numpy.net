@@ -260,11 +260,11 @@ namespace NumpyLib
             {
                 return false;
             }
-            if (totype == NPY_TYPES.NPY_OBJECT || totype == NPY_TYPES.NPY_VOID)
+            if (totype == NPY_TYPES.NPY_OBJECT)
             {
                 return true;
             }
-            if (fromtype == NPY_TYPES.NPY_OBJECT || fromtype == NPY_TYPES.NPY_VOID)
+            if (fromtype == NPY_TYPES.NPY_OBJECT)
             {
                 return false;
             }

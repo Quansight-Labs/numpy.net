@@ -735,7 +735,7 @@ namespace NumpyLib
             }
             if (swap && arr.descr.subarray != null)
             {
-                NpyArray_Descr descr = new NpyArray_Descr(NPY_TYPES.NPY_VOID);
+                NpyArray_Descr descr = new NpyArray_Descr(NPY_TYPES.NPY_OBJECT);
                 NpyArray_Descr newDescr = null;
                 npy_intp num;
                 int itemsize;

@@ -130,7 +130,7 @@ namespace NumpyLib
 
         NPY_DATETIME,
         NPY_TIMEDELTA,
-        NPY_VOID,
+
         NPY_NTYPES,
         NPY_NOTYPE,
         NPY_CHAR,               /* special flag */
@@ -419,7 +419,6 @@ namespace NumpyLib
             switch (type)
             {
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_VOID:
                     return true;
 
                 default:

@@ -506,10 +506,8 @@ namespace NumpyDotNet {
             bool stopAtString =
                 type != NPY_TYPES.NPY_STRING ||
                 descr.Type == NPY_TYPECHAR.NPY_STRINGLTR;
-            bool stopAtTuple =
-                type == NPY_TYPES.NPY_VOID &&
-                (descr.HasNames || descr.HasSubarray);
-
+            bool stopAtTuple = false;
+  
             int numDim = DiscoverDepth(src, NpyDefs.NPY_MAXDIMS + 1, stopAtString, stopAtTuple);
             if (numDim == 0)
             {
@@ -567,11 +565,6 @@ namespace NumpyDotNet {
         private static dtype FindArrayReturn(dtype chktype, dtype minitype)
         {
             dtype result = NpyCoreApi.SmallType(chktype, minitype);
-            if (result.TypeNum == NPY_TYPES.NPY_VOID &&
-                minitype.TypeNum != NPY_TYPES.NPY_VOID)
-            {
-                result = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
-            }
             return result;
         }
 

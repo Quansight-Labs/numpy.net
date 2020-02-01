@@ -245,11 +245,6 @@ namespace NumpyLib
             numpyinternal.NpyArrayAccess_DescrReplaceFields(descr, nameslist, fields);
         }
 
-        public static NpyArray_Descr NpyArrayAccess_DescrNewVoid(NpyDict fields, List<string> names, int elsize, NpyArray_Descr_Flags flags, int alignment)
-        {
-            return numpyinternal.NpyArrayAccess_DescrNewVoid(fields, names, elsize, flags, alignment);
-        }
-
         public static int NpyArrayAccess_AddField(NpyDict fields, List<string> names, int i, string name, NpyArray_Descr fieldType, int offset, string title)
         {
             return numpyinternal.NpyArrayAccess_AddField(fields, names, i, name, fieldType, offset, title);

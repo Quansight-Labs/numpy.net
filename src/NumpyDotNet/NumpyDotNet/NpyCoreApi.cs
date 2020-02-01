@@ -823,16 +823,6 @@ namespace NumpyDotNet {
             return result;
         }
 
-        internal static dtype DescrNewVoid(NpyDict fields, List<string> names, int elsize, NpyArray_Descr_Flags flags, int alignment)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                return new dtype(numpyAPI.NpyArrayAccess_DescrNewVoid(fields, names, elsize, flags, alignment));
-            }
-        }
-
         internal static dtype DescrNewSubarray(dtype basetype, npy_intp[] shape)
         {
 #if ENABLELOCKING

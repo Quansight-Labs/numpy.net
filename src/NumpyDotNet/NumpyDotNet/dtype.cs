@@ -93,10 +93,8 @@ namespace NumpyDotNet {
             {
                 Object lst = this.descr;
                 ret = (lst != null) ? lst.ToString() : "<err>";
-                if (TypeNum != NPY_TYPES.NPY_VOID)
-                {
-                    ret = String.Format("('{0}', {1})", this.str, this.descr);
-                }
+       
+                ret = String.Format("('{0}', {1})", this.str, this.descr);
             }
             else if (this.HasSubarray)
             {
@@ -752,8 +750,6 @@ namespace NumpyDotNet {
   
             } else if (type == NPY_TYPES.NPY_BOOL) {
                 info = ScalarInfo.Make<ScalarBool>();
-            } else if (type == NPY_TYPES.NPY_VOID) {
-                info = ScalarInfo.Make<ScalarVoid>();
             } else if (type == NPY_TYPES.NPY_OBJECT) {
                 info = ScalarInfo.Make<ScalarObject>();
             }

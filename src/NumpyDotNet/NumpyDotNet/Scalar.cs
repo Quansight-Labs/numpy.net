@@ -103,7 +103,7 @@ namespace NumpyDotNet
 
         public virtual object dtype {
             get {
-                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_VOID);
+                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
             }
             set {
                 throw new ArgumentTypeException("array-scalars are immutable");
@@ -1814,131 +1814,7 @@ namespace NumpyDotNet
 
     public class ScalarFlexible : ScalarGeneric { }
 
-    public class ScalarVoid : ScalarFlexible, IDisposable
-    {
-  
-        private static object FromObject(object val) {
-            ndarray arr = np.FromAny(val, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_VOID), flags: NPYARRAYFLAGS.NPY_FORCECAST);
-            return ndarray.ArrayReturn(arr);
-        }
-
-        public ScalarVoid() {
-            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_VOID);
-            dataptr =null;
-        }
-
-        internal ScalarVoid(int size) {
-            AllocData(size);
-            dtype_ = new dtype(NpyCoreApi.DescrFromType(NPY_TYPES.NPY_VOID));
-            dtype_.ElementSize = size;
-        }
-
-        private void AllocData(int size) {
-     
-        }
-
-        ~ScalarVoid() {
-            Dispose(false);
-        }
-
-        public void Dispose() {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing) {
-   
-        }
-
-        public override object dtype {
-            get {
-                return dtype_;
-            }
-        }
-
-        public override object Value { get { return this[0]; } }
-
-        internal override ndarray ToArray() {
-            ndarray a = NpyCoreApi.NewFromDescr(dtype_, new npy_intp[0], null, dataptr, 0, null);
-            //a.BaseObj = this;
-            return a;
-        }
-
-        internal override ScalarGeneric FillData(ndarray arr, npy_intp offset, bool isNativeByteOrder)
-        {
-            int elsize = arr.ItemSize;
-
-            if (dataptr != null)
-            {
-                throw new RuntimeException("Unexpected modification to existing scalar object.");
-            }
-
-
-            dtype_ = arr.Dtype;
-
-            if (arr.Dtype.HasNames)
-            {
-                base_arr = arr;
-                dataptr = arr.Array.data + offset;
-            }
-            else
-            {
-                base_arr = null;
-                AllocData(elsize);
-
-                arr.CopySwapOut(offset, dataptr, !arr.IsNotSwapped);
-            }
-            return this;
-        }
  
-        internal override ScalarGeneric FillData(VoidPtr dataPtr, int size, bool isNativeByteOrder) {
-            throw new NotImplementedException("Scalar fill operations are not supported for flexible (variable-size) types.");
-        }
-
-        public override object this[int index] {
-            get {
-                return Index(index);
-            }
-        }
-
-        public override object this[long index] {
-            get {
-                return Index((int)index);
-            }
-        }
-
-        public override object this[BigInteger index] {
-            get {
-                return Index((int)index);
-            }
-        }
-
-        public object this[string index] {
-            get {
-                return Index(index);
-            }
-        }
-
-        private object Index(int index) {
-            if (!dtype_.HasNames) {
-                throw new IndexOutOfRangeException("cant' index void scalar without fields");
-            }
-            return Index(dtype_.Names[index]);
-        }
-
-        private object Index(string index) {
-            return ToArray()[index];
-        }
-
-        private dtype dtype_;
-        private VoidPtr dataptr;
-
-        /// <summary>
-        /// When set this object is sharing memroy with the array below.  This occurs when accessing
-        /// elements of record type array.
-        /// </summary>
-        private ndarray base_arr;
-    }
-
     public class ScalarCharacter : ScalarFlexible
     {
         public override object dtype {

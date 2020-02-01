@@ -61,8 +61,6 @@ namespace NumpyDotNet {
         internal static readonly NPY_TYPES NPY_UINTP = NpyCoreApi.TypeOf_UInt32;
         #endif
 
-        internal const int NPY_NTYPES = (int)NPY_TYPES.NPY_NTYPES;
-
         public enum NPY_COMPARE_OP {
             NPY_LT = 0,
             NPY_LE = 1,
@@ -289,7 +287,6 @@ namespace NumpyDotNet {
             switch (type)
             {
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_VOID:
                     return true;
                 default:
                     return false;

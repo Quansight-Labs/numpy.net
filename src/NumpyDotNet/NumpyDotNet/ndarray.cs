@@ -854,7 +854,7 @@ namespace NumpyDotNet
             get
             {
                 if (core == null)
-                    return NPY_TYPES.NPY_VOID;
+                    return NPY_TYPES.NPY_OBJECT;
 
                 return core.descr.type_num;
             }
@@ -1360,7 +1360,6 @@ namespace NumpyDotNet
                     case NPY_TYPES.NPY_STRING:
                     case NPY_TYPES.NPY_DATETIME:
                     case NPY_TYPES.NPY_TIMEDELTA:
-                    case NPY_TYPES.NPY_VOID:
                         return false;
                     default:
                         return true;

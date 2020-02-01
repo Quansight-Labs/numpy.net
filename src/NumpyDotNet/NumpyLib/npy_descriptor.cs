@@ -212,7 +212,7 @@ namespace NumpyLib
 
         internal static NpyArray_Descr NpyArray_DescrNewSubarray(NpyArray_Descr baseDescr, int ndim, npy_intp[] dims)
         {
-            NpyArray_Descr result = NpyArray_DescrNewFromType(NPY_TYPES.NPY_VOID);
+            NpyArray_Descr result = NpyArray_DescrNewFromType(NPY_TYPES.NPY_OBJECT);
             if (result == null)
             {
                 return result;
@@ -505,16 +505,6 @@ namespace NumpyLib
             Npy_DECREF(chktype);
             Npy_DECREF(mintype);
 
-            /*
-             * VOID Arrays should not occur by "default"
-             * unless input was already a VOID
-             */
-            if (outtype.type_num == NPY_TYPES.NPY_VOID &&
-                mintype.type_num != NPY_TYPES.NPY_VOID)
-            {
-                Npy_DECREF(outtype);
-                outtype = NpyArray_DescrFromType(NPY_TYPES.NPY_OBJECT);
-            }
             return outtype;
         }
 

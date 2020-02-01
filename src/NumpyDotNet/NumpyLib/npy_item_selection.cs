@@ -1775,14 +1775,7 @@ namespace NumpyLib
             NpyArray result;
             NpyArray_ArrayDescr subarray = self.descr.subarray;
 
-            if (NpyArray_TYPE(self) != NPY_TYPES.NPY_VOID || subarray == null)
-            {
-                NpyErr_SetString( npyexc_type.NpyExc_ValueError,
-                                 "Array does not have subarrays");
-                return null;
-            }
-
-
+   
             Npy_INCREF(subarray._base);
             result = NpyArray_NewFromDescr(subarray._base,
                                            subarray.shape_num_dims, subarray.shape_dims, null, 

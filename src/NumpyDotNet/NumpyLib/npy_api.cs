@@ -186,12 +186,12 @@ namespace NumpyLib
         public VoidPtr()
         {
             datap = null;
-            type_num = NPY_TYPES.NPY_VOID;
+            type_num = NPY_TYPES.NPY_OBJECT;
         }
 
         public System.Object datap;
  
-        public NPY_TYPES type_num = NPY_TYPES.NPY_NOTYPE;
+        public NPY_TYPES type_num = NPY_TYPES.NPY_OBJECT;
 
         public npy_intp data_offset = 0;
     }
