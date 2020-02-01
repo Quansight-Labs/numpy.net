@@ -575,8 +575,8 @@ namespace NumpyDotNetTests
             y.fill(44);
             print(x);
 
-            y.fill("AAAA");
-            print(x);
+           // y.fill("AAAA");
+           // print(x);
 
             x = np.arange(0, 9, dtype: np.Complex).reshape(new shape(3, 3));
             x.fill(123);
