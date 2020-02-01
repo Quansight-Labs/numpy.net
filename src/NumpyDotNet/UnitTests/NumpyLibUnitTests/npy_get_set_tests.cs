@@ -55,6 +55,8 @@ namespace NumpyLibTests
         {
             Common.NumpyErrors.Clear();
         }
+
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void NpyArray_SetShape_Test1()
         {
@@ -92,6 +94,7 @@ namespace NumpyLibTests
 
         }
 
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void NpyArray_SetShape_Test2()
         {
@@ -129,7 +132,7 @@ namespace NumpyLibTests
         }
 
 
-
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void NpyArray_SetShape_Test3()
         {

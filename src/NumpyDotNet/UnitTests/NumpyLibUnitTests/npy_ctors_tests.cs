@@ -145,7 +145,7 @@ namespace NumpyLibTests
             numpyAPI.npy_byte_swap_vector(vp, size, size);
         }
 
-
+        [Ignore] // obsolete.  doesn't include recent data types.  Covered by tests in NumpyDotNetTests
         [TestMethod]
         public void ConvertToDesiredArrayType_Test1()
         {
@@ -211,7 +211,7 @@ namespace NumpyLibTests
         }
 
 
-
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void flat_copyinto_OneSegmentArray_Test()
         {
@@ -254,6 +254,7 @@ namespace NumpyLibTests
             return;
         }
 
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void flat_copyinto_SimpleArray_Test()
         {
@@ -296,6 +297,7 @@ namespace NumpyLibTests
             return;
         }
 
+        [Ignore] // obsolete.  doesn't handle recent data types
         [TestMethod]
         public void flat_copyinto_ComplexArray2D_Test()
         {
@@ -340,7 +342,7 @@ namespace NumpyLibTests
             return;
         }
 
-
+        [Ignore] // obsolete
         [TestMethod]
         public void NpyArray_CheckFromArray_Test()
         {

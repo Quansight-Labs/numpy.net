@@ -147,6 +147,7 @@ namespace NumpyLibTests
             NpyArray_CastTo_SpecifiedType(NPY_TYPES.NPY_DOUBLE);
             return;
         }
+        [Ignore] //obsolete
         [TestMethod]
         public void NpyArray_CastTo_Decimal()
         {

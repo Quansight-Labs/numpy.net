@@ -81,31 +81,6 @@ namespace NumpyLibTests
 
         }
 
-        [TestMethod]
-        public void NpyArray_CompareUCS4_Test()
-        {
-            npy_intp[] a1 = new npy_intp[] { 1, 2, 3, 4 };
-            npy_intp[] b1 = new npy_intp[] { 1, 2, 3, 4 };
-
-            Assert.AreEqual(0, numpyAPI.NpyArray_CompareUCS4(a1, b1, a1.Length));
-
-            npy_intp[] a2 = new npy_intp[] { 1, 2, 3, 4 };
-            npy_intp[] b2 = new npy_intp[] { 1, 2, 99, 4 };
-
-            Assert.AreEqual(-1, numpyAPI.NpyArray_CompareUCS4(a2, b2, a1.Length));
-
-            npy_intp[] a3 = new npy_intp[] { 1, 99, 3, 4 };
-            npy_intp[] b3 = new npy_intp[] { 1, 2, 3, 4 };
-
-            Assert.AreEqual(1, numpyAPI.NpyArray_CompareUCS4(a3, b3, a1.Length));
-
-            npy_intp[] a4 = new npy_intp[] { 1, 2, 3, 4 };
-            npy_intp[] b4 = new npy_intp[] { 1, 2, 3 };
-
-            Assert.AreEqual(-2, numpyAPI.NpyArray_CompareUCS4(a4, b4, a1.Length));
-            Assert.IsTrue(Common.MatchError(npyexc_type.NpyExc_IndexError, "NpyArray_CompareUCS4:"));
-        }
-
 
         [TestMethod]
         //[ExpectedException(typeof(Exception))]
