@@ -161,7 +161,7 @@ namespace NumpyDotNet {
     internal static class NpyUtil_Python
     {
         internal static bool IsIntegerScalar(object o) {
-            return (o is int || o is BigInteger || o is ScalarInteger);
+            return (o is int || o is BigInteger);
         }
 
         internal static bool IsTupleOfIntegers(object o) {
@@ -554,18 +554,6 @@ namespace NumpyDotNet {
             else if (arg is int)
             {
                 indexes.AddIndex((int)arg);
-            }
-            else if (arg is ScalarInt16)
-            {
-                indexes.AddIndex((int)(ScalarInt16)arg);
-            }
-            else if (arg is ScalarInt32)
-            {
-                indexes.AddIndex((int)(ScalarInt32)arg);
-            }
-            else if (arg is ScalarInt64)
-            {
-                indexes.AddIndex((int)(ScalarInt64)arg);
             }
             else if (arg is BigInteger)
             {

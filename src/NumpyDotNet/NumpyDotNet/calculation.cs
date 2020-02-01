@@ -107,8 +107,8 @@ namespace NumpyDotNet
             }
 
             // Set up to do a multiply, round, divide, or the other way around.
-            ufunc pre;
-            ufunc post;
+            NpyUFuncObject pre;
+            NpyUFuncObject post;
             if (decimals >= 0)
             {
                 pre = NpyCoreApi.GetNumericOp(NpyArray_Ops.npy_op_multiply);

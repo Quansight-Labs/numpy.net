@@ -113,14 +113,14 @@ namespace NumpyDotNet
 
         #region Operators
 
-        internal static ndarray BinaryOp(ndarray a, object b, ufunc f)
+        internal static ndarray BinaryOp(ndarray a, object b, NpyUFuncObject UFunc)
         {
-            return NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, np.asanyarray(b), false);
+            return NpyCoreApi.PerformNumericOp(a, UFunc.ops, np.asanyarray(b), false);
         }
 
-        internal static object BinaryOpInPlace(ndarray a, object b, ufunc f, ndarray ret)
+        internal static object BinaryOpInPlace(ndarray a, object b, NpyUFuncObject UFunc, ndarray ret)
         {
-            ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, f.UFunc.ops, np.asanyarray(b), true);
+            ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, UFunc.ops, np.asanyarray(b), true);
             if (numericOpResult != null && ret != null)
             {
                 NpyCoreApi.CopyAnyInto(ret, numericOpResult);
@@ -131,13 +131,13 @@ namespace NumpyDotNet
 
         internal static ndarray BinaryOp(ndarray a, object b, NpyArray_Ops op)
         {
-            ufunc f = NpyCoreApi.GetNumericOp(op);
+            var f = NpyCoreApi.GetNumericOp(op);
             return BinaryOp(a, b, f);
         }
 
         public static object BinaryOpInPlace(ndarray a, object b, NpyArray_Ops op, ndarray ret)
         {
-            ufunc f = NpyCoreApi.GetNumericOp(op);
+            var f = NpyCoreApi.GetNumericOp(op);
             return BinaryOpInPlace(a, b, f, ret);
         }
 
@@ -561,7 +561,7 @@ namespace NumpyDotNet
                             }
                             offset += val * s[i];
                         }
-                        return Dtype.ToScalar(this, offset);
+                        return this.GetItem(offset);
                     }
                     else if (indexes.IsMultiField)
                     {
@@ -610,7 +610,7 @@ namespace NumpyDotNet
                         }
                         if (noelipses)
                         {
-                            return result.Dtype.ToScalar(this);
+                            return result.GetItem(0);
                         }
                     }
 
@@ -1424,7 +1424,7 @@ namespace NumpyDotNet
 
         public static object ArrayReturn(ndarray a) {
             if (a.ndim == 0) {
-                return a.Dtype.ToScalar(a);
+                return a.GetItem(0);
             } else {
                 return a;
             }

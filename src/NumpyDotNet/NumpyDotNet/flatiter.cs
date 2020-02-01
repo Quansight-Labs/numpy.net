@@ -69,7 +69,7 @@ namespace NumpyDotNet
                 }
                 if (result.ndim == 0)
                 {
-                    return result.Dtype.ToScalar(result, 0);
+                    return result.GetItem(0);
                 }
                 else
                 {
@@ -202,10 +202,6 @@ namespace NumpyDotNet
             return NpyCoreApi.FlatView(arr);
         }
 
-        public object AsScalar()
-        {
-            return arr.Dtype.ToScalar(current, arr.ItemSize);
-        }
 
         public VoidPtr CurrentPtr
         {

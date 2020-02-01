@@ -269,16 +269,6 @@ namespace NumpyDotNet {
                     result = asanyarray(src);
                 }
 
-                if (src is ScalarGeneric)
-                {
-                    if ((flags & NPYARRAYFLAGS.NPY_UPDATEIFCOPY) != 0)
-                    {
-                        throw UpdateIfCopyError();
-                    }
-                    result = FromScalar((ScalarGeneric)src, descr);
-                    return FromAnyReturn(result, minDepth, maxDepth);
-                }
-
                 dtype newtype = (descr ?? FindScalarType(src));
                 if (descr == null && newtype != null)
                 {
@@ -440,17 +430,6 @@ namespace NumpyDotNet {
             return nd;
         }
 
- 
-        internal static ndarray FromScalar(ScalarGeneric scalar, dtype descr = null)
-        {
-            ndarray arr = scalar.ToArray();
-            if (descr != null && !NpyCoreApi.EquivTypes((dtype)scalar.dtype, descr))
-            {
-                arr = NpyCoreApi.CastToType(arr, descr, arr.IsFortran);
-            }
-            return arr;
-        }
-
 
         internal static ndarray FromPythonScalar(object src, dtype descr)
         {
@@ -592,19 +571,6 @@ namespace NumpyDotNet {
             if (src is ndarray)
             {
                 chktype = ((ndarray)src).Dtype;
-                if (minitype == null)
-                {
-                    return chktype;
-                }
-                else
-                {
-                    return FindArrayReturn(chktype, minitype);
-                }
-            }
-
-            if (src is ScalarGeneric)
-            {
-                chktype = (dtype)((ScalarGeneric)src).dtype;
                 if (minitype == null)
                 {
                     return chktype;

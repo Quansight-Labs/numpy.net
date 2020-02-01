@@ -574,21 +574,18 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ufunc GetNumericOp(NpyArray_Ops op)
+        internal static NpyUFuncObject GetNumericOp(NpyArray_Ops op)
         {
-            NpyUFuncObject ufuncPtr;
-
 #if ENABLELOCKING
             lock (GlobalIterpLock)
 #endif
             {
-                ufuncPtr = numpyAPI.NpyArray_GetNumericOp(op);
+                return numpyAPI.NpyArray_GetNumericOp(op);
             }
-            return new ufunc(ufuncPtr);
         }
 
 
-        internal static object GenericReduction(ufunc f, ndarray arr, ndarray indices, ndarray ret, int axis, dtype otype, GenericReductionOp op)
+        internal static object GenericReduction(NpyUFuncObject UFunc, ndarray arr, ndarray indices, ndarray ret, int axis, dtype otype, GenericReductionOp op)
         {
             if (indices != null)
             {
@@ -600,7 +597,7 @@ namespace NumpyDotNet {
             lock (GlobalIterpLock)
 #endif
             {
-                rval = new ndarray(numpyAPI.NpyUFunc_GenericReduction(f.UFunc, arr.Array,
+                rval = new ndarray(numpyAPI.NpyUFunc_GenericReduction(UFunc, arr.Array,
                                     (indices != null) ? indices.Array : null,
                                     (ret != null) ? ret.Array : null,
                                     axis, (otype != null) ? otype.Descr : null, op));
@@ -1268,13 +1265,13 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void SetNumericOp(NpyArray_Ops op, ufunc ufunc)
+        internal static void SetNumericOp(NpyArray_Ops op, NpyUFuncObject UFunc)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
 #endif
             {
-                numpyAPI.NpyArray_SetNumericOp(op, ufunc.UFunc);
+                numpyAPI.NpyArray_SetNumericOp(op, UFunc);
             }
         }
 

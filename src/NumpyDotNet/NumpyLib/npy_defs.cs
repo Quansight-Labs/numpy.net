@@ -159,7 +159,6 @@ namespace NumpyLib
 
         internal const int NPY_BUFSIZE = 10000;
 
-        internal const int NPY_NUM_FLOATTYPE = 3;
         internal const int NPY_NSORTS = (int)(NPY_SORTKIND.NPY_MERGESORT + 1);
         internal const int NPY_NSEARCHSIDES = (int)(NPY_SEARCHSIDE.NPY_SEARCHRIGHT + 1);
         internal const int NPY_NSCALARKINDS = (int)(NPY_SCALARKIND.NPY_OBJECT_SCALAR + 1);

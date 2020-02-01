@@ -392,7 +392,7 @@ namespace NumpyDotNet {
                             String.Format("Field named \"{0}\" not found.", (string)idx));
                     }
                 }
-                else if (idx is int || idx is long || idx is BigInteger || idx is ScalarInteger)
+                else if (idx is int || idx is long || idx is BigInteger)
                 {
                     int i = Convert.ToInt32(idx);
                     try
@@ -668,130 +668,7 @@ namespace NumpyDotNet {
 
         #endregion
 
-        #region Scalar type support
 
-        [Serializable]
-        internal class ScalarInfo {
-            internal Type ScalarType;
-            [NonSerialized]
-            internal Func<ScalarGeneric> ScalarConstructor;
-
-            internal static ScalarInfo Make<T>() where T: ScalarGeneric, new() {
-                return new ScalarInfo { ScalarType = typeof(T), ScalarConstructor = (() => new T()) };
-            }
-        };
-
-        internal ScalarInfo scalarInfo = null;
-
-        public Type ScalarType {
-            get {
-                if (scalarInfo == null) {
-                    FindScalarInfo();
-                }
-                return scalarInfo.ScalarType;
-            }
-        }
-
-        private void FindScalarInfo() {
-            ScalarInfo info = null;
-            NPY_TYPES type = TypeNum;
-            if (NpyDefs.IsSigned(type)) {
-                switch (ElementSize) {
-                    case 1:
-                        info = ScalarInfo.Make<ScalarInt8>();
-                        break;
-                    case 2:
-                        info = ScalarInfo.Make<ScalarInt16>();
-                        break;
-                    case 4:
-                        info = (type == NpyCoreApi.TypeOf_Int32) ?
-                            ScalarInfo.Make<ScalarInt32>() : ScalarInfo.Make<ScalarIntC>();
-                        break;
-                    case 8:
-                        info = (type == NpyCoreApi.TypeOf_Int64) ?
-                            ScalarInfo.Make<ScalarInt64>() : ScalarInfo.Make<ScalarLongLong>();
-                        break;
-                }
-            } else if (NpyDefs.IsUnsigned(type)) {
-                switch (ElementSize) {
-                    case 1:
-                        info = ScalarInfo.Make<ScalarUInt8>();
-                        break;
-                    case 2:
-                        info = ScalarInfo.Make<ScalarUInt16>();
-                        break;
-                    case 4:
-                        info = (type == NpyCoreApi.TypeOf_UInt32) ?
-                            ScalarInfo.Make<ScalarUInt32>() : ScalarInfo.Make<ScalarUIntC>();
-                        break;
-                    case 8:
-                        info = (type == NpyCoreApi.TypeOf_UInt64) ?
-                            ScalarInfo.Make<ScalarUInt64>() : ScalarInfo.Make<ScalarULongLong>();
-                        break;
-                }
-            } else if (NpyDefs.IsFloat(type)) {
-                switch (ElementSize) {
-                    case 4:
-                        info = ScalarInfo.Make<ScalarFloat32>();
-                        break;
-                    case 8:
-                        info = ScalarInfo.Make<ScalarFloat64>();
-                        break;
-                }
-            } else if (NpyDefs.IsComplex(type)) {
-                switch (ElementSize) {
-                    case 8:
-                        info = ScalarInfo.Make<ScalarComplex64>();
-                        break;
-                    case 16:
-                        info = ScalarInfo.Make<ScalarComplex128>();
-                        break;
-                }
-  
-            } else if (type == NPY_TYPES.NPY_BOOL) {
-                info = ScalarInfo.Make<ScalarBool>();
-            } else if (type == NPY_TYPES.NPY_OBJECT) {
-                info = ScalarInfo.Make<ScalarObject>();
-            }
-
-            if (info == null) {
-                info = new ScalarInfo();
-            }
-
-            scalarInfo = info;
-        }
-
-        /// <summary>
-        /// Converts a 0-d array to a scalar
-        /// </summary>
-        /// <param name="arr"></param>
-        /// <returns></returns>
-        internal object ToScalar(ndarray arr, npy_intp offset = 0)
-        {
-            if (ScalarType == null || ChkFlags(NpyArray_Descr_Flags.NPY_USE_GETITEM))
-            {
-                return arr.GetItem(offset);
-            }
-            else
-            {
-                return arr.GetItem(offset);
-                //ScalarGeneric result = scalarInfo.ScalarConstructor();
-                //return result.FillData(arr, offset, arr.Dtype.IsNativeByteOrder);
-            }
-        }
-
-        internal object ToScalar(VoidPtr dataPtr, int size)
-        {
-            if (ScalarType == null)
-            {
-                throw new ArgumentException("Attempt to construct scalar from non-scalar type");
-            }
-
-            ScalarGeneric result = scalarInfo.ScalarConstructor();
-            return result.FillData(dataPtr, size, true);
-        }
-
-        #endregion
     }
 
     internal class dtype_Enumerator : IEnumerator<object>
