@@ -114,6 +114,8 @@ namespace NumpyLib
             SetArrayHandler(NPY_TYPES.NPY_COMPLEXIMAG, new DoubleHandlers());
             SetArrayHandler(NPY_TYPES.NPY_BIGINT, new BigIntHandlers());
             SetArrayHandler(NPY_TYPES.NPY_OBJECT, new ObjectHandlers());
+            SetArrayHandler(NPY_TYPES.NPY_STRING, new StringHandlers());
+
         }
 
         public static void SetArrayHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)

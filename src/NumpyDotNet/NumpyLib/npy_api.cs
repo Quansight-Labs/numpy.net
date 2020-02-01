@@ -178,6 +178,11 @@ namespace NumpyLib
             datap = obj;
             type_num = NPY_TYPES.NPY_OBJECT;
         }
+        public VoidPtr(string[] obj)
+        {
+            datap = obj;
+            type_num = NPY_TYPES.NPY_STRING;
+        }
         public VoidPtr()
         {
             datap = null;

@@ -84,6 +84,7 @@ namespace NumpyDotNet
         public static readonly dtype Complex = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
         public static readonly dtype BigInt = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BIGINT);
         public static readonly dtype Object = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
+        public static readonly dtype Strings = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_STRING);
 
 #if NPY_INTP_64
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
@@ -110,6 +111,7 @@ namespace NumpyDotNet
                 switch (dtype.TypeNum)
                 {
                     case NPY_TYPES.NPY_OBJECT:
+                    case NPY_TYPES.NPY_STRING:
                         throw new Exception(string.Format("This function doesn't support {0} data types", dtype.TypeNum.ToString().Substring(4)));
                 }
             }
@@ -128,7 +130,7 @@ namespace NumpyDotNet
         {
             NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
 
-            if (arrayType != NPY_TYPES.NPY_OBJECT)
+            if (arrayType != NPY_TYPES.NPY_OBJECT && arrayType != NPY_TYPES.NPY_STRING)
             {
                 if (Get_NPYType(arr) != arrayType)
                 {
@@ -195,6 +197,8 @@ namespace NumpyDotNet
                     return array(arr.datap as System.Numerics.BigInteger[], dtype, copy, order, subok, ndmin);
                 case NPY_TYPES.NPY_OBJECT:
                     return array(arr.datap as object[], dtype, copy, order, subok, ndmin);
+                case NPY_TYPES.NPY_STRING:
+                    return array(arr.datap as string[], dtype, copy, order, subok, ndmin);
             }
 
             throw new Exception("unrecognized array type");
