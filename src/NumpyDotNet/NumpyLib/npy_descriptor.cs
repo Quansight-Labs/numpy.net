@@ -69,7 +69,7 @@ namespace NumpyLib
 
         }
 
-        public char kind;              /* kind for this type */
+        public NPY_TYPECHAR kind;              /* kind for this type */
         public byte type;              /* unique-character representing this type */
         public char byteorder;         /*
                                  * '>' (big), '<' (little), '|'
@@ -847,7 +847,7 @@ namespace NumpyLib
         }
         internal static NpyArray_Descr_Flags npy_descr_find_object_flag(NpyArray_Descr self)
         {
-            if (self.flags != 0 || self.type_num == NPY_TYPES.NPY_OBJECT || self.kind == 'O')
+            if (self.flags != 0 || self.type_num == NPY_TYPES.NPY_OBJECT || self.kind == NPY_TYPECHAR.NPY_OBJECTLTR)
             {
                 return NpyArray_Descr_Flags.NPY_OBJECT_DTYPE_FLAGS;
             }

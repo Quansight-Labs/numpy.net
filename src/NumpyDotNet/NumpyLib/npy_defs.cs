@@ -75,35 +75,17 @@ namespace NumpyLib
         NPY_UINTLTR = 'I',
         NPY_LONGLTR = 'l',
         NPY_ULONGLTR = 'L',
-        NPY_LONGLONGLTR = 'q',
-        NPY_ULONGLONGLTR = 'Q',
         NPY_FLOATLTR = 'f',
         NPY_DOUBLELTR = 'd',
-        NPY_LONGDOUBLELTR = 'g',
-        NPY_CFLOATLTR = 'F',
+        NPY_DECIMALLTR = '$',
+        NPY_COMPLEXLTR = 'c',
+        NPY_BIGINTLTR = 'q',
         NPY_CDOUBLELTR = 'D',
         NPY_CLONGDOUBLELTR = 'G',
         NPY_OBJECTLTR = 'O',
         NPY_STRINGLTR = 'S',
-        NPY_VOIDLTR = 'V',
         NPY_DATETIMELTR = 'M',
         NPY_TIMEDELTALTR = 'm',
-        NPY_CHARLTR = 'c',
-
-        /*
-         * No Descriptor, just a define -- this let's
-         * Python users specify an array of integers
-         * large enough to hold a pointer on the
-         * platform
-         */
-        NPY_INTPLTR = 'p',
-        NPY_UINTPLTR = 'P',
-
-        NPY_GENBOOLLTR = 'b',
-        NPY_SIGNEDLTR = 'i',
-        NPY_UNSIGNEDLTR = 'u',
-        NPY_FLOATINGLTR = 'f',
-        NPY_COMPLEXLTR = 'c'
     };
 
     public enum NPY_TYPES : int

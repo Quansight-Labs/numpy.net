@@ -55,26 +55,24 @@ namespace NumpyLib
 
         internal static void _intialize_builtin_descrs()
         {
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BOOL) { kind = 'b' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BYTE) { kind = 'i' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) { kind = 'u' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT16) { kind = 'i' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT16) { kind = 'u' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT32) { kind = 'i' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT32) { kind = 'u' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT64) { kind = 'i' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT64) { kind = 'u' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) { kind = 'f' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) { kind = 'f' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) { kind = 'd' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) { kind = 'c' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = 'I' });
-            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) { kind = 'M' });
-            // _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) { kind = 'm' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) { kind = 'O' });
-            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_STRING) { kind = 'S' });
-            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UNICODE) { kind = 'U' });
-            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_VOID) { kind = 'V' });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BOOL) { kind = NPY_TYPECHAR.NPY_BOOLLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BYTE) { kind = NPY_TYPECHAR.NPY_BYTELTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UBYTE) { kind = NPY_TYPECHAR.NPY_UBYTELTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT16) { kind = NPY_TYPECHAR.NPY_SHORTLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT16) { kind = NPY_TYPECHAR.NPY_USHORTLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT32) { kind = NPY_TYPECHAR.NPY_INTLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT32) { kind = NPY_TYPECHAR.NPY_UINTLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_INT64) { kind = NPY_TYPECHAR.NPY_LONGLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_UINT64) { kind = NPY_TYPECHAR.NPY_ULONGLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_FLOAT) { kind = NPY_TYPECHAR.NPY_FLOATLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DOUBLE) { kind = NPY_TYPECHAR.NPY_DOUBLELTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DECIMAL) { kind = NPY_TYPECHAR.NPY_DECIMALLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_COMPLEX) { kind = NPY_TYPECHAR.NPY_COMPLEXLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_BIGINT) { kind = NPY_TYPECHAR.NPY_BIGINTLTR });
+            //_register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_DATETIME) { kind = NPY_TYPECHAR.NPY_DATETIMELTR });
+            // _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_TIMEDELTA) { kind = NPY_TYPECHAR.NPY_TIMEDELTALTR});
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_OBJECT) { kind = NPY_TYPECHAR.NPY_OBJECTLTR });
+            _register_builtin_descrs(new NpyArray_Descr(NPY_TYPES.NPY_STRING) { kind = NPY_TYPECHAR.NPY_STRINGLTR });
         }
 
         private static void _register_builtin_descrs(NpyArray_Descr descr)

@@ -435,7 +435,7 @@ namespace NumpyDotNet {
 
         public char Kind {
             get {
-                return core.kind;
+                return Convert.ToChar(core.kind);
             }
         }
 

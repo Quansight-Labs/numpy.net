@@ -62,19 +62,6 @@ namespace NumpyDotNet {
         /// <param name="src">Source object</param>
         public static void CopyObject(ndarray dest, Object src)
         {
-            // For char arrays pad the input string.
-            if (dest.Dtype.Type == NPY_TYPECHAR.NPY_CHARLTR &&
-                dest.ndim > 0 && src is String)
-            {
-                int ndimNew = (int)dest.Dim(dest.ndim - 1);
-                int ndimOld = ((String)src).Length;
-
-                if (ndimNew > ndimOld)
-                {
-                    src = ((String)src).PadRight(ndimNew, ' ');
-                }
-            }
-
             ndarray srcArray;
             if (src is ndarray)
             {
@@ -94,18 +81,7 @@ namespace NumpyDotNet {
 
         internal static void SetField(ndarray dest, NpyArray_Descr descr, int offset, object src)
         {
-            // For char arrays pad the input string.
-            if (dest.Dtype.Type == NPY_TYPECHAR.NPY_CHARLTR &&
-                dest.ndim > 0 && src is String)
-            {
-                int ndimNew = (int)dest.Dim(dest.ndim - 1);
-                int ndimOld = ((String)src).Length;
-
-                if (ndimNew > ndimOld)
-                {
-                    src = ((String)src).PadRight(ndimNew, ' ');
-                }
-            }
+ 
             ndarray srcArray;
             if (src is ndarray)
             {
@@ -481,7 +457,7 @@ namespace NumpyDotNet {
             int itemsize = descr.ElementSize;
 
             NPY_TYPES type = descr.TypeNum;
-            bool checkIt = (descr.Type != NPY_TYPECHAR.NPY_CHARLTR);
+            bool checkIt = true;
             bool stopAtString =
                 type != NPY_TYPES.NPY_STRING ||
                 descr.Type == NPY_TYPECHAR.NPY_STRINGLTR;
@@ -507,12 +483,7 @@ namespace NumpyDotNet {
 
                 npy_intp[] dims = new npy_intp[numDim];
                 DiscoverDimensions(src, numDim, dims, 0, checkIt);
-                if (descr.Type == NPY_TYPECHAR.NPY_CHARLTR &&
-                    numDim > 0 && dims[numDim - 1] == 1)
-                {
-                    numDim--;
-                }
-
+    
                 result = NpyCoreApi.AllocArray(descr, numDim, dims, fortran);
                 AssignToArray(src, result);
             }
