@@ -105,17 +105,6 @@ namespace NumpyLib
             {
                 ret = NpyArray_DescrNew(_get_builtin_descrs(type));
             }
-            else if ((type == NPY_TYPES.NPY_CHAR) || ((int)type == (int)NPY_TYPECHAR.NPY_CHARLTR))
-            {
-                ret = NpyArray_DescrNew(_get_builtin_descrs(NPY_TYPES.NPY_STRING));
-                if (ret == null)
-                {
-                    return null;
-                }
-                ret.elsize = 1;
-                ret.type = (byte)NPY_TYPECHAR.NPY_CHARLTR;
-                return ret;
-            }
             else if (NpyTypeNum_ISUSERDEF((NPY_TYPES)type))
             {
                 ret = NpyArray_UserDescrFromTypeNum(type);

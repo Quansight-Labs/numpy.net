@@ -353,7 +353,7 @@ namespace NumpyDotNet
             npy_intp[] dims;
 
             // determine what data type it should be if not set,
-            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            if (dtype == null)
             {
                 Int64 stop2 = stop != null ? (Int64)stop : 0;
                 if (start <= System.Int32.MaxValue && stop2 <= System.Int32.MaxValue)
@@ -475,7 +475,7 @@ namespace NumpyDotNet
             }
 
             // determine what data type it should be if not set,
-            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            if (dtype == null)
             {
                 if ((float)start <= System.Single.MaxValue && (float)stop <= System.Single.MaxValue)
                 {
@@ -586,7 +586,7 @@ namespace NumpyDotNet
             }
 
             // determine what data type it should be if not set,
-            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            if (dtype == null)
             {
                 dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
             }
@@ -679,7 +679,7 @@ namespace NumpyDotNet
             }
 
             // determine what data type it should be if not set,
-            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            if (dtype == null)
             {
                 dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
             }
@@ -772,7 +772,7 @@ namespace NumpyDotNet
             }
 
             // determine what data type it should be if not set,
-            if (dtype == null || dtype.TypeNum == NPY_TYPES.NPY_NOTYPE)
+            if (dtype == null)
             {
                 dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BIGINT);
             }

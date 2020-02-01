@@ -133,7 +133,6 @@ namespace NumpyLib
 
         NPY_NTYPES,
         NPY_NOTYPE,
-        NPY_CHAR,               /* special flag */
         NPY_USERDEF = 256,      /* leave room for characters */
 
         NPY_INT8 = NPY_BYTE,
