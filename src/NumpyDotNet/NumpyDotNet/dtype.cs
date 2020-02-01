@@ -194,9 +194,6 @@ namespace NumpyDotNet {
                 if (endian == '=') {
                     endian = NpyDefs.IsNativeByteOrder('<') ? '<' : '>';
                 }
-                if (this.TypeNum == NPY_TYPES.NPY_UNICODE) {
-                    size >>= 2;
-                }
 
                 string ret = String.Format("{0}{1}{2}", (char)endian, (char)this.Kind, size);
                 if (this.Type == NPY_TYPECHAR.NPY_DATETIMELTR) {

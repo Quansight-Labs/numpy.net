@@ -289,7 +289,6 @@ namespace NumpyDotNet {
             switch (type)
             {
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_UNICODE:
                 case NPY_TYPES.NPY_VOID:
                     return true;
                 default:

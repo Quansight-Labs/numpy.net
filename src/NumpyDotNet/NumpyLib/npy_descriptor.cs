@@ -474,24 +474,8 @@ namespace NumpyLib
                 int chksize, minsize;
                 chksize = chktype.elsize;
                 minsize = mintype.elsize;
-                /*
-                 * Handle string.unicode case separately
-                 * because string itemsize is 4* as large
-                 */
-                if (outtype.type_num == NPY_TYPES.NPY_UNICODE &&
-                    mintype.type_num == NPY_TYPES.NPY_STRING)
-                {
-                    testsize = Math.Max(chksize, 4 * minsize);
-                }
-                else if (chktype.type_num == NPY_TYPES.NPY_STRING &&
-                         mintype.type_num == NPY_TYPES.NPY_UNICODE)
-                {
-                    testsize = Math.Max(chksize * 4, minsize);
-                }
-                else
-                {
-                    testsize = Math.Max(chksize, minsize);
-                }
+ 
+                testsize = Math.Max(chksize, minsize);
                 if (testsize != outtype.elsize)
                 {
                     NpyArray_DESCR_REPLACE(ref outtype);

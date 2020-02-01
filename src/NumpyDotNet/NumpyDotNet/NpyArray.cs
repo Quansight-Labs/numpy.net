@@ -318,15 +318,7 @@ namespace NumpyDotNet {
 
             if (result == null)
             {
-                // Hack required because in C# strings are enumerations of chars, not objects. 
-                // However, we want to keep src as a string if we are building a string or object array.
-                if (!is_object &&
-                    (descr.TypeNum != NPY_TYPES.NPY_STRING || descr.Type == NPY_TYPECHAR.NPY_CHARLTR) &&
-                    descr.TypeNum != NPY_TYPES.NPY_UNICODE && src is string && ((string)src).Length > 1)
-                {
-                    src = ((string)src).Cast<object>();
-                }
-
+  
                 bool seq = false;
                 if (src is IEnumerable<object> )
                 {
@@ -468,10 +460,6 @@ namespace NumpyDotNet {
             if (itemsize == 0 && NpyDefs.IsExtended(type))
             {
                 int n = PythonOps.Length(src);
-                if (type == NPY_TYPES.NPY_UNICODE)
-                {
-                    n *= 4;
-                }
                 descr = new dtype(descr);
                 descr.ElementSize = n;
             }
@@ -546,17 +534,6 @@ namespace NumpyDotNet {
                     numDim > 0 && dims[numDim - 1] == 1)
                 {
                     numDim--;
-                }
-
-                if (itemsize == 0 && NpyDefs.IsExtended(descr.TypeNum))
-                {
-                    itemsize = DiscoverItemsize(src, numDim, 0);
-                    if (descr.TypeNum == NPY_TYPES.NPY_UNICODE)
-                    {
-                        itemsize *= 4;
-                    }
-                    descr = new dtype(descr);
-                    descr.ElementSize = itemsize;
                 }
 
                 result = NpyCoreApi.AllocArray(descr, numDim, dims, fortran);
@@ -661,15 +638,7 @@ namespace NumpyDotNet {
                 return FindArrayReturn(chktype, minitype);
             }
 
-
-            if (src is String)
-            {
-                String s = (String)src;
-                chktype = new dtype(NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UNICODE));
-                chktype.ElementSize = s.Length * 4;
-                return FindArrayReturn(chktype, minitype);
-            }
-
+  
             chktype = UseDefaultType(src);
             return FindArrayReturn(chktype, minitype);
         }
@@ -840,19 +809,7 @@ namespace NumpyDotNet {
                 dims[dimIdx] = 1;
             }
         }
-
-        private static int DiscoverItemsize(object s, int nd, int min)
-        {
-            if (s is ndarray)
-            {
-                ndarray a1 = (ndarray)s;
-                return Math.Max(min, a1.ItemSize);
-            }
-
-            throw new Exception("not an ndarray");
-  
-        }
-
+   
  
     
         internal static void FillObjects(ndarray arr, object o)

@@ -85,11 +85,6 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Size(op);
         }
 
-        public static int NpyArray_CompareUCS4(npy_ucs4[] s1, npy_ucs4[] s2, int len)
-        {
-            return numpyinternal.NpyArray_CompareUCS4(s1, s2, len);
-        }
-
         public static int NpyArray_CompareString(string s1, string s2, int len)
         {
             return numpyinternal.NpyArray_CompareString(s1, s2, len);

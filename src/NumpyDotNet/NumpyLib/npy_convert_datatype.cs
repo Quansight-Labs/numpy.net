@@ -175,29 +175,7 @@ namespace NumpyLib
                 return mp;
             }
 
-            if (at.elsize == 0)
-            {
-                NpyArray_DESCR_REPLACE(ref at);
-                if (at == null)
-                {
-                    return null;
-                }
-                if (mpd.type_num == NPY_TYPES.NPY_STRING &&
-                    at.type_num == NPY_TYPES.NPY_UNICODE)
-                {
-                    at.elsize = mpd.elsize << 2;
-                }
-                if (mpd.type_num == NPY_TYPES.NPY_UNICODE &&
-                    at.type_num == NPY_TYPES.NPY_STRING)
-                {
-                    at.elsize = mpd.elsize >> 2;
-                }
-                if (at.type_num == NPY_TYPES.NPY_VOID)
-                {
-                    at.elsize = mpd.elsize;
-                }
-            }
-
+    
             dst = NpyArray_Alloc(at, mp.nd, mp.dimensions,
                          fortran, Npy_INTERFACE(mp));
 
@@ -411,7 +389,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_COMPLEX:
                     return totype > fromtype;
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_UNICODE:
                     return totype > fromtype;
                 default:
                     return false;
@@ -435,33 +412,6 @@ namespace NumpyLib
             bool ret;
 
             ret = NpyArray_CanCastSafely(fromtype, totype);
-            if (ret)
-            {
-                /* Check String and Unicode more closely */
-                if (fromtype == NPY_TYPES.NPY_STRING)
-                {
-                    if (totype == NPY_TYPES.NPY_STRING)
-                    {
-                        ret = (from.elsize <= to.elsize);
-                    }
-                    else if (totype == NPY_TYPES.NPY_UNICODE)
-                    {
-                        ret = (from.elsize << 2 <= to.elsize);
-                    }
-                }
-                else if (fromtype == NPY_TYPES.NPY_UNICODE)
-                {
-                    if (totype == NPY_TYPES.NPY_UNICODE)
-                    {
-                        ret = (from.elsize <= to.elsize);
-                    }
-                }
-                /*
-                 * TODO: If totype is STRING or unicode
-                 * see if the length is long enough to hold the
-                 * stringified value of the object.
-                 */
-            }
             return ret;
         }
 

@@ -780,8 +780,7 @@ namespace NumpyLib
             NPY_TYPES t1 = NpyArray_TYPE(a1);
             NPY_TYPES t2 = NpyArray_TYPE(a2);
 
-            if (NpyArray_TYPE(a1) != NpyArray_TYPE(a2) ||
-                (t1 != NPY_TYPES.NPY_UNICODE && t1 != NPY_TYPES.NPY_STRING && t1 != NPY_TYPES.NPY_VOID))
+            if (NpyArray_TYPE(a1) != NpyArray_TYPE(a2))
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Arrays must be of the same string type.");
                 return null;
@@ -803,15 +802,7 @@ namespace NumpyLib
                 goto finish;
             }
 
-            if (t1 == NPY_TYPES.NPY_UNICODE)
-            {
-                val = _compare_strings(result, mit, cmp_op, _myunincmp, rstrip);
-            }
-            else
-            {
-                val = _compare_strings(result, mit, cmp_op, _mystrncmp, rstrip);
-            }
-
+            val = _compare_strings(result, mit, cmp_op, _mystrncmp, rstrip);
             if (val < 0)
             {
                 Npy_DECREF(result);
@@ -911,68 +902,6 @@ namespace NumpyLib
             }
 
             return 0;
-        }
-
-        /* This also handles possibly mis-aligned data */
-        /* Compare s1 and s2 which are not necessarily null-terminated.
-           s1 is of length len1
-           s2 is of length len2
-           If they are null terminated, then stop comparison.
-        */
-        static int _myunincmp(NpyArray_UCS4[] s1, NpyArray_UCS4[] s2, int len1, int len2)
-        {
-            NpyArray_UCS4[] sptr;
-            NpyArray_UCS4[] s1t = s1;
-            NpyArray_UCS4[] s2t = s2;
-            int val;
-            npy_intp size;
-            int diff;
-            int index;
-
-            if (false)
-            {
-                size = (npy_intp)(len1 * sizeof(NpyArray_UCS4));
-                s1t = new npy_intp[size];
-                memcpy(s1, s1t, size);
-            }
-            if (false)
-            {
-                size = (npy_intp)(len2 * sizeof(NpyArray_UCS4));
-                s2t = new npy_intp[size];
-                memcpy(s2, s2t, size);
-            }
-            val = NpyArray_CompareUCS4(s1t, s2t, Math.Min(len1, len2));
-            if ((val != 0) || (len1 == len2))
-            {
-                goto finish;
-            }
-            if (len2 > len1)
-            {
-                sptr = s2t;
-                index = len1;
-                val = -1;
-                diff = len2 - len1;
-            }
-            else
-            {
-                sptr = s1t;
-                index = len2;
-                val = 1;
-                diff = len1 - len2;
-            }
-            while (diff-- > 0)
-            {
-                if (sptr[index] != 0)
-                {
-                    goto finish;
-                }
-                index++;
-            }
-            val = 0;
-
-            finish:
-  
-            return val;
         }
 
         /*

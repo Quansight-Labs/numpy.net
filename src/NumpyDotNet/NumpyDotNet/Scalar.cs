@@ -289,18 +289,17 @@ namespace NumpyDotNet
 
         #endregion
 
-        internal static dtype GetDtype(int size, NPY_TYPECHAR typechar) {
-            if (typechar == NPY_TYPECHAR.NPY_UNICODELTR) {
-                dtype d = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UNICODE);
-                d = NpyCoreApi.DescrNew(d);
-                d.ElementSize = size * 4;
-                return d;
-            } else if (typechar ==  NPY_TYPECHAR.NPY_STRINGLTR) {
+        internal static dtype GetDtype(int size, NPY_TYPECHAR typechar)
+        {
+            if (typechar == NPY_TYPECHAR.NPY_STRINGLTR)
+            {
                 dtype d = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_STRING);
                 d = NpyCoreApi.DescrNew(d);
                 d.ElementSize = size;
                 return d;
-            } else {
+            }
+            else
+            {
                 NPY_TYPES t = NpyCoreApi.TypestrConvert(size, typechar);
                 return NpyCoreApi.DescrFromType(t);
             }

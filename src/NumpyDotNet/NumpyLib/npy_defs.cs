@@ -85,8 +85,6 @@ namespace NumpyLib
         NPY_CLONGDOUBLELTR = 'G',
         NPY_OBJECTLTR = 'O',
         NPY_STRINGLTR = 'S',
-        NPY_STRINGLTR2 = 'a',
-        NPY_UNICODELTR = 'U',
         NPY_VOIDLTR = 'V',
         NPY_DATETIMELTR = 'M',
         NPY_TIMEDELTALTR = 'm',
@@ -127,11 +125,11 @@ namespace NumpyLib
         NPY_COMPLEXREAL,
         NPY_COMPLEXIMAG,
         NPY_BIGINT,
-        NPY_DATETIME,
-        NPY_TIMEDELTA,
         NPY_OBJECT,
         NPY_STRING,
-        NPY_UNICODE,
+
+        NPY_DATETIME,
+        NPY_TIMEDELTA,
         NPY_VOID,
         NPY_NTYPES,
         NPY_NOTYPE,
@@ -399,7 +397,6 @@ namespace NumpyLib
             switch (type)
             {
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_UNICODE:
                     return true;
 
                 default:
@@ -422,7 +419,6 @@ namespace NumpyLib
             switch (type)
             {
                 case NPY_TYPES.NPY_STRING:
-                case NPY_TYPES.NPY_UNICODE:
                 case NPY_TYPES.NPY_VOID:
                     return true;
 
