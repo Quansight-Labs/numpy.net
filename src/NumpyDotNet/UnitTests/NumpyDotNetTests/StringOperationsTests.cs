@@ -46,6 +46,8 @@ namespace NumpyDotNetTests
             return;
         }
 
+    
+
         [TestMethod]
         public void test_copy_1_STRING()
         {
@@ -8078,6 +8080,12 @@ namespace NumpyDotNetTests
             bb = np.greater_equal(aa, new ObjectDemoData(-1));
             AssertArray(bb, new Boolean[] { false, true, true, true });
 
+        }
+
+        [TestMethod]
+        public void TODO_Cleanup_DTYPE_HASNAMES()
+        {
+            Assert.Fail("Cleanup the DTYPE.HASNAMES code");
         }
 
         #endregion
