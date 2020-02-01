@@ -136,8 +136,8 @@ namespace NumpyLib
         internal const int NPY_MAXARGS = 32;
         internal const int NPY_MAX_PIVOT_STACK = 50;
 
-        internal const int NPY_MAX_INTP = 2147483647;
-        internal const int NPY_MIN_INTP = (-2147483647 - 1);
+        internal const int NPY_MAX_INTP = Int32.MaxValue;
+        internal const int NPY_MIN_INTP = Int32.MinValue;
 
         internal const int NPY_BUFSIZE = 10000;
 
@@ -145,7 +145,7 @@ namespace NumpyLib
         internal const int NPY_NSEARCHSIDES = (int)(NPY_SEARCHSIDE.NPY_SEARCHRIGHT + 1);
         internal const int NPY_NSCALARKINDS = (int)(NPY_SCALARKIND.NPY_OBJECT_SCALAR + 1);
 
-            
+
 
         internal const string NPY_STR_Y = "Y";
         internal const string NPY_STR_M = "M";
