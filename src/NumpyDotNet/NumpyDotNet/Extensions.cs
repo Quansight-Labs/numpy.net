@@ -518,6 +518,10 @@ namespace NumpyDotNet
         {
             return np.AsObjectArray(a);
         }
+        public static object[] AsStringArray(this ndarray a)
+        {
+            return np.AsStringArray(a);
+        }
     }
 
     public partial class np
@@ -789,6 +793,17 @@ namespace NumpyDotNet
             }
 
             return a.rawdata(0).datap as Object[];
+        }
+        public static string[] AsStringArray(object oa)
+        {
+            var a = ConvertToFlattenedArray(oa);
+
+            if (a.TypeNum != NPY_TYPES.NPY_STRING)
+            {
+                a = a.astype(np.Strings);
+            }
+
+            return a.rawdata(0).datap as string[];
         }
 
         private static ndarray ConvertToFlattenedArray(object input)
