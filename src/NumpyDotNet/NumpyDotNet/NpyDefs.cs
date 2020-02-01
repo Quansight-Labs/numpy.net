@@ -156,9 +156,9 @@ namespace NumpyDotNet {
             switch (type)
             {
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_UINT64:
                     return true;
                 default:
                     return false;
@@ -170,9 +170,9 @@ namespace NumpyDotNet {
             switch (type)
             {
                 case NPY_TYPES.NPY_BYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_INT64:
                     return true;
                 default:
                     return false;
@@ -186,12 +186,12 @@ namespace NumpyDotNet {
             {
                 case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_UINT64:
                 case NPY_TYPES.NPY_BIGINT:
                     return true;
                 default:
@@ -220,12 +220,12 @@ namespace NumpyDotNet {
             {
                 case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_UINT64:
                 case NPY_TYPES.NPY_FLOAT:
                 case NPY_TYPES.NPY_DOUBLE:
                 case NPY_TYPES.NPY_COMPLEX:

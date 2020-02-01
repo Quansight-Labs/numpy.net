@@ -112,12 +112,12 @@ namespace NumpyLib
         NPY_BOOL = 0,
         NPY_BYTE,
         NPY_UBYTE,
-        NPY_SHORT,
-        NPY_USHORT,
-        NPY_INT,
-        NPY_UINT,
-        NPY_LONG,
-        NPY_ULONG,
+        NPY_INT16,
+        NPY_UINT16,
+        NPY_INT32,
+        NPY_UINT32,
+        NPY_INT64,
+        NPY_UINT64,
         NPY_FLOAT,
         NPY_DOUBLE,
         NPY_DECIMAL,
@@ -135,17 +135,8 @@ namespace NumpyLib
         NPY_NOTYPE,
         NPY_USERDEF = 256,      /* leave room for characters */
 
-        NPY_INT8 = NPY_BYTE,
-        NPY_INT16 = NPY_SHORT,
-        NPY_INT32 = NPY_INT,
-        NPY_INT64 = NPY_LONG,
-        NPY_UINT8 = NPY_UBYTE,
-        NPY_UINT16 = NPY_USHORT,
-        NPY_UINT32 = NPY_UINT,
-        NPY_UINT64 = NPY_ULONG,
-
 #if NPY_INTP_64
-        NPY_INTP = NPY_LONG,
+        NPY_INTP = NPY_INT64,
 #else
         NPY_INTP = NPY_INT,
 #endif
@@ -324,9 +315,9 @@ namespace NumpyLib
             switch (type)
             {
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_UINT64:
                     return true;
 
                 default:
@@ -338,9 +329,9 @@ namespace NumpyLib
             switch (type)
             {
                 case NPY_TYPES.NPY_BYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_INT64:
                 case NPY_TYPES.NPY_DECIMAL:
                     return true;
 
@@ -355,12 +346,12 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_UINT64:
                 case NPY_TYPES.NPY_BIGINT:
                     return true;
 

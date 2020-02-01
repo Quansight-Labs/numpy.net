@@ -294,9 +294,9 @@ namespace NumpyLib
             switch (fromtype)
             {
                 case NPY_TYPES.NPY_BYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_INT64:
                     if (NpyTypeNum_ISINTEGER(totype))
                     {
                         if (NpyTypeNum_ISUNSIGNED(totype))
@@ -335,9 +335,9 @@ namespace NumpyLib
                         return totype > fromtype;
                     }
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_UINT64:
                     if (NpyTypeNum_ISINTEGER(totype))
                     {
                         if (NpyTypeNum_ISSIGNED(totype))

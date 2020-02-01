@@ -1464,15 +1464,15 @@ namespace NumpyLib
                         var bdata = (byte)data;
                         return bdata < 0;
 
-                    case NPY_TYPES.NPY_SHORT:
+                    case NPY_TYPES.NPY_INT16:
                         var sdata = (Int16)data;
                         return sdata < 0;
 
-                    case NPY_TYPES.NPY_INT:
+                    case NPY_TYPES.NPY_INT32:
                         var idata = (Int32)data;
                         return idata < 0;
 
-                    case NPY_TYPES.NPY_LONG:
+                    case NPY_TYPES.NPY_INT64:
                         var ldata = (Int64)data;
                         return ldata < 0;
 

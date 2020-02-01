@@ -72,8 +72,8 @@ namespace NumpyDotNet
         public static readonly dtype Bool = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BOOL);
         public static readonly dtype Int8 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BYTE);
         public static readonly dtype UInt8 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UBYTE);
-        public static readonly dtype Int16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_SHORT);
-        public static readonly dtype UInt16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_USHORT);
+        public static readonly dtype Int16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT16);
+        public static readonly dtype UInt16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT16);
         public static readonly dtype Int32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT32);
         public static readonly dtype UInt32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT32);
         public static readonly dtype Int64 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
@@ -369,7 +369,7 @@ namespace NumpyDotNet
 
             if (dtype == null)
             {
-                dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_LONG);
+                dtype = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
                 dtype = FindArrayType(start, dtype);
                 if (stop != null)
                 {
@@ -2243,7 +2243,7 @@ namespace NumpyDotNet
         public static ndarray packbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.TypeNum != NPY_TYPES.NPY_UINT8)
+            if (input.TypeNum != NPY_TYPES.NPY_UBYTE)
             {
                 throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.TypeNum));
             }
@@ -2298,7 +2298,7 @@ namespace NumpyDotNet
         public static ndarray unpackbits(ndarray input, int axis = 0)
         {
             // sanity check input array type
-            if (input.TypeNum != NPY_TYPES.NPY_UINT8)
+            if (input.TypeNum != NPY_TYPES.NPY_UBYTE)
             {
                 throw new Exception(string.Format("Expected input type of uint8, instead got {0}", input.TypeNum));
             }

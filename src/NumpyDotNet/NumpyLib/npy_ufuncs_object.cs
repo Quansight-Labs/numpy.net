@@ -924,17 +924,17 @@ namespace NumpyLib
                 {
                     if (NpyTypeNum_ISBOOL(typenum))
                     {
-                        typenum = NPY_TYPES.NPY_LONG;
+                        typenum = NPY_TYPES.NPY_INT64;
                     }
                     else if (NpyArray_ITEMSIZE(arr) < sizeof(long))
                     {
                         if (NpyTypeNum_ISUNSIGNED(typenum))
                         {
-                            typenum = NPY_TYPES.NPY_ULONG;
+                            typenum = NPY_TYPES.NPY_UINT64;
                         }
                         else
                         {
-                            typenum = NPY_TYPES.NPY_LONG;
+                            typenum = NPY_TYPES.NPY_INT64;
                         }
                     }
                 }
@@ -3106,15 +3106,15 @@ namespace NumpyLib
             switch (intype)
             {
                 case NPY_TYPES.NPY_BYTE:
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_INT64:
                     return NPY_TYPES.NPY_BYTE;
 
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_USHORT:
-                case NPY_TYPES.NPY_UINT:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT16:
+                case NPY_TYPES.NPY_UINT32:
+                case NPY_TYPES.NPY_UINT64:
                     return NPY_TYPES.NPY_UBYTE;
 
                 case NPY_TYPES.NPY_FLOAT:

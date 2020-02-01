@@ -479,7 +479,7 @@ namespace NumpyDotNet
     {
         public override object dtype {
             get {
-                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_LONG);
+                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
             }
         }
     }
@@ -775,7 +775,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT32);
                         }
                     }
                 }
@@ -903,7 +903,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_LONG);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
                         }
                     }
                 }
@@ -941,7 +941,7 @@ namespace NumpyDotNet
     {
         public override object dtype {
             get {
-                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_ULONG);
+                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT64);
             }
         }
     }
@@ -1212,7 +1212,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT32);
                         }
                     }
                 }
@@ -1325,7 +1325,7 @@ namespace NumpyDotNet
                 if (dtype_ == null) {
                     lock (GetType()) {
                         if (dtype_ == null) {
-                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_ULONG);
+                            dtype_ = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT64);
                         }
                     }
                 }

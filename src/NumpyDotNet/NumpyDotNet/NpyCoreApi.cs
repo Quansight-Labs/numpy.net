@@ -1600,11 +1600,11 @@ namespace NumpyDotNet {
 
                 case NPY_TYPES.NPY_BOOL:
                 case NPY_TYPES.NPY_BYTE:
-                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_INT16:
                     return NPY_TYPES.NPY_INT32;
 
                 case NPY_TYPES.NPY_UBYTE:
-                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_UINT16:
                     return NPY_TYPES.NPY_UINT32;
 
                 case NPY_TYPES.NPY_INT32:

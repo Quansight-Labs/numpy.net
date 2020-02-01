@@ -442,7 +442,7 @@ namespace NumpyDotNetTests
                     }
  
 
-                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_INT16:
                     {
                         Int16[] bdata = new Int16[dataLen];
 
@@ -469,7 +469,7 @@ namespace NumpyDotNetTests
                         break;
                     }
  
-                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_UINT16:
                     {
                         UInt16[] bdata = new UInt16[dataLen];
 
@@ -547,7 +547,7 @@ namespace NumpyDotNetTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT64:
                     {
                         Int64[] bdata = new Int64[dataLen];
 
@@ -573,7 +573,7 @@ namespace NumpyDotNetTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT64:
                     {
                         UInt64[] bdata = new UInt64[dataLen];
 
@@ -743,14 +743,14 @@ namespace NumpyDotNetTests
                 case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_UBYTE:
                     return 1;
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_UINT16:
                     return 2;
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_UINT32:
                     return 4;
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_UINT64:
                     return 8;
                 case NPY_TYPES.NPY_FLOAT:
                     return 4;
