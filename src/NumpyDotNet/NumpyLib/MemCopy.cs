@@ -116,6 +116,8 @@ namespace NumpyLib
                     return MemCpyToBigInt(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 case NPY_TYPES.NPY_OBJECT:
                     return MemCpyToObject(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                case NPY_TYPES.NPY_STRING:
+                    return MemCpyToString(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
             }
             return false;
         }
@@ -592,6 +594,19 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_OBJECT:
                     return MemCpyObjectToObject(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+                default:
+                    throw new Exception("Attempt to copy non object value to object array");
+
+            }
+            return false;
+        }
+
+        private static bool MemCpyToString(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_STRING:
+                    return MemCpyStringToString(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
                 default:
                     throw new Exception("Attempt to copy non object value to object array");
 
@@ -2871,6 +2886,30 @@ namespace NumpyLib
 
             object[] destArray = Dest.datap as object[];
             npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+
+            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
+            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+
+            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+
+            return true;
+        }
+
+        #endregion
+
+        #region String specific
+
+        private static bool MemCpyStringToString(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            string[] sourceArray = Src.datap as string[];
+
+            if (sourceArray == null)
+            {
+                throw new Exception(string.Format("Unable to copy array of this type to string array"));
+            }
+
+            string[] destArray = Dest.datap as string[];
+            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
