@@ -4238,4 +4238,125 @@ namespace NumpyLib
 
 
     }
+
+    internal class StringHandlers : ArrayHandlerBase<string>, IArrayHandlers
+    {
+        public StringHandlers()
+        {
+            _t = new string[1] { "X" };
+        }
+
+        public override int ItemSize
+        {
+            get { return IntPtr.Size; }
+        }
+
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            var adata = vp.datap as object[];
+            Fill(adata, FillValue, 0, adata.Length);
+            return;
+        }
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
+        {
+            index = AdjustNegativeIndex(data, index);
+
+            object[] dp = data.datap as object[];
+            dp[index] = (object)value;
+            return 1;
+        }
+
+        public override object MathOpConvertOperand(object srcValue, object operValue)
+        {
+            return operValue;
+        }
+        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_OBJECT;
+        }
+
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return o;
+        }
+
+        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        {
+            return NPY_TYPES.NPY_DOUBLE;
+        }
+
+        protected override object Divide(dynamic bValue, dynamic operand)
+        {
+            return bValue / operand;
+        }
+
+        protected override object BitWiseAnd(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue & operand;
+        }
+        protected override object BitWiseXor(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue ^ operand;
+        }
+        protected override object BitWiseOr(dynamic bValue, dynamic operand)
+        {
+            dynamic dValue = bValue;
+            return dValue | operand;
+        }
+        protected override object Remainder(dynamic bValue, dynamic operand)
+        {
+            return bValue % operand;
+        }
+        protected override object Floor(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Floor(Convert.ToDecimal(bValue));
+            }
+            return Math.Floor(Convert.ToDouble(bValue));
+        }
+        protected override object Ceiling(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Ceiling(Convert.ToDecimal(bValue));
+            }
+            return Math.Ceiling(Convert.ToDouble(bValue));
+        }
+        protected override object Maximum(dynamic bValue, dynamic operand)
+        {
+            if (bValue >= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object FMax(dynamic bValue, dynamic operand)
+        {
+            if (bValue >= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object Minimum(dynamic bValue, dynamic operand)
+        {
+            if (bValue <= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object FMin(dynamic bValue, dynamic operand)
+        {
+            if (bValue <= operand)
+                return bValue;
+            return operand;
+        }
+        protected override object Rint(dynamic bValue, dynamic operand)
+        {
+            if (bValue is decimal)
+            {
+                return Math.Round(Convert.ToDecimal(bValue));
+            }
+            return Math.Round(Convert.ToDouble(bValue));
+        }
+
+    }
 }
