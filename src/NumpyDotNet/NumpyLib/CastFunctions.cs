@@ -120,6 +120,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_OBJECT:
                     DefaultCastsToObject(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_STRING:
+                    DefaultCastsToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
             return;
@@ -873,6 +876,64 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_OBJECT:
                     CastObjectToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+            }
+
+
+        }
+
+
+        static void DefaultCastsToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            switch (Src.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    CastBoolsToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    CastBytesToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    CastUBytesToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    CastInt16sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    CastUInt16sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    CastInt32sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    CastUInt32sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    CastInt64sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    CastUInt64sToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    CastFloatsToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    CastDoublesToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    CastDecimalsToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    CastComplexToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    CastBigIntToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_OBJECT:
+                    CastObjectToString(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    CastStringToString(Src, src_offset, Dest, dest_offset, srclen);
                     break;
             }
 
@@ -3789,6 +3850,216 @@ namespace NumpyLib
             while (srclen-- > 0)
             {
                 d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+
+        #endregion
+
+        #region String specific casts
+        static void CastBoolsToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as bool[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastBytesToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as sbyte[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastUBytesToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as byte[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastInt16sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int16[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastUInt16sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt16[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastInt32sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int32[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastUInt32sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt32[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastInt64sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as Int64[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastUInt64sToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as UInt64[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastFloatsToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as float[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = s[index + src_offset].ToString();
+                }
+                catch
+                {
+                    d[index + dest_offset] = float.MinValue.ToString();
+                }
+                index++;
+            }
+        }
+        static void CastDoublesToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as double[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                try
+                {
+                    d[index + dest_offset] = s[index + src_offset].ToString();
+                }
+                catch
+                {
+                    d[index + dest_offset] = double.MinValue.ToString();
+                }
+                index++;
+            }
+        }
+        static void CastDecimalsToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as decimal[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastComplexToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.Complex[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastBigIntToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Numerics.BigInteger[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastObjectToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as object[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
+                index++;
+            }
+        }
+        static void CastStringToString(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as string[];
+            var d = Dest.datap as string[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset].ToString();
                 index++;
             }
         }

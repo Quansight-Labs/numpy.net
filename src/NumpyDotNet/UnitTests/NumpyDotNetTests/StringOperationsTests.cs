@@ -230,44 +230,43 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_view_STRING_TODO()
+        public void test_ndarray_view_STRING()
         {
-            var x = np.arange(256 + 32, 256 + 64, dtype: np.Int32);
-            x = np.array(x.AsObjectArray());
+            var x = np.arange(256 + 32, 256 + 64, dtype: np.Int32).astype(np.Strings);
             print(x);
             print(x.shape);
             print(x.Dtype);
 
-            AssertArray(x, new Object[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
+            AssertArray(x, asstring( new Int32[] { 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
-                                         310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
+                                         310, 311, 312, 313, 314, 315, 316, 317, 318, 319}));
 
             // Object can't be mapped by something besides another Object
             var y = x.view(np.UInt64);
             Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
 
-            y = x.view(np.Object);
-            AssertArray(y, y.AsObjectArray());
+            y = x.view(np.Strings);
+            AssertArray(y, y.AsStringArray());
 
-            y[5] = 1000;
+            y[5] = "1000";
 
-            AssertArray(x, new Object[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
+            AssertArray(x, asstring( new Int32[] { 288, 289, 290, 291, 292, 1000, 294, 295, 296, 297, 298,
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
-                                         310, 311, 312, 313, 314, 315, 316, 317, 318, 319});
+                                         310, 311, 312, 313, 314, 315, 316, 317, 318, 319}));
 
         }
 
+
         [TestMethod]
-        public void test_ndarray_delete1_STRING_TODO()
+        public void test_ndarray_delete1_STRING()
         {
-            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4));
-            x = np.array(x.AsObjectArray()).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4)).astype(np.Strings);
 
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new Object[8, 4]
+            var ExpectedDataX = asstring( new Int32[8, 4]
             {
                     { 0, 1, 2, 3},
                     { 4, 5, 6, 7},
@@ -277,18 +276,18 @@ namespace NumpyDotNetTests
                     { 20, 21, 22, 23},
                     { 24, 25, 26, 27},
                     { 28, 29, 30, 31},
-            };
+            });
 
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
 
             var y = np.delete(x, new Slice(null), 0).reshape(new shape(8, 3));
-            y[1] = 99;
+            y[1] = "99";
             print("Y");
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new Object[8, 3]
+            var ExpectedDataY = asstring(new Int32[8, 3]
             {
                     { 1, 2, 3},
                     { 99, 99, 99},
@@ -298,7 +297,7 @@ namespace NumpyDotNetTests
                     { 21, 22, 23},
                     { 25, 26, 27},
                     { 29, 30, 31},
-            };
+            });
 
             AssertArray(y, ExpectedDataY);
             AssertShape(y, 8, 3);
@@ -312,19 +311,18 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_delete2_STRING_TODO()
+        public void test_ndarray_delete2_STRING()
         {
-            var x = np.arange(0, 32, dtype: np.Int32);
-            x = np.array(x.AsObjectArray());
+            var x = np.arange(0, 32, dtype: np.Int32).astype(np.Strings);
 
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new object[] {0,  1,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataX = asstring( new Int32[] {0,  1,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
-                                             24, 25, 26, 27, 28, 29, 30, 31 };
+                                             24, 25, 26, 27, 28, 29, 30, 31 });
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 32);
 
@@ -333,10 +331,10 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new object[] {0,  2,  3,  4,  5,  6,  7,
+            var ExpectedDataY = asstring( new Int32[] {0,  2,  3,  4,  5,  6,  7,
                                              8,  9,  10, 11, 12, 13, 14, 15,
                                              16, 17, 18, 19, 20, 21, 22, 23,
-                                             24, 25, 26, 27, 28, 29, 30, 31 };
+                                             24, 25, 26, 27, 28, 29, 30, 31 });
             AssertArray(y, ExpectedDataY);
             AssertShape(y, 31);
 
@@ -8083,5 +8081,31 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+
+        private string[] asstring(int[] array)
+        {
+            string[] output = new string[array.Length];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                output[i] = array[i].ToString();
+            }
+            return output;
+        }
+
+        private string[,] asstring(int[,] array)
+        {
+            string[,] output = new string[array.GetLength(0), array.GetLength(1)];
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    output[i, j] = array[i, j].ToString();
+                }
+            }
+            return output;
+        }
     }
 }
