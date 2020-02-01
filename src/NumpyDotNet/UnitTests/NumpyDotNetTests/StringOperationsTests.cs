@@ -24,15 +24,15 @@ namespace NumpyDotNetTests
 
         #region from ArrayCreationTests
         [TestMethod]
-        public void test_asfarray_STRING_TODO()
+        public void test_asfarray_STRING()
         {
-            var a = np.asfarray(new Object[] { 2, 3 });
-            AssertArray(a, new double[] { 2, 3 });
+            var a = np.asfarray(new string[] { "2", "3" });
+            AssertArray(a, new double[] { 0, 0 });
             print(a);
 
             try
             {
-                var b = np.asfarray(new Object[] { "2", "3" }, dtype: np.Object);
+                var b = np.asfarray(new Object[] { "2", "3" }, dtype: np.Strings);
                 AssertArray(a, new double[] { 2, 3 });
                 print(a);
                 Assert.Fail("This function should have thrown exception");
@@ -47,9 +47,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copy_1_STRING_TODO()
+        public void test_copy_1_STRING()
         {
-            var x = np.array(new Object[] { "1", "2", "3" });
+            var x = np.array(new String[] { "1", "2", "3" });
             var y = x;
 
             var z = np.copy(x);
@@ -58,30 +58,30 @@ namespace NumpyDotNetTests
 
             x[0] = "10";
 
-            Assert.AreEqual((Object)"10", y[0]);
+            Assert.AreEqual("10", y[0]);
 
-            Assert.AreEqual((Object)"1", z[0]);
+            Assert.AreEqual("1", z[0]);
 
             return;
         }
 
 
         [TestMethod]
-        public void test_meshgrid_1_STRING_TODO()
+        public void test_meshgrid_1_STRING()
         {
 
-            var x = np.array(new object[] { "0", "50", "100" });
-            var y = np.array(new object[] { "0", "100" });
+            var x = np.array(new string[] { "0", "50", "100" });
+            var y = np.array(new string[] { "0", "100" });
 
             ndarray[] xv = np.meshgrid(new ndarray[] { x });
-            AssertArray(xv[0], new object[] { "0", "50", "100" });
+            AssertArray(xv[0], new string[] { "0", "50", "100" });
             print(xv[0]);
 
             print("************");
 
             ndarray[] xyv = np.meshgrid(new ndarray[] { x, y });
-            AssertArray(xyv[0], new object[,] { { "0", "50", "100" }, { "0", "50", "100" } });
-            AssertArray(xyv[1], new object[,] { { "0", "0", "0" }, { "100", "100", "100" } });
+            AssertArray(xyv[0], new string[,] { { "0", "50", "100" }, { "0", "50", "100" } });
+            AssertArray(xyv[1], new string[,] { { "0", "0", "0" }, { "100", "100", "100" } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -89,20 +89,20 @@ namespace NumpyDotNetTests
             print("************");
 
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
-            AssertArray(xyv[0], new object[,] { { "0", "50", "100" } });
-            AssertArray(xyv[1], new object[,] { { "0" }, { "100" } });
+            AssertArray(xyv[0], new string[,] { { "0", "50", "100" } });
+            AssertArray(xyv[1], new string[,] { { "0" }, { "100" } });
 
             print(xyv[0]);
             print(xyv[1]);
 
             print("************");
 
-            x = np.array(new object[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
-            y = np.array(new object[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
+            x = np.array(new string[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
+            y = np.array(new string[] { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" });
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
 
-            AssertArray(xyv[0], new object[,] { { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" } });
-            AssertArray(xyv[1], new object[,] { { "-5" }, { "-4" }, { "-3" }, { "-2" }, { "-1" }, { "0" }, { "1" }, { "2" }, { "3" }, { "4" } });
+            AssertArray(xyv[0], new string[,] { { "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4" } });
+            AssertArray(xyv[1], new string[,] { { "-5" }, { "-4" }, { "-3" }, { "-2" }, { "-1" }, { "0" }, { "1" }, { "2" }, { "3" }, { "4" } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -113,9 +113,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_OneDimensionalArray_STRING_TODO()
+        public void test_OneDimensionalArray_STRING()
         {
-            object[] l = new object[] { 12, 13, 100, 36 };
+            string[] l = new string[] { "12", "13", "100", "36" };
             print("Original List:", l);
             var a = np.array(l);
             print("One-dimensional numpy array: ", a);
@@ -128,9 +128,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_reverse_array_STRING_TODO()
+        public void test_reverse_array_STRING()
         {
-            var x = np.array(new object[] { "-5A", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4H" });
+            var x = np.array(new string[] { "-5A", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4H" });
             print("Original array:");
             print(x);
             print("Reverse array:");
@@ -138,7 +138,7 @@ namespace NumpyDotNetTests
             x = (ndarray)x["::-1"];
             print(x);
 
-            AssertArray(x, new object[] { "4H", "3", "2", "1", "0", "-1", "-2", "-3", "-4", "-5A" });
+            AssertArray(x, new string[] { "4H", "3", "2", "1", "0", "-1", "-2", "-3", "-4", "-5A" });
             AssertShape(x, 10);
             AssertStrides(x, -SizeOfString);
 
@@ -150,10 +150,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_checkerboard_1_STRING_TODO()
+        public void test_checkerboard_1_STRING()
         {
             print("Checkerboard pattern:");
-            var x = np.full((8, 8), "X", dtype: np.Object);
+            var x = np.full((8, 8), "X", dtype: np.Strings);
             x["1::2", "::2"] = "Y";
             x["::2", "1::2"] = "Y";
             print(x);
@@ -178,9 +178,9 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_ArrayStats_1_STRING_TODO()
+        public void test_ArrayStats_1_STRING()
         {
-            var x = np.array(new object[] { 1, 2, 3 }, dtype: np.Object);
+            var x = np.array(new string[] { "1", "2", "3" }, dtype: np.Strings);
             print("Size of the array: ", x.size);
             print("Length of one array element in bytes: ", x.ItemSize);
             print("Total bytes consumed by the elements of the array: ", x.nbytes);
@@ -192,40 +192,40 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_flatten_STRING_TODO()
+        public void test_ndarray_flatten_STRING()
         {
-            var x = np.array(new object[] { "A", "B", "C", "D" }, dtype: np.Object).reshape(new shape(2, 2));
+            var x = np.array(new string[] { "A", "B", "C", "D" }, dtype: np.Strings).reshape(new shape(2, 2));
             var y = x.flatten();
             print(x);
             print(y);
-            AssertArray(y, new object[] { "A", "B", "C", "D" });
+            AssertArray(y, new string[] { "A", "B", "C", "D" });
 
             y = x.flatten(order: NPY_ORDER.NPY_FORTRANORDER);
             print(y);
-            AssertArray(y, new object[] { "A", "C", "B", "D" });
+            AssertArray(y, new string[] { "A", "C", "B", "D" });
 
             y = x.flatten(order: NPY_ORDER.NPY_KORDER);
             print(y);
-            AssertArray(y, new object[] { "A", "B", "C", "D" });
+            AssertArray(y, new string[] { "A", "B", "C", "D" });
 
         }
 
         [TestMethod]
-        public void test_ndarray_byteswap_STRING_TODO()
+        public void test_ndarray_byteswap_STRING()
         {
-            var x = np.array(new object[] { "A", "B", "C", "D" }, dtype: np.Object);
+            var x = np.array(new string[] { "A", "B", "C", "D" }, dtype: np.Strings);
             print(x);
             var y = x.byteswap(true);
             print(y);
 
             // Objects can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsObjectArray());
+            AssertArray(y, x.AsStringArray());
 
             y = x.byteswap(false);
             print(y);
 
             // Objects can't be swapped.  Data should be unchanged
-            AssertArray(y, x.AsObjectArray());
+            AssertArray(y, x.AsStringArray());
 
         }
 
