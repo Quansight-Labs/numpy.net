@@ -987,7 +987,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_isin_1_STRING()
         {
-            ndarray element = 2 * np.arange(4, dtype: np.Int32).reshape(new shape(2, 2)).astype(np.Strings);
+            ndarray element = np.arange(0, 8, 2, dtype: np.Int32).reshape(new shape(2, 2)).astype(np.Strings);
             print(element);
 
             ndarray test_elements = np.array(new string[] { "1", "2", "4", "8" });

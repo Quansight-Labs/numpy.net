@@ -537,8 +537,17 @@ namespace NumpyDotNet
                     mask = np.ones(new shape(len(ar1)), dtype: np.Bool);
                     foreach (dynamic a in ar2)
                     {
-                        ndarray temp = ar1 != a;
-                        mask &= temp;
+                        if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
+                        {
+                            string aa = a.ToString();
+                            ndarray temp = ar1.NotEquals(aa);
+                            mask &= temp;
+                        }
+                        else
+                        {
+                            ndarray temp = ar1 != a;
+                            mask &= temp;
+                        }
                     }
                 }
                 else
@@ -546,8 +555,18 @@ namespace NumpyDotNet
                     mask = np.zeros(new shape(len(ar1)), dtype: np.Bool);
                     foreach (dynamic a in ar2)
                     {
-                        ndarray temp = ar1 == a;
-                        mask |= temp;
+                        if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
+                        {
+                            string aa = a.ToString();
+                            ndarray temp = ar1.Equals(aa);
+                            mask |= temp;
+                        }
+                        else
+                        {
+                            ndarray temp = ar1 == a;
+                            mask |= temp;
+                        }
+  
                     }
 
                 }
