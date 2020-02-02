@@ -352,6 +352,8 @@ namespace NumpyDotNet
         {
             npy_intp[] dims;
 
+            ValidateArangeDtype(dtype);
+
             // determine what data type it should be if not set,
             if (dtype == null)
             {
@@ -468,6 +470,8 @@ namespace NumpyDotNet
         {
             npy_intp[] dims;
 
+            ValidateArangeDtype(dtype);
+
             if (stop == null)
             {
                 stop = start;
@@ -574,10 +578,11 @@ namespace NumpyDotNet
             return result;
         }
 
-
         public static ndarray arange(decimal start, decimal? stop = null, decimal? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
+
+            ValidateArangeDtype(dtype);
 
             if (stop == null)
             {
@@ -672,6 +677,8 @@ namespace NumpyDotNet
         {
             npy_intp[] dims;
 
+            ValidateArangeDtype(dtype);
+
             if (stop == null)
             {
                 stop = start;
@@ -765,6 +772,8 @@ namespace NumpyDotNet
         {
             npy_intp[] dims;
 
+            ValidateArangeDtype(dtype);
+
             if (stop == null)
             {
                 stop = start;
@@ -852,6 +861,20 @@ namespace NumpyDotNet
                 result.Dtype = dtype;
             }
             return result;
+        }
+
+        private static void ValidateArangeDtype(dtype dtype)
+        {
+            if (dtype != null)
+            {
+                switch (dtype.TypeNum)
+                {
+                    case NPY_TYPES.NPY_OBJECT:
+                    case NPY_TYPES.NPY_STRING:
+                        throw new Exception(string.Format("This function doesn't support {0} data types", dtype.TypeNum.ToString().Substring(4)));
+                }
+            }
+  
         }
 
 
@@ -1085,6 +1108,9 @@ namespace NumpyDotNet
             //  (-0.5, 1)
             //  >>> plt.show()
 
+            ValidateArangeDtype(dtype);
+
+
             if (num < 0)
             {
                 throw new ValueError(string.Format("Number of samples, {0}, must be non-negative.", num));
@@ -1241,6 +1267,8 @@ namespace NumpyDotNet
             //  >>> plt.ylim([-0.5, 1])
             //  (-0.5, 1)
             //  >>> plt.show()
+
+            ValidateArangeDtype(dtype);
 
             if (num < 0)
             {
@@ -1399,6 +1427,8 @@ namespace NumpyDotNet
             //  (-0.5, 1)
             //  >>> plt.show()
 
+            ValidateArangeDtype(dtype);
+
             if (num < 0)
             {
                 throw new ValueError(string.Format("Number of samples, {0}, must be non-negative.", num));
@@ -1555,6 +1585,8 @@ namespace NumpyDotNet
             //  >>> plt.ylim([-0.5, 1])
             //  (-0.5, 1)
             //  >>> plt.show()
+
+            ValidateArangeDtype(dtype);
 
             if (num < 0)
             {
@@ -1868,7 +1900,8 @@ namespace NumpyDotNet
         }
         public static ndarray geomspace(double start, double stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
- 
+            ValidateArangeDtype(dtype);
+
             if (start == 0 || stop == 0)
             {
                 throw new ValueError("Geometric sequence cannot include zero");
@@ -1917,6 +1950,7 @@ namespace NumpyDotNet
         }
         public static ndarray geomspace(System.Numerics.Complex start, System.Numerics.Complex stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
+            ValidateArangeDtype(dtype);
 
             if (start == 0 || stop == 0)
             {
@@ -1966,6 +2000,7 @@ namespace NumpyDotNet
         }
         public static ndarray geomspace(System.Numerics.BigInteger start, System.Numerics.BigInteger stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
+            ValidateArangeDtype(dtype);
 
             if (start == 0 || stop == 0)
             {
@@ -2002,6 +2037,7 @@ namespace NumpyDotNet
             return result.astype(dtype);
         }
 
+ 
         #endregion
 
         #region To/From file/string/stream

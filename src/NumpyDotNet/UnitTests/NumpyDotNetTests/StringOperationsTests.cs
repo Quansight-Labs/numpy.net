@@ -232,6 +232,40 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ndarray_create_expected_exception_STRING()
+        {
+            try
+            {
+                var x = np.arange(256 + 32, 256 + 64, dtype: np.Strings);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+                var x = np.geomspace(256 + 32, 256 + 64, dtype: np.Strings);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+                var x = np.logspace(256 + 32, 256 + 64, dtype: np.Strings);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        [TestMethod]
         public void test_ndarray_view_STRING()
         {
             var x = np.arange(256 + 32, 256 + 64, dtype: np.Int32).astype(np.Strings);
