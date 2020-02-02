@@ -4251,6 +4251,20 @@ namespace NumpyLib
             get { return IntPtr.Size; }
         }
 
+
+        public override object GetArgSortMinValue()
+        {
+            return "\u0000";
+        }
+        public override object GetArgSortMaxValue()
+        {
+            return "\u10FFFF";
+        }
+        public override int CompareTo(dynamic invalue, dynamic comparevalue)
+        {
+            return invalue.ToString().CompareTo(comparevalue.ToString());
+        }
+
         public override void ArrayFill(VoidPtr vp, object FillValue)
         {
             var adata = vp.datap as object[];
@@ -4285,11 +4299,44 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
+        protected override object Less(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) < 0;
+        }
+
+        protected override object LessEqual(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) <= 0;
+        }
+        protected override object Equal(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) == 0;
+        }
+        protected override object NotEqual(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) != 0;
+        }
+        protected override object Greater(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) > 0;
+        }
+        protected override object GreaterEqual(dynamic bValue, dynamic operand)
+        {
+            return CompareTo(bValue, operand) >= 0;
+        }
+
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <param name="bValue"></param>
+        /// <param name="operand"></param>
+        /// <returns></returns>
+
         protected override object Divide(dynamic bValue, dynamic operand)
         {
             return bValue / operand;
         }
-
+ 
         protected override object BitWiseAnd(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
