@@ -1045,7 +1045,7 @@ namespace NumpyDotNetTests
             ndarray a = np.union1d(a1, a2);
             print(a);
 
-            AssertArray(a, new string[] { "-2", "-1", "0", "1", "2" });
+            AssertArray(a, new string[] { "0", "1", "-1", "2", "-2" });
             AssertShape(a, 5);
             //AssertStrides(a, 16);
         }
