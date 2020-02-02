@@ -347,16 +347,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_delete3_STRING_TODO()
+        public void test_ndarray_delete3_STRING()
         {
-            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4));
-            x = np.array(x.AsObjectArray()).reshape(new shape(8, 4));
+            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4)).astype(np.Strings);
 
             print("X");
             print(x);
             print(x.shape);
 
-            var ExpectedDataX = new object[8, 4]
+            var ExpectedDataX = asstring(new Int32[8, 4]
             {
                 { 0, 1, 2, 3},
                 { 4, 5, 6, 7},
@@ -366,7 +365,7 @@ namespace NumpyDotNetTests
                 { 20, 21, 22, 23},
                 { 24, 25, 26, 27},
                 { 28, 29, 30, 31},
-            };
+            });
 
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
@@ -395,7 +394,7 @@ namespace NumpyDotNetTests
             print("Y");
             print(y);
 
-            var ExpectedDataY = new object[8, 3]
+            var ExpectedDataY = asstring(new Int32[8, 3]
             {
                 { 1, 2, 3},
                 { 5, 6, 7},
@@ -405,7 +404,7 @@ namespace NumpyDotNetTests
                 { 21, 22, 23},
                 { 25, 26, 27},
                 { 29, 30, 31},
-            };
+            });
 
             AssertArray(y, ExpectedDataY);
             AssertShape(y, 8, 3);
@@ -419,9 +418,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_unique_1_STRING_TODO()
+        public void test_ndarray_unique_1_STRING()
         {
-            var x = np.array(new Object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 });
+            var x = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).astype(np.Strings);
 
             print("X");
             print(x);
@@ -434,7 +433,7 @@ namespace NumpyDotNetTests
 
             print("uvalues");
             print(uvalues);
-            AssertArray(uvalues, new Object[] { 1, 2, 3, 4, 5 });
+            AssertArray(uvalues, asstring(new Int32[] { 1, 2, 3, 4, 5 }));
 
             print("indexes");
             print(indexes);
@@ -450,31 +449,27 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_1_STRING_TODO()
+        public void test_ndarray_where_1_STRING()
         {
-            var x = np.array(new Object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3)).astype(np.Strings);
 
             print("X");
             print(x);
 
-            ndarray[] y = (ndarray[])np.where(x == 3);
+            ndarray[] y = (ndarray[])np.where(x.Equals("3"));
             print("Y");
             print(y);
-
-
         }
 
         [TestMethod]
-        public void test_ndarray_where_2_STRING_TODO()
+        public void test_ndarray_where_2_STRING()
         {
-            var x = np.array(new object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
+            var x = np.array(new object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3)).astype(np.Strings);
 
             print("X");
             print(x);
 
-            ndarray[] y = (ndarray[])np.where(x == 3);
-            print("Y");
-            print(y);
+            ndarray[] y = (ndarray[])np.where(x.Equals("3"));
 
             Assert.AreEqual(2, y.Length);
             AssertArray(y[0], new npy_intp[] { 0, 1 });
@@ -483,40 +478,66 @@ namespace NumpyDotNetTests
             var z = x.SliceMe(y) as ndarray;
             print("Z");
             print(z);
-            AssertArray(z, new object[] { 3, 3 });
+            AssertArray(z, asstring(new int[] { 3, 3 }));
+
+            ///////////////////////
+
+            y = (ndarray[])np.where(x.NotEquals("3"));
+
+            Assert.AreEqual(2, y.Length);
+            AssertArray(y[0], new npy_intp[] { 0, 1 });
+            AssertArray(y[1], new npy_intp[] { 2, 1 });
+
+            z = x.SliceMe(y) as ndarray;
+            print("Z");
+            print(z);
+            AssertArray(z, asstring(new int[] { 1,2,1,4,5,4,4 }));
         }
 
         [TestMethod]
-        public void test_ndarray_where_3_STRING_TODO()
+        public void test_ndarray_where_3_STRING()
         {
-            var x = np.arange(0, 1000, dtype: np.Int32).reshape(new shape(-1, 10));
-            x = np.array(x.AsObjectArray()).reshape(new shape(-1, 10));
+            var x = np.arange(0, 100, dtype: np.Int32).reshape(new shape(-1, 10)).astype(np.Strings);
 
-            //print("X");
-            //print(x);
-
-            ndarray[] y = (ndarray[])np.where(x % 10 == 0);
-            print("Y");
-            print(y);
-
+            ndarray[] y = (ndarray[])np.where(x < "13");
             var z = x[y] as ndarray;
-            print("Z");
-            print(z);
-
-            var ExpectedDataZ = new object[]
+            var ExpectedDataZ = asstring(new int[]
             {
-                0,  10,  20,  30,  40,  50,  60,  70,  80,
-                90, 100, 110, 120, 130, 140, 150, 160, 170,
-                180, 190, 200, 210, 220, 230, 240, 250, 260,
-                270, 280, 290, 300, 310, 320, 330, 340, 350,
-                360, 370, 380, 390, 400, 410, 420, 430, 440,
-                450, 460, 470, 480, 490, 500, 510, 520, 530,
-                540, 550, 560, 570, 580, 590, 600, 610, 620,
-                630, 640, 650, 660, 670, 680, 690, 700, 710,
-                720, 730, 740, 750, 760, 770, 780, 790, 800,
-                810, 820, 830, 840, 850, 860, 870, 880, 890,
-                900, 910, 920, 930, 940, 950, 960, 970, 980, 990
-            };
+                0,  1,  10,  11,  12
+            });
+
+            AssertArray(z, ExpectedDataZ);
+
+            ////////////////////
+
+            y = (ndarray[])np.where(x <= "13");
+            z = x[y] as ndarray;
+            ExpectedDataZ = asstring(new int[]
+            {
+                0,  1,  10,  11,  12, 13
+            });
+
+            AssertArray(z, ExpectedDataZ);
+
+            ///////////////////
+
+            y = (ndarray[])np.where(x > "93");
+            z = x[y] as ndarray;
+            ExpectedDataZ = asstring(new int[]
+            {
+                94,  95,  96,  97, 98, 99
+            });
+
+            AssertArray(z, ExpectedDataZ);
+
+            ///////////////////
+
+            y = (ndarray[])np.where(x >= "93");
+            z = x[y] as ndarray;
+            ExpectedDataZ = asstring(new int[]
+            {
+                93,  94,  95,  96,  97, 98, 99
+            });
 
             AssertArray(z, ExpectedDataZ);
 
