@@ -624,10 +624,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arange_slice_1_STRING_TODO()
+        public void test_arange_slice_1_STRING()
         {
-            var a = np.arange(0, 1024, dtype: np.Int32).reshape(new shape(2, 4, -1));
-            a = np.array(a.AsObjectArray()).reshape(new shape(2, 4, -1));
+            var a = np.arange(0, 1024, dtype: np.Int32).reshape(new shape(2, 4, -1)).astype(np.Strings);
 
             print("A");
             // print(a);
@@ -635,7 +634,6 @@ namespace NumpyDotNetTests
             print(a.strides);
 
             AssertShape(a, 2, 4, 128);
-            //AssertStrides(a, 8192, 2048, 16);
 
             var b = (ndarray)a[":", ":", 122];
             print("B");
@@ -643,11 +641,11 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new object[2, 4]
+            var ExpectedDataB = asstring(new Int32[2, 4]
             {
                 { 122, 250, 378, 506},
                 { 634, 762, 890, 1018 },
-            };
+            });
 
             AssertArray(b, ExpectedDataB);
             AssertShape(b, 2, 4);
@@ -659,7 +657,7 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            var ExpectedDataC = new object[2, 4, 1]
+            var ExpectedDataC = asstring(new Int32[2, 4, 1]
             {
                 {
                     { 122 },
@@ -674,7 +672,7 @@ namespace NumpyDotNetTests
                     { 1018 },
                 },
 
-            };
+            });
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2, 4, 1);
@@ -686,7 +684,7 @@ namespace NumpyDotNetTests
             print(d.shape);
             print(d.strides);
 
-            var ExpectedDataD = new object[2, 4, 2]
+            var ExpectedDataD = asstring( new Int32[2, 4, 2]
             {
                 {
                     { 122, 123 },
@@ -701,7 +699,7 @@ namespace NumpyDotNetTests
                     { 1018, 1019 },
                 },
 
-            };
+            });
 
             AssertArray(d, ExpectedDataD);
             AssertShape(d, 2, 4, 2);
@@ -710,68 +708,59 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arange_slice_2A_STRING_TODO()
+        public void test_arange_slice_2A_STRING()
         {
-            var a = np.arange(0, 32, dtype: np.Int32).reshape(new shape(2, 4, -1));
-            a = np.array(a.AsObjectArray()).reshape(new shape(2, 4, -1));
+            var a = np.arange(0, 32, dtype: np.Int32).reshape(new shape(2, 4, -1)).astype(np.Strings);
 
             print("A");
             // print(a);
             print(a.shape);
             print(a.strides);
 
-            var b = (ndarray)a[":", ":", np.where(a > 20)];
+            var b = (ndarray)a[":", ":", np.where(a > "4")];
             print("B");
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new object[,,,]
-                {{{{1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1},
-                   {1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3},
-                   {1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3}},
-
-                  {{5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5},
-                   {5,  5,  5,  6,  6,  6,  6,  7,  7,  7,  7},
-                   {5,  6,  7,  4,  5,  6,  7,  4,  5,  6,  7}},
-
-                  {{9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9},
-                   {9,  9,  9, 10, 10, 10, 10, 11, 11, 11, 11},
-                   {9, 10, 11,  8,  9, 10, 11,  8,  9, 10, 11}},
-
-                  {{13, 13 ,13, 13, 13, 13, 13, 13, 13, 13, 13},
-                   {13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15},
-                   {13, 14, 15, 12, 13, 14, 15, 12, 13, 14, 15}}},
-
-                 {{{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17},
-                   {17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19},
-                   {17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19}},
-
-                  {{21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21},
-                   {21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23},
-                   {21, 22, 23, 20, 21, 22, 23, 20, 21, 22, 23}},
-
-                  {{25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25},
-                   {25, 25, 25, 26, 26, 26, 26, 27, 27, 27, 27},
-                   {25, 26, 27, 24, 25, 26, 27, 24, 25, 26, 27}},
-
-                  {{29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29},
-                   {29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31},
-                   {29, 30, 31, 28, 29, 30, 31, 28, 29, 30, 31}}}};
+            var ExpectedDataB = asstring(new Int32[,,,]
+                { { { { 0, 0, 0, 0, 0 },
+                      { 1, 1, 1, 2, 2 },
+                      { 1, 2, 3, 0, 1 } },
+                    { { 4, 4, 4, 4, 4 },
+                      { 5, 5, 5, 6, 6 },
+                      { 5, 6, 7, 4, 5 } },
+                    { { 8, 8, 8, 8, 8 },
+                      { 9, 9, 9, 10, 10 },
+                      { 9, 10, 11, 8, 9 } },
+                    { { 12, 12, 12, 12, 12 },
+                      { 13, 13, 13, 14, 14 },
+                      { 13, 14, 15, 12, 13 } } },
+                  { { { 16, 16, 16, 16, 16 },
+                      { 17, 17, 17, 18, 18 },
+                      { 17, 18, 19, 16, 17 } },
+                    { { 20, 20, 20, 20, 20 },
+                      { 21, 21, 21, 22, 22 },
+                      { 21, 22, 23, 20, 21 } },
+                    { { 24, 24, 24, 24, 24 },
+                      { 25, 25, 25, 26, 26 },
+                      { 25, 26, 27, 24, 25 } },
+                    { { 28, 28, 28, 28, 28 },
+                      { 29, 29, 29, 30, 30 },
+                      { 29, 30, 31, 28, 29 } } } });
 
             AssertArray(b, ExpectedDataB);
             //AssertStrides(b, 64, 16, 1408, 128);
         }
 
         [TestMethod]
-        public void test_insert_1_STRING_TODO()
+        public void test_insert_1_STRING()
         {
-            object[,] TestData = new object[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
-            ndarray a = np.array(TestData, dtype: np.Int32);
-            a = np.array(a.AsObjectArray());
+            Int32[,] TestData = new Int32[,] { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+            ndarray a = np.array(TestData, dtype: np.Int32).astype(np.Strings);
 
             ndarray b = np.insert(a, 1, 5);
-            ndarray c = np.insert(a, 0, new object[] { 999, 100, 101 });
+            ndarray c = np.insert(a, 0, asstring(new Int32[] { 999, 100, 101 }));
 
             print(a);
             print(a.shape);
@@ -781,7 +770,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new int[] { 1, 5, 1, 2, 2, 3, 3 });
+            AssertArray(b, asstring(new int[] { 1, 5, 1, 2, 2, 3, 3 }));
             AssertShape(b, 7);
             //AssertStrides(b, 16);
 
@@ -790,22 +779,19 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new int[] { 999, 100, 101, 1, 1, 2, 2, 3, 3 });
+            AssertArray(c, asstring(new int[] { 999, 100, 101, 1, 1, 2, 2, 3, 3 }));
             AssertShape(c, 9);
             //AssertStrides(c, 16);
         }
 
         [TestMethod]
-        public void test_insert_2_STRING_TODO()
+        public void test_insert_2_STRING()
         {
             int[] TestData1 = new int[] { 1, 1, 2, 2, 3, 3 };
             int[] TestData2 = new int[] { 90, 91, 92, 92, 93, 93 };
 
-            ndarray a = np.array(TestData1, dtype: np.Int32);
-            a = np.array(a.AsObjectArray());
-
-            ndarray b = np.array(TestData2, dtype: np.Int32);
-            b = np.array(b.AsObjectArray());
+            ndarray a = np.array(TestData1, dtype: np.Int32).astype(np.Strings);
+            ndarray b = np.array(TestData2, dtype: np.Int32).astype(np.Strings);
 
             ndarray c = np.insert(a, new Slice(null), b);
 
@@ -817,7 +803,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new object[] { 90, 91, 92, 92, 93, 93 });
+            AssertArray(b, asstring(new Int32[] { 90, 91, 92, 92, 93, 93 }));
             AssertShape(b, 6);
             //AssertStrides(b, 4);
 
@@ -826,19 +812,17 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new object[] { 90, 1, 91, 1, 92, 2, 92, 2, 93, 3, 93, 3 });
+            AssertArray(c, asstring(new Int32[] { 90, 1, 91, 1, 92, 2, 92, 2, 93, 3, 93, 3 }));
             AssertShape(c, 12);
             //AssertStrides(c, 4);
 
         }
 
         [TestMethod]
-        public void test_append_1_STRING_TODO()
+        public void test_append_1_STRING()
         {
             int[] TestData = new int[] { 1, 1, 2, 2, 3, 3 };
-            ndarray a = np.array(TestData, dtype: np.Int32);
-            a = np.array(a.AsObjectArray());
-
+            ndarray a = np.array(TestData, dtype: np.Int32).astype(np.Strings);
             ndarray b = np.append(a, (object)1);
 
             print(a);
@@ -848,18 +832,18 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new object[] { 1, 1, 2, 2, 3, 3, 1 });
+            AssertArray(b, asstring(new Int32[] { 1, 1, 2, 2, 3, 3, 1 }));
             AssertShape(b, 7);
             //AssertStrides(b, 16);
         }
 
         [TestMethod]
-        public void test_append_3_STRING_TODO()
+        public void test_append_3_STRING()
         {
-            object[] TestData1 = new object[] { "1", "1", "2", "2", "3", "3" };
-            object[] TestData2 = new object[] { "4", "4", "5", "5", "6", "6" };
-            ndarray a = np.array(TestData1, dtype: np.Object);
-            ndarray b = np.array(TestData2, dtype: np.Object);
+            string[] TestData1 = new string[] { "1", "1", "2", "2", "3", "3" };
+            string[] TestData2 = new string[] { "4", "4", "5", "5", "6", "6" };
+            ndarray a = np.array(TestData1, dtype: np.Strings);
+            ndarray b = np.array(TestData2, dtype: np.Strings);
 
 
             ndarray c = np.append(a, b);
@@ -874,18 +858,18 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            AssertArray(c, new object[] { "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6" });
+            AssertArray(c, new string[] { "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6" });
             AssertShape(c, 12);
             //AssertStrides(c, 16);
         }
 
         [TestMethod]
-        public void test_append_4_STRING_TODO()
+        public void test_append_4_STRING()
         {
-            object[] TestData1 = new object[] { "1", "1", "2", "2", "3", "3" };
-            object[] TestData2 = new object[] { "4", "4", "5", "5", "6", "6" };
-            ndarray a = np.array(TestData1, dtype: np.Object).reshape((2, -1));
-            ndarray b = np.array(TestData2, dtype: np.Object).reshape((2, -1));
+            string[] TestData1 = new string[] { "1", "1", "2", "2", "3", "3" };
+            string[] TestData2 = new string[] { "4", "4", "5", "5", "6", "6" };
+            ndarray a = np.array(TestData1, dtype: np.Strings).reshape((2, -1));
+            ndarray b = np.array(TestData2, dtype: np.Strings).reshape((2, -1));
 
             ndarray c = np.append(a, b, axis: 1);
 
@@ -902,7 +886,7 @@ namespace NumpyDotNetTests
             print(c.strides);
             print("");
 
-            var ExpectedDataC = new object[,]
+            var ExpectedDataC = new string[,]
             {
                 { "1", "1", "2", "4", "4", "5" },
                 { "2", "3", "3", "5", "6", "6" },
@@ -915,63 +899,62 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_flat_2_STRING_TODO()
+        public void test_flat_2_STRING()
         {
-            var x = np.arange(1, 7, dtype: np.Int32).reshape((2, 3));
-            x = np.array(x.AsObjectArray()).reshape((2, 3));
+            var x = np.arange(1, 7, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
 
             print(x);
 
-            Assert.AreEqual((object)4, x.Flat[3]);
+            Assert.AreEqual("4", x.Flat[3]);
             print(x.Flat[3]);
 
             print(x.T);
-            Assert.AreEqual((object)5, x.T.Flat[3]);
+            Assert.AreEqual("5", x.T.Flat[3]);
             print(x.T.Flat[3]);
 
             x.flat = 3;
-            AssertArray(x, new object[,] { { 3, 3, 3 }, { 3, 3, 3 } });
+            AssertArray(x, asstring(new Int32[,] { { 3, 3, 3 }, { 3, 3, 3 } }));
             print(x);
 
-            x.Flat[new int[] { 1, 4 }] = 1;
-            AssertArray(x, new object[,] { { 3, 1, 3 }, { 3, 1, 3 } });
+            x.Flat[new int[] { 1, 4 }] = "1";
+            AssertArray(x, asstring(new Int32[,] { { 3, 1, 3 }, { 3, 1, 3 } }));
             print(x);
         }
 
         [TestMethod]
-        public void test_intersect1d_1_STRING_TODO()
+        public void test_intersect1d_1_STRING()
         {
-            ndarray a = np.array(new Object[] { 1, 3, 4, 3 });
-            ndarray b = np.array(new Object[] { 3, 1, 2, 1 });
+            ndarray a = np.array(new Int32[] { 1, 3, 4, 3 }).astype(np.Strings);
+            ndarray b = np.array(new Int32[] { 3, 1, 2, 1 }).astype(np.Strings);
 
             ndarray c = np.intersect1d(a, b);
             print(c);
 
-            AssertArray(c, new object[] { 1, 3 });
+            AssertArray(c, new string[] { "1", "3" });
             AssertShape(c, 2);
             //AssertStrides(c, 16);
 
         }
 
         [TestMethod]
-        public void test_setxor1d_1_STRING_TODO()
+        public void test_setxor1d_1_STRING()
         {
-            ndarray a = np.array(new Object[] { 1, 2, 3, 2, 4 });
-            ndarray b = np.array(new Object[] { 2, 3, 5, 7, 5 });
+            ndarray a = np.array(new Int32[] { 1, 2, 3, 2, 4 }).astype(np.Strings);
+            ndarray b = np.array(new Int32[] { 2, 3, 5, 7, 5 }).astype(np.Strings);
 
             ndarray c = np.setxor1d(a, b);
             print(c);
 
-            AssertArray(c, new Object[] { 1, 4, 5, 7 });
+            AssertArray(c, new string[] { "1", "4", "5", "7" });
             AssertShape(c, 4);
             //AssertStrides(c, 16);
         }
 
         [TestMethod]
-        public void test_in1d_1_STRING_TODO()
+        public void test_in1d_1_STRING()
         {
-            ndarray test = np.array(new Object[] { 0, 1, 2, 5, 0 });
-            ndarray states = np.array(new Object[] { 0, 2 });
+            ndarray test = np.array(new Int32[] { 0, 1, 2, 5, 0 }).astype(np.Strings);
+            ndarray states = np.array(new Int32[] { 0, 2 }).astype(np.Strings);
 
             ndarray mask = np.in1d(test, states);
             print(mask);
@@ -982,7 +965,7 @@ namespace NumpyDotNetTests
             //AssertStrides(mask, 1);
 
             ndarray a = test[mask] as ndarray;
-            AssertArray(a, new Object[] { 0, 2, 0 });
+            AssertArray(a, new string[] { "0", "2", "0" });
             AssertShape(a, 3);
             //AssertStrides(a, 16);
 
@@ -995,20 +978,19 @@ namespace NumpyDotNetTests
             //AssertStrides(mask, 1);
 
             ndarray b = test[mask] as ndarray;
-            AssertArray(b, new Object[] { 1, 5 });
+            AssertArray(b, new string[] { "1", "5" });
             AssertShape(b, 2);
             //AssertStrides(b, 16);
 
         }
 
         [TestMethod]
-        public void test_isin_1_STRING_TODO()
+        public void test_isin_1_STRING()
         {
-            ndarray element = 2 * np.arange(4, dtype: np.Int32).reshape(new shape(2, 2));
-            element = element.astype(np.Object);
+            ndarray element = 2 * np.arange(4, dtype: np.Int32).reshape(new shape(2, 2)).astype(np.Strings);
             print(element);
 
-            ndarray test_elements = np.array(new object[] { 1, 2, 4, 8 });
+            ndarray test_elements = np.array(new string[] { "1", "2", "4", "8" });
             ndarray mask = np.isin(element, test_elements);
             print(mask);
             print(element[mask]);
@@ -1025,7 +1007,7 @@ namespace NumpyDotNetTests
             AssertShape(mask, 2, 2);
             //AssertStrides(mask, 2, 1);
 
-            AssertArray(a, new object[] { 2, 4 });
+            AssertArray(a, new string[] { "2", "4" });
             AssertShape(a, 2);
             //AssertStrides(a, 16);
 
@@ -1049,120 +1031,120 @@ namespace NumpyDotNetTests
             AssertShape(mask, 2, 2);
             //AssertStrides(mask, 2, 1);
 
-            AssertArray(a, new object[] { 0, 6 });
+            AssertArray(a, new string[] { "0", "6" });
             AssertShape(a, 2);
             //AssertStrides(a, 16);
         }
 
         [TestMethod]
-        public void test_union1d_1_STRING_TODO()
+        public void test_union1d_1_STRING()
         {
-            ndarray a1 = np.array(new object[] { -1, 0, 1 });
-            ndarray a2 = np.array(new object[] { -2, 0, 2 });
+            ndarray a1 = np.array(new string[] { "-1", "0", "1" });
+            ndarray a2 = np.array(new string[] { "-2", "0", "2" });
 
             ndarray a = np.union1d(a1, a2);
             print(a);
 
-            AssertArray(a, new object[] { -2, -1, 0, 1, 2 });
+            AssertArray(a, new string[] { "-2", "-1", "0", "1", "2" });
             AssertShape(a, 5);
             //AssertStrides(a, 16);
         }
 
         [TestMethod]
-        public void test_Ellipsis_indexing_1_STRING_TODO()
+        public void test_Ellipsis_indexing_1_STRING()
         {
-            var a = np.array(new object[] { 10, 7, 4, 3, 2, 1 });
+            var a = np.array(new Int32[] { 10, 7, 4, 3, 2, 1 }).astype(np.Strings);
 
             var b = a.A("...", -1);
-            Assert.AreEqual((object)1, b.GetItem(0));
+            Assert.AreEqual("1", b.GetItem(0));
             print(b);
             print("********");
 
 
-            a = np.array(new object[,] { { 10, 7, 4 }, { 3, 2, 1 } });
+            a = np.array(new Int32[,] { { 10, 7, 4 }, { 3, 2, 1 } }).astype(np.Strings);
             var c = a.A("...", -1);
-            AssertArray(c, new object[] { 4, 1 });
+            AssertArray(c, new string[] { "4", "1" });
             print(c);
             print("********");
 
-            var TestData = new object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-            a = np.array(TestData, dtype: np.Object).reshape((1, 3, 2, -1, 1));
+            var TestData = new Int32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            a = np.array(TestData, dtype: np.Int32).reshape((1, 3, 2, -1, 1)).astype(np.Strings);
             var d = a["...", -1] as ndarray;
-            AssertArray(d, new object[,,,] { { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } } });
+            AssertArray(d, asstring(new Int32[,,,] { { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } } }));
             print(d);
             print("********");
 
             var e = a[0, "...", -1] as ndarray;
-            AssertArray(e, new object[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            AssertArray(e, asstring(new Int32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } }));
             print(e);
             print("********");
 
             var f = a[0, ":", ":", ":", -1] as ndarray;
-            AssertArray(f, new object[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } });
+            AssertArray(f, asstring(new Int32[,,] { { { 1, 2 }, { 3, 4 } }, { { 5, 6 }, { 7, 8 } }, { { 9, 10 }, { 11, 12 } } }));
             print(f);
             print("********");
 
             var g = a.A(0, 1, "...", -1);
-            AssertArray(g, new object[,] { { 5, 6 }, { 7, 8 } });
+            AssertArray(g, asstring(new Int32[,] { { 5, 6 }, { 7, 8 } }));
             print(g);
             print("********");
 
             var h = a.A(0, 2, 1, "...", -1);
-            AssertArray(h, new object[] { 11, 12 });
+            AssertArray(h, asstring(new Int32[] { 11, 12 }));
             print(h);
             print("********");
 
             var i = a[":", 2, 1, 1, "..."] as ndarray;
-            AssertArray(i, new object[,] { { 12 } });
+            AssertArray(i, asstring(new Int32[,] { { 12 } }));
             print(i);
         }
 
         [TestMethod]
-        public void test_concatenate_1_STRING_TODO()
+        public void test_concatenate_1_STRING()
         {
 
-            var a = np.array(new object[,] { { 1, 2 }, { 3, 4 } });
-            var b = np.array(new object[,] { { 5, 6 } });
+            var a = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }).astype(np.Strings);
+            var b = np.array(new Int32[,] { { 5, 6 } }).astype(np.Strings);
             var c = np.concatenate((a, b), axis: 0);
-            AssertArray(c, new object[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
+            AssertArray(c, asstring(new Int32[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } }));
             print(c);
 
             var d = np.concatenate((a, b.T), axis: 1);
-            AssertArray(d, new object[,] { { 1, 2, 5 }, { 3, 4, 6 } });
+            AssertArray(d, asstring(new Int32[,] { { 1, 2, 5 }, { 3, 4, 6 } }));
             print(d);
 
             var e = np.concatenate((a, b), axis: null);
-            AssertArray(e, new object[] { 1, 2, 3, 4, 5, 6 });
+            AssertArray(e, asstring(new Int32[] { 1, 2, 3, 4, 5, 6 }));
             print(e);
 
-            var f = np.concatenate((np.eye(2, dtype: np.Object), np.ones((2, 2), dtype: np.Object)), axis: 0);
-            //AssertArray(f, new object[,] { { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, 1 }, });
+            var f = np.concatenate((np.eye(2, dtype: np.Int32).astype(np.Strings), np.ones((2, 2), dtype: np.Int32).astype(np.Strings)), axis: 0);
+            AssertArray(f, asstring(new Int32[,] { { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, 1 }, }));
             print(f);
 
-            var g = np.concatenate((np.eye(2, dtype: np.Object), np.ones((2, 2), dtype: np.Object)), axis: 1);
-            //AssertArray(g, new object[,] { { 1, 0, 1, 1 }, { 0, 1, 1, 1 } });
+            var g = np.concatenate((np.eye(2, dtype: np.Int32).astype(np.Strings), np.ones((2, 2), dtype: np.Int32).astype(np.Strings)), axis: 1);
+            AssertArray(g, asstring(new Int32[,] { { 1, 0, 1, 1 }, { 0, 1, 1, 1 } }));
             print(g);
         }
 
         [TestMethod]
-        public void test_concatenate_3_STRING_TODO()
+        public void test_concatenate_3_STRING()
         {
 
-            var a = np.array(new object[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            var a = np.array(new Int32[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } }).astype(np.Strings);
             var c = np.concatenate(a, axis: -1);
-            AssertArray(c, new object[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            AssertArray(c, asstring(new Int32[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } }));
             print(c);
 
             var d = np.concatenate(a, axis: -2);
-            AssertArray(d, new object[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
+            AssertArray(d, asstring(new Int32[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } }));
             print(d);
 
             c = np.concatenate((a, a, a), axis: -1);
-            AssertArray(c, new object[,,,] { { { { 1, 2, 1, 2, 1, 2 }, { 3, 4, 3, 4, 3, 4 }, { 5, 6, 5, 6, 5, 6 } } } });
+            AssertArray(c, asstring(new Int32[,,,] { { { { 1, 2, 1, 2, 1, 2 }, { 3, 4, 3, 4, 3, 4 }, { 5, 6, 5, 6, 5, 6 } } } }));
             print(c);
 
             d = np.concatenate((a, a, a), axis: -2);
-            AssertArray(d, new object[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
+            AssertArray(d, asstring(new Int32[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } }));
             print(d);
 
 
@@ -8166,6 +8148,41 @@ namespace NumpyDotNetTests
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
                     output[i, j] = array[i, j].ToString();
+                }
+            }
+            return output;
+        }
+        private string[,,] asstring(int[,,] array)
+        {
+            string[,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2)];
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    for (int k = 0; k < array.GetLength(2); k++)
+                    {
+                        output[i, j, k] = array[i, j, k].ToString();
+                    }
+                }
+            }
+            return output;
+        }
+        private string[,,,] asstring(int[,,,] array)
+        {
+            string[,,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2), array.GetLength(3)];
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    for (int k = 0; k < array.GetLength(2); k++)
+                    {
+                        for (int l = 0; l < array.GetLength(3); l++)
+                        {
+                            output[i, j, k, l] = array[i, j, k, l].ToString();
+                        }
+                    }
                 }
             }
             return output;
