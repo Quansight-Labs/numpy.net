@@ -4252,6 +4252,51 @@ namespace NumpyLib
         }
 
 
+        public override int SetItem(VoidPtr data, npy_intp index, object value)
+        {
+            string[] dp = data.datap as string[];
+
+            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+            }
+
+            dp[AdjustedIndex] = value.ToString();
+            return 1;
+        }
+        public override int SetItemDifferentType(VoidPtr data, npy_intp index, object value)
+        {
+            return SetItem(data, index, value);
+        }
+        public override int SetIndex(VoidPtr data, npy_intp index, object value)
+        {
+            index = AdjustNegativeIndex(data, index);
+
+            string[] dp = data.datap as string[];
+            dp[index] = value.ToString();
+            return 1;
+        }
+
+        public override void ArrayFill(VoidPtr vp, object FillValue)
+        {
+            var adata = vp.datap as string[];
+            Fill(adata, FillValue.ToString(), 0, adata.Length);
+            return;
+        }
+  
+        public override int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset)
+        {
+            string[] destp = dest.datap as string[];
+            string[] scalarp = scalar.datap as string[];
+            if (destp == null || scalarp == null)
+                return -1;
+
+            Fill(destp, scalarp[fill_offset].ToString(), dest_offset, length + dest_offset);
+            return 0;
+        }
+
+
         public override object GetArgSortMinValue()
         {
             return "\u0000";
@@ -4265,19 +4310,39 @@ namespace NumpyLib
             return invalue.ToString().CompareTo(comparevalue.ToString());
         }
 
-        public override void ArrayFill(VoidPtr vp, object FillValue)
-        {
-            var adata = vp.datap as object[];
-            Fill(adata, FillValue, 0, adata.Length);
-            return;
-        }
-        public override int SetIndex(VoidPtr data, npy_intp index, object value)
-        {
-            index = AdjustNegativeIndex(data, index);
 
-            object[] dp = data.datap as object[];
-            dp[index] = (object)value;
-            return 1;
+        public override bool IsInRange(object o, double low, double high)
+        {
+            return false;
+            //var qd = Convert.ToDouble(o);
+            //if (qd < low || qd > high)
+            //    return false;
+            //return true;
+        }
+
+        public override object ConvertToUpgradedValue(object o)
+        {
+            return o;
+        }
+
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            string[] bp = vp.datap as string[];
+            return !(bp[index] == null);
+        }
+
+        protected override object T_dot(object otmp, object op1, object op2, npy_intp ip1_index, npy_intp ip2_index, npy_intp ip1Size, npy_intp ip2Size)
+        {
+            string tmp = (string)otmp;
+            string[] ip1 = op1 as string[];
+            string[] ip2 = op2 as string[];
+
+            if ((ip1[ip1_index / ip1Size] != null) && (ip2[ip2_index / ip2Size] != null))
+            {
+                tmp = (ip1[ip1_index / ip1Size] + ip2[ip2_index / ip2Size]);
+                return tmp;
+            }
+            return tmp;
         }
 
         public override object MathOpConvertOperand(object srcValue, object operValue)
@@ -4289,21 +4354,126 @@ namespace NumpyLib
             return NPY_TYPES.NPY_OBJECT;
         }
 
-        public override object ConvertToUpgradedValue(object o)
-        {
-            return o;
-        }
-
         public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
+        }
+
+        protected override object Add(dynamic bValue, dynamic operand)
+        {
+            return bValue + operand;
+        }
+        protected override object Subtract(dynamic bValue, dynamic operand)
+        {
+            string sValue = (string)bValue;
+            return sValue.Replace(operand.ToString(), "");
+        }
+        protected override object Multiply(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Divide(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Remainder(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object FMod(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Power(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Square(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Reciprocal(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+
+        protected override object OnesLike(dynamic bValue, object operand)
+        {
+            return "1";
+        }
+        protected override object Sqrt(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Negative(dynamic bValue, dynamic operand)
+        {
+            char[] arr = bValue.ToCharArray();
+            Array.Reverse(arr);
+            return new string(arr);
+        }
+        protected override object Absolute(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+        protected override object Invert(dynamic bValue, dynamic operand)
+        {
+            string sValue = bValue;
+            string lowercase = sValue.ToLower();
+            if (lowercase != sValue)
+                return lowercase;
+            else
+                return sValue.ToUpper();
+        }
+
+        protected override object LeftShift(dynamic bValue, dynamic operand)
+        {
+            string sValue = bValue;
+            int shiftCount = Convert.ToInt32(operand);
+
+            if (string.IsNullOrEmpty(sValue))
+                return sValue;
+
+            for (int i = 0; i < shiftCount; i++)
+            {
+                string first = sValue.Substring(0,1);
+                sValue = sValue.Substring(1) + first;
+            }
+            return sValue;
+        }
+        protected override object RightShift(dynamic bValue, dynamic operand)
+        {
+            string sValue = bValue;
+            int shiftCount = Convert.ToInt32(operand);
+
+            if (string.IsNullOrEmpty(sValue))
+                return sValue;
+
+            for (int i = 0; i < shiftCount; i++)
+            {
+                string last = sValue.Substring(sValue.Length-1, 1);
+                sValue = last + sValue.Substring(0, sValue.Length - 1);
+            }
+            return sValue;
+        }
+        protected override object BitWiseAnd(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+
+        }
+        protected override object BitWiseXor(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+
+        }
+        protected override object BitWiseOr(dynamic bValue, dynamic operand)
+        {
+            return bValue;
         }
 
         protected override object Less(dynamic bValue, dynamic operand)
         {
             return CompareTo(bValue, operand) < 0;
         }
-
         protected override object LessEqual(dynamic bValue, dynamic operand)
         {
             return CompareTo(bValue, operand) <= 0;
@@ -4325,85 +4495,71 @@ namespace NumpyLib
             return CompareTo(bValue, operand) >= 0;
         }
 
-        /// <summary>
-        /// /
-        /// </summary>
-        /// <param name="bValue"></param>
-        /// <param name="operand"></param>
-        /// <returns></returns>
-
-        protected override object Divide(dynamic bValue, dynamic operand)
+        protected override object IsNAN(object bValue, object operand)
         {
-            return bValue / operand;
+            return bValue;
         }
- 
-        protected override object BitWiseAnd(dynamic bValue, dynamic operand)
+        protected override object FloorDivide(dynamic bValue, dynamic operand)
         {
-            dynamic dValue = bValue;
-            return dValue & operand;
+            return bValue;
         }
-        protected override object BitWiseXor(dynamic bValue, dynamic operand)
+        protected override object TrueDivide(dynamic bValue, dynamic operand)
         {
-            dynamic dValue = bValue;
-            return dValue ^ operand;
+            return bValue;
         }
-        protected override object BitWiseOr(dynamic bValue, dynamic operand)
+        protected override object LogicalOr(dynamic bValue, dynamic operand)
         {
-            dynamic dValue = bValue;
-            return dValue | operand;
+            string sValue = (string)bValue;
+            return !sValue.Contains(operand.ToString());
         }
-        protected override object Remainder(dynamic bValue, dynamic operand)
+        protected override object LogicalAnd(dynamic bValue, dynamic operand)
         {
-            return bValue % operand;
+            string sValue = (string)bValue;
+            return sValue.Contains(operand.ToString());
         }
         protected override object Floor(dynamic bValue, dynamic operand)
         {
-            if (bValue is decimal)
-            {
-                return Math.Floor(Convert.ToDecimal(bValue));
-            }
-            return Math.Floor(Convert.ToDouble(bValue));
+            return bValue;
         }
         protected override object Ceiling(dynamic bValue, dynamic operand)
         {
-            if (bValue is decimal)
-            {
-                return Math.Ceiling(Convert.ToDecimal(bValue));
-            }
-            return Math.Ceiling(Convert.ToDouble(bValue));
+            return bValue;
         }
         protected override object Maximum(dynamic bValue, dynamic operand)
         {
-            if (bValue >= operand)
-                return bValue;
-            return operand;
+            if (CompareTo(bValue, operand) >= 0)
+                return bValue.ToString();
+            return operand.ToString();
         }
         protected override object FMax(dynamic bValue, dynamic operand)
         {
-            if (bValue >= operand)
-                return bValue;
-            return operand;
+            if (CompareTo(bValue, operand) >= 0)
+                return bValue.ToString();
+            return operand.ToString();
         }
         protected override object Minimum(dynamic bValue, dynamic operand)
         {
-            if (bValue <= operand)
-                return bValue;
-            return operand;
+            if (CompareTo(bValue, operand) <= 0)
+                return bValue.ToString();
+            return operand.ToString();
         }
         protected override object FMin(dynamic bValue, dynamic operand)
         {
-            if (bValue <= operand)
-                return bValue;
-            return operand;
+            if (CompareTo(bValue, operand) <= 0)
+                return bValue.ToString();
+            return operand.ToString();
         }
+
+        protected override object Heaviside(dynamic bValue, dynamic operand)
+        {
+            return bValue;
+        }
+
         protected override object Rint(dynamic bValue, dynamic operand)
         {
-            if (bValue is decimal)
-            {
-                return Math.Round(Convert.ToDecimal(bValue));
-            }
-            return Math.Round(Convert.ToDouble(bValue));
+            return bValue;
         }
+ 
 
     }
 }
