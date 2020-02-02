@@ -485,8 +485,8 @@ namespace NumpyDotNetTests
             y = (ndarray[])np.where(x.NotEquals("3"));
 
             Assert.AreEqual(2, y.Length);
-            AssertArray(y[0], new npy_intp[] { 0, 1 });
-            AssertArray(y[1], new npy_intp[] { 2, 1 });
+            AssertArray(y[0], new npy_intp[] { 0,0,1,1,2,2,2 });
+            AssertArray(y[1], new npy_intp[] { 0,1,0,2, 0,1,2 });
 
             z = x.SliceMe(y) as ndarray;
             print("Z");
@@ -544,10 +544,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_where_4_STRING_TODO()
+        public void test_ndarray_where_4_STRING()
         {
-            var x = np.arange(0, 3000000, dtype: np.Int32);
-            x = np.array(x.AsObjectArray());
+            var x = np.arange(0, 30, dtype: np.Int32).astype(np.Strings);
 
             var y = np.where(x % 7 == 0);
             print("Y");
@@ -563,26 +562,27 @@ namespace NumpyDotNetTests
             return;
         }
 
+   
         [TestMethod]
-        public void test_ndarray_where_5_STRING_TODO()
+        public void test_ndarray_where_5_STRING()
         {
-            var a = np.arange(10, dtype: np.Int32);
-            a = np.array(a.AsObjectArray());
+            var a1 = np.arange(10, dtype: np.Int32).astype(np.Strings);
+            var a2 = np.arange(10, 100, 10, dtype: np.Int32).astype(np.Strings);
 
-            var b = np.where(a < 5, a, 10 * a) as ndarray;
-            AssertArray(b, new object[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
+            var b = np.where(a1 < 5, a1, a2) as ndarray;
+            AssertArray(b, asstring(new int[] { 0, 1, 2, 3, 4, 60, 70, 80, 90, 10 }));
             print(b);
 
-            a = np.array(new object[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } });
-            b = np.where(a < 4, a, -1) as ndarray;  // -1 is broadcast
-            AssertArray(b, new object[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } });
+            a1 = np.array(new Int32[,] { { 0, 1, 2 }, { 0, 2, 4 }, { 0, 3, 6 } }).astype(np.Strings);
+            b = np.where(a1 < 4, a1, -1) as ndarray;  // -1 is broadcast
+            AssertArray(b, asstring(new Int32[,] { { 0, 1, 2 }, { 0, 2, -1 }, { 0, 3, -1 } }));
             print(b);
 
             var c = np.where(new bool[,] { { true, false }, { true, true } },
-                                    new object[,] { { 1, 2 }, { 3, 4 } },
-                                    new object[,] { { 9, 8 }, { 7, 6 } }) as ndarray;
+                                    asstring(new Int32[,] { { 1, 2 }, { 3, 4 } }),
+                                    asstring(new Int32[,] { { 9, 8 }, { 7, 6 } })) as ndarray;
 
-            AssertArray(c, new object[,] { { 1, 8 }, { 3, 4 } });
+            AssertArray(c, asstring(new Int32[,] { { 1, 8 }, { 3, 4 } }));
 
             print(c);
 
