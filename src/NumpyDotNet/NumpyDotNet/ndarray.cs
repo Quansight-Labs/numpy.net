@@ -384,8 +384,14 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
         }
+ 
         [SpecialName]
         public ndarray Equals(ndarray b)
+        {
+            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_equal, b);
+        }
+        [SpecialName]
+        public ndarray Equals(string b)
         {
             return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_equal, b);
         }
@@ -421,12 +427,17 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
         }
+
         [SpecialName]
         public ndarray NotEquals(ndarray b)
         {
             return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_not_equal, b);
         }
-
+        [SpecialName]
+        public ndarray NotEquals(string b)
+        {
+            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_not_equal, b);
+        }
         [SpecialName]
         public ndarray InPlaceExclusiveOr(ndarray b)
         {

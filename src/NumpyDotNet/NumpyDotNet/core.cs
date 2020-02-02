@@ -124,6 +124,8 @@ namespace NumpyDotNet
                     return new VoidPtr(new Double[] { (Double)o });
                 case TypeCode.Single:
                     return new VoidPtr(new Single[] { (Single)o });
+                case TypeCode.String:
+                    return new VoidPtr(new string[] { (string)o });
                 default:
                     if (o is System.Numerics.Complex)
                     {

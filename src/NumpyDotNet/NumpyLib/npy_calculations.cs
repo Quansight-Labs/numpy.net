@@ -628,7 +628,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguousSD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
-
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguousSD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
             }
         }
 
@@ -680,6 +682,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguousD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguousD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
 
             }
@@ -734,6 +739,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguous_SD_T2<S,object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
 
             }
         }
@@ -786,6 +794,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguous_D_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguous_D_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
 
             }
@@ -840,6 +851,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguousSD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
 
             }
         }
@@ -892,6 +906,9 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_OBJECT:
                     PerformNumericOpScalarIterContiguousD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    PerformNumericOpScalarIterContiguousD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
 
             }
