@@ -1136,8 +1136,6 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_max_OBJECT()
         {
-            // would have to rewrite object implementation of Minimum to use <= >= etc.
-
             Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
             var x = np.array(TestData);
             Object y = (Object)np.max(x);

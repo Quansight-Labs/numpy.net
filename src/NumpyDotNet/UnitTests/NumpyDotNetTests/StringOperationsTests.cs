@@ -1156,39 +1156,37 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_min_STRING_TODO()
+        public void test_min_STRING()
         {
-            Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var TestData = new string[] { "AA", "BB", "CC", "aa", "bb", "cc" };
             var x = np.array(TestData);
-            Object y = (Object)np.min(x);
+            string y = (string)np.min(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual((Object)(-17), y);
+            Assert.AreEqual("aa", y);
         }
 
         [TestMethod]
-        public void test_max_STRING_TODO()
+        public void test_max_STRING()
         {
-            // would have to rewrite object implementation of Minimum to use <= >= etc.
-
-            Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
+            var TestData = new string[] { "AA", "BB", "CC", "aa", "bb", "cc" };
             var x = np.array(TestData);
-            Object y = (Object)np.max(x);
+            string y = (string)np.max(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual((Object)25, y);
+            Assert.AreEqual("CC", y);
         }
 
 
         [TestMethod]
-        public void test_setdiff1d_STRING_TODO()
+        public void test_setdiff1d_STRING()
         {
-            Object[] TestDataA = new Object[] { 1, 2, 3, 2, 4, };
-            Object[] TestDataB = new Object[] { 3, 4, 5, 6 };
+            var TestDataA = new string[] { "1", "2", "3", "2", "4", };
+            var TestDataB = new string[] { "3", "4", "5", "6" };
 
             var a = np.array(TestDataA);
             var b = np.array(TestDataB);
@@ -1198,16 +1196,16 @@ namespace NumpyDotNetTests
             print(b);
             print(c);
 
-            AssertArray(c, new Object[] { 1, 2 });
+            AssertArray(c, new string[] { "1", "2" });
 
         }
 
         [TestMethod]
-        public void test_setdiff1d_2_STRING_TODO()
+        public void test_setdiff1d_2_STRING()
         {
-            Object[] TestDataB = new Object[] { 3, 4, 5, 6 };
+            var TestDataB = new string[] { "3", "4", "5", "6" };
 
-            var a = np.arange(1, 39).reshape(new shape(2, -1)).astype(np.Object);
+            var a = np.arange(1, 39).reshape(new shape(2, -1)).astype(np.Strings);
             var b = np.array(TestDataB);
             ndarray c = np.setdiff1d(a, b);
 
@@ -1215,50 +1213,50 @@ namespace NumpyDotNetTests
             print(b);
             print(c);
 
-            AssertArray(c, new Object[] {1,  2,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-                                         17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-                                         29, 30, 31, 32, 33, 34, 35, 36, 37, 38 });
+            AssertArray(c, asstring(new Int32[] { 1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                2, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                30, 31, 32, 33, 34, 35, 36, 37, 38, 7, 8, 9 }));
 
         }
 
         [TestMethod]
-        public void test_rot90_1_STRING_TODO()
+        public void test_rot90_1_STRING()
         {
-            ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }, np.Object);
+            ndarray m = np.array(new Int32[,] { { 1, 2 }, { 3, 4 } }).astype(np.Strings);
             print(m);
             print("************");
 
             ndarray n = np.rot90(m);
             print(n);
-            AssertArray(n, new Object[,] { { 2, 4 }, { 1, 3 }, });
+            AssertArray(n, asstring(new Int32[,] { { 2, 4 }, { 1, 3 }, }));
             print("************");
 
             n = np.rot90(m, 2);
             print(n);
-            AssertArray(n, new Object[,] { { 4, 3 }, { 2, 1 }, });
+            AssertArray(n, asstring(new Int32[,] { { 4, 3 }, { 2, 1 }, }));
             print("************");
 
-            m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             n = np.rot90(m, 1, new int[] { 1, 2 });
             print(n);
-            AssertArray(n, new Object[,,] { { { 1, 3 }, { 0, 2 } }, { { 5, 7 }, { 4, 6 } } });
+            AssertArray(n, asstring(new Int32[,,] { { { 1, 3 }, { 0, 2 } }, { { 5, 7 }, { 4, 6 } } }));
 
         }
 
         [TestMethod]
-        public void test_flip_1_STRING_TODO()
+        public void test_flip_1_STRING()
         {
-            ndarray A = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            ndarray A = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             ndarray B = np.flip(A, 0);
             print(A);
             print("************");
             print(B);
-            AssertArray(B, new Object[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
+            AssertArray(B, asstring(new Int32[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } }));
 
             print("************");
             ndarray C = np.flip(A, 1);
             print(C);
-            AssertArray(C, new Object[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
+            AssertArray(C, asstring(new Int32[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } }));
             print("************");
 
         }
