@@ -215,22 +215,37 @@ namespace NumpyDotNetTests
 
         private void AssertDataTypes<T>(ndarray arrayData, T[] expectedData)
         {
+            if (expectedData[0] == null)
+                return;
+
             Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0].GetType(), "ndarray type is not a match for expectedData");
         }
         private void AssertDataTypes<T>(ndarray arrayData, T[,] expectedData)
         {
+            if (expectedData[0,0] == null)
+                return;
+
             Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0,0].GetType(), "ndarray type is not a match for expectedData");
         }
         private void AssertDataTypes<T>(ndarray arrayData, T[,,] expectedData)
         {
+            if (expectedData[0, 0, 0] == null)
+                return;
+
             Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
         }
         private void AssertDataTypes<T>(ndarray arrayData, T[,,,] expectedData)
         {
+            if (expectedData[0, 0, 0, 0] == null)
+                return;
+
             Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
         }
         private void AssertDataTypes<T>(ndarray arrayData, T[,,,,] expectedData)
         {
+            if (expectedData[0, 0, 0, 0, 0] == null)
+                return;
+
             Assert.IsInstanceOfType(arrayData.GetItem(0), expectedData[0, 0, 0, 0, 0].GetType(), "ndarray type is not a match for expectedData");
         }
 
