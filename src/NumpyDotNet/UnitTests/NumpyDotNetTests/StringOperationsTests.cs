@@ -1396,9 +1396,9 @@ namespace NumpyDotNetTests
         private string MathFunctionExceptionPrefix = "Arrays of type";
 
         [TestMethod]
-        public void test_sin_1_STRING_TODO()
+        public void test_sin_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1414,9 +1414,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cos_1_STRING_TODO()
+        public void test_cos_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1432,9 +1432,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tan_1_STRING_TODO()
+        public void test_tan_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1450,9 +1450,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arcsin_1_STRING_TODO()
+        public void test_arcsin_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1468,9 +1468,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arccos_1_STRING_TODO()
+        public void test_arccos_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1486,9 +1486,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arctan_1_STRING_TODO()
+        public void test_arctan_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1504,11 +1504,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_hypot_1_STRING_TODO()
+        public void test_hypot_1_STRING()
         {
             try
             {
-                var b = np.hypot(np.ones((3, 3), dtype: np.Object) * 3, np.ones((3, 3), dtype: np.Object) * 4);
+                var b = np.hypot(np.ones((3, 3), dtype: np.Strings) * 3, np.ones((3, 3), dtype: np.Strings) * 4);
                 Assert.Fail("This should have caused an exception");
             }
             catch (Exception ex)
@@ -1519,12 +1519,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arctan2_1_STRING_TODO()
+        public void test_arctan2_1_STRING()
         {
             try
             {
-                var x = np.array(new Object[] { -1, +1, +1, -1 });
-                var y = np.array(new Object[] { -1, -1, +1, +1 });
+                var x = np.array(new string[] { "-1", "+1", "+1", "-1" });
+                var y = np.array(new string[] { "-1", "-1", "+1", "+1" });
                 var z = np.arctan2(y, x);
                 print(z);
                 Assert.Fail("This should have caused an exception");
@@ -1539,9 +1539,9 @@ namespace NumpyDotNetTests
         #region Hyperbolic functions
 
         [TestMethod]
-        public void test_sinh_1_STRING_TODO()
+        public void test_sinh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1556,9 +1556,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cosh_1_STRING_TODO()
+        public void test_cosh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1575,9 +1575,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tanh_1_STRING_TODO()
+        public void test_tanh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1593,9 +1593,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arcsinh_1_STRING_TODO()
+        public void test_arcsinh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1611,9 +1611,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arccosh_1_STRING_TODO()
+        public void test_arccosh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1629,9 +1629,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_arctanh_1_STRING_TODO()
+        public void test_arctanh_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1649,9 +1649,9 @@ namespace NumpyDotNetTests
         #endregion
 
         [TestMethod]
-        public void test_degrees_1_STRING_TODO()
+        public void test_degrees_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -1667,9 +1667,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_radians_1_STRING_TODO()
+        public void test_radians_1_STRING()
         {
-            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 10, dtype: np.Int32).astype(np.Strings);
             a = a["::2"] as ndarray;
 
             try
@@ -2135,10 +2135,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_exp_1_STRING_TODO()
+        public void test_exp_1_STRING()
         {
 
-            var x = np.array(new object[] { -17, -15, -02, 02, 15, 17, 20, -42 });
+            var x = np.array(new string[] { "A", "B", "C" });
 
             try
             {
@@ -2154,9 +2154,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_exp2_1_STRING_TODO()
+        public void test_exp2_1_STRING()
         {
-            var x = np.array(new object[] { -17, -15, -02, 02, 15, 17, 20, -42 });
+            var x = np.array(new string[] { "A", "B", "C" });
             try
             {
                 var a = np.exp2(x);
