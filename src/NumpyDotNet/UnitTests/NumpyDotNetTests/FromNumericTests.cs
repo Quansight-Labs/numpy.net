@@ -1799,16 +1799,6 @@ namespace NumpyDotNetTests
         }
 
 
-#if NOT_PLANNING_TODO
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void test_lexsort_1()
-        {
-
-        }
-
-#endif
-
         private void UpdateArrayByAxis(ndarray a, int axis, int v)
         {
             var b = np.IndicesFromAxis(a, axis);

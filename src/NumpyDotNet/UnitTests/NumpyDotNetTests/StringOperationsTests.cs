@@ -8141,6 +8141,18 @@ namespace NumpyDotNetTests
         #endregion
 
 
+
+
+        [TestMethod]
+        public void test_lexsort_1()
+        {
+            Assert.Fail("need to implement this now");
+        }
+
+
+
+
+
         private string[] asstring(int[] array)
         {
             string[] output = new string[array.Length];
