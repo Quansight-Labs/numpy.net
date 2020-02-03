@@ -32,7 +32,7 @@ namespace NumpyDotNetTests
 
             try
             {
-                var b = np.asfarray(new Object[] { "2", "3" }, dtype: np.Strings);
+                var b = np.asfarray(new string[] { "2", "3" }, dtype: np.Strings);
                 AssertArray(a, new double[] { 2, 3 });
                 print(a);
                 Assert.Fail("This function should have thrown exception");
@@ -160,7 +160,7 @@ namespace NumpyDotNetTests
             x["::2", "1::2"] = "Y";
             print(x);
 
-            var ExpectedData = new object[8, 8]
+            var ExpectedData = new string[8, 8]
             {
                  { "X", "Y", "X", "Y", "X", "Y", "X", "Y" },
                  { "Y", "X", "Y", "X", "Y", "X", "Y", "X" },
@@ -220,13 +220,13 @@ namespace NumpyDotNetTests
             var y = x.byteswap(true);
             print(y);
 
-            // Objects can't be swapped.  Data should be unchanged
+            // strings can't be swapped.  Data should be unchanged
             AssertArray(y, x.AsStringArray());
 
             y = x.byteswap(false);
             print(y);
 
-            // Objects can't be swapped.  Data should be unchanged
+            // strings can't be swapped.  Data should be unchanged
             AssertArray(y, x.AsStringArray());
 
         }
@@ -277,7 +277,7 @@ namespace NumpyDotNetTests
                                          299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309,
                                          310, 311, 312, 313, 314, 315, 316, 317, 318, 319}));
 
-            // Object can't be mapped by something besides another Object
+            // strings can't be mapped by something besides another strings
             var y = x.view(np.UInt64);
             Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
 
@@ -498,7 +498,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_where_2_STRING()
         {
-            var x = np.array(new object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3)).astype(np.Strings);
+            var x = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3)).astype(np.Strings);
 
             print("X");
             print(x);
@@ -590,7 +590,7 @@ namespace NumpyDotNetTests
             print(z);
             //var m = np.mean(z);
             //print("M");
-            //Assert.AreEqual((Object)1499998.5, m.GetItem(0));
+            //Assert.AreEqual(1499998.5, m.GetItem(0));
             //print(m);
 
             return;
@@ -823,7 +823,7 @@ namespace NumpyDotNetTests
         {
             int[] TestData = new int[] { 1, 1, 2, 2, 3, 3 };
             ndarray a = np.array(TestData, dtype: np.Int32).astype(np.Strings);
-            ndarray b = np.append(a, (object)1);
+            ndarray b = np.append(a, 1);
 
             print(a);
             print(a.shape);
@@ -1262,91 +1262,106 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_trim_zeros_1()
+        public void test_trim_zeros_1_STRING()
         {
-            ndarray a = np.array(new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1, 0 });
+            ndarray a = np.array(new string[] { null, null, null, "1", "2", "3", "0", "2", "1", null }, np.Strings);
 
             var b = np.trim_zeros(a);
             print(b);
-            AssertArray(b, new Object[] { 1, 2, 3, 0, 2, 1 });
+            AssertArray(b, new string[] { "1", "2", "3", "0", "2", "1" });
 
             var c = np.trim_zeros(a, "b");
             print(c);
-            AssertArray(c, new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
+            AssertArray(c, new string[] { null, null, null, "1", "2", "3", "0", "2", "1" });
         }
 
         [TestMethod]
-        public void test_logical_and_1_STRING_TODO()
+        public void test_logical_and_1_STRING()
         {
-            var x = np.arange(5).astype(np.Object);
+            var x = np.arange(5).astype(np.Strings);
             var c = np.logical_and(x > 1, x < 4);
             AssertArray(c, new bool[] { false, false, true, true, false });
             print(c);
 
-            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var y = np.arange(6).reshape((2, 3)).astype(np.Strings);
             var d = np.logical_and(y > 1, y < 4);
             AssertArray(d, new bool[,] { { false, false, true }, { true, false, false } });
             print(d);
         }
 
         [TestMethod]
-        public void test_logical_or_1_STRING_TODO()
+        public void test_logical_or_1_STRING()
         {
-            var x = np.arange(5).astype(np.Object);
+            var x = np.arange(5).astype(np.Strings);
             var c = np.logical_or(x < 1, x > 3);
             AssertArray(c, new bool[] { true, false, false, false, true });
             print(c);
 
-            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var y = np.arange(6).reshape((2, 3)).astype(np.Strings);
             var d = np.logical_or(y < 1, y > 3);
             AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
             print(d);
         }
 
         [TestMethod]
-        public void test_logical_xor_1_STRING_TODO()
+        public void test_logical_xor_1_STRING()
         {
-            var x = np.arange(5).astype(np.Object);
+            var x = np.arange(5).astype(np.Strings);
             var c = np.logical_xor(x < 1, x > 3);
             AssertArray(c, new bool[] { true, false, false, false, true });
             print(c);
 
-            var y = np.arange(6).reshape((2, 3)).astype(np.Object);
+            var y = np.arange(6).reshape((2, 3)).astype(np.Strings);
             var d = np.logical_xor(y < 1, y > 3);
             AssertArray(d, new bool[,] { { true, false, false }, { false, true, true } });
             print(d);
 
-            var e = np.logical_xor((object)0, np.eye(2).astype(np.Object));
+            var e = np.logical_xor(0, np.eye(2).astype(np.Strings));
             AssertArray(e, new bool[,] { { true, false }, { false, true } });
         }
 
         [TestMethod]
-        public void test_logical_not_1_STRING_TODO()
+        public void test_logical_not_1_STRING()
         {
-            var x = np.arange(5).astype(np.Object);
+            var x = np.arange(5).astype(np.Strings);
             var c = np.logical_not(x < 3);
             AssertArray(c, new bool[] { false, false, false, true, true });
             print(c);
+
+            ///////////////
+
+            x = np.array(new string[] { "AA", "BB", "CC", "DD", "EE" });
+            c = np.logical_not(x < "CC");
+            AssertArray(c, new bool[] { false, false, true, true, true });
+            print(c);
+
+            ///////////////
+
+            x = np.array(new string[] { "aa", "bb", "cc", "dd", "ee" });
+            c = np.logical_not(x < "cc");
+            AssertArray(c, new bool[] { false, false, true, true, true });
+            print(c);
+
         }
 
 
         [TestMethod]
-        public void test_copyto_1_STRING_TODO()
+        public void test_copyto_1_STRING()
         {
-            var a = np.zeros((2, 5), dtype: np.Object);
+            var a = np.zeros((2, 5), dtype: np.Strings);
             var b = new int[] { 11, 22, 33, 44, 55 };
             np.copyto(a, b);
 
             AssertShape(a, 2, 5);
-            AssertArray(a, new Object[,] { { 11, 22, 33, 44, 55 }, { 11, 22, 33, 44, 55 } });
+            AssertArray(a, asstring(new Int32[,] { { 11, 22, 33, 44, 55 }, { 11, 22, 33, 44, 55 } }));
             print(a);
 
-            a = np.zeros((4, 5), dtype: np.Object);
+            a = np.zeros((4, 5), dtype: np.Strings);
             np.copyto(a, 99);
-            AssertArray(a, new Object[,] { { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 } });
+            AssertArray(a, asstring(new Int32[,] { { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 }, { 99, 99, 99, 99, 99 } }));
             print(a);
 
-            a = np.zeros((10, 5), dtype: np.Object);
+            a = np.zeros((10, 5), dtype: np.Strings);
             var c = np.arange(11, 60, 11);
 
             try
@@ -1364,13 +1379,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copyto_2_STRING_TODO()
+        public void test_copyto_2_STRING()
         {
-            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.Object);
+            var a = np.zeros((1, 2, 2, 1, 2), dtype: np.Strings);
             var b = new int[] { 1, 2 };
             np.copyto(a, b);
 
-            AssertArray(a, new Object[,,,,] { { { { { 1, 2 } }, { { 1, 2 } } }, { { { 1, 2 } }, { { 1, 2, } } } } });
+            AssertArray(a, asstring(new Int32[,,,,] { { { { { 1, 2 } }, { { 1, 2 } } }, { { { 1, 2 } }, { { 1, 2, } } } } }));
 
         }
 
@@ -8179,6 +8194,28 @@ namespace NumpyDotNetTests
                         for (int l = 0; l < array.GetLength(3); l++)
                         {
                             output[i, j, k, l] = array[i, j, k, l].ToString();
+                        }
+                    }
+                }
+            }
+            return output;
+        }
+        private string[,,,,] asstring(int[,,,,] array)
+        {
+            string[,,,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2), array.GetLength(3), array.GetLength(4)];
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    for (int k = 0; k < array.GetLength(2); k++)
+                    {
+                        for (int l = 0; l < array.GetLength(3); l++)
+                        {
+                            for (int m = 0; m < array.GetLength(m); m++)
+                            {
+                                output[i, j, k, l, m] = array[i, j, k, l, m].ToString();
+                            }
                         }
                     }
                 }
