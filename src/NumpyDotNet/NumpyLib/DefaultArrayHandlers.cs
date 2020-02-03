@@ -4307,7 +4307,7 @@ namespace NumpyLib
         }
         public override int CompareTo(dynamic invalue, dynamic comparevalue)
         {
-            return invalue.ToString().CompareTo(comparevalue.ToString());
+            return string.Compare(invalue.ToString(), comparevalue.ToString());
         }
 
 

@@ -389,8 +389,8 @@ namespace NumpyLib
         {
             switch (type)
             {
-                case NPY_TYPES.NPY_STRING:
-                    return true;
+                //case NPY_TYPES.NPY_STRING:
+                //    return true;
 
                 default:
                     return false;
