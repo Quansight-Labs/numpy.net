@@ -1872,7 +1872,7 @@ namespace NumpyDotNetTests
 
             ndarray e = np.cumprod(a, axis: 1);
             print(e);
-            AssertArray(e, new Object[,] { { "a", "a", "a" }, { "d", "d", "d" } });
+            AssertArray(e, new string[,] { { "a", "a", "a" }, { "d", "d", "d" } });
             print("*****");
 
 
@@ -2003,7 +2003,7 @@ namespace NumpyDotNetTests
         public void test_gradient_1_STRING()
         {
             // note: This function requires that all values be cast to doubles.
-            // since strings get cast to 0 in this case, effectively this function does not work with objects
+            // since strings get cast to 0 in this case, effectively this function does not work with strings
             var f = np.array(new string[] { "1", "2", "4", "7", "11", "16" }, dtype: np.Strings);
             var a = np.gradient(f);
             AssertArray(a[0], new double[] { 0, 0, 0, 0, 0, 0 });
@@ -2103,7 +2103,7 @@ namespace NumpyDotNetTests
             var x = np.array(new string[] { "A", "B", "C" });
             try
             {
-                var a = np.i0((Object)5);
+                var a = np.i0("5");
                 Assert.Fail("This should throw an exception");
             }
             catch
@@ -2187,7 +2187,7 @@ namespace NumpyDotNetTests
         {
             try
             {
-                var a = np.ldexp((Object)5, np.arange(4, dtype: np.Int32)).astype(np.Strings);
+                var a = np.ldexp("5", np.arange(4, dtype: np.Int32)).astype(np.Strings);
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2202,7 +2202,7 @@ namespace NumpyDotNetTests
         {
             try
             {
-                var d = np.lcm(np.arange(6, dtype: np.Int32).astype(np.Object), new Object[] { 20 });
+                var d = np.lcm(np.arange(6, dtype: np.Int32).astype(np.Strings), new Int32[] { 20 });
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2216,7 +2216,7 @@ namespace NumpyDotNetTests
         {
             try
             {
-                var d = np.gcd(np.arange(6, dtype: np.Int32).astype(np.Strings), new Object[] { 20 });
+                var d = np.gcd(np.arange(6, dtype: np.Int32).astype(np.Strings), new Int32[] { 20 });
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2228,8 +2228,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_add_1_STRING()
         {
-            var a = np.add(1, 4).astype(np.Object);
-            Assert.AreEqual((Object)5, a.GetItem(0));
+            var a = np.add("1", "4");
+            Assert.AreEqual("14", a.GetItem(0));
             print(a);
 
             var b = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Strings);
@@ -2287,7 +2287,7 @@ namespace NumpyDotNetTests
             print(d);
 
             var e = np.positive(np.array(new string[,] { { "ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } }));
-            AssertArray(e, new object[,] { {"ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } });
+            AssertArray(e, new string[,] { {"ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } });
             print(e);
 
             try
@@ -2312,7 +2312,7 @@ namespace NumpyDotNetTests
             print(d);
 
             var e = np.negative(np.array(new string[,] { { "ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } }));
-            AssertArray(e, new object[,] { { "CBA", "LKJ", "zyx" }, { "cba", "lkj", "ZYX" } });
+            AssertArray(e, new string[,] { { "CBA", "LKJ", "zyx" }, { "cba", "lkj", "ZYX" } });
             print(e);
 
             try
@@ -2542,7 +2542,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_modf_1_STRING_TODO()
+        public void test_modf_1_STRING()
         {
             var x = np.modf(new string[] { "AA", "BB", "CC", "DD" });
             AssertArray(x[0], new string[] { "AA", "BB", "CC", "DD" });
@@ -2566,65 +2566,63 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_remainder_2_STRING_TODO()
+        public void test_remainder_2_STRING()
         {
-            var x = np.remainder(np.array(new int[] { -4, -7 }).astype(np.Object), np.array(new int[] { 2, 3 }).astype(np.Object));
-            AssertArray(x, new int[] { 0, -1 });
+            var x = np.remainder(new string[] { "AA", "BB", "CC", "DD" }, new string[] { "EE", "FF", "GG", "HH" });
+            AssertArray(x, new string[] { "AA", "BB", "CC", "DD" });
             print(x);
 
-            var y = np.remainder(np.arange(7).astype(np.Object), -5);
-            AssertArray(y, new int[] { 0, 1, 2, 3, 4, 0, 1 });
-            print(y);
 
             /////////////////////////////
 
-            var x1 = np.arange(7).astype(np.Object);
-            x1[2] = "X";
-
             try
             {
-                var a = np.remainder(x1, 3);
-                Assert.Fail("This should have thrown an exception");
+                var x1 = np.array(new string[] { "AA", "BB", "CC", "DD" });
+                x1[2] = 99;
+                var a = np.remainder(x, 3);
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
             return;
         }
 
         [TestMethod]
-        public void test_divmod_1_STRING_TODO()
+        public void test_divmod_1_STRING()
         {
-            var a = np.divmod((object)7, (object)3);
-            Assert.AreEqual(2, a[0].GetItem(0));
-            Assert.AreEqual(1, a[1].GetItem(0));
-
+            var a = np.divmod("7", "3");
+            Assert.AreEqual("7", a[0].GetItem(0));
+            Assert.AreEqual("7", a[1].GetItem(0));
             print(a);
 
-            var b = np.divmod(new object[] { 1.0, 2.0, 3.0, 4.0 }, 2.5);
-            AssertArray(b[0], new double[] { 0, 0, 1, 1 });
-            AssertArray(b[1], new double[] { 1, 2, 0.5, 1.5 });
+            var b = np.divmod(np.array(new string[] { "AA", "BB", "CC", "DD" }), 2.5);
+            AssertArray(b[0], new string[] { "AA", "BB", "CC", "DD" });
+            AssertArray(b[1], new string[] { "AA", "BB", "CC", "DD" });
             print(b);
 
-            var c = np.divmod(new object[] { 1.0, 2.0, 3.0, 4.0 }, new object[] { 0.5, 2.5, 2.5, 3.5 });
-            AssertArray(c[0], new double[] { 2, 0, 1, 1 });
-            AssertArray(c[1], new double[] { 0, 2, 0.5, 0.5 });
+            var c = np.divmod(np.array(new string[] { "AA", "BB", "CC", "DD" }), new double[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c[0], new string[] { "AA", "BB", "CC", "DD" });
+            AssertArray(c[1], new string[] { "AA", "BB", "CC", "DD" });
             print(c);
+
+     
+            print(a);
+
 
             /////////////////////////////
 
-            var x1 = np.arange(7).astype(np.Object);
+            var x1 = np.arange(7).astype(np.Strings);
             x1[2] = "X";
 
             try
             {
                 a = np.divmod(x1, 3);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
             return;
@@ -2632,94 +2630,76 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_convolve_1_STRING_TODO()
+        public void test_convolve_1_STRING()
         {
-            var a = np.convolve(np.array(new int[] { 1, 2, 3 }).astype(np.Object), np.array(new float[] { 0, 1, 0.5f }).astype(np.Object));
-            AssertArray(a, new float[] { 0.0f, 1.0f, 2.5f, 4.0f, 1.5f });
+            var a = np.convolve(np.array(new string[] { "AA", "BB", "CC" }), np.array(new string[] { "DD", "EE", "FF" }));
+            AssertArray(a, new string[] {  "AADD", "BBDD", "CCDD", "CCEE", "CCFF" });
             print(a);
 
-            var b = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
-            AssertArray(b, new double[] { 1.0, 2.5, 4.0 });
+            var b = np.convolve(new string[] { "AA", "BB", "CC" }, new string[] { "DD", "EE", "FF" }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+            AssertArray(b, new string[] { "BBDD", "CCDD", "CCEE" });
             print(b);
 
-            var c = np.convolve(new int[] { 1, 2, 3 }, new float[] { 0, 1, 0.5f }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
-            AssertArray(c, new double[] { 2.5 });
+            var c = np.convolve(new string[] { "AA", "BB", "CC" }, new string[] { "DD", "EE", "FF" }, mode: NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            AssertArray(c, new string[] { "CCDD" });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_clip_2_STRING_TODO()
+        public void test_clip_2_STRING()
         {
-            ndarray a = np.arange(16).reshape(new shape(4, 4)).astype(np.Object);
+            ndarray a = np.arange(16).reshape(new shape(4, 4)).astype(np.Strings);
             print(a);
             print("*****");
 
-            ndarray b = np.clip(a, 1, 8);
+            ndarray b = np.clip(a, "1", "8");
             print(b);
             print("*****");
-            AssertArray(b, new Int32[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, asstring( new Int32[,] { { 1, 1, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 10, 11 }, { 12, 13, 14, 15 } }));
 
-            ndarray c = np.clip(a, 3, 6, @out: a);
+            ndarray c = np.clip(a, "3", "6", @out: a);
             print(c);
-            AssertArray(c, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(c, asstring(new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 3, 3 }, { 3, 3, 3, 3 } }));
             print(a);
-            AssertArray(a, new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 6, 6 }, { 6, 6, 6, 6 } });
+            AssertArray(a, asstring(new Int32[,] { { 3, 3, 3, 3 }, { 4, 5, 6, 6 }, { 6, 6, 3, 3 }, { 3, 3, 3, 3 } }));
             print("*****");
 
-            a = np.arange(16).reshape(new shape(4, 4)).astype(np.Object);
+            a = np.arange(16).reshape(new shape(4, 4)).astype(np.Strings);
             print(a);
-            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Object), 8);
+            b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Strings), 8);
             print(b);
-            AssertArray(b, new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 8, 8 }, { 8, 8, 8, 8 } });
+            AssertArray(b, asstring(new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 10, 11 }, { 3, 4, 14, 15 } }));
 
             a["...", "..."] = "X";
             print(a);
             try
             {
-                b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Object), 8);
-                Assert.Fail("This should have thrown an exception");
+                b = np.clip(a, np.array(new Int32[] { 3, 4, 1, 1 }).astype(np.Strings), 8);
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
 
         }
 
         [TestMethod]
-        public void test_square_operations_STRING_TODO()
+        public void test_square_operations_STRING()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Int32).astype(np.Object);
+            var a = np.array(new string[] { "AA", "BB", "CC" });
             print(a);
 
             var b = np.square(a);
             print(b);
 
-            var ExpectedDataB1 = new Int32[]
-            {
-                0,   1,   4,   9,  16,  25,  36,  49,  64,  81, 100, 121, 144, 169, 196, 225, 256, 289,
-                324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961
-            };
+            var ExpectedDataB1 = new string[] { "AA", "BB", "CC" };
+      
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int64).astype(np.Object);
-            print(a);
-
-            b = np.square(a);
-            print(b);
-
-            var ExpectedDataB2 = new Int64[]
-            {
-                4194304, 4198401, 4202500, 4206601, 4210704, 4214809, 4218916, 4223025, 4227136,
-                4231249, 4235364, 4239481, 4243600, 4247721, 4251844, 4255969, 4260096, 4264225,
-                4268356, 4272489, 4276624, 4280761, 4284900, 4289041, 4293184, 4297329, 4301476,
-                4305625, 4309776, 4313929, 4318084, 4322241
-            };
-            AssertArray(b, ExpectedDataB2);
-
+  
             //////////////////////
 
             a["..."] = "X";
@@ -2727,33 +2707,25 @@ namespace NumpyDotNetTests
             try
             {
                 b = np.square(a);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_absolute_operations_STRING_TODO()
+        public void test_absolute_operations_STRING()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.Int16).astype(np.Object);
+            var a = np.array(new string[] { "AA", "BB", "CC" });
             print(a);
 
             var b = np.absolute(a);
             print(b);
 
-            var ExpectedDataB = new Int16[]
-            {
-                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
-                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
-                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
-                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                28, 29, 30, 31
-            };
-
+            var ExpectedDataB = new string[] { "AA", "BB", "CC" };
+            AssertArray(b, ExpectedDataB);
 
             //////////////////////
 
@@ -2762,32 +2734,25 @@ namespace NumpyDotNetTests
             try
             {
                 b = np.absolute(a);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_fabs_1_STRING_TODO()
+        public void test_fabs_1_STRING()
         {
-            var a = np.arange(-32, 32, 1, dtype: np.Int16).astype(np.Object);
+            var a = np.array(new string[] { "AA", "BB", "CC" });
             print(a);
 
             var b = np.fabs(a);
             print(b);
 
-            var ExpectedDataB = new Int16[]
-            {
-                32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
-                17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,
-                2,  1,  0,  1,  2,  3,  4,  5,   6,  7,  8,  9, 10, 11, 12,
-                13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                28, 29, 30, 31
-            };
+            var ExpectedDataB = new string[] { "AA", "BB", "CC" };
+            AssertArray(b, ExpectedDataB);
 
             //////////////////////
 
@@ -2796,25 +2761,23 @@ namespace NumpyDotNetTests
             try
             {
                 b = np.fabs(a);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_sign_1_STRING_TODO()
+        public void test_sign_1_STRING()
         {
-            var a = np.sign((Object)(-199));
-            Assert.AreEqual((Int64)(-1), a.GetItem(0));
-            print(a);
-
+ 
             try
             {
-                var b = np.sign(np.array(new Object[] { 1, -23, 21 }).astype(np.Object));
+                var a = np.sign("-199");
+
+                var b = np.sign(np.array(new Int32[] { 1, -23, 21 }).astype(np.Strings));
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2825,60 +2788,58 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_heaviside_1_STRING_TODO()
+        public void test_heaviside_1_STRING()
         {
-            var a = np.heaviside(np.array(new Int32[] { -15, 0, 20 }).astype(np.Object), 5);
-            AssertArray(a, new double[] { 0, 5, 1 });
+            var a = np.heaviside(np.array(new string[] { "AA", "BB", "CC" }), 5);
+            AssertArray(a, new string[] { "AA", "BB", "CC" });
             print(a);
 
-            var b = np.heaviside(np.array(new Int32[] { -15, 0, 20 }).astype(np.Object), 1);
-            AssertArray(b, new double[] { 0, 1, 1 });
+            var b = np.heaviside(np.array(new string[] { "AA", "BB", "CC" }), 1);
+            AssertArray(b, new string[] { "AA", "BB", "CC" });
             print(b);
 
-            var c = np.heaviside(np.array(new Int32[] { -1, 0, 2 }).astype(np.Object), 1);
-            AssertArray(c, new double[] { 0, 1, 1 });
+            var c = np.heaviside(np.array(new string[] { "AA", "BB", "CC" }), 1);
+            AssertArray(c, new string[] { "AA", "BB", "CC" });
             print(c);
 
             //////////////////////
 
-            a = np.array(new object[] { "A", "B", "C" });
+            a = np.array(new string[] { "A", "B", "C" });
             print(a);
             try
             {
                 b = np.heaviside(a, 1);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
 
         }
 
         [TestMethod]
-        public void test_maximum_1_STRING_TODO()
+        public void test_maximum_1_STRING()
         {
-            var a = np.maximum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new int[] { 2, 5, 4 });
+            var a = np.maximum(np.array(new string[] { "AA", "EE", "CC" }), np.array(new string[] { "DD", "BB", "FF" }));
+            AssertArray(a, new string[] { "DD", "EE", "FF" });
             print(a);
 
-            var b = np.maximum(np.eye(2, dtype: np.Object), new Object[] { 5, 2 }); // broadcasting
-            AssertArray(b, new int[,] { { 5, 2 }, { 5, 2 } });
+            var b = np.maximum(np.eye(2, dtype: np.Strings), new string[] { "5", "2" }); // broadcasting
+            AssertArray(b, new string[,] { { "5", "2" }, { "5", "2" } });
             print(b);
 
             //////////////////////
 
-            a = np.array(new object[] { "A", "B", "C" });
+            a = np.array(new string[] { "A", "B", "C" });
             print(a);
             try
             {
-                b = np.maximum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-                Assert.Fail("This should have thrown an exception");
+                b = np.maximum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Strings));
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
 
@@ -2887,95 +2848,79 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_minimum_1_STRING_TODO()
+        public void test_minimum_1_STRING()
         {
-            var a = np.minimum(np.array(new Int32[] { 2, 3, 4 }).astype(np.Object), np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new int[] { 1, 3, 2 });
+            var a = np.minimum(np.array(new string[] { "AA", "EE", "CC" }), np.array(new string[] { "DD", "BB", "FF" }));
+            AssertArray(a, new string[] { "AA", "BB", "CC" });
             print(a);
 
-            var b = np.minimum(np.eye(2).astype(np.Object), np.array(new Int32[] { 5, 2 }).astype(np.Object)); // broadcasting
-            AssertArray(b, new double[,] { { 1, 0 }, { 0, 1 } });
+            var b = np.minimum(np.eye(2, dtype: np.Strings), new string[] { "5", "2" }); // broadcasting
+            AssertArray(b, new string[,] { { "1", "0" }, { "0", "1" } });
             print(b);
 
             //////////////////////
 
-            a = np.array(new object[] { "A", "B", "C" });
+            a = np.array(new string[] { "A", "B", "C" });
             print(a);
             try
             {
-                b = np.minimum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Object));
-                Assert.Fail("This should have thrown an exception");
+                b = np.minimum(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Strings));
             }
             catch
             {
-
-            }
-
-
-        }
-
-        [TestMethod]
-        public void test_fmax_1_STRING_TODO()
-        {
-            var a = np.fmax(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new int[] { 2, 5, 4 });
-            print(a);
-
-            var b = np.fmax(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
-            AssertArray(b, new double[,] { { 1, 2 }, { 0.5, 2.0 } });
-            print(b);
-
-            var c = np.fmax(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { 0, float.NaN, float.NaN });
-            print(c);
-
-            var d = np.fmax(double.PositiveInfinity, 1);
-            Assert.AreEqual(double.PositiveInfinity, d.GetItem(0));
-            print(d);
-
-            //////////////////////
-
-            a = np.array(new object[] { "A", "B", "C" });
-            print(a);
-            try
-            {
-                b = np.fmax(a, np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-                Assert.Fail("This should have thrown an exception");
-            }
-            catch
-            {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_fmin_1_STRING_TODO()
+        public void test_fmax_1_STRING()
         {
-            var a = np.fmin(np.array(new int[] { 2, 3, 4 }).astype(np.Object), np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-            AssertArray(a, new int[] { 1, 3, 2 });
+            var a = np.fmax(np.array(new string[] { "AA", "EE", "CC" }), np.array(new string[] { "DD", "BB", "FF" }));
+            AssertArray(a, new string[] { "DD", "EE", "FF" });
             print(a);
 
-            var b = np.fmin(np.eye(2).astype(np.Object), new double[] { 0.5, 2 }); // broadcasting
-            AssertArray(b, new double[,] { { 0.5, 0.0 }, { 0.0, 1.0 } });
+            var b = np.fmax(np.eye(2, dtype: np.Strings), new string[] { "5", "2" }); // broadcasting
+            AssertArray(b, new string[,] { { "5", "2" }, { "5", "2" } });
             print(b);
-
-            var c = np.fmin(np.array(new float[] { float.NaN, 0, float.NaN }).astype(np.Object), new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new float[] { 0, float.NaN, float.NaN });
-            print(c);
 
             //////////////////////
 
-            a = np.array(new object[] { "A", "B", "C" });
+            a = np.array(new string[] { "A", "B", "C" });
             print(a);
             try
             {
-                b = np.fmin(a, np.array(new int[] { 1, 5, 2 }).astype(np.Object));
-                Assert.Fail("This should have thrown an exception");
+                b = np.fmax(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Strings));
             }
             catch
             {
+                Assert.Fail("This should NOT have thrown an exception");
+            }
 
+        }
+
+        [TestMethod]
+        public void test_fmin_1_STRING()
+        {
+            var a = np.fmin(np.array(new string[] { "AA", "EE", "CC" }), np.array(new string[] { "DD", "BB", "FF" }));
+            AssertArray(a, new string[] { "AA", "BB", "CC" });
+            print(a);
+
+            var b = np.fmin(np.eye(2, dtype: np.Strings), new string[] { "5", "2" }); // broadcasting
+            AssertArray(b, new string[,] { { "1", "0" }, { "0", "1" } });
+            print(b);
+
+            //////////////////////
+
+            a = np.array(new string[] { "A", "B", "C" });
+            print(a);
+            try
+            {
+                b = np.fmin(a, np.array(new Int32[] { 1, 5, 2 }).astype(np.Strings));
+            }
+            catch
+            {
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
 
