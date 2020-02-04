@@ -518,7 +518,7 @@ namespace NumpyDotNet
         {
             return np.AsObjectArray(a);
         }
-        public static object[] AsStringArray(this ndarray a)
+        public static string[] AsStringArray(this ndarray a)
         {
             return np.AsStringArray(a);
         }
