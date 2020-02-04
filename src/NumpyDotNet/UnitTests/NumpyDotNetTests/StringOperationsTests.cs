@@ -2198,7 +2198,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_lcm_1_STRING_TODO()
+        public void test_lcm_1_STRING()
         {
             try
             {
@@ -2329,55 +2329,53 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_multiply_1_STRING_TODO()
+        public void test_multiply_1_STRING()
         {
-            var a = np.multiply((object)2, (object)4);
-            Assert.AreEqual((object)8, a.GetItem(0));
+            var a = np.multiply("2","4");
+            Assert.AreEqual("2", a.GetItem(0));
             print(a);
 
-            var b = np.arange(9).reshape((3, 3)).astype(np.Object);
-            var c = np.arange(3).astype(np.Object);
+            var b = np.arange(9).reshape((3, 3)).astype(np.Strings);
+            var c = np.arange(3).astype(np.Strings);
             var d = np.multiply(b, c);
-            AssertArray(d, new object[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
+            AssertArray(d, new string[,] { { "0", "1", "2" }, { "3", "4", "5" }, { "6", "7", "8" } });
             print(d);
 
             try
             {
-                c[1] = "X";
+                c[1] = 99;
                 d = np.multiply(b, c);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
         }
 
         [TestMethod]
-        public void test_divide_STRING_TODO()
+        public void test_divide_STRING()
         {
-            var a = np.divide((object)7, (object)3);
-            Assert.AreEqual((object)2, a.GetItem(0));
+            var a = np.divide("7", "3");
+            Assert.AreEqual("7", a.GetItem(0));
             print(a);
 
-            var b = np.divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), 2);
-            AssertArray(b, new object[] { 0, 1, 1, 2 });
+            var b = np.divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Strings), 2);
+            AssertArray(b, new string[] { "1", "2", "3", "4" });
             print(b);
 
-            var c = np.divide(np.array(new Int32[] { 2, 4, 6, 8 }).astype(np.Object), np.array(new object[] { 1, 2, 3, 4 }).astype(np.Object));
-            AssertArray(c, new object[] { 2, 2, 2, 2 });
+            var c = np.divide(np.array(new Int32[] { 2, 4, 6, 8 }).astype(np.Strings), np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Strings));
+            AssertArray(c, new string[] { "2", "4", "6", "8" });
             print(c);
 
 
             try
             {
-                c[1] = "X";
+                c[1] = 99;
                 var d = np.divide(b, c);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
             return;
 
@@ -2385,61 +2383,35 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_power_operations_STRING_TODO()
+        public void test_power_operations_STRING()
         {
-            var a = np.arange(0, 32, 1, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(0, 4, 1, dtype: np.Int32).astype(np.Strings);
             print(a);
 
             var b = np.power(a, 3);
             print(b);
 
-            var ExpectedDataB1 = new double[]
+            var ExpectedDataB1 = asstring( new Int32[]
             {
-                0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197,
-                2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648, 12167, 13824,
-                15625, 17576, 19683, 21952, 24389, 27000, 29791
-            };
+                0, 1, 2, 3
+            });
 
             AssertArray(b, ExpectedDataB1);
 
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Int32).astype(np.Object);
-            print(a);
-
-            b = np.power(a, 4);
-            print(b);
-
-            var ExpectedDataB2 = new double[]
-            {
-                Math.Pow(2048, 4), 17626570956801, 17661006250000, 17695491973201,
-                17730028175616, 17764614906481, 17799252215056, 17833940150625,
-                17868678762496, 17903468100001, 17938308212496, 17973199149361,
-                18008140960000, 18043133693841, 18078177400336, 18113272128961,
-                18148417929216, 18183614850625, 18218862942736, 18254162255121,
-                18289512837376, 18324914739121, 18360368010000, 18395872699681,
-                18431428857856, 18467036534241, 18502695778576, 18538406640625,
-                18574169170176, 18609983417041, 18645849431056, 18681767262081 };
-
-
-            AssertArray(b, ExpectedDataB2);
-
+    
             b = np.power(a, 0);
             print(b);
-            var ExpectedDataB3 = new double[]
-            {
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-            };
-            AssertArray(b, ExpectedDataB3);
+    
+            AssertArray(b, ExpectedDataB1);
 
             try
             {
-                a[1] = "X";
+                a[1] = 99;
                 var d = np.power(a, 1);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
             return;
 
