@@ -109,7 +109,7 @@ namespace NumpyLib
                              */
 
     }
-
+    [Flags]
     public enum NpyArray_Descr_Flags: int
     {
         /* The item must be reference counted when it is inserted or extracted. */
