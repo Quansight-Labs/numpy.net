@@ -3512,15 +3512,15 @@ namespace NumpyDotNetTests
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
-             {0, 3, 1, 2},
-             {1, 0, 2, 3}};
+             {1, 2, 0, 3},
+             {1, 2, 3, 0}};
             AssertArray(perm3, Perm3Expected);
         }
 
         [TestMethod]
-        public void test_argmin_1_STRING_TODO()
+        public void test_argmin_1_STRING()
         {
-            ndarray a = np.array(new Object[] { 32, 33, 45, 98, 11, 02 }).reshape(new shape(2, 3));
+            ndarray a = np.array(new string[] { "32", "33", "45", "98", "11", "02" }).reshape(new shape(2, 3));
             print(a);
 
             ndarray b = np.argmin(a);
@@ -3541,9 +3541,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_argmax_1_STRING_TODO()
-        {
-            ndarray a = np.array(new Object[] { 32, 33, 45, 98, 11, 02 }).reshape(new shape(2, 3));
+        public void test_argmax_1_STRING()
+        { 
+            ndarray a = np.array(new string[] { "32", "33", "45", "98", "11", "02" }).reshape(new shape(2, 3));
             print(a);
             ndarray b = np.argmax(a);
             print(b);
@@ -3563,9 +3563,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_searchsorted_1_STRING_TODO()
+        public void test_searchsorted_1_STRING()
         {
-            ndarray arr = np.array(new Object[] { 1, 2, 3, 4, 5 });
+            ndarray arr = np.array(new string[] { "1", "2", "3", "4", "5" });
             ndarray a = np.searchsorted(arr, 3);
             print(a);
             Assert.AreEqual(a.GetItem(0), (npy_intp)2);
@@ -3578,46 +3578,47 @@ namespace NumpyDotNetTests
 
             ndarray c = np.searchsorted(arr, new Int32[] { -10, 10, 2, 3 });
             print(c);
-            AssertArray(c, new npy_intp[] { 0, 5, 1, 2 });
+            AssertArray(c, new npy_intp[] { 1, 1, 1, 2 });
 
 
-            ndarray d = np.searchsorted(np.array(new Object[] { 15, 14, 13, 12, 11 }), 13);
+            ndarray d = np.searchsorted(np.array(new string[] { "15", "14", "13", "12", "11" }), 13);
             print(d);
             Assert.AreEqual(d.GetItem(0), (npy_intp)0);
         }
 
         [TestMethod]
-        public void test_resize_1_STRING_TODO()
+        public void test_resize_1_STRING()
         {
-            ndarray a = np.array(new Object[,] { { 0, 1 }, { 2, 3 } });
+            ndarray a = np.array(new string[,] { { "0", "1" }, { "2", "3" } });
             print(a);
 
             ndarray b = np.resize(a, new shape(2, 3));
             print(b);
 
-            var ExpectedDataB = new Object[,]
+            var ExpectedDataB = asstring(new Int32[,]
             {
                 { 0,1,2 },
                 { 3,0,1 },
-            };
+            });
             AssertArray(b, ExpectedDataB);
 
 
             ndarray c = np.resize(a, new shape(1, 4));
             print(c);
-            var ExpectedDataC = new Object[,]
+            var ExpectedDataC = asstring(new Int32[,]
             {
                 { 0,1,2,3 },
-            };
+            })
+            ;
             AssertArray(c, ExpectedDataC);
 
             ndarray d = np.resize(a, new shape(2, 4));
             print(d);
-            var ExpectedDataD = new Object[,]
+            var ExpectedDataD = asstring(new Int32[,]
             {
                 { 0,1,2,3 },
                 { 0,1,2,3 },
-            };
+            });
             AssertArray(d, ExpectedDataD);
 
         }
