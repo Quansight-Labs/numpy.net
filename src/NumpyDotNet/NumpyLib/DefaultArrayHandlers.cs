@@ -4347,7 +4347,7 @@ namespace NumpyLib
 
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
-            return operValue;
+            return operValue.ToString();
         }
         public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
         {
