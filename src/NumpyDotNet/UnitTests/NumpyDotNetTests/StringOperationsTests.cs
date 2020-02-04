@@ -3624,19 +3624,19 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_squeeze_1_STRING_TODO()
+        public void test_squeeze_1_STRING()
         {
-            ndarray x = np.array(new Object[,,] { { { 0 }, { 1 }, { 2 } } });
+            ndarray x = np.array(new string[,,] { { { "0" }, { "1" }, { "2" } } });
             print(x);
-            AssertArray(x, new Object[1, 3, 1] { { { 0 }, { 1 }, { 2 } } });
+            AssertArray(x, new string[1, 3, 1] { { { "0" }, { "1" }, { "2" } } });
 
             ndarray a = np.squeeze(x);
             print(a);
-            AssertArray(a, new Object[] { 0, 1, 2 });
+            AssertArray(a, new string[] { "0", "1", "2" });
 
             ndarray b = np.squeeze(x, axis: 0);
             print(b);
-            AssertArray(b, new Object[3, 1] { { 0 }, { 1 }, { 2 } });
+            AssertArray(b, new string[3, 1] { { "0" }, { "1" }, { "2" } });
 
             bool CaughtException = false;
 
@@ -3654,7 +3654,7 @@ namespace NumpyDotNetTests
 
             ndarray d = np.squeeze(x, axis: 2);
             print(d);
-            AssertArray(d, new Object[,] { { 0, 1, 2 } });
+            AssertArray(d, new string[,] { { "0", "1", "2" } });
         }
 
         [TestMethod]
