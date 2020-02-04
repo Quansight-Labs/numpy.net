@@ -126,7 +126,8 @@ namespace NumpyLib
                     return partition_introselect<System.Numerics.BigInteger>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_OBJECT:
                     return partition_introselect<Object>(v, num, kth, pivots, ref npiv, true);
-
+                case NPY_TYPES.NPY_STRING:
+                    return partition_introselect<string>(v, num, kth, pivots, ref npiv, true);
             }
             return 0;
         }
@@ -165,6 +166,8 @@ namespace NumpyLib
                     return argpartition_introselect<System.Numerics.BigInteger>(v, tosort, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_OBJECT:
                     return argpartition_introselect<Object>(v, tosort, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_STRING:
+                    return argpartition_introselect<string>(v, tosort, num, kth, pivots, ref npiv, true);
 
             }
             return 0;

@@ -3109,26 +3109,26 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_repeat_1_STRING_TODO()
+        public void test_repeat_1_STRING()
         {
-            ndarray x = np.array(new Object[] { 1, 2, 3, 4 }).reshape(new shape(2, 2));
+            ndarray x = np.array(new Int32[] { 1, 2, 3, 4 }).reshape(new shape(2, 2)).astype(np.Strings);
             var y = new Int32[] { 2 };
 
             ndarray z = np.repeat(x, y);
             print(z);
             print("");
-            AssertArray(z, new Object[] { 1, 1, 2, 2, 3, 3, 4, 4 });
+            AssertArray(z, asstring(new Int32[] { 1, 1, 2, 2, 3, 3, 4, 4 }));
 
-            z = np.repeat((Object)3, 4);
+            z = np.repeat("3", 4);
             print(z);
             print("");
-            AssertArray(z, new Object[] { 3, 3, 3, 3 });
+            AssertArray(z, asstring(new Int32[] { 3, 3, 3, 3 }));
 
             z = np.repeat(x, 3, axis: 0);
             print(z);
             print("");
 
-            var ExpectedData1 = new Object[6, 2]
+            var ExpectedData1 = asstring(new Int32[6, 2]
             {
                 { 1, 2 },
                 { 1, 2 },
@@ -3136,7 +3136,7 @@ namespace NumpyDotNetTests
                 { 3, 4 },
                 { 3, 4 },
                 { 3, 4 },
-            };
+            });
 
             AssertArray(z, ExpectedData1);
             AssertShape(z, 6, 2);
@@ -3145,11 +3145,11 @@ namespace NumpyDotNetTests
             print(z);
             print("");
 
-            var ExpectedData2 = new Object[2, 6]
+            var ExpectedData2 = asstring(new Int32[2, 6]
             {
                 { 1, 1, 1, 2, 2, 2 },
                 { 3, 3, 3, 4, 4, 4 },
-            };
+            });
 
             AssertArray(z, ExpectedData2);
             AssertShape(z, 2, 6);
@@ -3159,38 +3159,38 @@ namespace NumpyDotNetTests
             z = np.repeat(x, new Int32[] { 1, 2 }, axis: 0);
             print(z);
 
-            var ExpectedData3 = new Object[3, 2]
+            var ExpectedData3 = asstring(new Int32[3, 2]
             {
                 { 1, 2 },
                 { 3, 4 },
                 { 3, 4 },
-            };
+            });
 
             AssertArray(z, ExpectedData3);
             AssertShape(z, 3, 2);
         }
 
         [TestMethod]
-        public void test_put_1_STRING_TODO()
+        public void test_put_1_STRING()
         {
-            ndarray a = np.arange(5, dtype: np.Int32).astype(np.Object);
+            ndarray a = np.arange(5, dtype: np.Int32).astype(np.Strings);
             np.put(a, new int[] { 0, 2 }, new int[] { -44, -55 });
             print(a);
-            AssertArray(a, new Object[] { -44, 1, -55, 3, 4 });
+            AssertArray(a, asstring(new Int32[] { -44, 1, -55, 3, 4 }));
 
-            a = np.arange(5, dtype: np.Int32).astype(np.Object);
+            a = np.arange(5, dtype: np.Int32).astype(np.Strings);
             np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_CLIP);
             print(a);
-            AssertArray(a, new Object[] { 0, 1, 2, 3, -5 });
+            AssertArray(a, asstring(new Int32[] { 0, 1, 2, 3, -5 }));
 
-            a = np.arange(5, dtype: np.Int32).astype(np.Object);
+            a = np.arange(5, dtype: np.Int32).astype(np.Strings);
             np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_WRAP);
             print(a);
-            AssertArray(a, new Object[] { 0, 1, -5, 3, 4 });
+            AssertArray(a, asstring(new Int32[] { 0, 1, -5, 3, 4 }));
 
             try
             {
-                a = np.arange(5, dtype: np.Int32).astype(np.Object);
+                a = np.arange(5, dtype: np.Int32).astype(np.Strings);
                 np.put(a, 22, -5, mode: NPY_CLIPMODE.NPY_RAISE);
                 print(a);
             }
@@ -3203,40 +3203,40 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_putmask_1_STRING_TODO()
+        public void test_putmask_1_STRING()
         {
-            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
-            np.putmask(x, x > 2, np.power(x, 2).astype(np.Int32));
-            AssertArray(x, new Object[,] { { 0, 1, 2, }, { 9, 16, 25 } });
+            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
+            np.putmask(x, x > 2, x);
+            AssertArray(x, asstring(new Int32[,] { { 0, 1, 2, }, { 3, 4, 5 } }));
             print(x);
 
 
             // If values is smaller than a it is repeated:
 
-            x = np.arange(5, dtype: np.Int32).astype(np.Object);
+            x = np.arange(5, dtype: np.Int32).astype(np.Strings);
             np.putmask(x, x > 1, new Int32[] { -33, -44 });
-            AssertArray(x, new Object[] { 0, 1, -33, -44, -33 });
+            AssertArray(x, asstring(new Int32[] { 0, 1, -33, -44, -33 }));
             print(x);
 
             return;
         }
 
         [TestMethod]
-        public void test_swapaxes_1_STRING_TODO()
+        public void test_swapaxes_1_STRING()
         {
-            ndarray x = np.array(new Object[,] { { 1, 2, 3 } });
+            ndarray x = np.array(new Int32[,] { { 1, 2, 3 } }).astype(np.Strings);
             print(x);
             print("********");
 
             ndarray y = np.swapaxes(x, 0, 1);
             print(y);
-            AssertArray(y, new Object[3, 1] { { 1 }, { 2 }, { 3 } });
+            AssertArray(y, asstring(new Int32[3, 1] { { 1 }, { 2 }, { 3 } }));
             print("********");
 
-            x = np.array(new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            x = np.array(new Int32[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } }).astype(np.Strings);
             print(x);
 
-            var ExpectedDataX = new Object[2, 2, 2]
+            var ExpectedDataX = asstring(new Int32[2, 2, 2]
             {
                 {
                     { 0,1 },
@@ -3246,7 +3246,7 @@ namespace NumpyDotNetTests
                     { 4,5 },
                     { 6,7 },
                 },
-            };
+            });
             AssertArray(x, ExpectedDataX);
 
             print("********");
@@ -3254,7 +3254,7 @@ namespace NumpyDotNetTests
             y = np.swapaxes(x, 0, 2);
             print(y);
 
-            var ExpectedDataY = new Object[2, 2, 2]
+            var ExpectedDataY = asstring(new Int32[2, 2, 2]
             {
                 {
                     { 0,4 },
@@ -3264,14 +3264,14 @@ namespace NumpyDotNetTests
                     { 1,5 },
                     { 3,7 },
                 },
-            };
+            });
             AssertArray(y, ExpectedDataY);
         }
 
         [TestMethod]
-        public void test_ndarray_T_1_STRING_TODO()
+        public void test_ndarray_T_1_STRING()
         {
-            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4)).astype(np.Object);
+            var x = np.arange(0, 32, dtype: np.Int32).reshape(new shape(8, 4)).astype(np.Strings);
             print("X");
             print(x);
             print(x.shape);
@@ -3282,22 +3282,22 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new Object[4, 8]
+            var ExpectedDataY = asstring(new Int32[4, 8]
             {
                 { 0, 4,  8, 12, 16, 20, 24, 28 },
                 { 1, 5,  9, 13, 17, 21, 25, 29 },
                 { 2, 6, 10, 14, 18, 22, 26, 30 },
                 { 3, 7, 11, 15, 19, 23, 27, 31 },
-            };
+            });
 
             AssertArray(y, ExpectedDataY);
 
         }
 
         [TestMethod]
-        public void test_ndarray_transpose_1_STRING_TODO()
+        public void test_ndarray_transpose_1_STRING()
         {
-            var x = np.arange(0, 64, dtype: np.Int32).reshape(new shape(2, 4, -1, 4)).astype(np.Object);
+            var x = np.arange(0, 64, dtype: np.Int32).reshape(new shape(2, 4, -1, 4)).astype(np.Strings);
             print("X");
             print(x);
             print(x.shape);
@@ -3308,7 +3308,7 @@ namespace NumpyDotNetTests
             print(y);
             print(y.shape);
 
-            var ExpectedDataY = new Object[4, 2, 4, 2]
+            var ExpectedDataY = asstring(new Int32[4, 2, 4, 2]
                 {{{ {0, 32},
                     {1, 33},
                     {2, 34},
@@ -3340,26 +3340,26 @@ namespace NumpyDotNetTests
                    {{28, 60},
                     {29, 61},
                     {30, 62},
-                    {31, 63}}}};
+                    {31, 63}}}});
 
             AssertArray(y, ExpectedDataY);
 
         }
 
         [TestMethod]
-        public void test_partition_3_STRING_TODO()
+        public void test_partition_3_STRING()
         {
-            var a = np.arange(22, 10, -1, dtype: np.Int32).reshape((3, 4, 1)).astype(np.Object);
+            var a = np.arange(22, 10, -1, dtype: np.Int32).reshape((3, 4, 1)).astype(np.Strings);
             var b = np.partition(a, 1, axis: 0);
-            AssertArray(b, new Object[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } });
+            AssertArray(b, asstring(new Int32[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } }));
             print(b);
 
             var c = np.partition(a, 2, axis: 1);
-            AssertArray(c, new Object[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } });
+            AssertArray(c, asstring(new Int32[,,] { { { 19 }, { 20 }, { 21 }, { 22 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 11 }, { 12 }, { 13 }, { 14 } } }));
             print(c);
 
             var d = np.partition(a, 0, axis: 2);
-            AssertArray(d, new Object[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } });
+            AssertArray(d, asstring(new Int32[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } }));
             print(d);
 
             try
@@ -3377,9 +3377,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_argpartition_3_STRING_TODO()
+        public void test_argpartition_3_STRING()
         {
-            var a = np.arange(22, 10, -1, np.Int32).reshape((3, 4, 1)).astype(np.Object);
+            var a = np.arange(22, 10, -1, np.Int32).reshape((3, 4, 1)).astype(np.Strings);
             var b = np.argpartition(a, 1, axis: 0);
             AssertArray(b, new npy_intp[,,] { { { 2 }, { 2 }, { 2 }, { 2 } }, { { 1 }, { 1 }, { 1 }, { 1 } }, { { 0 }, { 0 }, { 0 }, { 0 } } });
             print(b);
@@ -3407,27 +3407,27 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sort_2_STRING_TODO()
+        public void test_sort_2_STRING()
         {
-            var InputData = new Object[]
+            var InputData = asstring(new Int32[]
                 {32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17,
-                 16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1};
+                 16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1});
 
             var a = np.array(InputData).reshape(new shape(8, 4));
             ndarray b = np.sort(a);                 // sort along the last axis
             print(b);
 
-            var ExpectedDataB = new Object[8, 4]
+            var ExpectedDataB = asstring(new Int32[8, 4]
             {
              {29, 30, 31, 32},
              {25, 26, 27, 28},
              {21, 22, 23, 24},
              {17, 18, 19, 20},
              {13, 14, 15, 16},
-             {9, 10, 11, 12},
+             {10, 11, 12, 9},
              {5,  6,  7,  8},
              {1,  2,  3,  4},
-            };
+            });
 
             AssertArray(b, ExpectedDataB);
 
@@ -3435,26 +3435,24 @@ namespace NumpyDotNetTests
             print(c);
             print("********");
 
-            var ExpectedDataC = new Object[]
-            {1,  2,  3,  4,  5,  6,  7,  8, 9, 10, 11, 12, 13, 14, 15, 16,
-            17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+            var ExpectedDataC = asstring(new Int32[]
+                  { 1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21, 22,
+                    23, 24, 25, 26, 27, 28, 29, 3, 30, 31, 32, 4, 5, 6, 7, 8, 9 });
 
             AssertArray(c, ExpectedDataC);
 
             ndarray d = np.sort(a, axis: 0);        // sort along the first axis
             print(d);
 
-            var ExpectedDataD = new Object[8, 4]
-            {
-                {4,  3,  2,  1},
-                {8,  7,  6,  5},
-                {12, 11, 10, 9},
-                {16, 15, 14, 13},
-                {20, 19, 18, 17},
-                {24, 23, 22, 21},
-                {28, 27, 26, 25},
-                {32, 31, 30, 29},
-            };
+            var ExpectedDataD = asstring(new Int32[8, 4]
+                { { 12, 11, 10, 1 },
+                  { 16, 15, 14, 13 },
+                  { 20, 19, 18, 17 },
+                  { 24, 23, 2, 21 },
+                  { 28, 27, 22, 25 },
+                  { 32, 3, 26, 29 },
+                  { 4, 31, 30, 5 },
+                  { 8, 7, 6, 9 } });
 
             AssertArray(d, ExpectedDataD);
             print("********");
@@ -3462,28 +3460,28 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_msort_1_STRING_TODO()
+        public void test_msort_1_STRING()
         {
-            var a = np.array(new Object[,] { { 1, 4 }, { 3, 1 } });
+            var a = np.array(new Int32[,] { { 1, 4 }, { 3, 1 } }).astype(np.Strings);
             ndarray b = np.msort(a);
             print(b);
-            AssertArray(b, new Object[,] { { 1, 1 }, { 3, 4 } });
+            AssertArray(b, asstring(new Int32[,] { { 1, 1 }, { 3, 4 } }));
 
-            a = np.arange(32, 0, -1.0, dtype: np.Int32).astype(np.Object);
+            a = np.arange(32, 0, -1.0, dtype: np.Int32).astype(np.Strings);
             b = np.msort(a);
 
-            var ExpectedDataB = new Object[]
-            {1,  2,  3,  4,  5,  6,  7,  8, 9, 10, 11, 12, 13, 14, 15, 16,
-            17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+            var ExpectedDataB = asstring( new Int32[]
+            {1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21, 22, 23,
+             24, 25, 26, 27, 28, 29, 3, 30, 31, 32, 4, 5, 6, 7, 8, 9 });
             AssertArray(b, ExpectedDataB);
             print(b);
 
         }
 
         [TestMethod]
-        public void test_ndarray_argsort_2_STRING_TODO()
+        public void test_ndarray_argsort_2_STRING()
         {
-            var ar = np.array(new Object[] { 1, 2, 3, 1, 3, 4, 5, 4, 4, 1, 9, 6, 9, 11, 23, 9, 5, 0, 11, 12 }).reshape(new shape(5, 4));
+            var ar = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4, 1, 9, 6, 9, 11, 23, 9, 5, 0, 11, 12 }).reshape(new shape(5, 4)).astype(np.Strings);
 
             ndarray perm1 = np.argsort(ar, kind: NPY_SORTKIND.NPY_MERGESORT);
             ndarray perm2 = np.argsort(ar, kind: NPY_SORTKIND.NPY_QUICKSORT);
@@ -3495,8 +3493,8 @@ namespace NumpyDotNetTests
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
-             {0, 3, 1, 2},
-             {1, 0, 2, 3}};
+             {1, 2, 0, 3},
+             {1, 2, 3, 0}};
             AssertArray(perm1, Perm1Expected);
 
             print(perm2);
@@ -3504,8 +3502,8 @@ namespace NumpyDotNetTests
             {{0, 3, 1, 2},
              {0, 1, 3, 2},
              {1, 0, 3, 2},
-             {0, 3, 1, 2},
-             {1, 0, 2, 3}};
+             {1, 2, 0, 3},
+             {1, 2, 3, 0}};
             AssertArray(perm2, Perm2Expected);
 
 
