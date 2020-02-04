@@ -2440,6 +2440,11 @@ namespace NumpyDotNet
 
             var xa = asanyarray(x);
 
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
+
             dtype result_dtype = result_type(xa.TypeNum); 
 
             xa = atleast_1d(xa.astype(result_dtype)).ElementAt(0).Copy();
@@ -2666,6 +2671,11 @@ namespace NumpyDotNet
             */
 
             var xa = np.asanyarray(x);
+
+            if (!xa.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(xa);
+            }
 
             ndarray y;
 
@@ -3721,6 +3731,12 @@ namespace NumpyDotNet
 
      
             yarr = asanyarray(y);
+
+            if (!yarr.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(yarr);
+            }
+
             yarr = yarr.astype(result_type(yarr.TypeNum));
 
             if (axis < 0)
