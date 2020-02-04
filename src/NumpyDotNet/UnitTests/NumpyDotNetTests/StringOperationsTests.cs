@@ -1952,79 +1952,59 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_diff_3_STRING_TODO()
+        public void test_diff_3_STRING()
         {
-            Object[] TestData = new Object[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.Object).reshape(new shape(3, 2, -1));
+            var TestData = new string[] { "A", "JJJJJJABABABABADDDDDEEEEFFFFZZ", "B", "C", "AA" , "D", "E", "F", "G", "H", "I", "J" };
+            var x = np.array(TestData, dtype: np.Strings).reshape(new shape(3, 2, -1));
             x = x * 3;
             var y = np.diff(x, axis: 2);
 
             print(x);
             print(y);
 
-            var ExpectedData = new Object[,,]
+            var ExpectedData = new string[,,]
                 {
-                 {{15},
-                  {60}},
+                 {{"JJJJJJBBBBDDDDDEEEEFFFFZZ"},
+                  {"C"}},
 
-                 {{36},
-                  {15}},
+                 {{"D"},
+                  {"F"}},
 
-                 {{60},
-                  {36}}
+                 {{"H"},
+                  {"J"}}
                 };
 
             AssertArray(y, ExpectedData);
 
             try
             {
-                x[0] = "X";
+                x[0] = 99;
                 y = np.diff(x, axis: 2);
-                Assert.Fail("This should have thrown an exception");
             }
             catch (Exception ex)
             {
-
+                Assert.Fail("This should not have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_ediff1d_1_STRING_TODO()
+        public void test_ediff1d_1_STRING()
         {
-            ndarray x = np.array(new Object[] { 1, 2, 4, 7, 0 });
+            ndarray x = np.array(new string[] { "2", "2C", "CCC", "DD", "DD77DD" });
             ndarray y = np.ediff1d(x);
             print(y);
-            AssertArray(y, new Object[] { 1, 2, 3, -7 });
+            AssertArray(y, new string[] { "C", "CCC", "DD", "77" });
 
-            y = np.ediff1d(x, to_begin: np.array(new Object[] { -99 }), to_end: np.array(new Object[] { 88, 99 }));
-            print(y);
-            AssertArray(y, new Object[] { -99, 1, 2, 3, -7, 88, 99 });
-
-            x = np.array(new Object[,] { { 1, 2, 4 }, { 1, 6, 24 } }, dtype: np.Object);
-            y = np.ediff1d(x);
-            print(y);
-            AssertArray(y, new Object[] { 1, 2, -3, 5, 18 });
-
-            try
-            {
-                x[0] = "X";
-                y = np.ediff1d(x);
-                Assert.Fail("This should have thrown an error");
-            }
-            catch
-            {
-
-            }
-
+     
         }
 
         [TestMethod]
-        public void test_gradient_1_STRING_TODO()
+        public void test_gradient_1_STRING()
         {
             // note: This function requires that all values be cast to doubles.
-            // since objects get cast to 0 in this case, effectively this function does not work with objects
-            var f = np.array(new object[] { 1, 2, 4, 7, 11, 16 }, dtype: np.Object);
+            // since strings get cast to 0 in this case, effectively this function does not work with objects
+            var f = np.array(new string[] { "1", "2", "4", "7", "11", "16" }, dtype: np.Strings);
             var a = np.gradient(f);
             AssertArray(a[0], new double[] { 0, 0, 0, 0, 0, 0 });
             print(a[0]);
@@ -2032,34 +2012,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_cross_2_STRING_TODO()
+        public void test_cross_2_STRING()
         {
             // Multiple vector cross-products. Note that the direction of the cross
             // product vector is defined by the `right-hand rule`.
 
-            var x = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } });
-            var y = np.array(new Object[,] { { 4, 5, 6 }, { 1, 2, 3 } });
+            var x = np.array(new string[,] { { "A", "B", "C" }, { "D", "E", "F" } });
+            var y = np.array(new string[,] { { "G", "H", "I" }, { "J", "K", "L" } });
             var a = np.cross(x, y);
-            AssertArray(a, new Object[,] { { -3, 6, -3 }, { 3, -6, 3 } });
+            AssertArray(a, new string[,] { { "B", "C", "A" }, { "E", "F", "D" } });
             print(a);
 
 
             // The orientation of `c` can be changed using the `axisc` keyword.
 
             var b = np.cross(x, y, axisc: 0);
-            AssertArray(b, new Object[,] { { -3, 3 }, { 6, -6 }, { -3, 3 } });
+            AssertArray(b, new string[,] { { "B", "E" }, { "C", "F" }, { "A", "D" } });
             print(b);
 
             // Change the vector definition of `x` and `y` using `axisa` and `axisb`.
 
-            x = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
-            y = np.array(new Object[,] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } });
+            x = np.array(new string[,] { { "A", "B", "C" }, { "D", "E", "F" }, { "G", "H", "I" } });
+            y = np.array(new string[,] { { "K", "L", "M" }, { "N", "O", "P" }, { "Q", "R", "S" } });
             a = np.cross(x, y);
-            AssertArray(a, new Object[,] { { -6, 12, -6 }, { 0, 0, 0 }, { 6, -12, 6 } });
+            AssertArray(a, new string[,] { { "B", "C", "A" }, { "E", "F", "D" }, { "H", "I", "G" } });
             print(a);
 
             b = np.cross(x, y, axisa: 0, axisb: 0);
-            AssertArray(b, new Object[,] { { -24, 48, -24 }, { -30, 60, -30 }, { -36, 72, -36 } });
+            AssertArray(b, new string[,] { { "D", "G", "A" }, { "E", "H", "B" }, { "F", "I", "C" } });
             print(b);
 
             return;
@@ -3286,14 +3266,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_select_1_STRING_TODO()
+        public void test_select_1_STRING()
         {
-            var x = np.arange(10, dtype: np.Int32).astype(np.Object);
+            var x = np.arange(10, dtype: np.Int32);
             var condlist = new ndarray[] { x < 3, x > 5 };
-            var choicelist = new ndarray[] { x, np.array(np.power(x, 2), dtype: np.Object) };
+            var choicelist = new ndarray[] { x.astype(np.Strings), np.array(np.power(x, 2), dtype: np.Strings) };
             var y = np.select(condlist, choicelist);
 
-            AssertArray(y, new Object[] { 0, 1, 2, 0, 0, 0, (double)36, (double)49, (double)64, (double)81 });
+            AssertArray(y, new string[] { "0", "1", "2", "0", "0", "0", "36", "49", "64", "81" });
             print(y);
         }
 
