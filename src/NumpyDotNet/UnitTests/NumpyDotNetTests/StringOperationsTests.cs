@@ -2419,63 +2419,61 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_subtract_1_STRING_TODO()
+        public void test_subtract_1_STRING()
         {
-            var a = np.subtract((object)1, (object)4);
-            Assert.AreEqual((object)(-3), a.GetItem(0));
+            var a = np.subtract("AABBCCFFB", "BB");
+            Assert.AreEqual("AACCFFB", a.GetItem(0));
             print(a);
 
-            var b = np.arange(9.0, dtype: np.Int32).reshape((3, 3)).astype(np.Object);
-            var c = np.arange(3.0, dtype: np.Int32).astype(np.Object);
+            var b = np.array(new string[] {"A1","B1","C1","D1","E1","F1", "G1", "H1", "I1" }).reshape((3, 3));
+            var c = np.array(new string[] { "1", "1", "1" });
             var d = np.subtract(b, c);
-            AssertArray(d, new object[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
+            AssertArray(d, new string[,] { { "A", "B", "C" }, { "D", "E", "F" }, { "G", "H", "I" } });
             print(d);
 
             try
             {
-                c[1] = "X";
+                c[1] = 99;
                 d = np.subtract(b, c);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
             return;
         }
 
         [TestMethod]
-        public void test_true_divide_STRING_TODO()
+        public void test_true_divide_STRING()
         {
-            var a = np.true_divide((object)7, (object)3);
-            Assert.AreEqual(2.3333333333333335, a.GetItem(0));
+            var a = np.true_divide("7", "3");
+            Assert.AreEqual("7", a.GetItem(0));
             print(a);
 
-            var b = np.true_divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), 2.5);
-            AssertArray(b, new object[] { 0.4, 0.8, 1.2, 1.6 });
+            var b = np.true_divide(np.array(new string[] { "AA", "BB", "CC", "DD" }), 2.5);
+            AssertArray(b, new string[] { "AA", "BB", "CC", "DD" });
             print(b);
 
-            var c = np.true_divide(np.array(new Int32[] { 1, 2, 3, 4 }).astype(np.Object), new double[] { 0.5, 2.5, 2.5, 3.5 });
-            AssertArray(c, new double[] { 2.0, 0.8, 1.2, 1.14285714 });
+            var c = np.true_divide(np.array(new string[] { "AA", "BB", "CC", "DD" }), new double[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c, new string[] { "AA", "BB", "CC", "DD" });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_floor_divide_STRING_TODO()
+        public void test_floor_divide_STRING()
         {
-            var a = np.floor_divide((object)7, (object)3);
-            Assert.AreEqual(2, a.GetItem(0));
+            var a = np.floor_divide("7", "3");
+            Assert.AreEqual("7", a.GetItem(0));
             print(a);
 
-            var b = np.floor_divide(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).astype(np.Object), 2.5);
-            AssertArray(b, new double[] { 0, 0, 1, 1 });
+            var b = np.floor_divide(np.array(new string[] { "AA", "BB", "CC", "DD" }), 2.5);
+            AssertArray(b, new string[] { "AA", "BB", "CC", "DD" });
             print(b);
 
-            var c = np.floor_divide(np.array(new double[] { 1.0, 2.0, 3.0, 4.0 }).astype(np.Object),
-                                    np.array(new double[] { 0.5, 2.5, 2.5, 3.5 }).astype(np.Object));
-            AssertArray(c, new double[] { 2, 0, 1, 1 });
+            var c = np.floor_divide(np.array(new string[] { "AA", "BB", "CC", "DD" }), new double[] { 0.5, 2.5, 2.5, 3.5 });
+            AssertArray(c, new string[] { "AA", "BB", "CC", "DD" });
             print(c);
 
             return;
@@ -2483,13 +2481,13 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_float_power_STRING_TODO()
+        public void test_float_power_STRING()
         {
             var x1 = new int[] { 0, 1, 2, 3, 4, 5 };
 
             try
             {
-                var a = np.float_power(np.array(x1).astype(np.Object), 3);
+                var a = np.float_power(np.array(x1).astype(np.Strings), 3);
                 Assert.Fail("This should have thrown an exception");
             }
             catch
