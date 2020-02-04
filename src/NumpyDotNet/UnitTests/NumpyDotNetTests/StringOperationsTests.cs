@@ -3121,9 +3121,9 @@ namespace NumpyDotNetTests
         #region from FromNumericTests
 
         [TestMethod]
-        public void test_take_1_STRING_TODO()
+        public void test_take_1_STRING()
         {
-            var a = np.array(new object[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            var a = np.array(asstring(new Int32[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 }));
             var indices = np.array(new Int32[] { 0, 1, 4 });
             ndarray b = np.take(a, indices);
             print("B");
@@ -3131,12 +3131,12 @@ namespace NumpyDotNetTests
             print(b.shape);
             print(b.strides);
 
-            AssertArray(b, new object[] { 4, 3, 6 });
+            AssertArray(b, new string[] { "4", "3", "6" });
             AssertShape(b, 3);
             AssertStrides(b, SizeOfString);
 
 
-            a = np.array(new object[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 });
+            a = np.array(asstring(new Int32[] { 4, 3, 5, 7, 6, 8, 9, 12, 14, 16, 18, 20, 22, 24, 26, 28 }));
             indices = np.array(new Int32[,] { { 0, 1 }, { 2, 3 } });
             ndarray c = np.take(a, indices);
             print("C");
@@ -3144,10 +3144,10 @@ namespace NumpyDotNetTests
             print(c.shape);
             print(c.strides);
 
-            var ExpectedDataC = new object[2, 2]
+            var ExpectedDataC = new string[2, 2]
             {
-                { 4, 3 },
-                { 5, 7 },
+                { "4", "3" },
+                { "5", "7" },
             };
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2, 2);
@@ -3159,7 +3159,7 @@ namespace NumpyDotNetTests
             print(d.shape);
             print(d.strides);
 
-            var ExpectedDataD = new object[2, 2, 4]
+            var ExpectedDataD = new Int32[2, 2, 4]
             {
                 {
                     { 4, 3, 5, 7 },
@@ -3171,7 +3171,7 @@ namespace NumpyDotNetTests
                 },
 
             };
-            AssertArray(d, ExpectedDataD);
+            AssertArray(d, asstring(ExpectedDataD));
             AssertShape(d, 2, 2, 4);
             AssertStrides(d, SizeOfString * 8, SizeOfString * 4, SizeOfString * 1);
 
@@ -3181,7 +3181,7 @@ namespace NumpyDotNetTests
             print(e.shape);
             print(e.strides);
 
-            var ExpectedDataE = new object[4, 2, 2]
+            var ExpectedDataE = new Int32[4, 2, 2]
             {
                 {
                     { 4, 3 },
@@ -3202,45 +3202,45 @@ namespace NumpyDotNetTests
 
             };
 
-            AssertArray(e, ExpectedDataE);
+            AssertArray(e, asstring(ExpectedDataE));
             AssertShape(e, 4, 2, 2);
             AssertStrides(e, SizeOfString * 4, SizeOfString * 2, SizeOfString * 1);
 
         }
 
         [TestMethod]
-        public void test_ravel_1_STRING_TODO()
+        public void test_ravel_1_STRING()
         {
-            var a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } });
+            var a = np.array(new string[,] { { "1", "2", "3" }, { "4", "5", "6" } });
             var b = np.ravel(a);
-            AssertArray(b, new Object[] { 1, 2, 3, 4, 5, 6 });
+            AssertArray(b, new string[] { "1", "2", "3", "4", "5", "6" });
             print(b);
 
             var c = a.reshape(-1);
-            AssertArray(c, new Object[] { 1, 2, 3, 4, 5, 6 });
+            AssertArray(c, new string[] { "1", "2", "3", "4", "5", "6" });
             print(c);
 
             var d = np.ravel(a, order: NPY_ORDER.NPY_FORTRANORDER);
-            AssertArray(d, new Object[] { 1, 4, 2, 5, 3, 6 });
+            AssertArray(d, new string[] { "1", "4", "2", "5", "3", "6" });
             print(d);
 
             // When order is 'A', it will preserve the array's 'C' or 'F' ordering:
             var e = np.ravel(a.T);
-            AssertArray(e, new Object[] { 1, 4, 2, 5, 3, 6 });
+            AssertArray(e, new string[] { "1", "4", "2", "5", "3", "6" });
             print(e);
 
             var f = np.ravel(a.T, order: NPY_ORDER.NPY_ANYORDER);
-            AssertArray(f, new Object[] { 1, 2, 3, 4, 5, 6 });
+            AssertArray(f, new string[] { "1", "2", "3", "4", "5", "6" });
             print(f);
         }
 
         [TestMethod]
-        public void test_choose_1_STRING_TODO()
+        public void test_choose_1_STRING()
         {
-            ndarray choice1 = np.array(new Object[] { 0, 1, 2, 3 });
-            ndarray choice2 = np.array(new Object[] { 10, 11, 12, 13 });
-            ndarray choice3 = np.array(new Object[] { 20, 21, 22, 23 });
-            ndarray choice4 = np.array(new Object[] { 30, 31, 32, 33 });
+            ndarray choice1 = np.array(new string[] { "0", "1", "2", "3" });
+            ndarray choice2 = np.array(new string[] { "10", "11", "12", "13" });
+            ndarray choice3 = np.array(new string[] { "20", "21", "22", "23" });
+            ndarray choice4 = np.array(new string[] { "30", "31", "32", "33" });
 
             ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
 
@@ -3248,32 +3248,32 @@ namespace NumpyDotNetTests
 
             print(a);
 
-            AssertArray(a, new Object[] { 20, 31, 12, 3 });
+            AssertArray(a, new string[] { "20", "31", "12", "3" });
         }
 
         [TestMethod]
-        public void test_choose_2_STRING_TODO()
+        public void test_choose_2_STRING()
         {
-            ndarray choice1 = np.array(new Object[] { 0, 1, 2, 3 });
-            ndarray choice2 = np.array(new Object[] { 10, 11, 12, 13 });
-            ndarray choice3 = np.array(new Object[] { 20, 21, 22, 23 });
-            ndarray choice4 = np.array(new Object[] { 30, 31, 32, 33 });
+            ndarray choice1 = np.array(new string[] { "0", "1", "2", "3" });
+            ndarray choice2 = np.array(new string[] { "10", "11", "12", "13" });
+            ndarray choice3 = np.array(new string[] { "20", "21", "22", "23" });
+            ndarray choice4 = np.array(new string[] { "30", "31", "32", "33" });
 
             ndarray[] choices = new ndarray[] { choice1, choice2, choice3, choice4 };
 
             ndarray a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_CLIP);
             print(a);
-            AssertArray(a, new Object[] { 20, 31, 12, 3 });
+            AssertArray(a, new string[] { "20", "31", "12", "3" });
 
             a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_WRAP);
             print(a);
-            AssertArray(a, new Object[] { 20, 1, 12, 3 });
+            AssertArray(a, new string[] { "20", "1", "12", "3" });
 
             try
             {
                 a = np.choose(np.array(new Int32[] { 2, 4, 1, 0 }), choices, mode: NPY_CLIPMODE.NPY_RAISE);
                 print(a);
-                AssertArray(a, new Object[] { 20, 1, 12, 3 });
+                AssertArray(a, new string[] { "20", "1", "12", "3" });
             }
             catch (Exception ex)
             {
