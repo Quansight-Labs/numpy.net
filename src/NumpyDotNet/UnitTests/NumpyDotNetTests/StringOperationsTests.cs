@@ -2500,52 +2500,42 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_fmod_2_STRING_TODO()
+        public void test_fmod_2_STRING()
         {
-            var x = np.fmod(new object[] { -4, -7 }, new object[] { 2, 3 });
-            AssertArray(x, new int[] { 0, -1 });
+            var x = np.fmod(new string[] { "AA", "BB", "CC", "DD" }, new string[] { "EE", "FF", "GG", "HH" });
+            AssertArray(x, new string[] { "AA", "BB", "CC", "DD" });
             print(x);
-
-            var y = np.fmod(np.arange(7).astype(np.Object), -5);
-            AssertArray(y, new object[] { 0, 1, 2, 3, 4, 0, 1 });
-            print(y);
 
             try
             {
-                x = np.arange(7).astype(np.Object);
-                x[2] = "X";
+                x = np.array(new string[] { "AA", "BB", "CC", "DD" });
+                x[2] = 99;
                 var a = np.fmod(x, 3);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
             return;
         }
 
         [TestMethod]
-        public void test_mod_1_STRING_TODO()
+        public void test_mod_1_STRING()
         {
-            var x = np.mod(new object[] { 4, 7 }, new object[] { 2, 3 });
-            AssertArray(x, new int[] { 0, 1 });
+            var x = np.mod(new string[] { "AA", "BB", "CC", "DD" }, new string[] { "EE", "FF", "GG", "HH" });
+            AssertArray(x, new string[] { "AA", "BB", "CC", "DD" });
             print(x);
-
-            var y = np.mod(np.arange(7).astype(np.Object), 5);
-            AssertArray(y, new object[] { 0, 1, 2, 3, 4, 0, 1 });
-            print(y);
 
             try
             {
-                x = np.arange(7).astype(np.Object);
-                x[2] = "X";
+                x = np.array(new string[] { "AA", "BB", "CC", "DD" });
+                x[2] = 99;
                 var a = np.mod(x, 3);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
             return;
@@ -2554,30 +2544,23 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_modf_1_STRING_TODO()
         {
-            var x = np.modf(np.array(new double[] { 0, 3.5 }).astype(np.Object));
-            AssertArray(x[0], new double[] { 0, 0.5 });
-            AssertArray(x[1], new double[] { 0, 3.0 });
+            var x = np.modf(new string[] { "AA", "BB", "CC", "DD" });
+            AssertArray(x[0], new string[] { "AA", "BB", "CC", "DD" });
+            AssertArray(x[1], new string[] { "AA", "BB", "CC", "DD" });
             print(x);
-
-            var y = np.modf(np.arange(7.0).astype(np.Object));
-            AssertArray(y[0], new float[] { 0, 0, 0, 0, 0, 0, 0 });
-            AssertArray(y[1], new double[] { 0, 1, 2, 3, 4, 5, 6 });
-            print(y);
-
-            /////////////////////////////
-
-            var x1 = np.arange(7.0).astype(np.Object);
-            x1[2] = "X";
 
             try
             {
-                var a = np.mod(x1, 3);
-                Assert.Fail("This should have thrown an exception");
+                var x1 = np.array(new string[] { "AA", "BB", "CC", "DD" });
+                x1[2] = 99;
+                var a = np.mod(x, 3);
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
+
+
 
             return;
         }
