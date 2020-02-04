@@ -4356,7 +4356,7 @@ namespace NumpyLib
 
         public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
         {
-            return NPY_TYPES.NPY_DOUBLE;
+            return NPY_TYPES.NPY_STRING;
         }
 
         protected override object Add(dynamic bValue, dynamic operand)
