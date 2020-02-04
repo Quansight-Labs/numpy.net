@@ -2919,6 +2919,12 @@ namespace NumpyDotNet
             array([ 0,  0,  0, 10])
             */
 
+            if (!a.IsMathFunctionCapable)
+            {
+                ArrayTypeNotSupported(a);
+            }
+
+
             return a.Round(decimals, ret) as ndarray;
         }
 
