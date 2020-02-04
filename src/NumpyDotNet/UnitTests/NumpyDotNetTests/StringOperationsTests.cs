@@ -1759,41 +1759,37 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_trunc_1_STRING_TODO()
+        public void test_trunc_1_STRING()
         {
-            var a = np.trunc((object)3.14);
-            Assert.AreEqual((double)3.0, a.GetItem(0));
+            var a = np.trunc("3.14");
+            Assert.AreEqual("3.14", a.GetItem(0));
             print(a);
 
-            var b = np.trunc((object)3);
-            Assert.AreEqual((Int32)3, b.GetItem(0));
-            print(b);
-
-            var c = np.trunc(np.array(new object[] { 21, 29f, -21, -29 }));
-            AssertArray(c, new double[] { 21, 29, -21, -29 });
+            var c = np.trunc(np.array(new string[] { "21", "29f", "-21", "-29" }));
+            AssertArray(c, new string[] { "21", "29f", "-21", "-29" });
             print(c);
         }
 
         [TestMethod]
-        public void test_prod_2_STRING_TODO()
+        public void test_prod_2_STRING()
         {
-            ndarray a = np.prod(np.array(new object[] { 1, 2 }));
+            ndarray a = np.prod(np.array(new string[] { "XYZ", "ABC" }));
             print(a);
-            Assert.AreEqual(2, a.GetItem(0));
+            Assert.AreEqual("XYZ", a.GetItem(0));
             print("*****");
 
-            ndarray b = np.prod(np.array(new object[,] { { 1, 2 }, { 3, 4 } }));
+            ndarray b = np.prod(np.array(new string[,] { { "AA", "BB" }, { "CC", "DD" } }));
             print(b);
-            Assert.AreEqual((Int64)24, b.GetItem(0));
+            Assert.AreEqual("AA", b.GetItem(0));
             print("*****");
 
-            ndarray c = np.prod(np.array(new object[,] { { 1, 2 }, { 3, 4 } }), axis: 1);
+            ndarray c = np.prod(np.array(new string[,] { { "AA", "BB" }, { "CC", "DD" } }), axis: 1);
             print(c);
-            AssertArray(c, new Int64[] { 2, 12 });
+            AssertArray(c, new string[] { "AA", "CC" });
             print("*****");
 
-            ndarray d = np.array(new object[] { 1, 2, 3 }, dtype: np.Object);
-            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_OBJECT;
+            ndarray d = np.array(new string[] { "1", "2", "3" }, dtype: np.Strings);
+            bool e = np.prod(d).Dtype.TypeNum == NPY_TYPES.NPY_STRING;
             print(e);
             Assert.AreEqual(true, e);
             print("*****");
@@ -1801,15 +1797,14 @@ namespace NumpyDotNetTests
 
             try
             {
-                a = np.array(new object[,] { { 1, 2 }, { 3, 4 } }, dtype: np.Object);
+                a = np.array(new string[,] { { "1", "2" }, { "3", "4" } }, dtype: np.Strings);
                 a[1, 1] = "X";
 
                 b = np.prod(a);
-                Assert.Fail("Should have throw exception");
             }
             catch
             {
-
+                Assert.Fail("Should not have throw exception");
             }
 
 
@@ -1817,114 +1812,112 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_sum_2_STRING_TODO()
+        public void test_sum_2_STRING()
         {
-            Object[] TestData = new Object[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-            var x = np.array(TestData, dtype: np.Object).reshape(new shape(3, 2, -1));
+            string[] TestData = new string[] { "A", "B", "C", "D", "E", "F", "G", "H" };
+            var x = np.array(TestData, dtype: np.Strings).reshape(new shape(2, 2, 2));
             x = x * 3;
 
             var y = np.sum(x, axis: 0);
             print(y);
-            AssertArray(y, new Object[,] { { 339, 450 }, { 339, 450 } });
+            AssertArray(y, new string[,] {{ "AE", "BF" }, { "CG", "DH" }});
 
             print("*****");
 
             y = np.sum(x, axis: 1);
             print(y);
-            AssertArray(y, new Object[,] { { 105, 180 }, { 264, 315 }, { 309, 405 } });
+            AssertArray(y, new string[,] { { "AC", "BD" }, { "EG", "FH" } });
 
             print("*****");
 
             y = np.sum(x, axis: 2);
             print(y);
-            AssertArray(y, new Object[,] { { 75, 210 }, { 504, 75 }, { 210, 504 } });
+            AssertArray(y, new string[,] { { "AB", "CD" }, { "EF", "GH" } });
 
             print("*****");
 
             try
             {
-                x[0, 1, 1] = "X";
+                x[0, 1, 1] = 99;
                 y = np.sum(x, axis: 2);
-                Assert.Fail("This should have thrown an exception");
             }
             catch (Exception ex)
             {
-
+                Assert.Fail("This should not have thrown an exception");
             }
 
 
         }
 
         [TestMethod]
-        public void test_cumprod_2_STRING_TODO()
+        public void test_cumprod_2_STRING()
         {
-            ndarray a = np.array(new Object[] { 1, 2, 3 });
+            ndarray a = np.array(new string[] { "1", "2", "3" });
             ndarray b = np.cumprod(a);          // intermediate results 1, 1*2
                                                 // total product 1*2*3 = 6
             print(b);
-            AssertArray(b, new Object[] { 1, 2, 6 });
+            AssertArray(b, new string[] { "1", "1", "1" });
             print("*****");
 
-            a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, dtype: np.Object);
-            ndarray c = np.cumprod(a, dtype: np.Object); //specify type of output
+            a = np.array(new String[,] { { "a", "b", "c" }, { "d", "e", "f" } }, dtype: np.Strings);
+            ndarray c = np.cumprod(a, dtype: np.Strings); //specify type of output
             print(c);
-            AssertArray(c, new Object[] { 1, 2, 6, 24, 120, 720 });
+            AssertArray(c, new string[] { "a", "a", "a", "a", "a", "a" });
             print("*****");
 
             ndarray d = np.cumprod(a, axis: 0);
             print(d);
-            AssertArray(d, new Object[,] { { 1, 2, 3 }, { 4, 10, 18 } });
+            AssertArray(d, new string[,] { { "a", "b", "c" }, { "a", "b", "c" } });
             print("*****");
 
             ndarray e = np.cumprod(a, axis: 1);
             print(e);
-            AssertArray(e, new Object[,] { { 1, 2, 6 }, { 4, 20, 120 } });
+            AssertArray(e, new Object[,] { { "a", "a", "a" }, { "d", "d", "d" } });
             print("*****");
 
 
             try
             {
-                a[0] = "X";
+                a[0] = 99;
                 ndarray f = np.cumprod(a, axis: 1);
-                Assert.Fail("Should have thrown an exception");
             }
             catch (Exception ex)
             {
-
+                Assert.Fail("Should not have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_cumsum_3_STRING_TODO()
+        public void test_cumsum_3_STRING()
         {
-            ndarray a = np.array(new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, 3, -1));
+            ndarray a = np.array(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L" }).reshape(new shape(2, 3, -1));
             print(a);
             print("*****");
 
             ndarray b = np.cumsum(a);
             print(b);
-            AssertArray(b, new Object[] { 1, 3, 6, 10, 15, 21, 28,
-                                         36, 45, 55, 66, 78 });
+            AssertArray(b, new string[] { "A", "AB", "ABC", "ABCD", "ABCDE", "ABCDEF", "ABCDEFG", "ABCDEFGH",
+                                          "ABCDEFGHI", "ABCDEFGHIJ", "ABCDEFGHIJK", "ABCDEFGHIJKL" });
             print("*****");
 
-            ndarray c = np.cumsum(a, dtype: np.Object);     // specifies type of output value(s)
+            ndarray c = np.cumsum(a, dtype: np.Strings);     // specifies type of output value(s)
             print(c);
-            AssertArray(c, new Object[] { 1, 3, 6, 10, 15, 21, 28,
-                                             36, 45, 55, 66, 78 });
+            AssertArray(c, new string[] { "A", "AB", "ABC", "ABCD", "ABCDE", "ABCDEF", "ABCDEFG", "ABCDEFGH",
+                                          "ABCDEFGHI", "ABCDEFGHIJ", "ABCDEFGHIJK", "ABCDEFGHIJKL" });
             print("*****");
 
             ndarray d = np.cumsum(a, axis: 0);     // sum over rows for each of the 3 columns
             print(d);
 
-            var ExpectedDataD = new Object[,,]
-            {{{1,  2},
-              {3,  4},
-              {5,  6}},
+            var ExpectedDataD = new string[,,]
+            {{{"A", "B"},
+              {"C", "D"},
+              {"E", "F"}},
+             {{"AG", "BH"},
+              {"CI", "DJ"},
+              {"EK", "FL"}}};
 
-             {{8, 10},
-              {12, 14},
-              {16, 18}}};
 
             AssertArray(d, ExpectedDataD);
             print("*****");
@@ -1934,27 +1927,25 @@ namespace NumpyDotNetTests
             ndarray e = np.cumsum(a, axis: 1);    // sum over columns for each of the 2 rows
             print(e);
 
-            var ExpectedDataE = new Object[,,]
-            {{{1,  2},
-              {4,  6},
-              {9,  12}},
-
-             {{7, 8},
-              {16, 18},
-              {27, 30}}};
+            var ExpectedDataE = new string[,,]
+            {{{"A", "B"},
+              {"AC", "BD"},
+              {"ACE", "BDF"}},
+             {{"G", "H"},
+              {"GI", "HJ"},
+              {"GIK", "HJL"}}};
 
             AssertArray(e, ExpectedDataE);
             print("*****");
 
             try
             {
-                a[1, 1, 1] = "X";
+                a[1, 1, 1] = 99;
                 ndarray f = np.cumsum(a, axis: 2);    // sum over columns for each of the 2 rows
-                Assert.Fail("this should have thrown exception");
             }
             catch (Exception ex)
             {
-
+                Assert.Fail("this should not have thrown exception");
             }
 
 
