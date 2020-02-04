@@ -2133,15 +2133,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_signbit_1_STRING_TODO()
+        public void test_signbit_1_STRING()
         {
-            var a = np.signbit((Object)(-12));
-            Assert.AreEqual(true, a.GetItem(0));
-            print(a);
-
+  
             try
             {
-                var b = np.signbit(np.array(new Object[] { 1, -23, 21 }));
+                var b = np.signbit(np.array(new string[] { "A", "B", "C" }));
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2152,15 +2149,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_copysign_1_STRING_TODO()
+        public void test_copysign_1_STRING()
         {
-            var a = np.copysign((Object)13, (Object)(-1));
-            Assert.AreEqual((Object)(-13), a.GetItem(0));
-            print(a);
-
+ 
             try
             {
-                var d = np.copysign(np.array(new Object[] { -1, 0, 1 }, dtype: np.Object), -1.1);
+                var d = np.copysign(np.array(new string[] { "A", "B", "C" }, dtype: np.Strings), -1.1);
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2171,9 +2165,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_frexp_1_STRING_TODO()
+        public void test_frexp_1_STRING()
         {
-            var x = np.arange(9, dtype: np.Int32).astype(np.Object);
+            var x = np.arange(9, dtype: np.Int32).astype(np.Strings);
 
             try
             {
@@ -2189,11 +2183,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ldexp_1_STRING_TODO()
+        public void test_ldexp_1_STRING()
         {
             try
             {
-                var a = np.ldexp((Object)5, np.arange(4, dtype: np.Int32)).astype(np.Object);
+                var a = np.ldexp((Object)5, np.arange(4, dtype: np.Int32)).astype(np.Strings);
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2218,11 +2212,11 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_gcd_1_STRING_TODO()
+        public void test_gcd_1_STRING()
         {
             try
             {
-                var d = np.gcd(np.arange(6, dtype: np.Int32).astype(np.Object), new Object[] { 20 });
+                var d = np.gcd(np.arange(6, dtype: np.Int32).astype(np.Strings), new Object[] { 20 });
                 Assert.Fail("This should have thrown an exception");
             }
             catch
@@ -2232,16 +2226,16 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_add_1_STRING_TODO()
+        public void test_add_1_STRING()
         {
             var a = np.add(1, 4).astype(np.Object);
             Assert.AreEqual((Object)5, a.GetItem(0));
             print(a);
 
-            var b = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Object);
-            var c = np.arange(3, dtype: np.Int32).astype(np.Object);
+            var b = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Strings);
+            var c = np.arange(3, dtype: np.Int32).astype(np.Strings);
             var d = np.add(b, c);
-            AssertArray(d, new Object[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
+            AssertArray(d, new String[,] { { "00", "11", "22" }, { "30", "41", "52" }, { "60", "71", "82" } });
             print(d);
 
             try
@@ -2258,103 +2252,78 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_reciprocal_operations_STRING_TODO()
+        public void test_reciprocal_operations_STRING()
         {
-            var a = np.arange(1, 32, 1, dtype: np.Float32).astype(np.Object);
+            var a = np.arange(1, 32, 1, dtype: np.Float32).astype(np.Strings);
             print(a);
 
             var b = np.reciprocal(a);
             print(b);
 
-            var ExpectedDataB1 = new float[]
-            {
-                1.0f, 0.5f,        0.33333334f, 0.25f,       0.2f,        0.16666667f,
-                0.14285715f,       0.125f,      0.11111111f, 0.1f,        0.09090909f, 0.08333334f,
-                0.07692308f,       0.07142857f, 0.06666667f, 0.0625f,     0.05882353f, 0.05555556f,
-                0.05263158f,       0.05f,       0.04761905f, 0.04545455f, 0.04347826f, 0.04166667f,
-                0.04f,             0.03846154f, 0.03703704f, 0.03571429f, 0.03448276f, 0.03333334f,
-                0.03225806f
-            };
+            var ExpectedDataB1 = asstring(new Int32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                                        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 });
+
 
             AssertArray(b, ExpectedDataB1);
-
-
-            a = np.arange(2048, 2048 + 32, 1, dtype: np.Float64).astype(np.Object);
-            print(a);
-
-            b = np.reciprocal(a);
-            print(b);
-
-            var ExpectedDataB2 = new double[]
-             {
-                0.00048828, 0.00048804, 0.0004878,  0.00048757, 0.00048733, 0.00048709,
-                0.00048685, 0.00048662, 0.00048638, 0.00048614, 0.00048591, 0.00048567,
-                0.00048544, 0.0004852,  0.00048497, 0.00048473, 0.0004845,  0.00048426,
-                0.00048403, 0.00048379, 0.00048356, 0.00048333, 0.00048309, 0.00048286,
-                0.00048263, 0.00048239, 0.00048216, 0.00048193, 0.0004817,  0.00048146,
-                0.00048123, 0.000481
-             };
-            AssertArray(b, ExpectedDataB2);
 
 
             try
             {
                 a[4] = "X";
                 b = np.reciprocal(a);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
 
         [TestMethod]
-        public void test_positive_1_STRING_TODO()
+        public void test_positive_1_STRING()
         {
-            var d = np.positive(np.array(new Int32[] { -1, -0, 1 }).astype(np.Object));
-            AssertArray(d, new object[] { -1, -0, 1 });
+            var d = np.positive(np.array(new string[] { "ABC", "JKL", "xyz" }));
+            AssertArray(d, new string[] {"ABC", "JKL", "xyz" });
             print(d);
 
-            var e = np.positive(np.array(new Int32[,] { { 1, 0, -1 }, { -2, 3, -4 } }).astype(np.Object));
-            AssertArray(e, new object[,] { { 1, 0, -1 }, { -2, 3, -4 } });
+            var e = np.positive(np.array(new string[,] { { "ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } }));
+            AssertArray(e, new object[,] { {"ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } });
             print(e);
 
             try
             {
-                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Object);
+                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Strings);
                 d[1] = "X";
                 d = np.positive(d);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
         }
 
         [TestMethod]
-        public void test_negative_1_STRING_TODO()
+        public void test_negative_1_STRING()
         {
-            var d = np.negative(np.array(new object[] { -1, -0, 1 }).astype(np.Object));
-            AssertArray(d, new Int32[] { 1, 0, -1 });
+
+            // this should reverse the strings
+            var d = np.negative(np.array(new string[] { "ABC", "JKL", "xyz" }));
+            AssertArray(d, new string[] { "CBA", "LKJ", "zyx" });
             print(d);
 
-            var e = np.negative(np.array(new Int32[,] { { 1, 0, -1 }, { -2, 3, -4 } }).astype(np.Object));
-            AssertArray(e, new Int32[,] { { -1, 0, 1 }, { 2, -3, 4 } });
+            var e = np.negative(np.array(new string[,] { { "ABC", "JKL", "xyz" }, { "abc", "jkl", "XYZ" } }));
+            AssertArray(e, new object[,] { { "CBA", "LKJ", "zyx" }, { "cba", "lkj", "ZYX" } });
             print(e);
 
             try
             {
-                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Object);
+                d = np.array(new Int32[] { -1, -0, 1 }).astype(np.Strings);
                 d[1] = "X";
                 d = np.negative(d);
-                Assert.Fail("This should have thrown an exception");
             }
             catch
             {
-
+                Assert.Fail("This should NOT have thrown an exception");
             }
 
         }
