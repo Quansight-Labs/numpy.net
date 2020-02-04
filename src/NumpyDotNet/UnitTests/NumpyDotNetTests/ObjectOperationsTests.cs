@@ -2027,26 +2027,19 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trapz_1_OBJECT()
         {
-            var a = np.trapz(new Object[] { 1, 2, 3 });
-            Assert.AreEqual((double)4.0, a.GetItem(0));
-            print(a);
 
-            var b = np.trapz(new Object[] { 1, 2, 3 }, x: new int[] { 4, 6, 8 });
-            Assert.AreEqual((double)8.0, b.GetItem(0));
-            print(b);
+            try
+            {
+                var a = np.trapz(np.array(new Object[] { 1, 2, 3 }).astype(np.Object));
+                Assert.Fail("This should have caused an exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(MathFunctionExceptionPrefix));
+            }
 
-            var c = np.trapz(new Object[] { 1, 2, 3 }, dx: 2);
-            Assert.AreEqual((double)8.0, c.GetItem(0));
-            print(c);
 
-            a = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
-            b = np.trapz(a, axis: 0);
-            AssertArray(b, new double[] { 1.5, 2.5, 3.5 });
-            print(b);
-
-            c = np.trapz(a, axis: 1);
-            AssertArray(c, new double[] { 2.0, 8.0 });
-            print(c);
+    
         }
 
         [TestMethod]
@@ -2106,44 +2099,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_sinc_1_OBJECT()
         {
-            double retstep = 0;
-            var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Int64).astype(np.Object);
-            var a = np.sinc(x);
-            AssertArray(a, new double[] { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17,
-                                           3.89804309105148E-17, 1.0, 1.0, 3.89804309105148E-17, -3.89804309105148E-17,
-                                           3.89804309105148E-17, -3.89804309105148E-17 });
-            print(a);
+            try
+            {
+                double retstep = 0;
+                var x = np.linspace(-4, 4, ref retstep, 10, dtype: np.Int64).astype(np.Object);
+                var a = np.sinc(x);
+                Assert.Fail("This should throw an exception");
+            }
+            catch
+            {
 
-            print("********");
-
-            var xx = np.outer(x, x);
-            var b = np.sinc(xx);
-
-            var ExpectedDataB = new double[,]
-
-          { { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
-              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
-               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
-              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
-               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
-            { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
-            { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
-            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
-               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
-              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, 1.0, 1.0,
-               3.89804309105148E-17, -3.89804309105148E-17, 3.89804309105148E-17, -3.89804309105148E-17 },
-            { -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, 1.0, 1.0,
-              -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17, -3.89804309105148E-17 } };
-
-            AssertArray(b, ExpectedDataB);
-
-            print(b);
-
+            }
 
         }
 
