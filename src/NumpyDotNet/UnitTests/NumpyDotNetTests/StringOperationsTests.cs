@@ -1150,6 +1150,29 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_multi_index_selection_STRING()
+        {
+            var x = np.arange(10).astype(np.Strings);
+
+            var y = x.reshape(new shape(2, 5));
+            print(y);
+            Assert.AreEqual("3", y[0, 3]);
+            Assert.AreEqual("8", y[1, 3]);
+
+            x = np.arange(20).astype(np.Strings);
+            y = x.reshape(new shape(2, 2, 5));
+            print(y);
+            Assert.AreEqual("3", y[0, 0, 3]);
+            Assert.AreEqual("8", y[0, 1, 3]);
+
+            Assert.AreEqual("13", y[1, 0, 3]);
+            Assert.AreEqual("18", y[1, 1, 3]);
+
+        }
+
+
         #endregion
 
         #region from NumericalOperationsTests
@@ -3777,7 +3800,7 @@ namespace NumpyDotNetTests
 
             print(x);
             print(y);
-            Assert.AreEqual(false, y.GetItem(0));
+            Assert.AreEqual(true, y.GetItem(0));
 
             TestData = new string[] { null, null, null, null };
             x = np.array(TestData, dtype: np.Strings);
@@ -4013,21 +4036,21 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_count_nonzero_1_STRING_TODO()
+        public void test_count_nonzero_1_STRING()
         {
-            var a = np.count_nonzero_i(np.eye(4, dtype: np.Object));
-            Assert.AreEqual(0, a);
+            var a = np.count_nonzero_i(np.eye(4, dtype: np.Strings));
+            Assert.AreEqual(16, a);
             print(a);
 
-            var b = np.count_nonzero_i(new Object[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
+            var b = np.count_nonzero_i(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } });
             Assert.AreEqual(5, b);
             print(b);
 
-            var c = np.count_nonzero(new Object[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 0);
+            var c = np.count_nonzero(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } }, axis: 0);
             AssertArray(c, new int[] { 1, 1, 1, 1, 1 });
             print(c);
 
-            var d = np.count_nonzero(new Object[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 1);
+            var d = np.count_nonzero(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } }, axis: 1);
             AssertArray(d, new int[] { 2, 3 });
             print(d);
 

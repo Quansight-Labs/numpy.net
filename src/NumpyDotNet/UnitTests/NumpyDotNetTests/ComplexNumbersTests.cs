@@ -1175,6 +1175,27 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_multi_index_selection_COMPLEX()
+        {
+            var x = np.arange(10).astype(np.Complex);
+
+            var y = x.reshape(new shape(2, 5));
+            print(y);
+            Assert.AreEqual((Complex)3, y[0, 3]);
+            Assert.AreEqual((Complex)8, y[1, 3]);
+
+            x = np.arange(20, dtype: np.Complex);
+            y = x.reshape(new shape(2, 2, 5));
+            print(y);
+            Assert.AreEqual((Complex)3, y[0, 0, 3]);
+            Assert.AreEqual((Complex)8, y[0, 1, 3]);
+
+            Assert.AreEqual((Complex)13, y[1, 0, 3]);
+            Assert.AreEqual((Complex)18, y[1, 1, 3]);
+
+        }
+
         #endregion
 
         #region from NumericalOperationsTests

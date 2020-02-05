@@ -1115,6 +1115,27 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_multi_index_selection_OBJECT()
+        {
+            var x = np.arange(10).astype(np.Object);
+
+            var y = x.reshape(new shape(2, 5));
+            print(y);
+            Assert.AreEqual((object)3, y[0, 3]);
+            Assert.AreEqual((object)8, y[1, 3]);
+
+            x = np.arange(20).astype(np.Object);
+            y = x.reshape(new shape(2, 2, 5));
+            print(y);
+            Assert.AreEqual((object)3, y[0, 0, 3]);
+            Assert.AreEqual((object)8, y[0, 1, 3]);
+
+            Assert.AreEqual((object)13, y[1, 0, 3]);
+            Assert.AreEqual((object)18, y[1, 1, 3]);
+
+        }
+
         #endregion
 
         #region from NumericalOperationsTests
@@ -3892,9 +3913,9 @@ namespace NumpyDotNetTests
 
             print(x);
             print(y);
-            Assert.AreEqual(false, y.GetItem(0));
+            Assert.AreEqual(true, y.GetItem(0));
 
-            TestData = new Object[] { 0, 0, 0, 0 };
+            TestData = new Object[] { null, null, null, null };
             x = np.array(TestData);
             y = np.any(x);
 
@@ -3913,9 +3934,9 @@ namespace NumpyDotNetTests
 
             print(x);
             print(y);
-            Assert.AreEqual(false, y.GetItem(0));
+            Assert.AreEqual(true, y.GetItem(0));
 
-            TestData = new Object[] { 1, 1, 0, 1 };
+            TestData = new Object[] { 1, 1, null, 1 };
             x = np.array(TestData);
             y = np.all(x);
 
@@ -4143,7 +4164,7 @@ namespace NumpyDotNetTests
         public void test_count_nonzero_1_OBJECT()
         {
             var a = np.count_nonzero_i(np.eye(4, dtype: np.Object));
-            Assert.AreEqual(0, a);
+            Assert.AreEqual(16, a);
             print(a);
 
             var b = np.count_nonzero_i(new Object[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });

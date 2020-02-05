@@ -87,7 +87,6 @@
     <Compile Include="UFUNCTests.cs" />
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="MultithreadedTests.cs" />
-    <Compile Include="ReportedBugs.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
