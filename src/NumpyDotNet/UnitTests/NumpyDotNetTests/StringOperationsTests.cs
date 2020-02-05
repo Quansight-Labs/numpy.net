@@ -3910,9 +3910,9 @@ namespace NumpyDotNetTests
         #region from NumericTests
 
         [TestMethod]
-        public void test_zeros_1_STRING_TODO()
+        public void test_zeros_1_STRING()
         {
-            var x = np.zeros(new shape(10), dtype: np.Int32).astype(np.Object);
+            var x = np.zeros(new shape(10), dtype: np.Strings);
             print(x);
             print("Update sixth value to 11");
             x[6] = 11;
@@ -3920,27 +3920,27 @@ namespace NumpyDotNetTests
             print(x.shape);
             print(x.strides);
 
-            AssertArray(x, new Object[] { 0, 0, 0, 0, 0, 0, 11, 0, 0, 0 });
+            AssertArray(x, new string[] { "0", "0", "0", "0", "0", "0", "11", "0", "0", "0" });
             AssertShape(x, 10);
             AssertStrides(x, SizeOfString);
         }
 
         [TestMethod]
-        public void test_zeros_like_2_STRING_TODO()
+        public void test_zeros_like_2_STRING()
         {
-            var a = new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } };
+            var a = new string[,] { { "1", "2", "3" }, { "4", "5", "6" } };
             var b = np.zeros_like(a);
             b[1, 2] = 99;
 
-            AssertArray(b, new Object[,] { { 0, 0, 0 }, { 0, 0, 99 } });
+            AssertArray(b, new string[,] { { "0", "0", "0" }, { "0", "0", "99" } });
 
             return;
         }
 
         [TestMethod]
-        public void test_ones_1_STRING_TODO()
+        public void test_ones_1_STRING()
         {
-            var x = np.ones(new shape(10), dtype: np.Int32).astype(np.Object);
+            var x = np.ones(new shape(10), dtype: np.Strings);
             print(x);
             print("Update sixth value to 11");
             x[6] = 11;
@@ -3948,55 +3948,55 @@ namespace NumpyDotNetTests
             print(x.shape);
             print(x.strides);
 
-            AssertArray(x, new Object[] { 1, 1, 1, 1, 1, 1, 11, 1, 1, 1 });
+            AssertArray(x, new string[] { "1", "1", "1", "1", "1", "1", "11", "1", "1", "1" });
             AssertShape(x, 10);
             AssertStrides(x, SizeOfString);
         }
 
         [TestMethod]
-        public void test_ones_like_3_STRING_TODO()
+        public void test_ones_like_3_STRING()
         {
-            var a = new Object[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var a = new string[,,] { { { "1", "2", "3" }, { "4", "5", "6" } } };
             var b = np.ones_like(a);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new Object[,,] { { { 1, 1, 99 }, { 1, 88, 1 } } });
+            AssertArray(b, new string[,,] { { { "1", "1", "99" }, { "1", "88", "1" } } });
 
             return;
         }
 
         [TestMethod]
-        public void test_empty_STRING_TODO()
+        public void test_empty_STRING()
         {
             var a = np.empty((2, 3));
             AssertShape(a, 2, 3);
             Assert.AreEqual(a.Dtype.TypeNum, NPY_TYPES.NPY_DOUBLE);
 
-            var b = np.empty((2, 4), np.Object);
+            var b = np.empty((2, 4), np.Strings);
             AssertShape(b, 2, 4);
-            Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_OBJECT);
+            Assert.AreEqual(b.Dtype.TypeNum, NPY_TYPES.NPY_STRING);
         }
 
         [TestMethod]
-        public void test_empty_like_3_STRING_TODO()
+        public void test_empty_like_3_STRING()
         {
-            var a = new Object[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+            var a = new string[,,] { { { "1", "2", "3" }, { "4", "5", "6" } } };
             var b = np.empty_like(a);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new Object[,,] { { { 0, 0, 99 }, { 0, 88, 0 } } });
+            AssertArray(b, new string[,,] { { { "0", "0", "99" }, { "0", "88", "0" } } });
 
             return;
         }
 
         [TestMethod]
-        public void test_full_2_STRING_TODO()
+        public void test_full_2_STRING()
         {
-            var x = np.full((100), 99, dtype: np.Object).reshape(new shape(10, 10));
+            var x = np.full((100), 99, dtype: np.Strings).reshape(new shape(10, 10));
             print(x);
-            print("Update sixth value to 11");
+            print("Update sixth value to 55");
             x[6] = 55;
             print(x);
             print(x.shape);
