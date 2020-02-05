@@ -473,40 +473,22 @@ namespace NumpyDotNet
                 var b = np.Concatenate(a as ndarray[]);
                 return b;
             }
-
+ 
             if (a.GetType().IsArray)
             {
                 System.Array ssrc = a as System.Array;
                 NPY_TYPES type_num;
-                switch (ssrc.Rank)
+
+                try
                 {
-                    case 1:
-                        type_num = Get_NPYType(ssrc.GetValue(0));
-                        break;
-                    case 2:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0));
-                        break;
-                    case 3:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0));
-                        break;
-                    case 4:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0));
-                        break;
-                    case 5:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0));
-                        break;
-                    case 6:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0));
-                        break;
-                    case 7:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0, 0));
-                        break;
-                    case 8:
-                        type_num = Get_NPYType(ssrc.GetValue(0, 0, 0, 0, 0, 0, 0));
-                        break;
-                    default:
-                        throw new Exception("Number of dimensions is not supported");
+                    object nonnull = FindFirstNonNullValue(ssrc);
+                    type_num = Get_NPYType(nonnull);
                 }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+    
 
                 return ndArrayFromMD(ssrc, type_num, ssrc.Rank);
             }
@@ -535,6 +517,185 @@ namespace NumpyDotNet
             }
 
             throw new Exception("Unable to convert object to ndarray");
+        }
+
+        private static object FindFirstNonNullValue(Array ssrc)
+        {
+            switch (ssrc.Rank)
+            {
+                case 1:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        object oValue = ssrc.GetValue(i);
+                        if (oValue != null)
+                        {
+                            return oValue;
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            object oValue = ssrc.GetValue(i, j);
+                            if (oValue != null)
+                            {
+                                return oValue;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                object oValue = ssrc.GetValue(i, j, k);
+                                if (oValue != null)
+                                {
+                                    return oValue;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                for (int l = 0; l < ssrc.GetLength(3); l++)
+                                {
+                                    object oValue = ssrc.GetValue(i, j, k, l);
+                                    if (oValue != null)
+                                    {
+                                        return oValue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 5:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                for (int l = 0; l < ssrc.GetLength(3); l++)
+                                {
+                                    for (int m = 0; m < ssrc.GetLength(4); m++)
+                                    {
+                                        object oValue = ssrc.GetValue(i, j, k, l, m);
+                                        if (oValue != null)
+                                        {
+                                            return oValue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 6:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                for (int l = 0; l < ssrc.GetLength(3); l++)
+                                {
+                                    for (int m = 0; m < ssrc.GetLength(4); m++)
+                                    {
+                                        for (int n = 0; n < ssrc.GetLength(5); n++)
+                                        {
+                                            object oValue = ssrc.GetValue(i, j, k, l, m, n);
+                                            if (oValue != null)
+                                            {
+                                                return oValue;
+                                            }
+                                        }
+  
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                for (int l = 0; l < ssrc.GetLength(3); l++)
+                                {
+                                    for (int m = 0; m < ssrc.GetLength(4); m++)
+                                    {
+                                        for (int n = 0; n < ssrc.GetLength(5); n++)
+                                        {
+                                            for (int o = 0; o < ssrc.GetLength(6); o++)
+                                            {
+                                                object oValue = ssrc.GetValue(i, j, k, l, m, n, o);
+                                                if (oValue != null)
+                                                {
+                                                    return oValue;
+                                                }
+                                            }
+   
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 8:
+                    for (int i = 0; i < ssrc.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < ssrc.GetLength(1); j++)
+                        {
+                            for (int k = 0; k < ssrc.GetLength(2); k++)
+                            {
+                                for (int l = 0; l < ssrc.GetLength(3); l++)
+                                {
+                                    for (int m = 0; m < ssrc.GetLength(4); m++)
+                                    {
+                                        for (int n = 0; n < ssrc.GetLength(5); n++)
+                                        {
+                                            for (int o = 0; o < ssrc.GetLength(6); o++)
+                                            {
+                                                for (int p = 0; p < ssrc.GetLength(7); p++)
+                                                {
+                                                    object oValue = ssrc.GetValue(i, j, k, l, m, n, o, p);
+                                                    if (oValue != null)
+                                                    {
+                                                        return oValue;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("Number of dimensions is not supported");
+            }
+
+            throw new Exception("Unable to determine array type. Could not find any non-null entries. Please specify dtype");
         }
         #endregion
 

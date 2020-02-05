@@ -55,7 +55,8 @@ namespace NumpyDotNet
                 newshape[i] = ssrc.GetLength(i);
             }
 
-            return np.array(new VoidPtr(ArrayFromMD(ssrc, type_num), type_num), null).reshape(newshape);
+            dtype WantedDType = NpyCoreApi.DescrFromType(type_num);
+            return np.array(new VoidPtr(ArrayFromMD(ssrc, type_num), type_num), dtype: WantedDType).reshape(newshape);
         }
 
         private static System.Array ArrayFromMD(Array ssrc, NPY_TYPES type_num)
