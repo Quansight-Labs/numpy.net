@@ -178,6 +178,12 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_BIGINT:
                     CastBigIntToBools(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_OBJECT:
+                    CastObjectToBools(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    CastStringsToBools(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
         }
 
@@ -1133,6 +1139,30 @@ namespace NumpyLib
             while (srclen-- > 0)
             {
                 d[index + dest_offset] = (bool)(s[index + src_offset] != 0 ? true : false);
+                index++;
+            }
+        }
+        static void CastObjectToBools(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.Object[];
+            var d = Dest.datap as bool[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (bool)(s[index + src_offset] != null ? true : false);
+                index++;
+            }
+        }
+        static void CastStringsToBools(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.String[];
+            var d = Dest.datap as bool[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = (bool)(s[index + src_offset] != null ? true : false);
                 index++;
             }
         }
