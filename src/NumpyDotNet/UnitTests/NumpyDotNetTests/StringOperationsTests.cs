@@ -4082,23 +4082,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_asarray_1_STRING_TODO()
+        public void test_asarray_1_STRING()
         {
-            var a = new Object[] { 1, 2 };
+            var a = new string[] { "1", "2" };
             var b = np.asarray(a);
 
-            AssertArray(b, new Object[] { 1, 2 });
+            AssertArray(b, new string[] { "1", "2" });
             print(b);
 
-            var c = np.array(new Object[] { 1, 2 }, dtype: np.Object);
-            var d = np.asarray(c, dtype: np.Object);
+            var c = np.array(new string[] { "1", "2" }, dtype: np.Strings);
+            var d = np.asarray(c, dtype: np.Strings);
 
             c[0] = 3;
-            AssertArray(d, new Object[] { 3, 2 });
+            AssertArray(d, new string[] { "3", "2" });
             print(d);
 
-            var e = np.asarray(a, dtype: np.Object);
-            AssertArray(e, new Object[] { 1, 2 });
+            var e = np.asarray(a, dtype: np.Strings);
+            AssertArray(e, new string[] { "1", "2" });
 
             print(e);
 
@@ -4106,12 +4106,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ascontiguousarray_1_STRING_TODO()
+        public void test_ascontiguousarray_1_STRING()
         {
-            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
-            var y = np.ascontiguousarray(x, dtype: np.Object);
+            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
+            var y = np.ascontiguousarray(x, dtype: np.Strings);
 
-            AssertArray(y, new Object[,] { { 0, 1, 2 }, { 3, 4, 5 } });
+            AssertArray(y, new String[,] { { "0", "1", "2" }, { "3", "4", "5" } });
             print(y);
 
             Assert.AreEqual(x.flags.c_contiguous, true);
@@ -4121,12 +4121,12 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_asfortranarray_1_STRING_TODO()
+        public void test_asfortranarray_1_STRING()
         {
-            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
-            var y = np.asfortranarray(x, dtype: np.Object);
+            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
+            var y = np.asfortranarray(x, dtype: np.Strings);
 
-            AssertArray(y, new Object[,] { { 0, 1, 2 }, { 3, 4, 5 } });
+            AssertArray(y, new String[,] { { "0", "1", "2" }, { "3", "4", "5" } });
             print(y);
 
             Assert.AreEqual(x.flags.f_contiguous, false);
@@ -4136,20 +4136,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_isfortran_1_STRING_TODO()
+        public void test_isfortran_1_STRING()
         {
 
-            var a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var a = np.array(new String[,] { { "1", "2", "3" }, { "4", "5", "6" } }, order: NPY_ORDER.NPY_CORDER);
             var a1 = np.isfortran(a);
             Assert.AreEqual(false, a1);
             print(a1);
 
-            var b = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_FORTRANORDER);
+            var b = np.array(new String[,] { { "1", "2", "3" }, { "4", "5", "6" } }, order: NPY_ORDER.NPY_FORTRANORDER);
             var b1 = np.isfortran(b);
             Assert.AreEqual(true, b1);
             print(b1);
 
-            var c = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 } }, order: NPY_ORDER.NPY_CORDER);
+            var c = np.array(new String[,] { { "1", "2", "3" }, { "4", "5", "6" } }, order: NPY_ORDER.NPY_CORDER);
             var c1 = np.isfortran(c);
             Assert.AreEqual(false, c1);
             print(c1);
@@ -4161,7 +4161,7 @@ namespace NumpyDotNetTests
 
             // C-ordered arrays evaluate as False even if they are also FORTRAN-ordered.
 
-            var e1 = np.isfortran(np.array(new Object[] { 1, 2 }, order: NPY_ORDER.NPY_FORTRANORDER));
+            var e1 = np.isfortran(np.array(new String[] { "1", "2" }, order: NPY_ORDER.NPY_FORTRANORDER));
             Assert.AreEqual(false, e1);
             print(e1);
 
@@ -4170,9 +4170,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_argwhere_1_STRING_TODO()
+        public void test_argwhere_1_STRING()
         {
-            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
+            var x = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
             var y = np.argwhere(x > 1);
 
             var ExpectedY = new npy_intp[,] { { 0, 2 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
@@ -4194,9 +4194,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_flatnonzero_1_STRING_TODO()
+        public void test_flatnonzero_1_STRING()
         {
-            var x = np.arange(-2, 3, dtype: np.Int32).astype(np.Object);
+            var x = np.array(new string[] { "-2", "-1", null, "1", "2" });
 
             var y = np.flatnonzero(x);
             AssertArray(y, new npy_intp[] { 0, 1, 3, 4 });
@@ -4205,75 +4205,66 @@ namespace NumpyDotNetTests
             // Use the indices of the non-zero elements as an index array to extract these elements:
 
             var z = x.ravel()[np.flatnonzero(x)] as ndarray;
-            AssertArray(z, new Object[] { -2, -1, 1, 2 });
+            AssertArray(z, new String[] { "-2", "-1", "1", "2" });
             print(z);
 
             return;
         }
 
         [TestMethod]
-        public void test_outer_1_STRING_TODO()
+        public void test_outer_1_STRING()
         {
-            var a = np.arange(2, 10, dtype: np.Int32).reshape((2, 4)).astype(np.Object);
-            var b = np.arange(12, 20, dtype: np.Int32).reshape((2, 4)).astype(np.Object);
+            var a = np.arange(2, 10, dtype: np.Int32).reshape((2, 4)).astype(np.Strings);
+            var b = np.arange(12, 20, dtype: np.Int32).reshape((2, 4)).astype(np.Strings);
             var c = np.outer(a, b);
 
-            var ExpectedDataC = new Object[,]
-                {{24,  26,  28,  30,  32,  34,  36,  38},
-                 {36,  39,  42,  45,  48,  51,  54,  57},
-                 {48,  52,  56,  60,  64,  68,  72,  76},
-                 {60,  65,  70,  75,  80,  85,  90,  95},
-                 {72,  78,  84,  90,  96, 102, 108, 114},
-                 {84,  91,  98, 105, 112, 119, 126, 133},
-                 {96, 104, 112, 120, 128, 136, 144, 152},
-                 {108, 117, 126, 135, 144, 153, 162, 171}};
+            var ExpectedDataC =asstring( new Int32[,]
+                { { 2, 2, 2, 2, 2, 2, 2, 2 },
+                  { 3, 3, 3, 3, 3, 3, 3, 3 },
+                  { 4, 4, 4, 4, 4, 4, 4, 4 },
+                  { 5, 5, 5, 5, 5, 5, 5, 5 },
+                  { 6, 6, 6, 6, 6, 6, 6, 6 },
+                  { 7, 7, 7, 7, 7, 7, 7, 7 },
+                  { 8, 8, 8, 8, 8, 8, 8, 8 },
+                  { 9, 9, 9, 9, 9, 9, 9, 9 } });
 
             AssertArray(c, ExpectedDataC);
 
             print(c);
 
-            //a = np.arange(2000, 10000, dtype: np.Decimal).reshape((-1, 4000));
-            //b = np.arange(12000, 20000, dtype: np.Decimal).reshape((-1, 4000));
-
-            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            //sw.Start();
-            //c = np.outer(a, b);
-            //sw.Stop();
-            //Console.WriteLine(sw.ElapsedMilliseconds);
-
-
             return;
         }
 
         [TestMethod]
-        public void test_inner_1_STRING_TODO()
+        public void test_inner_1_STRING()
         {
-            var a = np.arange(1, 5, dtype: np.Int32).reshape((2, 2)).astype(np.Object);
-            var b = np.arange(11, 15, dtype: np.Int32).reshape((2, 2)).astype(np.Object);
+            var a = np.arange(1, 5, dtype: np.Int32).reshape((2, 2)).astype(np.Strings);
+            var b = np.arange(11, 15, dtype: np.Int32).reshape((2, 2)).astype(np.Strings);
             var c = np.inner(a, b);
-            AssertArray(c, new Object[,] { { 35, 41 }, { 81, 95 } });
+            AssertArray(c, new string[,] { { "212", "214" }, { "412", "414" } });
             print(c);
 
 
-            a = np.arange(2, 10, dtype: np.Int32).reshape((2, 4)).astype(np.Object);
-            b = np.arange(12, 20, dtype: np.Int32).reshape((2, 4)).astype(np.Object);
+            a = np.arange(2, 10, dtype: np.Int32).reshape((2, 4)).astype(np.Strings);
+            b = np.arange(12, 20, dtype: np.Int32).reshape((2, 4)).astype(np.Strings);
             c = np.inner(a, b);
             print(c);
-            AssertArray(c, new Object[,] { { 194, 250 }, { 410, 530 } });
+            AssertArray(c, new string[,] { {  "515", "519" }, { "915", "919" } });
             print(c.shape);
 
             return;
         }
 
         [TestMethod]
-        public void test_tensordot_2_STRING_TODO()
+        public void test_tensordot_2_STRING()
         {
-            var a = np.arange(12.0, dtype: np.Int32).reshape((3, 4)).astype(np.Object);
-            var b = np.arange(24.0, dtype: np.Int32).reshape((4, 3, 2)).astype(np.Object);
+            var a = np.arange(12.0, dtype: np.Int32).reshape((3, 4)).astype(np.Strings);
+            var b = np.arange(24.0, dtype: np.Int32).reshape((4, 3, 2)).astype(np.Strings);
             var c = np.tensordot(a, b, axis: 1);
             AssertShape(c, 3, 3, 2);
             print(c.shape);
-            AssertArray(c, new Object[,,] { { { 84, 90 }, { 96, 102 }, { 108, 114 } }, { { 228, 250 }, { 272, 294 }, { 316, 338 } }, { { 372, 410 }, { 448, 486 }, { 524, 562 } } });
+            print(c);
+            AssertArray(c,asstring( new Int32[,,] {{{ 318, 319 },  { 320, 321 },  { 322, 323 }}, {{ 718, 719 },  { 720, 721 },  { 722, 723 }}, {{ 1118, 1119 },{ 1120, 1121 },{ 1122, 1123 }}}));
 
 
             c = np.tensordot(a, b, axis: 0);
@@ -4284,29 +4275,19 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_dot_1_STRING_TODO()
+        public void test_dot_1_STRING()
         {
-            var a = new Object[,] { { 1, 0 }, { 0, 1 } };
-            var b = new Object[,] { { 4, 1 }, { 2, 2 } };
+            var a = new string[,] { { "1", "0" }, { "0", "1" } };
+            var b = new string[,] { { "4", "1" }, { "2", "2" } };
             var c = np.dot(a, b);
-            AssertArray(c, new Object[,] { { 4, 1 }, { 2, 2 } });
+            AssertArray(c, new string[,] { { "02", "02" }, { "12", "12" } });
             print(c);
 
-            var d = np.dot((Object)3, (Object)4);
-            Assert.AreEqual((Object)12, d.GetItem(0));
+            var d = np.dot("3", "4");
+            Assert.AreEqual("34", d.GetItem(0));
             print(d);
 
-            var e = np.arange(3 * 4 * 5 * 6, dtype: np.Int32).reshape((3, 4, 5, 6)).astype(np.Object);
-            var f = np.arange(3 * 4 * 5 * 6, dtype: np.Int32).A("::-1").reshape((5, 4, 6, 3)).astype(np.Object);
-            var g = np.dot(e, f);
-            AssertShape(g.shape, 3, 4, 5, 5, 4, 3);
-            Assert.AreEqual((Object)695768400, g.Sum().GetItem(0));
-
-            // TODO: NOTE: this crazy indexing is not currently working
-            //g = g.A(2, 3, 2, 1, 2, 2);
-            //Assert.AreEqual(499128, g.GetItem(0));
-            //print(g);
-
+   
         }
 
         [TestMethod]
