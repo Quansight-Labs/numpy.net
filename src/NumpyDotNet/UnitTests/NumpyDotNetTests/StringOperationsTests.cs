@@ -1172,6 +1172,30 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_multi_index_setting_STRING()
+        {
+            var x = np.arange(10, dtype: np.Int32).astype(np.Strings);
+
+            var y = x.reshape(new shape(2, 5));
+
+            y[0, 3] = 55;
+            y[1, 3] = 66;
+
+            Assert.AreEqual("55", (string)y[0, 3]);
+            Assert.AreEqual("66", (string)y[1, 3]);
+
+            x = np.arange(20, dtype: np.Int32).astype(np.Strings);
+            y = x.reshape(new shape(2, 2, 5));
+
+            y[1, 0, 3] = 55;
+            y[1, 1, 3] = 66;
+
+            Assert.AreEqual("55", (string)y[1, 0, 3]);
+            Assert.AreEqual("66", (string)y[1, 1, 3]);
+
+        }
+
 
         #endregion
 

@@ -2219,5 +2219,29 @@ namespace NumpyDotNetTests
             Assert.AreEqual(18, (int)y[1, 1, 3]);
 
         }
+
+        [TestMethod]
+        public void test_multi_index_setting()
+        {
+            var x = np.arange(10, dtype: np.Int32);
+
+            var y = x.reshape(new shape(2, 5));
+  
+            y[0, 3] = 55;
+            y[1, 3] = 66;
+
+            Assert.AreEqual(55, (int)y[0, 3]);
+            Assert.AreEqual(66, (int)y[1, 3]);
+
+            x = np.arange(20, dtype: np.Int32);
+            y = x.reshape(new shape(2, 2, 5));
+    
+            y[1, 0, 3] = 55;
+            y[1, 1, 3] = 66;
+
+            Assert.AreEqual(55, (int)y[1, 0, 3]);
+            Assert.AreEqual(66, (int)y[1, 1, 3]);
+
+        }
     }
 }

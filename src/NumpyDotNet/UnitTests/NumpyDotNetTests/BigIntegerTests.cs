@@ -1203,6 +1203,30 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_multi_index_setting_BIGINT()
+        {
+            var x = np.arange(10, dtype: np.Int32).astype(np.BigInt);
+
+            var y = x.reshape(new shape(2, 5));
+
+            y[0, 3] = new BigInteger(55);
+            y[1, 3] = new BigInteger(66);
+
+            Assert.AreEqual((BigInteger)55, (BigInteger)y[0, 3]);
+            Assert.AreEqual((BigInteger)66, (BigInteger)y[1, 3]);
+
+            x = np.arange(20, dtype: np.Int32).astype(np.BigInt);
+            y = x.reshape(new shape(2, 2, 5));
+
+            y[1, 0, 3] = new BigInteger(55);
+            y[1, 1, 3] = new BigInteger(66);
+
+            Assert.AreEqual((BigInteger)55, (BigInteger)y[1, 0, 3]);
+            Assert.AreEqual((BigInteger)66, (BigInteger)y[1, 1, 3]);
+
+        }
+
         #endregion
 
         #region from NumericalOperationsTests

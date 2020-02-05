@@ -1171,6 +1171,30 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_multi_index_setting_DECIMAL()
+        {
+            var x = np.arange(10, dtype: np.Int32).astype(np.Decimal);
+
+            var y = x.reshape(new shape(2, 5));
+
+            y[0, 3] = new Decimal(55);
+            y[1, 3] = new Decimal(66);
+
+            Assert.AreEqual((Decimal)55, (Decimal)y[0, 3]);
+            Assert.AreEqual((Decimal)66, (Decimal)y[1, 3]);
+
+            x = np.arange(20, dtype: np.Int32).astype(np.Decimal);
+            y = x.reshape(new shape(2, 2, 5));
+
+            y[1, 0, 3] = new Decimal(55);
+            y[1, 1, 3] = new Decimal(66);
+
+            Assert.AreEqual((Decimal)55, (Decimal)y[1, 0, 3]);
+            Assert.AreEqual((Decimal)66, (Decimal)y[1, 1, 3]);
+
+        }
+
         #endregion
 
         #region from NumericalOperationsTests
