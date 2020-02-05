@@ -59,11 +59,11 @@ namespace NumpyDotNet
                 string ItemType = arr.ItemType.ToString().Substring("NPY_".Length);
                 if (string.IsNullOrEmpty(arr.Name))
                 {
-                    sb.Add(string.Format("{0}\n", ItemType));
+                    sb.Add(string.Format("{0} \n", ItemType));
                 }
                 else
                 {
-                    sb.Add(string.Format("{0}:Name({1})\n", ItemType, arr.Name));
+                    sb.Add(string.Format("{0}:Name({1}) \n", ItemType, arr.Name));
                 }
             }
 
