@@ -572,7 +572,7 @@ namespace NumpyDotNet
                             }
                             offset += val * s[i];
                         }
-                        return this.GetItem(offset);
+                        return this.GetItem(offset/this.ItemSize);
                     }
                     else if (indexes.IsMultiField)
                     {
