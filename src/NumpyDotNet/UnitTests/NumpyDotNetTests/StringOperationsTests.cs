@@ -5114,51 +5114,51 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_mask_indices_STRING_TODO()
+        public void test_mask_indices_STRING()
         {
             var iu = np.mask_indices(3, np.triu);
             AssertArray(iu[0], new npy_intp[] { 0, 0, 0, 1, 1, 2 });
             AssertArray(iu[1], new npy_intp[] { 0, 1, 2, 1, 2, 2 });
             print(iu);
 
-            var a = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Object);
+            var a = np.arange(9, dtype: np.Int32).reshape((3, 3)).astype(np.Strings);
             var b = a[iu] as ndarray;
-            AssertArray(b, new Object[] { 0, 1, 2, 4, 5, 8 });
+            AssertArray(b, new string[] { "0", "1", "2", "4", "5", "8" });
             print(b);
 
             var iu1 = np.mask_indices(3, np.triu, 1);
 
             var c = a[iu1] as ndarray;
-            AssertArray(c, new Object[] { 1, 2, 5 });
+            AssertArray(c, new string[] { "1", "2", "5" });
             print(c);
 
             return;
         }
 
         [TestMethod]
-        public void test_tril_indices_STRING_TODO()
+        public void test_tril_indices_STRING()
         {
             var il1 = np.tril_indices(4);
             var il2 = np.tril_indices(4, 2);
 
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             var b = a[il1] as ndarray;
-            AssertArray(b, new Object[] { 0, 4, 5, 8, 9, 10, 12, 13, 14, 15 });
+            AssertArray(b, new string[] { "0", "4", "5", "8", "9", "10", "12", "13", "14", "15" });
             print(b);
 
             a[il1] = -1;
 
-            var ExpectedDataA1 = new Object[,]
-                {{-1,  1, 2,  3}, {-1, -1,  6,  7},
-                 {-1, -1,-1, 11}, {-1, -1, -1, -1}};
+            var ExpectedDataA1 = new string[,]
+                {{"-1",  "1", "2",  "3"}, {"-1", "-1",  "6",  "7"},
+                 {"-1", "-1","-1", "11"}, {"-1", "-1", "-1", "-1"}};
             AssertArray(a, ExpectedDataA1);
             print(a);
 
             a[il2] = -10;
 
-            var ExpectedDataA2 = new Object[,]
+            var ExpectedDataA2 = asstring(new Int32[,]
                 {{-10, -10, -10,  3}, {-10, -10, -10, -10},
-                 {-10, -10,-10, -10}, {-10, -10, -10, -10}};
+                 {-10, -10,-10, -10}, {-10, -10, -10, -10}});
             AssertArray(a, ExpectedDataA2);
             print(a);
 
@@ -5166,9 +5166,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tril_indices_from_STRING_TODO()
+        public void test_tril_indices_from_STRING()
         {
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             var il1 = np.tril_indices_from(a, 0);
 
             AssertArray(il1[0], new npy_intp[] { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3 });
@@ -5185,29 +5185,29 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_triu_indices_STRING_TODO()
+        public void test_triu_indices_STRING()
         {
             var il1 = np.triu_indices(4);
             var il2 = np.triu_indices(4, 2);
 
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             var b = a[il1] as ndarray;
-            AssertArray(b, new Object[] { 0, 1, 2, 3, 5, 6, 7, 10, 11, 15 });
+            AssertArray(b, asstring(new Int32[] { 0, 1, 2, 3, 5, 6, 7, 10, 11, 15 }));
             print(b);
 
             a[il1] = -1;
 
-            var ExpectedDataA1 = new Object[,]
+            var ExpectedDataA1 = asstring(new Int32[,]
                 {{-1, -1, -1, -1}, { 4, -1, -1, -1},
-                 { 8,  9, -1, -1}, {12, 13, 14, -1}};
+                 { 8,  9, -1, -1}, {12, 13, 14, -1}});
             AssertArray(a, ExpectedDataA1);
             print(a);
 
             a[il2] = -10;
 
-            var ExpectedDataA2 = new Object[,]
+            var ExpectedDataA2 = asstring(new Int32[,]
                 {{-1, -1, -10, -10}, {4,  -1, -1, -10},
-                 { 8,  9, -1,  -1},  {12, 13, 14, -1}};
+                 { 8,  9, -1,  -1},  {12, 13, 14, -1}});
             AssertArray(a, ExpectedDataA2);
             print(a);
 
@@ -5215,9 +5215,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_triu_indices_from_STRING_TODO()
+        public void test_triu_indices_from_STRING()
         {
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             var il1 = np.triu_indices_from(a, 0);
 
             AssertArray(il1[0], new npy_intp[] { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 });
