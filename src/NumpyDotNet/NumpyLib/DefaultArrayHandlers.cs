@@ -4257,6 +4257,10 @@ namespace NumpyLib
             get { return IntPtr.Size; }
         }
 
+        private string SetCheck(object value)
+        {
+            return value != null ? value.ToString() : null;
+        }
 
         public override int SetItem(VoidPtr data, npy_intp index, object value)
         {
@@ -4268,7 +4272,7 @@ namespace NumpyLib
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
             }
 
-            dp[AdjustedIndex] = value != null ? value.ToString() : null;
+            dp[AdjustedIndex] = SetCheck(value);
             return 1;
         }
         public override int SetItemDifferentType(VoidPtr data, npy_intp index, object value)
@@ -4280,14 +4284,14 @@ namespace NumpyLib
             index = AdjustNegativeIndex(data, index);
 
             string[] dp = data.datap as string[];
-            dp[index] = value.ToString();
+            dp[index] = SetCheck(value);
             return 1;
         }
 
         public override void ArrayFill(VoidPtr vp, object FillValue)
         {
             var adata = vp.datap as string[];
-            Fill(adata, FillValue.ToString(), 0, adata.Length);
+            Fill(adata, SetCheck(FillValue), 0, adata.Length);
             return;
         }
   
@@ -4298,7 +4302,7 @@ namespace NumpyLib
             if (destp == null || scalarp == null)
                 return -1;
 
-            Fill(destp, scalarp[fill_offset].ToString(), dest_offset, length + dest_offset);
+            Fill(destp, SetCheck(scalarp[fill_offset]), dest_offset, length + dest_offset);
             return 0;
         }
 
@@ -4313,6 +4317,15 @@ namespace NumpyLib
         }
         public override int CompareTo(dynamic invalue, dynamic comparevalue)
         {
+            if (invalue == null)
+            {
+                if (comparevalue == null)
+                {
+                    return 0;
+                }
+                return 1;
+            }
+
             return string.Compare(invalue.ToString(), comparevalue.ToString());
         }
 
@@ -4353,6 +4366,9 @@ namespace NumpyLib
 
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
+            if (operValue == null)
+                return null;
+
             return operValue.ToString();
         }
         public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
@@ -4367,11 +4383,17 @@ namespace NumpyLib
 
         protected override object Add(dynamic bValue, dynamic operand)
         {
+            if (operand == null)
+                return bValue;
+
             return bValue + operand;
         }
         protected override object Subtract(dynamic bValue, dynamic operand)
         {
             string sValue = (string)bValue;
+            if (sValue == null)
+                return sValue;
+
             return sValue.Replace(operand.ToString(), "");
         }
         protected override object Multiply(dynamic bValue, dynamic operand)
@@ -4413,6 +4435,9 @@ namespace NumpyLib
         }
         protected override object Negative(dynamic bValue, dynamic operand)
         {
+            if (bValue == null)
+                return bValue;
+
             char[] arr = bValue.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
@@ -4424,6 +4449,10 @@ namespace NumpyLib
         protected override object Invert(dynamic bValue, dynamic operand)
         {
             string sValue = bValue;
+
+            if (sValue == null)
+                return sValue;
+
             string lowercase = sValue.ToLower();
             if (lowercase != sValue)
                 return lowercase;
@@ -4433,6 +4462,9 @@ namespace NumpyLib
 
         protected override object LeftShift(dynamic bValue, dynamic operand)
         {
+            if (bValue == null || operand == null)
+                return bValue;
+
             string sValue = bValue;
             int shiftCount = Convert.ToInt32(operand);
 
@@ -4448,6 +4480,9 @@ namespace NumpyLib
         }
         protected override object RightShift(dynamic bValue, dynamic operand)
         {
+            if (bValue == null || operand == null)
+                return bValue;
+
             string sValue = bValue;
             int shiftCount = Convert.ToInt32(operand);
 
@@ -4515,11 +4550,17 @@ namespace NumpyLib
         }
         protected override object LogicalOr(dynamic bValue, dynamic operand)
         {
+            if (bValue == null || operand == null)
+                return bValue;
+
             string sValue = (string)bValue;
             return !sValue.Contains(operand.ToString());
         }
         protected override object LogicalAnd(dynamic bValue, dynamic operand)
         {
+            if (bValue == null || operand == null)
+                return bValue;
+
             string sValue = (string)bValue;
             return sValue.Contains(operand.ToString());
         }
