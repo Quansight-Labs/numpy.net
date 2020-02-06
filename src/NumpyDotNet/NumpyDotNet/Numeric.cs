@@ -163,6 +163,13 @@ namespace NumpyDotNet
         /// <returns>Array of uninitialized (arbitrary) data of the given shape, dtype, and order. Object arrays will be initialized to None.</returns>
         public static ndarray empty(object shape, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
+            if (dtype != null)
+            {
+                if (dtype.TypeNum == NPY_TYPES.NPY_OBJECT || dtype.TypeNum == NPY_TYPES.NPY_STRING)
+                {
+                    return full(shape, null, dtype, order);
+                }
+            }
             return zeros(shape, dtype, order);
         }
         #endregion
@@ -178,6 +185,13 @@ namespace NumpyDotNet
         /// <returns>Array of uninitialized (arbitrary) data with the same shape and type as a.</returns>
         public static ndarray empty_like(object src, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_KORDER, bool subok = true)
         {
+            if (dtype != null)
+            {
+                if (dtype.TypeNum == NPY_TYPES.NPY_OBJECT || dtype.TypeNum == NPY_TYPES.NPY_STRING)
+                {
+                    return full_like(src, null, dtype, order);
+                }
+            }
             return zeros_like(src, dtype, order, subok);
         }
         #endregion
