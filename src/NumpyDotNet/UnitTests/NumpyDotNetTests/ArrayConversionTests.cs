@@ -92,7 +92,14 @@ namespace NumpyDotNetTests
 
             var aobject = np.array(a.AsObjectArray());
             AssertArray(aobject, new object[] { 1, 0, 0, 1, 0 });
-            AssertArray(np.array(aobject.AsBoolArray()), new bool[] { false, false, false, false, false });
+            aobject[1] = null; aobject[2] = null; aobject[4] = null;
+            AssertArray(np.array(aobject.AsBoolArray()), new bool[] { true, false, false, true, false });
+            print(aobject);
+
+            var astring = np.array(a.AsStringArray());
+            AssertArray(astring, new string[] { "True", "False", "False", "True", "False" });
+            astring[1] = null; astring[2] = null; astring[4] = null;
+            AssertArray(np.array(astring.AsBoolArray()), new bool[] { true, false, false, true, false });
             print(aobject);
         }
 
@@ -1191,13 +1198,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AsObject()
         {
-            var TestData = new object[] { "A", "B", "10", "23", "-25" };
+            var TestData = new object[] { "A", null, "10", "23", "-25" };
 
             var a = np.array(TestData);
 
             var abool = np.array(a.AsBoolArray());
-            AssertArray(abool, new bool[] { false, false, false, false, false });
-            AssertArray(np.array(abool.AsObjectArray()), new object[] { 0, 0, 0, 0, 0 });
+            AssertArray(abool, new bool[] { true, false, true, true, true });
+            AssertArray(np.array(abool.AsObjectArray()), new object[] { 1, 0, 1, 1, 1 });
             print(abool);
 
             var aSByte = np.array(a.AsSByteArray());

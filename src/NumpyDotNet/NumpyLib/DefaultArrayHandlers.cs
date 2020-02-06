@@ -658,6 +658,12 @@ namespace NumpyLib
             return 1;
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            object[] bp = vp.datap as object[];
+            return !(bp[index] == null);
+        }
+
         public override object MathOpConvertOperand(object srcValue, object operValue)
         {
             return operValue;
@@ -4262,7 +4268,7 @@ namespace NumpyLib
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
             }
 
-            dp[AdjustedIndex] = value.ToString();
+            dp[AdjustedIndex] = value != null ? value.ToString() : null;
             return 1;
         }
         public override int SetItemDifferentType(VoidPtr data, npy_intp index, object value)

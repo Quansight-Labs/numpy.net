@@ -1274,15 +1274,15 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trim_zeros_1()
         {
-            ndarray a = np.array(new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1, 0 });
+            ndarray a = np.array(new Object[] { null, null, null, 1, 2, 3, null, 2, 1, null });
 
             var b = np.trim_zeros(a);
             print(b);
-            AssertArray(b, new Object[] { 1, 2, 3, 0, 2, 1 });
+            AssertArray(b, new Object[] { 1, 2, 3, null, 2, 1 });
 
             var c = np.trim_zeros(a, "b");
             print(c);
-            AssertArray(c, new Object[] { 0, 0, 0, 1, 2, 3, 0, 2, 1 });
+            AssertArray(c, new Object[] { null, null, null, 1, 2, 3, null, 2, 1 });
         }
 
         [TestMethod]
@@ -4322,7 +4322,7 @@ namespace NumpyDotNetTests
         public void test_flatnonzero_1_OBJECT()
         {
             var x = np.arange(-2, 3, dtype: np.Int32).astype(np.Object);
-
+            x[2] = null;
             var y = np.flatnonzero(x);
             AssertArray(y, new npy_intp[] { 0, 1, 3, 4 });
             print(y);
