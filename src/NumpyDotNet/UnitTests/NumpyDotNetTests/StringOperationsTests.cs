@@ -5472,63 +5472,63 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_array_split_2_STRING_TODO()
+        public void test_array_split_2_STRING()
         {
-            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
+            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Strings);
             var y = np.array_split(x, 3, axis: 0);
 
 
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0),asstring(new Int32[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } } }));
+            AssertArray(y.ElementAt(1),asstring(new Int32[,,] { { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } }));
             AssertShape(y.ElementAt(2), 0, 8, 1);
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Strings);
             y = np.array_split(x, 3, axis: 1);
 
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } });
-            AssertArray(y.ElementAt(2), new Object[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0 }, { 1 }, { 2 } }, { { 8 }, { 9 }, { 10 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 3 }, { 4 }, { 5 } }, { { 11 }, { 12 }, { 13 } } }));
+            AssertArray(y.ElementAt(2), asstring(new Int32[,,] { { { 6 }, { 7 } }, { { 14 }, { 15 } } }));
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Object);
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(2, 8, 1)).astype(np.Strings);
             y = np.array_split(x, 3, axis: 2);
 
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 } }, { { 8 }, { 9 }, { 10 }, { 11 }, { 12 }, { 13 }, { 14 }, { 15 } } }));
             AssertShape(y.ElementAt(1), 2, 8, 0);
             AssertShape(y.ElementAt(2), 2, 8, 0);
             print(y);
         }
 
         [TestMethod]
-        public void test_split_2_STRING_TODO()
+        public void test_split_2_STRING()
         {
-            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
+            var x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Strings);
             var y = np.split(x, new Int32[] { 2, 3 }, axis: 0);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 4 }, { 5 } } });
-            AssertArray(y.ElementAt(2), new Object[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0 }, { 1 } }, { { 2 }, { 3 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 4 }, { 5 } } }));
+            AssertArray(y.ElementAt(2), asstring(new Int32[,,] { { { 6 }, { 7 } }, { { 8 }, { 9 } }, { { 10 }, { 11 } }, { { 12 }, { 13 } }, { { 14 }, { 15 } } }));
 
 
             print(y);
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Strings);
             y = np.split(x, new int[] { 2, 3 }, axis: 1);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
-                                                        {{8},{9}},{{10},{11}}, {{12}, {13}}, {{14}, {15}}});
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] {{{0},{1}},{{2}, {3}}, {{4}, {5}}, {{6}, { 7}},
+                                                        {{8},{9}},{{10},{11}}, {{12}, {13}}, {{14}, {15}}}));
             AssertShape(y.ElementAt(1), 8, 0, 1);
             AssertShape(y.ElementAt(2), 8, 0, 1);
 
@@ -5536,12 +5536,12 @@ namespace NumpyDotNetTests
 
             print("**************");
 
-            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Object);
+            x = np.arange(16.0, dtype: np.Int32).reshape(new shape(8, 2, 1)).astype(np.Strings);
             y = np.split(x, new int[] { 2, 3 }, axis: 2);
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
-                                                        {{ 8},{ 9}},{{10}, {11}}, {{12}, {13}}, {{14}, {15}}});
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] {{{ 0},{ 1}},{{ 2}, { 3}}, {{ 4}, { 5}}, {{ 6}, { 7}},
+                                                        {{ 8},{ 9}},{{10}, {11}}, {{12}, {13}}, {{14}, {15}}}));
             AssertShape(y.ElementAt(1), 8, 2, 0);
             AssertShape(y.ElementAt(2), 8, 2, 0);
 
@@ -5549,23 +5549,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_hsplit_2_STRING_TODO()
+        public void test_hsplit_2_STRING()
         {
-            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             var y = np.hsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 } }, { { 4, 5 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 2, 3 } }, { { 6, 7 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1 } }, { { 4, 5 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 2, 3 } }, { { 6, 7 } } }));
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             y = np.hsplit(x, new Int32[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } }));
             AssertShape(y.ElementAt(1), 2, 0, 2);
             AssertShape(y.ElementAt(2), 2, 0, 2);
 
@@ -5573,23 +5573,23 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_vsplit_2_STRING_TODO()
+        public void test_vsplit_2_STRING()
         {
-            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            var x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             var y = np.vsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1 }, { 2, 3 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 4, 5 }, { 6, 7 } } }));
             print(y);
 
             print("**************");
 
-            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            x = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             y = np.vsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 5 }, { 6, 7 } } }));
             AssertShape(y.ElementAt(1), 0, 2, 2);
             AssertShape(y.ElementAt(2), 0, 2, 2);
 
@@ -5597,25 +5597,25 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_dsplit_1_STRING_TODO()
+        public void test_dsplit_1_STRING()
         {
-            var x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Object);
+            var x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Strings);
             var y = np.dsplit(x, 2);
 
             Assert.AreEqual(2, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1 }, { 4, 5 } }, { { 8, 9 }, { 12, 13 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 2, 3 }, { 6, 7 } }, { { 10, 11 }, { 14, 15 } } }));
             print(y);
 
 
             print("**************");
 
-            x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Object);
+            x = np.arange(16, dtype: np.Int32).reshape(new shape(2, 2, 4)).astype(np.Strings);
             y = np.dsplit(x, new int[] { 3, 6 });
 
             Assert.AreEqual(3, y.Count);
-            AssertArray(y.ElementAt(0), new Object[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } });
-            AssertArray(y.ElementAt(1), new Object[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } });
+            AssertArray(y.ElementAt(0), asstring(new Int32[,,] { { { 0, 1, 2 }, { 4, 5, 6 } }, { { 8, 9, 10 }, { 12, 13, 14 } } }));
+            AssertArray(y.ElementAt(1), asstring(new Int32[,,] { { { 3 }, { 7 } }, { { 11 }, { 15 } } }));
             AssertShape(y.ElementAt(2), 2, 2, 0);
 
             print(y);
