@@ -5238,75 +5238,75 @@ namespace NumpyDotNetTests
         #region from ShapeBaseTests
 
         [TestMethod]
-        public void test_atleast_1d_STRING_TODO()
+        public void test_atleast_1d_STRING()
         {
-            var a = np.atleast_1d((Object)1);
+            var a = np.atleast_1d("1");
             print(a);
-            AssertArray(a.ElementAt(0), new Object[] { 1 });
+            AssertArray(a.ElementAt(0), new string[] { "1" });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Strings);
             var b = np.atleast_1d(x);
             print(b);
 
-            var ExpectedB = new Object[,]
+            var ExpectedB = asstring(new Int32[,]
                 {{0, 1, 2},
                  {3, 4, 5},
-                 {6, 7, 8}};
+                 {6, 7, 8}});
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_1d(new object[] { (Object)1, new Object[] { 3, 4 } });
+            var c = np.atleast_1d(new object[] { "1", new string[] { "3", "4" } });
 
-            AssertArray(c.ElementAt(0), new Object[] { 1 });
-            AssertArray(c.ElementAt(1), new Object[] { 3, 4 });
+            AssertArray(c.ElementAt(0), new string[] { "1" });
+            AssertArray(c.ElementAt(1), new string[] { "3", "4" });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_2d_STRING_TODO()
+        public void test_atleast_2d_STRING()
         {
-            var a = np.atleast_2d((Object)1);
+            var a = np.atleast_2d("1");
             print(a);
-            AssertArray(a.ElementAt(0), new Object[,] { { 1 } });
+            AssertArray(a.ElementAt(0), new string[,] { { "1" } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Strings);
             var b = np.atleast_2d(x);
             print(b);
 
-            var ExpectedB = new Object[,]
+            var ExpectedB = asstring(new Int32[,]
                 {{0, 1, 2},
                  {3, 4, 5},
-                 {6, 7, 8}};
+                 {6, 7, 8}});
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_2d(new object[] { (Object)1, new Object[] { 3, 4 }, new Object[] { 5, 6 } });
+            var c = np.atleast_2d(new object[] { "1", new string[] { "3", "4" }, new string[] { "5", "6" } });
 
-            AssertArray(c.ElementAt(0), new Object[,] { { 1 } });
-            AssertArray(c.ElementAt(1), new Object[,] { { 3, 4 } });
-            AssertArray(c.ElementAt(2), new Object[,] { { 5, 6 } });
+            AssertArray(c.ElementAt(0), new string[,] { { "1" } });
+            AssertArray(c.ElementAt(1), new string[,] { { "3", "4" } });
+            AssertArray(c.ElementAt(2), new string[,] { { "5", "6" } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_atleast_3d_STRING_TODO()
+        public void test_atleast_3d_STRING()
         {
-            var a = np.atleast_3d((Object)1);
+            var a = np.atleast_3d("1");
             print(a);
-            AssertArray(a.ElementAt(0), new Object[,,] { { { 1 } } });
+            AssertArray(a.ElementAt(0), new string[,,] { { { "1" } } });
 
             print("**************");
-            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Object);
+            var x = np.arange(9.0, dtype: np.Int32).reshape(new shape(3, 3)).astype(np.Strings);
             var b = np.atleast_3d(x);
             print(b);
 
-            var ExpectedB = new Object[,,]
+            var ExpectedB = asstring(new Int32[,,]
              {{{0},
                {1},
                {2}},
@@ -5315,114 +5315,114 @@ namespace NumpyDotNetTests
                {5}},
               {{6},
                {7},
-               {8}}};
+               {8}}});
 
             AssertArray(b.ElementAt(0), ExpectedB);
 
             print("**************");
 
-            var c = np.atleast_3d(new object[] { new Object[] { 1, 2 }, new Object[] { 3, 4 }, new Object[] { 5, 6 } });
+            var c = np.atleast_3d(new object[] { new string[] { "1", "2" }, new string[] { "3", "4" }, new string[] { "5", "6" } });
 
-            AssertArray(c.ElementAt(0), new Object[,,] { { { 1 }, { 2 } } });
-            AssertArray(c.ElementAt(1), new Object[,,] { { { 3 }, { 4 } } });
-            AssertArray(c.ElementAt(2), new Object[,,] { { { 5 }, { 6 } } });
+            AssertArray(c.ElementAt(0), new string[,,] { { { "1" }, { "2" } } });
+            AssertArray(c.ElementAt(1), new string[,,] { { { "3" }, { "4" } } });
+            AssertArray(c.ElementAt(2), new string[,,] { { { "5" }, { "6" } } });
             print(c);
 
 
         }
 
         [TestMethod]
-        public void test_vstack_2_STRING_TODO()
+        public void test_vstack_2_STRING()
         {
-            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new string[,] { { "1" }, { "2" }, { "3" } });
+            var b = np.array(new string[,] { { "2" }, { "3" }, { "4" } });
             var c = np.vstack(new object[] { a, b });
 
-            AssertArray(c, new Object[,] { { 1 }, { 2 }, { 3 }, { 2 }, { 3 }, { 4 } });
+            AssertArray(c, new string[,] { { "1" }, { "2" }, { "3" }, { "2" }, { "3" }, { "4" } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_hstack_2_STRING_TODO()
+        public void test_hstack_2_STRING()
         {
-            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new string[,] { { "1" }, { "2" }, { "3" } });
+            var b = np.array(new string[,] { { "2" }, { "3" }, { "4" } });
             var c = np.hstack(new object[] { a, b });
 
-            AssertArray(c, new Object[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new string[,] { { "1", "2" }, { "2", "3" }, { "3", "4" } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_stack_1_STRING_TODO()
+        public void test_stack_1_STRING()
         {
-            var a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
-            var b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
+            var a = np.array(new string[,] { { "1" }, { "2" }, { "3" } });
+            var b = np.array(new string[,] { { "2" }, { "3" }, { "4" } });
 
             var c = np.stack(new object[] { a, b }, axis: 0);
-            AssertArray(c, new Object[,,] { { { 1 }, { 2 }, { 3 } }, { { 2 }, { 3 }, { 4 } } });
+            AssertArray(c, new string[,,] { { { "1" }, { "2" }, { "3" } }, { { "2" }, { "3" }, { "4" } } });
             print(c);
             print("**************");
 
             var d = np.stack(new object[] { a, b }, axis: 1);
-            AssertArray(d, new Object[,,] { { { 1 }, { 2 } }, { { 2 }, { 3 } }, { { 3 }, { 4 } } });
+            AssertArray(d, new string[,,] { { { "1" }, { "2" } }, { { "2" }, { "3" } }, { { "3" }, { "4" } } });
             print(d);
             print("**************");
 
             var e = np.stack(new object[] { a, b }, axis: 2);
-            AssertArray(e, new Object[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(e, new string[,,] { { { "1", "2" } }, { { "2", "3" } }, { { "3", "4" } } });
             print(e);
 
         }
 
         [TestMethod]
-        public void test_block_2_STRING_TODO()
+        public void test_block_2_STRING()
         {
-            var a = np.array(new Object[] { 1, 2, 3 });
-            var b = np.array(new Object[] { 2, 3, 4 });
+            var a = np.array(new string[] { "1", "2", "3" });
+            var b = np.array(new string[] { "2", "3", "4" });
             var c = np.block(new object[] { a, b, 10 });    // hstack([a, b, 10])
 
-            AssertArray(c, new Object[] { 1, 2, 3, 2, 3, 4, 10 });
+            AssertArray(c, new string[] { "1", "2", "3", "2", "3", "4", "10" });
             print(c);
             print("**************");
 
-            a = np.array(new Object[] { 1, 2, 3 });
-            b = np.array(new Object[] { 2, 3, 4 });
+            a = np.array(new string[] { "1", "2", "3" });
+            b = np.array(new string[] { "2", "3", "4" });
             c = np.block(new object[] { new object[] { a }, new object[] { b } });    // vstack([a, b])
 
-            AssertArray(c, new Object[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new string[,] { { "1", "2", "3" }, { "2", "3", "4" } });
             print(c);
 
         }
 
         [TestMethod]
-        public void test_expand_dims_1_STRING_TODO()
+        public void test_expand_dims_1_STRING()
         {
-            var a = np.array(new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }).reshape(new shape(2, -1, 2));
+            var a = np.array(asstring(new Int32[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 })).reshape(new shape(2, -1, 2));
             var b = np.expand_dims(a, axis: 0);
 
-            var ExpectedDataB = new Object[,,,]
+            var ExpectedDataB = asstring(new Int32[,,,]
             {{{{1,  2}, {3,  4}, {5,  6}},
-              {{7,  8}, {9, 10}, {11, 12}}}};
+              {{7,  8}, {9, 10}, {11, 12}}}});
 
             AssertArray(b, ExpectedDataB);
             print(b);
             print("**************");
 
             var c = np.expand_dims(a, axis: 1);
-            var ExpectedDataC = new Object[,,,]
+            var ExpectedDataC = asstring(new Int32[,,,]
                 {{{{1,  2}, {3,  4}, {5,  6}}},
-                {{{ 7,  8},{ 9, 10}, {11, 12}}}};
+                {{{ 7,  8},{ 9, 10}, {11, 12}}}});
             AssertArray(c, ExpectedDataC);
             print(c);
             print("**************");
 
             var d = np.expand_dims(a, axis: 2);
-            var ExpectedDataD = new Object[,,,]
+            var ExpectedDataD = asstring(new Int32[,,,]
             {{{{1,  2}},{{3,  4}},{{5,  6}}},
-             {{{7,  8}},{{9, 10}},{{11, 12}}}};
+             {{{7,  8}},{{9, 10}},{{11, 12}}}});
 
             AssertArray(d, ExpectedDataD);
             print(d);
@@ -5430,43 +5430,43 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_column_stack_1_STRING_TODO()
+        public void test_column_stack_1_STRING()
         {
-            var a = np.array(new Object[] { 1, 2, 3 });
-            var b = np.array(new Object[] { 2, 3, 4 });
+            var a = np.array(new string[] { "1", "2", "3" });
+            var b = np.array(new string[] { "2", "3", "4" });
             var c = np.column_stack(new object[] { a, b });
 
-            AssertArray(c, new Object[,] { { 1, 2 }, { 2, 3 }, { 3, 4 } });
+            AssertArray(c, new string[,] { { "1", "2" }, { "2", "3" }, { "3", "4" } });
             print(c);
         }
 
         [TestMethod]
-        public void test_row_stack_1_STRING_TODO()
+        public void test_row_stack_1_STRING()
         {
-            var a = np.array(new Object[] { 1, 2, 3 });
-            var b = np.array(new Object[] { 2, 3, 4 });
+            var a = np.array(new string[] { "1", "2", "3" });
+            var b = np.array(new string[] { "2", "3", "4" });
             var c = np.row_stack(new object[] { a, b });
 
-            AssertArray(c, new Object[,] { { 1, 2, 3 }, { 2, 3, 4 } });
+            AssertArray(c, new string[,] { { "1", "2", "3" }, { "2", "3", "4" } });
 
             print(c);
         }
 
         [TestMethod]
-        public void test_dstack_1_STRING_TODO()
+        public void test_dstack_1_STRING()
         {
-            var a = np.array(new Object[] { 1, 2, 3 });
-            var b = np.array(new Object[] { 2, 3, 4 });
+            var a = np.array(new string[] { "1", "2", "3" });
+            var b = np.array(new string[] { "2", "3", "4" });
             var c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new Object[,,] { { { 1, 2 }, { 2, 3 }, { 3, 4 } } });
+            AssertArray(c, new string[,,] { { { "1", "2" }, { "2", "3" }, { "3", "4" } } });
             print(c);
 
-            a = np.array(new Object[,] { { 1 }, { 2 }, { 3 } });
-            b = np.array(new Object[,] { { 2 }, { 3 }, { 4 } });
+            a = np.array(new string[,] { { "1" }, { "2" }, { "3" } });
+            b = np.array(new string[,] { { "2" }, { "3" }, { "4" } });
             c = np.dstack(new object[] { a, b });
 
-            AssertArray(c, new Object[,,] { { { 1, 2 } }, { { 2, 3 } }, { { 3, 4 } } });
+            AssertArray(c, new string[,,] { { { "1", "2" } }, { { "2", "3" } }, { { "3", "4" } } });
 
             print(c);
         }
