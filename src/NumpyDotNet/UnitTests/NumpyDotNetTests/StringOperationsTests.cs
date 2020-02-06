@@ -5960,10 +5960,10 @@ namespace NumpyDotNetTests
         #region from IteratorTests
 
         [TestMethod]
-        public void test_nditer_1_STRING_TODO()
+        public void test_nditer_1_STRING()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
-            var b = np.array(new Object[] { 7, 8, 9 });
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
+            var b = np.array(new string[] { "7", "8", "9" });
 
             foreach (var aa in new nditer(a))
             {
@@ -5983,9 +5983,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndindex_1_STRING_TODO()
+        public void test_ndindex_1_STRING()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
 
             foreach (var aa in new ndindex((2, 3)))
             {
@@ -6006,9 +6006,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndenumerate_1_STRING_TODO()
+        public void test_ndenumerate_1_STRING()
         {
-            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Object);
+            var a = np.arange(0.1, 6.1, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
 
             foreach (ValueTuple<npy_intp[], object> aa in new ndenumerate(a))
             {
