@@ -4545,7 +4545,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.nanprod(a, axis: 0);
-            AssertArray(c, new string[] { "1", "8" });
+            AssertArray(c, new string[] { "1", "2" });
             print(c);
 
             var d = np.nanprod(a, axis: 1);
@@ -4923,15 +4923,15 @@ namespace NumpyDotNetTests
         #region from TwoDimBaseTests
 
         [TestMethod]
-        public void test_diag_1_STRING_TODO()
+        public void test_diag_1_STRING()
         {
-            ndarray m = np.arange(9, dtype: np.Float64).astype(np.Object);
+            ndarray m = np.arange(9, dtype: np.Float64).astype(np.Strings);
             var n = np.diag(m);
 
             print(m);
             print(n);
 
-            var ExpectedDataN = new double[,]
+            var ExpectedDataN = asstring(new Int32[,]
                 {{0, 0, 0, 0, 0, 0, 0, 0, 0},
                  {0, 1, 0, 0, 0, 0, 0, 0, 0},
                  {0, 0, 2, 0, 0, 0, 0, 0, 0},
@@ -4940,174 +4940,174 @@ namespace NumpyDotNetTests
                  {0, 0, 0, 0, 0, 5, 0, 0, 0},
                  {0, 0, 0, 0, 0, 0, 6, 0, 0},
                  {0, 0, 0, 0, 0, 0, 0, 7, 0},
-                 {0, 0, 0, 0, 0, 0, 0, 0, 8}};
+                 {0, 0, 0, 0, 0, 0, 0, 0, 8}});
 
             AssertArray(n, ExpectedDataN);
 
-            m = np.arange(9, dtype: np.Float64).reshape(new shape(3, 3)).astype(np.Object);
+            m = np.arange(9, dtype: np.Float64).reshape(new shape(3, 3)).astype(np.Strings);
             n = np.diag(m);
 
             print(m);
             print(n);
-            AssertArray(n, new double[] { 0, 4, 8 });
+            AssertArray(n, new string[] { "0", "4", "8" });
         }
 
         [TestMethod]
-        public void test_diagflat_1_STRING_TODO()
+        public void test_diagflat_1_STRING()
         {
-            ndarray m = np.arange(1, 5, dtype: np.Float64).reshape(new shape(2, 2)).astype(np.Object);
+            ndarray m = np.arange(1, 5, dtype: np.Float64).reshape(new shape(2, 2)).astype(np.Strings);
             var n = np.diagflat(m);
 
             print(m);
             print(n);
 
-            var ExpectedDataN = new double[,]
+            var ExpectedDataN =asstring(new Int32[,]
             {
              {1, 0, 0, 0},
              {0, 2, 0, 0},
              {0, 0, 3, 0},
              {0, 0, 0, 4}
-            };
+            });
             AssertArray(n, ExpectedDataN);
 
-            m = np.arange(1, 3, dtype: np.Float64).astype(np.Object);
+            m = np.arange(1, 3, dtype: np.Float64).astype(np.Strings);
             n = np.diagflat(m, 1);
 
             print(m);
             print(n);
 
-            ExpectedDataN = new double[,]
+            ExpectedDataN = asstring(new Int32[,]
             {
              {0, 1, 0},
              {0, 0, 2},
              {0, 0, 0},
-            };
+            });
 
             AssertArray(n, ExpectedDataN);
 
-            m = np.arange(1, 3, dtype: np.Float64).astype(np.Object);
+            m = np.arange(1, 3, dtype: np.Float64).astype(np.Strings);
             n = np.diagflat(m, -1);
 
             print(m);
             print(n);
 
-            ExpectedDataN = new double[,]
+            ExpectedDataN = asstring(new Int32[,]
             {
              {0, 0, 0},
              {1, 0, 0},
              {0, 2, 0},
-            };
+            });
 
             AssertArray(n, ExpectedDataN);
 
         }
 
         [TestMethod]
-        public void test_fliplr_1_STRING_TODO()
+        public void test_fliplr_1_STRING()
         {
-            ndarray m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            ndarray m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             var n = np.fliplr(m);
 
             print(m);
             print(n);
 
-            AssertArray(n, new Object[,,] { { { 2, 3 }, { 0, 1 } }, { { 6, 7 }, { 4, 5 } } });
+            AssertArray(n, new string[,,] { { { "2", "3" }, { "0", "1" } }, { { "6", "7" }, { "4", "5" } } });
         }
 
         [TestMethod]
-        public void test_flipud_1_STRING_TODO()
+        public void test_flipud_1_STRING()
         {
-            ndarray m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Object);
+            ndarray m = np.arange(8, dtype: np.Int32).reshape(new shape(2, 2, 2)).astype(np.Strings);
             var n = np.flipud(m);
 
             print(m);
             print(n);
 
-            AssertArray(n, new Object[,,] { { { 4, 5 }, { 6, 7 } }, { { 0, 1 }, { 2, 3 } } });
+            AssertArray(n, new string[,,] { { { "4", "5" }, { "6", "7" } }, { { "0", "1" }, { "2", "3" } } });
         }
 
         [TestMethod]
-        public void test_tri_1_STRING_TODO()
+        public void test_tri_1_STRING()
         {
-            ndarray a = np.tri(3, 5, 2, dtype: np.Object);
+            ndarray a = np.tri(3, 5, 2, dtype: np.Strings);
             print(a);
 
-            var ExpectedDataA = new Object[,]
+            var ExpectedDataA = new string[,]
             {
-             {1, 1, 1, 0, 0},
-             {1, 1, 1, 1, 0},
-             {1, 1, 1, 1, 1}
+             {"True", "True", "True", "False",  "False"},
+             {"True", "True", "True", "True",  "False"},
+             {"True", "True", "True", "True", "True"}
             };
             AssertArray(a, ExpectedDataA);
 
             print("***********");
-            ndarray b = np.tri(3, 5, -1, dtype: np.Object);
+            ndarray b = np.tri(3, 5, -1, dtype: np.Strings);
             print(b);
 
-            var ExpectedDataB = new Object[,]
+            var ExpectedDataB = new string[,]
             {
-             {0, 0, 0, 0, 0},
-             {1, 0, 0, 0, 0},
-             {1, 1, 0, 0, 0}
+             {"False", "False", "False", "False", "False"},
+             {"True", "False", "False","False", "False"},
+             {"True", "True", "False", "False","False"}
             };
             AssertArray(b, ExpectedDataB);
         }
 
         [TestMethod]
-        public void test_tril_1_STRING_TODO()
+        public void test_tril_1_STRING()
         {
-            ndarray a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
+            ndarray a = np.array(new string[,] { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" }, { "10", "11", "12" } });
             ndarray b = np.tril(a, -1);
             print(a);
             print("***********");
             print(b);
 
-            var ExpectedDataB = new Object[,]
+            var ExpectedDataB = asstring(new Int32[,]
             {
              {0, 0, 0},
              {4, 0, 0},
              {7, 8, 0},
              {10, 11, 12},
-            };
+            });
             AssertArray(b, ExpectedDataB);
 
         }
 
         [TestMethod]
-        public void test_triu_1_STRING_TODO()
+        public void test_triu_1_STRING()
         {
-            ndarray a = np.array(new Object[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } });
+            ndarray a = np.array(new string[,] { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" }, { "10", "11", "12" } });
             ndarray b = np.triu(a, -1);
             print(a);
             print("***********");
             print(b);
 
-            var ExpectedDataB = new Object[,]
+            var ExpectedDataB = asstring(new Int32[,]
             {
              {1, 2, 3},
              {4, 5, 6},
              {0, 8, 9},
              {0, 0, 12},
-            };
+            });
             AssertArray(b, ExpectedDataB);
 
         }
 
         [TestMethod]
-        public void test_vander_1_STRING_TODO()
+        public void test_vander_1_STRING()
         {
-            var x = np.array(new Object[] { 1, 2, 3, 5 });
+            var x = np.array(new string[] { "1", "2", "3", "5" });
             int N = 3;
             var y = np.vander(x, N);
-            AssertArray(y, new Object[,] { { 1, 1, 1 }, { 4, 2, 1 }, { 9, 3, 1 }, { 25, 5, 1 } });
+            AssertArray(y, asstring(new Int32[,] { { 1, 1, 1 }, { 2, 2, 1 }, { 3, 3, 1 }, { 5, 5, 1 } }));
             print(y);
 
             y = np.vander(x);
-            AssertArray(y, new Object[,] { { 1, 1, 1, 1 }, { 8, 4, 2, 1 }, { 27, 9, 3, 1 }, { 125, 25, 5, 1 } });
+            AssertArray(y, asstring(new Int32[,] { { 1, 1, 1, 1 }, { 2, 2, 2, 1 }, { 3, 3, 3, 1 }, { 5, 5, 5, 1 } }));
             print(y);
 
             y = np.vander(x, increasing: true);
-            AssertArray(y, new Object[,] { { 1, 1, 1, 1 }, { 1, 2, 4, 8 }, { 1, 3, 9, 27 }, { 1, 5, 25, 125 } });
+            AssertArray(y, asstring(new Int32[,] { { 1, 1, 1, 1 }, { 1, 2, 2, 2 }, { 1, 3, 3, 3 }, { 1, 5, 5, 5 } }));
             print(y);
 
             return;
