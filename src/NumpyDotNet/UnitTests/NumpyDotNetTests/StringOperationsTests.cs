@@ -4291,9 +4291,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_roll_forward_STRING_TODO()
+        public void test_roll_forward_STRING()
         {
-            var a = np.arange(10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(10, dtype: np.Int32).astype(np.Strings);
 
             print("A");
             print(a);
@@ -4305,7 +4305,7 @@ namespace NumpyDotNetTests
             print(b);
             print(b.shape);
             print(b.strides);
-            AssertArray(b, new Object[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            AssertArray(b, new string[] { "8", "9", "0", "1", "2", "3", "4", "5", "6", "7" });
             AssertShape(b, 10);
 
             var c = np.roll(b, 2);
@@ -4313,15 +4313,15 @@ namespace NumpyDotNetTests
             print(c);
             print(c.shape);
             print(c.strides);
-            AssertArray(c, new Object[] { 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 });
+            AssertArray(c, new string[] { "6", "7", "8", "9", "0", "1", "2", "3", "4", "5" });
             AssertShape(c, 10);
 
         }
 
         [TestMethod]
-        public void test_roll_backward_STRING_TODO()
+        public void test_roll_backward_STRING()
         {
-            var a = np.arange(10, dtype: np.Int32).astype(np.Object);
+            var a = np.arange(10, dtype: np.Int32).astype(np.Strings);
 
             print("A");
             print(a);
@@ -4333,7 +4333,7 @@ namespace NumpyDotNetTests
             print(b);
             print(b.shape);
             print(b.strides);
-            AssertArray(b, new Object[] { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 });
+            AssertArray(b, new string[] { "2", "3", "4", "5", "6", "7", "8", "9", "0", "1" });
             AssertShape(b, 10);
 
             var c = np.roll(b, -6);
@@ -4341,7 +4341,7 @@ namespace NumpyDotNetTests
             print(c);
             print(c.shape);
             print(c.strides);
-            AssertArray(c, new Object[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            AssertArray(c, new string[] { "8", "9", "0", "1", "2", "3", "4", "5", "6", "7" });
             AssertShape(c, 10);
         }
 
