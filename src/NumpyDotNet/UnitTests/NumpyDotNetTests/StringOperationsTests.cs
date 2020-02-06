@@ -5622,65 +5622,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_kron_1_STRING_TODO()
+        public void test_kron_1_STRING()
         {
 
-            var a = np.kron(new Object[] { 1, 10, 100 }, new Object[] { 5, 6, 7 });
-            AssertArray(a, new Object[] { 5, 6, 7, 50, 60, 70, 500, 600, 700 });
+            var a = np.kron(new string[] { "1", "10", "100" }, new string[] { "5", "6", "7" });
+            AssertArray(a, new string[] { "1", "1", "1", "10", "10", "10", "100", "100", "100" });
             print(a);
-
-            var b = np.kron(new Object[] { 5, 6, 7 }, new Object[] { 1, 10, 100 });
-            AssertArray(b, new Object[] { 5, 50, 500, 6, 60, 600, 7, 70, 700 });
-            print(b);
-
-            var x = np.array(new Object[,] { { 2, 3 }, { 4, 5 } });
-            var y = np.array(new Object[,] { { 5, 6 }, { 7, 8 } });
-
-            var c = np.kron(x, y);
-            AssertArray(c, new Object[,] { { 10, 12, 15, 18 }, { 14, 16, 21, 24 }, { 20, 24, 25, 30 }, { 28, 32, 35, 40 } });
-            print(c);
-            print(c.shape);
-
-            c = np.kron(np.eye(2, dtype: np.Object), np.ones(new shape(2, 2), dtype: np.Object));
-            AssertArray(c, new double[,] { { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } });
-
-
-            x = np.array(new Object[,,] { { { 2, 3, 3 }, { 4, 5, 3 } } });
-            y = np.array(new Object[,,] { { { 5, 6, 6, 6 }, { 7, 8, 6, 6 } } });
-
-            c = np.kron(x, y);
-            AssertArray(c, new Int32[,,] { { { 10, 12, 12, 12, 15, 18, 18, 18, 15, 18, 18, 18 },
-                                           { 14, 16, 12, 12, 21, 24, 18, 18, 21, 24, 18, 18 },
-                                           { 20, 24, 24, 24, 25, 30, 30, 30, 15, 18, 18, 18 },
-                                           { 28, 32, 24, 24, 35, 40, 30, 30, 21, 24, 18, 18 } } });
-            print(c);
-            print(c.shape);
-
-
-            var d = np.kron(np.ones((5, 7, 9, 11), dtype: np.Object), np.ones((3, 4, 6, 8), dtype: np.Object));
-            AssertShape(d, 15, 28, 54, 88);
-            print(d.shape);
+ 
 
         }
 
         [TestMethod]
-        public void test_tile_2_STRING_TODO()
+        public void test_tile_2_STRING()
         {
-            var a = np.array(new Object[,] { { 1, 2 }, { 3, 4 } });
+            var a = np.array(new string[,] { { "1", "2" }, { "3", "4" } });
             var b = np.tile(a, 2);
-            AssertArray(b, new Object[,] { { 1, 2, 1, 2 }, { 3, 4, 3, 4 } });
+            AssertArray(b, new string[,] { { "1", "2", "1", "2" }, { "3", "4", "3", "4" } });
             print(b);
             print("**************");
 
             var c = np.tile(a, new Int32[] { 2, 1 });
-            AssertArray(c, new Object[,] { { 1, 2 }, { 3, 4 }, { 1, 2 }, { 3, 4 } });
+            AssertArray(c, new string[,] { { "1", "2" }, { "3", "4" }, { "1", "2" }, { "3", "4" } });
             print(c);
             print("**************");
 
-            var d = np.array(new Object[] { 1, 2, 3, 4 });
+            var d = np.array(new string[] { "1", "2", "3", "4" });
             var e = np.tile(d, new Int32[] { 4, 1 });
 
-            AssertArray(e, new Object[,] { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } });
+            AssertArray(e, new string[,] { { "1", "2", "3", "4" }, { "1", "2", "3", "4" }, { "1", "2", "3", "4" }, { "1", "2", "3", "4" } });
             print(e);
         }
 
