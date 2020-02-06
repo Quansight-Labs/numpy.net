@@ -6019,8 +6019,8 @@ namespace NumpyDotNetTests
 
         #endregion
 
-  
 
+        #region STRING specific unit tests
 
         [TestMethod]
         public void xxxtest_lexsort_1()
@@ -6028,9 +6028,9 @@ namespace NumpyDotNetTests
             Assert.Fail("need to implement this now");
         }
 
+        #endregion
 
-
-
+        #region helper functions
 
         private string[] asstring(int[] array)
         {
@@ -6056,6 +6056,7 @@ namespace NumpyDotNetTests
             }
             return output;
         }
+
         private string[,,] asstring(int[,,] array)
         {
             string[,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2)];
@@ -6072,6 +6073,7 @@ namespace NumpyDotNetTests
             }
             return output;
         }
+
         private string[,,,] asstring(int[,,,] array)
         {
             string[,,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2), array.GetLength(3)];
@@ -6091,6 +6093,7 @@ namespace NumpyDotNetTests
             }
             return output;
         }
+
         private string[,,,,] asstring(int[,,,,] array)
         {
             string[,,,,] output = new string[array.GetLength(0), array.GetLength(1), array.GetLength(2), array.GetLength(3), array.GetLength(4)];
@@ -6113,5 +6116,7 @@ namespace NumpyDotNetTests
             }
             return output;
         }
+
+        #endregion
     }
 }
