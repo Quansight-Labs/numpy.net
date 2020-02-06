@@ -1950,8 +1950,8 @@ namespace NumpyDotNet
                     adjustedshape.Add(shape[j]);
 
 
-                var kevin = np.arange(dim, dtype: dtype).reshape(adjustedshape);
-                res[i] = kevin;
+                var indices = np.arange(dim, dtype: dtype).reshape(adjustedshape);
+                res[i] = indices;
             }
             return res;
 

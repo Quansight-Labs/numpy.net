@@ -130,7 +130,7 @@ namespace NumpyLib
                 numbytes = NpyArray_MultiplyList(NpyArray_DIMS(newArray), NpyArray_NDIM(newArray));
                 numbytes = (npy_intp)(numbytes * NpyArray_ITEMSIZE(newArray));
 
-                // todo: Kevin - this calculation may not be correct
+                // todo: this calculation may not be correct
                 offset = (npy_intp)(NpyArray_BYTES_Length(self) - NpyArray_BYTES_Length(newArray));
             }
 
