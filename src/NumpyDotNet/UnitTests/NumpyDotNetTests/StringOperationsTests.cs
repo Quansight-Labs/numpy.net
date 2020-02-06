@@ -5874,10 +5874,10 @@ namespace NumpyDotNetTests
         #region from StrideTricksTests
 
         [TestMethod]
-        public void test_broadcast_1_STRING_TODO()
+        public void test_broadcast_1_STRING()
         {
-            var x = np.array(new Object[,] { { 11 }, { 2 }, { 3 } });
-            var y = np.array(new Object[] { 4, 5, 6 });
+            var x = np.array(new string[,] { { "11" }, { "2" }, { "3" } });
+            var y = np.array(new string[] { "4", "5", "6" });
             var b = np.broadcast(x, y);
             Assert.AreEqual(b.shape.iDims.Length, 2);
             Assert.AreEqual(b.shape.iDims[0], 3);
@@ -5897,10 +5897,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_to_1_STRING_TODO()
+        public void test_broadcast_to_1_STRING()
         {
-            var a = np.broadcast_to((Object)5, (4, 4));
-            AssertArray(a, new Object[,] { { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 }, { 5, 5, 5, 5 } });
+            var a = np.broadcast_to("5", (4, 4));
+            AssertArray(a, new string[,] { { "5", "5", "5", "5" }, { "5", "5", "5", "5" }, { "5", "5", "5", "5" }, { "5", "5", "5", "5" } });
             AssertStrides(a, 0, 0);
             print(a);
             print(a.shape);
@@ -5908,8 +5908,8 @@ namespace NumpyDotNetTests
             print("*************");
 
 
-            var b = np.broadcast_to(new Object[] { 1, 2, 3 }, (3, 3));
-            AssertArray(b, new Object[,] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
+            var b = np.broadcast_to(new string[] { "1", "2", "3" }, (3, 3));
+            AssertArray(b, new string[,] { { "1", "2", "3" }, { "1", "2", "3" }, { "1", "2", "3" } });
             AssertStrides(b, 0, SizeOfString);
             print(b);
             print(b.shape);
@@ -5920,10 +5920,10 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_broadcast_arrays_1_STRING_TODO()
+        public void test_broadcast_arrays_1_STRING()
         {
-            var x = np.array(new Object[,] { { 1, 2, 3 } });
-            var y = np.array(new Object[,] { { 4 }, { 5 } });
+            var x = np.array(new string[,] { { "1", "2", "3" } });
+            var y = np.array(new string[,] { { "4" }, { "5" } });
             var z = np.broadcast_arrays(false, new ndarray[] { x, y });
 
             print(z);
@@ -5931,14 +5931,14 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_as_strided_1_STRING_TODO()
+        public void test_as_strided_1_STRING()
         {
-            var y = np.zeros((10, 10), np.Int32).astype(np.Object);
+            var y = np.zeros((10, 10), np.Int32).astype(np.Strings);
             AssertStrides(y, SizeOfString * 10, SizeOfString * 1);
             print(y.strides);
 
             var n = 1000;
-            var a = np.arange(n, dtype: np.Float64).astype(np.Object);
+            var a = np.arange(n, dtype: np.Float64).astype(np.Strings);
 
             var b = np.as_strided(a, (n, n), (0, 8));
 
