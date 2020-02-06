@@ -4154,11 +4154,11 @@ namespace NumpyDotNetTests
         public void test_empty_like_3_OBJECT()
         {
             var a = new Object[,,] { { { 1, 2, 3 }, { 4, 5, 6 } } };
-            var b = np.empty_like(a);
+            var b = np.empty_like(a, dtype: np.Object);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new Object[,,] { { { 0, 0, 99 }, { 0, 88, 0 } } });
+            AssertArray(b, new Object[,,] { { { null, null, 99 }, { null, 88, null } } });
 
             return;
         }

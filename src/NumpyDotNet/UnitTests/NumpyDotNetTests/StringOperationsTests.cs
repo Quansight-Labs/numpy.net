@@ -3914,7 +3914,7 @@ namespace NumpyDotNetTests
             print(condition);
 
             var b = np.extract(condition, arr);
-            AssertArray(b, new string[] { "0", "3", "6", "9" });
+            AssertArray(b, new string[] { "AD", "AE", "BB", "BC" });
             print(b);
         }
 
@@ -4029,11 +4029,11 @@ namespace NumpyDotNetTests
         public void test_empty_like_3_STRING()
         {
             var a = new string[,,] { { { "1", "2", "3" }, { "4", "5", "6" } } };
-            var b = np.empty_like(a);
+            var b = np.empty_like(a, dtype: np.Strings);
             b[0, 0, 2] = 99;
             b[0, 1, 1] = 88;
 
-            AssertArray(b, new string[,,] { { { "0", "0", "99" }, { "0", "88", "0" } } });
+            AssertArray(b, new string[,,] { { { null, null, "99" }, { null, "88", null } } });
 
             return;
         }
@@ -4346,9 +4346,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_rollaxis_STRING_TODO()
+        public void test_ndarray_rollaxis_STRING()
         {
-            var a = np.ones((3, 4, 5, 6), dtype: np.Object);
+            var a = np.ones((3, 4, 5, 6), dtype: np.Strings);
             var b = np.rollaxis(a, 3, 1).shape;
             AssertShape(b, 3, 6, 4, 5);
             print(b);
