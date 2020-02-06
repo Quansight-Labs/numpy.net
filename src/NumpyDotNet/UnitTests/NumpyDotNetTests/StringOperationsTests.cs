@@ -4413,18 +4413,18 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_isscalar_1_STRING_TODO()
+        public void test_isscalar_1_STRING()
         {
 
-            bool a = np.isscalar((Object)3);
-            Assert.AreEqual(true, a);
+            bool a = np.isscalar("3");
+            Assert.AreEqual(false, a);
             print(a);
 
-            bool b = np.isscalar(np.array((Object)3));
+            bool b = np.isscalar(np.array("3"));
             Assert.AreEqual(false, b);
             print(b);
 
-            bool c = np.isscalar(new Object[] { 3 });
+            bool c = np.isscalar(new string[] { "3" });
             Assert.AreEqual(false, c);
             print(c);
 
@@ -4440,37 +4440,37 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_identity_1_STRING_TODO()
+        public void test_identity_1_STRING()
         {
-            ndarray a = np.identity(2, dtype: np.Int32).astype(np.Object);
+            ndarray a = np.identity(2, dtype: np.Int32).astype(np.Strings);
 
             print(a);
             print(a.shape);
             print(a.strides);
 
-            var ExpectedDataA = new Object[2, 2]
+            var ExpectedDataA = new string[2, 2]
             {
-                { 1,0 },
-                { 0,1 },
+                { "1","0" },
+                { "0","1" },
             };
             AssertArray(a, ExpectedDataA);
             AssertShape(a, 2, 2);
             AssertStrides(a, SizeOfString * 2, SizeOfString * 1);
 
-            ndarray b = np.identity(5, dtype: np.Object);
+            ndarray b = np.identity(5, dtype: np.Strings);
 
             print(b);
             print(b.shape);
             print(b.strides);
 
-            var ExpectedDataB = new Int32[5, 5]
+            var ExpectedDataB = asstring( new Int32[5, 5]
             {
                 { 1, 0, 0, 0, 0 },
                 { 0, 1, 0, 0, 0 },
                 { 0, 0, 1, 0, 0 },
                 { 0, 0, 0, 1, 0 },
                 { 0, 0, 0, 0, 1 },
-            };
+            });
             //AssertArray(b, ExpectedDataB);
             AssertShape(b, 5, 5);
             AssertStrides(b, SizeOfString * 5, SizeOfString * 1);
@@ -4478,45 +4478,45 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_array_equal_1_STRING_TODO()
+        public void test_array_equal_1_STRING()
         {
-            var a = np.array_equal(new Object[] { 1, 2 }, new Object[] { 1, 2 });
+            var a = np.array_equal(new string[] { "1", "2" }, new string[] { "1", "2" });
             Assert.AreEqual(true, a);
             print(a);
 
-            var b = np.array_equal(np.array(new Object[] { 1, 2 }), np.array(new Object[] { 1, 2 }));
+            var b = np.array_equal(np.array(new string[] { "1", "2" }), np.array(new string[] { "1", "2" }));
             Assert.AreEqual(true, b);
             print(b);
 
-            var c = np.array_equal(new Object[] { 1, 2 }, new Object[] { 1, 2, 3 });
+            var c = np.array_equal(new string[] { "1", "2" }, new string[] { "1", "2", "3" });
             Assert.AreEqual(false, c);
             print(c);
 
-            var d = np.array_equal(new Object[] { 1, 2 }, new Object[] { 1, 4 });
+            var d = np.array_equal(new string[] { "1", "2" }, new string[] { "1", "4" });
             Assert.AreEqual(false, d);
             print(d);
         }
 
         [TestMethod]
-        public void test_array_equiv_1_STRING_TODO()
+        public void test_array_equiv_1_STRING()
         {
-            var a = np.array_equiv(new Object[] { 1, 2 }, new Object[] { 1, 2 });
+            var a = np.array_equiv(new string[] { "1", "2" }, new string[] { "1", "2" });
             Assert.AreEqual(true, a);
             print(a);
 
-            var b = np.array_equiv(new Object[] { 1, 2 }, new Object[] { 1, 3 });
+            var b = np.array_equiv(new string[] { "1", "2" }, new string[] { "1", "3" });
             Assert.AreEqual(false, b);
             print(b);
 
-            var c = np.array_equiv(new Object[] { 1, 2 }, new Object[,] { { 1, 2 }, { 1, 2 } });
+            var c = np.array_equiv(new string[] { "1", "2" }, new string[,] { { "1", "2" }, { "1", "2" } });
             Assert.AreEqual(true, c);
             print(c);
 
-            var d = np.array_equiv(new Object[] { 1, 2 }, new Object[,] { { 1, 2, 1, 2 }, { 1, 2, 1, 2 } });
+            var d = np.array_equiv(new string[] { "1", "2" }, new string[,] { { "1", "2", "1", "2" }, { "1", "2", "1", "2" } });
             Assert.AreEqual(false, d);
             print(d);
 
-            var e = np.array_equiv(new Object[] { 1, 2 }, new Object[,] { { 1, 2 }, { 1, 3 } });
+            var e = np.array_equiv(new string[] { "1", "2" }, new string[,] { { "1", "2" }, { "1", "3" } });
             Assert.AreEqual(false, e);
             print(e);
         }
