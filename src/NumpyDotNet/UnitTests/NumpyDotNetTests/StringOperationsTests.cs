@@ -4905,51 +4905,16 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_cov_1_STRING_TODO()
+        public void test_cov_1_STRING()
         {
-            var x1 = np.array(new Object[,] { { 0, 2 }, { 1, 1 }, { 2, 0 } }).T;
+            var x1 = np.array(new string[,] { { "0", "2" }, { "1", "1" }, { "2", "0" } }).T;
             print(x1);
 
-            // Note how  increases while  decreases. The covariance matrix shows this clearly:
+            // strings cast to doubles == 0s
 
             var a = np.cov(x1);
-            AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
+            AssertArray(a, new double[,] { { 0, 0 }, { 0, 0 } });
             print(a);
-
-            var x = new Object[] { -21, -1, 43 };
-            var y = new Object[] { 3, 11, 12 };
-            var X = np.stack(new object[] { x, y }, axis: 0);
-            a = np.cov(X);
-            AssertArray(a, new double[,] { { 1072.0, 130.0 }, { 130.0, 24.3333333333333 } });
-            print(a);
-
-
-            var b = np.cov(x, y);
-            AssertArray(b, new double[,] { { 1072.0, 130.0 }, { 130.0, 24.3333333333333 } });
-            print(b);
-
-            var c = np.cov(x);
-            Assert.AreEqual(1072.0, c.GetItem(0));
-            print(c);
-
-            var d = np.cov(X, rowvar: false);
-            AssertArray(d, new double[,] { { 288.0, 144.0, -372.0 }, { 144.0, 72.0, -186.0 }, { -372.0, -186.0, 480.5 } });
-            print(d);
-
-            var e = np.cov(X, rowvar: false, bias: true);
-            AssertArray(e, new double[,] { { 144.0, 72.0, -186.0 }, { 72.0, 36.0, -93.0 }, { -186.0, -93.0, 240.25 } });
-            print(e);
-
-            var f = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 });
-            AssertArray(f, new double[,] { { 128.0, 64.0, -165.333333333333 },
-                                            { 64.0, 32.0, -82.6666666666667 },
-                                            { -165.333333333333, -82.6666666666667, 213.555555555556 }});
-            print(f);
-
-            var g = np.cov(X, rowvar: false, bias: true, fweights: new int[] { 1, 2 }, aweights: new int[] { 1, 2 });
-            AssertArray(g, new double[,] { { 92.16, 46.08, -119.04 }, { 46.08, 23.04, -59.52 }, { -119.04, -59.52, 153.76 } });
-            print(g);
-
             return;
         }
 
