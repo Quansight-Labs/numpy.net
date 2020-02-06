@@ -4363,9 +4363,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_ndarray_moveaxis_STRING_TODO()
+        public void test_ndarray_moveaxis_STRING()
         {
-            var x = np.zeros((3, 4, 5), np.Object);
+            var x = np.zeros((3, 4, 5), np.Strings);
             var b = np.moveaxis(x, 0, -1).shape;
             AssertShape(b, 4, 5, 3);
             print(b);
@@ -4393,20 +4393,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_indices_1_STRING_TODO()
+        public void test_indices_1_STRING()
         {
             var grid = np.indices((2, 3), dtype: np.Int32);
             AssertShape(grid, 2, 2, 3);
             print(grid.shape);
-            AssertArray(grid[0] as ndarray, new Object[,] { { 0, 0, 0 }, { 1, 1, 1 } });
+            AssertArray(grid[0] as ndarray, new Int32[,] { { 0, 0, 0 }, { 1, 1, 1 } });
             print(grid[0]);
-            AssertArray(grid[1] as ndarray, new Object[,] { { 0, 1, 2 }, { 0, 1, 2 } });
+            AssertArray(grid[1] as ndarray, new Int32[,] { { 0, 1, 2 }, { 0, 1, 2 } });
             print(grid[1]);
 
-            var x = np.arange(20, dtype: np.Int32).reshape((5, 4)).astype(np.Object);
+            var x = np.arange(20, dtype: np.Int32).reshape((5, 4)).astype(np.Strings);
 
             var y = x[grid[0], grid[1]];
-            AssertArray(y as ndarray, new Object[,] { { 0, 1, 2 }, { 4, 5, 6 } });
+            AssertArray(y as ndarray, new String[,] { { "0", "1", "2" }, { "4", "5", "6" } });
             print(y);
 
             return;
