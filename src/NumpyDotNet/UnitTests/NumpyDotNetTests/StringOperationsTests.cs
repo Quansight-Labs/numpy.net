@@ -3909,8 +3909,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_extract_1_STRING()
         {
-            var arr = np.arange(12, dtype: np.Int32).reshape((3, 4)).astype(np.Strings);
-            var condition = np.mod(arr, 3) == 0;
+            var arr = np.array(new string[] {"AB", "AC", "AD", "AE", "BB", "BC", "AA" });
+            var condition = arr >= "AD";
             print(condition);
 
             var b = np.extract(condition, arr);
