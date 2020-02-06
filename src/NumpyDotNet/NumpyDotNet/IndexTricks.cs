@@ -118,6 +118,8 @@ namespace NumpyDotNet
 
         private static object nd_grid(Slice[] key, bool Sparse)
         {
+            ValidateKeyData(key);
+
             if (key.Length > 1)
             {
                 List<npy_intp> size = new List<npy_intp>();
@@ -385,6 +387,20 @@ namespace NumpyDotNet
                     }
                 }
     
+
+            }
+        }
+
+        private static void ValidateKeyData(Slice[] key)
+        {
+            foreach (var k in key)
+            {
+                if (k.Start is string)
+                    throw new Exception(string.Format("This function does not support Start values of {0}", k.Start.ToString()));
+                if (k.Stop is string)
+                    throw new Exception(string.Format("This function does not support Stop values of {0}", k.Stop.ToString()));
+                if (k.Step is string)
+                    throw new Exception(string.Format("This function does not support Step values of {0}", k.Step.ToString()));
 
             }
         }

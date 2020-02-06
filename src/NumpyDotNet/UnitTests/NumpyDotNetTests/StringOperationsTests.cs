@@ -5773,136 +5773,86 @@ namespace NumpyDotNetTests
         #region from IndexTricksTests
 
         [TestMethod]
-        public void test_mgrid_1_STRING_TODO()
+        public void test_mgrid_1_STRING()
         {
-            var a = (ndarray)np.mgrid(new Slice[] { new Slice((object)0, (object)5) });
-            print(a);
-            AssertArray(a, new Object[] { 0, 1, 2, 3, 4 });
-            print("************");
+            try
+            {
+                var a = (ndarray)np.mgrid(new Slice[] { new Slice("A", "B") });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var b = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)6) });
-            print(b);
-            AssertArray(b, new Object[] { 0, 1, 2, 3, 4, 5 });
-            print("************");
-
-            var c = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)5), new Slice((Object)0, (Object)5) });
-            print(c);
-
-            var ExpectedCArray = new Object[,,]
-                {{{0, 0, 0, 0, 0},  {1, 1, 1, 1, 1},  {2, 2, 2, 2, 2},  {3, 3, 3, 3, 3},  {4, 4, 4, 4, 4}},
-                 {{0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4},  {0, 1, 2, 3, 4}}};
-            AssertArray(c, ExpectedCArray);
-
-
-            print("************");
-
-            var d = (ndarray)np.mgrid(new Slice[] { new Slice((Object)0, (Object)6), new Slice((Object)0, (Object)6) });
-            print(d);
-            var ExpectedDArray = new Object[,,]
-                {{{0, 0, 0, 0, 0, 0},  {1, 1, 1, 1, 1, 1},  {2, 2, 2, 2, 2, 2},  {3, 3, 3, 3, 3, 3},  {4, 4, 4, 4, 4, 4}, {5, 5, 5, 5, 5, 5}},
-                 {{0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5},  {0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 4, 5}}};
-            AssertArray(d, ExpectedDArray);
-
-            print("************");
-
-            var e = (ndarray)np.mgrid(new Slice[] { new Slice((Object)3, (Object)5), new Slice((Object)4, (Object)6), new Slice((Object)2, (Object)5) });
-            print(e);
-            var ExpectedEArray = new Object[,,,]
-                {
-                    {{{3, 3, 3}, {3, 3, 3}}, {{4, 4, 4}, {4, 4, 4}}},
-                    {{{4, 4, 4}, {5, 5, 5}}, {{4, 4, 4}, {5, 5, 5}}},
-                    {{{2, 3, 4}, {2, 3, 4}}, {{2, 3, 4}, {2, 3, 4}}},
-                };
-            AssertArray(e, ExpectedEArray);
+            }
+   
 
         }
 
         [TestMethod]
-        public void test_ogrid_1_STRING_TODO()
+        public void test_ogrid_1_STRING()
         {
-            var a = (ndarray)np.ogrid(new Slice[] { new Slice((Object)0, (Object)5) });
-            print(a);
-            AssertArray(a, new Object[] { 0, 1, 2, 3, 4 });
-            print("************");
+            try
+            {
+                var a = (ndarray)np.ogrid(new Slice[] { new Slice("A", "B") });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
 
-            var b = (ndarray)np.ogrid(new Slice[] { new Slice((Object)0, (Object)6) });
-            print(b);
-            AssertArray(b, new Object[] { 0, 1, 2, 3, 4, 5 });
-            print("************");
-
-            var c = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)0, (Object)5), new Slice((Object)0, (Object)5) });
-            print(c);
-            AssertArray(c[0], new Object[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } });
-            AssertArray(c[1], new Object[,] { { 0, 1, 2, 3, 4 } });
-
-
-            print("************");
-
-            var d = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)0, (Object)6), new Slice((Object)0, (Object)6) });
-            print(d);
-            AssertArray(d[0], new Object[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-            AssertArray(d[1], new Object[,] { { 0, 1, 2, 3, 4, 5 } });
-
-            print("************");
-
-            var e = (ndarray[])np.ogrid(new Slice[] { new Slice((Object)3, (Object)5), new Slice((Object)4, (Object)6), new Slice((Object)2, (Object)5) });
-            print(e);
-            AssertArray(e[0], new Object[,,] { { { 3 } }, { { 4 } } });
-            AssertArray(e[1], new Object[,,] { { { 4 }, { 5 } } });
-            AssertArray(e[2], new Object[,,] { { { 2, 3, 4 } } });
+            }
 
         }
 
         [TestMethod]
-        public void test_fill_diagonal_1_STRING_TODO()
+        public void test_fill_diagonal_1_STRING()
         {
-            var a = np.zeros((3, 3), np.Int32).astype(np.Object);
+            var a = np.zeros((3, 3), np.Int32).astype(np.Strings);
             np.fill_diagonal(a, 5);
-            AssertArray(a, new Object[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } });
+            AssertArray(a, asstring(new Int32[,] { { 5, 0, 0 }, { 0, 5, 0 }, { 0, 0, 5 } }));
             print(a);
 
-            a = np.zeros((3, 3, 3, 3), np.Int32).astype(np.Object);
+            a = np.zeros((3, 3, 3, 3), np.Int32).astype(np.Strings);
             np.fill_diagonal(a, 4);
-            AssertArray(a[0, 0] as ndarray, new Object[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a[0, 0] as ndarray, asstring(new Int32[,] { { 4, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } }));
             print(a[0, 0]);
-            AssertArray(a[1, 1] as ndarray, new Object[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } });
+            AssertArray(a[1, 1] as ndarray, asstring(new Int32[,] { { 0, 0, 0 }, { 0, 4, 0 }, { 0, 0, 0 } }));
             print(a[1, 1]);
-            AssertArray(a[2, 2] as ndarray, new Object[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } });
+            AssertArray(a[2, 2] as ndarray, asstring(new Int32[,] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 4 } }));
             print(a[2, 2]);
 
             // tall matrices no wrap
-            a = np.zeros((5, 3), np.Int32).astype(np.Object);
+            a = np.zeros((5, 3), np.Int32).astype(np.Strings);
             np.fill_diagonal(a, 4);
-            AssertArray(a, new Object[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } });
+            AssertArray(a, asstring(new Int32[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 0, 0, 0 } }));
             print(a);
 
             // tall matrices wrap
-            a = np.zeros((5, 3), np.Int32).astype(np.Object);
+            a = np.zeros((5, 3), np.Int32).astype(np.Strings);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new Object[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } });
+            AssertArray(a, asstring(new Int32[,] { { 4, 0, 0 }, { 0, 4, 0 }, { 0, 0, 4 }, { 0, 0, 0 }, { 4, 0, 0 } }));
             print(a);
 
             // wide matrices wrap
-            a = np.zeros((3, 5), np.Int32).astype(np.Object);
+            a = np.zeros((3, 5), np.Int32).astype(np.Strings);
             np.fill_diagonal(a, 4, wrap: true);
-            AssertArray(a, new Object[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } });
+            AssertArray(a, asstring(new Int32[,] { { 4, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 0, 0, 4, 0, 0 } }));
             print(a);
 
 
         }
 
         [TestMethod]
-        public void test_diag_indices_1_STRING_TODO()
+        public void test_diag_indices_1_STRING()
         {
             var di = np.diag_indices(4);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
             print(di);
 
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             a[di] = 100;
 
-            AssertArray(a, new Object[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } });
+            AssertArray(a, asstring(new Int32[,] { { 100, 1, 2, 3 }, { 4, 100, 6, 7 }, { 8, 9, 100, 11 }, { 12, 13, 14, 100 } }));
             print(a);
 
             return;
@@ -5910,9 +5860,9 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_diag_indices_from_1_STRING_TODO()
+        public void test_diag_indices_from_1_STRING()
         {
-            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Object);
+            var a = np.arange(16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
             var di = np.diag_indices_from(a);
             AssertArray(di[0], new Int32[] { 0, 1, 2, 3 });
             AssertArray(di[1], new Int32[] { 0, 1, 2, 3 });
