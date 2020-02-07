@@ -176,10 +176,7 @@ namespace NumpyDotNet {
                 {
                     typeName += this.ElementSize.ToString();
                 }
-                if (NpyDefs.IsDatetime(this.TypeNum))
-                {
-                    typeName = AppendDateTimeTypestr(typeName);
-                }
+     
                 return typeName;
             }
         }

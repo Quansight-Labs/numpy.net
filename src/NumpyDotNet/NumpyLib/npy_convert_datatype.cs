@@ -255,11 +255,6 @@ namespace NumpyLib
             {
                 return false;
             }
-            if (fromtype == NPY_TYPES.NPY_DATETIME || fromtype == NPY_TYPES.NPY_TIMEDELTA ||
-                totype == NPY_TYPES.NPY_DATETIME || totype == NPY_TYPES.NPY_TIMEDELTA)
-            {
-                return false;
-            }
             if (totype == NPY_TYPES.NPY_OBJECT)
             {
                 return true;

@@ -679,30 +679,6 @@ namespace NumpyDotNetTests
                     }
   
 
-                // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    {
-                        UInt64[] bdata = new UInt64[dataLen];
-
-                        for (int i = 0; i < bdata.Length; i++)
-                        {
-                            if (UseFillData)
-                            {
-                                bdata[i] = (UInt64)FillData;
-                            }
-                            else
-                            {
-                                bdata[i] = (UInt64)(i + ArrayDataAdjust);
-                            }
-                        }
-
-                        data = new VoidPtr(bdata);
-                        break;
-                    }
-
-
-                // not sure about these yet.  Not really supported
                 case NPY_TYPES.NPY_COMPLEX:
                     {
                         UInt64[] bdata = new UInt64[dataLen];

@@ -3127,9 +3127,6 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_BIGINT:
                     return NPY_TYPES.NPY_BIGINT;
 
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    throw new NotImplementedException("not handling DateTime values yet");
 
                 default:
                     return intype;

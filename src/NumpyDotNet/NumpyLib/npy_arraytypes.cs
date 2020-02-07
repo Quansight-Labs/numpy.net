@@ -132,15 +132,6 @@ namespace NumpyLib
                 Npy_INCREF(ret);
             }
 
-            /* Make sure dtype metadata is initialized for DATETIME */
-            if (NpyTypeNum_ISDATETIME((NPY_TYPES)type))
-            {
-                if (ret.dtinfo == null)
-                {
-                    _init_datetime_descr(ret);
-                }
-            }
-
             return ret;
         }
 

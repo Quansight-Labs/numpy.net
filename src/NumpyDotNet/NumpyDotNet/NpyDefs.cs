@@ -298,9 +298,6 @@ namespace NumpyDotNet {
         {
             switch (type)
             {
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    return true;
                 default:
                     return false;
             }

@@ -553,10 +553,6 @@ namespace NumpyLib
         {
             return NpyTypeNum_ISFLEXIBLE(NpyArray_TYPE(arr));
         }
-        internal static bool NpyArray_ISDATETIME(NpyArray arr)
-        {
-            return NpyTypeNum_ISDATETIME(NpyArray_TYPE(arr));
-        }
         internal static bool NpyArray_ISUSERDEF(NpyArray arr)
         {
             return NpyTypeNum_ISUSERDEF(NpyArray_TYPE(arr));

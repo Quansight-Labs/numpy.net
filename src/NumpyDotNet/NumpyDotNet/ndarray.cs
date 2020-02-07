@@ -1369,8 +1369,6 @@ namespace NumpyDotNet
                 {
                     case NPY_TYPES.NPY_OBJECT:
                     case NPY_TYPES.NPY_STRING:
-                    case NPY_TYPES.NPY_DATETIME:
-                    case NPY_TYPES.NPY_TIMEDELTA:
                         return false;
                     default:
                         return true;

@@ -110,9 +110,6 @@ namespace NumpyLib
         NPY_OBJECT,
         NPY_STRING,
 
-        NPY_DATETIME,
-        NPY_TIMEDELTA,
-
         NPY_NTYPES,
         NPY_NOTYPE,
         NPY_USERDEF = 256,      /* leave room for characters */
@@ -391,20 +388,6 @@ namespace NumpyLib
             {
                 //case NPY_TYPES.NPY_STRING:
                 //    return true;
-
-                default:
-                    return false;
-            }
-
-        }
-
-        internal static bool NpyTypeNum_ISDATETIME(NPY_TYPES type)
-        {
-            switch (type)
-            {
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    return true;
 
                 default:
                     return false;

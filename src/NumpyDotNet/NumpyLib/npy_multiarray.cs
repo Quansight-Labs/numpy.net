@@ -1240,14 +1240,6 @@ namespace NumpyLib
                 return typenum1 == typenum2 && _equivalent_subarrays(typ1.subarray, typ2.subarray);
             }
   
-            if (typenum1 == NPY_TYPES.NPY_DATETIME
-                || typenum1 == NPY_TYPES.NPY_DATETIME
-                || typenum2 == NPY_TYPES.NPY_TIMEDELTA
-                || typenum2 == NPY_TYPES.NPY_TIMEDELTA)
-            {
-                return ((typenum1 == typenum2)
-                        && _equivalent_units(typ1.dtinfo, typ2.dtinfo));
-            }
             return typ1.kind == typ2.kind;
         }
 

@@ -697,19 +697,8 @@ namespace NumpyDotNet
             var slice4 = BuildSliceArray(new Slice(null), N);
 
             dtype otype = f1.Dtype;
-            if (otype.TypeNum == NPY_TYPES.NPY_DATETIME)
-            {
-                // the timedelta dtype with the same unit information
-                //otype = np.dtype(otype.name.replace('datetime', 'timedelta'))
-                // view as timedelta to allow addition
-                //f1 = f1.view(otype);
-                throw new TypeError("We don't support DateTime");
-            }
-            else if (otype.TypeNum == NPY_TYPES.NPY_TIMEDELTA)
-            {
-                throw new TypeError("We don't support TimeDelta");
-            }
-            else if (f1.IsInexact)
+    
+            if (f1.IsInexact)
             {
                 ;
             }
