@@ -1083,7 +1083,71 @@ class ArrayCreationTests(unittest.TestCase):
         d = np.concatenate((a,a,a), axis=-2)
         print(d)
 
+    def test_newaxis_ufunc_1(self):
 
+        x = np.arange(0, 4, 1, float)
+        y = x.reshape(4,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(4,1,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(4,1,1,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(1,4,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(1,4,1, 1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+    def test_newaxis_ufunc_2(self):
+
+        x = np.arange(0, 4, 1, float).reshape(2,2);
+        y = x.reshape(2,2,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(2,2,1,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(2,2,1,1,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(1,2,2,1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
+
+        y =  x.reshape(1,2,2,1, 1) * 4
+        z = x + y
+        print(z.shape)
+        print(z)
+        print("*************")
 
 if __name__ == '__main__':
     unittest.main()
