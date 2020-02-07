@@ -170,9 +170,7 @@ namespace NumpyDotNet {
                 }
 
                 string ret = String.Format("{0}{1}{2}", (char)endian, (char)this.Kind, size);
-                if (this.Type == NPY_TYPECHAR.NPY_DATETIMELTR) {
-                    ret = AppendDateTimeTypestr(ret);
-                }
+     
                 return ret;
             }
         }

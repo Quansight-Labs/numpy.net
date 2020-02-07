@@ -155,69 +155,6 @@ namespace NumpyDotNet {
     }
 
 
-    /// <summary>
-    /// A package of utilities for dealing with Python
-    /// </summary>
-    internal static class NpyUtil_Python
-    {
-        internal static bool IsIntegerScalar(object o) {
-            return (o is int || o is BigInteger);
-        }
-
-        internal static bool IsTupleOfIntegers(object o) {
-            PythonTuple t = o as PythonTuple;
-            if (t == null) {
-                return false;
-            }
-            foreach (object item in t) {
-                if (!IsIntegerScalar(item)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        internal static PythonTuple ToPythonTuple(npy_intp[] array) {
-            int n = array.Length;
-            object[] vals = new object[n];
-            // Convert to Python types
-            for (int i = 0; i < n; i++) {
-                long v = array[i];
-                if (v < int.MinValue || v > int.MaxValue) {
-                    vals[i] = new BigInteger(v);
-                } else {
-                    vals[i] = (int)v;
-                }
-            }
-            // Make the tuple
-            return new PythonTuple(vals);
-        }
-
-        internal static object ToPython(long l) {
-            if (l < int.MinValue || l > int.MaxValue) {
-                return new BigInteger(l);
-            } else {
-                return (int)l;
-            }
-        }
-
-        internal static object ToPython(UInt64 l) {
-            if (l > int.MaxValue) {
-                return new BigInteger(l);
-            } else {
-                return (int)l;
-            }
-        }
-
-        internal static object ToPython(UInt32 l) {
-            if (l > int.MaxValue) {
-                return new BigInteger(l);
-            } else {
-                return (int)l;
-            }
-        }
-    }
-
 
     internal static class NpyUtil_ArgProcessing {
 
@@ -248,32 +185,6 @@ namespace NumpyDotNet {
             else if (o is int) return (int)o;
             else return Convert.ToInt32(o);
         }
-
-        internal static long LongConverter(Object o) {
-            if (o == null) return 0;
-            else return Convert.ToInt64(o);
-        }
-
-        /// <summary>
-        /// Converts an input sequence or scalar to a long[].  Equivalent to
-        /// PyArray_IntpFromSequence.
-        /// </summary>
-        /// <param name="o">Sequence or scalar integer value</param>
-        /// <returns>Array of long values</returns>
-        internal static npy_intp[] IntArrConverter(Object o)
-        {
-            if (o == null) return null;
-            else if (o is IEnumerable<Object>)
-            {
-                return ((IEnumerable<Object>)o).Select(x => IntPConverter(x)).ToArray();
-            }
-            else
-            {
-                return new npy_intp[1] { IntConverter(o) };
-            }
-        }
-
-
 
         internal static int AxisConverter(object o, int dflt = NpyDefs.NPY_MAXDIMS)
         {
@@ -353,97 +264,6 @@ namespace NumpyDotNet {
             }
         }
 
-
-        internal static npy_intp[] IntListConverter(IEnumerable<object> args)
-        {
-            npy_intp[] result = new npy_intp[args.Count()];
-            int i = 0;
-            foreach (object arg in args)
-            {
-                result[i++] = IntConverter(arg);
-            }
-            return result;
-        }
-
-
-        internal static Object[] BuildArgsArray(Object[] posArgs, String[] kwds, IDictionary<object, object> namedArgs) {
-            // For some reason the name of the attribute can only be access via ToString
-            // and not as a key so we fix that here.
-            if (namedArgs == null) {
-                return new Object[kwds.Length];
-            }
-
-            Dictionary<String, Object> argsDict = namedArgs
-                .Select(kvPair => new KeyValuePair<String, Object>(kvPair.Key.ToString(), kvPair.Value))
-                .ToDictionary((kvPair => kvPair.Key), (kvPair => kvPair.Value));
-
-            // The result, filled in as we go.
-            Object[] args = new Object[kwds.Length];
-            int i;
-
-            // Copy in the position arguments.
-            for (i = 0; i < posArgs.Length; i++) {
-                if (argsDict.ContainsKey(kwds[i])) {
-                    throw new ArgumentException(String.Format("Argument '{0}' is specified both positionally and by name.", kwds[i]));
-                }
-                args[i] = posArgs[i];
-            }
-
-            // Now insert any named arguments into the correct position.
-            for (i = posArgs.Length; i < kwds.Length; i++) {
-                if (argsDict.TryGetValue(kwds[i], out args[i])) {
-                    argsDict.Remove(kwds[i]);
-                } else {
-                    args[i] = null;
-                }
-            }
-            if (argsDict.Count > 0) {
-                throw new ArgumentTypeException("Unknown named arguments were specified.");
-            }
-            return args;
-        }
-
-
-        internal static NPY_SORTKIND SortkindConverter(string kind) {
-            if (kind == null) {
-                return NPY_SORTKIND.NPY_QUICKSORT;
-            }
-            if (kind.Length < 1) {
-                throw new ArgumentException("Sort kind string must be at least length 1");
-            }
-            switch (kind[0]) {
-                case 'q':
-                case 'Q':
-                    return NPY_SORTKIND.NPY_QUICKSORT;
-                case 'h':
-                case 'H':
-                    return NPY_SORTKIND.NPY_HEAPSORT;
-                case 'm':
-                case 'M':
-                    return NPY_SORTKIND.NPY_MERGESORT;
-                default:
-                    throw new ArgumentException(String.Format("{0} is an unrecognized kind of SortedDictionary", kind));
-            }
-        }
-
-        internal static NPY_SEARCHSIDE SearchsideConverter(string side) {
-            if (side == null) {
-                return NPY_SEARCHSIDE.NPY_SEARCHLEFT;
-            }
-            if (side.Length < 1) {
-                throw new ArgumentException("Expected nonexpty string for keyword 'side'");
-            }
-            switch (side[0]) {
-                case 'l':
-                case 'L':
-                    return NPY_SEARCHSIDE.NPY_SEARCHLEFT;
-                case 'r':
-                case 'R':
-                    return NPY_SEARCHSIDE.NPY_SEARCHRIGHT;
-                default:
-                    throw new ArgumentException(String.Format("'{0}' is an InvalidCastException value for keyword 'side'", side));
-            }
-        }
 
         internal static ndarray[] ConvertToCommonType(IEnumerable<object> objs) {
             // Determine the type and size;

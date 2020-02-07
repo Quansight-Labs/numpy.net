@@ -255,10 +255,6 @@ namespace NumpyLib
             return numpyinternal.NpyArrayAccess_GetDescrField(descr, fieldName, ref pField);
         }
 
-        public static string NpyArrayAccess_GetBufferFormatString(NpyArray arr)
-        {
-            return numpyinternal.NpyArrayAccess_GetBufferFormatString(arr);
-        }
 
         public static void NpyArrayAccess_DescrDestroyNames(List<string> names, int n)
         {
@@ -282,25 +278,6 @@ namespace NumpyLib
 
         #region npy_buffer
 
-        public static int npy_buffer_format_string(NpyArray_Descr descr, npy_tmp_string_t str, NpyArray arr, ref size_t offset,  ref char active_byteorder)
-        {
-            //return numpyinternal.npy_buffer_format_string(descr, str, arr, ref offset, ref active_byteorder);
-
-            // not currently supporting this
-            throw new NotImplementedException();
-        }
-        public static int npy_append_char(npy_tmp_string_t s, char c)
-        {
-            //return numpyinternal.npy_append_char(s, c);
-            // not currently supporting this
-            throw new NotImplementedException();
-        }
-        public static int npy_append_str(npy_tmp_string_t s, string c)
-        {
-            //return numpyinternal.npy_append_str(s, c);
-            // not currently supporting this
-            throw new NotImplementedException();
-        }
         public static int npy_array_getsegcount(NpyArray self, ref size_t lenp)
         {
             return numpyinternal.npy_array_getsegcount(self, ref lenp);
@@ -438,14 +415,6 @@ namespace NumpyLib
 
 #endregion
 
-#region npy_conversion_utils
-
-        public static NPY_TYPES NpyArray_TypestrConvert(int itemsize, NPY_TYPECHAR gentype)
-        {
-            return numpyinternal.NpyArray_TypestrConvert(itemsize, gentype);
-        }
-
-#endregion
 
 #region npy_convert
 
@@ -714,24 +683,6 @@ namespace NumpyLib
  
 #endregion
 
-#region npy_datetime
-
-        public static npy_datetime NpyArray_DatetimeStructToDatetime(NPY_DATETIMEUNIT fr, npy_datetimestruct d)
-        {
-            return numpyinternal.NpyArray_DatetimeStructToDatetime(fr, d);
-        }
-
-        public static void NpyArray_DatetimeToDatetimeStruct(npy_datetime val, NPY_DATETIMEUNIT fr, npy_datetimestruct result)
-        {
-            numpyinternal.NpyArray_DatetimeToDatetimeStruct(val, fr, result);
-        }
-
-        public static void NpyArray_TimedeltaToTimedeltaStruct(npy_timedelta val, NPY_DATETIMEUNIT fr, npy_timedeltastruct result)
-        {
-            numpyinternal.NpyArray_TimedeltaToTimedeltaStruct(val, fr, result);
-        }
-
-#endregion
 
 #region npy_descriptor
 
@@ -815,10 +766,7 @@ namespace NumpyLib
         {
             return numpyinternal.NpyArray_DescrNamesCopy(names);
         }
-        public static NpyArray_DateTimeInfo NpyArray_DateTimeInfoNew(string units, int num, int den, int events)
-        {
-            return numpyinternal.NpyArray_DateTimeInfoNew(units, num, den, events);
-        }
+
         public static bool npy_arraydescr_isnative(NpyArray_Descr self)
         {
             return numpyinternal.npy_arraydescr_isnative(self);

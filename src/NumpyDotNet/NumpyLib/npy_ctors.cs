@@ -1329,11 +1329,6 @@ namespace NumpyLib
         }
 
 
-        internal static int NpyArray_StridedCopyInto(NpyArray dest, NpyArray src)
-        {
-            return _array_copy_into(dest, src, true, true);
-        }
-
         internal static void npy_byte_swap_vector(VoidPtr p, npy_intp n, int size)
         {
             _strided_byte_swap(p, (npy_intp)size, n, size);
@@ -1716,32 +1711,6 @@ namespace NumpyLib
             }
             return retval;
         }
-
-        /*
-         * Like ceil(value), but check for overflow.
-         *
-         * Return 0 on success, -1 on failure. In case of failure, set a PyExc_Overflow
-         * exception
-         */
-        static npy_intp  _arange_safe_ceil_to_intp(double value)
-        {
-            double ivalue;
-
-            ivalue = Math.Ceiling(value);
-            /* condition inverted to handle NaN */
-            if (ivalue == double.NaN)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "arange: cannot compute length");
-                return -1;
-            }
-            if (!(npy_defs.NPY_MIN_INTP <= ivalue && ivalue <= npy_defs.NPY_MAX_INTP))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_OverflowError, "arange: overflow while computing length");
-                return -1;
-            }
-
-            return (npy_intp)ivalue;
-        }
-  
+        
     }
 }

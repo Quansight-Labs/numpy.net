@@ -41,7 +41,6 @@ namespace NumpyDotNet
 {
     public partial class numpy
     {
-        public static string __version__ = "0.0.1";
         public static bool _isNumpyLibraryInitialized = false;
 
         public static bool InitializeNumpyLibrary()

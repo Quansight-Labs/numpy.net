@@ -1094,71 +1094,7 @@ namespace NumpyLib
             return null;
         }
 
-        /*
-         * Revert a one dimensional array in-place
-         *
-         * Return 0 on success, other value on failure
-         */
-
-        static int _npyarray_revert(NpyArray ret)
-        {
-            npy_intp length, i, os;
-            NpyArray_CopySwapFunc copyswap;
-            VoidPtr tmp = null;
-            VoidPtr sw1;
-            VoidPtr sw2;
-            VoidPtr op;
-
-            length = NpyArray_DIM(ret, 0);
-            copyswap = NpyArray_DESCR(ret).f.copyswap;
-
-            tmp = NpyDataMem_NEW(ret.descr.type_num, (ulong)NpyArray_ITEMSIZE(ret));
-            if (tmp == null)
-            {
-                return -1;
-            }
-
-            os = NpyArray_ITEMSIZE(ret);
-            op = new VoidPtr(ret);
-            sw1 = new VoidPtr(op);
-            sw2 = new VoidPtr(op);
-            sw2.data_offset += (length - 1) * os;
-
-            if (NpyArray_ISFLEXIBLE(ret) || NpyArray_ISOBJECT(ret))
-            {
-                for (i = 0; i < length / 2; i++)
-                {
-                    memmove(tmp,0, sw1, 0, os);
-                    copyswap(tmp, null,  false, null);
-
-
-                    memmove(sw1, 0, sw2, 0, os);
-                    copyswap(sw1, null, false, null);
-
-
-                    memmove(sw2, 0, tmp, 0, os);
-                    copyswap(sw2, null, false, null);
-                    copyswap(sw2, null, false, null);
-
-                    sw1.data_offset += os;
-                    sw2.data_offset -= os;
-                }
-            }
-            else
-            {
-                for (i = 0; i < length / 2; i++)
-                {
-                    memcpy(tmp, sw1, os);
-                    memcpy(sw1, sw2, os);
-                    memcpy(sw2, tmp, os);
-                    sw1.data_offset += os;
-                    sw2.data_offset -= os;
-                }
-            }
-
-            return 0;
-        }
-
+   
         internal static NpyArray new_array_for_sum(NpyArray ap1, NpyArray ap2,  int nd, npy_intp []dimensions, NPY_TYPES typenum)
         {
             int tmp;
@@ -1189,7 +1125,6 @@ namespace NumpyLib
 
         enum Endianess
         {
-            NPY_CPU_UNKNOWN_ENDIAN,
             NPY_CPU_LITTLE,
             NPY_CPU_BIG,
         }
@@ -1324,42 +1259,6 @@ namespace NumpyLib
             return;
         }
 
-
-        internal static void NpyArray_CopyTo2(NpyArray dst, NpyArray src, NPY_CASTING casting, NpyArray wheremask_in)
-        {
-            NpyArray wheremask = null;
-
-            if (wheremask_in != null)
-            {
-                /* Get the boolean where mask */
-                NpyArray_Descr dtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
-                if (dtype == null)
-                {
-                    goto fail;
-                }
-                wheremask = NpyArray_FromArray(wheremask_in, dtype, NPYARRAYFLAGS.NPY_DEFAULT);
-                if (wheremask == null)
-                {
-                    goto fail;
-                }
-            }
-
-            if (NpyArray_AssignArray(dst, src, wheremask, casting) < 0)
-            {
-                goto fail;
-            }
-
-            Npy_XDECREF(src);
-            Npy_XDECREF(wheremask);
-
-            return;
-
-            fail:
-            Npy_XDECREF(src);
-            Npy_XDECREF(wheremask);
-            return;
-        }
-
         static bool _equivalent_fields(NpyDict field1, NpyDict field2)
         {
             NpyDict_Iter pos = new NpyDict_Iter();
@@ -1427,20 +1326,6 @@ namespace NumpyLib
             }
 
             return NpyArray_EquivTypes(sub1._base, sub2._base);
-        }
-
-        /* compare the metadata for two date-times
-         * return 1 if they are the same, or 0 if not
-         */
-        static bool _equivalent_units(NpyArray_DateTimeInfo info1, NpyArray_DateTimeInfo info2)
-        {
-            /* Same meta object */
-            return ((info1 == info2)
-                    || ((info1._base == info2._base)
-                    && (info1.num == info2.num)
-                    && (info1.den == info2.den)
-                    && (info1.events == info2.events)));
-
         }
 
         static bool _signbit_set(NpyArray arr)

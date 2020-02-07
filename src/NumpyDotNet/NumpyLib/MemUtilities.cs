@@ -227,11 +227,6 @@ namespace NumpyLib
             return;
         }
 
-        private static void NpyArray_free(NpyArray_DateTimeInfo dtinfo)
-        {
-            return;
-        }
-
         private static void NpyArray_free(npy_intp[] shape_dims)
         {
             return;

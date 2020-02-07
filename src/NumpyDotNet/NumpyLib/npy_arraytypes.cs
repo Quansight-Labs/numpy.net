@@ -135,23 +135,7 @@ namespace NumpyLib
             return ret;
         }
 
-        static void _init_datetime_descr(NpyArray_Descr descr)
-        {
-            NpyArray_DateTimeInfo dt_data;
-
-            dt_data = new NpyArray_DateTimeInfo();
-            dt_data._base = NPY_DATETIMEUNIT.NPY_FR_us;
-            dt_data.num = 1;
-            dt_data.den = 1;
-            dt_data.events = 1;
-
-            /* FIXME
-             * There is no error check here and no way to indicate an error
-             * until the metadata turns up NULL.
-             */
-            descr.dtinfo = dt_data;
-        }
-
+   
         /************************************************************
         * A struct used by PyArray_CreateSortedStridePerm, new in 1.7.
         ************************************************************/

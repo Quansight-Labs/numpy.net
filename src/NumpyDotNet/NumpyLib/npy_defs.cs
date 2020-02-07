@@ -80,12 +80,8 @@ namespace NumpyLib
         NPY_DECIMALLTR = '$',
         NPY_COMPLEXLTR = 'c',
         NPY_BIGINTLTR = 'q',
-        NPY_CDOUBLELTR = 'D',
-        NPY_CLONGDOUBLELTR = 'G',
         NPY_OBJECTLTR = 'O',
         NPY_STRINGLTR = 'S',
-        NPY_DATETIMELTR = 'M',
-        NPY_TIMEDELTALTR = 'm',
     };
 
     public enum NPY_TYPES : int
@@ -246,16 +242,6 @@ namespace NumpyLib
 
     internal partial class numpyinternal
     {
-
-
-        internal static npy_intp ConvertNpyIntpValue(object val)
-        {
-#if NPY_INTP_64
-            return Convert.ToInt64(val);
-#else
-            return Convert.ToInt32(val);
-#endif
-        }
 
         internal static bool Validate(NpyArray arr)
         {

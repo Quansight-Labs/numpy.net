@@ -287,23 +287,7 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static string NpyArrayAccess_GetBufferFormatString(NpyArray arr)
-        {
-            Debug.Assert(Validate(arr));
-
-            npy_tmp_string_t fmt = new npy_tmp_string_t() { allocated = 0, pos=  0, s = null };
-
-            char active_byte_order = '0';
-            ulong offset = 0;
-            if (npy_buffer_format_string(NpyArray_DESCR(arr), fmt, arr, ref offset, ref active_byte_order) != 0)
-            {
-                return null;
-            }
-            npy_append_char(fmt, '\0');
-
-            return fmt.s;
-        }
-
+ 
         internal static void NpyArrayAccess_DescrDestroyNames(List<string> names, int n)
         {
             for (int i = 0; i < n; i++)
@@ -369,20 +353,6 @@ namespace NumpyLib
             return nw;
         }
 
-        internal static int NpyArrayAccess_SetDateTimeInfo(NpyArray_Descr descr, string units, int num, int den, int events)
-        {
-            NpyArray_DateTimeInfo info = NpyArray_DateTimeInfoNew(units, num, den, events);
-            if (info == null)
-            {
-                return -1;
-            }
-            if (descr.dtinfo != null)
-            {
-                NpyArray_free(descr.dtinfo);
-            }
-            descr.dtinfo = info;
-            return 0;
-        }
 
         internal static VoidPtr NpyArrayAccess_IterGoto1D(NpyArrayIterObject it, npy_intp index)
         {

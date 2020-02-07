@@ -43,17 +43,7 @@ using npy_intp = System.Int32;
 #endif
 namespace NumpyLib
 {
-    public class NpyArray_DateTimeInfo
-    {
-        public NPY_DATETIMEUNIT _base;
-        public int num;
-        public int den;      /*
-                   * Converted to 1 on input for now -- an
-                   * input-only mechanism
-                   */
-        public int events;
-    };
-
+ 
     public  class NpyArray_Descr : NpyObject_HEAD
     {
    
@@ -102,11 +92,6 @@ namespace NumpyLib
                               * basic data descriptor
                               */
 
-        public NpyArray_DateTimeInfo
-        dtinfo;             /*
-                             * Non-null if this type is array of
-                             * DATETIME or TIMEDELTA
-                             */
 
     }
     [Flags]
@@ -188,12 +173,7 @@ namespace NumpyLib
             {
                 newDescr.subarray = NpyArray_DupSubarray(origDescr.subarray);
             }
-
-            if (newDescr.dtinfo != null)
-            {
-                newDescr.dtinfo = NpyArray_DupDateTimeInfo(origDescr.dtinfo);
-            }
-
+ 
             /* Allocate the interface wrapper object. */
             if (false == NpyInterface_DescrNewFromWrapper(Npy_INTERFACE(origDescr), newDescr, ref newDescr.nob_interface))
             {
@@ -263,11 +243,7 @@ namespace NumpyLib
                 NpyArray_DestroySubarray(self.subarray);
                 self.subarray = null;
             }
-            if (self.dtinfo != null)
-            {
-                NpyArray_free(self.dtinfo);
-            }
-
+  
             self.nob_magic_number = npy_defs.NPY_INVALID_MAGIC;
 
             npy_free(self);
@@ -298,19 +274,6 @@ namespace NumpyLib
             {
                 self.fields = null;
             }
-        }
-
-        private static NpyArray_DateTimeInfo NpyArray_DupDateTimeInfo(NpyArray_DateTimeInfo dtinfo)
-        {
-            NpyArray_DateTimeInfo newDateTimeInfo = new NpyArray_DateTimeInfo()
-            {
-                den = dtinfo.den,
-                events = dtinfo.events,
-                num = dtinfo.num,
-                _base = dtinfo._base,
-            };
-
-            return newDateTimeInfo;
         }
 
         private static NpyDict NpyDict_Copy(NpyDict origFields)
@@ -520,11 +483,7 @@ namespace NumpyLib
                 NpyArray_DestroySubarray(self.subarray);
                 self.subarray = null;
             }
-            if (self.dtinfo != null)
-            {
-                NpyArray_free(self.dtinfo);
-            }
-
+ 
             self.nob_magic_number = npy_defs.NPY_INVALID_MAGIC;
 
             npy_free(self);
@@ -637,183 +596,6 @@ namespace NumpyLib
             return NpyDict_Copy(fields);
         }
 
-
-        internal static NpyArray_DateTimeInfo NpyArray_DateTimeInfoNew(string units, int num, int den, int events)
-        {
-            NpyArray_DateTimeInfo dt_data;
-
-            dt_data = new NpyArray_DateTimeInfo();
-            dt_data._base = _unit_from_str(units);
-
-            /* Assumes other objects are Python integers */
-            dt_data.num = num;
-            dt_data.den = den;
-            dt_data.events = events;
-
-            if (dt_data.den > 1)
-            {
-                if (_convert_divisor_to_multiple(dt_data) < 0)
-                {
-                    NpyArray_free(dt_data);
-                    return null;
-                }
-            }
-
-            return dt_data;
-        }
-
-        static string[] _datetime_strings = new string[]
-            {
-                npy_defs.NPY_STR_Y,
-                npy_defs.NPY_STR_M,
-                npy_defs.NPY_STR_W,
-                npy_defs.NPY_STR_B,
-                npy_defs.NPY_STR_D,
-                npy_defs.NPY_STR_h,
-                npy_defs.NPY_STR_m,
-                npy_defs.NPY_STR_s,
-                npy_defs.NPY_STR_ms,
-                npy_defs.NPY_STR_us,
-                npy_defs.NPY_STR_ns,
-                npy_defs.NPY_STR_ps,
-                npy_defs.NPY_STR_fs,
-                npy_defs.NPY_STR_as
-            };
-
-        internal static NPY_DATETIMEUNIT _unit_from_str(string _base)
-        {
-            NPY_DATETIMEUNIT unit;
-
-            if (_base == null)
-            {
-                return NPY_DATETIMEUNIT.NPY_DATETIME_DEFAULTUNIT;
-            }
-
-            unit = NPY_DATETIMEUNIT.NPY_FR_Y;
-            while (unit < NPY_DATETIMEUNIT.NPY_DATETIME_NUMUNITS)
-            {
-                if (_base.CompareTo(_datetime_strings[(int)unit]) == 0)
-                {
-                    break;
-                }
-                unit++;
-            }
-            if (unit == NPY_DATETIMEUNIT.NPY_DATETIME_NUMUNITS)
-            {
-                return NPY_DATETIMEUNIT.NPY_DATETIME_DEFAULTUNIT;
-            }
-
-            return unit;
-        }
-
-        /* NPY_FR_Y */
-        static int[]              Row1 = { 12, 52, 365 }; 
-        static NPY_DATETIMEUNIT[] Row2 = { NPY_DATETIMEUNIT.NPY_FR_M, NPY_DATETIMEUNIT.NPY_FR_W, NPY_DATETIMEUNIT.NPY_FR_D };
-        /* NPY_FR_M */
-        static int[]              Row3 = { 4, 30, 720 };
-        static NPY_DATETIMEUNIT[] Row4 = { NPY_DATETIMEUNIT.NPY_FR_W, NPY_DATETIMEUNIT.NPY_FR_D, NPY_DATETIMEUNIT.NPY_FR_h };
-
-        /* NPY_FR_W */
-        static int[]              Row5 = { 5, 7, 168, 10080 };
-        static NPY_DATETIMEUNIT[] Row6 = { NPY_DATETIMEUNIT.NPY_FR_B, NPY_DATETIMEUNIT.NPY_FR_D, NPY_DATETIMEUNIT.NPY_FR_h, NPY_DATETIMEUNIT.NPY_FR_m };
-
-        /* NPY_FR_B */
-        static int[]              Row7 = { 24, 1440, 86400 };
-        static NPY_DATETIMEUNIT[] Row8 = { NPY_DATETIMEUNIT.NPY_FR_h, NPY_DATETIMEUNIT.NPY_FR_m, NPY_DATETIMEUNIT.NPY_FR_s };
-
-        /* NPY_FR_D */
-        static int[]              Row9 = { 24, 1440, 86400 };
-        static NPY_DATETIMEUNIT[] Row10 = { NPY_DATETIMEUNIT.NPY_FR_h, NPY_DATETIMEUNIT.NPY_FR_m, NPY_DATETIMEUNIT.NPY_FR_s };
-
-        /* NPY_FR_h */
-        static int[]              Row11 = { 60, 3600 };
-        static NPY_DATETIMEUNIT[] Row12 = { NPY_DATETIMEUNIT.NPY_FR_m, NPY_DATETIMEUNIT.NPY_FR_s };
-
-        /* NPY_FR_m */
-        static int[] Row13 = { 60, 60000 };
-        static NPY_DATETIMEUNIT[] Row14 = { NPY_DATETIMEUNIT.NPY_FR_s, NPY_DATETIMEUNIT.NPY_FR_ms };
-
-        /* >=NPY_FR_s */
-        static int[] Row15 = { 1000, 1000000 };
-        static NPY_DATETIMEUNIT[] Row16 = { 0, 0 };
-
-
-        static object[] _multiples_table =
-        {
-            Row1,
-            Row2,
-            Row3,
-            Row4,
-            Row5,
-            Row6,
-            Row7,
-            Row8,
-            Row9,
-            Row10,
-            Row11,
-            Row12,
-            Row13,
-            Row14,
-            Row15,
-            Row16,
-        };
-
-
-        /* Translate divisors into multiples of smaller units*/
-        static int _convert_divisor_to_multiple(NpyArray_DateTimeInfo dtinfo)
-        {
-            int i, num, ind;
-            int []totry;
-            NPY_DATETIMEUNIT []baseunit = new NPY_DATETIMEUNIT[2];
-            int q = 0;
-            int r;
-
-            ind = ((int)dtinfo._base - (int)NPY_DATETIMEUNIT.NPY_FR_Y) * 2;
-            totry = (int [])_multiples_table[ind];
-            baseunit = (NPY_DATETIMEUNIT [])_multiples_table[ind + 1];
-
-            num = 3;
-            if (dtinfo._base == NPY_DATETIMEUNIT.NPY_FR_W) {
-                num = 4;
-            }
-            else if (dtinfo._base > NPY_DATETIMEUNIT.NPY_FR_D) {
-                num = 2;
-            }
-            if (dtinfo._base >= NPY_DATETIMEUNIT.NPY_FR_s) {
-                ind = ((int)NPY_DATETIMEUNIT.NPY_FR_s - (int)NPY_DATETIMEUNIT.NPY_FR_Y) * 2;
-                totry = (int[])_multiples_table[ind];
-                baseunit = (NPY_DATETIMEUNIT[])_multiples_table[ind + 1];
-                baseunit[0] = dtinfo._base + 1;
-                baseunit[1] = dtinfo._base + 2;
-                if (dtinfo._base == NPY_DATETIMEUNIT.NPY_DATETIME_NUMUNITS - 2) {
-                    num = 1;
-                }
-                if (dtinfo._base == NPY_DATETIMEUNIT.NPY_DATETIME_NUMUNITS - 1) {
-                    num = 0;
-                }
-            }
-
-            for (i = 0; i < num; i++)
-            {
-                q = totry[i] / dtinfo.den;
-                r = totry[i] % dtinfo.den;
-                if (r == 0)
-                {
-                    break;
-                }
-            }
-            if (i == num)
-            {
-                string msg = string.Format("divisor ({0}) is not a multiple of a lower-unit", dtinfo.den);
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, msg);
-                return -1;
-            }
-            dtinfo._base = baseunit[i];
-            dtinfo.den = 1;
-            dtinfo.num *= q;
-
-            return 0;
-        }
 
         internal static bool npy_arraydescr_isnative(NpyArray_Descr self)
         {

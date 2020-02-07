@@ -60,12 +60,7 @@ namespace NumpyLib
         {
             get; set;
         }
-
-        public uint RefCount
-        {
-            get { return nob_refcnt; }
-        }
-
+        
         public VoidPtr data = new VoidPtr();          /* pointer to raw data buffer */
         public int nd;                /* number of dimensions, also called ndim */
         public npy_intp[] dimensions; /* size in each dimension */
@@ -226,19 +221,12 @@ namespace NumpyLib
             }
             return;
         }
-        internal static bool NpyDataType_ISOBJECT(NpyArray_Descr desc)
-        {
-            return (NpyTypeNum_ISOBJECT(desc.type_num));
-        }
+ 
         internal static bool NpyDataType_ISSTRING(NpyArray_Descr desc)
         {
             return (NpyTypeNum_ISSTRING(desc.type_num));
         }
-        internal static NPY_TYPES NpyDataType_TYPE_NUM(NpyArray_Descr obj)
-        {
-            return obj.type_num;
-        }
-
+ 
  
         private static void Npy_INCREF(NpyObject_HEAD Head)
         {
@@ -628,30 +616,7 @@ namespace NumpyLib
             return NpyArray_SIZE(op);
         }
 
-        internal static int NpyArray_CompareUCS4(npy_ucs4[] s1, npy_ucs4[] s2, int len)
-        {
-            npy_ucs4 c1, c2;
-
-            if (s1.Length != s2.Length)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_IndexError, "NpyArray_CompareUCS4: different size arrays being compared");
-                return -2;
-            }
-
-            int i = 0;
-            while (len-- > 0)
-            {
-                c1 = s1[i];
-                c2 = s2[i++];
-                
-                if (c1 != c2)
-                {
-                    return (c1 < c2) ? -1 : 1;
-                }
-            }
-            return 0;
-        }
-
+ 
         internal static int NpyArray_CompareString(string s1, string s2, int len)
         {
             //if (s1.Equals(s2, StringComparison.CurrentCultureIgnoreCase))
@@ -818,64 +783,7 @@ namespace NumpyLib
             return 0;
         }
 
-        static int _compare_strings(NpyArray result, NpyArrayMultiIterObject multi, int cmp_op, myArrayCompareFunc func, int rstrip)
-        {
-            //NpyArrayIterObject iself,iother;
-            //bool []dptr;
-            //npy_intp size;
-            //int val;
-            //int N1, N2;
-            //int (*cmpfunc)(void*, void*, int, int);
-            //void (*relfunc)(char *, int);
-            //char* (*stripfunc)(char *, char *, int);
-
-            //cmpfunc = func;
-            //dptr = (npy_bool*)NpyArray_DATA(result);
-            //iself = multi.iters[0];
-            //iother = multi.iters[1];
-            //size = multi.size;
-            //N1 = iself.ao.descr.elsize;
-            //N2 = iother.ao.descr.elsize;
-            //if ((void*)cmpfunc == (void*)_myunincmp)
-            //{
-            //    N1 >>= 2;
-            //    N2 >>= 2;
-            //    stripfunc = _uni_copy_n_strip;
-            //    relfunc = _uni_release;
-            //}
-            //else
-            //{
-            //    stripfunc = _char_copy_n_strip;
-            //    relfunc = _char_release;
-            //}
-            //switch (cmp_op)
-            //{
-            //    case NPY_EQ:
-            //        _loop(==)
-            //        break;
-            //    case NPY_NE:
-            //        _loop(!=)
-            //        break;
-            //    case NPY_LT:
-            //        _loop(<)
-            //        break;
-            //    case NPY_LE:
-            //        _loop(<=)
-            //        break;
-            //    case NPY_GT:
-            //        _loop(>)
-            //        break;
-            //    case NPY_GE:
-            //        _loop(>=)
-            //        break;
-            //    default:
-            //        NpyErr_SetString(npyexc_type.NpyExc_RuntimeError, "bad comparison operator");
-            //        return -1;
-            //}
-            return 0;
-        }
-
-
+ 
         /*NUMPY_API
          *
          * This function does nothing if obj is writeable, and raises an exception
@@ -909,17 +817,6 @@ namespace NumpyLib
         static int _mystrncmp(string s1, string s2, int len1, int len2)
         {
              return string.Compare(s1, s2);
-        }
-
-
-        static string _rstripw(string s, int n)
-        {
-            return s.TrimEnd();
-        }
-
-        static string _unistripw(string s, int n)
-        {
-            return s.TrimEnd();
         }
 
         /* Deallocs & destroy's the array object.

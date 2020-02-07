@@ -68,10 +68,8 @@ namespace NumpyLib
                 return types.Length;
             }
         }
-        public int check_return;
         public string name;
         public NPY_TYPES[] types;
-        public string doc;
         public object ptr;
         public NpyDict userloops;
 
@@ -1458,39 +1456,7 @@ namespace NumpyLib
             }
             return null;
         }
-
-        public int NpyUFunc_RegisterLoopForType(NpyUFuncObject ufunc, int usertype, NpyUFuncGenericFunction function,
-                                                int[] arg_types, object data)
-        {
-            throw new NotImplementedException();
-        }
-
-        private NpyUFuncObject NpyUFunc_FromFuncAndDataAndSignature(NpyUFuncGenericFunction func,
-                                     VoidPtr data, char[] types, int ntypes,
-                                     int nin, int nout, int identity,
-                                     string name, string doc,
-                                     int check_return, string signature)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public NpyUFuncObject NpyUFunc_FromFuncAndData(NpyUFuncGenericFunction func, VoidPtr data,
-                                                         char[] types, int ntypes,
-                                                         int nin, int nout, int identity,
-                                                         string name, string doc, int check_return)
-        {
-            return NpyUFunc_FromFuncAndDataAndSignature(func, data, types, ntypes,
-                                                        nin, nout, identity, name,
-                                                        doc, check_return, null);
-        }
-
-        int NpyUFunc_SetUsesArraysAsData(VoidPtr data, long i)
-        {
-            //data[i] = (void*)NpyUFunc_SetUsesArraysAsData;
-            return 0;
-        }
-
+   
         private static NpyUFuncLoopObject construct_loop(NpyUFuncObject self)
         {
             NpyUFuncLoopObject loop;
@@ -2634,12 +2600,6 @@ namespace NumpyLib
         }
 
 
-        NpyUFuncObject npy_ufunc_frompyfunc(int nin, int nout, string fname, ulong fname_len,
-                             NpyUFuncGenericFunction gen_funcs, object function)
-        {
-            throw new NotImplementedException();
-        }
-
         private static int extract_specified_loop(NpyUFuncObject self, NPY_TYPES[] arg_types, 
             NpyUFuncGenericFunction function, ref object data, int ntypenums, NPY_TYPES[] rtypenums, int userdef)
         {
@@ -3091,16 +3051,7 @@ namespace NumpyLib
             return -1;
         }
 
-        /*
-         * Sets core_num_dim_ix, core_num_dims, core_dim_ixs, core_offsets,
-         * and core_signature in PyUFuncObject "self".  Returns 0 unless an
-         * error occured.
-         */
-        static int _parse_signature(NpyUFuncObject self, string signature)
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         private static NPY_TYPES _lowest_type(NPY_TYPES intype)
         {
             switch (intype)
