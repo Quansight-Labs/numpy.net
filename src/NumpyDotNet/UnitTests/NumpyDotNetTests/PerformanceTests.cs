@@ -180,6 +180,16 @@ namespace NumpyDotNetTests
             var gaus = np.exp(-4 * np.log(2) * (np.power((x - x0), 2) + np.power((y - y0), 2)) / np.power(sigma, 2));
             print(gaus);
 
+            Assert.Fail("Take this out of final release");
+
+        }
+
+        [TestMethod]
+        public void test_KEVIN2()
+        {
+            Assert.Fail("Take this out of final release");
+
+            make_gaussian(null, 0, null, null);
         }
 
         public ndarray make_gaussian(ndarray im, double sigma, ndarray xc, ndarray yc)
