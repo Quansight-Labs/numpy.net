@@ -425,9 +425,16 @@ namespace NumpyLib
             NpyArray newArray = null;
             if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
             {
-                if (operandArray != null && (srcArray.nd > 0 && operandArray.nd > 0) && (srcArray.nd < operandArray.nd))
+                if (operandArray != null && (srcArray.nd > 0 && operandArray.nd > 0))
                 {
-                    srcArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
+                    if (srcArray.nd < operandArray.nd)
+                    {
+                        srcArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
+                    }
+                    else if (srcArray.nd > operandArray.nd)
+                    {
+                        srcArray = NpyArray_HandleNewAxisDims(operandArray, srcArray);
+                    }
                 }
 
                 newArray = NpyArray_FromArray(srcArray, newtype, flags);

@@ -99,7 +99,7 @@ namespace NumpyDotNetTests
 
             return;
         }
- 
+
         [TestMethod]
         public void test_linspace_1()
         {
@@ -153,7 +153,7 @@ namespace NumpyDotNetTests
             AssertArray(d, new double[] { 1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0 });
             print(d);
         }
-  
+
         [TestMethod]
         public void test_meshgrid_1()
         {
@@ -182,7 +182,7 @@ namespace NumpyDotNetTests
 
             xyv = np.meshgrid(new ndarray[] { x, y }, sparse: true);
             AssertArray(xyv[0], new double[,] { { 0.0, 0.5, 1.0 } });
-            AssertArray(xyv[1], new double[,] { { 0.0 },{ 1.0 } });
+            AssertArray(xyv[1], new double[,] { { 0.0 }, { 1.0 } });
 
             print(xyv[0]);
             print(xyv[1]);
@@ -199,7 +199,7 @@ namespace NumpyDotNetTests
 
             print("************");
         }
-  
+
         [TestMethod]
         public void test_meshgrid_2()
         {
@@ -213,7 +213,7 @@ namespace NumpyDotNetTests
             var y = np.linspace(4, 5, ref ret, ny);
             var z = np.linspace(8, 9, ref ret, nz);
 
-            ndarray[] xyzv = np.meshgrid(new ndarray[] { x, y, z }, indexing : "ij");
+            ndarray[] xyzv = np.meshgrid(new ndarray[] { x, y, z }, indexing: "ij");
             AssertArray(xyzv[0], new double[,,] { { { 0.0, 0.0 }, { 0.0, 0.0 } }, { { 0.5, 0.5 }, { 0.5, 0.5 } }, { { 1.0, 1.0 }, { 1.0, 1.0 } } });
             AssertArray(xyzv[1], new double[,,] { { { 4.0, 4.0 }, { 5.0, 5.0 } }, { { 4.0, 4.0 }, { 5.0, 5.0 } }, { { 4.0, 4.0 }, { 5.0, 5.0 } } });
             AssertArray(xyzv[2], new double[,,] { { { 8.0, 9.0 }, { 8.0, 9.0 } }, { { 8.0, 9.0 }, { 8.0, 9.0 } }, { { 8.0, 9.0 }, { 8.0, 9.0 } } });
@@ -224,7 +224,7 @@ namespace NumpyDotNetTests
 
             print("************");
 
-            xyzv = np.meshgrid(new ndarray[] { x, y, z }, sparse:true);
+            xyzv = np.meshgrid(new ndarray[] { x, y, z }, sparse: true);
             AssertArray(xyzv[0], new double[,,] { { { 0.0 }, { 0.5 }, { 1.0 } } });
             AssertArray(xyzv[1], new double[,,] { { { 4.0 } }, { { 5.0 } } });
             AssertArray(xyzv[2], new double[,,] { { { 8.0, 9.0 } } });
@@ -319,14 +319,14 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_arange_reshape_33()
         {
-            var a = np.arange(2, 11).reshape(new shape(3,3));
+            var a = np.arange(2, 11).reshape(new shape(3, 3));
             print(a);
 
             print(a.shape);
             print(a.strides);
 
-            AssertArray(a, new Int32[3,3] { { 2, 3, 4 },{ 5, 6, 7 },{ 8, 9, 10 } });
-            AssertShape(a, 3,3);
+            AssertArray(a, new Int32[3, 3] { { 2, 3, 4 }, { 5, 6, 7 }, { 8, 9, 10 } });
+            AssertShape(a, 3, 3);
             AssertStrides(a, sizeof(Int32) * 3, sizeof(Int32));
 
         }
@@ -349,7 +349,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_reverse_array()
         {
-            var x = np.arange(0,40);
+            var x = np.arange(0, 40);
             print("Original array:");
             print(x);
             print("Reverse array:");
@@ -364,7 +364,7 @@ namespace NumpyDotNetTests
             var y = x + 100;
             print(y);
 
-            var z = x.reshape((5,-1));
+            var z = x.reshape((5, -1));
             print(z);
         }
 
@@ -403,7 +403,7 @@ namespace NumpyDotNetTests
                  { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0} };
 
             AssertArray(x, ExpectedData);
-            AssertShape(x, 15,15);
+            AssertShape(x, 15, 15);
             AssertStrides(x, sizeof(double) * 15, sizeof(double));
 
         }
@@ -411,7 +411,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_1_OnBorder_0Inside_2()
         {
-            var x = np.arange(0,225,dtype:np.Float64).reshape(new shape(15, 15));
+            var x = np.arange(0, 225, dtype: np.Float64).reshape(new shape(15, 15));
             print("Original array:");
             print(x);
             print(x.shape);
@@ -477,7 +477,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_F2C_1()
         {
-            float[] fvalues = new float[] {0, 12, 45.21f, 34, 99.91f};
+            float[] fvalues = new float[] { 0, 12, 45.21f, 34, 99.91f };
             ndarray F = (ndarray)np.array(fvalues);
             print("Values in Fahrenheit degrees:");
             print(F);
@@ -526,8 +526,8 @@ namespace NumpyDotNetTests
             var x = np.arange(0.73, 25.73, dtype: np.Float64).reshape(new shape(5, 5));
 
             var filename = "numpyDOTNETToFileTest.txt";
-            x.tofile(filename, sep : ", ");
-            var y = np.fromfile(filename, sep : ",");
+            x.tofile(filename, sep: ", ");
+            var y = np.fromfile(filename, sep: ",");
             print(y);
 
             AssertArray(y, new Single[] { 0.73f, 1.73f, 2.73f, 3.73f, 4.73f, 5.73f, 6.73f, 7.73f, 8.73f, 9.73f,
@@ -556,10 +556,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_fill()
         {
-            var x = np.arange(0,9, dtype: np.Float64).reshape(new shape(3, 3));
+            var x = np.arange(0, 9, dtype: np.Float64).reshape(new shape(3, 3));
             x.fill(33);
             print(x);
-            AssertArray(x, new double[,] { { 33.0, 33.0, 33.0 },  { 33.0, 33.0, 33.0 },  { 33.0, 33.0, 33.0 } } );
+            AssertArray(x, new double[,] { { 33.0, 33.0, 33.0 }, { 33.0, 33.0, 33.0 }, { 33.0, 33.0, 33.0 } });
 
             var y = x["1:2", "1:2"] as ndarray;
             print(y);
@@ -567,8 +567,8 @@ namespace NumpyDotNetTests
             y.fill(44);
             print(x);
 
-           // y.fill("AAAA");
-           // print(x);
+            // y.fill("AAAA");
+            // print(x);
 
             x = np.arange(0, 9, dtype: np.Complex).reshape(new shape(3, 3));
             x.fill(123);
@@ -595,7 +595,7 @@ namespace NumpyDotNetTests
                                          10.73, 11.73, 12.73, 13.73, 14.73, 15.73, 16.73, 17.73, 18.73,
                                          19.73, 20.73, 21.73, 22.73, 23.73, 24.73 });
 
-            y = x.flatten(order : NPY_ORDER.NPY_FORTRANORDER);
+            y = x.flatten(order: NPY_ORDER.NPY_FORTRANORDER);
             print(y);
 
             AssertArray(y, new double[] { 0.73, 5.73, 10.73, 15.73, 20.73,  1.73, 6.73, 11.73, 16.73,
@@ -720,7 +720,7 @@ namespace NumpyDotNetTests
 
 
             var y = x.T;
-                      
+
 
             print("Y");
             print(y);
@@ -893,7 +893,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_view2_reshape()
         {
-            var x = np.arange(65470 + 32, 65470 + 64, dtype: np.UInt16).reshape(new shape(2,2,-1));
+            var x = np.arange(65470 + 32, 65470 + 64, dtype: np.UInt16).reshape(new shape(2, 2, -1));
             print(x);
             print(x.shape);
             print(x.Dtype);
@@ -933,7 +933,7 @@ namespace NumpyDotNetTests
             print(y);
             print(x.shape);
             print(x.Dtype);
-            
+
             var ExpectedDataY = new UInt16[4] { 65504, 65512, 65520, 65528 };
             AssertArray(y, ExpectedDataY);
         }
@@ -1003,7 +1003,7 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
 
-            var y = np.delete(x, new Slice(null), 0).reshape(new shape(8,3));
+            var y = np.delete(x, new Slice(null), 0).reshape(new shape(8, 3));
             y[1] = 99;
             print("Y");
             print(y);
@@ -1031,7 +1031,7 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
         }
- 
+
         [TestMethod]
         public void test_ndarray_delete2()
         {
@@ -1068,7 +1068,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_delete3()
         {
-            var x = np.arange(0, 32, dtype: np.Int16).reshape(new shape(8,4));
+            var x = np.arange(0, 32, dtype: np.Int16).reshape(new shape(8, 4));
             print("X");
             print(x);
             print(x.shape);
@@ -1107,7 +1107,7 @@ namespace NumpyDotNetTests
             AssertArray(mask, ExpectedDataMask);
             AssertShape(mask, 8, 4);
 
-            var y = ((ndarray)(x[mask])).reshape(new shape(8,3));
+            var y = ((ndarray)(x[mask])).reshape(new shape(8, 3));
 
             print("Y");
             print(y);
@@ -1167,7 +1167,7 @@ namespace NumpyDotNetTests
             };
 
             AssertArray(y, ExpectedDataY);
-            AssertShape(y, 1,4,4);
+            AssertShape(y, 1, 4, 4);
 
             AssertArray(z, ExpectedDataY);
             AssertShape(z, 1, 4, 4);
@@ -1182,7 +1182,7 @@ namespace NumpyDotNetTests
             print("X");
             print(x);
 
-            var result = np.unique(x, return_counts:true, return_index:true, return_inverse:true);
+            var result = np.unique(x, return_counts: true, return_index: true, return_inverse: true);
             var uvalues = result.data;
             var indexes = result.indices;
             var inverse = result.inverse;
@@ -1206,11 +1206,11 @@ namespace NumpyDotNetTests
 
 
         }
- 
+
         [TestMethod]
         public void test_ndarray_where_1()
         {
-            var x = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3,3));
+            var x = np.array(new Int32[] { 1, 2, 3, 1, 3, 4, 5, 4, 4 }).reshape(new shape(3, 3));
 
             print("X");
             print(x);
@@ -1218,8 +1218,8 @@ namespace NumpyDotNetTests
             ndarray[] y = (ndarray[])np.where(x == 3);
             print("Y");
             print(y);
-      
-  
+
+
         }
 
         [TestMethod]
@@ -1247,7 +1247,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_where_3()
         {
-            var x = np.arange(0,1000).reshape(new shape(-1, 10));
+            var x = np.arange(0, 1000).reshape(new shape(-1, 10));
 
             //print("X");
             //print(x);
@@ -1370,14 +1370,14 @@ namespace NumpyDotNetTests
             var a = np.arange(0, 1024, dtype: np.UInt16).reshape(new shape(2, 4, -1));
 
             print("A");
-           // print(a);
+            // print(a);
             print(a.shape);
             print(a.strides);
 
             AssertShape(a, 2, 4, 128);
             AssertStrides(a, 1024, 256, 2);
 
-            var b = (ndarray)a[":",":", 122];
+            var b = (ndarray)a[":", ":", 122];
             print("B");
             print(b);
             print(b.shape);
@@ -1413,12 +1413,12 @@ namespace NumpyDotNetTests
                     { 890 },
                     { 1018 },
                 },
-        
+
             };
 
             AssertArray(c, ExpectedDataC);
             AssertShape(c, 2, 4, 1);
-            AssertStrides(c, 8,2,16); 
+            AssertStrides(c, 8, 2, 16);
 
             var d = (ndarray)a.A(":", ":", new Int64[] { 122, 123 });
             print("D");
@@ -1445,7 +1445,7 @@ namespace NumpyDotNetTests
 
             AssertArray(d, ExpectedDataD);
             AssertShape(d, 2, 4, 2);
-            AssertStrides(d, 8,2,16);
+            AssertStrides(d, 8, 2, 16);
 
         }
 
@@ -1484,7 +1484,7 @@ namespace NumpyDotNetTests
 
             AssertArray(b, ExpectedDataB);
             AssertShape(b, 2, 4, 1);
-            AssertStrides(b, 8,2,16); 
+            AssertStrides(b, 8, 2, 16);
 
         }
 
@@ -1554,7 +1554,7 @@ namespace NumpyDotNetTests
             AssertShape(a, 2, 4, 4);
             AssertStrides(a, 32, 8, 2);
 
-            b[":",":","[2]"] = a[":",":","[2]"];
+            b[":", ":", "[2]"] = a[":", ":", "[2]"];
             print("B");
             print(b);
             print(b.shape);
@@ -1579,7 +1579,7 @@ namespace NumpyDotNetTests
 
             AssertArray(b, ExpectedDataB);
             AssertShape(b, 2, 4, 4);
-            AssertStrides(b, 32,8,2); 
+            AssertStrides(b, 32, 8, 2);
 
         }
 
@@ -1624,7 +1624,7 @@ namespace NumpyDotNetTests
 
             AssertArray(carray, ExpectedDataC);
             AssertShape(carray, 2, 4, 1);
-            AssertStrides(carray, 8,2,2); 
+            AssertStrides(carray, 8, 2, 2);
         }
 
         [TestMethod]
@@ -1632,7 +1632,7 @@ namespace NumpyDotNetTests
         {
 
             Int32 _max = 5;
-            var output = np.ndarray(new shape(_max), dtype:np.Float32);
+            var output = np.ndarray(new shape(_max), dtype: np.Float32);
             output[":"] = np.NaN;
 
             print(output);
@@ -1706,7 +1706,7 @@ namespace NumpyDotNetTests
             AssertStrides(c, 4);
 
         }
-    
+
         [TestMethod]
         public void test_append_1()
         {
@@ -1749,7 +1749,7 @@ namespace NumpyDotNetTests
         public void test_append_2()
         {
             Int32[] TestData = new int[] { 1, 1, 2, 2, 3, 3 };
-            Int32[] TestData2 = new int[] { 4,4 };
+            Int32[] TestData2 = new int[] { 4, 4 };
             ndarray a = np.array(TestData, dtype: np.Int32);
             ndarray b = np.append(a, TestData2);
 
@@ -1795,10 +1795,10 @@ namespace NumpyDotNetTests
         {
             Int32[] TestData1 = new int[] { 1, 1, 2, 2, 3, 3 };
             Int32[] TestData2 = new int[] { 4, 4, 5, 5, 6, 6 };
-            ndarray a = np.array(TestData1, dtype: np.Int32).reshape((2,-1));
-            ndarray b = np.array(TestData2, dtype: np.Int32).reshape((2,-1)); 
+            ndarray a = np.array(TestData1, dtype: np.Int32).reshape((2, -1));
+            ndarray b = np.array(TestData2, dtype: np.Int32).reshape((2, -1));
 
-            ndarray c = np.append(a, b, axis:1);
+            ndarray c = np.append(a, b, axis: 1);
 
             print(a);
             print(a.shape);
@@ -1820,7 +1820,7 @@ namespace NumpyDotNetTests
             };
 
             AssertArray(c, ExpectedDataC);
-            AssertShape(c, 2,6);
+            AssertShape(c, 2, 6);
             //AssertStrides(c, 24, 4); 
 
         }
@@ -1828,7 +1828,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_flat_1()
         {
-            var x = np.arange(10, 16).reshape(new shape(2,3));
+            var x = np.arange(10, 16).reshape(new shape(2, 3));
             print(x);
 
             x.Flat[3] = 9;
@@ -1896,10 +1896,10 @@ namespace NumpyDotNetTests
             ndarray a = np.array(new int[] { 1, 3, 4, 3 });
             ndarray b = np.array(new int[] { 3, 1, 2, 1 });
 
-            ndarray c = np.intersect1d(a,b);
+            ndarray c = np.intersect1d(a, b);
             print(c);
 
-            AssertArray(c, new Int32[] { 1,3 });
+            AssertArray(c, new Int32[] { 1, 3 });
             AssertShape(c, 2);
             AssertStrides(c, 4);
 
@@ -1934,7 +1934,7 @@ namespace NumpyDotNetTests
             AssertStrides(mask, 1);
 
             ndarray a = test[mask] as ndarray;
-            AssertArray(a, new Int32[] { 0,2,0 });
+            AssertArray(a, new Int32[] { 0, 2, 0 });
             AssertShape(a, 3);
             AssertStrides(a, 4);
 
@@ -1947,7 +1947,7 @@ namespace NumpyDotNetTests
             AssertStrides(mask, 1);
 
             ndarray b = test[mask] as ndarray;
-            AssertArray(b, new Int32[] { 1,5 });
+            AssertArray(b, new Int32[] { 1, 5 });
             AssertShape(b, 2);
             AssertStrides(b, 4);
 
@@ -1973,16 +1973,16 @@ namespace NumpyDotNetTests
             };
 
             AssertArray(mask, ExpectedDataMask);
-            AssertShape(mask, 2,2);
-            AssertStrides(mask, 2,1);
+            AssertShape(mask, 2, 2);
+            AssertStrides(mask, 2, 1);
 
-            AssertArray(a, new Int32[] { 2,4});
+            AssertArray(a, new Int32[] { 2, 4 });
             AssertShape(a, 2);
             AssertStrides(a, 4);
 
             print("***********");
 
-            mask = np.isin(element, test_elements, invert : true);
+            mask = np.isin(element, test_elements, invert: true);
             print(mask);
             print(element[mask]);
 
@@ -2000,7 +2000,7 @@ namespace NumpyDotNetTests
             AssertShape(mask, 2, 2);
             AssertStrides(mask, 2, 1);
 
-            AssertArray(a, new Int32[] { 0,6 });
+            AssertArray(a, new Int32[] { 0, 6 });
             AssertShape(a, 2);
             AssertStrides(a, 4);
         }
@@ -2133,16 +2133,16 @@ namespace NumpyDotNetTests
             AssertArray(d, new int[,] { { 1, 2, 5 }, { 3, 4, 6 } });
             print(d);
 
-            var e = np.concatenate((a, b), axis : null);
+            var e = np.concatenate((a, b), axis: null);
             AssertArray(e, new int[] { 1, 2, 3, 4, 5, 6 });
             print(e);
 
-            var f = np.concatenate((np.eye(2), np.ones((2, 2))), axis : 0);
-            AssertArray(f, new double[,] { { 1,0 }, {0,1 }, {1,1 }, {1,1 }, });
+            var f = np.concatenate((np.eye(2), np.ones((2, 2))), axis: 0);
+            AssertArray(f, new double[,] { { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, 1 }, });
             print(f);
 
-            var g = np.concatenate((np.eye(2), np.ones((2, 2))), axis : 1);
-            AssertArray(g, new double[,] { { 1, 0, 1,1 }, { 0, 1, 1,1 } });
+            var g = np.concatenate((np.eye(2), np.ones((2, 2))), axis: 1);
+            AssertArray(g, new double[,] { { 1, 0, 1, 1 }, { 0, 1, 1, 1 } });
             print(g);
         }
 
@@ -2153,7 +2153,7 @@ namespace NumpyDotNetTests
             //var ca = np.concatenate(aa, axis: 0);
 
             var a = np.array(new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
-            var c = np.concatenate(a, axis : 0);
+            var c = np.concatenate(a, axis: 0);
             AssertArray(c, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
             print(c);
 
@@ -2161,7 +2161,7 @@ namespace NumpyDotNetTests
             AssertArray(d, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
             print(d);
 
-            var e = np.concatenate(a, axis : null);
+            var e = np.concatenate(a, axis: null);
             AssertArray(e, new int[] { 1, 2, 3, 4, 5, 6 });
             print(e);
 
@@ -2180,11 +2180,11 @@ namespace NumpyDotNetTests
             AssertArray(d, new int[,,] { { { 1, 2 }, { 3, 4 }, { 5, 6 } } });
             print(d);
 
-            c = np.concatenate((a,a,a), axis: -1);
+            c = np.concatenate((a, a, a), axis: -1);
             AssertArray(c, new int[,,,] { { { { 1, 2, 1, 2, 1, 2 }, { 3, 4, 3, 4, 3, 4 }, { 5, 6, 5, 6, 5, 6 } } } });
             print(c);
 
-            d = np.concatenate((a,a,a), axis: -2);
+            d = np.concatenate((a, a, a), axis: -2);
             AssertArray(d, new int[,,,] { { { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 }, { 1, 2 }, { 3, 4 }, { 5, 6 } } } });
             print(d);
 
@@ -2218,7 +2218,7 @@ namespace NumpyDotNetTests
             var x = np.arange(10, dtype: np.Int32);
 
             var y = x.reshape(new shape(2, 5));
-  
+
             y[0, 3] = 55;
             y[1, 3] = 66;
 
@@ -2227,7 +2227,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(20, dtype: np.Int32);
             y = x.reshape(new shape(2, 2, 5));
-    
+
             y[1, 0, 3] = 55;
             y[1, 1, 3] = 66;
 
@@ -2264,13 +2264,13 @@ namespace NumpyDotNetTests
             print(z);
             print("*************");
 
-            AssertArray(z, new double[,,,] {{{{0,  1,  2,  3,}}}, {{{ 4,  5,  6,  7,}}}, {{{ 8,  9, 10, 11,}}}, {{{12, 13, 14, 15,}}}});
+            AssertArray(z, new double[,,,] { { { { 0, 1, 2, 3, } } }, { { { 4, 5, 6, 7, } } }, { { { 8, 9, 10, 11, } } }, { { { 12, 13, 14, 15, } } } });
             y = x.reshape((1, 4, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,] {{{0,  1,  2,  3,}, {4,  5,  6,  7,}, {8,  9, 10, 11,}, {12, 13, 14, 15,}}});
+            AssertArray(z, new double[,,] { { { 0, 1, 2, 3, }, { 4, 5, 6, 7, }, { 8, 9, 10, 11, }, { 12, 13, 14, 15, } } });
 
             y = x.reshape((1, 4, 1, 1)) * 4;
             z = x + y;
@@ -2278,14 +2278,14 @@ namespace NumpyDotNetTests
             print(z);
             print("*************");
 
-            AssertArray(z, new double[,,,] {{{{0,  1,  2,  3,}}, {{4,  5,  6,  7,}}, {{ 8,  9, 10, 11,}}, {{12, 13, 14, 15,}}}});
-  
+            AssertArray(z, new double[,,,] { { { { 0, 1, 2, 3, } }, { { 4, 5, 6, 7, } }, { { 8, 9, 10, 11, } }, { { 12, 13, 14, 15, } } } });
+
         }
 
         [TestMethod]
         public void test_newaxis_ufunc_2()
         {
-            var x = np.arange(0, 4, 1, dtype: np.Float32).reshape((2,2));
+            var x = np.arange(0, 4, 1, dtype: np.Float32).reshape((2, 2));
             var y = x.reshape((2, 2, 1)) * 4;
             var z = x + y;
             print(z.shape);
@@ -2300,21 +2300,21 @@ namespace NumpyDotNetTests
             print("*************");
             AssertArray(z, new double[,,,] { { { { 0, 1, }, { 2, 3, } }, { { 4, 5, }, { 6, 7, } } }, { { { 8, 9, }, { 10, 11, } }, { { 12, 13, }, { 14, 15, } } } });
 
-            y = x.reshape((2,2, 1, 1, 1)) * 4;
+            y = x.reshape((2, 2, 1, 1, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
             AssertArray(z, new double[,,,,] { { { { { 0, 1, }, { 2, 3, } } }, { { { 4, 5, }, { 6, 7, } } } }, { { { { 8, 9, }, { 10, 11, } } }, { { { 12, 13, }, { 14, 15, } } } } });
 
-            y = x.reshape((1, 2,2, 1)) * 4;
+            y = x.reshape((1, 2, 2, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
             AssertArray(z, new double[,,,] { { { { 0, 1, }, { 6, 7, } }, { { 8, 9, }, { 14, 15, } } } });
 
-            y = x.reshape((1, 2,2, 1, 1)) * 4;
+            y = x.reshape((1, 2, 2, 1, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
@@ -2323,5 +2323,40 @@ namespace NumpyDotNetTests
 
         }
 
+
+        [TestMethod]
+        public void test_newaxis_ufunc_3()
+        {
+            var x1 = np.array(new Int32[] { 1, 2, 3, 4, 5 });
+            var x2 = np.array(new Int32[] { 5, 4, 3 });
+
+            var x1_new = (ndarray)x1[":", np.newaxis];
+            var z = x1_new + x2;
+            print(z);
+            AssertArray(z, new Int32[,] { { 6, 5, 4 }, { 7, 6, 5 }, { 8, 7, 6 }, { 9, 8, 7 }, { 10, 9, 8 } });
+            print("*************");
+
+            x1_new = (ndarray)x1[np.newaxis, ":", np.newaxis];
+            z = x1_new + x2;
+            print(z);
+            AssertArray(z, new Int32[,,] { { { 6, 5, 4 }, { 7, 6, 5 }, { 8, 7, 6 }, { 9, 8, 7 }, { 10, 9, 8 } } });
+            print("*************");
+
+
+
+            var x2_new = (ndarray)x2[":", np.newaxis];
+            z = x1 + x2_new;
+            print(z);
+            AssertArray(z, new Int32[,] { { 6, 7, 8, 9, 10 }, { 5, 6, 7, 8, 9 }, { 4, 5, 6, 7, 8 } });
+            print("*************");
+
+            x2_new = (ndarray)x2[":", np.newaxis, np.newaxis];
+            z = x1 + x2_new;
+            print(z);
+            AssertArray(z, new Int32[,,] { { { 6, 7, 8, 9, 10 } }, { { 5, 6, 7, 8, 9 } }, { { 4, 5, 6, 7, 8 } } });
+            print("*************");
+
+
+        }
     }
 }
