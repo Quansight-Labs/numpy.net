@@ -84,25 +84,5 @@ namespace NumpyLib
             }
         }
 
-
-        internal static int npy_append_char(npy_tmp_string_t s, char c)
-        {
-            if (s.s == null)
-            {
-                s.s = c.ToString();
-                s.pos = 0;
-                s.allocated = s.s.Length;
-            }
-            else
-            {
-                s.s += c.ToString();
-                s.pos = 0;
-                s.allocated = s.s.Length;
-            }
-  
-            return 0;
-        }
- 
-
     }
 }

@@ -61,21 +61,6 @@ namespace NumpyLib
         NPY_KEEPORDER = 2,
     };
 
-    public class npy_buffer_info_t
-    {
-        public string format;
-        public int ndim;
-        public size_t []strides;
-        public size_t []shape;
-    }
-
-    /* Fast string 'class' */
-    public class npy_tmp_string_t
-    {
-        public string s;
-        public int allocated;
-        public int pos;
-    }
 
     public class numpyAPI
     {
@@ -598,12 +583,7 @@ namespace NumpyLib
         {
             return numpyinternal._flat_copyinto(dst, src, order);
         }
-
-        public static size_t npy_array_fill_strides(npy_intp[] strides, npy_intp[] dims, int nd, size_t itemsize, NPYARRAYFLAGS inflag, ref NPYARRAYFLAGS objflags)
-        {
-            return numpyinternal.npy_array_fill_strides(strides, dims, nd, itemsize, inflag, ref objflags);
-        }
-
+        
         public static int NpyArray_MoveInto(NpyArray dest, NpyArray src)
         {
             return numpyinternal.NpyArray_MoveInto(dest, src);

@@ -53,17 +53,7 @@ namespace NumpyLib
         public npy_intp[] ptr;
         public int len;
     };
-    public struct npy_datetimestruct
-    {
-        public int year;
-        public int month, day, hour, min, sec, us, ps, as1;
-    };
-    public struct npy_timedeltastruct
-    {
-        public long day;
-        public int sec, us, ps, as1;
-    };
-
+ 
     public enum NPY_TYPECHAR
     {
         NPY_BOOLLTR = '?',
@@ -138,23 +128,6 @@ namespace NumpyLib
         internal const int NPY_NSEARCHSIDES = (int)(NPY_SEARCHSIDE.NPY_SEARCHRIGHT + 1);
         internal const int NPY_NSCALARKINDS = (int)(NPY_SCALARKIND.NPY_OBJECT_SCALAR + 1);
 
-
-
-        internal const string NPY_STR_Y = "Y";
-        internal const string NPY_STR_M = "M";
-        internal const string NPY_STR_W = "W";
-        internal const string NPY_STR_B = "B";
-        internal const string NPY_STR_D = "D";
-        internal const string NPY_STR_h = "h";
-        internal const string NPY_STR_m = "m";
-        internal const string NPY_STR_s = "s";
-        internal const string NPY_STR_ms = "ms";
-        internal const string NPY_STR_us = "us";
-        internal const string NPY_STR_ns = "ns";
-        internal const string NPY_STR_ps = "ps";
-        internal const string NPY_STR_fs = "fs";
-        internal const string NPY_STR_as = "as";
-
         internal const int NPY_FAIL = 0;
         internal const int NPY_SUCCEED = 1;
     }
@@ -218,27 +191,6 @@ namespace NumpyLib
         NPY_INTROSELECT = 0,
     }
 
-
-    public enum NPY_DATETIMEUNIT : int
-    {
-        NPY_FR_Y,
-        NPY_FR_M,
-        NPY_FR_W,
-        NPY_FR_B,
-        NPY_FR_D,
-        NPY_FR_h,
-        NPY_FR_m,
-        NPY_FR_s,
-        NPY_FR_ms,
-        NPY_FR_us,
-        NPY_FR_ns,
-        NPY_FR_ps,
-        NPY_FR_fs,
-        NPY_FR_as,
-
-        NPY_DATETIME_NUMUNITS = NPY_FR_as + 1,
-        NPY_DATETIME_DEFAULTUNIT = NPY_FR_us,
-    };
 
     internal partial class numpyinternal
     {
