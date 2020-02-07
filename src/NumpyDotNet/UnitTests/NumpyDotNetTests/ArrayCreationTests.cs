@@ -2358,5 +2358,42 @@ namespace NumpyDotNetTests
 
 
         }
+
+
+        [TestMethod]
+        public void test_newaxis_ufunc_4()
+        {
+            var x1 = np.array(new Int32[] { 1, 2, 3, 4, 5 });
+            var x2 = np.array(new Int32[] { 5, 4, 3 });
+
+            var x2_new = (ndarray)x2[":", np.newaxis];
+            var z = x2_new + x1;
+            print(z);
+            AssertArray(z, new Int32[,] { { 6, 7, 8, 9, 10 }, { 5, 6, 7, 8, 9 }, { 4, 5, 6, 7, 8 } });
+            print("*************");
+
+            x2_new = (ndarray)x2[np.newaxis, ":", np.newaxis];
+            z = x2_new + x1;
+            print(z);
+            AssertArray(z, new Int32[,,] { { { 6, 7, 8, 9, 10 }, { 5, 6, 7, 8, 9 }, { 4, 5, 6, 7, 8 } } });
+            print("*************");
+
+
+
+            x2_new = (ndarray)x2[":", np.newaxis];
+            z = x2_new + x1;
+            print(z);
+            AssertArray(z, new Int32[,] { { 6, 7, 8, 9, 10 }, { 5, 6, 7, 8, 9 }, { 4, 5, 6, 7, 8 } });
+            print("*************");
+
+            x2_new = (ndarray)x2[":", np.newaxis, np.newaxis];
+            z = x2_new + x1;
+            print(z);
+            AssertArray(z, new Int32[,,] {{{ 6,  7,  8,  9, 10}}, {{ 5,  6,  7,  8,  9}}, {{ 4,  5,  6,  7,  8}}});
+            print("*************");
+
+
+        }
+
     }
 }

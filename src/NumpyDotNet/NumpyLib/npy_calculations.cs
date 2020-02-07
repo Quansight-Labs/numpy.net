@@ -441,6 +441,15 @@ namespace NumpyLib
             }
             else
             {
+                if (srcArray.nd < operandArray.nd)
+                {
+                    operandArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
+                }
+                else if (srcArray.nd > operandArray.nd)
+                {
+                    operandArray = NpyArray_HandleNewAxisDims(operandArray, srcArray);
+                }
+
                 newArray = NpyArray_FromArray(operandArray, newtype, flags);
             }
             return newArray;

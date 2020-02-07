@@ -1173,6 +1173,30 @@ class ArrayCreationTests(unittest.TestCase):
         z = x1 + x2_new
         print(z)
 
+    def test_newaxis_ufunc_4(self):
+
+        x1 = np.array([1, 2, 3, 4, 5])
+        x2 = np.array([5, 4, 3])
+
+        x2_new = x2[:, np.newaxis]
+        z = x2_new + x1
+        print(z)
+        print("*************")
+
+        x2_new = x2[np.newaxis,:, np.newaxis]
+        z = x2_new + x1
+        print(z)
+        print("*************")
+
+        x2_new = x2[:, np.newaxis] 
+        z = x2_new + x1
+        print(z)
+        print("*************")
+
+        x2_new = x2[:, np.newaxis, np.newaxis] 
+        z =  x2_new + x1
+        print(z)
+
 
 
 if __name__ == '__main__':
