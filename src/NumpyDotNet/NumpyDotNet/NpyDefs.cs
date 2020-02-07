@@ -52,15 +52,6 @@ namespace NumpyDotNet {
         public const int NPY_VALID_MAGIC = 1234567;
 
  
-        internal const NPY_TYPES DefaultType = NPY_TYPES.NPY_DOUBLE;
-        #if NPY_INTP_64
-        internal static readonly NPY_TYPES NPY_INTP = NpyCoreApi.TypeOf_Int64;
-        internal static readonly NPY_TYPES NPY_UINTP = NpyCoreApi.TypeOf_UInt64;
-        #else
-        internal static readonly NPY_TYPES NPY_INTP = NpyCoreApi.TypeOf_Int32;
-        internal static readonly NPY_TYPES NPY_UINTP = NpyCoreApi.TypeOf_UInt32;
-        #endif
-
         public enum NPY_COMPARE_OP {
             NPY_LT = 0,
             NPY_LE = 1,
@@ -74,75 +65,7 @@ namespace NumpyDotNet {
         internal const int NPY_MAXARGS = 32;
 
         #endregion
-
-
-   
-        #region umath errors
-
-        public const int NPY_BUFSIZE = 10000;
-        public const int NPY_MIN_BUFSIZE = 2 * sizeof(double);
-        public const int NPY_MAX_BUFSIZE = NPY_MIN_BUFSIZE * 1000000;
-
-        public enum NPY_UFUNC_FPE
-        {
-            DIVIDEBYZERO = 1,
-            OVERFLOW = 2,
-            UNDERFLOW = 4,
-            INVALID = 8
-        }
-
-        public enum NPY_UFUNC_ERR
-        {
-            IGNORE = 0,
-            WARN = 1,
-            RAISE = 2,
-            CALL = 3,
-            PRINT = 4,
-            LOG = 5
-        }
-
-        public enum NPY_UFUNC_MASK
-        {
-            DIVIDEBYZERO = 0x07,
-            OVERFLOW = 0x3f,
-            UNDERFLOW = 0x1ff,
-            INVALID = 0xfff
-        }
-
-        public enum NPY_UFUNC_SHIFT
-        {
-            DIVIDEBYZERO = 0,
-            OVERFLOW = 3,
-            UNDERFLOW = 6,
-            INVALID = 9
-        }
-
-        public enum NPY_DATETIMEUNIT : int
-        {
-            NPY_FR_Y=0,
-            NPY_FR_M,
-            NPY_FR_W,
-            NPY_FR_B,
-            NPY_FR_D,
-            NPY_FR_h,
-            NPY_FR_m,
-            NPY_FR_s,
-            NPY_FR_ms,
-            NPY_FR_us,
-            NPY_FR_ns,
-            NPY_FR_ps,
-            NPY_FR_fs,
-            NPY_FR_as
-        }
-
-        public const int NPY_UFUNC_ERR_DEFAULT = 0;
-        public const int NPY_UFUNC_ERR_DEFAULT2 =
-            ((int)NPY_UFUNC_ERR.PRINT << (int)NPY_UFUNC_SHIFT.DIVIDEBYZERO) +
-            ((int)NPY_UFUNC_ERR.PRINT << (int)NPY_UFUNC_SHIFT.OVERFLOW) +
-            ((int)NPY_UFUNC_ERR.PRINT << (int)NPY_UFUNC_SHIFT.INVALID);
-
-        #endregion
-
+  
 
         #region Type functions
 
@@ -292,15 +215,6 @@ namespace NumpyDotNet {
                     return false;
             }
 
-        }
-
-        public static bool IsDatetime(NPY_TYPES type)
-        {
-            switch (type)
-            {
-                default:
-                    return false;
-            }
         }
 
         public static bool IsUserDefined(NPY_TYPES type)

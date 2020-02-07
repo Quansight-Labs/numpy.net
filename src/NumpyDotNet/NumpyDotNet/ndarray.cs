@@ -781,12 +781,7 @@ namespace NumpyDotNet
             var flattened = this.ravel();
             return numpyAPI.NpyArray_Index2Ptr(flattened.Array, index);
         }
-
-        /// <summary>
-        /// Returns the reference count of the core array object.  Used for debugging only.
-        /// </summary>
-        public uint __coreRefCount__ { get { return Array.RefCount; } }
-
+        
         public ndarray __array_wrap__(ndarray a)
         {
             return a;
@@ -912,8 +907,6 @@ namespace NumpyDotNet
         public ndarray byteswap(bool inplace = false) {
             return NpyCoreApi.Byteswap(this, inplace);
         }
-
-        private static string[] chooseArgNames = { "out", "mode" };
 
         public object copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return ArrayReturn(Copy(order));
@@ -1071,8 +1064,6 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Newshape(this, newshape, order);
         }
-        private static string[] resizeKeywords = { "refcheck" };
-
 
         public void setflags(object write = null, object align = null, object uic = null)
         {
@@ -1133,7 +1124,7 @@ namespace NumpyDotNet
             aIndices = (indices as ndarray);
             if (aIndices == null)
             {
-                aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NpyDefs.NPY_INTP),
+                aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INTP),
                     1, 0, NPYARRAYFLAGS.NPY_CONTIGUOUS, null);
             }
             iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
@@ -1555,12 +1546,6 @@ namespace NumpyDotNet
                 return dtype1;
             }
         }
-
-        private static bool IsNdarraySubtype(object type)
-        {
-            return false;
-        }
-
 
         internal ndarray BaseArray {
             get {

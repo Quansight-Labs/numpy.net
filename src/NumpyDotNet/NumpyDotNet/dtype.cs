@@ -74,17 +74,6 @@ namespace NumpyDotNet {
             funcs = d.f;
         }
 
-
-        /// <summary>
-        /// Creates a wrapper for an array created on the native side, such as
-        /// the result of a slice operation.
-        /// </summary>
-        /// <param name="d">Pointer to core NpyArray_Descr structure</param>
-        internal dtype(NpyArray_Descr d, int type) {
-            core = d;
-            funcs = core.f;
-        }
-
         public override string ToString()
         {
             string ret;
@@ -134,16 +123,6 @@ namespace NumpyDotNet {
         #region Python interface
 
  
-
-
-
-        public object subdtype {
-            get {
-                return HasSubarray ? new PythonTuple(new Object[] { @base, this.shape }) : null;
-            }
-        }
-
-
         /// <summary>
         /// Returns the name of the underlying data type such as 'int32' or 'object'.
         /// </summary>
@@ -247,23 +226,6 @@ namespace NumpyDotNet {
         }
 
 
-        /// <summary>
-        /// Returns 0 for built=-in types, 1 for a composite type, 2 for user-defined types.
-        /// </summary>
-        public int isbuiltin {
-            get {
-                int val = 0;
-
-                if (this.fields != null) {
-                    val = 1;
-                }
-                if (NpyDefs.IsUserDefined(this.TypeNum)) {
-                    val = 2;
-                }
-                return val;
-            }
-        }
-
         public bool isnative {
             get {
                 return NpyCoreApi.DescrIsNative(this);
@@ -306,21 +268,7 @@ namespace NumpyDotNet {
 
         public Dictionary<string, object> Fields { get { return this.GetFieldsDict(); } }
 
-        public object dtinfo
-        {
-            get
-            {
-                return new PythonTuple(new object[] {
-                    core.dtinfo._base.ToString(), core.dtinfo.num, core.dtinfo.den, core.dtinfo.events });
-            }
-
-            internal set
-            {
-                PythonTuple dtTup = (PythonTuple)value;
-                core.dtinfo = numpyAPI.NpyArray_DateTimeInfoNew((string)dtTup[0], (int)dtTup[1], (int)dtTup[2], (int)dtTup[3]);
-            }
-        }
-
+    
         public int itemsize {
             get { return ElementSize; }
         }
@@ -353,14 +301,7 @@ namespace NumpyDotNet {
 
         public string kind { get { return new string((char)this.Kind, 1); } }
 
-        public string @char {
-            get {
-                return ((char)this.Type).ToString();
-            }
-        }
-
-        public int num { get { return (int)this.TypeNum; } }
-
+  
         public string byteorder { get { return new string((char)this.ByteOrder, 1); } }
 
         public int alignment { get { return this.Alignment; } }

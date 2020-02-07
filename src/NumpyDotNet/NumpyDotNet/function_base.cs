@@ -1332,12 +1332,7 @@ namespace NumpyDotNet
 
         #endregion
 
-        #region unique
-        public static ndarray _unique(ndarray x)
-        {
-            throw new NotImplementedException("This function is deprecated. Use other version of unique instead");
-        }
-        #endregion
+   
 
         #region extract
         public static ndarray extract(ndarray condition, ndarray arr)

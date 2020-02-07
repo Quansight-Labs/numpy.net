@@ -58,8 +58,6 @@ namespace NumpyDotNet
             return (flags&check) == check;
         }
 
-        public int num { get { return (int)flags; } }
-
         public bool this[string name] {
             get {
                 if (name != null) {

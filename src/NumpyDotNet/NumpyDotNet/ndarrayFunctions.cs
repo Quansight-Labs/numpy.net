@@ -64,7 +64,6 @@ namespace NumpyDotNet
         {
         }
 
-        public static readonly string __version__ = "0.9.09";
         private static readonly bool _init = numpy.InitializeNumpyLibrary();
 
 
@@ -2682,19 +2681,6 @@ namespace NumpyDotNet
 
         #endregion
 
-        #region numeric operations
-
-
-        public delegate bool numericOp(dynamic X1, dynamic X2);
-
-        public static bool bgreater_equal(dynamic x1, dynamic x2)
-        {
-            return x1 >= x2;
-        }
-
-
-
-        #endregion
 
         #region IndicesFromAxis
         public static IList<npy_intp> IndicesFromAxis(ndarray a, int axis)

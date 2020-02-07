@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+#define USE_REFCHECK
 //#define ENABLELOCKING
 using System;
 using System.Collections.Generic;
@@ -300,22 +300,24 @@ namespace NumpyDotNet {
             }
 
         }
-
-
+        [Conditional("USE_REFCHECK")]
         internal static void Incref(NpyArray_Descr obj)
         {
             numpyAPI.NpyArrayAccess_Incref(obj);
         }
+        [Conditional("USE_REFCHECK")]
         internal static void Decref(NpyArray_Descr obj)
         {
             numpyAPI.NpyArrayAccess_Decref(obj);
         }
 
+        [Conditional("USE_REFCHECK")]
         internal static void Incref(NpyArray obj)
         {
             numpyAPI.NpyArrayAccess_Incref(obj);
         }
 
+        [Conditional("USE_REFCHECK")]
         internal static void Decref(NpyArray obj)
         {
             numpyAPI.NpyArrayAccess_Decref(obj);
@@ -781,16 +783,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static NPY_TYPES TypestrConvert(int elsize, NPY_TYPECHAR letter)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                return numpyAPI.NpyArray_TypestrConvert(elsize, letter);
-            }
-        }
-
         internal static void AddField(NpyDict fields, List<string> names, int i, string name, dtype fieldType, int offset, string title)
         {
             Incref(fieldType.Descr);
@@ -969,19 +961,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void SetDateTimeInfo(dtype d, string units, int num, int den, int events)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                if (numpyAPI.NpyArrayAccess_SetDateTimeInfo(d.Descr, units, num, den, events) < 0)
-                {
-                    CheckError();
-                }
-            }
-        }
-
         internal static dtype InheritDescriptor(dtype t1, dtype other)
         {
 #if ENABLELOCKING
@@ -1034,23 +1013,6 @@ namespace NumpyDotNet {
                 return numpyAPI.NpyArray_CanCastTo(d1.Descr, d2.Descr);
             }
         }
-
-        /// <summary>
-        /// Returns the PEP 3118 format encoding for the type of an array.
-        /// </summary>
-        /// <param name="arr">Array to get the format string for</param>
-        /// <returns>Format string</returns>
-        internal static string GetBufferFormatString(ndarray arr)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                return numpyAPI.NpyArrayAccess_GetBufferFormatString(arr.Array);
-            }
-
-        }
-
 
         /// <summary>
         /// Reads the specified text or binary file and produces an array from the content.  Currently only
@@ -2059,28 +2021,7 @@ namespace NumpyDotNet {
             }
         }
 
-        /// <summary>
-        /// Deallocates the core data structure.  The obj IntRef is no longer valid after this
-        /// point and there must not be any existing internal core references to this object
-        /// either.
-        /// </summary>
-        /// <param name="obj">Core NpyObject instance to deallocate</param>
-        internal static void Dealloc(NpyObject_HEAD obj)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                numpyAPI.NpyArrayAccess_Dealloc(obj);
-            }
-        }
-
-        internal static float GetAbiVersion()
-        {
-            float NPY_ABI_VERSION = 2.0f;
-            return NPY_ABI_VERSION;
-        }
-
+    
         internal static NpyDict_Iter NpyDict_AllocIter()
         {
 #if ENABLELOCKING
@@ -2121,24 +2062,10 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static string FormatLongFloat(double v, int precision)
-        {
-            return "%f";
-        }
-
         #endregion
 
 
         #region Callbacks and native access
-
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal class DateTimeInfo {
-            internal NpyDefs.NPY_DATETIMEUNIT @base;
-            internal int num;
-            internal int den;
-            internal int events;
-        }
 
 
         internal static byte oppositeByteOrder;
@@ -2214,34 +2141,6 @@ namespace NumpyDotNet {
         }
 
 
-        /// <summary>
-        /// Called by NpyErr_SetMessage in the native world when something bad happens
-        /// </summary>
-        /// <param name="exceptType">Type of exception to be thrown</param>
-        /// <param name="bStr">Message string</param>
-        private static void SetErrorCallback(int exceptType, string bStr) {
-            if (exceptType < 0 || exceptType >= (int)npyexc_type.NpyExc_NoError) {
-                Console.WriteLine("Internal error: invalid exception type {0}, likely ErrorType and npyexc_type (npy_api.h) are out of sync.",
-                    exceptType);
-            }
-            SetError((npyexc_type)exceptType, bStr);
-        }
-  
-
-        /// <summary>
-        /// Called by native side to check to see if an error occurred
-        /// </summary>
-        /// <returns>1 if an error is pending, 0 if not</returns>
-        private static int ErrorOccurredCallback() {
-            return (ErrorCode != npyexc_type.NpyExc_NoError) ? 1 : 0;
-        }
- 
-
-        private static void ClearErrorCallback() {
-            ErrorCode = npyexc_type.NpyExc_NoError;
-            ErrorMessage = null;
-        }
-
 
 #endregion
 
@@ -2263,58 +2162,6 @@ namespace NumpyDotNet {
 #endregion
 
 
-        /// <summary>
-        /// The native type code that matches up to a 32-bit int.
-        /// </summary>
-        internal static readonly NPY_TYPES TypeOf_Int32 = NPY_TYPES.NPY_INT32;
-
-        /// <summary>
-        /// Native type code that matches up to a 64-bit int.
-        /// </summary>
-        internal static readonly NPY_TYPES TypeOf_Int64 = NPY_TYPES.NPY_INT64;
-
-        /// <summary>
-        /// Native type code that matches up to a 32-bit unsigned int.
-        /// </summary>
-        internal static readonly NPY_TYPES TypeOf_UInt32 = NPY_TYPES.NPY_UINT32;
-
-        /// <summary>
-        /// Native type code that matches up to a 64-bit unsigned int.
-        /// </summary>
-        internal static readonly NPY_TYPES TypeOf_UInt64 = NPY_TYPES.NPY_UINT64;
-
-        /// <summary>
-        /// Native type code that matches up to a 64-bit unsigned int.
-        /// </summary>
-        internal static readonly NPY_TYPES TypeOf_Decimal = NPY_TYPES.NPY_DECIMAL;
-
-        /// <summary>
-        /// Size of element in integer arrays, in bytes.
-        /// </summary>
-        internal static readonly int Native_SizeOfInt = sizeof(Int32);
-
-        /// <summary>
-        /// Size of element in long arrays, in bytes.
-        /// </summary>
-        internal static readonly int Native_SizeOfLong = sizeof(Int64);
-
-        /// <summary>
-        /// Size of element in long long arrays, in bytes.
-        /// </summary>
-        internal static readonly int Native_SizeOfLongLong = sizeof(Int64) * 2;
-
-        /// <summary>
-        /// Size fo element in long double arrays, in bytes.
-        /// </summary>
-        internal static readonly int Native_SizeOfLongDouble = sizeof(double) * 2;
-
-
-        /// <summary>
-        /// Initializes the core library with necessary callbacks on load.
-        /// </summary>
-        static NpyCoreApi() {
-     
-        }
 #endregion
 
 

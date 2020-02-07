@@ -833,11 +833,6 @@ namespace NumpyLib
             return numpyinternal.NpyArrayAccess_InheritDescriptor(type, conv);
         }
 
-        public static int NpyArrayAccess_SetDateTimeInfo(NpyArray_Descr descr, string units, int num, int den, int events)
-        {
-            return numpyinternal.NpyArrayAccess_SetDateTimeInfo(descr, units, num, den, events);
-        }
-
         public static VoidPtr NpyArrayAccess_IterGoto1D(NpyArrayIterObject it, npy_intp index)
         {
             return numpyinternal.NpyArrayAccess_IterGoto1D(it, index);

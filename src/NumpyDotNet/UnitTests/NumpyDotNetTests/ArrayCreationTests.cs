@@ -63,14 +63,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_PrintVersionString()
-        {
-            print(np.__version__);
-        }
-
-    
-
-        [TestMethod]
         public void test_asfarray_1()
         {
             var a = np.asfarray(new int[] { 2, 3 });

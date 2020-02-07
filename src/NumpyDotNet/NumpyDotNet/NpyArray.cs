@@ -103,32 +103,6 @@ namespace NumpyDotNet {
             }
         }
 
-
-
-
-        /// <summary>
-        /// Checks the strides against the shape of the array.  This duplicates
-        /// NpyArray_CheckStrides and is only here because we don't currently support
-        /// buffers and can simplify this function plus it's much faster to do here
-        /// than to pass the arrays into the native world.
-        /// </summary>
-        /// <param name="elSize">Size of array element in bytes</param>
-        /// <param name="shape">Size of each dimension of the array</param>
-        /// <param name="strides">Stride of each dimension</param>
-        /// <returns>True if strides are ok, false if not</returns>
-        public static bool CheckStrides(this NpyArray a, int elSize, npy_intp[] shape, npy_intp[] strides)
-        {
-            // Product of all dimension sizes * element size in bytes.
-            long numbytes = shape.Aggregate(1L, (acc, x) => acc * x) * elSize;
-            long end = numbytes - elSize;
-            for (int i = 0; i < shape.Length; i++)
-            {
-                if (strides[i] * (shape[i] - 1) > end) return false;
-            }
-            return true;
-        }
-
-
         public static ndarray CheckFromAny(Object src, dtype descr, int minDepth,
             int maxDepth, NPYARRAYFLAGS requires, Object context)
         {
@@ -739,29 +713,8 @@ namespace NumpyDotNet {
                 dims[dimIdx] = 1;
             }
         }
-   
+  
  
-    
-        internal static void FillObjects(ndarray arr, object o)
-        {
-            dtype d = arr.Dtype;
-            if (d.IsObject)
-            {
-                if (d.HasNames)
-                {
-                    foreach (string name in d.Names)
-                    {
-                        ndarray view = NpyCoreApi.GetField(arr, name);
-                        FillObjects(view, o);
-                    }
-                }
-                else
-                {
-                    NpyCoreApi.FillWithObject(arr, o);
-                }
-            }
-        }
-
         internal static void AssignToArray(Object src, ndarray result)
         {
             IEnumerable<object> seq = src as IEnumerable<object>;
@@ -809,17 +762,6 @@ namespace NumpyDotNet {
                 seq.Iteri((o, i) => result.Dtype.f.setitem(offset + i * stride, o, result.Array));
             }
         }
-
-        // This does not work because I can't get the incredibly complex Assign_Array subsystem to work correctly.
-        // I have abandoned this effort 5/5/2019
-        private static ndarray ConcatenateNEW(IEnumerable<ndarray> arrays, int? axis = 0, bool shrinkOnSingle = true)
-        {
-            var result = NpyCoreApi.NpyArray_Concatenate(arrays, axis, null);
-
-            return result;
-
-        }
-
 
         private static ndarray Concatenate(IEnumerable<ndarray> arrays, int? axis = 0)
         {

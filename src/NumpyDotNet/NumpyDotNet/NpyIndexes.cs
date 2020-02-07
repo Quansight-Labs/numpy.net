@@ -540,7 +540,7 @@ namespace NumpyDotNet
         public void AddIntpArray(Object arg)
         {
             // Convert to an intp array
-            ndarray arr = np.FromAny(arg, NpyCoreApi.DescrFromType(NpyDefs.NPY_INTP), 0, 0, NPYARRAYFLAGS.NPY_FORCECAST, null);
+            ndarray arr = np.FromAny(arg, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INTP), 0, 0, NPYARRAYFLAGS.NPY_FORCECAST, null);
             // Write the type
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_INTP_ARRAY;
 

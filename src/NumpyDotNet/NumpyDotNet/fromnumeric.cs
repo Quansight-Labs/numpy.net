@@ -448,7 +448,7 @@ namespace NumpyDotNet
             aIndices = asanyarray(indices);
             if (aIndices == null)
             {
-                aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NpyDefs.NPY_INTP),
+                aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INTP),
                     0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
             }
             aValues = asanyarray(values);
