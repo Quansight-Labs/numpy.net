@@ -92,6 +92,30 @@ class PerformanceTests(unittest.TestCase):
 
         print(masked)
 
+    def test_KEVIN(self):
+
+        sigma = 0.4
+        size = int(8 * sigma + 1)
+
+        if size % 2 == 0:
+            size = size + 1
+        
+        x = np.arange(0, size, 1, float)
+        y = x[:, np.newaxis] * 4
+        x0 = y0 = size // 2
+   
+        gaus = np.exp(-4 * np.log(2) * ((x - x0) ** 2 + (y - y0) ** 2) / sigma ** 2)
+        print(gaus)
+
+    def test_copyto_kev(self):
+
+        x = np.arange(0, 6, 1, float).reshape((3,2))
+        y = x[:,:, np.newaxis] * 4
+        y = x[:,np.newaxis,:] * 4
+        #y = y[:,:,:,np.newaxis]
+        z = x + y
+        print(z)
+
 
 if __name__ == '__main__':
     unittest.main()

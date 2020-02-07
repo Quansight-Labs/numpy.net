@@ -164,6 +164,47 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_KEVIN()
+        {
+            double sigma = 0.4;
+            ndarray im;
+            int x0, y0;
+            int size = (int)(8 * sigma + 1);
+            if (size % 2 == 0) size += 1;
+            var x = np.arange(0, size, 1, np.Float32);
+            var y = x.A(":", np.newaxis) * 4;
+
+            x0 = y0 = size / 2;
+
+            var gaus = np.exp(-4 * np.log(2) * (np.power((x - x0), 2) + np.power((y - y0), 2)) / np.power(sigma, 2));
+            print(gaus);
+
+        }
+
+        public ndarray make_gaussian(ndarray im, double sigma, ndarray xc, ndarray yc)
+        {
+
+            int size = (int)(8 * sigma + 1);
+
+            if (size % 2 == 0)
+                size += 1;
+
+            var x = np.arange(0, size, 1, np.Float32);
+            var y = x.A(":", np.newaxis) * 4;
+
+
+            int x0 = size / 2;
+            int y0 = size / 2;
+
+            var gaus = np.exp(-4 * np.log(2) * (np.power((x - x0),2) + np.power((y - y0),2) / np.power(sigma,2)));
+
+            im[xc - (size / 2) + ":" + (xc + size / 2 + 1), (yc - size / 2) + ":" + (yc + size / 2 + 1)] = gaus;
+
+            return im;
+
+        }
+
 
     }
 }
