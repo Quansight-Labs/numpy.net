@@ -425,6 +425,11 @@ namespace NumpyLib
             NpyArray newArray = null;
             if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
             {
+                if (operandArray != null && (srcArray.nd > 0 && operandArray.nd > 0) && (srcArray.nd < operandArray.nd))
+                {
+                    srcArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
+                }
+
                 newArray = NpyArray_FromArray(srcArray, newtype, flags);
             }
             else
@@ -432,6 +437,76 @@ namespace NumpyLib
                 newArray = NpyArray_FromArray(operandArray, newtype, flags);
             }
             return newArray;
+        }
+
+        internal static NpyArray NpyArray_HandleNewAxisDims(NpyArray srcArray, NpyArray operandArray)
+        {
+
+            var newdims = new npy_intp[operandArray.dimensions.Length];
+            Array.Copy(operandArray.dimensions, 0, newdims, 0, operandArray.nd);
+
+            var possibleOffsets = PossibleNewAxisOffsets(srcArray, operandArray);
+
+            npy_intp numtoskip = possibleOffsets.Length - srcArray.nd;
+            if (numtoskip < 0)
+                numtoskip = 0;
+
+            for (int i = 0; i < Math.Min(possibleOffsets.Length - numtoskip, srcArray.nd); i++)
+            {
+                newdims[possibleOffsets[i + numtoskip]] = srcArray.dimensions[i];
+            }
+
+     
+            npy_intp srcArraySize = NpyArray_SIZE(srcArray);
+            npy_intp operandArraySize = NpyArray_MultiplyList(newdims, newdims.Length);
+            if (srcArraySize < operandArraySize)
+            {
+                srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, newdims, newdims.Length);
+            }
+            else
+            {
+                NpyArray_Dims dims = new NpyArray_Dims()
+                {
+                    ptr = newdims,
+                    len = newdims.Length,
+                };
+                srcArray = NpyArray_Newshape(srcArray, dims, NPY_ORDER.NPY_KEEPORDER);
+            }
+
+            return srcArray;
+        }
+
+        internal static npy_intp[] PossibleNewAxisOffsets(NpyArray srcArray, NpyArray operandArray)
+        {
+            var offsets = new List<npy_intp>();
+ 
+
+            int srcIndex = 0;
+            for (npy_intp i = 0; i < operandArray.nd; i++)
+            {
+                if (srcIndex < srcArray.nd)
+                {
+                    if (operandArray.dimensions[i] != srcArray.dimensions[srcIndex] && operandArray.dimensions[i] == 1)
+                    {
+                        if (srcIndex > 0)
+                            offsets.Add(i);
+                    }
+                    else
+                    {
+                        srcIndex++;
+                    }
+                }
+                else
+                {
+                    if (operandArray.dimensions[i] == 1)
+                    {
+                        offsets.Add(i);
+                    }
+                }
+   
+            }
+
+            return offsets.ToArray();
         }
 
         internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
@@ -456,10 +531,10 @@ namespace NumpyLib
                     Int64 repeatNumber = operandArraySize / srcArraySize;
 
                     NpyArray repeatArray = NpyArray_Alloc(
-                        NpyArray_DescrFromType(NPY_TYPES.NPY_INT64),
+                        NpyArray_DescrFromType(NPY_TYPES.NPY_INTP),
                         1, new npy_intp[] { 1 }, false, null);
 
-                    Int64[] Data = repeatArray.data.datap as Int64[];
+                    npy_intp[] Data = repeatArray.data.datap as npy_intp[];
                     Data[0] = repeatNumber;
 
                     srcArray = NpyArray_Repeat(srcArray, repeatArray, -1);
