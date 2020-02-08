@@ -52,9 +52,11 @@ using NpyArray_UCS4 = System.UInt32;
 namespace NumpyLib
 {
 
-
     internal partial class numpyinternal
     {
+        const int NUMERICOPS_TASKSIZE = 1000;       // size of data to break into chunks
+        const int NUMERICOPS_SMALL_TASKSIZE = 100;  // size of data to small to use parallel library
+
 
         internal static NumericOperation GetOperation(ref NpyArray srcArray, NpyArray_Ops operationType)
         {
@@ -609,77 +611,103 @@ namespace NumpyLib
                 return;
             }
 
-            long taskSize = 1000;
-            int taskCnt = 0;
-            var srcOffsets = new Int32[taskSize];
-            var destOffsets = new Int32[taskSize];
-            var operOffsets = new Int32[taskSize];
-
-            Countdown countDown = new Countdown();
-            List<Exception> caughtExceptions = new List<Exception>();
-
+            long taskSize = NUMERICOPS_TASKSIZE;
+             
             for (long i = 0; i < destSize;)
             {
                 long offset_cnt = Math.Min(taskSize, destSize - i);
 
-                NpyArray_ITER_TOARRAY(SrcIter, srcArray, srcOffsets, offset_cnt);
-                NpyArray_ITER_TOARRAY(DestIter, destArray, destOffsets, offset_cnt);
-                NpyArray_ITER_TOARRAY(OperIter, operArray, operOffsets, offset_cnt);
+                PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, offset_cnt);
 
                 i += offset_cnt;
-
-                if (true) //taskCnt == taskSize || i == destSize)
-                {
-
-                    var taskData = new NumericOpTaskData()
-                    {
-                        operations = operations,
-                        srcArray = srcArray,
-                        destArray = destArray,
-                        operArray = operArray,
-                        srcOffsets = srcOffsets,
-                        destOffsets = destOffsets,
-                        operOffsets = operOffsets,
-                        taskCnt = (int)offset_cnt,
-                        countDown = countDown,
-                        caughtExceptions = caughtExceptions,
-                    };
-
-                    lock (NumericOpTaskQueue)
-                    {
-                        countDown.Increment();
-                        NumericOpTaskQueue.Enqueue(taskData);
-                        NumericOpTaskSemaphore.Release(1);
-                    }
-
-                    //// task creation is taking huge time
-                    //var newTask = new TaskFactory().StartNew(new Action<object>((_taskData) =>
-                    //{
-                    //    var td = _taskData as NumericOpTaskData;
-                    //    NumericOpTask(td.srcArray, td.destArray, td.operArray, td.operations, td.srcOffsets, td.destOffsets, td.operOffsets, td.taskCnt);
-                    //}), taskData);
-
-                    //TaskList.Add(newTask);
-
-                    srcOffsets = new Int32[taskSize];
-                    destOffsets = new Int32[taskSize];
-                    operOffsets = new Int32[taskSize];
-                    taskCnt = 0;
-                }
 
                 NpyArray_ITER_NEXT(SrcIter);
                 NpyArray_ITER_NEXT(DestIter);
                 NpyArray_ITER_NEXT(OperIter);
-
             }
 
-            countDown.Wait();
+            return;
+        }
+
+        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+        {
+            List<Exception> caughtExceptions = new List<Exception>();
+
+            var srcOffsets = new Int32[taskSize];
+            var destOffsets = new Int32[taskSize];
+            var operOffsets = new Int32[taskSize];
+
+            if (taskSize < NUMERICOPS_SMALL_TASKSIZE)
+            {
+                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
+                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
+                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
+
+                try
+                {
+                    for (int i = 0; i < taskSize; i++)
+                    {
+                        var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
+                        var operValue = operations.operandGetItem(operOffsets[i], operArray);
+
+                        object destValue = null;
+
+                        destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
+
+                        try
+                        {
+                            operations.destSetItem(destOffsets[i], destValue, destArray);
+                        }
+                        catch
+                        {
+                            operations.destSetItem(destOffsets[i], 0, destArray);
+                        }
+                    };
+                }
+                catch (Exception ex)
+                {
+                    caughtExceptions.Add(ex);
+                }
+            }
+            else
+            {
+                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
+                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
+                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
+
+
+                Parallel.For(0, taskSize, i =>
+                {
+                    try
+                    {
+                        var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
+                        var operValue = operations.operandGetItem(operOffsets[i], operArray);
+
+                        object destValue = null;
+
+                        destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
+
+                        try
+                        {
+                            operations.destSetItem(destOffsets[i], destValue, destArray);
+                        }
+                        catch
+                        {
+                            operations.destSetItem(destOffsets[i], 0, destArray);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        caughtExceptions.Add(ex);
+                    }
+                });
+            }
+
 
             if (caughtExceptions.Count > 0)
             {
                 throw caughtExceptions[0];
             }
-            return;
         }
 
         private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
@@ -1189,139 +1217,7 @@ namespace NumpyLib
             return NpyArray_ITER_COUNT(OperIter);
         }
 
-        public class Countdown : IDisposable
-        {
-            private readonly ManualResetEvent done;
-            private long current;
-
-            public Countdown()
-            {
-                current = 0;
-                done = new ManualResetEvent(false);
-            }
-
-            public void Signal()
-            {
-                if (Interlocked.Decrement(ref current) == 0)
-                {
-                    done.Set();
-                }
-            }
-            public void Increment()
-            {
-                Interlocked.Increment(ref current);
-            }
-
-            public void Wait()
-            {
-                done.WaitOne();
-            }
-
-            public void Dispose()
-            {
-                ((IDisposable)done).Dispose();
-            }
-        }
-
-        class NumericOpTaskData
-        {
-            public NpyArray srcArray;
-            public NpyArray destArray;
-            public NpyArray operArray;
-            public NumericOperations operations;
-            public Int32[] srcOffsets;
-            public Int32[] destOffsets;
-            public Int32[] operOffsets;
-            public int taskCnt;
-            public Countdown countDown;
-            public List<Exception> caughtExceptions;
-        }
-
-        private static bool NumericOpThreadsRunning = false;
-        private static int NumericOpTaskThreadCount = 10;
-        private static Queue<NumericOpTaskData> NumericOpTaskQueue = new Queue<NumericOpTaskData>();
-        private static System.Threading.SemaphoreSlim NumericOpTaskSemaphore = new System.Threading.SemaphoreSlim(0, int.MaxValue);
-
-        internal static void StartNumericOpTaskThreads()
-        {
-            NumericOpThreadsRunning = true;
-
-            for (int i = 0; i < NumericOpTaskThreadCount; i++)
-            {
-                Task.Run(() => NumericOpTaskThread());
-            }
-   
-        }
-        internal static void StopNumericOpTaskThreads()
-        {
-            NumericOpThreadsRunning = false;
-            NumericOpTaskSemaphore.Release(NumericOpTaskThreadCount);
-        }
-
-        private static void NumericOpTaskThread()
-        {
-            Thread.CurrentThread.Name = "NumericOpTaskThread";
-
-            while (NumericOpThreadsRunning)
-            {
-                NumericOpTaskSemaphore.Wait();
-                
-                NumericOpTaskData td = null;
-
-                lock (NumericOpTaskQueue)
-                {
-                    if (NumericOpTaskQueue.Count > 0)
-                    {
-                        td = NumericOpTaskQueue.Dequeue();
-                    }
-                }
-
-                if (td != null)
-                {
-                    try
-                    {
-                        NumericOpTask(td.srcArray, td.destArray, td.operArray, td.operations, td.srcOffsets, td.destOffsets, td.operOffsets, td.taskCnt);
-                        td.countDown.Signal();
-                        td.srcOffsets = null;
-                        td.destOffsets = null;
-                        td.operOffsets = null;
-                    }
-                    catch (Exception ex)
-                    {
-                        td.countDown.Signal();
-                        td.caughtExceptions.Add(ex);
-                    }
-
-                }
-
-
-            }
-
-            return;
-        }
-
-        private static void NumericOpTask(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, Int32[] srcOffsets, Int32[] destOffsets, Int32[] operOffsets, int taskCnt)
-        {
-            for (int i = 0; i < taskCnt; i++)
-            {
-                var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
-                var operValue = operations.operandGetItem(operOffsets[i], operArray);
-
-                object destValue = null;
-
-                destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
-
-                try
-                {
-                    operations.destSetItem(destOffsets[i], destValue, destArray);
-                }
-                catch
-                {
-                    operations.destSetItem(destOffsets[i], 0, destArray);
-                }
-            };
-
-        }
+  
         #endregion
 
         private static void PerformOuterOpArrayIter(NpyArray a,  NpyArray b, NpyArray destArray, NumericOperations operations)
