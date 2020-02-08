@@ -65,6 +65,17 @@ namespace NumpyDotNetTests
             }
   
         }
+        [Ignore]
+        [TestMethod]
+        public void MultiThreaded_ExecuteAllUnitTests_1000X()
+        {
+
+            for (int i = 0; i < 1000; i++)
+            {
+                MultiThreaded_ExecuteAllUnitTests();
+            }
+
+        }
 
         private MethodInfoData[] GetArrayOfUnitTests()
         {
