@@ -139,7 +139,7 @@ namespace NumpyLib
   
 
             // if this is a scalar with no dimensions, let's fake 1 dimension
-            if (dims == null)
+            if (dims == null || nd <= 0)
             {
                 dims = new npy_intp[1] { 1 };
                 nd = 1;

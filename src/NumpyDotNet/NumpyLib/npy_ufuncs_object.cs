@@ -963,13 +963,13 @@ namespace NumpyLib
             if (keepdims)
             {
                 npy_intp[] ExpandedDims = null;
-                if (ret.dimensions == null)
+                if (ret.dimensions == null || ret.nd <= 0)
                 {
                     ExpandedDims = new npy_intp[1] { 1 };
                 }
                 else
                 {
-                    ExpandedDims = new npy_intp[ret.dimensions.Length + 1];
+                    ExpandedDims = new npy_intp[ret.nd + 1];
                 }
 
 

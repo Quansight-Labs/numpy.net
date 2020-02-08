@@ -56,18 +56,24 @@ namespace NumpyLib
     
     public class NpyArray : NpyObject_HEAD
     {
+        ~NpyArray()
+        {
+            numpyinternal.NpyDimMem_FREE(dimensions);
+            numpyinternal.NpyDimMem_FREE(strides);
+            return;
+        }
+
         public string Name
         {
             get; set;
         }
         
-        public VoidPtr data = new VoidPtr();          /* pointer to raw data buffer */
+        public VoidPtr data;          /* pointer to raw data buffer */
         public int nd;                /* number of dimensions, also called ndim */
+
         public npy_intp[] dimensions; /* size in each dimension */
-        public npy_intp[] strides;    /*
-                                        * bytes to jump to get to the
-                                        * next element in each dimension
-                                        */
+        public npy_intp[] strides;    /* bytes to jump to get to next element in each dimension */
+    
         private NpyArray _base_arr;
         public NpyArray base_arr        /* Base when it's specifically an array object */
         {
@@ -79,7 +85,6 @@ namespace NumpyLib
             if (arr != null)
             {
                 Name = arr.Name;
-
             }
         }
 
@@ -113,6 +118,7 @@ namespace NumpyLib
                 return descr.type_num;
             }
         }
+ 
 
         public long GetElementCount()
         {
