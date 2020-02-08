@@ -19,8 +19,6 @@ namespace NumpyDotNetTests
         {
             int LoopCount = 200;
 
-            var kk = new bool[Int32.MaxValue / 2];
-
             var matrix = np.arange(1600000, dtype: np.Int64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
