@@ -2231,7 +2231,7 @@ namespace NumpyDotNet
             ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
             ndarray ret = np.ndarray(aCondition1.shape, _x.Dtype);
 
-            for (npy_intp i = 0; i < aCondition1.Size; i++)
+            Parallel.For(0, aCondition1.Size, i =>
             {
                 bool c = (bool)_GetWhereItem(aCondition1, i);
                 if (c)
@@ -2242,8 +2242,8 @@ namespace NumpyDotNet
                 {
                     _SetWhereItem(ret, i, _GetWhereItem(_y, i));
                 }
-            }
-      
+            });
+
             return ret;
         }
 
