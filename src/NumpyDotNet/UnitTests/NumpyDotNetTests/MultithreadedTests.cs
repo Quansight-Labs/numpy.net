@@ -20,6 +20,7 @@ namespace NumpyDotNetTests
             public TestBaseClass baseClass;
         }
 
+        //[Ignore]
         [TestMethod]
         public void MultiThreaded_ExecuteAllUnitTests()
         {

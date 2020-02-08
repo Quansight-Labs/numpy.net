@@ -437,13 +437,13 @@ namespace NumpyDotNet
             var SetItemFunc = FastSetItemFuncByType(CC, result.Array.data);
 
             // populate the array
-            int _step = (int)step;
-            int _start = (int)start;
-            for (int i = 0; i < len; i++)
+            Int64 _step = (Int64)step;
+            Int64 _start = (Int64)start;
+            Parallel.For(0, len, i =>
             {
                 double value = _start + (i * _step);
                 SetItemFunc(i, value);
-            }
+            });
 
 
             if (swap)
@@ -562,11 +562,11 @@ namespace NumpyDotNet
             // populate the array
             double _step = (double)step;
             double _start = (double)start;
-            for (int i = 0; i < (int)len; i++)
+            Parallel.For(0, (npy_intp)len, i =>
             {
                 double value = _start + (i * _step);
                 SetItemFunc(i, value);
-            }
+            });
 
 
             if (swap)
@@ -657,11 +657,11 @@ namespace NumpyDotNet
             // populate the array
             decimal _step = (decimal)step;
             decimal _start = (decimal)start;
-            for (int i = 0; i < (int)len; i++)
+            Parallel.For(0, (npy_intp)len, i =>
             {
                 decimal value = _start + (i * _step);
                 SetItemFunc(i, value);
-            }
+            });
 
 
             if (swap)
@@ -752,11 +752,11 @@ namespace NumpyDotNet
             // populate the array
             System.Numerics.Complex _step = step.Value;
             System.Numerics.Complex _start = start;
-            for (int i = 0; i < (int)len; i++)
+            Parallel.For(0, (npy_intp)len, i =>
             {
                 System.Numerics.Complex value = _start + (i * _step);
                 SetItemFunc(i, value);
-            }
+            });
 
 
             if (swap)
@@ -847,11 +847,11 @@ namespace NumpyDotNet
             // populate the array
             System.Numerics.BigInteger _step = step.Value;
             System.Numerics.BigInteger _start = start;
-            for (int i = 0; i < (int)len; i++)
+            Parallel.For(0, (npy_intp)len, i =>
             {
                 System.Numerics.BigInteger value = _start + (i * _step);
                 SetItemFunc(i, value);
-            }
+            });
 
 
             if (swap)
@@ -955,9 +955,9 @@ namespace NumpyDotNet
             return FAData;
         }
 
-        private static Func<int, object, int> FastSetItemFuncByType(FastArrayAccessData FAData, VoidPtr vp)
+        private static Func<npy_intp, object, int> FastSetItemFuncByType(FastArrayAccessData FAData, VoidPtr vp)
         {
-            Func<int, object, int> ret = null;
+            Func<npy_intp, object, int> ret = null;
 
             switch (vp.type_num)
             {
@@ -2169,7 +2169,7 @@ namespace NumpyDotNet
             var numSequence = array.shape.iDims[0];
 
             ndarray[] sequenceArray = new ndarray[numSequence];
-            for (int i = 0; i < numSequence; i++)
+            for (npy_intp i = 0; i < numSequence; i++)
             {
                 sequenceArray[i] = array[i] as ndarray;
             }
@@ -2231,7 +2231,7 @@ namespace NumpyDotNet
             ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
             ndarray ret = np.ndarray(aCondition1.shape, _x.Dtype);
 
-            for (int i = 0; i < aCondition1.Size; i++)
+            for (npy_intp i = 0; i < aCondition1.Size; i++)
             {
                 bool c = (bool)_GetWhereItem(aCondition1, i);
                 if (c)
@@ -2247,12 +2247,12 @@ namespace NumpyDotNet
             return ret;
         }
 
-        private static void _SetWhereItem(ndarray a, int index, object v)
+        private static void _SetWhereItem(ndarray a, npy_intp index, object v)
         {
             a.SetItem(v, _SanitizeIndex(a, index));
         }
 
-        private static object _GetWhereItem(ndarray a, int index)
+        private static object _GetWhereItem(ndarray a, npy_intp index)
         {
             return a.GetItem(_SanitizeIndex(a, index));
         }
