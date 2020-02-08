@@ -5950,7 +5950,7 @@ namespace NumpyDotNetTests
             print(b.shape);
             AssertStrides(b, 0, 8);
             print(b.strides);
-            Assert.AreEqual(4000000, b.nbytes);
+            Assert.AreEqual(SizeOfString * b.size, b.nbytes);
             print(b.nbytes);
 
         }
