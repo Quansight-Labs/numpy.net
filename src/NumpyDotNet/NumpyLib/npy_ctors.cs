@@ -889,9 +889,7 @@ namespace NumpyLib
          */
         internal static NpyArray NpyArray_Alloc(NpyArray_Descr descr, int nd, npy_intp[] dims, bool is_fortran, object interfaceData)
         {
-            /* TODO: Have NpyArray_NewFromDescr call this instead of
-               vice versa. */
-            return NpyArray_NewFromDescr(descr, nd, dims,
+             return NpyArray_NewFromDescr(descr, nd, dims,
                                          null, null, 
                                          (is_fortran ? NPYARRAYFLAGS.NPY_FORTRAN : 0),
                                          false, null, interfaceData);
