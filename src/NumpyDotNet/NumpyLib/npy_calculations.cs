@@ -423,80 +423,69 @@ namespace NumpyLib
             }
 
             var broadcastDims = GenerateBroadcastedDims(srcArray, operandArray);
-            if (broadcastDims != null && broadcastDims.Length == 1 && broadcastDims[0] == 0)
-            {
-                Console.Write("");
-            }
-
+  
             if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
             {
                 if (broadcastDims != null)
                 {
                     return NpyArray_Alloc(newtype, broadcastDims.Length, broadcastDims, NpyArray_ISFORTRAN(srcArray), null);
                 }
+                else
+                {
+                    return NpyArray_Alloc(newtype, srcArray.nd, srcArray.dimensions, NpyArray_ISFORTRAN(srcArray), null);
+                }
 
-                return NpyArray_FromArray(srcArray, newtype, flags);
             }
             else
             {
-                 if (broadcastDims != null)
+                if (broadcastDims != null)
                 {
                     return NpyArray_Alloc(newtype, broadcastDims.Length, broadcastDims, NpyArray_ISFORTRAN(operandArray), null);
                 }
-
-                return NpyArray_FromArray(operandArray, newtype, flags);
+                else
+                {
+                    return NpyArray_Alloc(newtype, operandArray.nd, operandArray.dimensions, NpyArray_ISFORTRAN(operandArray), null);
+                }
             }
-
-            //if (broadcastDims != null)
-            //{
-            //    if (!NpyArray_CompareLists(broadcastDims, newArray.dimensions, Math.Max(broadcastDims.Length, newArray.nd)))
-            //    {
-            //        Console.WriteLine("");
-            //        //throw new Exception("");
-            //    }
-            //}
-  
 
         }
 
-        public static npy_intp[] GenerateBroadcastedDims(NpyArray leftShape, NpyArray rightShape)
+        public static npy_intp[] GenerateBroadcastedDims(NpyArray leftArray, NpyArray rightArray)
         {
             npy_intp i, nd, k, j, tmp;
 
             //is left a scalar
-            if (leftShape.nd == 1 && leftShape.dimensions[0] == 1)
+            if (leftArray.nd == 1 && leftArray.dimensions[0] == 1)
             {
-                if (NpyArray_SIZE(rightShape) > 0)
-                    return rightShape.dimensions;
-                return leftShape.dimensions;
+                if (NpyArray_SIZE(rightArray) > 0)
+                    return AdjustedDimensions(rightArray);
+                return AdjustedDimensions(leftArray);
             }
             //is right a scalar
-            else if (rightShape.nd == 1 && rightShape.dimensions[0] == 1)
+            else if (rightArray.nd == 1 && rightArray.dimensions[0] == 1)
             {
-                if (NpyArray_SIZE(leftShape) > 0)
-                    return leftShape.dimensions;
-                return rightShape.dimensions;
+                if (NpyArray_SIZE(leftArray) > 0)
+                    return AdjustedDimensions(leftArray);
+                return AdjustedDimensions(rightArray);
             }
             else
             {
                 tmp = 0;
-                /* Discover the broadcast number of dimensions */
-                //Gets the largest ndim of all iterators
-                nd = Math.Max(rightShape.nd, leftShape.nd);
 
-                //this is the shared shape aka the target broadcast
+                //this is the shared shape of the target broadcast
+                nd = Math.Max(rightArray.nd, leftArray.nd);
                 npy_intp[] newDimensions = new npy_intp[nd];
 
-                /* Discover the broadcast shape in each dimension */
+                // Discover the broadcast shape in each dimension 
                 for (i = 0; i < nd; i++)
                 {
                     newDimensions[i] = 1;
 
                     /* This prepends 1 to shapes not already equal to nd */
-                    k = i + leftShape.nd - nd;
+                    k = i + leftArray.nd - nd;
                     if (k >= 0)
                     {
-                        tmp = leftShape.dimensions[k];
+                        tmp = leftArray.dimensions[k];
                         if (tmp == 1)
                         {
                             goto _continue;
@@ -514,10 +503,10 @@ namespace NumpyLib
 
                     _continue:
                     /* This prepends 1 to shapes not already equal to nd */
-                    k = i + rightShape.nd - nd;
+                    k = i + rightArray.nd - nd;
                     if (k >= 0)
                     {
-                        tmp = rightShape.dimensions[k];
+                        tmp = rightArray.dimensions[k];
                         if (tmp == 1)
                         {
                             continue;
@@ -535,11 +524,17 @@ namespace NumpyLib
 
                 }
                 return newDimensions;
-
             }
+        }
 
+        private static npy_intp[] AdjustedDimensions(NpyArray Array)
+        {
+            if (Array.nd <= 0)
+                return null;
 
-
+            npy_intp[] Dims = new npy_intp[Array.nd];
+            System.Array.Copy(Array.dimensions, Dims, Array.nd);
+            return Dims;
         }
 
         internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
