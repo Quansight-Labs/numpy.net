@@ -422,108 +422,121 @@ namespace NumpyLib
                     }
             }
 
-            NpyArray newArray = null;
+            var broadcastDims = GenerateBroadcastedDims(srcArray, operandArray);
+
             if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
             {
-                if (operandArray != null && (srcArray.nd > 0 && operandArray.nd > 0))
+                if (broadcastDims != null)
                 {
-                    if (srcArray.nd < operandArray.nd)
-                    {
-                        srcArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
-                    }
-                    else if (srcArray.nd > operandArray.nd)
-                    {
-                        srcArray = NpyArray_HandleNewAxisDims(operandArray, srcArray);
-                    }
-                }
-
-                newArray = NpyArray_FromArray(srcArray, newtype, flags);
-            }
-            else
-            {
-                if (srcArray.nd < operandArray.nd)
-                {
-                    operandArray = NpyArray_HandleNewAxisDims(srcArray, operandArray);
-                }
-                else if (srcArray.nd > operandArray.nd)
-                {
-                    operandArray = NpyArray_HandleNewAxisDims(operandArray, srcArray);
-                }
-
-                newArray = NpyArray_FromArray(operandArray, newtype, flags);
-            }
-            return newArray;
-        }
-
-        internal static NpyArray NpyArray_HandleNewAxisDims(NpyArray srcArray, NpyArray operandArray)
-        {
-
-            var newdims = new npy_intp[operandArray.dimensions.Length];
-            Array.Copy(operandArray.dimensions, 0, newdims, 0, operandArray.nd);
-
-            var possibleOffsets = PossibleNewAxisOffsets(srcArray, operandArray);
-
-            npy_intp numtoskip = possibleOffsets.Length - srcArray.nd;
-            if (numtoskip < 0)
-                numtoskip = 0;
-
-            for (int i = 0; i < Math.Min(possibleOffsets.Length - numtoskip, srcArray.nd); i++)
-            {
-                newdims[possibleOffsets[i + numtoskip]] = srcArray.dimensions[i];
-            }
-
-
-            npy_intp srcArraySize = NpyArray_SIZE(srcArray);
-            npy_intp operandArraySize = NpyArray_MultiplyList(newdims, newdims.Length);
-            if (srcArraySize < operandArraySize)
-            {
-                srcArray = NpyArray_NumericOpUpscaleSourceArray(srcArray, newdims, newdims.Length);
-            }
-            else
-            {
-                NpyArray_Dims dims = new NpyArray_Dims()
-                {
-                    ptr = newdims,
-                    len = newdims.Length,
-                };
-                srcArray = NpyArray_Newshape(srcArray, dims, NPY_ORDER.NPY_KEEPORDER);
-            }
-
-            return srcArray;
-        }
-
-        internal static npy_intp[] PossibleNewAxisOffsets(NpyArray srcArray, NpyArray operandArray)
-        {
-            var offsets = new List<npy_intp>();
-
-
-            int srcIndex = 0;
-            for (npy_intp i = 0; i < operandArray.nd; i++)
-            {
-                if (srcIndex < srcArray.nd)
-                {
-                    if (operandArray.dimensions[i] != srcArray.dimensions[srcIndex] && operandArray.dimensions[i] == 1)
-                    {
-                        if (srcIndex > 0)
-                            offsets.Add(i);
-                    }
-                    else
-                    {
-                        srcIndex++;
-                    }
+                    return NpyArray_Alloc(newtype, broadcastDims.Length, broadcastDims, NpyArray_ISFORTRAN(srcArray), null);
                 }
                 else
                 {
-                    if (operandArray.dimensions[i] == 1)
-                    {
-                        offsets.Add(i);
-                    }
+                    return NpyArray_Alloc(newtype, srcArray.nd, srcArray.dimensions, NpyArray_ISFORTRAN(srcArray), null);
                 }
 
             }
+            else
+            {
+                if (broadcastDims != null)
+                {
+                    return NpyArray_Alloc(newtype, broadcastDims.Length, broadcastDims, NpyArray_ISFORTRAN(operandArray), null);
+                }
+                else
+                {
+                    return NpyArray_Alloc(newtype, operandArray.nd, operandArray.dimensions, NpyArray_ISFORTRAN(operandArray), null);
+                }
+            }
 
-            return offsets.ToArray();
         }
+
+        public static npy_intp[] GenerateBroadcastedDims(NpyArray leftArray, NpyArray rightArray)
+        {
+            npy_intp i, nd, k, j, tmp;
+
+            //is left a scalar
+            if (leftArray.nd == 1 && leftArray.dimensions[0] == 1)
+            {
+                if (NpyArray_SIZE(rightArray) > 0)
+                    return AdjustedDimensions(rightArray);
+                return AdjustedDimensions(leftArray);
+            }
+            //is right a scalar
+            else if (rightArray.nd == 1 && rightArray.dimensions[0] == 1)
+            {
+                if (NpyArray_SIZE(leftArray) > 0)
+                    return AdjustedDimensions(leftArray);
+                return AdjustedDimensions(rightArray);
+            }
+            else
+            {
+                tmp = 0;
+
+                //this is the shared shape of the target broadcast
+                nd = Math.Max(rightArray.nd, leftArray.nd);
+                npy_intp[] newDimensions = new npy_intp[nd];
+
+                // Discover the broadcast shape in each dimension 
+                for (i = 0; i < nd; i++)
+                {
+                    newDimensions[i] = 1;
+
+                    /* This prepends 1 to shapes not already equal to nd */
+                    k = i + leftArray.nd - nd;
+                    if (k >= 0)
+                    {
+                        tmp = leftArray.dimensions[k];
+                        if (tmp == 1)
+                        {
+                            goto _continue;
+                        }
+
+                        if (newDimensions[i] == 1)
+                        {
+                            newDimensions[i] = tmp;
+                        }
+                        else if (newDimensions[i] != tmp)
+                        {
+                            throw new Exception("shape mismatch: objects cannot be broadcast to a single shape");
+                        }
+                    }
+
+                    _continue:
+                    /* This prepends 1 to shapes not already equal to nd */
+                    k = i + rightArray.nd - nd;
+                    if (k >= 0)
+                    {
+                        tmp = rightArray.dimensions[k];
+                        if (tmp == 1)
+                        {
+                            continue;
+                        }
+
+                        if (newDimensions[i] == 1)
+                        {
+                            newDimensions[i] = tmp;
+                        }
+                        else if (newDimensions[i] != tmp)
+                        {
+                            throw new Exception("shape mismatch: objects cannot be broadcast to a single shape");
+                        }
+                    }
+
+                }
+                return newDimensions;
+            }
+        }
+
+        private static npy_intp[] AdjustedDimensions(NpyArray Array)
+        {
+            if (Array.nd <= 0)
+                return null;
+
+            npy_intp[] Dims = new npy_intp[Array.nd];
+            System.Array.Copy(Array.dimensions, Dims, Array.nd);
+            return Dims;
+        }
+
 
         internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, NpyArray operandArray)
         {
