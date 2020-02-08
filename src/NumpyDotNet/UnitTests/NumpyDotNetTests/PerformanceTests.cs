@@ -13,7 +13,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance()
         {
@@ -165,7 +165,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_KEVIN()
+        public void xxx_test_KEVIN()
         {
             double sigma = 0.4;
             ndarray im;
@@ -185,7 +185,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_KEVIN2()
+        public void xxx_test_KEVIN2()
         {
             Assert.Fail("Take this out of final release");
 

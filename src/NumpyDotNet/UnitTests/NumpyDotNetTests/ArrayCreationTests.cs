@@ -2395,5 +2395,26 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_fields_1()
+        {
+            var data = np.zeros(4);
+            //var kk = data.
+
+            List<string> TestData = new List<string>();
+            TestData.Add("Test1");
+            TestData.Add("Test2");
+
+            numpyAPI.NpyArray_DescrSetNames(data.Dtype.Descr, TestData);
+            var tt = data.Dtype.Names;
+
+
+            var data2 = data.reshape((2, 2));
+            var t2 = data2.Dtype.Names;
+
+            return;
+
+        }
+
     }
 }

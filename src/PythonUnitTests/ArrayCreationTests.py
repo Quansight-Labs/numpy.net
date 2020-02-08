@@ -1197,7 +1197,10 @@ class ArrayCreationTests(unittest.TestCase):
         z =  x2_new + x1
         print(z)
 
+    def test_fields_1(self):
 
+        data = np.zeros(4, dtype={'names':('name', 'age', 'weight'),'formats':('U10', 'i4', 'f8')})
+        print(data.dtype)
 
 if __name__ == '__main__':
     unittest.main()
