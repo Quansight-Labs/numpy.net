@@ -190,6 +190,14 @@ namespace NumpyDotNetTests
             make_gaussian(null, 0, null, null);
         }
 
+        [TestMethod]
+        public void xxx_test_PARALLEL_MemCpy()
+        {
+            Assert.Fail("Try to parallel all of the for loops in MemCpy");
+
+            make_gaussian(null, 0, null, null);
+        }
+
         public ndarray make_gaussian(ndarray im, double sigma, ndarray xc, ndarray yc)
         {
 
