@@ -49,6 +49,7 @@ using NpyArray_UCS4 = System.Int32;
 using size_t = System.UInt64;
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace NumpyLib
 {
@@ -205,8 +206,7 @@ namespace NumpyLib
   
         }
 
-
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_DECREF(NpyObject_HEAD Head)
         {
             lock (Head)
@@ -232,8 +232,8 @@ namespace NumpyLib
         {
             return (NpyTypeNum_ISSTRING(desc.type_num));
         }
- 
- 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_INCREF(NpyObject_HEAD Head)
         {
             lock (Head)
@@ -246,12 +246,13 @@ namespace NumpyLib
             return;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyInterface_DECREF(object o)
         {
 
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Npy_XINCREF(NpyArray a)
         {
             if (a != null)
@@ -260,18 +261,22 @@ namespace NumpyLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_XDECREF(NpyArray arr)
         {
             if (arr == null)
                 return;
             Npy_DECREF(arr);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_XDECREF(NpyArray_Descr descr)
         {
             if (descr == null)
                 return;
             Npy_DECREF(descr);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_XDECREF(NpyArrayIterObject iterobject)
         {
             if (iterobject == null)
@@ -279,6 +284,7 @@ namespace NumpyLib
             Npy_DECREF(iterobject);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Npy_XDECREF(NpyArrayMultiIterObject multi)
         {
             if (multi == null)
@@ -286,6 +292,7 @@ namespace NumpyLib
             Npy_DECREF(multi);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_XDECREF_ERR(NpyArray obj)
         {
             if (obj != null)
@@ -298,21 +305,24 @@ namespace NumpyLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static VoidPtr NpyInterface_INCREF(VoidPtr ptr)
         {
             return ptr;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static VoidPtr NpyInterface_DECREF(VoidPtr ptr)
         {
             return ptr;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyInterface_CLEAR(VoidPtr castbuf)
         {
             return;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NpyArray_Descr NpyArray_DESCR_REPLACE(ref NpyArray_Descr descr)
         {
             NpyArray_Descr newDescr = NpyArray_DescrNew(descr);
@@ -323,42 +333,51 @@ namespace NumpyLib
 
 
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_CHKFLAGS(NpyArray arr, NPYARRAYFLAGS FLAGS)
         {
             return ((arr.flags  & FLAGS) == FLAGS);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISCONTIGUOUS(NpyArray arr)
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_CONTIGUOUS);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISWRITEABLE(NpyArray arr)
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_WRITEABLE);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISALIGNED(NpyArray arr)
         {
             return true;
             //return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_ALIGNED);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_IS_C_CONTIGUOUS(NpyArray arr)
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_C_CONTIGUOUS);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_IS_F_CONTIGUOUS(NpyArray arr)
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_F_CONTIGUOUS);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_NDIM(NpyArray arr)
         {
             return arr.nd;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_NDIM_Update(NpyArray arr, int newnd)
         {
             arr.nd = newnd;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISONESEGMENT(NpyArray arr)
         {
             bool b =( NpyArray_NDIM(arr) == 0) ||
@@ -368,6 +387,7 @@ namespace NumpyLib
             return b;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISFORTRAN(NpyArray arr)
         {
             bool b = (NpyArray_NDIM(arr) > 1) &&
@@ -376,27 +396,33 @@ namespace NumpyLib
             return b;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_FORTRAN_IF(NpyArray arr)
         {
             return NpyArray_CHKFLAGS(arr, NPYARRAYFLAGS.NPY_FORTRAN) ? (int)NPYARRAYFLAGS.NPY_FORTRAN : 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static VoidPtr NpyArray_DATA(NpyArray arr)
         {
             return arr.data;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static VoidPtr NpyArray_BYTES(NpyArray arr)
         {
             return arr.data;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ulong NpyArray_BYTES_Length(NpyArray arr)
         {
             return VoidPointer_BytesLength(arr.data);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_Array_Length(NpyArray arr)
         {
             return VoidPointer_Length(arr.data);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ulong VoidPointer_BytesLength(VoidPtr vp)
         {
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(vp.type_num);
@@ -405,6 +431,7 @@ namespace NumpyLib
             return (ulong)(Length - vp.data_offset);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int VoidPointer_Length(VoidPtr vp)
         {
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(vp.type_num);
@@ -413,196 +440,242 @@ namespace NumpyLib
             return Length;
   
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp[] NpyArray_DIMS(NpyArray arr)
         {
             return arr.dimensions;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_DIMS_Update(NpyArray arr, npy_intp[] newdimensions)
         {
             arr.dimensions = newdimensions;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp NpyArray_DIM(NpyArray arr, npy_intp n)
         {
             return arr.dimensions[n];
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_DIM_Update(NpyArray arr, int n, npy_intp newsize)
         {
             arr.dimensions[n] = newsize;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp[] NpyArray_STRIDES(NpyArray arr)
         {
             return arr.strides;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_STRIDES_Update(NpyArray arr, npy_intp[] newStrides)
         {
             arr.strides = newStrides;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp NpyArray_DIMS(NpyArray arr, int n)
         {
             return arr.dimensions[n];
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp NpyArray_STRIDE(NpyArray arr, int n)
         {
             return arr.strides[n];
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_STRIDE_Update(NpyArray arr, int n, npy_intp newsize)
         {
             arr.strides[n] = newsize;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NpyArray_Descr NpyArray_DESCR(NpyArray arr)
         {
             return arr.descr;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void NpyArray_DESCR_Update(NpyArray arr, NpyArray_Descr newtype)
         {
             arr.descr = newtype;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NPYARRAYFLAGS NpyArray_FLAGS(NpyArray arr)
         {
             return arr.flags;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NPYARRAYFLAGS NpyArray_FLAGS_OR(NpyArray arr, NPYARRAYFLAGS flag)
         {
             return arr.flags |= flag;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_ITEMSIZE( NpyArray arr)
         {
             return arr.descr.elsize;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_ITEMSIZE(NpyArrayIterObject arr)
         {
             return arr.ao.descr.elsize;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NPY_TYPES NpyArray_TYPE(NpyArray arr)
         {
             return arr.descr.type_num;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NpyArray NpyArray_BASE_ARRAY(NpyArray arr)
         {
             return arr.base_arr;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NpyArray NpyArray_BASE_ARRAY_Update(NpyArray arr, NpyArray newArr)
         {
             arr.SetBase(arr);
             return arr.base_arr;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object NpyArray_BASE(NpyArray arr)
         {
             return arr.base_obj;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static npy_intp NpyArray_SIZE(NpyArray arr)
         {
             return numpyinternal.NpyArray_MultiplyList(NpyArray_DIMS(arr), NpyArray_NDIM(arr));
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long NpyArray_NBYTES(NpyArray arr)
         {
             return (NpyArray_ITEMSIZE(arr) * NpyArray_SIZE(arr));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_SAMESHAPE(NpyArray a1, NpyArray a2)
         {
             return ((NpyArray_NDIM(a1) == NpyArray_NDIM(a2)) &&
                     numpyinternal.NpyArray_CompareLists(NpyArray_DIMS(a1), NpyArray_DIMS(a2), NpyArray_NDIM(a1)));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISBOOL(NpyArray arr)
         {
             return NpyTypeNum_ISBOOL(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISUNSIGNED(NpyArray arr)
         {
             return NpyTypeNum_ISUNSIGNED(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISSIGNED(NpyArray arr)
         {
             return NpyTypeNum_ISSIGNED(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISINTEGER(NpyArray arr)
         {
             return NpyTypeNum_ISINTEGER(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISFLOAT(NpyArray arr)
         {
             return NpyTypeNum_ISFLOAT(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISNUMBER(NpyArray arr)
         {
             return NpyTypeNum_ISNUMBER(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISSTRING(NpyArray arr)
         {
             return NpyTypeNum_ISSTRING(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISCOMPLEX(NpyArray arr)
         {
             return NpyTypeNum_ISCOMPLEX(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISFLEXIBLE(NpyArray arr)
         {
             return NpyTypeNum_ISFLEXIBLE(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISUSERDEF(NpyArray arr)
         {
             return NpyTypeNum_ISUSERDEF(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISEXTENDED(NpyArray arr)
         {
             return NpyTypeNum_ISEXTENDED(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISOBJECT(NpyArray arr)
         {
             return NpyTypeNum_ISOBJECT(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_HASFIELDS(NpyArray arr)
         {
             return NpyArray_DESCR(arr).fields != null;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISVARIABLE(NpyArray arr)
         {
             return NpyTypeNum_ISFLEXIBLE(NpyArray_TYPE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_SAFEALIGNEDCOPY(NpyArray arr)
         {
             return (NpyArray_ISALIGNED(arr) && !NpyArray_ISVARIABLE(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISNOTSWAPPED(NpyArray arr)
         {
             return NpyArray_ISNBO(arr);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISBYTESWAPPED(NpyArray arr)
         {
             return !NpyArray_ISNOTSWAPPED(arr);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_FLAGSWAP(NpyArray arr, NPYARRAYFLAGS flags)
         {
             return (NpyArray_CHKFLAGS(arr, flags) && NpyArray_ISNOTSWAPPED(arr));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISCARRAY(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_CARRAY));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISCARRAY_RO(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_CARRAY_RO));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISFARRAY(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_FARRAY));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISFARRAY_RO(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_FARRAY_RO));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISBEHAVED(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_BEHAVED));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISBEHAVED_RO(NpyArray arr)
         {
             return (NpyArray_FLAGSWAP(arr, NPYARRAYFLAGS.NPY_ALIGNED));
