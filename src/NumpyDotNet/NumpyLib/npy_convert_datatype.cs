@@ -545,10 +545,7 @@ namespace NumpyLib
             {
                 return -1;
             }
-            if (NpyArray_ISOBJECT(src))
-            {
-                memset(inbuffer, 0, npy_defs.NPY_BUFSIZE * elsize);
-            }
+      
             it_in = NpyArray_IterNew(src);
             if (it_in == null)
             {
@@ -563,10 +560,7 @@ namespace NumpyLib
                 {
                     goto exit;
                 }
-                if (NpyArray_ISOBJECT(dst))
-                {
-                    memset(outbuffer, 0, npy_defs.NPY_BUFSIZE * oelsize);
-                }
+ 
                 it_out = NpyArray_IterNew(dst);
                 if (it_out == null)
                 {
