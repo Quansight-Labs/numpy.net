@@ -644,8 +644,9 @@ namespace NumpyLib
             }
             else
             {
-                srcOffsets = new Int32[taskSize];
-                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
+                var IterableArraySize = CalculateIterationArraySize(srcArray, destArray);
+                srcOffsets = new Int32[IterableArraySize];
+                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
             }
             if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
             {
@@ -653,8 +654,9 @@ namespace NumpyLib
             }
             else
             {
-                operOffsets = new Int32[taskSize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
+                var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
+                operOffsets = new Int32[IterableArraySize];
+                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
             }
 
             if (taskSize < NUMERICOPS_SMALL_TASKSIZE)
@@ -665,8 +667,11 @@ namespace NumpyLib
                 {
                     for (int i = 0; i < taskSize; i++)
                     {
-                        var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
-                        var operValue = operations.operandGetItem(operOffsets[i], operArray);
+                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
+                        var srcValue = operations.srcGetItem(srcOffsets[srcIndex], srcArray);
+
+                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
+                        var operValue = operations.operandGetItem(operOffsets[operandIndex], operArray);
 
                         object destValue = null;
 
@@ -693,8 +698,11 @@ namespace NumpyLib
                 {
                     try
                     {
-                        var srcValue = operations.srcGetItem(srcOffsets[i], srcArray);
-                        var operValue = operations.operandGetItem(operOffsets[i], operArray);
+                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
+                        var srcValue = operations.srcGetItem(srcOffsets[srcIndex], srcArray);
+
+                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
+                        var operValue = operations.operandGetItem(operOffsets[operandIndex], operArray);
 
                         object destValue = null;
 
