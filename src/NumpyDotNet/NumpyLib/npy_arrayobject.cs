@@ -189,11 +189,11 @@ namespace NumpyLib
 
         }
 
-        internal static long[] GetViewOffsets(NpyArrayIterObject iter, long count)
+        internal static npy_intp[] GetViewOffsets(NpyArrayIterObject iter, long count)
         {
             var itemSize = iter.ao.ItemSize;
 
-            long[] offsets = new long[count];
+            npy_intp[] offsets = new npy_intp[count];
 
             for (int i = 0; i < count; i++)
             {

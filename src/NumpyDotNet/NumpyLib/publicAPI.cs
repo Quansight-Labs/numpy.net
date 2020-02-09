@@ -124,12 +124,12 @@ namespace NumpyLib
             return numpyinternal.NpyArray_dealloc(self);
         }
 
-        public static long[] GetViewOffsets(NpyArray self)
+        public static npy_intp[] GetViewOffsets(NpyArray self)
         {
             return numpyinternal.GetViewOffsets(self);
         }
 
-        public static long[] GetViewOffsets(NpyArrayIterObject iter, long count)
+        public static npy_intp[] GetViewOffsets(NpyArrayIterObject iter, npy_intp count)
         {
             return numpyinternal.GetViewOffsets(iter, count);
         }

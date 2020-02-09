@@ -66,8 +66,8 @@ namespace NumpyDotNet
             public shape expectedShape = null;
             public int expectedLength = 0;
 
-            private long[] offsets = null;
-            private long[] offsets2 = null;
+            private npy_intp[] offsets = null;
+            private npy_intp[] offsets2 = null;
 
             private T[] x1 = null;
             private T[] x2 = null;
@@ -115,8 +115,8 @@ namespace NumpyDotNet
                     throw new Exception(string.Format("operands could not be broadcast together with shapes ({0}),({1})", a.shape.ToString(), b.shape.ToString()));
                 }
 
-                long asize = NpyCoreApi.ArraySize(a);
-                long bsize = NpyCoreApi.ArraySize(b);
+                npy_intp asize = NpyCoreApi.ArraySize(a);
+                npy_intp bsize = NpyCoreApi.ArraySize(b);
 
                 if (asize < bsize)
                 {
