@@ -50,16 +50,14 @@ namespace NumpyLib
         public static long MemCpy_ShortBufferCount = 0;
         public static long MemCpy_MediumBufferCount = 0;
         public static long MemCpy_LargeBufferCount = 0;
+        public static long MemCpy_VeryLargeBufferCount = 0;
         public static long MemCpy_SameTypeCount = 0;
         public static long MemCpy_DifferentTypeCount = 0;
+        public static long MemCpy_DifferentTypeCountLarge = 0;
 
-
-        #region First Level Routing
-        public static bool MemCpy(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        [System.Diagnostics.Conditional("DEBUG")]
+        public static void MemCpyStats(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
-            DestOffset += Dest.data_offset;
-            SrcOffset += Src.data_offset;
-
             MemCpy_TotalCount++;
 
             if (Dest.type_num == Src.type_num)
@@ -69,8 +67,10 @@ namespace NumpyLib
             else
             {
                 MemCpy_DifferentTypeCount++;
+                if (totalBytesToCopy > 32)
+                    MemCpy_DifferentTypeCountLarge++;
             }
-            if (totalBytesToCopy <=4)
+            if (totalBytesToCopy <= 4)
             {
                 MemCpy_ShortBufferCount++;
             }
@@ -78,11 +78,25 @@ namespace NumpyLib
             {
                 MemCpy_MediumBufferCount++;
             }
-            else
+            else if (totalBytesToCopy <= 128)
             {
                 MemCpy_LargeBufferCount++;
             }
-                
+            else
+            {
+                MemCpy_VeryLargeBufferCount++;
+            }
+        }
+
+
+        #region First Level Routing
+        public static bool MemCpy(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+        {
+            DestOffset += Dest.data_offset;
+            SrcOffset += Src.data_offset;
+
+            MemCpyStats(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
+             
 
             switch (Dest.type_num)
             {
