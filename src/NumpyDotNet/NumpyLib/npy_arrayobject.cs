@@ -623,35 +623,6 @@ namespace NumpyLib
         }
 
  
-        internal static int NpyArray_CompareString(string s1, string s2, int len)
-        {
-            //if (s1.Equals(s2, StringComparison.CurrentCultureIgnoreCase))
-            //    return 0;
-
-            try
-            {
-                for (int i = 0; i < len; ++i)
-                {
-                    //if (s1.Length <= i)
-                    //    return -1;
-                    //if (s2.Length <= 1)
-                    //    return 1;
-
-                    if (s1[i] != s2[i])
-                    {
-                        return (s1[i] > s2[i]) ? 1 : -1;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_IndexError, string.Format("NpyArray_CompareString: {0}", ex.Message));
-                return -2;
-            }
-
-            return 0;
-        }
-
         internal static int NpyArray_ElementStrides(NpyArray arr)
         {
             int itemsize = NpyArray_ITEMSIZE(arr);

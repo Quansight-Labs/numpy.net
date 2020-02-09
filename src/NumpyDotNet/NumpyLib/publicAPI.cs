@@ -70,11 +70,6 @@ namespace NumpyLib
             return numpyinternal.NpyArray_Size(op);
         }
 
-        public static int NpyArray_CompareString(string s1, string s2, int len)
-        {
-            return numpyinternal.NpyArray_CompareString(s1, s2, len);
-        }
-
         public static int NpyArray_ElementStrides(NpyArray arr)
         {
             return numpyinternal.NpyArray_ElementStrides(arr);
