@@ -559,6 +559,19 @@ namespace NumpyLib
             return ((NpyArray_NDIM(a1) == NpyArray_NDIM(a2)) &&
                     numpyinternal.NpyArray_CompareLists(NpyArray_DIMS(a1), NpyArray_DIMS(a2), NpyArray_NDIM(a1)));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool NpyArray_SAMESTRIDES(NpyArray a1, NpyArray a2)
+        {
+            return ((NpyArray_NDIM(a1) == NpyArray_NDIM(a2)) &&
+                    numpyinternal.NpyArray_CompareLists(NpyArray_STRIDES(a1), NpyArray_STRIDES(a2), NpyArray_NDIM(a1)));
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool NpyArray_SAMESHAPEANDSTRIDES(NpyArray a1, NpyArray a2)
+        {
+            return ((NpyArray_NDIM(a1) == NpyArray_NDIM(a2)) &&
+                numpyinternal.NpyArray_CompareLists(NpyArray_DIMS(a1), NpyArray_DIMS(a2), NpyArray_NDIM(a1)) &&
+                numpyinternal.NpyArray_CompareLists(NpyArray_STRIDES(a1), NpyArray_STRIDES(a2), NpyArray_NDIM(a1)));
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool NpyArray_ISBOOL(NpyArray arr)

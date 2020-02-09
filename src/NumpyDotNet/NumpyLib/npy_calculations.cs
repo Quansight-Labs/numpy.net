@@ -633,15 +633,33 @@ namespace NumpyLib
         {
             List<Exception> caughtExceptions = new List<Exception>();
 
-            var srcOffsets = new Int32[taskSize];
-            var destOffsets = new Int32[taskSize];
-            var operOffsets = new Int32[taskSize];
+            Int32[] destOffsets = new Int32[taskSize];
+            Int32[] srcOffsets;
+            Int32[] operOffsets;
+
+            NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
+            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, srcArray))
+            {
+                srcOffsets = destOffsets;
+            }
+            else
+            {
+                srcOffsets = new Int32[taskSize];
+                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
+            }
+            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
+            {
+                operOffsets = destOffsets;
+            }
+            else
+            {
+                operOffsets = new Int32[taskSize];
+                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
+            }
 
             if (taskSize < NUMERICOPS_SMALL_TASKSIZE)
             {
-                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
-                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
+ 
 
                 try
                 {
@@ -671,11 +689,6 @@ namespace NumpyLib
             }
             else
             {
-                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, taskSize);
-                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, taskSize);
-
-
                 Parallel.For(0, taskSize, i =>
                 {
                     try
