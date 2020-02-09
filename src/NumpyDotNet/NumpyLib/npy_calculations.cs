@@ -1080,9 +1080,9 @@ namespace NumpyLib
 
             var loopCount = NpyArray_Size(destArray);
 
-            if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
+            if (NpyArray_Size(operArray) == 1)
             {
-                object operand = operations.ConvertOperand(src[0], oper[0]);
+                object operand = operations.ConvertOperand(src[0], GetIndex(operArray.data, 0));
 
                 Parallel.For(0, loopCount, index =>
                 {
