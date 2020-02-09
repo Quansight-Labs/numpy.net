@@ -477,7 +477,8 @@ namespace NumpyLib
             it.index++;
             if (it.nd_m1 == 0)
             {
-                _NpyArray_ITER_NEXT1(it);
+                it.dataptr.data_offset += it.strides[0];
+                it.coordinates[0]++;
             }
             else if (it.contiguous)
             {
@@ -485,7 +486,17 @@ namespace NumpyLib
             }
             else if (it.nd_m1 == 1)
             {
-                _NpyArray_ITER_NEXT2(it);
+                if (it.coordinates[1] < it.dims_m1[1])
+                {
+                    it.coordinates[1]++;
+                    it.dataptr.data_offset += it.strides[1];
+                }
+                else
+                {
+                    it.coordinates[1] = 0;
+                    it.coordinates[0]++;
+                    it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                }
             }
             else
             {
@@ -591,7 +602,8 @@ namespace NumpyLib
                 it.index++;
                 if (it.nd_m1 == 0)
                 {
-                    _NpyArray_ITER_NEXT1(it);
+                    it.dataptr.data_offset += it.strides[0];
+                    it.coordinates[0]++;
                 }
                 else if (it.contiguous)
                 {
@@ -599,7 +611,17 @@ namespace NumpyLib
                 }
                 else if (it.nd_m1 == 1)
                 {
-                    _NpyArray_ITER_NEXT2(it);
+                    if (it.coordinates[1] < it.dims_m1[1])
+                    {
+                        it.coordinates[1]++;
+                        it.dataptr.data_offset += it.strides[1];
+                    }
+                    else
+                    {
+                        it.coordinates[1] = 0;
+                        it.coordinates[0]++;
+                        it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                    }
                 }
                 else
                 {
@@ -726,6 +748,7 @@ namespace NumpyLib
                 it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
             }
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void _NpyArray_ITER_NEXT3(NpyArrayIterObject it)
         {
