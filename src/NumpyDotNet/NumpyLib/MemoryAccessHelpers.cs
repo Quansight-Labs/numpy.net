@@ -32,7 +32,7 @@
 
 // turn this on to use the built int bit converter functions. 
 // These take endian issues into account but are a little slower.
-#define USE_BITCONVERTER
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,19 @@ namespace NumpyLib
 {
     class MemoryAccess
     {
+        private static bool IsLittleEndian = BitConverter.IsLittleEndian;
+        private static bool USE_BITCONVERTER
+        {
+            get
+            {
+                return !IsLittleEndian;
+            }
+        }
+
+        public MemoryAccess()
+        {
+        }
+        
 
         public static byte GetByteT<T>(T[] _Array, npy_intp byte_index)
         {
@@ -121,19 +134,22 @@ namespace NumpyLib
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 1:
-                    return (byte)((ArrayValue & 0xFF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x00FF) >> 0);
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 1:
+                        return (byte)((ArrayValue & 0xFF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x00FF) >> 0);
+                }
+                return 0;
+            }
         }
 
         public static byte GetByte(UInt16[] Array, npy_intp byte_index)
@@ -143,20 +159,22 @@ namespace NumpyLib
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 1:
-                    return (byte)((ArrayValue & 0xFF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x00FF) >> 0);
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
-
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 1:
+                        return (byte)((ArrayValue & 0xFF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x00FF) >> 0);
+                }
+                return 0;
+            }
         }
 
         public static byte GetByte(Int32[] Array, npy_intp byte_index)
@@ -166,24 +184,26 @@ namespace NumpyLib
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 3:
-                    return (byte)((ArrayValue & 0xFF000000) >> 24);
-                case 2:
-                    return (byte)((ArrayValue & 0x00FF0000) >> 16);
-                case 1:
-                    return (byte)((ArrayValue & 0x0000FF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x000000FF));
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 3:
+                        return (byte)((ArrayValue & 0xFF000000) >> 24);
+                    case 2:
+                        return (byte)((ArrayValue & 0x00FF0000) >> 16);
+                    case 1:
+                        return (byte)((ArrayValue & 0x0000FF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x000000FF));
+                }
+                return 0;
+            }
         }
         public static byte GetByte(UInt32[] Array, npy_intp byte_index)
         {
@@ -192,24 +212,27 @@ namespace NumpyLib
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
             
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 3:
-                    return (byte)((ArrayValue & 0xFF000000) >> 24);
-                case 2:
-                    return (byte)((ArrayValue & 0x00FF0000) >> 16);
-                case 1:
-                    return (byte)((ArrayValue & 0x0000FF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x000000FF));
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 3:
+                        return (byte)((ArrayValue & 0xFF000000) >> 24);
+                    case 2:
+                        return (byte)((ArrayValue & 0x00FF0000) >> 16);
+                    case 1:
+                        return (byte)((ArrayValue & 0x0000FF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x000000FF));
+                }
+                return 0;
+            }
+
         }
 
         public static byte GetByte(Int64[] Array, npy_intp byte_index)
@@ -219,31 +242,34 @@ namespace NumpyLib
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 7:
-                    return (byte)((ArrayValue & 0xFF00000000000000) >> 56);
-                case 6:
-                    return (byte)((ArrayValue & 0x00FF000000000000) >> 48);
-                case 5:
-                    return (byte)((ArrayValue & 0x0000FF0000000000) >> 40);
-                case 4:
-                    return (byte)((ArrayValue & 0x000000FF00000000) >> 32);
-                case 3:
-                    return (byte)((ArrayValue & 0x00000000FF000000) >> 24);
-                case 2:
-                    return (byte)((ArrayValue & 0x0000000000FF0000) >> 16);
-                case 1:
-                    return (byte)((ArrayValue & 0x000000000000FF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x00000000000000FF) >> 0);
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 7:
+                        return (byte)((ArrayValue & 0xFF00000000000000) >> 56);
+                    case 6:
+                        return (byte)((ArrayValue & 0x00FF000000000000) >> 48);
+                    case 5:
+                        return (byte)((ArrayValue & 0x0000FF0000000000) >> 40);
+                    case 4:
+                        return (byte)((ArrayValue & 0x000000FF00000000) >> 32);
+                    case 3:
+                        return (byte)((ArrayValue & 0x00000000FF000000) >> 24);
+                    case 2:
+                        return (byte)((ArrayValue & 0x0000000000FF0000) >> 16);
+                    case 1:
+                        return (byte)((ArrayValue & 0x000000000000FF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x00000000000000FF) >> 0);
+                }
+                return 0;
+            }
         }
 
         public static byte GetByte(UInt64[] Array, npy_intp byte_index)
@@ -253,31 +279,34 @@ namespace NumpyLib
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            return (byteArray[ByteNumber]);
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 7:
-                    return (byte)((ArrayValue & 0xFF00000000000000) >> 56);
-                case 6:
-                    return (byte)((ArrayValue & 0x00FF000000000000) >> 48);
-                case 5:
-                    return (byte)((ArrayValue & 0x0000FF0000000000) >> 40);
-                case 4:
-                    return (byte)((ArrayValue & 0x000000FF00000000) >> 32);
-                case 3:
-                    return (byte)((ArrayValue & 0x00000000FF000000) >> 24);
-                case 2:
-                    return (byte)((ArrayValue & 0x0000000000FF0000) >> 16);
-                case 1:
-                    return (byte)((ArrayValue & 0x000000000000FF00) >> 8);
-                case 0:
-                    return (byte)((ArrayValue & 0x00000000000000FF) >> 0);
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                return (byteArray[ByteNumber]);
             }
-            return 0;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 7:
+                        return (byte)((ArrayValue & 0xFF00000000000000) >> 56);
+                    case 6:
+                        return (byte)((ArrayValue & 0x00FF000000000000) >> 48);
+                    case 5:
+                        return (byte)((ArrayValue & 0x0000FF0000000000) >> 40);
+                    case 4:
+                        return (byte)((ArrayValue & 0x000000FF00000000) >> 32);
+                    case 3:
+                        return (byte)((ArrayValue & 0x00000000FF000000) >> 24);
+                    case 2:
+                        return (byte)((ArrayValue & 0x0000000000FF0000) >> 16);
+                    case 1:
+                        return (byte)((ArrayValue & 0x000000000000FF00) >> 8);
+                    case 0:
+                        return (byte)((ArrayValue & 0x00000000000000FF) >> 0);
+                }
+                return 0;
+            }
         }
 
         public static byte GetByte(double[] Array, npy_intp byte_index)
@@ -389,27 +418,30 @@ namespace NumpyLib
             npy_intp ByteNumber = byte_index % 2;
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToInt16(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 1:
-                    ArrayValue = (UInt16)(ArrayValue & 0x00FF);
-                    ArrayValue = (UInt16)(ArrayValue + (data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt16)(ArrayValue & 0xFF00);
-                    ArrayValue = (UInt16)(ArrayValue + (data));
-                    break;
-
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToInt16(byteArray, 0);
+                return;
             }
-            Array[ArrayIndex] = (Int16)ArrayValue;
-            return;
-#endif
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 1:
+                        ArrayValue = (UInt16)(ArrayValue & 0x00FF);
+                        ArrayValue = (UInt16)(ArrayValue + (data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt16)(ArrayValue & 0xFF00);
+                        ArrayValue = (UInt16)(ArrayValue + (data));
+                        break;
+                }
+                Array[ArrayIndex] = (Int16)ArrayValue;
+                return;
+            }
+
         }
 
         public static void SetByte(UInt16[] Array, npy_intp byte_index, byte data)
@@ -419,28 +451,31 @@ namespace NumpyLib
 
             UInt16 ArrayValue = Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToUInt16(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 1:
-                    ArrayValue = (UInt16)(ArrayValue & 0x00FF);
-                    ArrayValue = (UInt16)(ArrayValue + (data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt16)(ArrayValue & 0xFF00);
-                    ArrayValue = (UInt16)(ArrayValue + (data));
-                    break;
-
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToUInt16(byteArray, 0);
+                return;
             }
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 1:
+                        ArrayValue = (UInt16)(ArrayValue & 0x00FF);
+                        ArrayValue = (UInt16)(ArrayValue + (data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt16)(ArrayValue & 0xFF00);
+                        ArrayValue = (UInt16)(ArrayValue + (data));
+                        break;
 
-            Array[ArrayIndex] = (UInt16)ArrayValue;
-            return;
-#endif
+                }
+
+                Array[ArrayIndex] = (UInt16)ArrayValue;
+                return;
+            }
         }
 
         public static void SetByte(Int32[] Array, npy_intp byte_index, byte data)
@@ -450,35 +485,39 @@ namespace NumpyLib
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToInt32(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 3:
-                    ArrayValue = (UInt32)(ArrayValue & 0x00FFFFFF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 24));
-                    break;
-                case 2:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFF00FFFF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 16));
-                    break;
-                case 1:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFFFF00FF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFFFFFF00);
-                    ArrayValue = (UInt32)(ArrayValue + (data));
-                    break;
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToInt32(byteArray, 0);
+                return;
             }
-            Array[ArrayIndex] = (Int32)ArrayValue;
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 3:
+                        ArrayValue = (UInt32)(ArrayValue & 0x00FFFFFF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 24));
+                        break;
+                    case 2:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFF00FFFF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 16));
+                        break;
+                    case 1:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFFFF00FF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFFFFFF00);
+                        ArrayValue = (UInt32)(ArrayValue + (data));
+                        break;
+                }
+                Array[ArrayIndex] = (Int32)ArrayValue;
 
-            return;
-#endif
+                return;
+            }
+
         }
 
         public static void SetByte(UInt32[] Array, npy_intp byte_index, byte data)
@@ -488,35 +527,38 @@ namespace NumpyLib
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToUInt32(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 3:
-                    ArrayValue = (UInt32)(ArrayValue & 0x00FFFFFF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 24));
-                    break;
-                case 2:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFF00FFFF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 16));
-                    break;
-                case 1:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFFFF00FF);
-                    ArrayValue = (UInt32)(ArrayValue + (data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt32)(ArrayValue & 0xFFFFFF00);
-                    ArrayValue = (UInt32)(ArrayValue + (data));
-                    break;
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToUInt32(byteArray, 0);
+                return;
             }
-            Array[ArrayIndex] = (UInt32)ArrayValue;
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 3:
+                        ArrayValue = (UInt32)(ArrayValue & 0x00FFFFFF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 24));
+                        break;
+                    case 2:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFF00FFFF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 16));
+                        break;
+                    case 1:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFFFF00FF);
+                        ArrayValue = (UInt32)(ArrayValue + (data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt32)(ArrayValue & 0xFFFFFF00);
+                        ArrayValue = (UInt32)(ArrayValue + (data));
+                        break;
+                }
+                Array[ArrayIndex] = (UInt32)ArrayValue;
 
-            return;
-#endif
+                return;
+            }
         }
 
         public static void SetByte(Int64[] Array, npy_intp byte_index, byte data)
@@ -526,52 +568,63 @@ namespace NumpyLib
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
-
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToInt64(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (BitConverter.IsLittleEndian)
             {
-                case 7:
-                    ArrayValue = (UInt64)(ArrayValue & 0x00FFFFFFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 56));
-                    break;
-                case 6:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFF00FFFFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 48));
-                    break;
-                case 5:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFF00FFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 40));
-                    break;
-                case 4:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFF00FFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 32));
-                    break;
-                case 3:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFF00FFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 24));
-                    break;
-                case 2:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFF00FFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 16));
-                    break;
-                case 1:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFF00FF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFFFF00);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 0));
-                    break;
+                Console.WriteLine("");
             }
-            Array[ArrayIndex] = (Int64)ArrayValue;
+            else
+            {
+                Console.WriteLine("");
+            }
 
-            return;
-#endif
+            if (USE_BITCONVERTER)
+            {
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToInt64(byteArray, 0);
+                return;
+            }
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 7:
+                        ArrayValue = (UInt64)(ArrayValue & 0x00FFFFFFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 56));
+                        break;
+                    case 6:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFF00FFFFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 48));
+                        break;
+                    case 5:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFF00FFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 40));
+                        break;
+                    case 4:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFF00FFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 32));
+                        break;
+                    case 3:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFF00FFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 24));
+                        break;
+                    case 2:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFF00FFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 16));
+                        break;
+                    case 1:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFF00FF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFFFF00);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 0));
+                        break;
+                }
+                Array[ArrayIndex] = (Int64)ArrayValue;
+
+                return;
+            }
         }
 
         public static void SetByte(UInt64[] Array, npy_intp byte_index, byte data)
@@ -581,51 +634,55 @@ namespace NumpyLib
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
-#if USE_BITCONVERTER
-            var byteArray = BitConverter.GetBytes(ArrayValue);
-            byteArray[ByteNumber] = data;
-            Array[ArrayIndex] = BitConverter.ToUInt64(byteArray, 0);
-            return;
-#else
-            switch (ByteNumber)
+            if (USE_BITCONVERTER)
             {
-                case 7:
-                    ArrayValue = (UInt64)(ArrayValue & 0x00FFFFFFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 56));
-                    break;
-                case 6:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFF00FFFFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 48));
-                    break;
-                case 5:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFF00FFFFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 40));
-                    break;
-                case 4:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFF00FFFFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 32));
-                    break;
-                case 3:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFF00FFFFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 24));
-                    break;
-                case 2:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFF00FFFF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 16));
-                    break;
-                case 1:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFF00FF);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 8));
-                    break;
-                case 0:
-                    ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFFFF00);
-                    ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 0));
-                    break;
+                var byteArray = BitConverter.GetBytes(ArrayValue);
+                byteArray[ByteNumber] = data;
+                Array[ArrayIndex] = BitConverter.ToUInt64(byteArray, 0);
+                return;
             }
-            Array[ArrayIndex] = (UInt64)ArrayValue;
+            else
+            {
+                switch (ByteNumber)
+                {
+                    case 7:
+                        ArrayValue = (UInt64)(ArrayValue & 0x00FFFFFFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 56));
+                        break;
+                    case 6:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFF00FFFFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 48));
+                        break;
+                    case 5:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFF00FFFFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 40));
+                        break;
+                    case 4:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFF00FFFFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 32));
+                        break;
+                    case 3:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFF00FFFFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 24));
+                        break;
+                    case 2:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFF00FFFF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 16));
+                        break;
+                    case 1:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFF00FF);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 8));
+                        break;
+                    case 0:
+                        ArrayValue = (UInt64)(ArrayValue & 0xFFFFFFFFFFFFFF00);
+                        ArrayValue = (UInt64)(ArrayValue + ((UInt64)data << 0));
+                        break;
+                }
+                Array[ArrayIndex] = (UInt64)ArrayValue;
 
-            return;
-#endif
+                return;
+            }
+
         }
 
         public static void SetByte(float[] Array, npy_intp byte_index, byte data)
