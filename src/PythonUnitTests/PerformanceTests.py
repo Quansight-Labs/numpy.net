@@ -70,6 +70,22 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 sin calculations took %f milliseconds" %(diff))
 
+    def test_AddReduce_Performance(self):
+
+        LoopCount = 200;
+
+        a = np.arange(10000000, dtype=np.float64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduce(a)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sin calculations took %f milliseconds" %(diff))
+
 
     def test_xxx(self):
 
