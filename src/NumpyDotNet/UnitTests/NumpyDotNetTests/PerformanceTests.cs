@@ -176,6 +176,8 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, a);
+                Assert.AreEqual(49999995000000.0, b.item(0));
+               // print(b);
             }
 
             sw.Stop();
