@@ -46,7 +46,7 @@ namespace NumpyLib
 {
     #region Data Structures
 
-    public delegate void NpyUFuncGenericFunction(VoidPtr[] s1, npy_intp i1, npy_intp[] i2);
+    public delegate void NpyUFuncGenericFunction(GenericReductionOp op, VoidPtr[] s1, npy_intp i1, npy_intp[] i2);
 
     public class NpyUFuncObject : NpyObject_HEAD
     {
@@ -272,7 +272,8 @@ namespace NumpyLib
 
     public enum GenericReductionOp
     {
-        NPY_UFUNC_REDUCE = 0,
+        NPY_UFUNC_GENERIC = 1,
+        NPY_UFUNC_REDUCE,
         NPY_UFUNC_ACCUMULATE,
         NPY_UFUNC_REDUCEAT,
         NPY_UFUNC_OUTER,
@@ -360,7 +361,7 @@ namespace NumpyLib
         }
 
 
-        internal static int NpyUFunc_GenericFunction(NpyUFuncObject self, int nargs, NpyArray[] mps,
+        internal static int NpyUFunc_GenericFunction(GenericReductionOp operation, NpyUFuncObject self, int nargs, NpyArray[] mps,
                              int ntypenums, NPY_TYPES[] rtypenums,
                              bool originalArgWasObjArray,
                              npy_prepare_outputs_func prepare_outputs,
@@ -431,7 +432,7 @@ namespace NumpyLib
                      * increment moves through the entire array.
                      */
                     /*fprintf(stderr, "ONE...%d\n", loop.size);*/
-                    loop.function(loop.bufptr, loop.iter.size, loop.steps);
+                    loop.function(operation, loop.bufptr, loop.iter.size, loop.steps);
                     if (!NPY_UFUNC_CHECK_ERROR(loop))
                         goto fail;
 
@@ -447,7 +448,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(loop.bufptr, loop.bufcnt,loop.steps);
+                        loop.function(operation, loop.bufptr, loop.bufcnt,loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -466,7 +467,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(loop.bufptr, loop.core_dim_sizes[0],loop.core_strides);
+                        loop.function(operation, loop.bufptr, loop.core_dim_sizes[0],loop.core_strides);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -642,7 +643,7 @@ namespace NumpyLib
                                 }
 
                                 bufcnt = (npy_intp)bufsize;
-                                loop.function(dptr, bufcnt, steps);
+                                loop.function(operation, dptr, bufcnt, steps);
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
 
@@ -936,15 +937,15 @@ namespace NumpyLib
             switch (operation)
             {
                 case GenericReductionOp.NPY_UFUNC_REDUCE:
-                    ret = NpyUFunc_Reduce(self, arr, _out, axis,
+                    ret = NpyUFunc_Reduce(operation, self, arr, _out, axis,
                                           otype.type_num);
                     break;
                 case GenericReductionOp.NPY_UFUNC_ACCUMULATE:
-                    ret = NpyUFunc_Accumulate(self, arr, _out, axis,
+                    ret = NpyUFunc_Accumulate(operation, self, arr, _out, axis,
                                               otype.type_num);
                     break;
                 case GenericReductionOp.NPY_UFUNC_REDUCEAT:
-                    ret = NpyUFunc_Reduceat(self, arr, indices, _out,
+                    ret = NpyUFunc_Reduceat(operation, self, arr, indices, _out,
                                             axis, otype.type_num);
                     Npy_DECREF(indices);
                     break;
@@ -993,7 +994,7 @@ namespace NumpyLib
          *
          *  Zero-length and one-length axes-to-be-reduced are handled separately.
          */
-        private static NpyArray NpyUFunc_Reduce(NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
+        private static NpyArray NpyUFunc_Reduce(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
         {
             NpyArray ret = null;
             NpyUFuncReduceObject loop;
@@ -1041,7 +1042,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(loop.bufptr, loop.N,loop.steps);
+                        loop.function(operation, loop.bufptr, loop.N,loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -1105,7 +1106,7 @@ namespace NumpyLib
                             {
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
-                            loop.function(loop.bufptr, i, loop.steps);
+                            loop.function(operation, loop.bufptr, i, loop.steps);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1142,7 +1143,7 @@ namespace NumpyLib
             return null;
         }
 
-        private static NpyArray NpyUFunc_Accumulate(NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
+        private static NpyArray NpyUFunc_Accumulate(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
         {
             NpyArray ret = null;
             NpyUFuncReduceObject loop;
@@ -1188,7 +1189,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(loop.bufptr, loop.N, loop.steps);
+                        loop.function(operation, loop.bufptr, loop.N, loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
                         NpyArray_ITER_NEXT(loop.it);
@@ -1254,7 +1255,7 @@ namespace NumpyLib
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
 
-                            loop.function(loop.bufptr, i, loop.steps);
+                            loop.function(operation, loop.bufptr, i, loop.steps);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1293,7 +1294,7 @@ namespace NumpyLib
             return null;
         }
 
-        private static NpyArray NpyUFunc_Reduceat(NpyUFuncObject self, NpyArray arr, NpyArray ind, NpyArray _out, int axis, NPY_TYPES otype)
+        private static NpyArray NpyUFunc_Reduceat(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray ind, NpyArray _out, int axis, NPY_TYPES otype)
         {
             NpyArray ret;
             NpyUFuncReduceObject loop;
@@ -1350,7 +1351,7 @@ namespace NumpyLib
                             {
                                 loop.bufptr[1] += loop.steps[1];
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(loop.bufptr, mm, loop.steps);
+                                loop.function(operation, loop.bufptr, mm, loop.steps);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
@@ -1404,7 +1405,7 @@ namespace NumpyLib
                                                null, null);
                                 }
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(loop.bufptr, j, loop.steps);
+                                loop.function(operation, loop.bufptr, j, loop.steps);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
