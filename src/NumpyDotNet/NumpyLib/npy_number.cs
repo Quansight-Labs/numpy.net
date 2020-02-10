@@ -484,6 +484,7 @@ namespace NumpyLib
 
             if (R_Step == 0 && O1_Step == 0)
             {
+
                 npy_intp R_Index = AdjustNegativeIndex<T>(Result, R_Offset / R_sizeData);
                 npy_intp O1_Index = AdjustNegativeIndex<U>(Operand1, O1_Offset / O1_sizeData);
 
@@ -491,8 +492,14 @@ namespace NumpyLib
                 U[] Op1Array = Operand1.datap as U[];
                 V[] Op2Array = Operand2.datap as V[];
 
+                object[] kevin = new object[retArray.Length];
+
+
                 npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
                 npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
+
+                bool ThrewException = false;
+                
 
                 for (int i = 0; i < N; i++)
                 {
@@ -504,9 +511,38 @@ namespace NumpyLib
                         npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
                         var O2 = Op2Array[O2_Index];                                            // get operand 2
 
-                        var R = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
-                        ResultHandler.SetIndex(Result, R_Index, R);
-                        //retArray[R_Index] = R;
+                   
+                        if (ThrewException)
+                        {
+                            var RR = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
+                            ResultHandler.SetIndex(Result, R_Index, RR);
+                        }
+                        else
+                        {
+                            T R;
+                            try
+                            {
+                                R = (T)Operation(O1, O2);    // calculate result
+                            }
+                            catch
+                            {
+                                ThrewException = true;
+                                var RR = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));
+                                ResultHandler.SetIndex(Result, R_Index, RR);
+                                continue;
+                            }
+
+                            try
+                            {
+                                retArray[R_Index] = R;
+                            }
+                            catch
+                            {
+                                ThrewException = true;
+                                ResultHandler.SetIndex(Result, R_Index, R);
+                            }
+                        }
+                    
                     }
                     catch (System.OverflowException oe)
                     {
@@ -517,7 +553,6 @@ namespace NumpyLib
                         NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                     }
                 }
-
 
                 return;
 
