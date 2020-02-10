@@ -272,8 +272,7 @@ namespace NumpyLib
 
     public enum GenericReductionOp
     {
-        NPY_UFUNC_GENERIC = 1,
-        NPY_UFUNC_REDUCE,
+        NPY_UFUNC_REDUCE = 1,
         NPY_UFUNC_ACCUMULATE,
         NPY_UFUNC_REDUCEAT,
         NPY_UFUNC_OUTER,
