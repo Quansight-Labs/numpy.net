@@ -280,175 +280,175 @@ namespace NumpyLib
             switch (Result.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    UFuncCommon_R<bool>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<bool>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    UFuncCommon_R<sbyte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<sbyte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    UFuncCommon_R<byte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<byte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    UFuncCommon_R<Int16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<Int16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    UFuncCommon_R<UInt16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<UInt16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    UFuncCommon_R<Int32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<Int32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    UFuncCommon_R<UInt32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<UInt32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    UFuncCommon_R<Int64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<Int64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    UFuncCommon_R<UInt64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<UInt64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    UFuncCommon_R<float>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<float>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    UFuncCommon_R<double>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<double>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    UFuncCommon_R<decimal>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<decimal>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    UFuncCommon_R<System.Numerics.Complex>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<System.Numerics.Complex>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    UFuncCommon_R<System.Numerics.BigInteger>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<System.Numerics.BigInteger>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    UFuncCommon_R<object>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<object>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    UFuncCommon_R<string>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_R<string>(bufPtr, N, steps, Operation);
                     break;
             }
    
             return;
         }
 
-        private static void UFuncCommon_R<T>(ref VoidPtr[] bufPtr, ref long N, ref long[] steps, object funcData, NumericOperation Operation)
+        private static void UFuncCommon_R<R>(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NumericOperation Operation)
         {
             VoidPtr Result = bufPtr[0];
 
             switch (Result.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    UFuncCommon_RO<T,bool>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R,bool>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    UFuncCommon_RO<T, sbyte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, sbyte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    UFuncCommon_RO<T, byte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, byte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    UFuncCommon_RO<T, Int16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, Int16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    UFuncCommon_RO<T, UInt16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, UInt16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    UFuncCommon_RO<T, Int32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, Int32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    UFuncCommon_RO<T, UInt32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, UInt32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    UFuncCommon_RO<T, Int64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, Int64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    UFuncCommon_RO<T, UInt64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, UInt64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    UFuncCommon_RO<T, float>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, float>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    UFuncCommon_RO<T, double>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, double>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    UFuncCommon_RO<T, decimal>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, decimal>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    UFuncCommon_RO<T, System.Numerics.Complex>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, System.Numerics.Complex>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    UFuncCommon_RO<T, System.Numerics.BigInteger>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, System.Numerics.BigInteger>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    UFuncCommon_RO<T, object>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, object>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    UFuncCommon_RO<T, string>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_RO<R, string>(bufPtr, N, steps, Operation);
                     break;
             }
 
             return;
         }
 
-        private static void UFuncCommon_RO<T,U>(ref VoidPtr[] bufPtr, ref long N, ref long[] steps, object funcData, NumericOperation Operation)
+        private static void UFuncCommon_RO<R,O1>(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NumericOperation Operation)
         {
             VoidPtr Result = bufPtr[1];
 
             switch (Result.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    UFuncCommon_ROO<T,U,bool>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R,O1,bool>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    UFuncCommon_ROO<T, U, sbyte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, sbyte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    UFuncCommon_ROO<T, U, byte>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, byte>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    UFuncCommon_ROO<T, U, Int16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, Int16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    UFuncCommon_ROO<T, U, UInt16>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, UInt16>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    UFuncCommon_ROO<T, U, Int32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, Int32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    UFuncCommon_ROO<T, U, UInt32>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, UInt32>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    UFuncCommon_ROO<T, U, Int64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, Int64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    UFuncCommon_ROO<T, U, UInt64>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, UInt64>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    UFuncCommon_ROO<T, U, float>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, float>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    UFuncCommon_ROO<T, U, double>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, double>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    UFuncCommon_ROO<T, U, decimal>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, decimal>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    UFuncCommon_ROO<T, U, System.Numerics.Complex>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, System.Numerics.Complex>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    UFuncCommon_ROO<T, U, System.Numerics.BigInteger>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, System.Numerics.BigInteger>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    UFuncCommon_ROO<T, U, object>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, object>(bufPtr, N, steps, Operation);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    UFuncCommon_ROO<T, U, string>(ref bufPtr, ref N, ref steps, funcData, Operation);
+                    UFuncCommon_ROO<R, O1, string>(bufPtr, N, steps, Operation);
                     break;
             }
         }
 
-        private static void UFuncCommon_ROO<T, U, V>(ref VoidPtr[] bufPtr, ref long N, ref long[] steps, object funcData, NumericOperation Operation)
+        private static void UFuncCommon_ROO<R, O1, O2>(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NumericOperation Operation)
         {
             VoidPtr Operand1 = bufPtr[0];
             VoidPtr Operand2 = bufPtr[1];
@@ -485,12 +485,12 @@ namespace NumpyLib
             if (R_Step == 0 && O1_Step == 0)
             {
 
-                npy_intp R_Index = AdjustNegativeIndex<T>(Result, R_Offset / R_sizeData);
-                npy_intp O1_Index = AdjustNegativeIndex<U>(Operand1, O1_Offset / O1_sizeData);
+                npy_intp R_Index = AdjustNegativeIndex<R>(Result, R_Offset / R_sizeData);
+                npy_intp O1_Index = AdjustNegativeIndex<O1>(Operand1, O1_Offset / O1_sizeData);
 
-                T[] retArray = Result.datap as T[];
-                U[] Op1Array = Operand1.datap as U[];
-                V[] Op2Array = Operand2.datap as V[];
+                R[] retArray = Result.datap as R[];
+                O1[] Op1Array = Operand1.datap as O1[];
+                O2[] Op2Array = Operand2.datap as O2[];
 
                 npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
                 npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
@@ -503,24 +503,23 @@ namespace NumpyLib
 
                     try
                     {
-                        var O1 = Op1Array[O1_Index];
+                        var O1Value = Op1Array[O1_Index];
 
                         npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
-                        var O2 = Op2Array[O2_Index];                                            // get operand 2
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
 
                     retry:                   
                         if (ThrewException)
                         {
-                            var RR = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
-                            ResultHandler.SetIndex(Result, R_Index, RR);
+                            var RRValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
+                            ResultHandler.SetIndex(Result, R_Index, RRValue);
                         }
                         else
                         {
-                            T R;
                             try
                             {
-                                R = (T)Operation(O1, O2);    // calculate result
-                                retArray[R_Index] = R;
+                                R RValue = (R)Operation(O1Value, O2Value);    // calculate result
+                                retArray[R_Index] = RValue;
                             }
                             catch
                             {
@@ -556,10 +555,10 @@ namespace NumpyLib
 
                 try
                 {
-                    var O1 = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
-                    var O2 = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
-                    var R = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
-                    ResultHandler.SetIndex(Result, R_Index, R);
+                    var O1Value = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
+                    var O2Value = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
+                    var RValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
+                    ResultHandler.SetIndex(Result, R_Index, RValue);
                 }
                 catch (System.OverflowException oe)
                 {
