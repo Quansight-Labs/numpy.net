@@ -492,9 +492,6 @@ namespace NumpyLib
                 U[] Op1Array = Operand1.datap as U[];
                 V[] Op2Array = Operand2.datap as V[];
 
-                object[] kevin = new object[retArray.Length];
-
-
                 npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
                 npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
 
@@ -511,7 +508,7 @@ namespace NumpyLib
                         npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
                         var O2 = Op2Array[O2_Index];                                            // get operand 2
 
-                   
+                    retry:                   
                         if (ThrewException)
                         {
                             var RR = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
@@ -523,24 +520,14 @@ namespace NumpyLib
                             try
                             {
                                 R = (T)Operation(O1, O2);    // calculate result
-                            }
-                            catch
-                            {
-                                ThrewException = true;
-                                var RR = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));
-                                ResultHandler.SetIndex(Result, R_Index, RR);
-                                continue;
-                            }
-
-                            try
-                            {
                                 retArray[R_Index] = R;
                             }
                             catch
                             {
                                 ThrewException = true;
-                                ResultHandler.SetIndex(Result, R_Index, R);
+                                goto retry;
                             }
+
                         }
                     
                     }
@@ -558,6 +545,8 @@ namespace NumpyLib
 
             }
 
+            // todo: try idea of allocation an array objects, do the set and convert when all done.
+            // todo: try next level down of optimization like above.
 
             for (int i = 0; i < N; i++)
             {
