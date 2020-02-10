@@ -273,7 +273,7 @@ namespace NumpyLib
             return loc;
         }
 
-        internal static void UFuncCommon(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData, NumericOperation Operation)
+        internal static void UFuncCommon(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NumericOperation Operation)
         {
             VoidPtr Result = bufPtr[2];
 
@@ -584,202 +584,202 @@ namespace NumpyLib
         }
 
 
-        internal static void UFuncAdd(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncAdd(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_add));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_add));
             return;
         }
 
-        internal static void UFuncMultiply(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncMultiply(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_multiply));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_multiply));
             return;
         }
 
-        internal static void UFuncMax(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncMax(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_maximum));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_maximum));
             return;
         }
  
  
-        internal static void UFuncMin(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncMin(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_minimum));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_minimum));
             return;
         }
   
  
-        internal static void UFuncLogicalOr(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncLogicalOr(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_logical_or));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_logical_or));
             return;
         }
 
-        internal static void UFuncLogicalAnd(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncLogicalAnd(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_logical_and));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_logical_and));
             return;
         }
 
-        internal static void UFuncSubtract(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncSubtract(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_subtract));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_subtract));
             return;
         }
 
-        internal static void UFuncDivide(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncDivide(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_divide));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_divide));
             return;
         }
 
-        internal static void UFuncRemainder(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncRemainder(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_remainder));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_remainder));
             return;
         }
 
-        internal static void UFuncFMod(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncFMod(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_fmod));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_fmod));
             return;
         }
 
-        internal static void UFuncPower(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncPower(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_power));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_power));
             return;
         }
 
-        internal static void UFuncSquare(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncSquare(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_square));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_square));
             return;
         }
 
-        internal static void UFuncReciprocal(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncReciprocal(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_reciprocal));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_reciprocal));
             return;
         }
 
-        internal static void UFuncOnesLike(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncOnesLike(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_ones_like));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_ones_like));
             return;
         }
 
-        internal static void UFuncSqrt(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncSqrt(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_sqrt));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_sqrt));
             return;
         }
 
-        internal static void UFuncNegative(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncNegative(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_negative));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_negative));
             return;
         }
 
-        internal static void UFuncAbsolute(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncAbsolute(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_absolute));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_absolute));
             return;
         }
 
-        internal static void UFuncInvert(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncInvert(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_invert));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_invert));
             return;
         }
 
-        internal static void UFuncLeftShift(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncLeftShift(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_left_shift));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_left_shift));
             return;
         }
 
-        internal static void UFuncRightShift(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncRightShift(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_right_shift));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_right_shift));
             return;
         }
 
-        internal static void UFuncBitWiseAnd(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncBitWiseAnd(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_bitwise_and));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_bitwise_and));
             return;
         }
-        internal static void UFuncBitWiseXor(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncBitWiseXor(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_bitwise_xor));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_bitwise_xor));
             return;
         }
-        internal static void UFuncBitWiseOr(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncBitWiseOr(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0],NpyArray_Ops.npy_op_bitwise_or));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0],NpyArray_Ops.npy_op_bitwise_or));
             return;
         }
 
-        internal static void UFuncLess(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncLess(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_less));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_less));
             return;
         }
-        internal static void UFuncLessEqual(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncLessEqual(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_less_equal));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_less_equal));
             return;
         }
-        internal static void UFuncEqual(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncEqual(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_equal));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_equal));
             return;
         }
-        internal static void UFuncNotEqual(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncNotEqual(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_not_equal));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_not_equal));
             return;
         }
-        internal static void UFuncGreater(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncGreater(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_greater));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_greater));
             return;
         }
-        internal static void UFuncGreaterEqual(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncGreaterEqual(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_greater_equal));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_greater_equal));
             return;
         }
-        internal static void UFuncFloorDivide(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncFloorDivide(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_floor_divide));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_floor_divide));
             return;
         }
-        internal static void UFuncTrueDivide(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncTrueDivide(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_true_divide));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_true_divide));
             return;
         }
-        internal static void UFuncFloor(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncFloor(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_floor));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_floor));
             return;
         }
-        internal static void UFuncCeil(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncCeil(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_ceil));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_ceil));
             return;
         }
-        internal static void UFuncRint(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncRint(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_rint));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_rint));
             return;
         }
-        internal static void UFuncConjugate(ref VoidPtr[] bufPtr, ref npy_intp N, ref npy_intp[] steps, object funcData)
+        internal static void UFuncConjugate(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
         {
-            UFuncCommon(ref bufPtr, ref N, ref steps, funcData, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_conjugate));
+            UFuncCommon(bufPtr, N, steps, GetOperation(bufPtr[0], NpyArray_Ops.npy_op_conjugate));
             return;
         }
     }

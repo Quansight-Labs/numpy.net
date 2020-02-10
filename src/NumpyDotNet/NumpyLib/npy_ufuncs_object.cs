@@ -46,7 +46,7 @@ namespace NumpyLib
 {
     #region Data Structures
 
-    public delegate void NpyUFuncGenericFunction(ref VoidPtr[] s1, ref npy_intp i1, ref npy_intp[] i2, object o1);
+    public delegate void NpyUFuncGenericFunction(VoidPtr[] s1, npy_intp i1, npy_intp[] i2);
 
     public class NpyUFuncObject : NpyObject_HEAD
     {
@@ -114,7 +114,6 @@ namespace NumpyLib
 
         /* Specific function and data to use */
         public NpyUFuncGenericFunction function;
-        public object funcdata;
 
         /* Loop method */
         public UFuncLoopMethod meth;
@@ -180,7 +179,6 @@ namespace NumpyLib
         public int first;
 
         public NpyUFuncGenericFunction function;
-        public object funcdata;
         public UFuncLoopMethod meth;
         public bool swap;
 
@@ -214,7 +212,6 @@ namespace NumpyLib
     public class NpyUFunc_Loop1d
     {
         public NpyUFuncGenericFunction func;
-        public object data;
         public NPY_TYPES[] arg_types;
         public NpyUFunc_Loop1d next;
     }
@@ -434,8 +431,7 @@ namespace NumpyLib
                      * increment moves through the entire array.
                      */
                     /*fprintf(stderr, "ONE...%d\n", loop.size);*/
-                    loop.function(ref loop.bufptr, ref loop.iter.size,
-                                   ref loop.steps, loop.funcdata);
+                    loop.function(loop.bufptr, loop.iter.size, loop.steps);
                     if (!NPY_UFUNC_CHECK_ERROR(loop))
                         goto fail;
 
@@ -451,8 +447,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(ref loop.bufptr, ref loop.bufcnt,
-                                       ref loop.steps, loop.funcdata);
+                        loop.function(loop.bufptr, loop.bufcnt,loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -471,8 +466,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(ref loop.bufptr, ref loop.core_dim_sizes[0],
-                                       ref loop.core_strides, loop.funcdata);
+                        loop.function(loop.bufptr, loop.core_dim_sizes[0],loop.core_strides);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -648,8 +642,7 @@ namespace NumpyLib
                                 }
 
                                 bufcnt = (npy_intp)bufsize;
-                                loop.function(ref dptr, ref bufcnt, ref steps,
-                                               loop.funcdata);
+                                loop.function(dptr, bufcnt, steps);
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
 
@@ -1048,8 +1041,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(ref loop.bufptr, ref loop.N,
-                                       ref loop.steps, loop.funcdata);
+                        loop.function(loop.bufptr, loop.N,loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -1113,8 +1105,7 @@ namespace NumpyLib
                             {
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
-                            loop.function(ref loop.bufptr, ref i,
-                                           ref loop.steps, loop.funcdata);
+                            loop.function(loop.bufptr, i, loop.steps);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1197,8 +1188,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(ref loop.bufptr, ref loop.N,
-                                ref loop.steps, loop.funcdata);
+                        loop.function(loop.bufptr, loop.N, loop.steps);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
                         NpyArray_ITER_NEXT(loop.it);
@@ -1264,8 +1254,7 @@ namespace NumpyLib
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
 
-                            loop.function(ref loop.bufptr, ref i,
-                                           ref loop.steps, loop.funcdata);
+                            loop.function(loop.bufptr, i, loop.steps);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1361,8 +1350,7 @@ namespace NumpyLib
                             {
                                 loop.bufptr[1] += loop.steps[1];
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(ref loop.bufptr, ref mm,
-                                               ref loop.steps, loop.funcdata);
+                                loop.function(loop.bufptr, mm, loop.steps);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
@@ -1416,8 +1404,7 @@ namespace NumpyLib
                                                null, null);
                                 }
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(ref loop.bufptr, ref j,
-                                               ref loop.steps, loop.funcdata);
+                                loop.function(loop.bufptr, j, loop.steps);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
@@ -1613,7 +1600,7 @@ namespace NumpyLib
 
             /* Select an appropriate function for these argument types. */
             if (select_types(loop.ufunc, arg_types, ref loop.function,
-                             ref loop.funcdata, scalars, ntypenums,
+                             scalars, ntypenums,
                              rtypenums) == -1)
             {
                 return -1;
@@ -2146,11 +2133,6 @@ namespace NumpyLib
 
             }
 
-            if (_does_loop_use_arrays(loop.funcdata))
-            {
-                loop.funcdata = mps;
-            }
-
             return nargs;
         }
 
@@ -2211,7 +2193,7 @@ namespace NumpyLib
 
             default_fp_error_state(loop);
             if (select_types(loop.ufunc, arg_types, ref loop.function,
-                             ref loop.funcdata, scalars, 0, null) == -1)
+                             scalars, 0, null) == -1)
             {
                 goto fail;
             }
@@ -2227,7 +2209,7 @@ namespace NumpyLib
                 arg_types[0] = otype;
                 arg_types[1] = otype;
                 if (select_types(loop.ufunc, arg_types, ref loop.function,
-                                 ref loop.funcdata, scalars, 0, null) == -1)
+                                 scalars, 0, null) == -1)
                 {
                     goto fail;
                 }
@@ -2479,7 +2461,7 @@ namespace NumpyLib
          * Can change arg_types.
          */
         static int select_types(NpyUFuncObject self, NPY_TYPES[] arg_types,
-                     ref NpyUFuncGenericFunction function, ref object data,
+                     ref NpyUFuncGenericFunction function,
                      NPY_SCALARKIND[] scalars,
                      int ntypenums, NPY_TYPES[] rtypenums)
         {
@@ -2503,7 +2485,7 @@ namespace NumpyLib
 
             if (rtypenums != null)
             {
-                return extract_specified_loop(self, arg_types, function, ref data,
+                return extract_specified_loop(self, arg_types, function,
                                               ntypenums, rtypenums, userdef);
             }
 
@@ -2536,7 +2518,7 @@ namespace NumpyLib
                      * data and argtypes for this user-defined type.
                      */
                     ret = _find_matching_userloop(funcdata, arg_types, scalars,
-                                                  function, ref data, self.nargs,
+                                                  function, self.nargs,
                                                   self.nin);
                 }
                 if (ret == 0)
@@ -2585,15 +2567,6 @@ namespace NumpyLib
 
             }
 
-
-            if (self.data != null)
-            {
-                data = self.data[i];
-            }
-            else
-            {
-                data = null;
-            }
             function = self.GetFunction(i);
 
             return 0;
@@ -2601,7 +2574,7 @@ namespace NumpyLib
 
 
         private static int extract_specified_loop(NpyUFuncObject self, NPY_TYPES[] arg_types, 
-            NpyUFuncGenericFunction function, ref object data, int ntypenums, NPY_TYPES[] rtypenums, int userdef)
+            NpyUFuncGenericFunction function, int ntypenums, NPY_TYPES[] rtypenums, int userdef)
         {
             string msg = "loop written to specified type(s) not found";
             int nargs;
@@ -2649,7 +2622,6 @@ namespace NumpyLib
                     if (i == nargs)
                     {
                         function = funcdata.func;
-                        data = funcdata.data;
                         for (i = 0; i < nargs; i++)
                         {
                             arg_types[i] = funcdata.arg_types[i];
@@ -2676,7 +2648,6 @@ namespace NumpyLib
                 if (i == nargs)
                 {
                     function = self.GetFunction(j);
-                    data = self.data[j];
                     for (i = 0; i < nargs; i++)
                     {
                         arg_types[i] = self.types[j * nargs + i];
@@ -3021,7 +2992,7 @@ namespace NumpyLib
 
         private static int _find_matching_userloop(NpyUFunc_Loop1d funcdata, NPY_TYPES[] arg_types, 
                             NPY_SCALARKIND[] scalars, NpyUFuncGenericFunction function, 
-                            ref object data, int nargs, int nin)
+                            int nargs, int nin)
         {
             int i;
 
@@ -3038,7 +3009,6 @@ namespace NumpyLib
                 {
                     /* match found */
                     function = funcdata.func;
-                    data = funcdata.data;
                     /* Make sure actual arg_types supported by the loop are used */
                     for (i = 0; i < nargs; i++)
                     {
@@ -3084,12 +3054,7 @@ namespace NumpyLib
             }
         }
 
-        private static bool _does_loop_use_arrays(object data)
-        {
-            return false;
-        }
-
-
+ 
         /*
          * Floating point error handling.
          */
