@@ -58,7 +58,7 @@ namespace NumpyLib
         const int NUMERICOPS_SMALL_TASKSIZE = 100;  // size of data to small to use parallel library
 
 
-        internal static NumericOperation GetOperation(ref NpyArray srcArray, NpyArray_Ops operationType)
+        internal static NumericOperation GetOperation(NpyArray srcArray, NpyArray_Ops operationType)
         {
             switch (operationType)
             {
@@ -1358,7 +1358,7 @@ namespace NumpyLib
         #region array to array numeric functions
         public static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArray operandArray, NpyArray_Ops operationType)
         {
-            NumericOperation operation = GetOperation(ref srcArray, operationType);
+            NumericOperation operation = GetOperation(srcArray, operationType);
 
             NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
    
@@ -1367,7 +1367,7 @@ namespace NumpyLib
 
         public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, NpyArray_Ops operationType)
         {
-            NumericOperation operation = GetOperation(ref srcArray, operationType);
+            NumericOperation operation = GetOperation(srcArray, operationType);
 
             NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
   
@@ -1766,7 +1766,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_Floor(NpyArray srcArray, NpyArray outPtr)
         {
-            NumericOperation operation = GetOperation(ref srcArray, NpyArray_Ops.npy_op_floor);
+            NumericOperation operation = GetOperation(srcArray, NpyArray_Ops.npy_op_floor);
 
             if (outPtr == null)
             {
@@ -1789,7 +1789,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_IsNaN(NpyArray srcArray)
         {
-            NumericOperation operation = GetOperation(ref srcArray, NpyArray_Ops.npy_op_isnan);
+            NumericOperation operation = GetOperation(srcArray, NpyArray_Ops.npy_op_isnan);
 
             NpyArray outPtr = NpyArray_FromArray(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORCECAST);
 
