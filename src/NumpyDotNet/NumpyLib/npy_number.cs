@@ -57,56 +57,7 @@ namespace NumpyLib
             throw new NotImplementedException();
         }
 
-        internal static NpyArray NpyArray_GenericBinaryFunction(NpyArray m1, NpyArray m2, NpyUFuncObject op, NpyArray outArray)
-        {
-            NpyArray[] mps = new NpyArray[npy_defs.NPY_MAXARGS];
-            NpyArray result;
-            int i;
-
-            Debug.Assert(Validate(op));
-            Debug.Assert(Validate(m1));
-            Debug.Assert(Validate(m2));
-            if (outArray != null)
-                Debug.Assert(Validate(outArray));
- 
-
-            mps[0] = m1;
-            mps[1] = m2;
-            Npy_XINCREF(outArray);
-            mps[2] = outArray;
-
-            for (i = 0; i < 3; i++)
-            {
-                Npy_XINCREF(mps[i]);
-            }
-            if (0 > NpyUFunc_GenericFunction(GenericReductionOp.NPY_UFUNC_GENERIC,  op, 3, mps, 0, null, false, null, null))
-            {
-                result = null;
-                goto finish;
-            }
-
-            if (outArray != null) {
-                result = outArray;
-            } else {
-                result = mps[2];
-            }
-
-            finish:
-            Npy_XINCREF(result);
-            for (i = 0; i < 3; i++)
-            {
-                if (mps[i] != null)
-                {
-                    if ((mps[i].flags & NPYARRAYFLAGS.NPY_UPDATEIFCOPY) != 0)
-                    {
-                        NpyArray_ForceUpdate(mps[i]);
-                    }
-                    Npy_DECREF(mps[i]);
-                }
-            }
-            return result;
-        }
-
+    
         internal static NpyArray NpyArray_GenericUnaryFunction(GenericReductionOp operation, NpyArray inputArray, NpyUFuncObject op, NpyArray retArray)
         {
             NpyArray[] mps = new NpyArray[npy_defs.NPY_MAXARGS];

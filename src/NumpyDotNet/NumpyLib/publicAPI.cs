@@ -1197,11 +1197,7 @@ namespace NumpyLib
             return numpyinternal.NpyArray_SetNumericOp(op, func);
         }
 
-        public static NpyArray NpyArray_GenericBinaryFunction(NpyArray m1, NpyArray m2, NpyUFuncObject op, NpyArray _out)
-        {
-            return numpyinternal.NpyArray_GenericBinaryFunction(m1, m2, op, _out);
-        }
-
+  
         public static int NpyArray_Bool(NpyArray mp)
         {
             return numpyinternal.NpyArray_Bool(mp);
