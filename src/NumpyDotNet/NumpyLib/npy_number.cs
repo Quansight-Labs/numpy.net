@@ -480,34 +480,7 @@ namespace NumpyLib
             npy_intp O1_Offset = Operand1.data_offset;
             npy_intp O2_Offset = Operand2.data_offset;
             npy_intp R_Offset = Result.data_offset;
-
-            if (R_Step == 0 && O1_Step == 0 && O2_Step == 0)
-            {
-                npy_intp O1_Index = O1_Offset / O1_sizeData;
-                npy_intp O2_Index = O2_Offset / O2_sizeData;
-                npy_intp R_Index = R_Offset / R_sizeData;
-
-                for (int i = 0; i < N; i++)
-                {
-                    try
-                    {
-                        var O1 = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
-                        var O2 = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
-                        var R = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
-                        ResultHandler.SetIndex(Result, R_Index, R);
-                    }
-                    catch (System.OverflowException oe)
-                    {
-                        NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
-                    }
-                }
-                return;
-
-            }
+                   
 
             if (R_Step == 0 && O1_Step == 0)
             {
@@ -521,10 +494,9 @@ namespace NumpyLib
                 npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
                 npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
 
-
                 for (int i = 0; i < N; i++)
                 {
-      
+
                     try
                     {
                         var O1 = Op1Array[O1_Index];
@@ -545,6 +517,7 @@ namespace NumpyLib
                         NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                     }
                 }
+
 
                 return;
 
