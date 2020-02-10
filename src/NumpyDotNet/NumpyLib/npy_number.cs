@@ -518,7 +518,9 @@ namespace NumpyLib
                 U[] Op1Array = Operand1.datap as U[];
                 V[] Op2Array = Operand2.datap as V[];
 
-  
+                npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
+                npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
+
 
                 for (int i = 0; i < N; i++)
                 {
@@ -527,13 +529,12 @@ namespace NumpyLib
                     {
                         var O1 = Op1Array[O1_Index];
 
-                        npy_intp O2_Index = ((i * O2_Step) + O2_Offset) / O2_sizeData;
+                        npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
                         var O2 = Op2Array[O2_Index];                                            // get operand 2
 
                         var R = Operation(O1, Operand1Handler.MathOpConvertOperand(O1, O2));    // calculate result
-
                         ResultHandler.SetIndex(Result, R_Index, R);
-                        //retArray[R_Index] = (T)R;
+                        //retArray[R_Index] = R;
                     }
                     catch (System.OverflowException oe)
                     {

@@ -80,6 +80,7 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.reduce(a)
+            print(b)
 
         end = tm.time()
 
