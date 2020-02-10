@@ -831,8 +831,6 @@ namespace NumpyLib
         internal static NpyArray NpyUFunc_GenericReduction(NpyUFuncObject self, NpyArray arr, NpyArray indices,
                          NpyArray _out, int axis, NpyArray_Descr otype, GenericReductionOp operation, bool keepdims)
         {
-            string[] _reduce_type = new string[] { "reduce", "accumulate", "reduceat", null };
-
             if (self == null)
             {
                 throw new Exception("UnFunc does not exist for this operation");
@@ -869,7 +867,7 @@ namespace NumpyLib
             /* Check to see if input is zero-dimensional */
             if (NpyArray_NDIM(arr) == 0)
             {
-                string buf = string.Format("cannot %s on a scalar", _reduce_type[(int)operation]);
+                string buf = string.Format("cannot %s on a scalar", operation.ToString());
                 NpyErr_SetString(npyexc_type.NpyExc_TypeError, buf);
                 Npy_DECREF(arr);
                 return null;
@@ -878,7 +876,7 @@ namespace NumpyLib
             if (NpyArray_ISFLEXIBLE(arr) ||
                 (null != otype && NpyTypeNum_ISFLEXIBLE(otype.type_num)))
             {
-                string buf = string.Format("cannot perform %s with flexible type", _reduce_type[(int)operation]);
+                string buf = string.Format("cannot perform %s with flexible type", operation.ToString());
 
                 NpyErr_SetString(npyexc_type.NpyExc_TypeError, buf);
                 return null;
