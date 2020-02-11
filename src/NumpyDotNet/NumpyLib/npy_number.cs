@@ -434,69 +434,18 @@ namespace NumpyLib
             npy_intp R_Offset = Result.data_offset;
                    
 
-            if (R_Step == 0 && O1_Step == 0)
+            if (op == GenericReductionOp.NPY_UFUNC_REDUCE && R_Step == 0 && O1_Step == 0 && Result.datap.Equals(Operand1.datap))
             {
-
-                npy_intp R_Index = AdjustNegativeIndex<R>(Result, R_Offset / R_sizeData);
-                npy_intp O1_Index = AdjustNegativeIndex<O1>(Operand1, O1_Offset / O1_sizeData);
-
-                R[] retArray = Result.datap as R[];
-                O1[] Op1Array = Operand1.datap as O1[];
-                O2[] Op2Array = Operand2.datap as O2[];
-
-                npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
-                npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
-
-                bool ThrewException = false;
-                
-
-                for (int i = 0; i < N; i++)
-                {
-
-                    try
-                    {
-                        var O1Value = Op1Array[O1_Index];
-
-                        npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
-                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
-
-                    retry:                   
-                        if (ThrewException)
-                        {
-                            var RRValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
-                            ResultHandler.SetIndex(Result, R_Index, RRValue);
-                        }
-                        else
-                        {
-                            try
-                            {
-                                R RValue = (R)Operation(O1Value, O2Value);    // calculate result
-                                retArray[R_Index] = RValue;
-                            }
-                            catch
-                            {
-                                ThrewException = true;
-                                goto retry;
-                            }
-
-                        }
-                    
-                    }
-                    catch (System.OverflowException oe)
-                    {
-                        NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
-                    }
-                }
-
+                UFuncCommon_REDUCE<R, O1, O2>(bufPtr, N, steps, ops);
                 return;
-
             }
 
-            // todo: try idea of allocation an array objects, do the set and convert when all done.
+
+            if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
+            {
+                throw new Exception("Didn't expect UFUNC_REDUCE to have non zero steps");
+            }
+            //todo: try idea of allocation an array objects, do the set and convert when all done.
             // todo: try next level down of optimization like above.
 
             for (int i = 0; i < N; i++)
@@ -511,6 +460,98 @@ namespace NumpyLib
                     var O2Value = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
                     var RValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
                     ResultHandler.SetIndex(Result, R_Index, RValue);
+                }
+                catch (System.OverflowException oe)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
+                }
+                catch (Exception ex)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                }
+            }
+
+            return;
+        }
+
+        private static void UFuncCommon_REDUCE<R, O1, O2>(VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NpyArray_Ops ops)
+        {
+            VoidPtr Operand1 = bufPtr[0];
+            VoidPtr Operand2 = bufPtr[1];
+            VoidPtr Result = bufPtr[2];
+
+            npy_intp O1_Step = steps[0];
+            npy_intp O2_Step = steps[1];
+            npy_intp R_Step = steps[2];
+
+            if (Operand2 == null)
+            {
+                Operand2 = Operand1;
+                O2_Step = O1_Step;
+            }
+            if (Result == null)
+            {
+                Result = Operand1;
+                R_Step = O1_Step;
+            }
+
+            NumericOperation Operation = GetOperation(Operand1, ops);
+            var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
+            var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
+            var ResultHandler = DefaultArrayHandlers.GetArrayHandler(Result.type_num);
+
+            npy_intp O1_sizeData = Operand1Handler.ItemSize;
+            npy_intp O2_sizeData = Operand2Handler.ItemSize;
+            npy_intp R_sizeData = ResultHandler.ItemSize;
+
+            npy_intp O1_Offset = Operand1.data_offset;
+            npy_intp O2_Offset = Operand2.data_offset;
+            npy_intp R_Offset = Result.data_offset;
+
+            npy_intp R_Index = AdjustNegativeIndex<R>(Result, R_Offset / R_sizeData);
+            npy_intp O1_Index = AdjustNegativeIndex<O1>(Operand1, O1_Offset / O1_sizeData);
+
+            R[] retArray = Result.datap as R[];
+            O1[] Op1Array = Operand1.datap as O1[];
+            O2[] Op2Array = Operand2.datap as O2[];
+
+            npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
+            npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
+
+            bool ThrewException = false;
+
+
+            for (int i = 0; i < N; i++)
+            {
+
+                try
+                {
+                    var O1Value = Op1Array[O1_Index];
+
+                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+                    var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                    retry:
+                    if (ThrewException)
+                    {
+                        var RRValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
+                        ResultHandler.SetIndex(Result, R_Index, RRValue);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            R RValue = (R)Operation(O1Value, O2Value);    // calculate result
+                            retArray[R_Index] = RValue;
+                        }
+                        catch
+                        {
+                            ThrewException = true;
+                            goto retry;
+                        }
+
+                    }
+
                 }
                 catch (System.OverflowException oe)
                 {
