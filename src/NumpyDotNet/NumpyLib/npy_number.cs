@@ -560,21 +560,48 @@ namespace NumpyLib
             O1[] Op1Array = Operand1.datap as O1[];
             O2[] Op2Array = Operand2.datap as O2[];
 
+            npy_intp O1_CalculatedStep = (O1_Step / O1_sizeData);
+            npy_intp O1_CalculatedOffset = (O1_Offset / O1_sizeData);
+
             npy_intp O2_CalculatedStep = (O2_Step / O2_sizeData);
             npy_intp O2_CalculatedOffset = (O2_Offset / O2_sizeData);
 
+            npy_intp R_CalculatedStep = (R_Step / R_sizeData);
+            npy_intp R_CalculatedOffset = (R_Offset / R_sizeData);
+
+            bool ThrewException = false;
+
             for (int i = 0; i < N; i++)
             {
-                npy_intp O1_Index = ((i * O1_Step) + O1_Offset) / O1_sizeData;
-                npy_intp O2_Index = ((i * O2_Step) + O2_Offset) / O2_sizeData;
-                npy_intp R_Index = ((i * R_Step) + R_Offset) / R_sizeData;
+                npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
+                npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+                npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
+
+                var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                var O2Value = Op2Array[O2_Index];                                            // get operand 2
 
                 try
                 {
-                    var O1Value = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
-                    var O2Value = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
-                    var RValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
-                    ResultHandler.SetIndex(Result, R_Index, RValue);
+                    retry:
+                    if (ThrewException)
+                    {
+                        var RRValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
+                        ResultHandler.SetIndex(Result, R_Index, RRValue);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            R RValue = (R)Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
+                            retArray[R_Index] = RValue;
+                        }
+                        catch
+                        {
+                            ThrewException = true;
+                            goto retry;
+                        }
+                    }
+
                 }
                 catch (System.OverflowException oe)
                 {
