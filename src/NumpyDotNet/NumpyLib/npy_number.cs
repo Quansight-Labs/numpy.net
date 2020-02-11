@@ -401,40 +401,7 @@ namespace NumpyLib
 
         private static void UFuncCommon_ROO<R, O1, O2>(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, NpyArray_Ops ops)
         {
-            VoidPtr Operand1 = bufPtr[0];
-            VoidPtr Operand2 = bufPtr[1];
-            VoidPtr Result = bufPtr[2];
-
-            npy_intp O1_Step = steps[0];
-            npy_intp O2_Step = steps[1];
-            npy_intp R_Step = steps[2];
-
-            if (Operand2 == null)
-            {
-                Operand2 = Operand1;
-                O2_Step = O1_Step;
-            }
-            if (Result == null)
-            {
-                Result = Operand1;
-                R_Step = O1_Step;
-            }
-
-            NumericOperation Operation = GetOperation(Operand1, ops);
-            var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
-            var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
-            var ResultHandler = DefaultArrayHandlers.GetArrayHandler(Result.type_num);
-
-            npy_intp O1_sizeData = Operand1Handler.ItemSize;
-            npy_intp O2_sizeData = Operand2Handler.ItemSize;
-            npy_intp R_sizeData = ResultHandler.ItemSize;
-
-            npy_intp O1_Offset = Operand1.data_offset;
-            npy_intp O2_Offset = Operand2.data_offset;
-            npy_intp R_Offset = Result.data_offset;
-                   
-
-            if (op == GenericReductionOp.NPY_UFUNC_REDUCE && R_Step == 0 && O1_Step == 0 && Result.datap.Equals(Operand1.datap))
+            if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
             {
                 UFuncCommon_REDUCE<R, O1, O2>(bufPtr, N, steps, ops);
                 return;
