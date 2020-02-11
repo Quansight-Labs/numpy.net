@@ -13,7 +13,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void test_ScalarOperationPerformance()
         {
@@ -176,7 +176,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, a);
-                Assert.AreEqual(49999995000000.0, b.item(0));
+                //Assert.AreEqual(49999995000000.0, b.item(0));
                // print(b);
             }
 
@@ -188,64 +188,50 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void xxx_test_KEVIN()
+        public void test_AddReduce_Performance_IDEAL()
         {
-            double sigma = 0.4;
-            ndarray im;
-            int x0, y0;
-            int size = (int)(8 * sigma + 1);
-            if (size % 2 == 0) size += 1;
-            var x = np.arange(0, size, 1, np.Float32);
-            var y = x.A(":", np.newaxis) * 4;
 
-            x0 = y0 = size / 2;
+            int LoopCount = 200;
+            var a = np.arange(0, 10000000, dtype: np.Float64);
+            var aa = a.AsDoubleArray();
 
-            var gaus = np.exp(-4 * np.log(2) * (np.power((x - x0), 2) + np.power((y - y0), 2)) / np.power(sigma, 2));
-            print(gaus);
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
 
-            Assert.Fail("Take this out of final release");
+            for (int i = 0; i < LoopCount; i++)
+            {
+                double total = 0;
+
+                long O2_CalculatedStep = 1;
+                long O2_CalculatedOffset = 0;
+                try
+                {
+                    for (int j = 0; j < aa.Length; j++)
+                    {
+
+                        long O2_Index = ((j * O2_CalculatedStep) + O2_CalculatedOffset);
+                        double O2Value = aa[O2_Index];                                            // get operand 2
+
+                        total = total + O2Value;
+                    }
+                    Assert.AreEqual(49999995000000.0, total);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+     
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
 
         }
 
-        [TestMethod]
-        public void xxx_test_KEVIN2()
-        {
-            Assert.Fail("Take this out of final release");
-
-            make_gaussian(null, 0, null, null);
-        }
-
-        [TestMethod]
-        public void xxx_test_PARALLEL_MemCpy()
-        {
-            Assert.Fail("Try to parallel all of the for loops in MemCpy");
-
-            make_gaussian(null, 0, null, null);
-        }
-
-        public ndarray make_gaussian(ndarray im, double sigma, ndarray xc, ndarray yc)
-        {
-
-            int size = (int)(8 * sigma + 1);
-
-            if (size % 2 == 0)
-                size += 1;
-
-            var x = np.arange(0, size, 1, np.Float32);
-            var y = x.A(":", np.newaxis) * 4;
-
-
-            int x0 = size / 2;
-            int y0 = size / 2;
-
-            var gaus = np.exp(-4 * np.log(2) * (np.power((x - x0),2) + np.power((y - y0),2) / np.power(sigma,2)));
-
-            im[xc - (size / 2) + ":" + (xc + size / 2 + 1), (yc - size / 2) + ":" + (yc + size / 2 + 1)] = gaus;
-
-            return im;
-
-        }
-
+ 
 
     }
 }
