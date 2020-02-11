@@ -187,6 +187,31 @@ namespace NumpyDotNetTests
 
         }
 
+
+
+        [Ignore]
+        [TestMethod]
+        public void test_AddAccumulate_Performance()
+        {
+
+            int LoopCount = 200;
+            var a = np.arange(0, 10000000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, a);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
         [TestMethod]
         public void test_AddReduce_Performance_IDEAL()
         {

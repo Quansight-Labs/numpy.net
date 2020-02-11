@@ -85,7 +85,23 @@ class PerformanceTests(unittest.TestCase):
         end = tm.time()
 
         diff = end-start
-        print("1000000 sin calculations took %f milliseconds" %(diff))
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
+    def test_AddAccumulate_Performance(self):
+
+        LoopCount = 200;
+
+        a = np.arange(10000000, dtype=np.float64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.accumulate(a)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
 
 
     def test_xxx(self):
