@@ -125,11 +125,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_AddAccumulate_1()
         {
-            //NumericOps.SetNumericHandler(NPY_TYPES.NPY_INT32, new MyInt32Handlers());
-
-            var Handler = NumericOps.GetNumericHandler(NPY_TYPES.NPY_INT32);
-            Handler.AddOperation = MYTESTINT32_AddOperation;
-
+      
             var x = np.arange(8);
 
             var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
