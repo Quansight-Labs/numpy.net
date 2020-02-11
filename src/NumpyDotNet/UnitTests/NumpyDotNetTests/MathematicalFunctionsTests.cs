@@ -863,7 +863,7 @@ namespace NumpyDotNetTests
 
             print(x);
             print(y);
-            Assert.AreEqual((UInt64)1403336390624999936, y.GetItem(0));
+            Assert.AreEqual((UInt64)1403336390625000000, y.GetItem(0));
 
         }
 

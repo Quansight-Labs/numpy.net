@@ -806,7 +806,7 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
@@ -966,22 +966,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -992,7 +992,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1011,7 +1011,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1082,32 +1082,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -1151,22 +1151,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1177,7 +1177,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1196,7 +1196,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1267,32 +1267,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
   
     }
@@ -1336,22 +1336,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1362,7 +1362,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1381,7 +1381,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1452,32 +1452,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -1520,22 +1520,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1546,7 +1546,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1565,7 +1565,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1636,32 +1636,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -1703,22 +1703,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1729,7 +1729,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1748,7 +1748,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1819,32 +1819,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -1887,22 +1887,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1913,7 +1913,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -1932,7 +1932,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2003,32 +2003,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -2070,22 +2070,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2096,7 +2096,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2115,7 +2115,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2186,32 +2186,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -2253,22 +2253,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2279,7 +2279,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2298,7 +2298,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2369,32 +2369,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
     }
 
@@ -2491,22 +2491,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2517,7 +2517,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2536,7 +2536,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2607,32 +2607,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             float dValue = (float)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
         protected override object FMax(object bValue, object operand)
         {
@@ -2755,22 +2755,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue + (double)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue - (double)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue * (double)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2781,7 +2781,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2800,7 +2800,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            double doperand = (double)operand;
+            double doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -2871,32 +2871,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue < (double)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue <= (double)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue == (double)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue != (double)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue > (double)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             double dValue = (double)bValue;
-            return dValue >= (double)operand;
+            return dValue >= (dynamic)operand;
         }
         protected override object IsNAN(object bValue, object operand)
         {
@@ -3033,22 +3033,22 @@ namespace NumpyLib
         protected override object Add(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue + (decimal)operand;
+            return dValue + (dynamic)operand;
         }
         protected override object Subtract(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue - (decimal)operand;
+            return dValue - (dynamic)operand;
         }
         protected override object Multiply(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue * (decimal)operand;
+            return dValue * (dynamic)operand;
         }
         protected override object Divide(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            decimal doperand = (decimal)operand;
+            decimal doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -3059,7 +3059,7 @@ namespace NumpyLib
         protected override object Remainder(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            decimal doperand = (decimal)operand;
+            decimal doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -3078,7 +3078,7 @@ namespace NumpyLib
         protected override object FMod(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            decimal doperand = (decimal)operand;
+            decimal doperand = (dynamic)operand;
             if (doperand == 0)
             {
                 dValue = 0;
@@ -3164,32 +3164,32 @@ namespace NumpyLib
         protected override object Less(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue < (decimal)operand;
+            return dValue < (dynamic)operand;
         }
         protected override object LessEqual(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue <= (decimal)operand;
+            return dValue <= (dynamic)operand;
         }
         protected override object Equal(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue == (decimal)operand;
+            return dValue == (dynamic)operand;
         }
         protected override object NotEqual(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue != (decimal)operand;
+            return dValue != (dynamic)operand;
         }
         protected override object Greater(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue > (decimal)operand;
+            return dValue > (dynamic)operand;
         }
         protected override object GreaterEqual(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
-            return dValue >= (decimal)operand;
+            return dValue >= (dynamic)operand;
         }
         protected override object IsNAN(object bValue, object operand)
         {
