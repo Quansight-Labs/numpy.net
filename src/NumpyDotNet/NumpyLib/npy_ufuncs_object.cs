@@ -832,7 +832,7 @@ namespace NumpyLib
         {
             if (self == null)
             {
-                throw new Exception("UnFunc does not exist for this operation");
+                throw new Exception("UFunc does not exist for this operation");
             }
 
 
