@@ -218,7 +218,27 @@ namespace NumpyLib
                     arrFuncs.getitem = DECIMAL_GetItemFunc;
                     arrFuncs.setitem = DECIMAL_SetItemFunc;
                     break;
-                     
+                case NPY_TYPES.NPY_COMPLEX:
+                    arrFuncs.copyswap = Common_copyswap<System.Numerics.Complex>;
+                    arrFuncs.getitem = COMPLEX_GetItemFunc;
+                    arrFuncs.setitem = COMPLEX_SetItemFunc;
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    arrFuncs.copyswap = Common_copyswap<System.Numerics.BigInteger>;
+                    arrFuncs.getitem = BIGINT_GetItemFunc;
+                    arrFuncs.setitem = BIGINT_SetItemFunc;
+                    break;
+                case NPY_TYPES.NPY_OBJECT:
+                    arrFuncs.copyswap = Common_copyswap<System.Object>;
+                    arrFuncs.getitem = OBJECT_GetItemFunc;
+                    arrFuncs.setitem = OBJECT_SetItemFunc;
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    arrFuncs.copyswap = Common_copyswap<System.String>;
+                    arrFuncs.getitem = STRING_GetItemFunc;
+                    arrFuncs.setitem = STRING_SetItemFunc;
+                    break;
+
                 default:
                     arrFuncs.copyswap = NpyArray_CopySwapFunc;
                     arrFuncs.getitem = NpyArray_GetItemFunc;
@@ -452,6 +472,51 @@ namespace NumpyLib
                 return DifferentSizes_GetItemFunc(index, npa);
             }
         }
+        internal static object COMPLEX_GetItemFunc(npy_intp index, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.Complex[] dp = npa.data.datap as System.Numerics.Complex[];
+                long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
+                return dp[AdjustedIndex];
+            }
+
+            return null;
+        }
+        internal static object BIGINT_GetItemFunc(npy_intp index, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.BigInteger[] dp = npa.data.datap as System.Numerics.BigInteger[];
+                long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
+                return dp[AdjustedIndex];
+            }
+
+            return null;
+        }
+        internal static object OBJECT_GetItemFunc(npy_intp index, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                Object[] dp = npa.data.datap as Object[];
+                long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
+                return dp[AdjustedIndex];
+            }
+
+            return null;
+        }
+        internal static object STRING_GetItemFunc(npy_intp index, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                String[] dp = npa.data.datap as String[];
+                long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
+                return dp[AdjustedIndex];
+            }
+
+            return null;
+        }
+
         internal static object NpyArray_GetItemFunc(npy_intp index, NpyArray npa)
         {
             if (npa.ItemType == npa.data.type_num)
@@ -656,7 +721,59 @@ namespace NumpyLib
                 return DifferentSizes_SetItemFunc(index, value, npa);
             }
         }
-   
+
+        internal static int COMPLEX_SetItemFunc(npy_intp index, dynamic value, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.Complex[] dp = npa.data.datap as System.Numerics.Complex[];
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+                dp[AdjustedIndex] = (System.Numerics.Complex)value;
+                return 1;
+            }
+            return 0;
+        }
+
+        internal static int BIGINT_SetItemFunc(npy_intp index, dynamic value, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                System.Numerics.BigInteger[] dp = npa.data.datap as System.Numerics.BigInteger[];
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+                dp[AdjustedIndex] = (System.Numerics.BigInteger)value;
+                return 1;
+            }
+            return 0;
+        }
+
+
+        internal static int OBJECT_SetItemFunc(npy_intp index, dynamic value, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                Object[] dp = npa.data.datap as Object[];
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+                dp[AdjustedIndex] = (Object)value;
+                return 1;
+            }
+            return 0;
+        }
+
+
+        internal static int STRING_SetItemFunc(npy_intp index, dynamic value, NpyArray npa)
+        {
+            if (npa.ItemType == npa.data.type_num)
+            {
+                String[] dp = npa.data.datap as String[];
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+                dp[AdjustedIndex] = value != null ? value.ToString() : null;
+                return 1;
+            }
+            return 0;
+        }
+
+
+
 
         internal static int NpyArray_SetItemFunc(npy_intp index, object value, NpyArray npa)
         {
