@@ -304,24 +304,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void test_KEVIN()
-        {
-            Assert.Fail("make these function for every data type to ensure copies are made or not");
-            var TestData = new Int32[] { 0, 1, 2, 3 };
-
-            var kevin = np.array(TestData);
-            kevin[2] = 99;
-            Assert.AreEqual(TestData[2], 2);
-
-            kevin = np.array(TestData, copy: false);
-            kevin[2] = 99;
-            Assert.AreEqual(TestData[2], 99);
-
-            return;
-
-
-        }
+   
 
 
     }

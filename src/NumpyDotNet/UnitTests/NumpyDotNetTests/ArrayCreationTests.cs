@@ -2396,6 +2396,203 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ndarray_copy_parameter()
+        {
+            var BoolTestData = new bool[] { false, false, false, false };
+
+            var a = np.array(BoolTestData);
+            a[2] = true;
+            Assert.AreEqual(BoolTestData[2], false);
+
+            a = np.array(BoolTestData, copy: false);
+            a[2] = true;
+            Assert.AreEqual(BoolTestData[2], true);
+
+            ////////////////////////
+
+            var ByteTestData = new byte[] { 0, 1, 2, 3 };
+
+            a = np.array(ByteTestData);
+            a[2] = 10;
+            Assert.AreEqual(ByteTestData[2], 2);
+
+            a = np.array(ByteTestData, copy: false);
+            a[2] = 10;
+            Assert.AreEqual(ByteTestData[2], 10);
+
+            ////////////////////////
+
+            var SByteTestData = new sbyte[] { 0, 1, 2, 3 };
+
+            a = np.array(SByteTestData);
+            a[2] = 20;
+            Assert.AreEqual(SByteTestData[2], 2);
+
+            a = np.array(SByteTestData, copy: false);
+            a[2] = 20;
+            Assert.AreEqual(SByteTestData[2], 20);
+
+            ////////////////////////
+
+            var Int16TestData = new Int16[] { 0, 1, 2, 3 };
+
+            a = np.array(Int16TestData);
+            a[2] = 30;
+            Assert.AreEqual(Int16TestData[2], 2);
+
+            a = np.array(Int16TestData, copy: false);
+            a[2] = 30;
+            Assert.AreEqual(Int16TestData[2], 30);
+
+            ////////////////////////
+
+            var UInt16TestData = new UInt16[] { 0, 1, 2, 3 };
+
+            a = np.array(UInt16TestData);
+            a[2] = 40;
+            Assert.AreEqual(UInt16TestData[2], 2);
+
+            a = np.array(UInt16TestData, copy: false);
+            a[2] = 40;
+            Assert.AreEqual(UInt16TestData[2], 40);
+
+            ////////////////////////
+
+
+            var Int32TestData = new Int32[] { 0, 1, 2, 3 };
+
+            a = np.array(Int32TestData);
+            a[2] = 50;
+            Assert.AreEqual(Int32TestData[2], 2);
+
+            a = np.array(Int32TestData, copy: false);
+            a[2] = 50;
+            Assert.AreEqual(Int32TestData[2], 50);
+
+            ////////////////////////
+
+            var UInt32TestData = new UInt32[] { 0, 1, 2, 3 };
+
+            a = np.array(UInt32TestData);
+            a[2] = 60;
+            Assert.AreEqual(UInt32TestData[2], (UInt32)2);
+
+            a = np.array(UInt32TestData, copy: false);
+            a[2] = 60;
+            Assert.AreEqual(UInt32TestData[2], (UInt32)60);
+
+            ////////////////////////
+
+            var Int64TestData = new Int64[] { 0, 1, 2, 3 };
+
+            a = np.array(Int64TestData);
+            a[2] = 70;
+            Assert.AreEqual(Int64TestData[2], 2);
+
+            a = np.array(Int64TestData, copy: false);
+            a[2] = 70;
+            Assert.AreEqual(Int64TestData[2], 70);
+
+            ////////////////////////
+
+            var UInt64TestData = new UInt64[] { 0, 1, 2, 3 };
+
+            a = np.array(UInt64TestData);
+            a[2] = 80;
+            Assert.AreEqual(UInt64TestData[2], (UInt64)2);
+
+            a = np.array(UInt64TestData, copy: false);
+            a[2] = 80;
+            Assert.AreEqual(UInt64TestData[2], (UInt64)80);
+
+            ////////////////////////
+
+            var FloatTestData = new float[] { 0, 1, 2, 3 };
+
+            a = np.array(FloatTestData);
+            a[2] = 90;
+            Assert.AreEqual(FloatTestData[2], (float)2);
+
+            a = np.array(FloatTestData, copy: false);
+            a[2] = 90;
+            Assert.AreEqual(FloatTestData[2], (float)90);
+
+            ////////////////////////
+
+            var DoubleTestData = new double[] { 0, 1, 2, 3 };
+
+            a = np.array(DoubleTestData);
+            a[2] = 100;
+            Assert.AreEqual(DoubleTestData[2], (double)2);
+
+            a = np.array(DoubleTestData, copy: false);
+            a[2] = 100;
+            Assert.AreEqual(DoubleTestData[2], (double)100);
+
+            ////////////////////////
+
+            var DecimalTestData = new decimal[] { 0, 1, 2, 3 };
+
+            a = np.array(DecimalTestData);
+            a[2] = 100;
+            Assert.AreEqual(DecimalTestData[2], (decimal)2);
+
+            a = np.array(DecimalTestData, copy: false);
+            a[2] = 100;
+            Assert.AreEqual(DecimalTestData[2], (decimal)100);
+
+            ////////////////////////
+
+            var ComplexTestData = new System.Numerics.Complex[] { 0, 1, 2, 3 };
+
+            a = np.array(ComplexTestData);
+            a[2] = 110;
+            Assert.AreEqual(ComplexTestData[2], (System.Numerics.Complex)2);
+
+            a = np.array(ComplexTestData, copy: false);
+            a[2] = 110;
+            Assert.AreEqual(ComplexTestData[2], (System.Numerics.Complex)110);
+
+            ////////////////////////
+
+            var BigIntTestData = new System.Numerics.BigInteger[] { 0, 1, 2, 3 };
+
+            a = np.array(BigIntTestData);
+            a[2] = 120;
+            Assert.AreEqual(BigIntTestData[2], (System.Numerics.BigInteger)2);
+
+            a = np.array(BigIntTestData, copy: false);
+            a[2] = 120;
+            Assert.AreEqual(BigIntTestData[2], (System.Numerics.BigInteger)120);
+
+            ////////////////////////
+
+            var ObjectTestData = new System.Object[] { 0, 1, 2, 3 };
+
+            a = np.array(ObjectTestData);
+            a[2] = 130;
+            Assert.AreEqual(ObjectTestData[2], 2);
+
+            a = np.array(ObjectTestData, copy: false);
+            a[2] = 130;
+            Assert.AreEqual(ObjectTestData[2], 130);
+
+            ////////////////////////
+
+            var StringTestData = new String[] { "0", "1", "2", "3" };
+
+            a = np.array(StringTestData);
+            a[2] = "A";
+            Assert.AreEqual(StringTestData[2], "2");
+
+            a = np.array(StringTestData, copy: false);
+            a[2] = "A";
+            Assert.AreEqual(StringTestData[2], "A");
+
+        }
+
+
+        [TestMethod]
         public void test_fields_1()
         {
             var data = np.zeros(4);
