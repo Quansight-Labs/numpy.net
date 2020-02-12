@@ -55,14 +55,17 @@ Take note that if multiple threads are manipulating the same ndarray object, you
 * System.Decimal (exclusive feature!)
 * System.Numerics.Complex (exclusive feature!)
 * System.Numerics.BigInteger (exclusive feature!)
-* System.Object - A really cool feature! (exclusive feature!)
+* System.Object (exclusive feature!) (a really cool feature!)
+* System.String (exclusive feature!)
+* System.DateTime/System.Timespan (implemented via System.Object data type)
 
 ##### Future plans include support for:
 
-* additional performance tunings
-* System.String data type
-* DateTime/TimeDiff data types ??
-* User defined data types (System.Objects may make this unnecessary!)
+* additional performance tunings.  (we think we can be much faster)
+* random number functionality (np.random API)
+* np.pad ??
+* masked arrays??
+* 
 
 ## System.Objects - A really cool feature.
 
