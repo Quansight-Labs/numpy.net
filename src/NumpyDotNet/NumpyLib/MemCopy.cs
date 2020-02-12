@@ -96,7 +96,7 @@ namespace NumpyLib
             SrcOffset += Src.data_offset;
 
             MemCpyStats(Dest, DestOffset, Src, SrcOffset, totalBytesToCopy);
-             
+
 
             switch (Dest.type_num)
             {
@@ -631,6 +631,7 @@ namespace NumpyLib
         #endregion
 
         #region Common functions
+
         private static void CommonArrayCopy<T>(T[] destArray, npy_intp DestOffset, T[] sourceArray, npy_intp SrcOffset, long totalBytesToCopy, npy_intp DestOffsetAdjustment, npy_intp SrcOffsetAdjustment, npy_intp ItemSize)
         {
             for (npy_intp i = 0; i < DestOffsetAdjustment; i++)
@@ -1169,7 +1170,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -1348,7 +1356,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -1521,9 +1536,17 @@ namespace NumpyLib
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
 
 
+
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -1696,7 +1719,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -1871,7 +1901,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2046,7 +2083,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2232,7 +2276,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2417,7 +2468,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2603,7 +2661,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2775,7 +2840,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2800,7 +2872,14 @@ namespace NumpyLib
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                {
+                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                }
+                else
+                {
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+                }
             }
             else
             {
@@ -2880,7 +2959,14 @@ namespace NumpyLib
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
 
-            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            {
+                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+            }
+            else
+            {
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            }
 
             return true;
         }
@@ -2904,7 +2990,14 @@ namespace NumpyLib
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
 
-            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            {
+                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+            }
+            else
+            {
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            }
 
             return true;
         }
@@ -2928,7 +3021,14 @@ namespace NumpyLib
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
 
-            CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            {
+                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+            }
+            else
+            {
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
+            }
 
             return true;
         }
