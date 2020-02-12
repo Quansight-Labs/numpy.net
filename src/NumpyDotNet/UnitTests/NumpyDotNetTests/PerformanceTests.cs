@@ -15,7 +15,7 @@ namespace NumpyDotNetTests
     {
         [Ignore]
         [TestMethod]
-        public void test_ScalarOperationPerformance()
+        public void Performance_ScalarOperation()
         {
             int LoopCount = 200;
 
@@ -43,7 +43,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_ScalarOperationPerformance_NotContiguous()
+        public void Performance_ScalarOperation_NotContiguous()
         {
             int LoopCount = 200;
 
@@ -73,7 +73,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_ScalarOperationPerformance_InLine()
+        public void Performance_ScalarOperation_InLine()
         {
             int LoopCount = 200;
 
@@ -105,7 +105,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_ScalarOperationPerformance_InLine2()
+        public void Performance_ScalarOperation_InLine2()
         {
             int LoopCount = 200;
 
@@ -145,7 +145,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_MathOperation_Sin()
+        public void Performance_MathOperation_Sin()
         {
 
             var a = np.arange(0, 10000000, dtype: np.Float64);
@@ -164,7 +164,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_AddReduce_Performance()
+        public void Performance_AddReduce()
         {
 
             int LoopCount = 200;
@@ -191,7 +191,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_AddAccumulate_Performance()
+        public void Performance_AddAccumulate()
         {
 
             int LoopCount = 200;
@@ -214,7 +214,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_AddReduce_Performance_IDEAL()
+        public void Performance_AddReduce_IDEAL()
         {
 
             int LoopCount = 200;
@@ -259,7 +259,7 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
-        public void test_AddReduceAt_Performance()
+        public void Performance_AddReduceAt()
         {
 
             int LoopCount = 200;
@@ -282,7 +282,7 @@ namespace NumpyDotNetTests
         }
         [Ignore]
         [TestMethod]
-        public void test_AddOuter_Performance()
+        public void Performance_AddOuter()
         {
 
             int LoopCount = 200;
@@ -301,6 +301,25 @@ namespace NumpyDotNetTests
 
             Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
+
+        }
+
+        [TestMethod]
+        public void test_KEVIN()
+        {
+            Assert.Fail("make these function for every data type to ensure copies are made or not");
+            var TestData = new Int32[] { 0, 1, 2, 3 };
+
+            var kevin = np.array(TestData);
+            kevin[2] = 99;
+            Assert.AreEqual(TestData[2], 2);
+
+            kevin = np.array(TestData, copy: false);
+            kevin[2] = 99;
+            Assert.AreEqual(TestData[2], 99);
+
+            return;
+
 
         }
 
