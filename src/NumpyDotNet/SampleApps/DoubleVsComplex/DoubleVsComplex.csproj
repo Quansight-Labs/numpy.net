@@ -35,11 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NumpyDotNet, Version=0.9.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NumpyDotNet.0.9.14\lib\netstandard2.0\NumpyDotNet.dll</HintPath>
+    <Reference Include="NumpyDotNet, Version=0.9.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.21\lib\netstandard2.0\NumpyDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="NumpyLib, Version=0.9.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NumpyDotNet.0.9.14\lib\netstandard2.0\NumpyLib.dll</HintPath>
+    <Reference Include="NumpyLib, Version=0.9.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.21\lib\netstandard2.0\NumpyLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
