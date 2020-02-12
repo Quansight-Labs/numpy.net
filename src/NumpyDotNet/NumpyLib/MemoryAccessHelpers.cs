@@ -568,14 +568,6 @@ namespace NumpyLib
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
-            if (BitConverter.IsLittleEndian)
-            {
-                Console.WriteLine("");
-            }
-            else
-            {
-                Console.WriteLine("");
-            }
 
             if (USE_BITCONVERTER)
             {
