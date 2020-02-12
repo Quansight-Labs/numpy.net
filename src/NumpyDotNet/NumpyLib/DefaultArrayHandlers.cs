@@ -279,7 +279,7 @@ namespace NumpyLib
 
             var copy = new T[src.Length];
             Array.Copy(src, copy, src.Length);
-            return new VoidPtr(src, vp.type_num);
+            return new VoidPtr(copy, vp.type_num);
         }
 
         public virtual bool NonZero(VoidPtr vp, npy_intp index)
