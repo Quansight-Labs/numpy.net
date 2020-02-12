@@ -80,25 +80,138 @@ namespace NumpyLib
             return 1;
         }
 
-        private static npy_intp GetTypeSize(VoidPtr vp)
+        private static int GetTypeSize(VoidPtr vp)
         {
             return GetTypeSize(vp.type_num);
         }
 
-        private static npy_intp GetTypeSize(NPY_TYPES type_num)
+        private static int __ComplexSize = -1;
+        private static int __BigIntSize = -1;
+        private static int __ObjectSize = -1;
+        private static int __StringSize = -1;
+
+        private static int GetTypeSize(NPY_TYPES type_num)
         {
-            return numpyAPI.GetArrayHandler(type_num).ItemSize;
+            int ItemSize = 0;
+            switch (type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                {
+                    ItemSize = sizeof(bool);
+                    break;
+                }
+                case NPY_TYPES.NPY_BYTE:
+                {
+                    ItemSize = sizeof(sbyte);
+                    break;
+                }
+                case NPY_TYPES.NPY_UBYTE:
+                {
+                    ItemSize = sizeof(byte);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT16:
+                {
+                    ItemSize = sizeof(Int16);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT16:
+                {
+                    ItemSize = sizeof(UInt16);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT32:
+                {
+                    ItemSize = sizeof(Int32);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT32:
+                {
+                    ItemSize = sizeof(UInt32);
+                    break;
+                }
+                case NPY_TYPES.NPY_INT64:
+                {
+                    ItemSize = sizeof(Int64);
+                    break;
+                }
+                case NPY_TYPES.NPY_UINT64:
+                {
+                    ItemSize = sizeof(UInt64);
+                    break;
+                }
+                case NPY_TYPES.NPY_FLOAT:
+                {
+                    ItemSize = sizeof(float);
+                    break;
+                }
+                case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEXREAL:
+                case NPY_TYPES.NPY_COMPLEXIMAG:
+                {
+                    ItemSize = sizeof(double);
+                    break;
+                }
+                case NPY_TYPES.NPY_DECIMAL:
+                {
+                    ItemSize = sizeof(decimal);
+                    break;
+                }
+                case NPY_TYPES.NPY_COMPLEX:
+                {
+                    if (__ComplexSize < 0)
+                    {
+                        __ComplexSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
+                    }
+                    ItemSize = __ComplexSize;
+                    break;
+                }
+                case NPY_TYPES.NPY_BIGINT:
+                {
+                    if (__BigIntSize < 0)
+                    {
+                        __BigIntSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+                    }
+                    ItemSize = __BigIntSize;
+                    break;
+                }
+                case NPY_TYPES.NPY_OBJECT:
+                {
+                    if (__ObjectSize < 0)
+                    {
+                        __ObjectSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+                    }
+                    ItemSize = __ObjectSize;
+                    break;
+                }
+                case NPY_TYPES.NPY_STRING:
+                {
+                    if (__StringSize < 0)
+                    {
+                        __StringSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
+                    }
+                    ItemSize = __StringSize;
+                    break;
+                }
+
+
+            }
+
+            return ItemSize;
         }
 
 
         #region memmove
-        internal static int __ComplexSize = -1;
-        internal static int __BigIntSize = -1;
-        internal static int __ObjectSize = -1;
-        internal static int __StringSize = -1;
+ 
+
+        internal static void memmove(VoidPtr dest, VoidPtr src, long len)
+        {
+            memmove(dest, 0, src, 0, len);
+        }
 
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
+            #region special case data types
             if (dest.type_num == NPY_TYPES.NPY_DECIMAL)
             {
                 long ElementCount = len / sizeof(decimal);
@@ -111,14 +224,11 @@ namespace NumpyLib
             }
             else if (dest.type_num == NPY_TYPES.NPY_COMPLEX)
             {
-                if (__ComplexSize < 0)
-                {
-                    __ComplexSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
-                }
+                var _ComplexSize = GetTypeSize(dest.type_num);
 
-                long ElementCount = len / __ComplexSize;
-                long sOffset = (src.data_offset + src_offset) / __ComplexSize;
-                long dOffset = (dest.data_offset + dest_offset) / __ComplexSize;
+                long ElementCount = len / _ComplexSize;
+                long sOffset = (src.data_offset + src_offset) / _ComplexSize;
+                long dOffset = (dest.data_offset + dest_offset) / _ComplexSize;
 
                 var temp = new System.Numerics.Complex[ElementCount];
                 Array.Copy(src.datap as System.Numerics.Complex[], sOffset, temp, 0, ElementCount);
@@ -126,14 +236,11 @@ namespace NumpyLib
             }
             else if (dest.type_num == NPY_TYPES.NPY_BIGINT)
             {
-                if (__BigIntSize < 0)
-                {
-                    __BigIntSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
-                }
-
-                long ElementCount = len / __BigIntSize;
-                long sOffset = (src.data_offset + src_offset) / __BigIntSize;
-                long dOffset = (dest.data_offset + dest_offset) / __BigIntSize;
+                var _BigIntSize = GetTypeSize(dest.type_num);
+ 
+                long ElementCount = len / _BigIntSize;
+                long sOffset = (src.data_offset + src_offset) / _BigIntSize;
+                long dOffset = (dest.data_offset + dest_offset) / _BigIntSize;
 
                 var temp = new System.Numerics.BigInteger[ElementCount];
                 Array.Copy(src.datap as System.Numerics.BigInteger[], sOffset, temp, 0, ElementCount);
@@ -141,14 +248,11 @@ namespace NumpyLib
             }
             else if (dest.type_num == NPY_TYPES.NPY_OBJECT)
             {
-                if (__ObjectSize < 0)
-                {
-                    __ObjectSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
-                }
+                var _ObjectSize = GetTypeSize(dest.type_num);
 
-                long ElementCount = len / __ObjectSize;
-                long sOffset = (src.data_offset + src_offset) / __ObjectSize;
-                long dOffset = (dest.data_offset + dest_offset) / __ObjectSize;
+                long ElementCount = len / _ObjectSize;
+                long sOffset = (src.data_offset + src_offset) / _ObjectSize;
+                long dOffset = (dest.data_offset + dest_offset) / _ObjectSize;
 
                 var temp = new object[ElementCount];
                 Array.Copy(src.datap as object[], sOffset, temp, 0, ElementCount);
@@ -156,31 +260,171 @@ namespace NumpyLib
             }
             else if (dest.type_num == NPY_TYPES.NPY_STRING)
             {
-                if (__StringSize < 0)
-                {
-                    __StringSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
-                }
+                var _StringSize = GetTypeSize(dest.type_num);
 
-                long ElementCount = len / __StringSize;
-                long sOffset = (src.data_offset + src_offset) / __StringSize;
-                long dOffset = (dest.data_offset + dest_offset) / __StringSize;
+                long ElementCount = len / _StringSize;
+                long sOffset = (src.data_offset + src_offset) / _StringSize;
+                long dOffset = (dest.data_offset + dest_offset) / _StringSize;
 
                 var temp = new String[ElementCount];
                 Array.Copy(src.datap as String[], sOffset, temp, 0, ElementCount);
                 Array.Copy(temp, 0, dest.datap as String[], dOffset, ElementCount);
             }
+            #endregion
             else
             {
-                VoidPtr Temp = new VoidPtr(new byte[len]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
+                {
+                    #region perfectly aligned arrays of same type can be processed much faster this way.
+                    switch (src.type_num)
+                    {
+                        case NPY_TYPES.NPY_BOOL:
+                        {
+                            long ElementCount = len / sizeof(bool);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(bool);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(bool);
+
+                            var temp = new bool[ElementCount];
+                            Array.Copy(src.datap as bool[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as bool[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_BYTE:
+                        {
+                            long ElementCount = len / sizeof(sbyte);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(sbyte);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(sbyte);
+
+                            var temp = new sbyte[ElementCount];
+                            Array.Copy(src.datap as sbyte[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as sbyte[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_UBYTE:
+                        {
+                            long ElementCount = len / sizeof(byte);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(byte);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(byte);
+
+                            var temp = new byte[ElementCount];
+                            Array.Copy(src.datap as byte[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as byte[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_INT16:
+                        {
+                            long ElementCount = len / sizeof(Int16);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(Int16);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(Int16);
+
+                            var temp = new Int16[ElementCount];
+                            Array.Copy(src.datap as Int16[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as Int16[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_UINT16:
+                        {
+                            long ElementCount = len / sizeof(UInt16);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(UInt16);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(UInt16);
+
+                            var temp = new UInt16[ElementCount];
+                            Array.Copy(src.datap as UInt16[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as UInt16[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_INT32:
+                        {
+                            long ElementCount = len / sizeof(Int32);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(Int32);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(Int32);
+
+                            var temp = new Int32[ElementCount];
+                            Array.Copy(src.datap as Int32[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as Int32[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_UINT32:
+                        {
+                            long ElementCount = len / sizeof(UInt32);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(UInt32);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(UInt32);
+
+                            var temp = new UInt32[ElementCount];
+                            Array.Copy(src.datap as UInt32[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as UInt32[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_INT64:
+                        {
+                            long ElementCount = len / sizeof(Int64);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(Int64);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(Int64);
+
+                            var temp = new Int64[ElementCount];
+                            Array.Copy(src.datap as Int64[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as Int64[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_UINT64:
+                        {
+                            long ElementCount = len / sizeof(UInt64);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(UInt64);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(UInt64);
+
+                            var temp = new UInt64[ElementCount];
+                            Array.Copy(src.datap as UInt64[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as UInt64[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_FLOAT:
+                        {
+                            long ElementCount = len / sizeof(float);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(float);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(float);
+
+                            var temp = new float[ElementCount];
+                            Array.Copy(src.datap as float[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as float[], dOffset, ElementCount);
+                            break;
+                        }
+                        case NPY_TYPES.NPY_DOUBLE:
+                        {
+                            long ElementCount = len / sizeof(double);
+                            long sOffset = (src.data_offset + src_offset) / sizeof(double);
+                            long dOffset = (dest.data_offset + dest_offset) / sizeof(double);
+
+                            var temp = new double[ElementCount];
+                            Array.Copy(src.datap as double[], sOffset, temp, 0, ElementCount);
+                            Array.Copy(temp, 0, dest.datap as double[], dOffset, ElementCount);
+                            break;
+                        }
+
+                    }
+                    #endregion
+                }
+                else
+                {
+                    VoidPtr Temp = new VoidPtr(new byte[len]);
+                    MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                    MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                }
+    
+                return;
             }
 
         }
-        internal static void memmove(VoidPtr dest, VoidPtr src, long len)
+
+        private static bool IsElementAligned(VoidPtr src, long src_offset)
         {
-            memmove(dest, 0, src, 0, len);
+            long ItemSize = GetTypeSize(src.type_num);
+
+            if ((src_offset % ItemSize == 0) && (src.data_offset % ItemSize == 0))
+                return true;
+            return false;
         }
+
+
 
         #endregion
 
