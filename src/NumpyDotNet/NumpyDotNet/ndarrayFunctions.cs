@@ -125,18 +125,74 @@ namespace NumpyDotNet
 
         #region array
 
-        public static ndarray array<T>(T[] arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
+        public static ndarray array(bool[] arr)
         {
-            NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
+            return _array(arr, NPY_TYPES.NPY_BOOL);
+        }
+        public static ndarray array(byte[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_UBYTE);
+        }
+        public static ndarray array(sbyte[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_BYTE);
+        }
+        public static ndarray array(Int16[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_INT16);
+        }
+        public static ndarray array(UInt16[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_UINT16);
+        }
+        public static ndarray array(Int32[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_INT32);
+        }
+        public static ndarray array(UInt32[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_UINT32);
+        }
+        public static ndarray array(Int64[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_INT64);
+        }
+        public static ndarray array(UInt64[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_UINT64);
+        }
+        public static ndarray array(float[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_FLOAT);
+        }
+        public static ndarray array(double[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_DOUBLE);
+        }
+        public static ndarray array(decimal[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_DECIMAL);
+        }
+        public static ndarray array(System.Numerics.Complex[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_COMPLEX);
+        }
+        public static ndarray array(System.Numerics.BigInteger[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_BIGINT);
+        }
+        public static ndarray array(System.Object[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_OBJECT);
+        }
+        public static ndarray array(System.String[] arr)
+        {
+            return _array(arr, NPY_TYPES.NPY_STRING);
+        }
 
-            if (arrayType != NPY_TYPES.NPY_OBJECT && arrayType != NPY_TYPES.NPY_STRING)
-            {
-                if (Get_NPYType(arr) != arrayType)
-                {
-                    throw new Exception("Mismatch data types between input array and dtype");
-                }
-            }
-  
+        private static ndarray _array<T>(T[] arr, NPY_TYPES arrayType)
+        {
+            dtype dtype = null; bool copy = true; NPY_ORDER order = NPY_ORDER.NPY_ANYORDER; bool subok = false; int ndmin = 0;
 
             var arrayDescr = numpyAPI.NpyArray_DescrFromType(arrayType);
             if (arrayDescr == null)
@@ -158,10 +214,49 @@ namespace NumpyDotNet
             if (NpyArray != null)
             {
                 ndarray ndArray = new ndarray(NpyArray);
-                return array(ndArray, dtype, copy, order, subok, ndmin);
+                return array(ndArray, dtype, false, order, subok, ndmin);
             }
             return null;
         }
+
+        public static ndarray array<T>(T[] arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
+        {
+            NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
+
+            if (arrayType != NPY_TYPES.NPY_OBJECT && arrayType != NPY_TYPES.NPY_STRING)
+            {
+                if (Get_NPYType(arr) != arrayType)
+                {
+                    throw new Exception("Mismatch data types between input array and dtype");
+                }
+            }
+
+
+            var arrayDescr = numpyAPI.NpyArray_DescrFromType(arrayType);
+            if (arrayDescr == null)
+            {
+                return null;
+            }
+
+            VoidPtr data = GetDataPointer(arr, arrayType, copy);
+            NPYARRAYFLAGS flags = NPYARRAYFLAGS.NPY_DEFAULT;
+
+            bool ensureArray = true;
+            object subtype = null;
+            object interfacedata = null;
+
+            int nd = 1;
+            npy_intp[] dims = new npy_intp[] { arr.Length };
+
+            var NpyArray = numpyAPI.NpyArray_NewFromDescr(arrayDescr, nd, dims, null, data, flags, ensureArray, subtype, interfacedata);
+            if (NpyArray != null)
+            {
+                ndarray ndArray = new ndarray(NpyArray);
+                return array(ndArray, dtype, false, order, subok, ndmin);
+            }
+            return null;
+        }
+
         public static ndarray array(VoidPtr arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
         {
             switch (arr.type_num)
