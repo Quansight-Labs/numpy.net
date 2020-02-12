@@ -6,15 +6,15 @@
     <RootNamespace>NumpyDotNet</RootNamespace>
     <Authors>Kevin McKenna</Authors>
     <Company>Baseline Software Solutions</Company>
-    <Description>This library provides an API to the .NET implementation of NumPy.</Description>
+    <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2020, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.14</Version>
+    <Version>0.9.20</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>Adding support for System.Object data types (a really cool feature).  Huge performance improvements in calculation engine. Fully multithreaded capable with no GIL lock.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adding support for System.String as a native data type. Supporting DateTime/Timespan as Object data types. HUGE performance improvements in calculation engine and the overall system.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>NumpyDotNet.UnitTests</id>
-    <version>0.9.14</version>
+    <version>0.9.20</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/Quansight-Labs/numpy.net</projectUrl>
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This package provides the unit tests for the NumpyDotNet library.</description>
-    <releaseNotes>Adding support for System.Object data types (a really cool feature).  Huge performance improvements in calculation engine. Fully multithreaded capable with no GIL lock.</releaseNotes>
+    <description>This package provides the unit tests for the NumpyDotNet library. Multi-threaded, fast and accurate.</description>
+    <releaseNotes>Adding support for System.String as a native data type. Supporting DateTime/Timespan as Object data types. HUGE performance improvements in calculation engine and the overall system.</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
