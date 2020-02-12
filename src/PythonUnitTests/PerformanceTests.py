@@ -104,6 +104,23 @@ class PerformanceTests(unittest.TestCase):
         print("1000000 add calculations took %f milliseconds" %(diff))
 
 
+    def test_AddReduceAt_Performance(self):
+
+        LoopCount = 200;
+
+        a = np.arange(10000000, dtype=np.float64).reshape((40, -1));
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduceat(a, [10, 20, 30, 39])
+            print(b.shape)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
     def test_xxx(self):
 
         AASize = 16000000;
