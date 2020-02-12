@@ -121,6 +121,24 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_AddOuter_Performance(self):
+
+        LoopCount = 200;
+
+        a = np.arange(1000, dtype=np.float64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.outer(a,a)
+            print(b.shape)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
+
     def test_xxx(self):
 
         AASize = 16000000;

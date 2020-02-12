@@ -212,6 +212,7 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
         [TestMethod]
         public void test_AddReduce_Performance_IDEAL()
         {
@@ -256,7 +257,7 @@ namespace NumpyDotNetTests
 
         }
 
-
+        [Ignore]
         [TestMethod]
         public void test_AddReduceAt_Performance()
         {
@@ -271,6 +272,29 @@ namespace NumpyDotNetTests
             {
                 var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, a, new long[] { 10, 20, 30, 39 });
                 print(b.shape);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+        [Ignore]
+        [TestMethod]
+        public void test_AddOuter_Performance()
+        {
+
+            int LoopCount = 200;
+            var a = np.arange(0, 1000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+               var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, np.Float64, a, a);
+               // print(b.shape);
             }
 
             sw.Stop();
