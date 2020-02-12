@@ -2860,11 +2860,18 @@ namespace NumpyLib
             return true;
         }
 
+        private static int __ComplexSize = -1;
         private static bool MemCpyComplexToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             System.Numerics.Complex[] sourceArray = Src.datap as System.Numerics.Complex[];
             System.Numerics.Complex[] destArray = Dest.datap as System.Numerics.Complex[];
-            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
+
+            if (__ComplexSize < 0)
+            {
+                __ComplexSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
+            }
+
+            npy_intp ItemSize = __ComplexSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
@@ -2950,11 +2957,18 @@ namespace NumpyLib
              return true;
         }
 
+        private static int __BigIntSize = -1;
+
         private static bool MemCpyBigIntToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             System.Numerics.BigInteger[] sourceArray = Src.datap as System.Numerics.BigInteger[];
             System.Numerics.BigInteger[] destArray = Dest.datap as System.Numerics.BigInteger[];
-            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+
+            if (__BigIntSize < 0)
+            {
+                __BigIntSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+            }
+            npy_intp ItemSize = __BigIntSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
@@ -2975,6 +2989,7 @@ namespace NumpyLib
 
         #region Object specific
 
+        private static int __ObjectSize = -1;
         private static bool MemCpyObjectToObject(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             object[] sourceArray = Src.datap as object[];
@@ -2985,7 +3000,12 @@ namespace NumpyLib
             }
 
             object[] destArray = Dest.datap as object[];
-            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+
+            if (__ObjectSize < 0)
+            {
+                __ObjectSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+            }
+            npy_intp ItemSize = __ObjectSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
@@ -3006,6 +3026,7 @@ namespace NumpyLib
 
         #region String specific
 
+        private static int __StringSize = -1;
         private static bool MemCpyStringToString(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             string[] sourceArray = Src.datap as string[];
@@ -3016,7 +3037,12 @@ namespace NumpyLib
             }
 
             string[] destArray = Dest.datap as string[];
-            npy_intp ItemSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
+
+            if (__StringSize < 0)
+            {
+                __StringSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
+            }
+            npy_intp ItemSize = __StringSize;
 
             npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
             npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;

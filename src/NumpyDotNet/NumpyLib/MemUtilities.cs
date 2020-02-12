@@ -92,37 +92,82 @@ namespace NumpyLib
 
 
         #region memmove
+        internal static int __ComplexSize = -1;
+        internal static int __BigIntSize = -1;
+        internal static int __ObjectSize = -1;
+        internal static int __StringSize = -1;
+
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
             if (dest.type_num == NPY_TYPES.NPY_DECIMAL)
             {
-                VoidPtr Temp = new VoidPtr(new decimal[len/sizeof(decimal)]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                long ElementCount = len / sizeof(decimal);
+                long sOffset = (src.data_offset + src_offset) / sizeof(decimal);
+                long dOffset = (dest.data_offset+ dest_offset) / sizeof(decimal);
+
+                var temp = new decimal[ElementCount];
+                Array.Copy(src.datap as decimal[], sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, dest.datap as decimal[], dOffset, ElementCount);
             }
             else if (dest.type_num == NPY_TYPES.NPY_COMPLEX)
             {
-                VoidPtr Temp = new VoidPtr(new System.Numerics.Complex[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                if (__ComplexSize < 0)
+                {
+                    __ComplexSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
+                }
+
+                long ElementCount = len / __ComplexSize;
+                long sOffset = (src.data_offset + src_offset) / __ComplexSize;
+                long dOffset = (dest.data_offset + dest_offset) / __ComplexSize;
+
+                var temp = new System.Numerics.Complex[ElementCount];
+                Array.Copy(src.datap as System.Numerics.Complex[], sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, dest.datap as System.Numerics.Complex[], dOffset, ElementCount);
             }
             else if (dest.type_num == NPY_TYPES.NPY_BIGINT)
             {
-                VoidPtr Temp = new VoidPtr(new System.Numerics.BigInteger[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                if (__BigIntSize < 0)
+                {
+                    __BigIntSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+                }
+
+                long ElementCount = len / __BigIntSize;
+                long sOffset = (src.data_offset + src_offset) / __BigIntSize;
+                long dOffset = (dest.data_offset + dest_offset) / __BigIntSize;
+
+                var temp = new System.Numerics.BigInteger[ElementCount];
+                Array.Copy(src.datap as System.Numerics.BigInteger[], sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, dest.datap as System.Numerics.BigInteger[], dOffset, ElementCount);
             }
             else if (dest.type_num == NPY_TYPES.NPY_OBJECT)
             {
-                VoidPtr Temp = new VoidPtr(new object[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                if (__ObjectSize < 0)
+                {
+                    __ObjectSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+                }
+
+                long ElementCount = len / __ObjectSize;
+                long sOffset = (src.data_offset + src_offset) / __ObjectSize;
+                long dOffset = (dest.data_offset + dest_offset) / __ObjectSize;
+
+                var temp = new object[ElementCount];
+                Array.Copy(src.datap as object[], sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, dest.datap as object[], dOffset, ElementCount);
             }
             else if (dest.type_num == NPY_TYPES.NPY_STRING)
             {
-                VoidPtr Temp = new VoidPtr(new string[len / DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+                if (__StringSize < 0)
+                {
+                    __StringSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
+                }
+
+                long ElementCount = len / __StringSize;
+                long sOffset = (src.data_offset + src_offset) / __StringSize;
+                long dOffset = (dest.data_offset + dest_offset) / __StringSize;
+
+                var temp = new String[ElementCount];
+                Array.Copy(src.datap as String[], sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, dest.datap as String[], dOffset, ElementCount);
             }
             else
             {
