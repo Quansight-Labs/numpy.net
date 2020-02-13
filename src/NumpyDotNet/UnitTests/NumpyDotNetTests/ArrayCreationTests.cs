@@ -332,6 +332,87 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_reshape_maxnd_1()
+        {
+            var a = np.arange(2, 11).reshape(new shape(3, 3));
+            a = a.reshape(new long[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            Assert.AreEqual(32, a.ndim);
+            var dimsarray = np.array(a.dims);
+            var stridearray = np.array(a.strides);
+            AssertArray(dimsarray, new npy_intp[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            AssertArray(stridearray, new npy_intp[] { 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
+
+            a = a.reshape(new int[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            Assert.AreEqual(32, a.ndim);
+            dimsarray = np.array(a.dims);
+            stridearray = np.array(a.strides);
+            AssertArray(dimsarray, new npy_intp[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            AssertArray(stridearray, new npy_intp[] { 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
+
+            try
+            {
+                a = a.reshape(new long[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+                print(ex.Message);
+            }
+
+            try
+            {
+                a = a.reshape(new int[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+                print(ex.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void test_reshape_maxnd_2()
+        {
+            var a = np.arange(2, 11).reshape(new shape(3, 3));
+            a = a.reshape((long)3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
+            Assert.AreEqual(32, a.ndim);
+            var dimsarray = np.array(a.dims);
+            var stridearray = np.array(a.strides);
+            AssertArray(dimsarray, new npy_intp[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            AssertArray(stridearray, new npy_intp[] { 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
+
+            a = a.reshape(3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+            Assert.AreEqual(32, a.ndim);
+            dimsarray = np.array(a.dims);
+            stridearray = np.array(a.strides);
+            AssertArray(dimsarray, new npy_intp[] { 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+            AssertArray(stridearray, new npy_intp[] { 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
+
+            try
+            {
+                a = a.reshape( (long)3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+                print(ex.Message);
+            }
+
+            try
+            {
+                a = a.reshape( 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 );
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch (Exception ex)
+            {
+                print(ex.Message);
+            }
+
+        }
+
+
+        [TestMethod]
         public void test_arange_reshape_53()
         {
             var a = np.arange(0, 15).reshape(new shape(5, 3));
