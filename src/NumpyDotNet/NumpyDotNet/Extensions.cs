@@ -48,6 +48,27 @@ namespace NumpyDotNet
 {
     public static class NumpyExtensions
     {
+        public static ndarray reshape(this ndarray a, params int[] newshape)
+        {
+            if (newshape.Length == 1)
+            {
+                return np.reshape(a, new shape(newshape[0]), NPY_ORDER.NPY_ANYORDER);
+            }
+            if (newshape.Length == 2)
+            {
+                return np.reshape(a, new shape(newshape[0], newshape[1]), NPY_ORDER.NPY_ANYORDER);
+            }
+            if (newshape.Length == 3)
+            {
+                return np.reshape(a, new shape(newshape[0], newshape[1], newshape[2]), NPY_ORDER.NPY_ANYORDER);
+            }
+            if (newshape.Length == 4)
+            {
+                return np.reshape(a, new shape(newshape[0], newshape[1], newshape[2], newshape[3]), NPY_ORDER.NPY_ANYORDER);
+            }
+            throw new Exception("4 dims is the max we support using this method.  Try specifing the dimensions using tuples");
+
+        }
         public static ndarray reshape(this ndarray a, shape newshape, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             return np.reshape(a, newshape, order);
