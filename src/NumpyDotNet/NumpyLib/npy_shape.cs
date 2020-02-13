@@ -191,6 +191,13 @@ namespace NumpyLib
             npy_intp []newstrides = new npy_intp[npy_defs.NPY_MAXDIMS];
             NPYARRAYFLAGS flags;
 
+            if (newdims.len > npy_defs.NPY_MAXDIMS)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError,
+                     string.Format("Maximum number of dimensions is {0}", npy_defs.NPY_MAXDIMS.ToString()));
+                return null;
+            }
+
             if (fortran == NPY_ORDER.NPY_ANYORDER)
             {
                 fortran = NpyArray_ISFORTRAN(self) ? NPY_ORDER.NPY_FORTRANORDER : NPY_ORDER.NPY_ANYORDER;
