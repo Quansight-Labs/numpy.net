@@ -1243,12 +1243,10 @@ namespace NumpyLib
 
         private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
-            var a1 = destArray.ItemType == a.ItemType ? a : NpyArray_CastToType(a, NpyArray_DescrFromType(destArray.ItemType), false);
-            var b1 = destArray.ItemType == b.ItemType ? b : NpyArray_CastToType(b, NpyArray_DescrFromType(destArray.ItemType), false);
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
             {
-                PerformOuterOpArrayIterDouble(a1, b1, destArray, operations, operation);
+                PerformOuterOpArrayIterDouble(a, b, destArray, operations, operation);
                 return;
             }
   
@@ -1324,14 +1322,14 @@ namespace NumpyLib
             double[] aValues = new double[aSize];
             for (long i = 0; i < aSize; i++)
             {
-                aValues[i] = (double)operations.destGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                aValues[i] = Convert.ToDouble(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
                 NpyArray_ITER_NEXT(aIter);
             }
 
             double[] bValues = new double[bSize];
             for (long i = 0; i < bSize; i++)
             {
-                bValues[i] = (double)operations.destGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                bValues[i] =  Convert.ToDouble(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
                 NpyArray_ITER_NEXT(bIter);
             }
 
