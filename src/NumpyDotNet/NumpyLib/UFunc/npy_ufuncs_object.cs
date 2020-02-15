@@ -984,6 +984,38 @@ namespace NumpyLib
             return ret;
         }
 
+
+        private static void NpyUFunc_PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, npy_intp src_offset, npy_intp dest_offset, NumericOperations operation)
+        {
+            if (dimIdx == destArray.nd)
+            {
+                var srcValue = operation.srcGetItem(src_offset, srcArray);
+
+                cumsum = operation.operation(srcValue, operation.ConvertOperand(srcValue, cumsum));
+
+                try
+                {
+                    operation.destSetItem(dest_offset, cumsum, destArray);
+                }
+                catch
+                {
+                    operation.destSetItem(dest_offset, 0, destArray);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dimensions[dimIdx]; i++)
+                {
+                    npy_intp lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
+                    npy_intp ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
+
+                    NpyUFunc_PerformUFunc(srcArray, destArray, ref cumsum, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
+                }
+            }
+        }
+
+
+
         /*
          * We have two basic kinds of loops. One is used when arr is not-swapped
          * and aligned and output type is the same as input type.  The other uses
