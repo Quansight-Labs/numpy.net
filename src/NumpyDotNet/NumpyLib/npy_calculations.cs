@@ -1241,14 +1241,14 @@ namespace NumpyLib
 
         #endregion
 
-        private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations)
+        private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
             var a1 = destArray.ItemType == a.ItemType ? a : NpyArray_CastToType(a, NpyArray_DescrFromType(destArray.ItemType), false);
             var b1 = destArray.ItemType == b.ItemType ? b : NpyArray_CastToType(b, NpyArray_DescrFromType(destArray.ItemType), false);
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
             {
-                PerformOuterOpArrayIterDouble(a1, b1, destArray, operations);
+                PerformOuterOpArrayIterDouble(a1, b1, destArray, operations, operation);
                 return;
             }
   
@@ -1305,7 +1305,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations)
+        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -1341,19 +1341,46 @@ namespace NumpyLib
     
             if (DestIter.contiguous)
             {
- 
-                long destIndex = destArray.data.data_offset / destArray.ItemSize;
 
-                for (long i = 0; i < aSize; i++)
+                Parallel.For(0, aSize, i =>
                 {
                     var aValue = aValues[i];
+
+                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
 
                     for (long j = 0; j < bSize; j++)
                     {
                         var bValue = bValues[j];
 
-                        //double destValue = op(aValue, bValue);
-                        double destValue = UFuncAdd(aValue, bValue);
+                        double destValue;
+                        switch (operation)
+                        {
+                            case NpyArray_Ops.npy_op_add:
+                                destValue = UFuncAdd(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_subtract:
+                                destValue = UFuncSubtract(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_multiply:
+                                destValue = UFuncMultiply(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_divide:
+                                destValue = UFuncDivide(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_fmod:
+                                destValue = UFuncFMod(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_power:
+                                destValue = UFuncPower(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_remainder:
+                                destValue = UFuncRemainder(aValue, bValue);
+                                break;
+                            default:
+                                destValue = 0;
+                                break;
+
+                        }
 
                         try
                         {
@@ -1366,7 +1393,7 @@ namespace NumpyLib
                         destIndex++;
                     }
 
-                }
+                });
             }
             else
             {
@@ -1405,6 +1432,38 @@ namespace NumpyLib
         static double UFuncAdd(double aValue, double bValue)
         {
             return aValue + bValue;
+        }
+
+        static double UFuncSubtract(double aValue, double bValue)
+        {
+            return aValue - bValue;
+        }
+        static double UFuncMultiply(double aValue, double bValue)
+        {
+            return aValue * bValue;
+        }
+
+        static double UFuncDivide(double aValue, double bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue / bValue;
+        }
+        static double UFuncRemainder(double aValue, double bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue % bValue;
+        }
+        static double UFuncFMod(double aValue, double bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue % bValue;
+        }
+        static double UFuncPower(double aValue, double bValue)
+        {
+            return Math.Pow(aValue, bValue);
         }
 
 
@@ -1494,7 +1553,7 @@ namespace NumpyLib
 
             NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
   
-            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations);
+            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations, operationType);
             return destArray;
         }
 
