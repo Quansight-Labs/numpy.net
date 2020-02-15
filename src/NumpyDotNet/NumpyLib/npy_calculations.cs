@@ -1305,7 +1305,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
+        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -1352,37 +1352,8 @@ namespace NumpyLib
                     {
                         var bValue = bValues[j];
 
-                        double destValue;
-                        switch (operation)
-                        {
-                            case NpyArray_Ops.npy_op_add:
-                                destValue = UFuncAdd(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_subtract:
-                                destValue = UFuncSubtract(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_multiply:
-                                destValue = UFuncMultiply(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_divide:
-                                destValue = UFuncDivide(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_remainder:
-                                destValue = UFuncRemainder(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_fmod:
-                                destValue = UFuncFMod(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_power:
-                                destValue = UFuncPower(aValue, bValue);
-                                break;
-  
-                            default:
-                                destValue = 0;
-                                break;
-
-                        }
-
+                        double destValue = PerformUFuncOperation(op, aValue, bValue);
+    
                         try
                         {
                             dp[destIndex] = destValue;
@@ -1406,37 +1377,8 @@ namespace NumpyLib
                     {
                         var bValue = bValues[j];
 
-                        double destValue;
-                        switch (operation)
-                        {
-                            case NpyArray_Ops.npy_op_add:
-                                destValue = UFuncAdd(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_subtract:
-                                destValue = UFuncSubtract(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_multiply:
-                                destValue = UFuncMultiply(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_divide:
-                                destValue = UFuncDivide(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_remainder:
-                                destValue = UFuncRemainder(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_fmod:
-                                destValue = UFuncFMod(aValue, bValue);
-                                break;
-                            case NpyArray_Ops.npy_op_power:
-                                destValue = UFuncPower(aValue, bValue);
-                                break;
-
-                            default:
-                                destValue = 0;
-                                break;
-
-                        }
-
+                        double destValue = PerformUFuncOperation(op, aValue, bValue);
+   
                         try
                         {
                             long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
@@ -1454,6 +1396,42 @@ namespace NumpyLib
             }
 
    
+        }
+
+        static double PerformUFuncOperation(NpyArray_Ops op, double aValue, double bValue)
+        {
+            double destValue;
+            switch (op)
+            {
+                case NpyArray_Ops.npy_op_add:
+                    destValue = UFuncAdd(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_subtract:
+                    destValue = UFuncSubtract(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_multiply:
+                    destValue = UFuncMultiply(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_divide:
+                    destValue = UFuncDivide(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_remainder:
+                    destValue = UFuncRemainder(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_fmod:
+                    destValue = UFuncFMod(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_power:
+                    destValue = UFuncPower(aValue, bValue);
+                    break;
+
+                default:
+                    destValue = 0;
+                    break;
+
+            }
+
+            return destValue;
         }
 
 
