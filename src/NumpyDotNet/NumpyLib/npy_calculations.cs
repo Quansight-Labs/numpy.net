@@ -1243,6 +1243,16 @@ namespace NumpyLib
 
         private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations)
         {
+            var a1 = destArray.ItemType == a.ItemType ? a : NpyArray_CastToType(a, NpyArray_DescrFromType(destArray.ItemType), false);
+            var b1 = destArray.ItemType == b.ItemType ? b : NpyArray_CastToType(b, NpyArray_DescrFromType(destArray.ItemType), false);
+
+            if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
+            {
+                PerformOuterOpArrayIterDouble(a1, b1, destArray, operations);
+                return;
+            }
+  
+
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
             var bSize = NpyArray_Size(b);
@@ -1265,7 +1275,7 @@ namespace NumpyLib
             object[] bValues = new object[bSize];
             for (long i = 0; i < bSize; i++)
             {
-                bValues[i] = operations.srcGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                bValues[i] = operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
                 NpyArray_ITER_NEXT(bIter);
             }
 
@@ -1293,6 +1303,108 @@ namespace NumpyLib
                 }
 
             }
+        }
+
+        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations)
+        {
+            var destSize = NpyArray_Size(destArray);
+            var aSize = NpyArray_Size(a);
+            var bSize = NpyArray_Size(b);
+
+            if (bSize == 0 || aSize == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
+
+            var aIter = NpyArray_IterNew(a);
+            var bIter = NpyArray_IterNew(b);
+            var DestIter = NpyArray_IterNew(destArray);
+
+            double[] aValues = new double[aSize];
+            for (long i = 0; i < aSize; i++)
+            {
+                aValues[i] = (double)operations.destGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                NpyArray_ITER_NEXT(aIter);
+            }
+
+            double[] bValues = new double[bSize];
+            for (long i = 0; i < bSize; i++)
+            {
+                bValues[i] = (double)operations.destGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                NpyArray_ITER_NEXT(bIter);
+            }
+
+
+            double[]dp = destArray.data.datap as double[];
+
+    
+            if (DestIter.contiguous)
+            {
+ 
+                long destIndex = destArray.data.data_offset / destArray.ItemSize;
+
+                for (long i = 0; i < aSize; i++)
+                {
+                    var aValue = aValues[i];
+
+                    for (long j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
+
+                        //double destValue = op(aValue, bValue);
+                        double destValue = UFuncAdd(aValue, bValue);
+
+                        try
+                        {
+                            dp[destIndex] = destValue;
+                        }
+                        catch
+                        {
+                            operations.destSetItem(destIndex, 0, destArray);
+                        }
+                        destIndex++;
+                    }
+
+                }
+            }
+            else
+            {
+                for (long i = 0; i < aSize; i++)
+                {
+                    var aValue = aValues[i];
+
+                    for (long j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
+
+                        //double destValue = op(aValue, bValue);
+                        double destValue = UFuncAdd(aValue, bValue);
+
+                        try
+                        {
+                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                            dp[AdjustedIndex] = destValue;
+                        }
+                        catch
+                        {
+                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                            operations.destSetItem(AdjustedIndex, 0, destArray);
+                        }
+                        NpyArray_ITER_NEXT(DestIter);
+                    }
+
+                }
+            }
+
+   
+        }
+
+        delegate double UFuncOperation(double a, double b);
+
+        static double UFuncAdd(double aValue, double bValue)
+        {
+            return aValue + bValue;
         }
 
 
