@@ -1241,6 +1241,9 @@ namespace NumpyLib
 
         #endregion
 
+        private const int UFUNC_PARALLEL_DEST_MINSIZE = 1000;
+        private const int UFUNC_PARALLEL_DEST_ASIZE = 100;
+
         private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
 
@@ -1249,7 +1252,12 @@ namespace NumpyLib
                 PerformOuterOpArrayIterDouble(a, b, destArray, operations, operation);
                 return;
             }
-  
+            if (destArray.ItemType == NPY_TYPES.NPY_INT32)
+            {
+                PerformOuterOpArrayIterInt32(a, b, destArray, operations, operation);
+                return;
+            }
+
 
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -1303,6 +1311,7 @@ namespace NumpyLib
             }
         }
 
+        #region UFUNC DOUBLE
         private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
         {
             var destSize = NpyArray_Size(destArray);
@@ -1336,8 +1345,8 @@ namespace NumpyLib
 
             double[]dp = destArray.data.datap as double[];
 
-    
-            if (DestIter.contiguous)
+
+            if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
             {
 
                 Parallel.For(0, aSize, i =>
@@ -1469,7 +1478,176 @@ namespace NumpyLib
         {
             return Math.Pow(aValue, bValue);
         }
+        #endregion
 
+        #region UFUNC INT32
+        private static void PerformOuterOpArrayIterInt32(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
+        {
+            var destSize = NpyArray_Size(destArray);
+            var aSize = NpyArray_Size(a);
+            var bSize = NpyArray_Size(b);
+
+            if (bSize == 0 || aSize == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
+
+            var aIter = NpyArray_IterNew(a);
+            var bIter = NpyArray_IterNew(b);
+            var DestIter = NpyArray_IterNew(destArray);
+
+            Int32[] aValues = new Int32[aSize];
+            for (long i = 0; i < aSize; i++)
+            {
+                aValues[i] = Convert.ToInt32(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
+                NpyArray_ITER_NEXT(aIter);
+            }
+
+            Int32[] bValues = new Int32[bSize];
+            for (long i = 0; i < bSize; i++)
+            {
+                bValues[i] = Convert.ToInt32(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
+                NpyArray_ITER_NEXT(bIter);
+            }
+
+
+            Int32[] dp = destArray.data.datap as Int32[];
+
+
+            if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
+            {
+
+                Parallel.For(0, aSize, i =>
+                {
+                    var aValue = aValues[i];
+
+                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+
+                    for (long j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
+
+                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                        try
+                        {
+                            dp[destIndex] = destValue;
+                        }
+                        catch
+                        {
+                            operations.destSetItem(destIndex, 0, destArray);
+                        }
+                        destIndex++;
+                    }
+
+                });
+            }
+            else
+            {
+                for (long i = 0; i < aSize; i++)
+                {
+                    var aValue = aValues[i];
+
+                    for (long j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
+
+                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                        try
+                        {
+                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                            dp[AdjustedIndex] = destValue;
+                        }
+                        catch
+                        {
+                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                            operations.destSetItem(AdjustedIndex, 0, destArray);
+                        }
+                        NpyArray_ITER_NEXT(DestIter);
+                    }
+
+                }
+            }
+
+
+        }
+
+        static Int32 PerformUFuncOperation(NpyArray_Ops op, Int32 aValue, Int32 bValue)
+        {
+            Int32 destValue;
+            switch (op)
+            {
+                case NpyArray_Ops.npy_op_add:
+                    destValue = UFuncAdd(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_subtract:
+                    destValue = UFuncSubtract(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_multiply:
+                    destValue = UFuncMultiply(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_divide:
+                    destValue = UFuncDivide(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_remainder:
+                    destValue = UFuncRemainder(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_fmod:
+                    destValue = UFuncFMod(aValue, bValue);
+                    break;
+                case NpyArray_Ops.npy_op_power:
+                    destValue = UFuncPower(aValue, bValue);
+                    break;
+
+                default:
+                    destValue = 0;
+                    break;
+
+            }
+
+            return destValue;
+        }
+
+
+        static Int32 UFuncAdd(Int32 aValue, Int32 bValue)
+        {
+            return aValue + bValue;
+        }
+
+        static Int32 UFuncSubtract(Int32 aValue, Int32 bValue)
+        {
+            return aValue - bValue;
+        }
+        static Int32 UFuncMultiply(Int32 aValue, Int32 bValue)
+        {
+            return aValue * bValue;
+        }
+
+        static Int32 UFuncDivide(Int32 aValue, Int32 bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue / bValue;
+        }
+        static Int32 UFuncRemainder(Int32 aValue, Int32 bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue % bValue;
+        }
+        static Int32 UFuncFMod(Int32 aValue, Int32 bValue)
+        {
+            if (bValue == 0)
+                return 0;
+            return aValue % bValue;
+        }
+        static Int32 UFuncPower(Int32 aValue, Int32 bValue)
+        {
+            return Convert.ToInt32(Math.Pow((double)aValue, (double)bValue));
+        }
+        #endregion
 
         private static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperations operations)
         {

@@ -280,7 +280,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_AddOuter()
         {
@@ -305,6 +305,7 @@ namespace NumpyDotNetTests
 
         }
 
+        //[Ignore]
         [TestMethod]
         public void Performance_AddOuter_NotSameType()
         {
