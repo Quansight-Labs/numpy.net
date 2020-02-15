@@ -50,6 +50,15 @@ namespace NumpyLib
 
         private static void NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
+            var destSize = NpyArray_Size(destArray);
+            var aSize = NpyArray_Size(a);
+            var bSize = NpyArray_Size(b);
+
+            if (bSize == 0 || aSize == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
             {
@@ -65,15 +74,7 @@ namespace NumpyLib
             }
 
 
-            var destSize = NpyArray_Size(destArray);
-            var aSize = NpyArray_Size(a);
-            var bSize = NpyArray_Size(b);
-
-            if (bSize == 0 || aSize == 0)
-            {
-                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
-            }
+  
 
             var aIter = NpyArray_IterNew(a);
             object[] aValues = new object[aSize];
