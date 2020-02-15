@@ -543,7 +543,7 @@ namespace NumpyLib
 
         internal static long AdjustedIndex_SetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
-            long AdjustedIndex = AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
+            long AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
 
             if (AdjustedIndex < 0)
             {
