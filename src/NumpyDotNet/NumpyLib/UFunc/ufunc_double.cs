@@ -168,6 +168,7 @@ namespace NumpyLib
                     destValue = UFuncPower(aValue, bValue);
                     break;
 
+                     todo: add support for the rest of the operations
                 default:
                     destValue = 0;
                     break;
