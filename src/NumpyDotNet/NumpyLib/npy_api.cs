@@ -233,8 +233,6 @@ namespace NumpyLib
      */
     public class NpyArrayMultiIterObject : NpyObject_HEAD
     {
-        /* DANGER - this must be in sync with NpyUFuncLoopObject in npy_ufunc_object.h */
-
         public int numiter;                                                                    /* number of iters */
         public npy_intp size;                                                                  /* broadcasted size */
         public npy_intp index;                                                                 /* current index */
