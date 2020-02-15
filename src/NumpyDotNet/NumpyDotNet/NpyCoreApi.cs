@@ -479,7 +479,7 @@ namespace NumpyDotNet {
 
                 var b = np.asanyarray(operand);
 
-                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
+                return new ndarray(numpyAPI.NpyArray_PerformNumericOperation(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
             }
 
         }
@@ -494,7 +494,7 @@ namespace NumpyDotNet {
                 if (UseSrcAsDest)
                     @out = a;
 
-                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
+                return new ndarray(numpyAPI.NpyArray_PerformNumericOperation(ops, a.Array, b != null ? b.Array : null, @out != null ? @out.Array : null, null));
             }
 
         }
@@ -505,7 +505,7 @@ namespace NumpyDotNet {
             lock (GlobalIterpLock)
 #endif
             {
-                return new ndarray(numpyAPI.NpyArray_PerformUFUNC(ops, x1.Array, x2 != null ? x2.Array : null, @out != null ? @out.Array : null, where != null ? where.Array : null));
+                return new ndarray(numpyAPI.NpyArray_PerformNumericOperation(ops, x1.Array, x2 != null ? x2.Array : null, @out != null ? @out.Array : null, where != null ? where.Array : null));
             }
 
         }

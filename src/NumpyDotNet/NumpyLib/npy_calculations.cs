@@ -258,7 +258,7 @@ namespace NumpyLib
 
 
 
-        internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+        internal static NpyArray NpyArray_PerformNumericOperation(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
             if (outArray == null)
             {

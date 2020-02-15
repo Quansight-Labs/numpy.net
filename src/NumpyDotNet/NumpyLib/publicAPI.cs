@@ -279,9 +279,9 @@ namespace NumpyLib
         #region npy_calculation
 
  
-        public static NpyArray NpyArray_PerformUFUNC(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+        public static NpyArray NpyArray_PerformNumericOperation(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
-            return numpyinternal.NpyArray_PerformUFUNCOperation(operationType, x1Array, x2Array, outArray, whereFilter);
+            return numpyinternal.NpyArray_PerformNumericOperation(operationType, x1Array, x2Array, outArray, whereFilter);
         }
 
         public static NpyArray NpyArray_PerformOuterOp(NpyArray a, NpyArray b, NpyArray dest, NpyArray_Ops operationType)
