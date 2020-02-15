@@ -1329,7 +1329,7 @@ namespace NumpyLib
 
             NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
   
-            PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations, operationType);
+            NpyUFunc_PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations, operationType);
             return destArray;
         }
 

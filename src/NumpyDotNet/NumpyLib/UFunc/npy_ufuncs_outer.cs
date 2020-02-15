@@ -48,7 +48,7 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
 
-        private static void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
+        private static void NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
         {
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
