@@ -250,15 +250,15 @@ namespace NumpyLib
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
                 }
-  
+
                 default:
                     return null;
             }
         }
 
-  
 
-        internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType,  NpyArray x1Array,  NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+
+        internal static NpyArray NpyArray_PerformUFUNCOperation(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
             if (outArray == null)
             {
@@ -283,92 +283,92 @@ namespace NumpyLib
                 {
                     if (NpyArray_ISFLOAT(operandArray))
                     {
-                         newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(NpyArray_Ops.npy_op_special_operand_is_float));
+                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(NpyArray_Ops.npy_op_special_operand_is_float));
                     }
                 }
             }
-           
+
 
             switch (operationType)
             {
                 case NpyArray_Ops.npy_op_add:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_subtract:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_multiply:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_divide:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_remainder:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_fmod:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_power:
-                    {
-                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
-                        break;
-                    }
+                {
+                    newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
+                    break;
+                }
                 case NpyArray_Ops.npy_op_square:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_reciprocal:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_ones_like:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_sqrt:
-                    {
-                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
-                        break;
-                    }
+                {
+                    newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
+                    break;
+                }
                 case NpyArray_Ops.npy_op_negative:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_absolute:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_invert:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_left_shift:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_right_shift:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_bitwise_and:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_bitwise_xor:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_bitwise_or:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_less:
                 case NpyArray_Ops.npy_op_less_equal:
                 case NpyArray_Ops.npy_op_equal:
@@ -376,56 +376,56 @@ namespace NumpyLib
                 case NpyArray_Ops.npy_op_greater:
                 case NpyArray_Ops.npy_op_greater_equal:
                 case NpyArray_Ops.npy_op_isnan:
-                    {
-                        newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
-                        break;
-                    }
-  
+                {
+                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
+                    break;
+                }
+
                 case NpyArray_Ops.npy_op_floor_divide:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_true_divide:
-                    {
-                        newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
-                        break;
-                    }
+                {
+                    newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
+                    break;
+                }
                 case NpyArray_Ops.npy_op_logical_or:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_logical_and:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_floor:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_ceil:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_maximum:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_minimum:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_rint:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 case NpyArray_Ops.npy_op_conjugate:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
             }
 
             var broadcastDims = GenerateBroadcastedDims(srcArray, operandArray);
-  
+
             if (operandArray == null || NpyArray_Size(srcArray) >= NpyArray_Size(operandArray))
             {
                 if (broadcastDims != null)
@@ -544,7 +544,7 @@ namespace NumpyLib
             return NpyArray_NumericOpUpscaleSourceArray(srcArray, operandArray.dimensions, operandArray.nd);
         }
 
-        internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, npy_intp [] newdims, int nd)
+        internal static NpyArray NpyArray_NumericOpUpscaleSourceArray(NpyArray srcArray, npy_intp[] newdims, int nd)
         {
             if (srcArray != null && newdims != null)
             {
@@ -581,8 +581,8 @@ namespace NumpyLib
         }
 
         #region scalar numeric functions
- 
- 
+
+
 
         #region PerformNumericOpScalarIter
         private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations)
@@ -612,7 +612,7 @@ namespace NumpyLib
             }
 
             long taskSize = NUMERICOPS_TASKSIZE;
-             
+
             for (long i = 0; i < destSize;)
             {
                 long offset_cnt = Math.Min(taskSize, destSize - i);
@@ -661,7 +661,7 @@ namespace NumpyLib
 
             if (taskSize < NUMERICOPS_SMALL_TASKSIZE)
             {
- 
+
 
                 try
                 {
@@ -737,7 +737,7 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_BOOL:
                     PerformNumericOpScalarIterContiguousSD_T1<bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
-                   break;
+                    break;
                 case NPY_TYPES.NPY_BYTE:
                     PerformNumericOpScalarIterContiguousSD_T1<sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
@@ -847,49 +847,49 @@ namespace NumpyLib
             switch (destArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S,object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_STRING:
                     PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
@@ -954,7 +954,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguous_SD_T2<S,D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        private static void PerformNumericOpScalarIterContiguous_SD_T2<S, D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             switch (operArray.ItemType)
             {
@@ -1219,7 +1219,7 @@ namespace NumpyLib
                         exceptions.Enqueue(ex);
                     }
                 });
-  
+
 
             }
 
@@ -1249,12 +1249,14 @@ namespace NumpyLib
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
             {
-                PerformOuterOpArrayIterDouble(a, b, destArray, operations, operation);
+                UFUNC_Operations UFunc = new UFUNC_Double();
+                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, operation);
                 return;
             }
             if (destArray.ItemType == NPY_TYPES.NPY_INT32)
             {
-                PerformOuterOpArrayIterInt32(a, b, destArray, operations, operation);
+                UFUNC_Operations UFunc = new UFUNC_Int32();
+                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, operation);
                 return;
             }
 
@@ -1311,342 +1313,354 @@ namespace NumpyLib
             }
         }
 
-        #region UFUNC DOUBLE
-        private static void PerformOuterOpArrayIterDouble(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
+        internal interface UFUNC_Operations
         {
-            var destSize = NpyArray_Size(destArray);
-            var aSize = NpyArray_Size(a);
-            var bSize = NpyArray_Size(b);
+            void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op);
+        }
 
-            if (bSize == 0 || aSize == 0)
+        #region UFUNC DOUBLE
+        internal class UFUNC_Double : UFUNC_Operations
+        {
+            public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
             {
-                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
-            }
+                var destSize = NpyArray_Size(destArray);
+                var aSize = NpyArray_Size(a);
+                var bSize = NpyArray_Size(b);
 
-            var aIter = NpyArray_IterNew(a);
-            var bIter = NpyArray_IterNew(b);
-            var DestIter = NpyArray_IterNew(destArray);
-
-            double[] aValues = new double[aSize];
-            for (long i = 0; i < aSize; i++)
-            {
-                aValues[i] = Convert.ToDouble(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
-                NpyArray_ITER_NEXT(aIter);
-            }
-
-            double[] bValues = new double[bSize];
-            for (long i = 0; i < bSize; i++)
-            {
-                bValues[i] =  Convert.ToDouble(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
-                NpyArray_ITER_NEXT(bIter);
-            }
-
-
-            double[]dp = destArray.data.datap as double[];
-
-
-            if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
-            {
-
-                Parallel.For(0, aSize, i =>
+                if (bSize == 0 || aSize == 0)
                 {
-                    var aValue = aValues[i];
+                    NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                    return;
+                }
 
-                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+                var aIter = NpyArray_IterNew(a);
+                var bIter = NpyArray_IterNew(b);
+                var DestIter = NpyArray_IterNew(destArray);
 
-                    for (long j = 0; j < bSize; j++)
-                    {
-                        var bValue = bValues[j];
-
-                        double destValue = PerformUFuncOperation(op, aValue, bValue);
-    
-                        try
-                        {
-                            dp[destIndex] = destValue;
-                        }
-                        catch
-                        {
-                            operations.destSetItem(destIndex, 0, destArray);
-                        }
-                        destIndex++;
-                    }
-
-                });
-            }
-            else
-            {
+                double[] aValues = new double[aSize];
                 for (long i = 0; i < aSize; i++)
                 {
-                    var aValue = aValues[i];
+                    aValues[i] = Convert.ToDouble(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
+                    NpyArray_ITER_NEXT(aIter);
+                }
 
-                    for (long j = 0; j < bSize; j++)
+                double[] bValues = new double[bSize];
+                for (long i = 0; i < bSize; i++)
+                {
+                    bValues[i] = Convert.ToDouble(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
+                    NpyArray_ITER_NEXT(bIter);
+                }
+
+
+                double[] dp = destArray.data.datap as double[];
+
+
+                if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
+                {
+
+                    Parallel.For(0, aSize, i =>
                     {
-                        var bValue = bValues[j];
+                        var aValue = aValues[i];
 
-                        double destValue = PerformUFuncOperation(op, aValue, bValue);
-   
-                        try
+                        long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+
+                        for (long j = 0; j < bSize; j++)
                         {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            dp[AdjustedIndex] = destValue;
+                            var bValue = bValues[j];
+
+                            double destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                dp[destIndex] = destValue;
+                            }
+                            catch
+                            {
+                                operations.destSetItem(destIndex, 0, destArray);
+                            }
+                            destIndex++;
                         }
-                        catch
+
+                    });
+                }
+                else
+                {
+                    for (long i = 0; i < aSize; i++)
+                    {
+                        var aValue = aValues[i];
+
+                        for (long j = 0; j < bSize; j++)
                         {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            operations.destSetItem(AdjustedIndex, 0, destArray);
+                            var bValue = bValues[j];
+
+                            double destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                dp[AdjustedIndex] = destValue;
+                            }
+                            catch
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                operations.destSetItem(AdjustedIndex, 0, destArray);
+                            }
+                            NpyArray_ITER_NEXT(DestIter);
                         }
-                        NpyArray_ITER_NEXT(DestIter);
+
                     }
+                }
+
+
+            }
+
+            private double PerformUFuncOperation(NpyArray_Ops op, double aValue, double bValue)
+            {
+                double destValue;
+                switch (op)
+                {
+                    case NpyArray_Ops.npy_op_add:
+                        destValue = UFuncAdd(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_subtract:
+                        destValue = UFuncSubtract(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_multiply:
+                        destValue = UFuncMultiply(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_divide:
+                        destValue = UFuncDivide(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_remainder:
+                        destValue = UFuncRemainder(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_fmod:
+                        destValue = UFuncFMod(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_power:
+                        destValue = UFuncPower(aValue, bValue);
+                        break;
+
+                    default:
+                        destValue = 0;
+                        break;
 
                 }
+
+                return destValue;
             }
 
-   
-        }
 
-        static double PerformUFuncOperation(NpyArray_Ops op, double aValue, double bValue)
-        {
-            double destValue;
-            switch (op)
+            private double UFuncAdd(double aValue, double bValue)
             {
-                case NpyArray_Ops.npy_op_add:
-                    destValue = UFuncAdd(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_subtract:
-                    destValue = UFuncSubtract(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_multiply:
-                    destValue = UFuncMultiply(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_divide:
-                    destValue = UFuncDivide(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_remainder:
-                    destValue = UFuncRemainder(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_fmod:
-                    destValue = UFuncFMod(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_power:
-                    destValue = UFuncPower(aValue, bValue);
-                    break;
-
-                default:
-                    destValue = 0;
-                    break;
-
+                return aValue + bValue;
             }
 
-            return destValue;
+            private double UFuncSubtract(double aValue, double bValue)
+            {
+                return aValue - bValue;
+            }
+            private double UFuncMultiply(double aValue, double bValue)
+            {
+                return aValue * bValue;
+            }
+
+            private double UFuncDivide(double aValue, double bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue / bValue;
+            }
+            private double UFuncRemainder(double aValue, double bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue % bValue;
+            }
+            private double UFuncFMod(double aValue, double bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue % bValue;
+            }
+            private double UFuncPower(double aValue, double bValue)
+            {
+                return Math.Pow(aValue, bValue);
+            }
         }
 
 
-        static double UFuncAdd(double aValue, double bValue)
-        {
-            return aValue + bValue;
-        }
-
-        static double UFuncSubtract(double aValue, double bValue)
-        {
-            return aValue - bValue;
-        }
-        static double UFuncMultiply(double aValue, double bValue)
-        {
-            return aValue * bValue;
-        }
-
-        static double UFuncDivide(double aValue, double bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue / bValue;
-        }
-        static double UFuncRemainder(double aValue, double bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue % bValue;
-        }
-        static double UFuncFMod(double aValue, double bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue % bValue;
-        }
-        static double UFuncPower(double aValue, double bValue)
-        {
-            return Math.Pow(aValue, bValue);
-        }
         #endregion
 
         #region UFUNC INT32
-        private static void PerformOuterOpArrayIterInt32(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
+
+        internal class UFUNC_Int32 : UFUNC_Operations
         {
-            var destSize = NpyArray_Size(destArray);
-            var aSize = NpyArray_Size(a);
-            var bSize = NpyArray_Size(b);
-
-            if (bSize == 0 || aSize == 0)
+            public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
             {
-                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
-            }
+                var destSize = NpyArray_Size(destArray);
+                var aSize = NpyArray_Size(a);
+                var bSize = NpyArray_Size(b);
 
-            var aIter = NpyArray_IterNew(a);
-            var bIter = NpyArray_IterNew(b);
-            var DestIter = NpyArray_IterNew(destArray);
-
-            Int32[] aValues = new Int32[aSize];
-            for (long i = 0; i < aSize; i++)
-            {
-                aValues[i] = Convert.ToInt32(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
-                NpyArray_ITER_NEXT(aIter);
-            }
-
-            Int32[] bValues = new Int32[bSize];
-            for (long i = 0; i < bSize; i++)
-            {
-                bValues[i] = Convert.ToInt32(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
-                NpyArray_ITER_NEXT(bIter);
-            }
-
-
-            Int32[] dp = destArray.data.datap as Int32[];
-
-
-            if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
-            {
-
-                Parallel.For(0, aSize, i =>
+                if (bSize == 0 || aSize == 0)
                 {
-                    var aValue = aValues[i];
+                    NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                    return;
+                }
 
-                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+                var aIter = NpyArray_IterNew(a);
+                var bIter = NpyArray_IterNew(b);
+                var DestIter = NpyArray_IterNew(destArray);
 
-                    for (long j = 0; j < bSize; j++)
-                    {
-                        var bValue = bValues[j];
-
-                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
-
-                        try
-                        {
-                            dp[destIndex] = destValue;
-                        }
-                        catch
-                        {
-                            operations.destSetItem(destIndex, 0, destArray);
-                        }
-                        destIndex++;
-                    }
-
-                });
-            }
-            else
-            {
+                Int32[] aValues = new Int32[aSize];
                 for (long i = 0; i < aSize; i++)
                 {
-                    var aValue = aValues[i];
+                    aValues[i] = Convert.ToInt32(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
+                    NpyArray_ITER_NEXT(aIter);
+                }
 
-                    for (long j = 0; j < bSize; j++)
+                Int32[] bValues = new Int32[bSize];
+                for (long i = 0; i < bSize; i++)
+                {
+                    bValues[i] = Convert.ToInt32(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
+                    NpyArray_ITER_NEXT(bIter);
+                }
+
+
+                Int32[] dp = destArray.data.datap as Int32[];
+
+
+                if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
+                {
+
+                    Parallel.For(0, aSize, i =>
                     {
-                        var bValue = bValues[j];
+                        var aValue = aValues[i];
 
-                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
+                        long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
 
-                        try
+                        for (long j = 0; j < bSize; j++)
                         {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            dp[AdjustedIndex] = destValue;
+                            var bValue = bValues[j];
+
+                            Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                dp[destIndex] = destValue;
+                            }
+                            catch
+                            {
+                                operations.destSetItem(destIndex, 0, destArray);
+                            }
+                            destIndex++;
                         }
-                        catch
+
+                    });
+                }
+                else
+                {
+                    for (long i = 0; i < aSize; i++)
+                    {
+                        var aValue = aValues[i];
+
+                        for (long j = 0; j < bSize; j++)
                         {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            operations.destSetItem(AdjustedIndex, 0, destArray);
+                            var bValue = bValues[j];
+
+                            Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                dp[AdjustedIndex] = destValue;
+                            }
+                            catch
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                operations.destSetItem(AdjustedIndex, 0, destArray);
+                            }
+                            NpyArray_ITER_NEXT(DestIter);
                         }
-                        NpyArray_ITER_NEXT(DestIter);
+
                     }
+                }
+
+
+            }
+
+            private Int32 PerformUFuncOperation(NpyArray_Ops op, Int32 aValue, Int32 bValue)
+            {
+                Int32 destValue;
+                switch (op)
+                {
+                    case NpyArray_Ops.npy_op_add:
+                        destValue = UFuncAdd(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_subtract:
+                        destValue = UFuncSubtract(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_multiply:
+                        destValue = UFuncMultiply(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_divide:
+                        destValue = UFuncDivide(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_remainder:
+                        destValue = UFuncRemainder(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_fmod:
+                        destValue = UFuncFMod(aValue, bValue);
+                        break;
+                    case NpyArray_Ops.npy_op_power:
+                        destValue = UFuncPower(aValue, bValue);
+                        break;
+
+                    default:
+                        destValue = 0;
+                        break;
 
                 }
+
+                return destValue;
             }
 
-
-        }
-
-        static Int32 PerformUFuncOperation(NpyArray_Ops op, Int32 aValue, Int32 bValue)
-        {
-            Int32 destValue;
-            switch (op)
+            private Int32 UFuncAdd(Int32 aValue, Int32 bValue)
             {
-                case NpyArray_Ops.npy_op_add:
-                    destValue = UFuncAdd(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_subtract:
-                    destValue = UFuncSubtract(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_multiply:
-                    destValue = UFuncMultiply(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_divide:
-                    destValue = UFuncDivide(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_remainder:
-                    destValue = UFuncRemainder(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_fmod:
-                    destValue = UFuncFMod(aValue, bValue);
-                    break;
-                case NpyArray_Ops.npy_op_power:
-                    destValue = UFuncPower(aValue, bValue);
-                    break;
-
-                default:
-                    destValue = 0;
-                    break;
-
+                return aValue + bValue;
             }
-
-            return destValue;
+            private Int32 UFuncSubtract(Int32 aValue, Int32 bValue)
+            {
+                return aValue - bValue;
+            }
+            private Int32 UFuncMultiply(Int32 aValue, Int32 bValue)
+            {
+                return aValue * bValue;
+            }
+            private Int32 UFuncDivide(Int32 aValue, Int32 bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue / bValue;
+            }
+            private Int32 UFuncRemainder(Int32 aValue, Int32 bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue % bValue;
+            }
+            private Int32 UFuncFMod(Int32 aValue, Int32 bValue)
+            {
+                if (bValue == 0)
+                    return 0;
+                return aValue % bValue;
+            }
+            private Int32 UFuncPower(Int32 aValue, Int32 bValue)
+            {
+                return Convert.ToInt32(Math.Pow((double)aValue, (double)bValue));
+            }
         }
-
-
-        static Int32 UFuncAdd(Int32 aValue, Int32 bValue)
-        {
-            return aValue + bValue;
-        }
-
-        static Int32 UFuncSubtract(Int32 aValue, Int32 bValue)
-        {
-            return aValue - bValue;
-        }
-        static Int32 UFuncMultiply(Int32 aValue, Int32 bValue)
-        {
-            return aValue * bValue;
-        }
-
-        static Int32 UFuncDivide(Int32 aValue, Int32 bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue / bValue;
-        }
-        static Int32 UFuncRemainder(Int32 aValue, Int32 bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue % bValue;
-        }
-        static Int32 UFuncFMod(Int32 aValue, Int32 bValue)
-        {
-            if (bValue == 0)
-                return 0;
-            return aValue % bValue;
-        }
-        static Int32 UFuncPower(Int32 aValue, Int32 bValue)
-        {
-            return Convert.ToInt32(Math.Pow((double)aValue, (double)bValue));
-        }
+ 
         #endregion
 
         private static int PerformNumericOpScalar2(NpyArray srcArray, NpyArray destArray, double operand, NumericOperations operations)
