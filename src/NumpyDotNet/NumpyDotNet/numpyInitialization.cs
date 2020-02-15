@@ -58,7 +58,6 @@ namespace NumpyDotNet
                 neighbor_iter_new_wrapper = numpy_interface_neighbor_iter_new_wrapper,
                 descr_new_from_type = numpy_interface_descr_new_from_type,
                 descr_new_from_wrapper = numpy_interface_descr_new_from_wrapper,
-                ufunc_new_wrapper = numpy_interface_ufunc_new_wrapper,
             };
 
             npy_tp_error_set error_set = ErrorSet_handler;

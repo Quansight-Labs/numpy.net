@@ -107,11 +107,6 @@ namespace NumpyLib
             _init_builtin_descr_wrappers();
         }
 
-        internal static void npy_set_ufunc_wrapper_func(npy_interface_ufunc_new_wrapper wrapperFunc)
-        {
-            _NpyArrayWrapperFuncs.ufunc_new_wrapper = wrapperFunc;
-        }
-
         internal static npy_intp NpyArray_MultiplyIntList(npy_intp[] l1, int n)
         {
             npy_intp s = 1;

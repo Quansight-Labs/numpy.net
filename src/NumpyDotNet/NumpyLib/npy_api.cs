@@ -349,7 +349,6 @@ namespace NumpyLib
     public delegate bool npy_interface_neighbor_iter_new_wrapper(NpyArrayNeighborhoodIterObject iter, ref object interfaceRet);
     public delegate bool npy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet);
     public delegate bool npy_interface_descr_new_from_wrapper(object _base, NpyArray_Descr descr, ref object interfaceRet);
-    public delegate bool npy_interface_ufunc_new_wrapper(object _base, ref object interfaceRet);
 
     public delegate void npy_free_func(object o1);
     public delegate void npy_tp_error_set(string FunctionName, npyexc_type et, string error);
@@ -383,7 +382,6 @@ namespace NumpyLib
         public npy_interface_neighbor_iter_new_wrapper neighbor_iter_new_wrapper;
         public npy_interface_descr_new_from_type descr_new_from_type;
         public npy_interface_descr_new_from_wrapper descr_new_from_wrapper;
-        public npy_interface_ufunc_new_wrapper ufunc_new_wrapper;
     };
 
     internal partial class numpyinternal
