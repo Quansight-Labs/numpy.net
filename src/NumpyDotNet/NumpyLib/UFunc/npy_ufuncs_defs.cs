@@ -46,8 +46,8 @@ namespace NumpyLib
 {
     internal partial class numpyinternal
     {
-        private const int UFUNC_PARALLEL_DEST_MINSIZE = 1000;
-        private const int UFUNC_PARALLEL_DEST_ASIZE = 100;
+        internal const int UFUNC_PARALLEL_DEST_MINSIZE = 1000;
+        internal const int UFUNC_PARALLEL_DEST_ASIZE = 100;
 
         internal interface UFUNC_Operations
         {
