@@ -131,6 +131,24 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.outer(a,a)
+            #print(b.shape)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
+    def test_AddOuter_Performance_NotSameType(self):
+
+        LoopCount = 200;
+
+        a1 = np.arange(1000, dtype=np.float64);
+        a2 = np.arange(1000, dtype=np.int16);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.outer(a2,a1)
             print(b.shape)
 
         end = tm.time()

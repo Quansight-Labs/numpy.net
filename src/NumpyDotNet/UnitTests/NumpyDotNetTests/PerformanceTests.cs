@@ -280,13 +280,14 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_AddOuter()
         {
 
             int LoopCount = 200;
-            var a = np.arange(0, 1000, dtype: np.Float64);
+            var c = np.arange(0, 2000, dtype: np.Float64);
+            var a = c[new Slice(0, 2000, 2)];
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -304,7 +305,31 @@ namespace NumpyDotNetTests
 
         }
 
-   
+        [TestMethod]
+        public void Performance_AddOuter_NotSameType()
+        {
+
+            int LoopCount = 200;
+            var a1 = np.arange(0, 1000, dtype: np.Float64);
+            var a2 = np.arange(0, 1000, dtype: np.Int16);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, np.Float64, a2, a1);
+                // print(b.shape);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+
 
 
     }
