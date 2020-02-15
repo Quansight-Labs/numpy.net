@@ -1367,15 +1367,16 @@ namespace NumpyLib
                             case NpyArray_Ops.npy_op_divide:
                                 destValue = UFuncDivide(aValue, bValue);
                                 break;
+                            case NpyArray_Ops.npy_op_remainder:
+                                destValue = UFuncRemainder(aValue, bValue);
+                                break;
                             case NpyArray_Ops.npy_op_fmod:
                                 destValue = UFuncFMod(aValue, bValue);
                                 break;
                             case NpyArray_Ops.npy_op_power:
                                 destValue = UFuncPower(aValue, bValue);
                                 break;
-                            case NpyArray_Ops.npy_op_remainder:
-                                destValue = UFuncRemainder(aValue, bValue);
-                                break;
+  
                             default:
                                 destValue = 0;
                                 break;
@@ -1405,8 +1406,36 @@ namespace NumpyLib
                     {
                         var bValue = bValues[j];
 
-                        //double destValue = op(aValue, bValue);
-                        double destValue = UFuncAdd(aValue, bValue);
+                        double destValue;
+                        switch (operation)
+                        {
+                            case NpyArray_Ops.npy_op_add:
+                                destValue = UFuncAdd(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_subtract:
+                                destValue = UFuncSubtract(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_multiply:
+                                destValue = UFuncMultiply(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_divide:
+                                destValue = UFuncDivide(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_remainder:
+                                destValue = UFuncRemainder(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_fmod:
+                                destValue = UFuncFMod(aValue, bValue);
+                                break;
+                            case NpyArray_Ops.npy_op_power:
+                                destValue = UFuncPower(aValue, bValue);
+                                break;
+
+                            default:
+                                destValue = 0;
+                                break;
+
+                        }
 
                         try
                         {
@@ -1427,7 +1456,6 @@ namespace NumpyLib
    
         }
 
-        delegate double UFuncOperation(double a, double b);
 
         static double UFuncAdd(double aValue, double bValue)
         {
