@@ -60,71 +60,64 @@ namespace NumpyLib
                 return destArray;
             }
 
-            if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
+            switch (destArray.ItemType)
             {
-                UFUNC_Operations UFunc = new UFUNC_Double();
-                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
-                if (HasBoolReturn(ops))
+                case NPY_TYPES.NPY_DOUBLE:
                 {
-                    destArray = NpyArray_CastToType(destArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+                    UFUNC_Operations UFunc = new UFUNC_Double();
+                    UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
+                    break;
                 }
-                return destArray;
-            }
-            if (destArray.ItemType == NPY_TYPES.NPY_INT32)
-            {
-                UFUNC_Operations UFunc = new UFUNC_Int32();
-                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
-                if (HasBoolReturn(ops))
+                default:
                 {
-                    destArray = NpyArray_CastToType(destArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
-                }
-                return destArray;
-            }
-
-
-  
-
-            var aIter = NpyArray_IterNew(a);
-            object[] aValues = new object[aSize];
-            for (long i = 0; i < aSize; i++)
-            {
-                aValues[i] = operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
-                NpyArray_ITER_NEXT(aIter);
-            }
-
-            var bIter = NpyArray_IterNew(b);
-            object[] bValues = new object[bSize];
-            for (long i = 0; i < bSize; i++)
-            {
-                bValues[i] = operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
-                NpyArray_ITER_NEXT(bIter);
-            }
-
-            var DestIter = NpyArray_IterNew(destArray);
-
-            for (long i = 0; i < aSize; i++)
-            {
-                var aValue = aValues[i];
-
-                for (long j = 0; j < bSize; j++)
-                {
-                    var bValue = bValues[j];
-
-                    object destValue = operations.operation(aValue, operations.ConvertOperand(aValue, bValue));
-
-                    try
+                    var aIter = NpyArray_IterNew(a);
+                    object[] aValues = new object[aSize];
+                    for (long i = 0; i < aSize; i++)
                     {
-                        operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                        aValues[i] = operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                        NpyArray_ITER_NEXT(aIter);
                     }
-                    catch
-                    {
-                        operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
-                    }
-                    NpyArray_ITER_NEXT(DestIter);
-                }
 
+                    var bIter = NpyArray_IterNew(b);
+                    object[] bValues = new object[bSize];
+                    for (long i = 0; i < bSize; i++)
+                    {
+                        bValues[i] = operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                        NpyArray_ITER_NEXT(bIter);
+                    }
+
+                    var DestIter = NpyArray_IterNew(destArray);
+
+                    for (long i = 0; i < aSize; i++)
+                    {
+                        var aValue = aValues[i];
+
+                        for (long j = 0; j < bSize; j++)
+                        {
+                            var bValue = bValues[j];
+
+                            object destValue = operations.operation(aValue, operations.ConvertOperand(aValue, bValue));
+
+                            try
+                            {
+                                operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                            }
+                            catch
+                            {
+                                operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                            }
+                            NpyArray_ITER_NEXT(DestIter);
+                        }
+
+                    }
+                    break;
+                }
             }
 
+            if (HasBoolReturn(ops))
+            {
+                destArray = NpyArray_CastToType(destArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+            }
             return destArray;
         }
 
