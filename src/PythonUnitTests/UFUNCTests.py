@@ -710,12 +710,87 @@ class Test_UFUNCTests(unittest.TestCase):
         except:
             print("Exception occured")
 
+            
+    def test_BitwiseAndOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.bitwise_and.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+                        
+    def test_BitwiseOrOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.bitwise_or.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_BitwiseXorOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.bitwise_xor.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
     def test_LessOuter_DOUBLE(self):
 
         a1 = np.arange(0, 5, dtype=np.float64);
         a2 = np.arange(3, 8, dtype=np.float64);
   
         b = np.less.outer(a1,a2)
+        print(b)
+
+    def test_LessEqualOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.less_equal.outer(a1,a2)
+        print(b)
+
+    def test_EqualOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.equal.outer(a1,a2)
+        print(b)
+
+    def test_NotEqualOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.not_equal.outer(a1,a2)
+        print(b)
+
+    def test_GreaterOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.greater.outer(a1,a2)
+        print(b)
+
+    def test_GreaterEqualOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.greater_equal.outer(a1,a2)
         print(b)
 
     #endregion 

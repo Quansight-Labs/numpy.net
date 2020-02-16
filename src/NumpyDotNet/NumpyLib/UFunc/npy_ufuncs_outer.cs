@@ -130,6 +130,7 @@ namespace NumpyLib
                 case NpyArray_Ops.npy_op_equal:
                 case NpyArray_Ops.npy_op_not_equal:
                 case NpyArray_Ops.npy_op_greater:
+                case NpyArray_Ops.npy_op_greater_equal:
                 case NpyArray_Ops.npy_op_logical_or:
                 case NpyArray_Ops.npy_op_logical_and:
                 case NpyArray_Ops.npy_op_isnan:
