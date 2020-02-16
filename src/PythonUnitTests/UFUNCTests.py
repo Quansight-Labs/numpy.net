@@ -793,6 +793,22 @@ class Test_UFUNCTests(unittest.TestCase):
         b = np.greater_equal.outer(a1,a2)
         print(b)
 
+    def test_FloorDivideOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.floor_divide.outer(a1,a2)
+        print(b)
+
+    def test_TrueDivideOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.true_divide.outer(a1,a2)
+        print(b)
+
     #endregion 
 
 

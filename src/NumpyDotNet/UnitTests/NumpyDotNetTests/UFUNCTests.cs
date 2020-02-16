@@ -1405,6 +1405,50 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_FloorDivideOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_floor_divide, null, a1, a2);
+            print(b);
+
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 0.0, 0.0, 0.0} };
+
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_TrueDivideOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_true_divide, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                      {{0,  0,  0,  0,  0,},
+                     {0.33333333, 0.25,       0.2,        0.16666667, 0.14285714},
+                     {0.66666667, 0.5,        0.4,        0.33333333, 0.28571429},
+                     {1,         0.75,       0.6,        0.5,        0.42857143},
+                     {1.33333333, 1,         0.8,        0.66666667, 0.57142857}};
+
+            AssertArray(b, ExpectedData);
+
+
+        }
+
+
         #endregion
     }
 }
