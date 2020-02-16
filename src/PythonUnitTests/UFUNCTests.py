@@ -555,5 +555,171 @@ class Test_UFUNCTests(unittest.TestCase):
         
 
     #endregion
+
+
+    #region UFUNC DOUBLE Tests
+
+    def test_AddOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.add.outer(a1,a2)
+        print(b)
+
+    def test_SubtractOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.subtract.outer(a1,a2)
+        print(b)
+
+    def test_MultiplyOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.multiply.outer(a1,a2)
+        print(b)
+
+    def test_DivideOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.divide.outer(a1,a2)
+        print(b)
+
+    def test_RemainderOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.remainder.outer(a1,a2)
+        print(b)
+
+    def test_FModOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.fmod.outer(a1,a2)
+        print(b)
+
+    def test_SquareOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+
+        try :
+            b = np.square.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+ 
+    def test_ReciprocalOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.reciprocal.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_OnesLikeOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.ones_like.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_SqrtOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+        
+        try :
+            b = np.sqrt.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+
+    def test_NegativeOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.negative.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+        
+    def test_AbsoluteOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+
+        try :
+            b = np.absolute.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+ 
+
+    def test_InvertOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.invert.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_LeftShiftOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.left_shift.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+
+    def test_RightShiftOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        try :
+            b = np.right_shift.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_LessOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.less.outer(a1,a2)
+        print(b)
+
+    #endregion 
+
+
 if __name__ == '__main__':
     unittest.main()

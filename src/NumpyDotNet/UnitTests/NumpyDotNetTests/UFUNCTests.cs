@@ -921,6 +921,322 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region UFUNC DOUBLE Tests
+
+        [TestMethod]
+        public void test_AddOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{3,  4,  5,  6,  7},
+                     {4,  5,  6,  7,  8},
+                     {5,  6,  7,  8,  9},
+                     {6,  7,  8,  9, 10},
+                     {7,  8,  9, 10, 11}};
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SubtractOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_subtract, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{-3, -4, -5, -6, -7},
+                     {-2, -3, -4, -5, -6},
+                     {-1, -2, -3, -4, -5},
+                     {0, -1, -2, -3, -4},
+                     {1,  0, -1, -2, -3}};
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MultiplyOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_multiply, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{0,  0,  0,  0,  0,},
+                     {3,  4,  5,  6,  7,},
+                     {6,  8, 10, 12, 14},
+                     {9, 12, 15, 18, 21,},
+                     {12, 16, 20, 24, 28,}};
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_DivideOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{0,  0,  0,  0,  0,},
+                     {0.33333333, 0.25,       0.2,        0.16666667, 0.14285714},
+                     {0.66666667, 0.5,        0.4,        0.33333333, 0.28571429},
+                     {1,         0.75,       0.6,        0.5,        0.42857143},
+                     {1.33333333, 1,         0.8,        0.66666667, 0.57142857}};
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_RemainderOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{0, 0, 0, 0, 0,},
+                     {1, 1, 1, 1, 1,},
+                     {2, 2, 2, 2, 2},
+                     {0, 3, 3, 3, 3,},
+                     {1, 0, 4, 4, 4,}};
+
+            AssertArray(b, ExpectedData);
+
+
+        }
+
+        [TestMethod]
+        public void test_FModOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmod, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                    {{0, 0, 0, 0, 0,},
+                     {1, 1, 1, 1, 1,},
+                     {2, 2, 2, 2, 2},
+                     {0, 3, 3, 3, 3,},
+                     {1, 0, 4, 4, 4,}};
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SquareOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_square, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0 },
+                  { 9.0, 9.0, 9.0, 9.0, 9.0 },
+                  { 16.0, 16.0, 16.0, 16.0, 16.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_ReciprocalOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_reciprocal, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity,Double.PositiveInfinity },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 0.5, 0.5, 0.5, 0.5, 0.5 },
+                  { 0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333 },
+                  { 0.25, 0.25, 0.25, 0.25, 0.25 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_OnesLikeOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_ones_like, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SqrtOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_sqrt, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 1.4142135623731, 1.4142135623731, 1.4142135623731, 1.4142135623731, 1.4142135623731  },
+                  { 1.73205080756888, 1.73205080756888, 1.73205080756888, 1.73205080756888, 1.73205080756888 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_NegativeOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_negative, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { -1.0, -1.0, -1.0, -1.0, -1.0 },
+                  { -2.0, -2.0, -2.0, -2.0, -2.0 },
+                  { -3.0, -3.0, -3.0, -3.0, -3.0 },
+                  {-4.0, -4.0, -4.0, -4.0, -4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_AbsoluteOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_absolute, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_InvertOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_invert, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_LeftShiftOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_left_shift, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                  { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 8.0, 16.0, 32.0, 64.0, 128.0 },
+                  { 16.0, 32.0, 64.0, 128.0, 256.0 },
+                  { 24.0, 48.0, 96.0, 192.0, 384.0 },
+                  { 32.0, 64.0, 128.0, 256.0, 512.0  } };
+
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_RightShiftOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64) * 1024 * 4;
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_right_shift, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0  },
+                  { 512.0, 256.0, 128.0, 64.0, 32.0 },
+                  { 1024.0, 512.0, 256.0, 128.0, 64.0  },
+                  { 1536.0, 768.0, 384.0, 192.0, 96.0  },
+                  { 2048.0, 1024.0, 512.0, 256.0, 128.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
         [TestMethod]
         public void test_LessOuter()
         {
@@ -938,6 +1254,6 @@ namespace NumpyDotNetTests
 
         }
 
-
+        #endregion
     }
 }
