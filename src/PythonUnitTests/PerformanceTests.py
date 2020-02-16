@@ -156,6 +156,17 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_LessOuter(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.less.outer(a1,a2)
+        print(b)
+
+     
+
+
 
     def test_xxx(self):
 

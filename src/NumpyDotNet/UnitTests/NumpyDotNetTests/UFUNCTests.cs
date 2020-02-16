@@ -921,5 +921,23 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        [TestMethod]
+        public void test_LessOuter()
+        {
+            var a1 = np.arange(0, 5, dtype : np.Float64);
+            var a2 = np.arange(3, 8, dtype : np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_less, null, a1, a2);
+            print(b);
+
+            AssertArray(b, new bool[,] { { true, true, true, true, true }, 
+                                         { true, true, true, true, true }, 
+                                         { true, true, true, true, true },
+                                         { false, true, true, true, true }, 
+                                         { false, false, true, true, true } });
+
+        }
+
+
     }
 }
