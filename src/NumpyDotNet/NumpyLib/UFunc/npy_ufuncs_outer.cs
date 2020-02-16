@@ -48,7 +48,7 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
 
-        private static void NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops operation)
+        private static NpyArray NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops ops)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -57,20 +57,28 @@ namespace NumpyLib
             if (bSize == 0 || aSize == 0)
             {
                 NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
+                return destArray;
             }
 
             if (destArray.ItemType == NPY_TYPES.NPY_DOUBLE)
             {
                 UFUNC_Operations UFunc = new UFUNC_Double();
-                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, operation);
-                return;
+                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
+                if (HasBoolReturn(ops))
+                {
+                    destArray = NpyArray_CastToType(destArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+                }
+                return destArray;
             }
             if (destArray.ItemType == NPY_TYPES.NPY_INT32)
             {
                 UFUNC_Operations UFunc = new UFUNC_Int32();
-                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, operation);
-                return;
+                UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
+                if (HasBoolReturn(ops))
+                {
+                    destArray = NpyArray_CastToType(destArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+                }
+                return destArray;
             }
 
 
@@ -116,7 +124,27 @@ namespace NumpyLib
                 }
 
             }
+
+            return destArray;
         }
 
+        private static bool HasBoolReturn(NpyArray_Ops ops)
+        {
+            switch (ops)
+            {
+                case NpyArray_Ops.npy_op_less:
+                case NpyArray_Ops.npy_op_less_equal:
+                case NpyArray_Ops.npy_op_equal:
+                case NpyArray_Ops.npy_op_not_equal:
+                case NpyArray_Ops.npy_op_greater:
+                case NpyArray_Ops.npy_op_logical_or:
+                case NpyArray_Ops.npy_op_logical_and:
+                case NpyArray_Ops.npy_op_isnan:
+                    return true;
+                default:
+                    return false;
+
+            }
+        }
     }
 }

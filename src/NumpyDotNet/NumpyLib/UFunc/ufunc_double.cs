@@ -209,21 +209,27 @@ namespace NumpyLib
                     break;
                 case NpyArray_Ops.npy_op_less:
                     boolValue = Less(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_less_equal:
                     boolValue = LessEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_equal:
                     boolValue = Equal(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_not_equal:
                     boolValue = NotEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_greater:
                     boolValue = Greater(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_greater_equal:
                     boolValue = GreaterEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_floor_divide:
                     destValue = FloorDivide(aValue, bValue);
@@ -233,9 +239,11 @@ namespace NumpyLib
                     break;
                 case NpyArray_Ops.npy_op_logical_or:
                     boolValue = LogicalOr(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_logical_and:
                     boolValue = LogicalAnd(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_floor:
                     destValue = Floor(aValue, bValue);
@@ -257,6 +265,7 @@ namespace NumpyLib
                     break;
                 case NpyArray_Ops.npy_op_isnan:
                     boolValue = IsNAN(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
                     break;
                 case NpyArray_Ops.npy_op_fmax:
                     destValue = FMax(aValue, bValue);
