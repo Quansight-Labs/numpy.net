@@ -809,6 +809,22 @@ class Test_UFUNCTests(unittest.TestCase):
         b = np.true_divide.outer(a1,a2)
         print(b)
 
+    def test_LogicalAndOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.logical_and.outer(a1,a2)
+        print(b)
+
+    def test_LogicalOrOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+  
+        b = np.logical_or.outer(a1,a2)
+        print(b)
+
     #endregion 
 
 

@@ -1444,9 +1444,43 @@ namespace NumpyDotNetTests
                      {1.33333333, 1,         0.8,        0.66666667, 0.57142857}};
 
             AssertArray(b, ExpectedData);
+        }
 
+
+        [TestMethod]
+        public void test_LogicalAndOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_logical_and, null, a1, a2);
+            print(b);
+
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true}});
 
         }
+
+        [TestMethod]
+        public void test_LogicalOrOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_logical_or, null, a1, a2);
+            print(b);
+
+            AssertArray(b, new bool[,] {{true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true}});
+
+        }
+
 
 
         #endregion
