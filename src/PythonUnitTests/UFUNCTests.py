@@ -896,6 +896,30 @@ class Test_UFUNCTests(unittest.TestCase):
         except:
             print("Exception occured")
 
+    def test_FMaxOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+ 
+        b = np.fmax.outer(a1,a2)
+        print(b)
+
+    def test_FMinOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+ 
+        b = np.fmin.outer(a1,a2)
+        print(b)
+
+    def test_HeavisideOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+ 
+        b = np.heaviside.outer(a1,a2)
+        print(b)
+
     #endregion 
 
 

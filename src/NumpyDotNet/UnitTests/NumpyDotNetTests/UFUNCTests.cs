@@ -1622,6 +1622,67 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_FMaxOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmax, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 4.0, 4.0, 5.0, 6.0, 7.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_FMinOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmin, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 3.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_HeavisideOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_heaviside, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+               { { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                 { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                 { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                 { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                 { 1.0, 1.0, 1.0, 1.0, 1.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
         #endregion
     }
 }
