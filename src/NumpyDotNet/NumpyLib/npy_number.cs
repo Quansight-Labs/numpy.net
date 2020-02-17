@@ -126,75 +126,75 @@ namespace NumpyLib
             switch (op)
             {
                 case UFuncOperation.add:
-                    return DefaultOpControl(op, UFuncAdd);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.maximum:
-                    return DefaultOpControl(op, UFuncMax);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.minimum:
-                    return DefaultOpControl(op, UFuncMin);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.multiply:
-                    return DefaultOpControl(op, UFuncMultiply);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.logical_or:
-                    return DefaultOpControl(op, UFuncLogicalOr);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.logical_and:
-                    return DefaultOpControl(op, UFuncLogicalAnd);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.subtract:
-                    return DefaultOpControl(op, UFuncSubtract);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.divide:
-                    return DefaultOpControl(op, UFuncDivide);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.remainder:
-                    return DefaultOpControl(op, UFuncRemainder);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.fmod:
-                    return DefaultOpControl(op, UFuncFMod);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.power:
-                    return DefaultOpControl(op, UFuncPower);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.square:
-                    return DefaultOpControl(op, UFuncSquare);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.reciprocal:
-                    return DefaultOpControl(op, UFuncReciprocal);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.ones_like:
-                    return DefaultOpControl(op, UFuncOnesLike);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.sqrt:
-                    return DefaultOpControl(op, UFuncSqrt);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.negative:
-                    return DefaultOpControl(op, UFuncNegative);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.absolute:
-                    return DefaultOpControl(op, UFuncAbsolute);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.invert:
-                    return DefaultOpControl(op, UFuncInvert);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.left_shift:
-                    return DefaultOpControl(op, UFuncLeftShift);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.right_shift:
-                    return DefaultOpControl(op, UFuncRightShift);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.bitwise_and:
-                    return DefaultOpControl(op, UFuncBitWiseAnd);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.bitwise_xor:
-                    return DefaultOpControl(op, UFuncBitWiseXor);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.bitwise_or:
-                    return DefaultOpControl(op, UFuncBitWiseOr);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.less:
-                    return DefaultOpControl(op, UFuncLess);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.less_equal:
-                    return DefaultOpControl(op, UFuncLessEqual);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.equal:
-                    return DefaultOpControl(op, UFuncEqual);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.not_equal:
-                    return DefaultOpControl(op, UFuncNotEqual);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.greater:
-                    return DefaultOpControl(op, UFuncGreater);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.greater_equal:
-                    return DefaultOpControl(op, UFuncGreaterEqual);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.floor_divide:
-                    return DefaultOpControl(op, UFuncFloorDivide);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.true_divide:
-                    return DefaultOpControl(op, UFuncTrueDivide);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.floor:
-                    return DefaultOpControl(op, UFuncFloor);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.ceil:
-                    return DefaultOpControl(op, UFuncCeil);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.rint:
-                    return DefaultOpControl(op, UFuncRint);
+                    return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.conjugate:
-                    return DefaultOpControl(op, UFuncConjugate);
+                    return DefaultOpControl(op, UFuncCommon);
                 default:
                     loc = null;
                     break;
@@ -795,203 +795,6 @@ namespace NumpyLib
         }
 
 
-        internal static void UFuncAdd(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.add);
-            return;
-        }
 
-        internal static void UFuncMultiply(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.multiply);
-            return;
-        }
-
-        internal static void UFuncMax(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.maximum);
-            return;
-        }
- 
- 
-        internal static void UFuncMin(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.minimum);
-            return;
-        }
-  
- 
-        internal static void UFuncLogicalOr(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.logical_or);
-            return;
-        }
-
-        internal static void UFuncLogicalAnd(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.logical_and);
-            return;
-        }
-
-        internal static void UFuncSubtract(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.subtract);
-            return;
-        }
-
-        internal static void UFuncDivide(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.divide);
-            return;
-        }
-
-        internal static void UFuncRemainder(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.remainder);
-            return;
-        }
-
-        internal static void UFuncFMod(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.fmod);
-            return;
-        }
-
-        internal static void UFuncPower(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.power);
-            return;
-        }
-
-        internal static void UFuncSquare(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.square);
-            return;
-        }
-
-        internal static void UFuncReciprocal(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.reciprocal);
-            return;
-        }
-
-        internal static void UFuncOnesLike(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.ones_like);
-            return;
-        }
-
-        internal static void UFuncSqrt(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.sqrt);
-            return;
-        }
-
-        internal static void UFuncNegative(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.negative);
-            return;
-        }
-
-        internal static void UFuncAbsolute(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.absolute);
-            return;
-        }
-
-        internal static void UFuncInvert(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.invert);
-            return;
-        }
-
-        internal static void UFuncLeftShift(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.left_shift);
-            return;
-        }
-
-        internal static void UFuncRightShift(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.right_shift);
-            return;
-        }
-
-        internal static void UFuncBitWiseAnd(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.bitwise_and);
-            return;
-        }
-        internal static void UFuncBitWiseXor(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.bitwise_xor);
-            return;
-        }
-        internal static void UFuncBitWiseOr(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.bitwise_or);
-            return;
-        }
-
-        internal static void UFuncLess(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.less);
-            return;
-        }
-        internal static void UFuncLessEqual(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.less_equal);
-            return;
-        }
-        internal static void UFuncEqual(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.equal);
-            return;
-        }
-        internal static void UFuncNotEqual(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.not_equal);
-            return;
-        }
-        internal static void UFuncGreater(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.greater);
-            return;
-        }
-        internal static void UFuncGreaterEqual(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.greater_equal);
-            return;
-        }
-        internal static void UFuncFloorDivide(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.floor_divide);
-            return;
-        }
-        internal static void UFuncTrueDivide(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.true_divide);
-            return;
-        }
-        internal static void UFuncFloor(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.floor);
-            return;
-        }
-        internal static void UFuncCeil(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.ceil);
-            return;
-        }
-        internal static void UFuncRint(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.rint);
-            return;
-        }
-        internal static void UFuncConjugate(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps)
-        {
-            UFuncCommon(op, bufPtr, N, steps, UFuncOperation.conjugate);
-            return;
-        }
     }
 }

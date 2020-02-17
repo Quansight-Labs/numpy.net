@@ -46,7 +46,7 @@ namespace NumpyLib
 {
     #region Data Structures
 
-    public delegate void NpyUFuncGenericFunction(GenericReductionOp op, VoidPtr[] s1, npy_intp i1, npy_intp[] i2);
+    public delegate void NpyUFuncGenericFunction(GenericReductionOp op, VoidPtr[] s1, npy_intp i1, npy_intp[] i2, UFuncOperation ufop);
 
     public class NpyUFuncObject : NpyObject_HEAD
     {
@@ -431,7 +431,7 @@ namespace NumpyLib
                      * increment moves through the entire array.
                      */
                     /*fprintf(stderr, "ONE...%d\n", loop.size);*/
-                    loop.function(operation, loop.bufptr, loop.iter.size, loop.steps);
+                    loop.function(operation, loop.bufptr, loop.iter.size, loop.steps, self.ops);
                     if (!NPY_UFUNC_CHECK_ERROR(loop))
                         goto fail;
 
@@ -447,7 +447,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(operation, loop.bufptr, loop.bufcnt,loop.steps);
+                        loop.function(operation, loop.bufptr, loop.bufcnt,loop.steps, self.ops);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -466,7 +466,7 @@ namespace NumpyLib
                         {
                             loop.bufptr[i] = loop.iter.iters[i].dataptr;
                         }
-                        loop.function(operation, loop.bufptr, loop.core_dim_sizes[0],loop.core_strides);
+                        loop.function(operation, loop.bufptr, loop.core_dim_sizes[0],loop.core_strides, self.ops);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -642,7 +642,7 @@ namespace NumpyLib
                                 }
 
                                 bufcnt = (npy_intp)bufsize;
-                                loop.function(operation, dptr, bufcnt, steps);
+                                loop.function(operation, dptr, bufcnt, steps, self.ops);
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
 
@@ -1071,7 +1071,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(operation, loop.bufptr, loop.N,loop.steps);
+                        loop.function(operation, loop.bufptr, loop.N,loop.steps, self.ops);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
 
@@ -1135,7 +1135,7 @@ namespace NumpyLib
                             {
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
-                            loop.function(operation, loop.bufptr, i, loop.steps);
+                            loop.function(operation, loop.bufptr, i, loop.steps, self.ops);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1218,7 +1218,7 @@ namespace NumpyLib
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(operation, loop.bufptr, loop.N, loop.steps);
+                        loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                             goto fail;
                         NpyArray_ITER_NEXT(loop.it);
@@ -1284,7 +1284,7 @@ namespace NumpyLib
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
 
-                            loop.function(operation, loop.bufptr, i, loop.steps);
+                            loop.function(operation, loop.bufptr, i, loop.steps, self.ops);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
                             if (!NPY_UFUNC_CHECK_ERROR(loop))
@@ -1380,7 +1380,7 @@ namespace NumpyLib
                             {
                                 loop.bufptr[1] += loop.steps[1];
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(operation, loop.bufptr, mm, loop.steps);
+                                loop.function(operation, loop.bufptr, mm, loop.steps, self.ops);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
@@ -1434,7 +1434,7 @@ namespace NumpyLib
                                                null, null);
                                 }
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(operation, loop.bufptr, j, loop.steps);
+                                loop.function(operation, loop.bufptr, j, loop.steps, self.ops);
 
                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     goto fail;
