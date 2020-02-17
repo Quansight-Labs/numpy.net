@@ -147,8 +147,6 @@ namespace NumpyLib
 
         public void PerformReduceOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
         {
-            //return;
-
             VoidPtr Operand1 = bufPtr[0];
             VoidPtr Operand2 = bufPtr[1];
             VoidPtr Result = bufPtr[2];
@@ -172,8 +170,11 @@ namespace NumpyLib
             npy_intp O2_CalculatedStep = (O2_Step / sizeof(double));
             npy_intp O2_CalculatedOffset = (O2_Offset / sizeof(double));
 
+
+
             try
             {
+                // note: these can't be parrallized.
                 for (int i = 0; i < N; i++)
                 {
                     npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
