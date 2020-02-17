@@ -73,8 +73,8 @@ namespace NumpyLib
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);
         int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset);
-        NPY_TYPES MathOpReturnType(NpyArray_Ops Operation);
-        NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation);
+        NPY_TYPES MathOpReturnType(UFuncOperation Operation);
+        NPY_TYPES MathOpFloatingType(UFuncOperation Operation);
         object MathOpConvertOperand(object srcValue, object operValue);
         object GetArgSortMinValue();
         object GetArgSortMaxValue();

@@ -322,11 +322,11 @@ namespace NumpyLib
             return tmp;
         }
 
-        public virtual NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public virtual NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             switch (Operation)
             {
-                case NpyArray_Ops.npy_op_sqrt:
+                case UFuncOperation.npy_op_sqrt:
                 {
                     if (ItemSize > 4)
                         return NPY_TYPES.NPY_DOUBLE;
@@ -337,7 +337,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
-        public virtual NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public virtual NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
@@ -668,7 +668,7 @@ namespace NumpyLib
         {
             return operValue;
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_OBJECT;
         }
@@ -678,7 +678,7 @@ namespace NumpyLib
             return o;
         }
 
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
@@ -2467,15 +2467,15 @@ namespace NumpyLib
             return Convert.ToSingle(o);
         }
 
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             switch (Operation)
             {
-                case NpyArray_Ops.npy_op_power:
+                case UFuncOperation.npy_op_power:
                     return NPY_TYPES.NPY_DOUBLE;
-                case NpyArray_Ops.npy_op_true_divide:
+                case UFuncOperation.npy_op_true_divide:
                     return NPY_TYPES.NPY_DOUBLE;
-                case NpyArray_Ops.npy_op_special_operand_is_float:
+                case UFuncOperation.npy_op_special_operand_is_float:
                     return NPY_TYPES.NPY_DOUBLE;
 
             }
@@ -2483,7 +2483,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_FLOAT;
         }
 
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
              return NPY_TYPES.NPY_FLOAT;
         }
@@ -2743,11 +2743,11 @@ namespace NumpyLib
             return Convert.ToDouble(o);
         }
 
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
@@ -3003,11 +3003,11 @@ namespace NumpyLib
             return Convert.ToDecimal(o);
         }
 
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DECIMAL;
         }
@@ -3341,11 +3341,11 @@ namespace NumpyLib
         {
             return ConvertToComplex(o);
         }
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_COMPLEX;
         }
@@ -3890,11 +3890,11 @@ namespace NumpyLib
         {
             return ConvertToBigInt(o);
         }
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_BIGINT;
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
         }
@@ -4371,12 +4371,12 @@ namespace NumpyLib
 
             return operValue.ToString();
         }
-        public override NPY_TYPES MathOpFloatingType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_STRING;
         }
 
-        public override NPY_TYPES MathOpReturnType(NpyArray_Ops Operation)
+        public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_STRING;
         }

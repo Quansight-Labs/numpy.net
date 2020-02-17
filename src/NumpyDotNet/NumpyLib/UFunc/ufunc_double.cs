@@ -49,7 +49,7 @@ namespace NumpyLib
     internal class UFUNC_Double : UFUNC_Operations
     {
         #region UFUNC Outer
-        public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
+        public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -143,137 +143,137 @@ namespace NumpyLib
         }
         #endregion
 
-        private double PerformUFuncOperation(NpyArray_Ops op, double aValue, double bValue)
+        private double PerformUFuncOperation(UFuncOperation op, double aValue, double bValue)
         {
             double destValue = 0;
             bool boolValue = false;
 
             switch (op)
             {
-                case NpyArray_Ops.npy_op_add:
+                case UFuncOperation.npy_op_add:
                     destValue = Add(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_subtract:
+                case UFuncOperation.npy_op_subtract:
                     destValue = Subtract(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_multiply:
+                case UFuncOperation.npy_op_multiply:
                     destValue = Multiply(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_divide:
+                case UFuncOperation.npy_op_divide:
                     destValue = Divide(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_remainder:
+                case UFuncOperation.npy_op_remainder:
                     destValue = Remainder(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_fmod:
+                case UFuncOperation.npy_op_fmod:
                     destValue = FMod(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_power:
+                case UFuncOperation.npy_op_power:
                     destValue = Power(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_square:
+                case UFuncOperation.npy_op_square:
                     destValue = Square(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_reciprocal:
+                case UFuncOperation.npy_op_reciprocal:
                     destValue = Reciprocal(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_ones_like:
+                case UFuncOperation.npy_op_ones_like:
                     destValue = OnesLike(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_sqrt:
+                case UFuncOperation.npy_op_sqrt:
                     destValue = Sqrt(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_negative:
+                case UFuncOperation.npy_op_negative:
                     destValue = Negative(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_absolute:
+                case UFuncOperation.npy_op_absolute:
                     destValue = Absolute(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_invert:
+                case UFuncOperation.npy_op_invert:
                     destValue = Invert(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_left_shift:
+                case UFuncOperation.npy_op_left_shift:
                     destValue = LeftShift(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_right_shift:
+                case UFuncOperation.npy_op_right_shift:
                     destValue = RightShift(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_bitwise_and:
+                case UFuncOperation.npy_op_bitwise_and:
                     destValue = BitWiseAnd(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_bitwise_xor:
+                case UFuncOperation.npy_op_bitwise_xor:
                     destValue = BitWiseXor(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_bitwise_or:
+                case UFuncOperation.npy_op_bitwise_or:
                     destValue = BitWiseOr(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_less:
+                case UFuncOperation.npy_op_less:
                     boolValue = Less(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_less_equal:
+                case UFuncOperation.npy_op_less_equal:
                     boolValue = LessEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_equal:
+                case UFuncOperation.npy_op_equal:
                     boolValue = Equal(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_not_equal:
+                case UFuncOperation.npy_op_not_equal:
                     boolValue = NotEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_greater:
+                case UFuncOperation.npy_op_greater:
                     boolValue = Greater(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_greater_equal:
+                case UFuncOperation.npy_op_greater_equal:
                     boolValue = GreaterEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_floor_divide:
+                case UFuncOperation.npy_op_floor_divide:
                     destValue = FloorDivide(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_true_divide:
+                case UFuncOperation.npy_op_true_divide:
                     destValue = TrueDivide(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_logical_or:
+                case UFuncOperation.npy_op_logical_or:
                     boolValue = LogicalOr(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_logical_and:
+                case UFuncOperation.npy_op_logical_and:
                     boolValue = LogicalAnd(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_floor:
+                case UFuncOperation.npy_op_floor:
                     destValue = Floor(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_ceil:
+                case UFuncOperation.npy_op_ceil:
                     destValue = Ceiling(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_maximum:
+                case UFuncOperation.npy_op_maximum:
                     destValue = Maximum(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_minimum:
+                case UFuncOperation.npy_op_minimum:
                     destValue = Minimum(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_rint:
+                case UFuncOperation.npy_op_rint:
                     destValue = Rint(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_conjugate:
+                case UFuncOperation.npy_op_conjugate:
                     destValue = Conjugate(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_isnan:
+                case UFuncOperation.npy_op_isnan:
                     boolValue = IsNAN(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case NpyArray_Ops.npy_op_fmax:
+                case UFuncOperation.npy_op_fmax:
                     destValue = FMax(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_fmin:
+                case UFuncOperation.npy_op_fmin:
                     destValue = FMin(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_heaviside:
+                case UFuncOperation.npy_op_heaviside:
                     destValue = Heaviside(aValue, bValue);
                     break;
                 default:

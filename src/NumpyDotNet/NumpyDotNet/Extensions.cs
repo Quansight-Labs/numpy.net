@@ -543,7 +543,7 @@ namespace NumpyDotNet
         internal class ufuncbase
         {
 
-            internal static ndarray reduce(NpyArray_Ops ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null, bool keepdims = false)
+            internal static ndarray reduce(UFuncOperation ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null, bool keepdims = false)
             {
                 ndarray arr = asanyarray(a);
                 if (arr == null)
@@ -555,7 +555,7 @@ namespace NumpyDotNet
                 return NpyCoreApi.PerformReduceOp(arr, axis, ops, rtype, @out, keepdims);
             }
 
-            internal static ndarray reduceat(NpyArray_Ops ops, object a, object indices, int axis = 0, dtype dtype = null, ndarray @out = null)
+            internal static ndarray reduceat(UFuncOperation ops, object a, object indices, int axis = 0, dtype dtype = null, ndarray @out = null)
             {
                 ndarray arr = asanyarray(a);
                 if (arr == null)
@@ -573,7 +573,7 @@ namespace NumpyDotNet
                 return NpyCoreApi.PerformReduceAtOp(arr, indicesarr, axis, ops, rtype, @out);
             }
 
-            internal static ndarray accumulate(NpyArray_Ops ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null)
+            internal static ndarray accumulate(UFuncOperation ops, object a, int axis = 0, dtype dtype = null, ndarray @out = null)
             {
                 ndarray arr = asanyarray(a);
                 if (arr == null)
@@ -586,7 +586,7 @@ namespace NumpyDotNet
                 return NpyCoreApi.PerformAccumulateOp(arr, axis, ops, rtype, @out);
             }
 
-            public static ndarray outer(NpyArray_Ops ops, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
+            public static ndarray outer(UFuncOperation ops, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
             {
 
                 var a1 = np.asanyarray(a);
@@ -612,22 +612,22 @@ namespace NumpyDotNet
 
         public class ufunc 
         {
-            public static ndarray accumulate(NpyArray_Ops operation, object a, int axis = 0, ndarray @out = null)
+            public static ndarray accumulate(UFuncOperation operation, object a, int axis = 0, ndarray @out = null)
             {
                 return ufuncbase.accumulate(operation, a, axis, null, @out);
             }
 
-            public static ndarray reduce(NpyArray_Ops operation, object a, int axis = 0, ndarray @out = null, bool keepdims = false)
+            public static ndarray reduce(UFuncOperation operation, object a, int axis = 0, ndarray @out = null, bool keepdims = false)
             {
                 return ufuncbase.reduce(operation, a, axis, null, @out, keepdims);
             }
 
-            public static ndarray reduceat(NpyArray_Ops operation, object a, object indices, int axis = 0, ndarray @out = null)
+            public static ndarray reduceat(UFuncOperation operation, object a, object indices, int axis = 0, ndarray @out = null)
             {
                 return ufuncbase.reduceat(operation, a, indices, axis, null, @out);
             }
 
-            public static ndarray outer(NpyArray_Ops operation, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
+            public static ndarray outer(UFuncOperation operation, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
             {
                 return ufuncbase.outer(operation, dtype, a, b, @out, axis);
             }

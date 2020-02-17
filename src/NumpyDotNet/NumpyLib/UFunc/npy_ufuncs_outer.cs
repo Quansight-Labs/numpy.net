@@ -48,7 +48,7 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
 
-        private static NpyArray NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops ops)
+        private static NpyArray NpyUFunc_PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation ops)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -121,19 +121,19 @@ namespace NumpyLib
             return destArray;
         }
 
-        private static bool HasBoolReturn(NpyArray_Ops ops)
+        private static bool HasBoolReturn(UFuncOperation ops)
         {
             switch (ops)
             {
-                case NpyArray_Ops.npy_op_less:
-                case NpyArray_Ops.npy_op_less_equal:
-                case NpyArray_Ops.npy_op_equal:
-                case NpyArray_Ops.npy_op_not_equal:
-                case NpyArray_Ops.npy_op_greater:
-                case NpyArray_Ops.npy_op_greater_equal:
-                case NpyArray_Ops.npy_op_logical_or:
-                case NpyArray_Ops.npy_op_logical_and:
-                case NpyArray_Ops.npy_op_isnan:
+                case UFuncOperation.npy_op_less:
+                case UFuncOperation.npy_op_less_equal:
+                case UFuncOperation.npy_op_equal:
+                case UFuncOperation.npy_op_not_equal:
+                case UFuncOperation.npy_op_greater:
+                case UFuncOperation.npy_op_greater_equal:
+                case UFuncOperation.npy_op_logical_or:
+                case UFuncOperation.npy_op_logical_and:
+                case UFuncOperation.npy_op_isnan:
                     return true;
                 default:
                     return false;

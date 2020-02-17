@@ -7093,24 +7093,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, dtype: np.Complex);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             Assert.AreEqual((Complex)28m, a.GetItem(0));
             print(a);
 
             x = np.arange(8, dtype: np.Complex).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             AssertArray(b, new Complex[,] { { 4, 6 }, { 8, 10 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new Complex[,] { { 4, 6 }, { 8, 10 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new Complex[,] { { 2, 4 }, { 10, 12 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new Complex[,] { { 1, 5 }, { 9, 13 } });
             print(e);
 
@@ -7121,24 +7121,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, dtype: np.Complex);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(a, new Complex[] { 0, 1, 3, 6, 10, 15, 21, 28 });
             print(a);
 
             x = np.arange(8, dtype: np.Complex).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(b, new Complex[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new Complex[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new Complex[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new Complex[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
             print(e);
 
@@ -7147,18 +7147,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_AddReduceAt_1_COMPLEX()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8, dtype: np.Complex), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_add, np.arange(8, dtype: np.Complex), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new Complex[] { 6, 10, 14, 18 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16, dtype: np.Complex).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new Complex[,] {{12.0, 15.0, 18.0, 21.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0},
                                           {8.0, 9.0, 10.0, 11.0}, {24.0, 28.0, 32.0, 36.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new Complex[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -7168,7 +7168,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, dtype: np.Complex);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new Complex[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
@@ -7176,7 +7176,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(6, dtype: np.Complex).reshape((3, 2));
             var y = np.arange(6, dtype: np.Complex).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 

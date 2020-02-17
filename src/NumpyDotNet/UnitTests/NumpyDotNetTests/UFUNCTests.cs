@@ -128,24 +128,24 @@ namespace NumpyDotNetTests
       
             var x = np.arange(8);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(a, new int[] { 0, 1, 3, 6, 10, 15, 21, 28 });
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, {{ 4, 6 }, { 8, 10 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 4, 6 }, { 8, 10 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new int[,,] { { { 0, 1 }, { 2, 4 } }, { { 4, 5 }, { 10, 12 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new int[,,] { { { 0, 1 }, { 2, 5 } }, { { 4, 9 }, { 6, 13 } } });
             print(e);
 
@@ -156,24 +156,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             Assert.AreEqual(28, a.GetItem(0));
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             AssertArray(b, new int[,] { { 4, 6 }, { 8, 10 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new int[,] { { 4, 6 }, { 8, 10 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new int[,] { { 2, 4 }, { 10, 12 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new int[,] { { 1, 5 }, { 9, 13 } });
             print(e);
 
@@ -202,18 +202,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_AddReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8),new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_add, np.arange(8),new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { 6,10,14,18});
             print(a);
 
             double retstep = 0; 
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{12.0, 15.0, 18.0, 21.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0}, 
                                           {8.0, 9.0, 10.0, 11.0}, {24.0, 28.0, 32.0, 36.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis : 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis : 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -223,7 +223,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new int[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
@@ -231,7 +231,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(6).reshape((3, 2));
             var y = np.arange(6).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -254,24 +254,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_subtract, x);
             AssertArray(a, new int[] { 0, -1, -3, -6, -10, -15, -21, -28 });
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_subtract, x);
             AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { -4, -4 }, { -4, -4 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_subtract, x, 0);
             AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { -4, -4 }, { -4, -4 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_subtract, x, 1);
             AssertArray(d, new int[,,] { { { 0, 1 }, { -2, -2 } }, { { 4, 5 }, { -2, -2 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_subtract, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_subtract, x, 2);
             AssertArray(e, new int[,,] { { { 0, -1 }, { 2, -1 } }, { { 4, -1 }, { 6, -1 } } });
             print(e);
 
@@ -282,24 +282,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_subtract, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_subtract, x);
             Assert.AreEqual(-28, a.GetItem(0));
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_subtract, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_subtract, x);
             AssertArray(b, new int[,] { { -4, -4 }, { -4, -4 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_subtract, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_subtract, x, 0);
             AssertArray(c, new int[,] { { -4, -4 }, { -4, -4 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_subtract, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_subtract, x, 1);
             AssertArray(d, new int[,] { { -2, -2 }, { -2, -2 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_subtract, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_subtract, x, 2);
             AssertArray(e, new int[,] { { -1, -1 }, { -1, -1 } });
             print(e);
 
@@ -308,18 +308,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_SubtractReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_subtract, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { -6, -8, -10, -12 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_subtract, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_subtract, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{-12.0, -13.0, -14.0, -15.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0},
                                           {8.0, 9.0, 10.0, 11.0}, {-24.0, -26.0, -28.0, -30.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -329,7 +329,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_subtract, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_subtract, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new int[,] { { 0, -1, -2, -3 }, { 1, 0, -1, -2 }, { 2, 1, 0, -1 }, { 3, 2, 1, 0 } });
@@ -337,7 +337,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(6).reshape((3, 2));
             var y = np.arange(6).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_subtract, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_subtract, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -360,24 +360,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_multiply, x);
             AssertArray(a, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 });
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_multiply, x);
             AssertArray(b, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 0, 5 }, { 12, 21 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_multiply, x, 0);
             AssertArray(c, new int[,,] { { { 0, 1 }, { 2, 3 } }, { { 0, 5 }, { 12, 21 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_multiply, x, 1);
             AssertArray(d, new int[,,] { { { 0, 1 }, { 0, 3 } }, { { 4, 5 }, { 24, 35 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_multiply, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_multiply, x, 2);
             AssertArray(e, new int[,,] { { { 0, 0 }, { 2, 6 } }, { { 4, 20 }, { 6, 42 } } });
             print(e);
 
@@ -388,24 +388,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_multiply, x);
             Assert.AreEqual(0, a.GetItem(0));
             print(a);
 
             x = np.arange(8).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_multiply, x);
             AssertArray(b, new int[,] { { 0, 5 }, { 12, 21 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_multiply, x, 0);
             AssertArray(c, new int[,] { { 0, 5 }, { 12, 21 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_multiply, x, 1);
             AssertArray(d, new int[,] { { 0, 3 }, { 24, 35 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_multiply, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_multiply, x, 2);
             AssertArray(e, new int[,] { { 0, 6 }, { 20, 42 } });
             print(e);
 
@@ -414,18 +414,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_MultiplyReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, np.arange(8), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new int[] { 0, 24, 120, 360 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.0, 45.0, 120.0, 231.0},{12.0, 13.0, 14.0, 15.0}, {4.0, 5.0, 6.0, 7.0},
                                           {8.0, 9.0, 10.0, 11.0}, {0.0, 585.0, 1680.0, 3465.0}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 120.0, 7.0 }, { 720.0, 11.0 }, { 2184.0, 15.0 } });
             print(c);
         }
@@ -435,7 +435,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_multiply, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_multiply, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new int[,] { { 0, 0, 0, 0 }, { 0, 1, 2, 3 }, { 0, 2, 4, 6 }, { 0, 3, 6, 9 } });
@@ -443,7 +443,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(6).reshape((3, 2));
             var y = np.arange(6).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_multiply, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_multiply, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -466,24 +466,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, 16, dtype : np.Float64);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_divide, x);
             AssertArray(a, new double[] { 8.00000000e+00, 8.88888889e-01, 8.88888889e-02, 8.08080808e-03, 6.73400673e-04, 5.18000518e-05, 3.70000370e-06, 2.46666913e-07 });
             print(a);
 
             x = np.arange(8, 16, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_divide, x);
             AssertArray(b, new double[,,] { { { 8, 9 }, { 10, 11 } }, { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_divide, x, 0);
             AssertArray(c, new double[,,] { { { 8, 9 }, { 10, 11 } }, { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_divide, x, 1);
             AssertArray(d, new double[,,] { { { 8, 9 }, { 0.8, 0.81818182 } }, { { 12, 13 }, { 0.85714286, 0.86666667 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_divide, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_divide, x, 2);
             AssertArray(e, new double[,,] { { { 8.0, 0.88888889 }, { 10.0, 0.90909091 } }, { { 12.0, 0.92307692 }, { 14.0, 0.93333333 } } });
             print(e);
 
@@ -494,24 +494,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, 16, dtype: np.Float64);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_divide, x);
             Assert.AreEqual(2.4666691333357994e-07, a.GetItem(0));
             print(a);
 
             x = np.arange(8, 16, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_divide, x);
             AssertArray(b, new double[,] { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_divide, x, 0);
             AssertArray(c, new double[,] { { 0.66666667, 0.69230769 }, { 0.71428571, 0.73333333 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_divide, x, 1);
             AssertArray(d, new double[,] { { 0.8, 0.81818182 }, { 0.85714286, 0.86666667 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_divide, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_divide, x, 2);
             AssertArray(e, new double[,] { { 0.88888889, 0.90909091 }, { 0.92307692, 0.93333333 } });
             print(e);
 
@@ -520,13 +520,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_DivideReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, np.arange(8, 16, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_divide, np.arange(8, 16, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 0.00808081, 0.00681818, 0.00582751, 0.00503663 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_divide, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.00000000e+00, 2.22222222e-02, 3.33333333e-02, 3.89610390e-02},
                                           {1.20000000e+01, 1.30000000e+01, 1.40000000e+01, 1.50000000e+01}, 
                                           {4.00000000e+00, 5.00000000e+00, 6.00000000e+00, 7.00000000e+00},
@@ -534,7 +534,7 @@ namespace NumpyDotNetTests
                                           {0.00000000e+00, 1.70940171e-03, 2.38095238e-03, 2.59740260e-03}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_divide, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_divide, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.0, 3.0 }, { 0.13333333,  7.0  }, { 0.08888889, 11.0  }, { 0.06593407, 15.0  } });
             print(c);
         }
@@ -544,7 +544,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, 8, dtype: np.Float64);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_divide, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new double[,] { { 1.0, 0.8, 0.66666667, 0.57142857 },
@@ -555,7 +555,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(8,14, dtype:np.Float64).reshape((3, 2));
             var y = np.arange(8, 14, dtype: np.Float64).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_divide, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -578,24 +578,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16, 8, -1, dtype: np.Float64);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_remainder, x);
             AssertArray(a, new double[] { 16,  1,  1,  1,  1,  1,  1,  1 });
             print(a);
 
             x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_remainder, x);
             AssertArray(b, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4,4 }, { 4,4 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_remainder, x, 0);
             AssertArray(c, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4, 4 }, { 4, 4 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_remainder, x, 1);
             AssertArray(d, new double[,,] { { { 16, 15 }, { 2, 2 } }, { { 12, 11 }, { 2, 2 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_remainder, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_remainder, x, 2);
             AssertArray(e, new double[,,] { { { 16, 1 }, { 14, 1 } }, { { 12, 1 }, { 10, 1 } } });
             print(e);
 
@@ -606,24 +606,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16,8,-1, dtype: np.Float64);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_remainder, x);
             Assert.AreEqual(1.0, a.GetItem(0));
             print(a);
 
             x = np.arange(16,8,-1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_remainder, x);
             AssertArray(b, new double[,] { { 4, 4 }, { 4, 4 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_remainder, x, 0);
             AssertArray(c, new double[,] { { 4, 4 }, { 4, 4 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_remainder, x, 1);
             AssertArray(d, new double[,] { { 2, 2 }, { 2, 2 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_remainder, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_remainder, x, 2);
             AssertArray(e, new double[,] { { 1, 1 }, { 1, 1 } });
             print(e);
 
@@ -632,13 +632,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_RemainderReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_remainder, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 1,1,1,1 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_remainder, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0,1,2,3},
                                           {12,13,14,15},
                                           {4,5,6,7},
@@ -646,7 +646,7 @@ namespace NumpyDotNetTests
                                           {0,1,2,3}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_remainder, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_remainder, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0, 3 }, { 4, 7 }, { 8, 11 }, { 12, 15 } });
             print(c);
         }
@@ -656,7 +656,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, 8, dtype: np.Float64);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_remainder, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new double[,] { { 0,4,4,4 },
@@ -667,7 +667,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(14, 8, -1, dtype: np.Float64).reshape((3, 2));
             var y = np.arange(14, 8, -1, dtype: np.Float64).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_remainder, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -690,24 +690,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16, 8, -1, dtype: np.Float64);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_fmod, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_fmod, x);
             AssertArray(a, new double[] { 16, 1, 1, 1, 1, 1, 1, 1 });
             print(a);
 
             x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_fmod, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_fmod, x);
             AssertArray(b, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4, 4 }, { 4, 4 } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_fmod, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_fmod, x, 0);
             AssertArray(c, new double[,,] { { { 16, 15 }, { 14, 13 } }, { { 4, 4 }, { 4, 4 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_fmod, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_fmod, x, 1);
             AssertArray(d, new double[,,] { { { 16, 15 }, { 2, 2 } }, { { 12, 11 }, { 2, 2 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_fmod, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_fmod, x, 2);
             AssertArray(e, new double[,,] { { { 16, 1 }, { 14, 1 } }, { { 12, 1 }, { 10, 1 } } });
             print(e);
 
@@ -718,24 +718,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16, 8, -1, dtype: np.Float64);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_fmod, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_fmod, x);
             Assert.AreEqual(1.0, a.GetItem(0));
             print(a);
 
             x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_fmod, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_fmod, x);
             AssertArray(b, new double[,] { { 4, 4 }, { 4, 4 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_fmod, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_fmod, x, 0);
             AssertArray(c, new double[,] { { 4, 4 }, { 4, 4 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_fmod, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_fmod, x, 1);
             AssertArray(d, new double[,] { { 2, 2 }, { 2, 2 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_fmod, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_fmod, x, 2);
             AssertArray(e, new double[,] { { 1, 1 }, { 1, 1 } });
             print(e);
 
@@ -744,13 +744,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_FModReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_fmod, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { 1, 1, 1, 1 });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_fmod, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0,1,2,3},
                                           {12,13,14,15},
                                           {4,5,6,7},
@@ -758,7 +758,7 @@ namespace NumpyDotNetTests
                                           {0,1,2,3}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_fmod, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_fmod, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0, 3 }, { 4, 7 }, { 8, 11 }, { 12, 15 } });
             print(c);
         }
@@ -768,7 +768,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, 8, dtype: np.Float64);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_fmod, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_fmod, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new double[,] { { 0,4,4,4 },
@@ -779,7 +779,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(14, 8,-1, dtype: np.Float64).reshape((3, 2));
             var y = np.arange(14, 8, -1, dtype: np.Float64).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmod, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_fmod, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -802,13 +802,13 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16, 8, -1, dtype: np.Float64);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_power, x);
             AssertArray(a, new double[] {1.6000000e+001, 1.152921504606847E+18, 7.33155940312959E+252, double.PositiveInfinity,
                                         double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity });
             print(a);
 
             x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_power, x);
             AssertArray(b, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 1.40000000e+01, 1.30000000e+01 } }, 
                                             { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } } });
 
@@ -817,17 +817,17 @@ namespace NumpyDotNetTests
 
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_power, x, 0);
             AssertArray(c, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 1.40000000e+01, 1.30000000e+01 } },
                                             { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_power, x, 1);
             AssertArray(d, new double[,,] { { { 1.60000000e+01, 1.50000000e+01 }, { 72057594037927936, 1946195068359375 } }, 
                                             { { 1.20000000e+01, 1.10000000e+01 }, { 61917364224, 2357947691 } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_power, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_power, x, 2);
             AssertArray(e, new double[,,] { { { 1.60000000e+01, 1.152921504606847E+18 }, { 1.40000000e+01, 793714773254144 } }, 
                                             { { 1.20000000e+01, 743008370688 }, { 1.00000000e+01, 1.00000000e+09} } });
             print(e);
@@ -839,24 +839,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(16, 8, -1, dtype: np.Float64);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_power, x);
             Assert.AreEqual(double.PositiveInfinity, a.GetItem(0));
             print(a);
 
             x = np.arange(16, 8, -1, dtype: np.Float64).reshape((2, 2, 2));
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_power, x);
             AssertArray(b, new double[,] { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_power, x, 0);
             AssertArray(c, new double[,] { { 281474976710656, 8649755859375 }, { 289254654976, 10604499373 } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_power, x, 1);
             AssertArray(d, new double[,] { { 72057594037927936, 1946195068359375 }, { 61917364224, 2357947691 } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_power, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_power, x, 2);
             AssertArray(e, new double[,] { { 1.152921504606847E+18, 793714773254144 }, { 743008370688, 1.00000000e+09 } });
             print(e);
 
@@ -865,13 +865,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_PowerReduceAt_1()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_power, np.arange(16, 8, -1, dtype: np.Float64), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 })["::2"] as ndarray;
             AssertArray(a, new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16).reshape((4, 4));
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_power, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new double[,] {{0.00000000e+000, 1.00000000e+000, 1.152921504606847E+18, 5.4744010894202194E+36},
                                           {1.20000000e+001, 1.30000000e+001, 1.40000000e+001, 1.50000000e+001},
                                           {4.00000000e+000, 5.00000000e+000, 6.00000000e+000, 7.00000000e+000},
@@ -879,7 +879,7 @@ namespace NumpyDotNetTests
                                           {0.00000000e+000, 1.00000000e+000, 7.331559403129590e+252, double.PositiveInfinity}});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_power, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_power, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new double[,] { { 0.00000000e+000, 3.00000000e+000 }, { 1.152921504606847E+18, 7.00000000e+000 }, 
                                            { 1.8971375900641885E+81, 1.10000000e+001 }, { 2.5762427384904039E+196, 1.50000000e+001 } });
             print(c);
@@ -890,7 +890,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, 8, dtype: np.Float64);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_power, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_power, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new double[,] { { 2.56000e+02, 1.02400e+03, 4.09600e+03, 1.63840e+04 },
@@ -901,7 +901,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(14, 8, -1, dtype: np.Float64).reshape((3, 2));
             var y = np.arange(14, 8, -1, dtype: np.Float64).reshape((2, 3));
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_power, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_power, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 
@@ -929,7 +929,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_add, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -949,7 +949,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_subtract, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_subtract, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -969,7 +969,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_multiply, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_multiply, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -989,7 +989,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_divide, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_divide, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1009,7 +1009,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_remainder, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_remainder, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1030,7 +1030,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmod, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_fmod, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1051,7 +1051,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_square, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_square, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1073,7 +1073,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_reciprocal, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_reciprocal, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1095,7 +1095,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_ones_like, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_ones_like, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1116,7 +1116,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_sqrt, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_sqrt, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1137,7 +1137,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_negative, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_negative, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1158,7 +1158,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_absolute, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_absolute, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1179,7 +1179,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_invert, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_invert, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1200,7 +1200,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_left_shift, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_left_shift, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1222,7 +1222,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_right_shift, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_right_shift, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1244,7 +1244,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_bitwise_and, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_bitwise_and, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1265,7 +1265,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_bitwise_or, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_bitwise_or, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1286,7 +1286,7 @@ namespace NumpyDotNetTests
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_bitwise_xor, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_bitwise_xor, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1307,7 +1307,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype : np.Float64);
             var a2 = np.arange(3, 8, dtype : np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_less, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_less, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] { { true, true, true, true, true }, 
@@ -1325,7 +1325,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_less_equal, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_less_equal, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] { { true, true, true, true, true },
@@ -1342,7 +1342,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_equal, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_equal, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
@@ -1360,7 +1360,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_not_equal, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_not_equal, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] { { true, true, true, true, true },
@@ -1377,7 +1377,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_greater, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_greater, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
@@ -1394,7 +1394,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_greater_equal, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_greater_equal, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
@@ -1411,7 +1411,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_floor_divide, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_floor_divide, null, a1, a2);
             print(b);
 
 
@@ -1433,7 +1433,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_true_divide, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_true_divide, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1453,7 +1453,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_logical_and, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_logical_and, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
@@ -1470,7 +1470,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_logical_or, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_logical_or, null, a1, a2);
             print(b);
 
             AssertArray(b, new bool[,] {{true, true, true, true, true},
@@ -1488,7 +1488,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_floor, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_floor, null, a1, a2);
             print(b);
 
 
@@ -1509,7 +1509,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_ceil, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_ceil, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1529,7 +1529,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_maximum, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_maximum, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1549,7 +1549,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_minimum, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_minimum, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1569,7 +1569,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_rint, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_rint, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1589,7 +1589,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_conjugate, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_conjugate, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1609,7 +1609,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_isnan, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_isnan, null, a1, a2);
             print(b);
 
 
@@ -1628,7 +1628,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmax, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_fmax, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1648,7 +1648,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_fmin, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_fmin, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]
@@ -1668,7 +1668,7 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
 
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_heaviside, null, a1, a2);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_heaviside, null, a1, a2);
             print(b);
 
             var ExpectedData = new double[,]

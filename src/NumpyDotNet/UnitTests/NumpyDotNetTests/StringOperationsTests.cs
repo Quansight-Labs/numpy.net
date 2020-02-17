@@ -5662,24 +5662,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, dtype: np.Int32).astype(np.Strings);
 
-            var a = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             Assert.AreEqual("01234567", a.GetItem(0));
             print(a);
 
             x = np.arange(8, dtype: np.Int32).reshape((2, 2, 2)).astype(np.Strings);
-            var b = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.reduce(UFuncOperation.npy_op_add, x);
             AssertArray(b, new string[,] { { "04", "15" }, { "26", "37" } });
             print(b);
 
-            var c = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new string[,] { { "04", "15" }, { "26", "37" } });
             print(c);
 
-            var d = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new string[,] { { "02", "13" }, { "46", "57" } });
             print(d);
 
-            var e = np.ufunc.reduce(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.reduce(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new string[,] { { "01", "23" }, { "45", "67" } });
             print(e);
 
@@ -5690,24 +5690,24 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(8, dtype: np.Int32).astype(np.Strings);
 
-            var a = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var a = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(a, new string[] { "0", "01", "012", "0123", "01234", "012345", "0123456", "01234567" });
             print(a);
 
             x = np.arange(8, dtype: np.Int32).reshape((2, 2, 2)).astype(np.Strings);
-            var b = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x);
+            var b = np.ufunc.accumulate(UFuncOperation.npy_op_add, x);
             AssertArray(b, new string[,,] { { { "0", "1" }, { "2", "3" } }, { { "04", "15" }, { "26", "37" } } });
             print(b);
 
-            var c = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 0);
+            var c = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 0);
             AssertArray(c, new string[,,] { { { "0", "1" }, { "2", "3" } }, { { "04", "15" }, { "26", "37" } } });
             print(c);
 
-            var d = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 1);
+            var d = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 1);
             AssertArray(d, new string[,,] { { { "0", "1" }, { "02", "13" } }, { { "4", "5" }, { "46", "57" } } });
             print(d);
 
-            var e = np.ufunc.accumulate(NpyArray_Ops.npy_op_add, x, 2);
+            var e = np.ufunc.accumulate(UFuncOperation.npy_op_add, x, 2);
             AssertArray(e, new string[,,] { { { "0", "01" }, { "2", "23" } }, { { "4", "45" }, { "6", "67" } } });
             print(e);
 
@@ -5716,18 +5716,18 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_UFUNC_AddReduceAt_1_STRING()
         {
-            var a = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, np.arange(8, dtype: np.Int32), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 }).astype(np.Strings)["::2"] as ndarray;
+            var a = np.ufunc.reduceat(UFuncOperation.npy_op_add, np.arange(8, dtype: np.Int32), new npy_intp[] { 0, 4, 1, 5, 2, 6, 3, 7 }).astype(np.Strings)["::2"] as ndarray;
             AssertArray(a, new string[] { "6", "10", "14", "18" });
             print(a);
 
             double retstep = 0;
             var x = np.linspace(0, 15, ref retstep, 16, dtype: np.Int32).reshape((4, 4)).astype(np.Strings);
-            var b = np.ufunc.reduceat(NpyArray_Ops.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
+            var b = np.ufunc.reduceat(UFuncOperation.npy_op_add, x, new npy_intp[] { 0, 3, 1, 2, 0 });
             AssertArray(b, new string[,] {{"048", "159", "2610", "3711"},{"12", "13", "14", "15"}, {"4", "5", "6", "7"},
                                           {"8", "9", "10", "11"}, { "04812", "15913", "261014", "371115" }});
             print(b);
 
-            var c = np.ufunc.reduceat(NpyArray_Ops.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
+            var c = np.ufunc.reduceat(UFuncOperation.npy_op_multiply, x, new npy_intp[] { 0, 3 }, axis: 1);
             AssertArray(c, new string[,] { { "0", "3" }, { "4", "7" }, { "8", "11" }, { "12", "15" } });
             print(c);
         }
@@ -5737,7 +5737,7 @@ namespace NumpyDotNetTests
         {
             var x = np.arange(4, dtype: np.Int32);
 
-            var a = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, x);
+            var a = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, x);
             AssertShape(a, 4, 4);
             print(a.shape);
             AssertArray(a, new Object[,] { { 0, 1, 2, 3 }, { 1, 2, 3, 4 }, { 2, 3, 4, 5 }, { 3, 4, 5, 6 } });
@@ -5745,7 +5745,7 @@ namespace NumpyDotNetTests
 
             x = np.arange(6, dtype: np.Int32).reshape((3, 2)).astype(np.Strings);
             var y = np.arange(6, dtype: np.Int32).reshape((2, 3)).astype(np.Strings);
-            var b = np.ufunc.outer(NpyArray_Ops.npy_op_add, null, x, y);
+            var b = np.ufunc.outer(UFuncOperation.npy_op_add, null, x, y);
             AssertShape(b, 3, 2, 2, 3);
             print(b.shape);
 

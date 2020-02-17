@@ -54,7 +54,7 @@ namespace NumpyLib
         {
             _function = f;
         }
-        public NpyArray_Ops ops;
+        public UFuncOperation ops;
         public int nin, nout, nargs;
         public NpyUFuncIdentity identity;
  
@@ -217,7 +217,7 @@ namespace NumpyLib
     }
     
 
-    public enum NpyArray_Ops
+    public enum UFuncOperation
     {
         npy_op_add = 0,
         npy_op_subtract,
@@ -838,7 +838,7 @@ namespace NumpyLib
 
             switch (self.ops)
             {
-                case NpyArray_Ops.npy_op_add:
+                case UFuncOperation.npy_op_add:
                     switch (arr.ItemType)
                     {
                         case NPY_TYPES.NPY_BOOL:

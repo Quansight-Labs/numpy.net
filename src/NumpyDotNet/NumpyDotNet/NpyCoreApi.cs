@@ -467,7 +467,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, object operand, bool UseSrcAsDest = false)
+        internal static ndarray PerformNumericOp(ndarray a, UFuncOperation ops, object operand, bool UseSrcAsDest = false)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -484,7 +484,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray PerformNumericOp(ndarray a, NpyArray_Ops ops, ndarray b, bool UseSrcAsDest = false)
+        internal static ndarray PerformNumericOp(ndarray a, UFuncOperation ops, ndarray b, bool UseSrcAsDest = false)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -499,7 +499,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray PerformUFUNC(NpyArray_Ops ops, ndarray x1, ndarray x2, ndarray @out, ndarray where)
+        internal static ndarray PerformUFUNC(UFuncOperation ops, ndarray x1, ndarray x2, ndarray @out, ndarray where)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -511,7 +511,7 @@ namespace NumpyDotNet {
         }
 
 
-        internal static ndarray PerformOuterOp(ndarray a, ndarray b, ndarray dest, NpyArray_Ops ops)
+        internal static ndarray PerformOuterOp(ndarray a, ndarray b, ndarray dest, UFuncOperation ops)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -522,7 +522,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray PerformReduceOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null, bool keepdims = false)
+        internal static ndarray PerformReduceOp(ndarray a, int axis, UFuncOperation ops, NPY_TYPES rtype, ndarray @out = null, bool keepdims = false)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -533,7 +533,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray PerformReduceAtOp(ndarray a, ndarray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
+        internal static ndarray PerformReduceAtOp(ndarray a, ndarray indices, int axis, UFuncOperation ops, NPY_TYPES rtype, ndarray @out = null)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -544,7 +544,7 @@ namespace NumpyDotNet {
 
         }
 
-        internal static ndarray PerformAccumulateOp(ndarray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, ndarray @out = null)
+        internal static ndarray PerformAccumulateOp(ndarray a, int axis, UFuncOperation ops, NPY_TYPES rtype, ndarray @out = null)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -576,7 +576,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static NpyUFuncObject GetNumericOp(NpyArray_Ops op)
+        internal static NpyUFuncObject GetNumericOp(UFuncOperation op)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)
@@ -1227,7 +1227,7 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void SetNumericOp(NpyArray_Ops op, NpyUFuncObject UFunc)
+        internal static void SetNumericOp(UFuncOperation op, NpyUFuncObject UFunc)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)

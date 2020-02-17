@@ -51,7 +51,7 @@ namespace NumpyLib
 
         internal interface UFUNC_Operations
         {
-            void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op);
+            void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op);
         }
 
 

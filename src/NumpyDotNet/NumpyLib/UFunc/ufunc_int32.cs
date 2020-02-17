@@ -50,7 +50,7 @@ namespace NumpyLib
 
     internal class UFUNC_Int32 : UFUNC_Operations
     {
-        public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, NpyArray_Ops op)
+        public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
         {
             var destSize = NpyArray_Size(destArray);
             var aSize = NpyArray_Size(a);
@@ -143,30 +143,30 @@ namespace NumpyLib
 
         }
 
-        private Int32 PerformUFuncOperation(NpyArray_Ops op, Int32 aValue, Int32 bValue)
+        private Int32 PerformUFuncOperation(UFuncOperation op, Int32 aValue, Int32 bValue)
         {
             Int32 destValue;
             switch (op)
             {
-                case NpyArray_Ops.npy_op_add:
+                case UFuncOperation.npy_op_add:
                     destValue = UFuncAdd(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_subtract:
+                case UFuncOperation.npy_op_subtract:
                     destValue = UFuncSubtract(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_multiply:
+                case UFuncOperation.npy_op_multiply:
                     destValue = UFuncMultiply(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_divide:
+                case UFuncOperation.npy_op_divide:
                     destValue = UFuncDivide(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_remainder:
+                case UFuncOperation.npy_op_remainder:
                     destValue = UFuncRemainder(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_fmod:
+                case UFuncOperation.npy_op_fmod:
                     destValue = UFuncFMod(aValue, bValue);
                     break;
-                case NpyArray_Ops.npy_op_power:
+                case UFuncOperation.npy_op_power:
                     destValue = UFuncPower(aValue, bValue);
                     break;
 

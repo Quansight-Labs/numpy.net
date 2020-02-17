@@ -279,27 +279,27 @@ namespace NumpyLib
         #region npy_calculation
 
  
-        public static NpyArray NpyArray_PerformNumericOperation(NpyArray_Ops operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
+        public static NpyArray NpyArray_PerformNumericOperation(UFuncOperation operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
             return numpyinternal.NpyArray_PerformNumericOperation(operationType, x1Array, x2Array, outArray, whereFilter);
         }
 
-        public static NpyArray NpyArray_PerformOuterOp(NpyArray a, NpyArray b, NpyArray dest, NpyArray_Ops operationType)
+        public static NpyArray NpyArray_PerformOuterOp(NpyArray a, NpyArray b, NpyArray dest, UFuncOperation operationType)
         {
             return numpyinternal.PerformOuterOpArray(a, b, dest, operationType);
         }
 
-        public static NpyArray NpyArray_PerformReduceOp(NpyArray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out, bool keepdims)
+        public static NpyArray NpyArray_PerformReduceOp(NpyArray a, int axis, UFuncOperation ops, NPY_TYPES rtype, NpyArray @out, bool keepdims)
         {
             return numpyinternal.PerformReduceOpArray(a, axis, ops, rtype, @out, keepdims);
         }
 
-        public static NpyArray NpyArray_PerformReduceAtOp(NpyArray a, NpyArray indices, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out)
+        public static NpyArray NpyArray_PerformReduceAtOp(NpyArray a, NpyArray indices, int axis, UFuncOperation ops, NPY_TYPES rtype, NpyArray @out)
         {
             return numpyinternal.PerformReduceAtOpArray(a, indices, axis, ops, rtype, @out);
         }
 
-        public static NpyArray NpyArray_PerformAccumulateOp(NpyArray a, int axis, NpyArray_Ops ops, NPY_TYPES rtype, NpyArray @out)
+        public static NpyArray NpyArray_PerformAccumulateOp(NpyArray a, int axis, UFuncOperation ops, NPY_TYPES rtype, NpyArray @out)
         {
             return numpyinternal.PerformAccumulateOpArray(a, axis, ops, rtype, @out);
         }
@@ -1182,12 +1182,12 @@ namespace NumpyLib
 
 
  
-        public static NpyUFuncObject NpyArray_GetNumericOp(NpyArray_Ops op)
+        public static NpyUFuncObject NpyArray_GetNumericOp(UFuncOperation op)
         {
             return numpyinternal.NpyArray_GetNumericOp(op);
         }
 
-        public static NpyUFuncObject NpyArray_SetNumericOp(NpyArray_Ops op, NpyUFuncObject func)
+        public static NpyUFuncObject NpyArray_SetNumericOp(UFuncOperation op, NpyUFuncObject func)
         {
             return numpyinternal.NpyArray_SetNumericOp(op, func);
         }

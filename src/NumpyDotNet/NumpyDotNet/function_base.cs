@@ -1211,7 +1211,7 @@ namespace NumpyDotNet
             copyto(ph_correct, 0, where: absolute(dd) < discont);
 
 
-            var dtype_typenum = numpyAPI.GetArrayHandler(arrp.TypeNum).MathOpReturnType(NpyArray_Ops.npy_op_multiply);
+            var dtype_typenum = numpyAPI.GetArrayHandler(arrp.TypeNum).MathOpReturnType(UFuncOperation.npy_op_multiply);
             dtype dtype = new dtype(numpyAPI.NpyArray_DescrFromType(dtype_typenum));
   
             var up = array(p, copy: true, dtype: dtype);
@@ -3770,7 +3770,7 @@ namespace NumpyDotNet
                 // Operations didn't work, cast to ndarray
                 d = np.asarray(d);
                 yarr = np.asarray(yarr);
-                ret = ufunc.reduce(NpyArray_Ops.npy_op_add, d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0, axis: axis);
+                ret = ufunc.reduce(UFuncOperation.npy_op_add, d * (yarr.A(slice1) + yarr.A(slice2)) / 2.0, axis: axis);
             }
 
             return ret;

@@ -129,25 +129,25 @@ namespace NumpyDotNet
             return numericOpResult;
         }
 
-        internal static ndarray BinaryOp(ndarray a, object b, NpyArray_Ops op)
+        internal static ndarray BinaryOp(ndarray a, object b, UFuncOperation op)
         {
             var f = NpyCoreApi.GetNumericOp(op);
             return BinaryOp(a, b, f);
         }
 
-        public static object BinaryOpInPlace(ndarray a, object b, NpyArray_Ops op, ndarray ret)
+        public static object BinaryOpInPlace(ndarray a, object b, UFuncOperation op, ndarray ret)
         {
             var f = NpyCoreApi.GetNumericOp(op);
             return BinaryOpInPlace(a, b, f, ret);
         }
 
-        internal static object UnaryOp(ndarray a, NpyArray_Ops op)
+        internal static object UnaryOp(ndarray a, UFuncOperation op)
         {
             return NpyCoreApi.PerformNumericOp(a, op, 0, false);
         }
 
 
-        internal static object UnaryOpInPlace(ndarray a, NpyArray_Ops op, ndarray ret)
+        internal static object UnaryOpInPlace(ndarray a, UFuncOperation op, ndarray ret)
         {
             ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, op, 0, true);
 
@@ -167,285 +167,285 @@ namespace NumpyDotNet
 
         public static ndarray operator +(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_add, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_add, operand);
         }
 
         public static ndarray operator +(object operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_add, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_add, operand);
         }
 
         public static ndarray operator +(ndarray a, ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_add, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_add, b);
         }
 
         [SpecialName]
         public ndarray InPlaceAdd(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_add, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_add, b, true);
         }
 
         public static ndarray operator -(ndarray a, object operand) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_subtract, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_subtract, operand);
         }
         public static ndarray operator -(object operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_subtract, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_subtract, operand);
         }
 
         public static ndarray operator -(ndarray a, ndarray b) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_subtract, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_subtract, b);
         }
 
 
         [SpecialName]
         public ndarray InPlaceSubtract(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_subtract, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_subtract, b, true);
         }
 
         public static ndarray operator -(ndarray a) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_negative, 0);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_negative, 0);
         }
 
         public static ndarray operator *(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_multiply, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_multiply, operand);
         }
 
         public static ndarray operator *(object operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_multiply, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_multiply, operand);
         }
 
         public static ndarray operator *(ndarray a, ndarray b) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_multiply, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_multiply, b);
         }
 
         [SpecialName]
         public ndarray InPlaceMultiply(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_multiply, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_multiply, b, true);
         }
 
 
         public static ndarray operator /(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_divide, operand);
         }
         public static ndarray operator /(object operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_divide, operand);
         }
 
 
         public static object operator /(ndarray a, ndarray b) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_divide, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_divide, b);
         }
 
         [SpecialName]
         public ndarray InPlaceDivide(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_divide, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_divide, b, true);
         }
 
         [SpecialName]
         public ndarray InPlaceTrueDivide(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_true_divide, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_true_divide, b, true);
         }
 
         [SpecialName]
         public ndarray InPlaceFloorDivide(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_floor_divide, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_floor_divide, b, true);
         }
 
         public static ndarray operator %(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_remainder, operand);
         }
         public static ndarray operator %(object operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_remainder, operand);
         }
         public static ndarray operator %(ndarray a, ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_remainder, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_remainder, b);
         }
 
 
 
         public static ndarray operator &(ndarray a, Int64 operand) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_and, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_and, operand);
         }
         public static ndarray operator &(Int64 operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_and, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_and, operand);
         }
 
         public static ndarray operator &(ndarray a, ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_and, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_and, b);
         }
 
         [SpecialName]
         public ndarray InPlaceBitwiseAnd(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_bitwise_and, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_bitwise_and, b, true);
         }
 
         public static ndarray operator |(ndarray a, Int64 operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_or, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_or, operand);
         }
         public static ndarray operator |(Int64 operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_or, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_or, operand);
         }
 
         public static ndarray operator |(ndarray a, ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_or, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_or, b);
         }
 
         [SpecialName]
         public ndarray InPlaceBitwiseOr(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_bitwise_or, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_bitwise_or, b, true);
         }
 
         public static ndarray operator ^(ndarray a, Int64 operand) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_xor, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_xor, operand);
         }
         public static ndarray operator ^(Int64 operand, ndarray a)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_xor, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_xor, operand);
         }
 
         public static object operator ^(ndarray a, ndarray b) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_bitwise_xor, b);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_bitwise_xor, b);
         }
 
         public static ndarray operator <<(ndarray a, int shift) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_left_shift, shift);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_left_shift, shift);
         }
 
         public static ndarray operator >>(ndarray a, int shift) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_right_shift, shift);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_right_shift, shift);
         }
 
         public static ndarray operator <(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_less, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_less, operand);
         }
         public static ndarray operator <=(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_less_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_less_equal, operand);
         }
         public static ndarray operator >(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_greater, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_greater, operand);
         }
         public static ndarray operator >=(ndarray a, object operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_greater_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_greater_equal, operand);
         }
         public static ndarray operator ==(ndarray a, double operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, float operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, Int64 operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, Int32 operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, bool operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, decimal operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, Complex operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
         public static ndarray operator ==(ndarray a, BigInteger operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_equal, operand);
         }
  
         [SpecialName]
         public ndarray Equals(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_equal, b);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_equal, b);
         }
         [SpecialName]
         public ndarray Equals(string b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_equal, b);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_equal, b);
         }
         public static ndarray operator !=(ndarray a, double operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, float operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, Int64 operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, Int32 operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, bool operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, decimal operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, Complex operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
         public static ndarray operator !=(ndarray a, BigInteger operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_not_equal, operand);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_not_equal, operand);
         }
 
         [SpecialName]
         public ndarray NotEquals(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_not_equal, b);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_not_equal, b);
         }
         [SpecialName]
         public ndarray NotEquals(string b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_not_equal, b);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_not_equal, b);
         }
         [SpecialName]
         public ndarray InPlaceExclusiveOr(ndarray b)
         {
-            return NpyCoreApi.PerformNumericOp(this, NpyArray_Ops.npy_op_bitwise_xor, b, true);
+            return NpyCoreApi.PerformNumericOp(this, UFuncOperation.npy_op_bitwise_xor, b, true);
         }
 
         public static ndarray operator ~(ndarray a) {
-            return NpyCoreApi.PerformNumericOp(a, NpyArray_Ops.npy_op_invert, 0);
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_invert, 0);
         }
 
         public static implicit operator String(ndarray a) {
