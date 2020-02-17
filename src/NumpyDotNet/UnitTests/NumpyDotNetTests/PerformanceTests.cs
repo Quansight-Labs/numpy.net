@@ -305,7 +305,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_AddOuter_NotSameType()
         {
