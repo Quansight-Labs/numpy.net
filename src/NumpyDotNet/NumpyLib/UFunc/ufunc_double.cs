@@ -171,6 +171,7 @@ namespace NumpyLib
             npy_intp O2_CalculatedOffset = (O2_Offset / sizeof(double));
 
 
+            double retValue = retArray[R_Index];
 
             try
             {
@@ -179,34 +180,37 @@ namespace NumpyLib
                 {
                     npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
 
-                    var Op1Value = Op1Array[O1_Index];
+                    var Op1Value = retValue;
                     var Op2Value = Op2Array[O2_Index];
 
                     // for the common operations, do inline for speed.
                     switch (ops)
                     {
                         case UFuncOperation.add:
-                            retArray[R_Index] = Add(Op1Value,Op2Value);
+                            retValue = Add(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.subtract:
-                            retArray[R_Index] = Subtract(Op1Value,Op2Value);
+                            retValue = Subtract(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.multiply:
-                            retArray[R_Index] = Multiply(Op1Value, Op2Value);
+                            retValue = Multiply(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.divide:
-                            retArray[R_Index] = Divide(Op1Value, Op2Value);
+                            retValue = Divide(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.power:
-                            retArray[R_Index] = Power(Op1Value, Op2Value);
+                            retValue = Power(Op1Value, Op2Value);
                             break;
 
                         default:
-                            retArray[R_Index] = PerformUFuncOperation(ops, Op1Value, Op2Value);
+                            retValue = PerformUFuncOperation(ops, Op1Value, Op2Value);
                             break;
 
                     }
                 }
+
+                retArray[R_Index] = retValue;
+
             }
             catch (System.OverflowException oe)
             {
