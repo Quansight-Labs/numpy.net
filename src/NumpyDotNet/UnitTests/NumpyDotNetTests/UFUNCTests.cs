@@ -1482,6 +1482,87 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_FloorOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_floor, null, a1, a2);
+            print(b);
+
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_CeilOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_ceil, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                 { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MaximumOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_maximum, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 3.0, 4.0, 5.0, 6.0, 7.0 },
+                  { 4.0, 4.0, 5.0, 6.0, 7.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MinimumOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_minimum, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 3.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
 
         #endregion
     }

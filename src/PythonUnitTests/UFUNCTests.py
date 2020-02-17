@@ -825,6 +825,46 @@ class Test_UFUNCTests(unittest.TestCase):
         b = np.logical_or.outer(a1,a2)
         print(b)
 
+    def test_FloorOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+
+        try :
+            b = np.floor.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+ 
+    def test_CeilOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+
+        try :
+            b = np.ceil.outer(a1,a2)
+            print(b)
+        except:
+            print("Exception occured")
+
+    def test_MaximumOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+ 
+        b = np.maximum.outer(a1,a2)
+        print(b)
+
+    def test_MinimumOuter_DOUBLE(self):
+
+        a1 = np.arange(0, 5, dtype=np.float64);
+        a2 = np.arange(3, 8, dtype=np.float64);
+ 
+        b = np.minimum.outer(a1,a2)
+        print(b)
+    
+ 
+
     #endregion 
 
 
