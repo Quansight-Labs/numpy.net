@@ -940,7 +940,351 @@ class Test_UFUNCTests(unittest.TestCase):
         
       #endregion
   
-      
+
+    #region REDUCE Tests
+    def test_AddReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+  
+        b = np.add.reduce(a1)
+        print(b)
+
+    def test_SubtractReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64); 
+        
+        b = np.subtract.reduce(a1)
+        print(b)
+
+    def test_MultiplyReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+  
+        b = np.multiply.reduce(a1)
+        print(b)
+
+    def test_DivideReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.divide.reduce(a1)
+        print(b)
+
+    def test_RemainderReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        b = np.remainder.reduce(a1)
+        print(b)
+
+    def test_FModReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.fmod.reduce(a1)
+        print(b)
+
+    def test_SquareReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.square.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_ReciprocalReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        try :
+            b = np.reciprocal.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_OnesLikeReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        try :
+            b = np.ones_like.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_SqrtReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);        
+
+        try :
+            b = np.sqrt.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+
+    def test_NegativeReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        try :
+            b = np.negative.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+        
+    def test_AbsoluteReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.absolute.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+
+    def test_InvertReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        try :
+            b = np.invert.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_LeftShiftReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        try :
+            b = np.left_shift.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+
+    def test_RightShiftReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);  
+
+        try :
+            b = np.right_shift.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+            
+    def test_BitwiseAndReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        try :
+            b = np.bitwise_and.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+                        
+    def test_BitwiseOrReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        try :
+            b = np.bitwise_or.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_BitwiseXorReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+  
+        try :
+            b = np.bitwise_xor.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_LessReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.less.reduce(a1)
+        print(b)
+
+    def test_LessEqualReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.less_equal.reduce(a1)
+        print(b)
+
+    def test_EqualReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        b = np.equal.reduce(a1)
+        print(b)
+
+    def test_NotEqualReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.not_equal.reduce(a1)
+        print(b)
+
+    def test_GreaterReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.greater.reduce(a1)
+        print(b)
+
+    def test_GreaterEqualReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.greater_equal.reduce(a1)
+        print(b)
+
+    def test_FloorDivideReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.floor_divide.reduce(a1)
+        print(b)
+
+    def test_TrueDivideReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.true_divide.reduce(a1)
+        print(b)
+
+    def test_LogicalAndReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.logical_and.reduce(a1)
+        print(b)
+
+    def test_LogicalOrReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.logical_or.reduce(a1)
+        print(b)
+
+    def test_FloorReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.floor.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_CeilReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.ceil.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_MaximumReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.maximum.reduce(a1)
+        print(b)
+
+    def test_MinimumReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+ 
+        b = np.minimum.reduce(a1)
+        print(b)
+ 
+    def test_RintReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.rint.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_ConjugateReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.conjugate.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_IsNANReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+
+        try :
+            b = np.isnan.reduce(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_FMaxReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.fmax.reduce(a1)
+        print(b)
+
+    def test_FMinReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+       
+        b = np.fmin.reduce(a1)
+        print(b)
+
+    def test_HeavisideReduce_DOUBLE(self):
+
+        a1 = np.arange(0, 100, dtype=np.float64);
+        
+        b = np.heaviside.reduce(a1)
+        print(b)
+        
+      #endregion
+  
+        
 
       #endregion 
 
