@@ -559,6 +559,7 @@ class Test_UFUNCTests(unittest.TestCase):
 
     #region UFUNC DOUBLE Tests
 
+    #region OUTER Tests
     def test_AddOuter_DOUBLE(self):
 
         a1 = np.arange(0, 5, dtype=np.float64);
@@ -615,6 +616,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.square.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
  
@@ -626,6 +628,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.reciprocal.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -637,6 +640,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.ones_like.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -648,6 +652,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.sqrt.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -660,6 +665,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.negative.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -672,6 +678,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.absolute.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
  
@@ -684,6 +691,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.invert.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -695,6 +703,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.left_shift.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -707,6 +716,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.right_shift.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -719,6 +729,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.bitwise_and.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -731,6 +742,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.bitwise_or.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -742,6 +754,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.bitwise_xor.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -833,6 +846,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.floor.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
  
@@ -844,6 +858,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.ceil.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -871,6 +886,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.rint.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
  
@@ -882,6 +898,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.conjugate.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
  
@@ -893,6 +910,7 @@ class Test_UFUNCTests(unittest.TestCase):
         try :
             b = np.isnan.outer(a1,a2)
             print(b)
+            self.fail("should have thrown exception")
         except:
             print("Exception occured")
 
@@ -919,8 +937,12 @@ class Test_UFUNCTests(unittest.TestCase):
  
         b = np.heaviside.outer(a1,a2)
         print(b)
+        
+      #endregion
+  
+      
 
-    #endregion 
+      #endregion 
 
 
 if __name__ == '__main__':
