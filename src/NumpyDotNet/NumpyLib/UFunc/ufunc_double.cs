@@ -185,19 +185,19 @@ namespace NumpyLib
                     switch (ops)
                     {
                         case UFuncOperation.add:
-                            retArray[R_Index] = Op1Value + Op2Value;
+                            retArray[R_Index] = Add(Op1Value,Op2Value);
                             break;
                         case UFuncOperation.subtract:
-                            retArray[R_Index] = Op1Value - Op2Value;
+                            retArray[R_Index] = Subtract(Op1Value,Op2Value);
                             break;
                         case UFuncOperation.multiply:
-                            retArray[R_Index] = Op1Value * Op2Value;
+                            retArray[R_Index] = Multiply(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.divide:
-                            retArray[R_Index] = Op1Value / Op2Value;
+                            retArray[R_Index] = Divide(Op1Value, Op2Value);
                             break;
                         case UFuncOperation.power:
-                            retArray[R_Index] = Math.Pow(Op1Value, Op2Value);
+                            retArray[R_Index] = Power(Op1Value, Op2Value);
                             break;
 
                         default:
