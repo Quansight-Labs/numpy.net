@@ -752,7 +752,7 @@ namespace NumpyDotNet
                 ArrayTypeNotSupported(a);
             }
 
-            var ret = NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_rint, 0);
+            var ret = NpyCoreApi.PerformNumericOp(a, UFuncOperation.rint, 0);
             ret = ret.reshape(new shape(a.dims));
             if (where != null)
             {
@@ -783,7 +783,7 @@ namespace NumpyDotNet
             var a = asanyarray(x);
 
  
-            var ret = NpyCoreApi.PerformNumericOp(a, UFuncOperation.npy_op_ceil, 0);
+            var ret = NpyCoreApi.PerformNumericOp(a, UFuncOperation.ceil, 0);
             ret = ret.reshape(new shape(a.dims));
             if (where != null)
             {
@@ -1705,12 +1705,12 @@ namespace NumpyDotNet
 
         public static ndarray add(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_add, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.add, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
         public static ndarray reciprocal(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_reciprocal, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.reciprocal, 0);
         }
 
         public static ndarray positive(object o)
@@ -1721,7 +1721,7 @@ namespace NumpyDotNet
 
         public static ndarray negative(object a, ndarray @out = null)
         {
-            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_negative, 0, UseSrcAsDest: false );
+            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.negative, 0, UseSrcAsDest: false );
             if (@out != null)
             {
                 np.copyto(@out, result);
@@ -1731,33 +1731,33 @@ namespace NumpyDotNet
 
         public static ndarray multiply(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_multiply, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.multiply, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
         public static ndarray divide(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
         public static ndarray power(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_power, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.power, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
         public static ndarray subtract(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_subtract, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.subtract, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
  
         public static ndarray true_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_true_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.true_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
           
         public static ndarray floor_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_floor_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.floor_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
  
         public static ndarray float_power(object x1, object x2, object where = null)
@@ -1824,12 +1824,12 @@ namespace NumpyDotNet
         }
         public static ndarray remainder(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_remainder, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.remainder, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
  
         public static ndarray fmod(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_fmod, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmod, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
  
 
@@ -1842,8 +1842,8 @@ namespace NumpyDotNet
         {
             ndarray[] results = new ndarray[2];
 
-            results[0] = NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_floor_divide, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
-            results[1] = NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_remainder, asanyarray(x1), asanyarray(x2), @out2, asanyarray(where));
+            results[0] = NpyCoreApi.PerformUFUNC(UFuncOperation.floor_divide, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            results[1] = NpyCoreApi.PerformUFUNC(UFuncOperation.remainder, asanyarray(x1), asanyarray(x2), @out2, asanyarray(where));
 
             return results;
         }
@@ -1861,8 +1861,8 @@ namespace NumpyDotNet
 
             dtype ret_type = result_type(x1a.TypeNum);
 
-            results[1] = NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_floor_divide, asanyarray(x1).astype(ret_type), asanyarray(1), @out1, asanyarray(where));
-            results[0] = NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_remainder, asanyarray(x1).astype(ret_type), asanyarray(1), @out2, asanyarray(where));
+            results[1] = NpyCoreApi.PerformUFUNC(UFuncOperation.floor_divide, asanyarray(x1).astype(ret_type), asanyarray(1), @out1, asanyarray(where));
+            results[0] = NpyCoreApi.PerformUFUNC(UFuncOperation.remainder, asanyarray(x1).astype(ret_type), asanyarray(1), @out2, asanyarray(where));
 
             return results;
         }
@@ -2158,7 +2158,7 @@ namespace NumpyDotNet
 
         public static ndarray conj(object a, ndarray @out = null, object where = null)
         {
-            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_conjugate, 0, UseSrcAsDest: false);
+            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.conjugate, 0, UseSrcAsDest: false);
             if (@out != null)
             {
                 np.copyto(@out, result);

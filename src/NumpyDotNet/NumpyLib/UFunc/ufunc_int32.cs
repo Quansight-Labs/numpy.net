@@ -148,25 +148,25 @@ namespace NumpyLib
             Int32 destValue;
             switch (op)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                     destValue = UFuncAdd(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_subtract:
+                case UFuncOperation.subtract:
                     destValue = UFuncSubtract(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_multiply:
+                case UFuncOperation.multiply:
                     destValue = UFuncMultiply(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_divide:
+                case UFuncOperation.divide:
                     destValue = UFuncDivide(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_remainder:
+                case UFuncOperation.remainder:
                     destValue = UFuncRemainder(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_fmod:
+                case UFuncOperation.fmod:
                     destValue = UFuncFMod(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_power:
+                case UFuncOperation.power:
                     destValue = UFuncPower(aValue, bValue);
                     break;
 

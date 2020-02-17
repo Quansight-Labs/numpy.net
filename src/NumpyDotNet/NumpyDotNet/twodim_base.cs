@@ -459,7 +459,7 @@ namespace NumpyDotNet
                 M = N;
 
 
-            ndarray m = ufunc.outer(UFuncOperation.npy_op_greater_equal, np.Bool, arange(N, dtype: _min_int(0, N)),
+            ndarray m = ufunc.outer(UFuncOperation.greater_equal, np.Bool, arange(N, dtype: _min_int(0, N)),
                                                   arange(-k, M-k, dtype: _min_int(-k, (int)M - k)));
 
             // Avoid making a copy if the requested type is already bool
@@ -651,7 +651,7 @@ namespace NumpyDotNet
             if (N > 1)
             {
                 tmp[":", "1:"] = array[":", null];
-                ufunc.accumulate(UFuncOperation.npy_op_multiply, tmp[":", "1:"] as ndarray, @out : tmp[":", "1:"] as ndarray, axis : 1);
+                ufunc.accumulate(UFuncOperation.multiply, tmp[":", "1:"] as ndarray, @out : tmp[":", "1:"] as ndarray, axis : 1);
             }
 
 

@@ -62,7 +62,7 @@ namespace NumpyLib
         {
             switch (operationType)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                     switch (srcArray.ItemType)
                     {
                         case NPY_TYPES.NPY_BOOL:
@@ -90,163 +90,163 @@ namespace NumpyLib
 
             switch (operationType)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).AddOperation;
                 }
-                case UFuncOperation.npy_op_subtract:
+                case UFuncOperation.subtract:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SubtractOperation;
                 }
-                case UFuncOperation.npy_op_multiply:
+                case UFuncOperation.multiply:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).MultiplyOperation;
                 }
-                case UFuncOperation.npy_op_divide:
+                case UFuncOperation.divide:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).DivideOperation;
                 }
-                case UFuncOperation.npy_op_remainder:
+                case UFuncOperation.remainder:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).RemainderOperation;
                 }
 
-                case UFuncOperation.npy_op_fmod:
+                case UFuncOperation.fmod:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FModOperation;
                 }
 
-                case UFuncOperation.npy_op_power:
+                case UFuncOperation.power:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).PowerOperation;
                 }
-                case UFuncOperation.npy_op_square:
+                case UFuncOperation.square:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SquareOperation;
                 }
-                case UFuncOperation.npy_op_reciprocal:
+                case UFuncOperation.reciprocal:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
                 }
-                case UFuncOperation.npy_op_ones_like:
+                case UFuncOperation.ones_like:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
                 }
-                case UFuncOperation.npy_op_sqrt:
+                case UFuncOperation.sqrt:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
                 }
-                case UFuncOperation.npy_op_negative:
+                case UFuncOperation.negative:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
                 }
-                case UFuncOperation.npy_op_absolute:
+                case UFuncOperation.absolute:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
                 }
-                case UFuncOperation.npy_op_invert:
+                case UFuncOperation.invert:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
                 }
-                case UFuncOperation.npy_op_left_shift:
+                case UFuncOperation.left_shift:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LeftShiftOperation;
                 }
-                case UFuncOperation.npy_op_right_shift:
+                case UFuncOperation.right_shift:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).RightShiftOperation;
                 }
-                case UFuncOperation.npy_op_bitwise_and:
+                case UFuncOperation.bitwise_and:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseAndOperation;
                 }
-                case UFuncOperation.npy_op_bitwise_xor:
+                case UFuncOperation.bitwise_xor:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseXorOperation;
                 }
-                case UFuncOperation.npy_op_bitwise_or:
+                case UFuncOperation.bitwise_or:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseOrOperation;
                 }
-                case UFuncOperation.npy_op_less:
+                case UFuncOperation.less:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LessOperation;
                 }
-                case UFuncOperation.npy_op_less_equal:
+                case UFuncOperation.less_equal:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LessEqualOperation;
                 }
-                case UFuncOperation.npy_op_equal:
+                case UFuncOperation.equal:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).EqualOperation;
                 }
-                case UFuncOperation.npy_op_not_equal:
+                case UFuncOperation.not_equal:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
                 }
-                case UFuncOperation.npy_op_greater:
+                case UFuncOperation.greater:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterOperation;
                 }
-                case UFuncOperation.npy_op_greater_equal:
+                case UFuncOperation.greater_equal:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterEqualOperation;
                 }
-                case UFuncOperation.npy_op_isnan:
+                case UFuncOperation.isnan:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
                 }
-                case UFuncOperation.npy_op_floor_divide:
+                case UFuncOperation.floor_divide:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorDivideOperation;
                 }
-                case UFuncOperation.npy_op_true_divide:
+                case UFuncOperation.true_divide:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).TrueDivideOperation;
                 }
-                case UFuncOperation.npy_op_logical_or:
+                case UFuncOperation.logical_or:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalOrOperation;
                 }
-                case UFuncOperation.npy_op_logical_and:
+                case UFuncOperation.logical_and:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
                 }
-                case UFuncOperation.npy_op_floor:
+                case UFuncOperation.floor:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorOperation;
                 }
-                case UFuncOperation.npy_op_ceil:
+                case UFuncOperation.ceil:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
                 }
-                case UFuncOperation.npy_op_maximum:
+                case UFuncOperation.maximum:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).MaximumOperation;
                 }
-                case UFuncOperation.npy_op_fmax:
+                case UFuncOperation.fmax:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
                 }
-                case UFuncOperation.npy_op_minimum:
+                case UFuncOperation.minimum:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).MinimumOperation;
                 }
-                case UFuncOperation.npy_op_fmin:
+                case UFuncOperation.fmin:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).FMinOperation;
                 }
 
-                case UFuncOperation.npy_op_heaviside:
+                case UFuncOperation.heaviside:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).HeavisideOperation;
                 }
 
-                case UFuncOperation.npy_op_rint:
+                case UFuncOperation.rint:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).RintOperation;
                 }
-                case UFuncOperation.npy_op_conjugate:
+                case UFuncOperation.conjugate:
                 {
                     return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
                 }
@@ -283,7 +283,7 @@ namespace NumpyLib
                 {
                     if (NpyArray_ISFLOAT(operandArray))
                     {
-                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(UFuncOperation.npy_op_special_operand_is_float));
+                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(UFuncOperation.special_operand_is_float));
                     }
                 }
             }
@@ -291,134 +291,134 @@ namespace NumpyLib
 
             switch (operationType)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_subtract:
+                case UFuncOperation.subtract:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_multiply:
+                case UFuncOperation.multiply:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_divide:
+                case UFuncOperation.divide:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_remainder:
+                case UFuncOperation.remainder:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_fmod:
+                case UFuncOperation.fmod:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_power:
-                {
-                    newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
-                    break;
-                }
-                case UFuncOperation.npy_op_square:
-                {
-                    break;
-                }
-                case UFuncOperation.npy_op_reciprocal:
-                {
-                    break;
-                }
-                case UFuncOperation.npy_op_ones_like:
-                {
-                    break;
-                }
-                case UFuncOperation.npy_op_sqrt:
+                case UFuncOperation.power:
                 {
                     newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                     break;
                 }
-                case UFuncOperation.npy_op_negative:
+                case UFuncOperation.square:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_absolute:
+                case UFuncOperation.reciprocal:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_invert:
+                case UFuncOperation.ones_like:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_left_shift:
+                case UFuncOperation.sqrt:
+                {
+                    newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
+                    break;
+                }
+                case UFuncOperation.negative:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_right_shift:
+                case UFuncOperation.absolute:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_bitwise_and:
+                case UFuncOperation.invert:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_bitwise_xor:
+                case UFuncOperation.left_shift:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_bitwise_or:
+                case UFuncOperation.right_shift:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_less:
-                case UFuncOperation.npy_op_less_equal:
-                case UFuncOperation.npy_op_equal:
-                case UFuncOperation.npy_op_not_equal:
-                case UFuncOperation.npy_op_greater:
-                case UFuncOperation.npy_op_greater_equal:
-                case UFuncOperation.npy_op_isnan:
+                case UFuncOperation.bitwise_and:
+                {
+                    break;
+                }
+                case UFuncOperation.bitwise_xor:
+                {
+                    break;
+                }
+                case UFuncOperation.bitwise_or:
+                {
+                    break;
+                }
+                case UFuncOperation.less:
+                case UFuncOperation.less_equal:
+                case UFuncOperation.equal:
+                case UFuncOperation.not_equal:
+                case UFuncOperation.greater:
+                case UFuncOperation.greater_equal:
+                case UFuncOperation.isnan:
                 {
                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
                     break;
                 }
 
-                case UFuncOperation.npy_op_floor_divide:
+                case UFuncOperation.floor_divide:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_true_divide:
+                case UFuncOperation.true_divide:
                 {
                     newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                     break;
                 }
-                case UFuncOperation.npy_op_logical_or:
+                case UFuncOperation.logical_or:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_logical_and:
+                case UFuncOperation.logical_and:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_floor:
+                case UFuncOperation.floor:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_ceil:
+                case UFuncOperation.ceil:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_maximum:
+                case UFuncOperation.maximum:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_minimum:
+                case UFuncOperation.minimum:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_rint:
+                case UFuncOperation.rint:
                 {
                     break;
                 }
-                case UFuncOperation.npy_op_conjugate:
+                case UFuncOperation.conjugate:
                 {
                     break;
                 }
@@ -1640,7 +1640,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_maximum),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.maximum),
                                             newArray, null, outPtr, axis,
                                             newArray.descr,
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
@@ -1657,7 +1657,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_minimum),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.minimum),
                                             newArray, null, outPtr, axis,
                                             newArray.descr,
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
@@ -1674,7 +1674,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_add),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.add),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
@@ -1692,7 +1692,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_multiply),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.multiply),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
@@ -1712,7 +1712,7 @@ namespace NumpyLib
 
 
   
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_add),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.add),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
                                             GenericReductionOp.NPY_UFUNC_ACCUMULATE, false);
@@ -1723,7 +1723,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_Floor(NpyArray srcArray, NpyArray outPtr)
         {
-            NumericOperation operation = GetOperation(srcArray, UFuncOperation.npy_op_floor);
+            NumericOperation operation = GetOperation(srcArray, UFuncOperation.floor);
 
             if (outPtr == null)
             {
@@ -1746,7 +1746,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_IsNaN(NpyArray srcArray)
         {
-            NumericOperation operation = GetOperation(srcArray, UFuncOperation.npy_op_isnan);
+            NumericOperation operation = GetOperation(srcArray, UFuncOperation.isnan);
 
             NpyArray outPtr = NpyArray_FromArray(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORCECAST);
 
@@ -1769,7 +1769,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_multiply),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.multiply),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(rtype),
                                             GenericReductionOp.NPY_UFUNC_ACCUMULATE, false);
@@ -1786,7 +1786,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_logical_or),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.logical_or),
                                             newArray, null, outPtr, axis,
                                             NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
@@ -1803,7 +1803,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.npy_op_logical_and),
+            ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.logical_and),
                                             newPtr, null, outPtr, axis,
                                             NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);

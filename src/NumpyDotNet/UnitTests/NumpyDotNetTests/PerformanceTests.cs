@@ -175,7 +175,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.reduce(UFuncOperation.npy_op_add, a);
+                var b = np.ufunc.reduce(UFuncOperation.add, a);
                 //Assert.AreEqual(49999995000000.0, b.item(0));
                // print(b);
             }
@@ -202,7 +202,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.accumulate(UFuncOperation.npy_op_add, a);
+                var b = np.ufunc.accumulate(UFuncOperation.add, a);
             }
 
             sw.Stop();
@@ -270,7 +270,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.reduceat(UFuncOperation.npy_op_add, a, new long[] { 10, 20, 30, 39 });
+                var b = np.ufunc.reduceat(UFuncOperation.add, a, new long[] { 10, 20, 30, 39 });
                 print(b.shape);
             }
 
@@ -294,7 +294,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-               var b = np.ufunc.outer(UFuncOperation.npy_op_add, np.Float64, a, a);
+               var b = np.ufunc.outer(UFuncOperation.add, np.Float64, a, a);
                // print(b.shape);
             }
 
@@ -319,7 +319,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.outer(UFuncOperation.npy_op_add, np.Float64, a2, a1);
+                var b = np.ufunc.outer(UFuncOperation.add, np.Float64, a2, a1);
                 // print(b.shape);
             }
 

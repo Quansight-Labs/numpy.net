@@ -2220,27 +2220,27 @@ namespace NumpyDotNet
    
         public static ndarray square(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_square, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.square, 0);
         }
   
         public static ndarray sqrt(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_sqrt, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.sqrt, 0);
         }
 
 
         public static ndarray cbrt(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_power, 1.0/3.0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.power, 1.0/3.0);
         }
 
         public static ndarray absolute(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_absolute, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.absolute, 0);
         }
         public static ndarray fabs(object a)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.npy_op_absolute, 0);
+            return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.absolute, 0);
         }
 
 
@@ -2502,56 +2502,56 @@ namespace NumpyDotNet
         #region bitwise_and
         public static ndarray bitwise_and(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_bitwise_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region bitwise_or
         public static ndarray bitwise_or(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_bitwise_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region bitwise_xor
         public static ndarray bitwise_xor(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_bitwise_xor, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_xor, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region bitwise_not
         public static ndarray bitwise_not(object input)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.npy_op_invert, 0, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.invert, 0, false);
         }
         #endregion
 
         #region logical_and
         public static ndarray logical_and(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_logical_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.logical_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region logical_or
         public static ndarray logical_or(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_logical_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.logical_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region logical_xor
         public static ndarray logical_xor(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region logical_not
         public static ndarray logical_not(object input)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.npy_op_equal, 0, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.equal, 0, false);
         }
 
         #endregion
@@ -2559,49 +2559,49 @@ namespace NumpyDotNet
         #region greater
         public static ndarray greater(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_greater, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.greater, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region greater_equal
         public static ndarray greater_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_greater_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.greater_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region less
         public static ndarray less(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_less, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.less, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region less_equal
         public static ndarray less_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_less_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.less_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region equal
         public static ndarray equal(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region not_equal
         public static ndarray not_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region invert
         public static ndarray invert(object input)
         {
-            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.npy_op_invert, 0, false);
+            return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.invert, 0, false);
         }
 
         #endregion
@@ -2609,14 +2609,14 @@ namespace NumpyDotNet
         #region right_shift
         public static ndarray right_shift(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_right_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.right_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
         #region left_shift
         public static ndarray left_shift(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_left_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.left_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
         #endregion
 
@@ -2887,19 +2887,19 @@ namespace NumpyDotNet
 
         public static ndarray maximum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_maximum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.maximum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
         public static ndarray minimum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_minimum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.minimum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
         public static ndarray fmax(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_fmax, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmax, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
         public static ndarray fmin(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_fmin, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmin, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
 
 
@@ -2910,7 +2910,7 @@ namespace NumpyDotNet
 
         public static ndarray heaviside(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.npy_op_heaviside, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.heaviside, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
         }
 
         #endregion

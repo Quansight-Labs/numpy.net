@@ -219,48 +219,48 @@ namespace NumpyLib
 
     public enum UFuncOperation
     {
-        npy_op_add = 0,
-        npy_op_subtract,
-        npy_op_multiply,
-        npy_op_divide,
-        npy_op_remainder,
-        npy_op_fmod,
-        npy_op_power,
-        npy_op_square,
-        npy_op_reciprocal,
-        npy_op_ones_like,
-        npy_op_sqrt,
-        npy_op_negative,
-        npy_op_absolute,
-        npy_op_invert,
-        npy_op_left_shift,
-        npy_op_right_shift,
-        npy_op_bitwise_and,
-        npy_op_bitwise_xor,
-        npy_op_bitwise_or,
-        npy_op_less,
-        npy_op_less_equal,
-        npy_op_equal,
-        npy_op_not_equal,
-        npy_op_greater,
-        npy_op_greater_equal,
-        npy_op_floor_divide,
-        npy_op_true_divide,
-        npy_op_logical_or,
-        npy_op_logical_and,
-        npy_op_floor,
-        npy_op_ceil,
-        npy_op_maximum,
-        npy_op_minimum,
-        npy_op_rint,
-        npy_op_conjugate,
-        npy_op_isnan,
-        npy_op_fmax,
-        npy_op_fmin,
-        npy_op_heaviside,
+        add = 0,
+        subtract,
+        multiply,
+        divide,
+        remainder,
+        fmod,
+        power,
+        square,
+        reciprocal,
+        ones_like,
+        sqrt,
+        negative,
+        absolute,
+        invert,
+        left_shift,
+        right_shift,
+        bitwise_and,
+        bitwise_xor,
+        bitwise_or,
+        less,
+        less_equal,
+        equal,
+        not_equal,
+        greater,
+        greater_equal,
+        floor_divide,
+        true_divide,
+        logical_or,
+        logical_and,
+        floor,
+        ceil,
+        maximum,
+        minimum,
+        rint,
+        conjugate,
+        isnan,
+        fmax,
+        fmin,
+        heaviside,
 
         // special flags
-        npy_op_special_operand_is_float
+        special_operand_is_float
     };
 
     public enum NpyUFuncIdentity
@@ -838,7 +838,7 @@ namespace NumpyLib
 
             switch (self.ops)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                     switch (arr.ItemType)
                     {
                         case NPY_TYPES.NPY_BOOL:

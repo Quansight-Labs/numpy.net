@@ -103,7 +103,7 @@ namespace NumpyDotNet
             if (decimals == 0)
             {
                 // This is just a ufunc
-                return UnaryOpInPlace(this, UFuncOperation.npy_op_rint, ret);
+                return UnaryOpInPlace(this, UFuncOperation.rint, ret);
             }
 
             // Set up to do a multiply, round, divide, or the other way around.
@@ -111,13 +111,13 @@ namespace NumpyDotNet
             NpyUFuncObject post;
             if (decimals >= 0)
             {
-                pre = NpyCoreApi.GetNumericOp(UFuncOperation.npy_op_multiply);
-                post = NpyCoreApi.GetNumericOp(UFuncOperation.npy_op_divide);
+                pre = NpyCoreApi.GetNumericOp(UFuncOperation.multiply);
+                post = NpyCoreApi.GetNumericOp(UFuncOperation.divide);
             }
             else
             {
-                pre = NpyCoreApi.GetNumericOp(UFuncOperation.npy_op_divide);
-                post = NpyCoreApi.GetNumericOp(UFuncOperation.npy_op_multiply);
+                pre = NpyCoreApi.GetNumericOp(UFuncOperation.divide);
+                post = NpyCoreApi.GetNumericOp(UFuncOperation.multiply);
                 decimals = -decimals;
             }
             var factor = PowerOfTen(decimals);
@@ -140,7 +140,7 @@ namespace NumpyDotNet
 
             // Do the work
             tmp = BinaryOp(this, factor, pre);
-            UnaryOpInPlace(tmp, UFuncOperation.npy_op_rint, tmp);
+            UnaryOpInPlace(tmp, UFuncOperation.rint, tmp);
             BinaryOpInPlace(tmp, factor, post, tmp);
 
             if (ret != null && tmp != ret)
@@ -167,16 +167,16 @@ namespace NumpyDotNet
                 }
                 if (min == null)
                 {
-                    return BinaryOpInPlace(this, max, UFuncOperation.npy_op_minimum, ret) as ndarray;
+                    return BinaryOpInPlace(this, max, UFuncOperation.minimum, ret) as ndarray;
                 }
                 else if (max == null)
                 {
-                    return BinaryOpInPlace(this, min, UFuncOperation.npy_op_maximum, ret) as ndarray;
+                    return BinaryOpInPlace(this, min, UFuncOperation.maximum, ret) as ndarray;
                 }
                 else
                 {
-                    ndarray tmp = BinaryOpInPlace(this, max, UFuncOperation.npy_op_minimum, ret) as ndarray;
-                    return BinaryOpInPlace(tmp, min, UFuncOperation.npy_op_maximum, ret) as ndarray;
+                    ndarray tmp = BinaryOpInPlace(this, max, UFuncOperation.minimum, ret) as ndarray;
+                    return BinaryOpInPlace(tmp, min, UFuncOperation.maximum, ret) as ndarray;
                 }
             }
             else
@@ -187,16 +187,16 @@ namespace NumpyDotNet
                 }
                 if (min == null)
                 {
-                    return BinaryOp(this, max, UFuncOperation.npy_op_minimum) as ndarray;
+                    return BinaryOp(this, max, UFuncOperation.minimum) as ndarray;
                 }
                 else if (max == null)
                 {
-                    return BinaryOp(this, min, UFuncOperation.npy_op_maximum) as ndarray;
+                    return BinaryOp(this, min, UFuncOperation.maximum) as ndarray;
                 }
                 else
                 {
-                    ndarray tmp = BinaryOp(this, max, UFuncOperation.npy_op_minimum) as ndarray;
-                    return BinaryOp(tmp, min, UFuncOperation.npy_op_maximum) as ndarray;
+                    ndarray tmp = BinaryOp(this, max, UFuncOperation.minimum) as ndarray;
+                    return BinaryOp(tmp, min, UFuncOperation.maximum) as ndarray;
                 }
             }
 

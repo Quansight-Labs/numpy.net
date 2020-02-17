@@ -150,130 +150,130 @@ namespace NumpyLib
 
             switch (op)
             {
-                case UFuncOperation.npy_op_add:
+                case UFuncOperation.add:
                     destValue = Add(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_subtract:
+                case UFuncOperation.subtract:
                     destValue = Subtract(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_multiply:
+                case UFuncOperation.multiply:
                     destValue = Multiply(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_divide:
+                case UFuncOperation.divide:
                     destValue = Divide(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_remainder:
+                case UFuncOperation.remainder:
                     destValue = Remainder(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_fmod:
+                case UFuncOperation.fmod:
                     destValue = FMod(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_power:
+                case UFuncOperation.power:
                     destValue = Power(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_square:
+                case UFuncOperation.square:
                     destValue = Square(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_reciprocal:
+                case UFuncOperation.reciprocal:
                     destValue = Reciprocal(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_ones_like:
+                case UFuncOperation.ones_like:
                     destValue = OnesLike(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_sqrt:
+                case UFuncOperation.sqrt:
                     destValue = Sqrt(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_negative:
+                case UFuncOperation.negative:
                     destValue = Negative(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_absolute:
+                case UFuncOperation.absolute:
                     destValue = Absolute(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_invert:
+                case UFuncOperation.invert:
                     destValue = Invert(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_left_shift:
+                case UFuncOperation.left_shift:
                     destValue = LeftShift(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_right_shift:
+                case UFuncOperation.right_shift:
                     destValue = RightShift(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_bitwise_and:
+                case UFuncOperation.bitwise_and:
                     destValue = BitWiseAnd(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_bitwise_xor:
+                case UFuncOperation.bitwise_xor:
                     destValue = BitWiseXor(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_bitwise_or:
+                case UFuncOperation.bitwise_or:
                     destValue = BitWiseOr(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_less:
+                case UFuncOperation.less:
                     boolValue = Less(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_less_equal:
+                case UFuncOperation.less_equal:
                     boolValue = LessEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_equal:
+                case UFuncOperation.equal:
                     boolValue = Equal(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_not_equal:
+                case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_greater:
+                case UFuncOperation.greater:
                     boolValue = Greater(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_greater_equal:
+                case UFuncOperation.greater_equal:
                     boolValue = GreaterEqual(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_floor_divide:
+                case UFuncOperation.floor_divide:
                     destValue = FloorDivide(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_true_divide:
+                case UFuncOperation.true_divide:
                     destValue = TrueDivide(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_logical_or:
+                case UFuncOperation.logical_or:
                     boolValue = LogicalOr(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_logical_and:
+                case UFuncOperation.logical_and:
                     boolValue = LogicalAnd(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_floor:
+                case UFuncOperation.floor:
                     destValue = Floor(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_ceil:
+                case UFuncOperation.ceil:
                     destValue = Ceiling(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_maximum:
+                case UFuncOperation.maximum:
                     destValue = Maximum(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_minimum:
+                case UFuncOperation.minimum:
                     destValue = Minimum(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_rint:
+                case UFuncOperation.rint:
                     destValue = Rint(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_conjugate:
+                case UFuncOperation.conjugate:
                     destValue = Conjugate(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_isnan:
+                case UFuncOperation.isnan:
                     boolValue = IsNAN(aValue, bValue);
                     destValue = boolValue ? 1 : 0;
                     break;
-                case UFuncOperation.npy_op_fmax:
+                case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_fmin:
+                case UFuncOperation.fmin:
                     destValue = FMin(aValue, bValue);
                     break;
-                case UFuncOperation.npy_op_heaviside:
+                case UFuncOperation.heaviside:
                     destValue = Heaviside(aValue, bValue);
                     break;
                 default:

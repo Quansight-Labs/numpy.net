@@ -326,7 +326,7 @@ namespace NumpyLib
         {
             switch (Operation)
             {
-                case UFuncOperation.npy_op_sqrt:
+                case UFuncOperation.sqrt:
                 {
                     if (ItemSize > 4)
                         return NPY_TYPES.NPY_DOUBLE;
@@ -2471,11 +2471,11 @@ namespace NumpyLib
         {
             switch (Operation)
             {
-                case UFuncOperation.npy_op_power:
+                case UFuncOperation.power:
                     return NPY_TYPES.NPY_DOUBLE;
-                case UFuncOperation.npy_op_true_divide:
+                case UFuncOperation.true_divide:
                     return NPY_TYPES.NPY_DOUBLE;
-                case UFuncOperation.npy_op_special_operand_is_float:
+                case UFuncOperation.special_operand_is_float:
                     return NPY_TYPES.NPY_DOUBLE;
 
             }

@@ -125,15 +125,15 @@ namespace NumpyLib
         {
             switch (ops)
             {
-                case UFuncOperation.npy_op_less:
-                case UFuncOperation.npy_op_less_equal:
-                case UFuncOperation.npy_op_equal:
-                case UFuncOperation.npy_op_not_equal:
-                case UFuncOperation.npy_op_greater:
-                case UFuncOperation.npy_op_greater_equal:
-                case UFuncOperation.npy_op_logical_or:
-                case UFuncOperation.npy_op_logical_and:
-                case UFuncOperation.npy_op_isnan:
+                case UFuncOperation.less:
+                case UFuncOperation.less_equal:
+                case UFuncOperation.equal:
+                case UFuncOperation.not_equal:
+                case UFuncOperation.greater:
+                case UFuncOperation.greater_equal:
+                case UFuncOperation.logical_or:
+                case UFuncOperation.logical_and:
+                case UFuncOperation.isnan:
                     return true;
                 default:
                     return false;
