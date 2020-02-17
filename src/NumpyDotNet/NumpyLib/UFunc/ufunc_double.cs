@@ -46,7 +46,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC DOUBLE
-    internal class UFUNC_Double : UFUNC_Operations
+    internal class UFUNC_Double : iUFUNC_Operations
     {
         #region UFUNC Outer
         public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
@@ -141,6 +141,94 @@ namespace NumpyLib
 
 
         }
+        #endregion
+
+        #region UFUNC Reduce
+
+        public void PerformReduceOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+        {
+            //return;
+
+            VoidPtr Operand1 = bufPtr[0];
+            VoidPtr Operand2 = bufPtr[1];
+            VoidPtr Result = bufPtr[2];
+
+            npy_intp O1_Step = steps[0];
+            npy_intp O2_Step = steps[1];
+            npy_intp R_Step = steps[2];
+              
+            npy_intp O1_Offset = Operand1.data_offset;
+            npy_intp O2_Offset = Operand2.data_offset;
+            npy_intp R_Offset = Result.data_offset;
+
+
+            double[] retArray = Result.datap as double[];
+            double[] Op1Array = Operand1.datap as double[];
+            double[] Op2Array = Operand2.datap as double[];
+
+            npy_intp R_Index = AdjustNegativeIndex(retArray, R_Offset / sizeof(double));
+            npy_intp O1_Index = AdjustNegativeIndex(Op1Array, O1_Offset / sizeof(double));
+
+            npy_intp O2_CalculatedStep = (O2_Step / sizeof(double));
+            npy_intp O2_CalculatedOffset = (O2_Offset / sizeof(double));
+
+            try
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+
+                    var Op1Value = Op1Array[O1_Index];
+                    var Op2Value = Op2Array[O2_Index];
+
+                    // for the common operations, do inline for speed.
+                    switch (ops)
+                    {
+                        case UFuncOperation.add:
+                            retArray[R_Index] = Op1Value + Op2Value;
+                            break;
+                        case UFuncOperation.subtract:
+                            retArray[R_Index] = Op1Value - Op2Value;
+                            break;
+                        case UFuncOperation.multiply:
+                            retArray[R_Index] = Op1Value * Op2Value;
+                            break;
+                        case UFuncOperation.divide:
+                            retArray[R_Index] = Op1Value / Op2Value;
+                            break;
+                        case UFuncOperation.power:
+                            retArray[R_Index] = Math.Pow(Op1Value, Op2Value);
+                            break;
+
+                        default:
+                            retArray[R_Index] = PerformUFuncOperation(ops, Op1Value, Op2Value);
+                            break;
+
+                    }
+                }
+            }
+            catch (System.OverflowException oe)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
+            }
+            catch (Exception ex)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+            }
+   
+
+            return;
+        }
+
+        private npy_intp AdjustNegativeIndex(double[] data, npy_intp index)
+        {
+            if (index < 0)
+            {
+                index = data.Length - Math.Abs(index);
+            }
+            return index;
+        }
+
         #endregion
 
         private double PerformUFuncOperation(UFuncOperation op, double aValue, double bValue)

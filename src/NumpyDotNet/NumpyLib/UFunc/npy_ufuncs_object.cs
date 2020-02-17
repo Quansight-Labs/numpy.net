@@ -2840,8 +2840,7 @@ namespace NumpyLib
                     return -1;
                 }
                 /* First ufunc.nargs elements will be used for looping */
-                loop.core_strides[ufunc.nargs + j] =
-                dim == 1 ? 0 : NpyArray_STRIDE(mps[i], k);
+                loop.core_strides[ufunc.nargs + j] = dim == 1 ? 0 : NpyArray_STRIDE(mps[i], k);
             }
             return 0;
         }

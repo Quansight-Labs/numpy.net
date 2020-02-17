@@ -450,6 +450,16 @@ namespace NumpyLib
                 R_Step = O1_Step;
             }
 
+            if (Result.type_num == Operand1.type_num && Result.type_num == Operand2.type_num)
+            {
+                if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                {
+                    iUFUNC_Operations UFunc = new UFUNC_Double();
+                    UFunc.PerformReduceOpArrayIter(bufPtr, steps, ops, N);
+                    return;
+                }
+            }
+
             NumericOperation Operation = GetOperation(Operand1, ops);
             var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
             var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
@@ -521,6 +531,7 @@ namespace NumpyLib
             return;
         }
 
+  
         private static void UFuncCommon_ACCUMULATE<R, O1, O2>(VoidPtr[] bufPtr, long N, long[] steps, UFuncOperation ops)
         {
             VoidPtr Operand1 = bufPtr[0];

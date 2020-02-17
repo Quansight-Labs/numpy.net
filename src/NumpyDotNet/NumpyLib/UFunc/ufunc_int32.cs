@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC INT32
 
-    internal class UFUNC_Int32 : UFUNC_Operations
+    internal class UFUNC_Int32 : iUFUNC_Operations
     {
         public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
         {
@@ -212,6 +212,11 @@ namespace NumpyLib
         private Int32 UFuncPower(Int32 aValue, Int32 bValue)
         {
             return Convert.ToInt32(Math.Pow((double)aValue, (double)bValue));
+        }
+
+        public void PerformReduceOpArrayIter(VoidPtr[] bufPtr, long[] steps, UFuncOperation ops, long N)
+        {
+            throw new NotImplementedException();
         }
     }
 

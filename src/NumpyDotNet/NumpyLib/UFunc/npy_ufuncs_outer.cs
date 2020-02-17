@@ -64,7 +64,7 @@ namespace NumpyLib
             {
                 case NPY_TYPES.NPY_DOUBLE:
                 {
-                    UFUNC_Operations UFunc = new UFUNC_Double();
+                    iUFUNC_Operations UFunc = new UFUNC_Double();
                     UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
                     break;
                 }
