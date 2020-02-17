@@ -228,6 +228,20 @@ namespace NumpyLib
         {
             VoidPtr Result = bufPtr[2];
 
+            if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
+            {
+                if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
+                {
+                    if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                    {
+                        iUFUNC_Operations UFunc = new UFUNC_Double();
+                        UFunc.PerformReduceOpArrayIter(bufPtr, steps, Ops, N);
+                        return;
+                    }
+                }
+            }
+ 
+
             switch (Result.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
@@ -450,15 +464,7 @@ namespace NumpyLib
                 R_Step = O1_Step;
             }
 
-            if (Result.type_num == Operand1.type_num && Result.type_num == Operand2.type_num)
-            {
-                if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
-                {
-                    iUFUNC_Operations UFunc = new UFUNC_Double();
-                    UFunc.PerformReduceOpArrayIter(bufPtr, steps, ops, N);
-                    return;
-                }
-            }
+ 
 
             NumericOperation Operation = GetOperation(Operand1, ops);
             var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
