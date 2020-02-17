@@ -1563,6 +1563,64 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_RintOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_rint, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_ConjugateOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_conjugate, null, a1, a2);
+            print(b);
+
+            var ExpectedData = new double[,]
+                { { 0.0, 0.0, 0.0, 0.0, 0.0 },
+                  { 1.0, 1.0, 1.0, 1.0, 1.0 },
+                  { 2.0, 2.0, 2.0, 2.0, 2.0 },
+                  { 3.0, 3.0, 3.0, 3.0, 3.0 },
+                  { 4.0, 4.0, 4.0, 4.0, 4.0  } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_IsNANOuter_DOUBLE()
+        {
+            var a1 = np.arange(0, 5, dtype: np.Float64);
+            var a2 = np.arange(3, 8, dtype: np.Float64);
+
+            var b = np.ufunc.outer(NpyArray_Ops.npy_op_isnan, null, a1, a2);
+            print(b);
+
+
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
+
+        }
+
 
         #endregion
     }
