@@ -981,6 +981,11 @@ namespace NumpyLib
                 ret = NpyArray_Newshape(ret, new NpyArray_Dims() { len = ExpandedDims.Length, ptr = ExpandedDims }, NPY_ORDER.NPY_ANYORDER);
             }
 
+            if (HasBoolReturn(self.ops))
+            {
+                ret = NpyArray_CastToType(ret, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+            }
+
             return ret;
         }
 
