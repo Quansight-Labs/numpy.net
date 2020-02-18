@@ -195,6 +195,14 @@ namespace NumpyLib
                     return DefaultOpControl(op, UFuncCommon);
                 case UFuncOperation.conjugate:
                     return DefaultOpControl(op, UFuncCommon);
+                case UFuncOperation.isnan:
+                    return DefaultOpControl(op, UFuncCommon);
+                case UFuncOperation.fmax:
+                    return DefaultOpControl(op, UFuncCommon);
+                case UFuncOperation.fmin:
+                    return DefaultOpControl(op, UFuncCommon);
+                case UFuncOperation.heaviside:
+                    return DefaultOpControl(op, UFuncCommon);
                 default:
                     loc = null;
                     break;
