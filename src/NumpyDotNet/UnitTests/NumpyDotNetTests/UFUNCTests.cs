@@ -2393,7 +2393,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.negative, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, -1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, -1.0, -2.0 },  { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2408,7 +2408,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.absolute, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2423,7 +2423,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.invert, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2438,7 +2438,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.left_shift, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 16.0, 64.0 },  { 0.0, 2048.0, 16384.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2453,7 +2453,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.right_shift, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 0.0, 0.0 },  { 0.0, 0.0, 0.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2469,7 +2469,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_and, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 0.0, 0.0 },  { 0.0, 0.0, 0.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2484,7 +2484,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_or, a1);
             print(b);
 
-            var ExpectedData = new double[] { 126.0, 127.0, 126.0, 127.0, 126.0, 127.0, 126.0, 127.0, 126.0, 127.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 3.0, 5.0, 7.0 }, { 7.0, 7.0, 15.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2499,7 +2499,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_xor, a1);
             print(b);
 
-            var ExpectedData = new double[] { 106.0, 106.0, 94.0, 94.0, 42.0, 42.0, 6.0, 6.0, 26.0, 26.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 3.0, 5.0, 7.0 },  { 5.0, 2.0, 15.0 } };
 
             AssertArray(b, ExpectedData);
 
