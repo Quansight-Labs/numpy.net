@@ -1634,7 +1634,7 @@ class Test_UFUNCTests(unittest.TestCase):
 
         a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
   
-        b = np.multiply.reduceat(a1, [0, 2], axis = 1)
+        b = np.add.reduceat(a1, [0, 2], axis = 1)
         print(b)
 
     def test_SubtractReduceAt_DOUBLE(self):
