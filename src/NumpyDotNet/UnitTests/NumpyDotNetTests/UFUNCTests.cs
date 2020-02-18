@@ -3046,7 +3046,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.less, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+            AssertArray(b, new bool[,] { { true, true, true }, { true, true, true }, { true, true, true } });
 
         }
 
@@ -3059,7 +3059,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.less_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+            AssertArray(b, new bool[,] { { true, true },{ true, true }, { true, true } });
 
         }
 
@@ -3071,7 +3071,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+            AssertArray(b, new bool[,] { { false, true }, { false, true }, { false, true } });
 
         }
 
@@ -3084,7 +3084,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.not_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+            AssertArray(b, new bool[,] { { true, true }, { true, true }, { true, true } });
         }
 
         [TestMethod]
@@ -3095,7 +3095,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.greater, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+            AssertArray(b, new bool[,] { { false, true }, { false, true }, { false, true } });
         }
 
         [TestMethod]
@@ -3106,7 +3106,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.greater_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+            AssertArray(b, new bool[,] { { false, true }, { false, true }, { false, true } });
         }
 
         [TestMethod]
@@ -3172,7 +3172,7 @@ namespace NumpyDotNetTests
             print(b);
 
 
-            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+            var ExpectedData = new double[,] { { 0.0, 2.0 }, { 3.0, 5.0 }, { 6.0, 8.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -3186,7 +3186,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.ceil, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+            var ExpectedData = new double[,] {{ 0.0, 2.0 }, { 3.0, 5.0 }, { 6.0, 8.0 } };
 
             AssertArray(b, ExpectedData);
 
