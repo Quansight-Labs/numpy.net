@@ -3046,7 +3046,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.less, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true }, { true, true, true }, { true, true, true } });
+            AssertArray(b, new bool[,] { { true, true }, { true, true }, { true, true } });
 
         }
 
@@ -3146,7 +3146,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.logical_and, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { false, true, true }, { false, true, true } });
+            AssertArray(b, new bool[,] { { false, true }, { true, true }, { true, true } });
 
         }
 
@@ -3158,7 +3158,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.logical_or, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+            AssertArray(b, new bool[,] { { true, true }, { true, true }, { true, true } });
 
         }
 
