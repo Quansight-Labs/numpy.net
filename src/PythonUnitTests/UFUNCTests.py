@@ -1284,7 +1284,350 @@ class Test_UFUNCTests(unittest.TestCase):
         
       #endregion
   
+     
+    #region ACCUMULATE Tests
+    def test_AddAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+  
+        b = np.add.accumulate(a1)
+        print(b)
+
+    def test_SubtractAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
         
+        b = np.subtract.accumulate(a1)
+        print(b)
+
+    def test_MultiplyAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+  
+        b = np.multiply.accumulate(a1)
+        print(b)
+
+    def test_DivideAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.divide.accumulate(a1)
+        print(b)
+
+    def test_RemainderAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        b = np.remainder.accumulate(a1)
+        print(b)
+
+    def test_FModAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.fmod.accumulate(a1)
+        print(b)
+
+    def test_SquareAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.square.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_ReciprocalAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.reciprocal.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_OnesLikeAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.ones_like.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_SqrtAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.sqrt.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+
+    def test_NegativeAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.negative.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+        
+    def test_AbsoluteAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.absolute.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+
+    def test_InvertAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.invert.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_LeftShiftAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        try :
+            b = np.left_shift.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+
+    def test_RightShiftAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.right_shift.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+            
+    def test_BitwiseAndAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        try :
+            b = np.bitwise_and.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+                        
+    def test_BitwiseOrAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        try :
+            b = np.bitwise_or.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_BitwiseXorAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+  
+        try :
+            b = np.bitwise_xor.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_LessAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.less.accumulate(a1)
+        print(b)
+
+    def test_LessEqualAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.less_equal.accumulate(a1)
+        print(b)
+
+    def test_EqualAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        b = np.equal.accumulate(a1)
+        print(b)
+
+    def test_NotEqualAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.not_equal.accumulate(a1)
+        print(b)
+
+    def test_GreaterAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.greater.accumulate(a1)
+        print(b)
+
+    def test_GreaterEqualAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.greater_equal.accumulate(a1)
+        print(b)
+
+    def test_FloorDivideAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.floor_divide.accumulate(a1)
+        print(b)
+
+    def test_TrueDivideAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.true_divide.accumulate(a1)
+        print(b)
+
+    def test_LogicalAndAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.logical_and.accumulate(a1)
+        print(b)
+
+    def test_LogicalOrAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.logical_or.accumulate(a1)
+        print(b)
+
+    def test_FloorAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.floor.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_CeilAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.ceil.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_MaximumAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.maximum.accumulate(a1)
+        print(b)
+
+    def test_MinimumAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+ 
+        b = np.minimum.accumulate(a1)
+        print(b)
+ 
+    def test_RintAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.rint.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_ConjugateAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.conjugate.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+ 
+    def test_IsNANAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+
+        try :
+            b = np.isnan.accumulate(a1)
+            print(b)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
+    def test_FMaxAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.fmax.accumulate(a1)
+        print(b)
+
+    def test_FMinAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+       
+        b = np.fmin.accumulate(a1)
+        print(b)
+
+    def test_HeavisideAccumulate_DOUBLE(self):
+
+        a1 = np.arange(0, 9, dtype=np.float64).reshape((3,3));
+        
+        b = np.heaviside.accumulate(a1)
+        print(b)
+        
+      #endregion
+     
 
       #endregion 
 
