@@ -1429,7 +1429,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_TrueDivideOuter_DOUBLE()
+        public void test_trueDivideOuter_DOUBLE()
         {
             var a1 = np.arange(0, 5, dtype: np.Float64);
             var a2 = np.arange(3, 8, dtype: np.Float64);
@@ -2054,7 +2054,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_TrueDivideReduce_DOUBLE()
+        public void test_trueDivideReduce_DOUBLE()
         {
             var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10,10));
 
@@ -2514,7 +2514,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.less, a1);
             print(b);
 
-            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
 
         }
 
@@ -2527,7 +2527,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.less_equal, a1);
             print(b);
 
-            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+            AssertArray(b, new bool[,] { { false, true, true },  { true, true, true },  { true, true, true } });
 
         }
 
@@ -2539,7 +2539,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.equal, a1);
             print(b);
 
-            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
+            AssertArray(b, new bool[,] { { false, true, true },  { false, false, false },  { false, false, false } });
 
         }
 
@@ -2552,7 +2552,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.not_equal, a1);
             print(b);
 
-            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
         }
 
         [TestMethod]
@@ -2563,7 +2563,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.greater, a1);
             print(b);
 
-            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
+            AssertArray(b, new bool[,] { { false, true, true },  { false, false, false },  { false, false, false } });
         }
 
         [TestMethod]
@@ -2574,7 +2574,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.greater_equal, a1);
             print(b);
 
-            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
+            AssertArray(b, new bool[,] { { false, true, true },  { false, false, false },  { false, false, false } });
         }
 
         [TestMethod]
@@ -2586,25 +2586,21 @@ namespace NumpyDotNetTests
             print(b);
 
 
-            var ExpectedData = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
 
             AssertArray(b, ExpectedData);
 
         }
 
         [TestMethod]
-        public void test_TrueDivideAccumulate_DOUBLE()
+        public void test_trueDivideAccumulate_DOUBLE()
         {
             var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.true_divide, a1);
             print(b);
 
-            var ExpectedData = new double[]
-
-            { 0.0, 2.09198082035686E-15, 3.21882666785402E-15, 3.75809150839492E-15,
-              3.9407286126896E-15, 3.91001422993167E-15, 3.75562609685661E-15,
-                3.53390118867932E-15, 3.2801549506235E-15, 3.0163159361263E-15 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.25, 0.4 }, { 0.0, 0.0357142857142857, 0.05 } };
 
             AssertArray(b, ExpectedData);
         }
@@ -2618,7 +2614,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.logical_and, a1);
             print(b);
 
-            AssertArray(b, new bool[] { false, true, true, true, true, true, true, true, true, true });
+            AssertArray(b, new bool[,] { { false, true, true },  { false, true, true },  { false, true, true } });
 
         }
 
@@ -2630,7 +2626,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.logical_or, a1);
             print(b);
 
-            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+            AssertArray(b, new bool[,] { { false, true, true },  { true, true, true },  { true, true, true } });
 
         }
 
@@ -2644,7 +2640,7 @@ namespace NumpyDotNetTests
             print(b);
 
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2658,7 +2654,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.ceil, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2672,7 +2668,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.maximum, a1);
             print(b);
 
-            var ExpectedData = new double[] { 90.0, 91.0, 92.0, 93.0, 94.0, 95.0, 96.0, 97.0, 98.0, 99.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 4.0, 5.0 }, { 6.0, 7.0, 8.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2686,7 +2682,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.minimum, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2700,7 +2696,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.rint, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2714,7 +2710,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.conjugate, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2729,7 +2725,7 @@ namespace NumpyDotNetTests
             print(b);
 
 
-            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
+            AssertArray(b, new bool[,] { { false, true, true },  { false, false, false },  { false, false, false } });
         }
 
 
@@ -2741,7 +2737,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.fmax, a1);
             print(b);
 
-            var ExpectedData = new double[] { 90.0, 91.0, 92.0, 93.0, 94.0, 95.0, 96.0, 97.0, 98.0, 99.0 };
+            var ExpectedData = new double[,]{ { 0.0, 1.0, 2.0 },  { 3.0, 4.0, 5.0 },  { 6.0, 7.0, 8.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2755,7 +2751,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.fmin, a1);
             print(b);
 
-            var ExpectedData = new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+            var ExpectedData = new double[,] {{ 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 },  { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2769,7 +2765,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.heaviside, a1);
             print(b);
 
-            var ExpectedData = new double[] { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
 
             AssertArray(b, ExpectedData);
 
