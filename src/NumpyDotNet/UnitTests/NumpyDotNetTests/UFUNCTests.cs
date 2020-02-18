@@ -1975,12 +1975,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.less, a1);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true },
-                                         { false, false, true, true, true } });
-
+            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+    
         }
 
 
@@ -1992,12 +1988,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.less_equal, a1);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true } });
-
+            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
+ 
         }
 
         [TestMethod]
@@ -2008,12 +2000,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.equal, a1);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {true, false, false, false, false},
-                                        {false, true, false, false, false}});
-
+            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
+    
         }
 
 
@@ -2025,12 +2013,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.not_equal,a1);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true },
-                                         { true, false, true, true, true } });
-
+            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
         }
 
         [TestMethod]
@@ -2041,12 +2024,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.greater, a1);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {true, false, false, false, false}});
-
+            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
         }
 
         [TestMethod]
@@ -2057,12 +2035,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.greater_equal, a1);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {true, false, false, false, false},
-                                        {true, true, false, false, false}});
-
+            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
         }
 
         [TestMethod]
@@ -2106,11 +2079,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.logical_and, a1);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true}});
+            AssertArray(b, new bool[] { false, true, true, true, true, true, true, true, true, true });
 
         }
 
@@ -2122,11 +2091,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.logical_or, a1);
             print(b);
 
-            AssertArray(b, new bool[,] {{true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true}});
+            AssertArray(b, new bool[] { true, true, true, true, true, true, true, true, true, true });
 
         }
 
@@ -2225,12 +2190,7 @@ namespace NumpyDotNetTests
             print(b);
 
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
-
+            AssertArray(b, new bool[] { false, false, false, false, false, false, false, false, false, false });
         }
 
 
