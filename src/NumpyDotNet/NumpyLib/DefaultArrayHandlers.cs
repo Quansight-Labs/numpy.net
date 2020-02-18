@@ -572,12 +572,27 @@ namespace NumpyLib
         protected virtual object LogicalOr(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return dValue || Convert.ToBoolean(operand);
+            
+            try
+            {
+                return Convert.ToBoolean(bValue) || Convert.ToBoolean(operand);
+            }
+            catch
+            {
+                return false;
+            }
         }
         protected virtual object LogicalAnd(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
-            return dValue && Convert.ToBoolean(operand);
+            try
+            {
+                return Convert.ToBoolean(dValue) && Convert.ToBoolean(operand);
+            }
+            catch
+            {
+                return false;
+            }
         }
         protected virtual object Floor(dynamic bValue, dynamic operand)
         {
