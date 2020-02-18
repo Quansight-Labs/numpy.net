@@ -2237,7 +2237,6 @@ namespace NumpyDotNetTests
         }
         #endregion
 
-
         #region ACCUMULATE tests
         [TestMethod]
         public void test_AddAccumulate_DOUBLE()
@@ -2763,6 +2762,540 @@ namespace NumpyDotNetTests
             var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.heaviside, a1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+        #endregion
+
+        #region REDUCEAT tests
+        [TestMethod]
+        public void test_AddReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.add, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 5.0, 7.0 }, { 9.0, 12.0, 15.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SubtractReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.subtract, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { -3.0, -3.0, -3.0 }, { -9.0, -10.0, -11.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MultiplyReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.multiply, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 4.0, 10.0 }, { 0.0, 28.0, 80.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_DivideReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.25, 0.4 }, { 0.0, 0.0357142857142857, 0.05 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_RemainderReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.remainder, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+        }
+
+        [TestMethod]
+        public void test_FModReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.fmod, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SquareReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.square, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 4.0 }, { 0.0, 1.0, 16.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_ReciprocalReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.reciprocal, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { double.PositiveInfinity, 1.0, 0.5 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_OnesLikeReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.ones_like, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_SqrtReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.sqrt, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 1.4142135623731 }, { 0.0, 1.0, 1.18920711500272 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_NegativeReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.negative, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, -1.0, -2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_AbsoluteReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.absolute, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_InvertReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.invert, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_LeftShiftReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.left_shift, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 16.0, 64.0 }, { 0.0, 2048.0, 16384.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_RightShiftReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.right_shift, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_BitwiseAndReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.bitwise_and, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_BitwiseOrReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.bitwise_or, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 5.0, 7.0 }, { 7.0, 7.0, 15.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_BitwiseXorReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            // note: python throws an exception here because squares don't have two arguments.  I don't care.
+            var b = np.ufunc.reduceat(UFuncOperation.bitwise_xor, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 5.0, 7.0 }, { 5.0, 2.0, 15.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+
+        [TestMethod]
+        public void test_LessReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.less, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+
+        }
+
+
+        [TestMethod]
+        public void test_LessEqualReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.less_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+
+        }
+
+        [TestMethod]
+        public void test_EqualReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+
+        }
+
+
+        [TestMethod]
+        public void test_NotEqualReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.not_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+        }
+
+        [TestMethod]
+        public void test_GreaterReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.greater, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+        }
+
+        [TestMethod]
+        public void test_GreaterEqualReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.greater_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+        }
+
+        [TestMethod]
+        public void test_FloorDivideReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.floor_divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_trueDivideReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.true_divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 0.25, 0.4 }, { 0.0, 0.0357142857142857, 0.05 } };
+
+            AssertArray(b, ExpectedData);
+        }
+
+
+        [TestMethod]
+        public void test_LogicalAndReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.logical_and, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { false, true, true }, { false, true, true } });
+
+        }
+
+        [TestMethod]
+        public void test_LogicalOrReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.logical_or, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            AssertArray(b, new bool[,] { { false, true, true }, { true, true, true }, { true, true, true } });
+
+        }
+
+
+        [TestMethod]
+        public void test_FloorReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.floor, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_CeilReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.ceil, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MaximumReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.maximum, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 4.0, 5.0 }, { 6.0, 7.0, 8.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_MinimumReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.minimum, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_RintReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.rint, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_ConjugateReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.conjugate, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_IsNANReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.isnan, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+
+            AssertArray(b, new bool[,] { { false, true, true }, { false, false, false }, { false, false, false } });
+        }
+
+
+        [TestMethod]
+        public void test_FMaxReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.fmax, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 4.0, 5.0 }, { 6.0, 7.0, 8.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_FMinReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.fmin, a1, new npy_intp[] { 0, 2 }, axis: 1);
+            print(b);
+
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 }, { 0.0, 1.0, 2.0 } };
+
+            AssertArray(b, ExpectedData);
+
+        }
+
+        [TestMethod]
+        public void test_HeavisideReduceAt_DOUBLE()
+        {
+            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+
+            var b = np.ufunc.reduceat(UFuncOperation.heaviside, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
             var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 3.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
