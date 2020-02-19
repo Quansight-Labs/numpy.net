@@ -431,115 +431,58 @@ namespace NumpyLib
                 NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
             }
 
-            if (true || taskSize < NUMERICOPS_SMALL_TASKSIZE)
-            {
 
+            Parallel.For(0, taskSize, i =>
+            {
                 try
                 {
-                    for (int i = 0; i < taskSize; i++)
+                    int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
+                    var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
+
+                    int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
+                    var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
+
+                    double retValue = 0;
+
+                    try
                     {
-                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
-
-                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
-
-                        double retValue = 0;
-
-                        try
+                        // for the common operations, do inline for speed.
+                        switch (op)
                         {
-                            // for the common operations, do inline for speed.
-                            switch (op)
-                            {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
+                            case UFuncOperation.add:
+                                retValue = Add(srcValue, operand);
+                                break;
+                            case UFuncOperation.subtract:
+                                retValue = Subtract(srcValue, operand);
+                                break;
+                            case UFuncOperation.multiply:
+                                retValue = Multiply(srcValue, operand);
+                                break;
+                            case UFuncOperation.divide:
+                                retValue = Divide(srcValue, operand);
+                                break;
+                            case UFuncOperation.power:
+                                retValue = Power(srcValue, operand);
+                                break;
 
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
+                            default:
+                                retValue = PerformUFuncOperation(op, srcValue, operand);
+                                break;
 
-                            }
-
-                            dest[destOffsets[i] / SizeOfItem] = retValue;
                         }
-                        catch
-                        {
-                            dest[destOffsets[i] / SizeOfItem] = 0;
-                        }
-                    };
+
+                        dest[destOffsets[i] / SizeOfItem] = retValue;
+                    }
+                    catch
+                    {
+                        dest[destOffsets[i] / SizeOfItem] = 0;
+                    }
                 }
                 catch (Exception ex)
                 {
                     caughtExceptions.Add(ex);
                 }
-            }
-            else
-            {
-                Parallel.For(0, taskSize, i =>
-                {
-                    try
-                    {
-                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
-
-                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
-
-                        double retValue = 0;
-
-                        try
-                        {
-                            // for the common operations, do inline for speed.
-                            switch (op)
-                            {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
-
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
-
-                            }
-
-                            dest[destOffsets[i] / SizeOfItem] = retValue;
-                        }
-                        catch
-                        {
-                            dest[destOffsets[i] / SizeOfItem] = 0; 
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        caughtExceptions.Add(ex);
-                    }
-                });
-            }
+            });
 
 
             if (caughtExceptions.Count > 0)
@@ -570,47 +513,45 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
+                        double retValue;
+                        double srcValue = src[index - srcAdjustment];
+
+                        // for the common operations, do inline for speed.
+                        switch (op)
                         {
-                            double retValue;
-                            double srcValue = src[index - srcAdjustment];
+                            case UFuncOperation.add:
+                                retValue = Add(srcValue, operand);
+                                break;
+                            case UFuncOperation.subtract:
+                                retValue = Subtract(srcValue, operand);
+                                break;
+                            case UFuncOperation.multiply:
+                                retValue = Multiply(srcValue, operand);
+                                break;
+                            case UFuncOperation.divide:
+                                retValue = Divide(srcValue, operand);
+                                break;
+                            case UFuncOperation.power:
+                                retValue = Power(srcValue, operand);
+                                break;
 
-                            // for the common operations, do inline for speed.
-                            switch (op)
-                            {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
+                            default:
+                                retValue = PerformUFuncOperation(op, srcValue, operand);
+                                break;
 
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
-
-                            }
-
-                            dest[index - destAdjustment] = retValue;
                         }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = 0;
-                        }
+
+                        dest[index - destAdjustment] = retValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = 0;
                     }
                     catch (Exception ex)
                     {
                         exceptions.Enqueue(ex);
                     }
+
                 });
             }
             else
@@ -623,49 +564,47 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
+                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                        double operand = oper[operOffsets[operandIndex] / SizeOfItem];
+                        double srcValue = src[index - srcAdjustment];
+                        double retValue;
+
+                        // for the common operations, do inline for speed.
+                        switch (op)
                         {
-                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                            double operand =  oper[operOffsets[operandIndex] / SizeOfItem];
-                            double srcValue = src[index - srcAdjustment];
-                            double retValue;
+                            case UFuncOperation.add:
+                                retValue = Add(srcValue, operand);
+                                break;
+                            case UFuncOperation.subtract:
+                                retValue = Subtract(srcValue, operand);
+                                break;
+                            case UFuncOperation.multiply:
+                                retValue = Multiply(srcValue, operand);
+                                break;
+                            case UFuncOperation.divide:
+                                retValue = Divide(srcValue, operand);
+                                break;
+                            case UFuncOperation.power:
+                                retValue = Power(srcValue, operand);
+                                break;
 
-                            // for the common operations, do inline for speed.
-                            switch (op)
-                            {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
+                            default:
+                                retValue = PerformUFuncOperation(op, srcValue, operand);
+                                break;
 
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
-
-                            }
-
-                            dest[index - destAdjustment] = retValue;
                         }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = 0;
-                        }
+
+                        dest[index - destAdjustment] = retValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = 0;
                     }
                     catch (Exception ex)
                     {
                         exceptions.Enqueue(ex);
                     }
+
                 });
 
             }
