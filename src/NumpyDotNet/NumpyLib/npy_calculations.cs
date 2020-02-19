@@ -585,7 +585,7 @@ namespace NumpyLib
 
 
         #region PerformNumericOpScalarIter
-        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations)
+        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, UFuncOperation op)
         {
             var destSize = NpyArray_Size(destArray);
 
@@ -594,6 +594,12 @@ namespace NumpyLib
                 NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
                 return;
             }
+
+            bool handled = PerformNumericOpScalarAllSameType(destArray, srcArray, operArray, op);
+            if (handled)
+                return;
+
+    
 
             var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
@@ -627,6 +633,55 @@ namespace NumpyLib
             }
 
             return;
+        }
+
+        private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
+        {
+            switch (destArray.ItemType)
+            {
+                case NPY_TYPES.NPY_DOUBLE:
+                {
+                    if (destArray.ItemType == srcArray.ItemType)
+                    {
+                        if (operArray.ItemType != destArray.ItemType && NpyArray_SIZE(operArray) <= NUMERICOPS_TASKSIZE)
+                        {
+                            operArray = NpyArray_CastToType(operArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(operArray));
+                        }
+                    }
+                    if (destArray.ItemType == operArray.ItemType)
+                    {
+                        if (srcArray.ItemType != srcArray.ItemType && NpyArray_SIZE(srcArray) <= NUMERICOPS_TASKSIZE)
+                        {
+                            srcArray = NpyArray_CastToType(srcArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(srcArray));
+                        }
+                    }
+
+                    if (destArray.ItemType == srcArray.ItemType && destArray.ItemType == operArray.ItemType)
+                    {
+                        bool handled = PerformNumericOpScalarAllSameType(destArray, srcArray, operArray, op, destArray.ItemType);
+                        return handled;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            return false;
+
+    
+        }
+
+        private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op, NPY_TYPES itemType)
+        {
+            switch (itemType)
+            {
+                case NPY_TYPES.NPY_DOUBLE:
+                    iUFUNC_Operations UFunc = new UFUNC_Double();
+                    UFunc.PerformScalarOpArrayIter(destArray, srcArray, operArray, op);
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
@@ -1320,7 +1375,7 @@ namespace NumpyLib
 
             NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
    
-            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operations);
+            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operations, operationType);
         }
 
         public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, UFuncOperation operationType)

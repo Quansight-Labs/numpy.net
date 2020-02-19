@@ -228,6 +228,11 @@ namespace NumpyLib
         {
             throw new NotImplementedException();
         }
+
+        public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     #endregion
