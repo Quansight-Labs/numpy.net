@@ -3221,18 +3221,6 @@ namespace NumpyLib
             return true;
         }
 
-       
-        private static iUFUNC_Operations GetUFuncHandler(NPY_TYPES npy_type)
-        {
-            switch (npy_type)
-            {
-                case NPY_TYPES.NPY_DOUBLE:
-                    return new UFUNC_Double();
-
-                default:
-                    return null;
-            }
-        }
 
     }
 
