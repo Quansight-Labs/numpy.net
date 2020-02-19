@@ -262,6 +262,19 @@ namespace NumpyLib
                 }
             }
 
+            if (op == GenericReductionOp.NPY_UFUNC_REDUCEAT)
+            {
+                if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
+                {
+                    if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                    {
+                        iUFUNC_Operations UFunc = new UFUNC_Double();
+                        UFunc.PerformReduceAtOpArrayIter(bufPtr, steps, Ops, N);
+                        return;
+                    }
+                }
+            }
+
 
             switch (Result.type_num)
             {
