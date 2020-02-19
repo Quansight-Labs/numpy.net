@@ -236,6 +236,107 @@ namespace NumpyLib
 
         #endregion
 
+        #region UFUNC Accumulate
+
+        public void PerformAccumulateOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+        {
+            VoidPtr Operand1 = bufPtr[0];
+            VoidPtr Operand2 = bufPtr[1];
+            VoidPtr Result = bufPtr[2];
+
+            npy_intp O1_Step = steps[0];
+            npy_intp O2_Step = steps[1];
+            npy_intp R_Step = steps[2];
+
+            if (Operand2 == null)
+            {
+                Operand2 = Operand1;
+                O2_Step = O1_Step;
+            }
+            if (Result == null)
+            {
+                Result = Operand1;
+                R_Step = O1_Step;
+            }
+
+            NumericOperation Operation = GetOperation(Operand1, ops);
+            var Operand1Handler = DefaultArrayHandlers.GetArrayHandler(Operand1.type_num);
+            var Operand2Handler = DefaultArrayHandlers.GetArrayHandler(Operand2.type_num);
+            var ResultHandler = DefaultArrayHandlers.GetArrayHandler(Result.type_num);
+
+
+            npy_intp O1_Offset = Operand1.data_offset;
+            npy_intp O2_Offset = Operand2.data_offset;
+            npy_intp R_Offset = Result.data_offset;
+
+
+            double[] retArray = Result.datap as double[];
+            double[] Op1Array = Operand1.datap as double[];
+            double[] Op2Array = Operand2.datap as double[];
+
+            npy_intp O1_CalculatedStep = (O1_Step / sizeof(double));
+            npy_intp O1_CalculatedOffset = (O1_Offset / sizeof(double));
+
+            npy_intp O2_CalculatedStep = (O2_Step / sizeof(double));
+            npy_intp O2_CalculatedOffset = (O2_Offset / sizeof(double));
+
+            npy_intp R_CalculatedStep = (R_Step / sizeof(double));
+            npy_intp R_CalculatedOffset = (R_Offset / sizeof(double));
+
+
+            try
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
+                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+                    npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
+
+                    var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                    var O2Value = Op2Array[O2_Index];                                            // get operand 2
+                    double retValue;
+
+                    // for the common operations, do inline for speed.
+                    switch (ops)
+                    {
+                        case UFuncOperation.add:
+                            retValue = Add(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.subtract:
+                            retValue = Subtract(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.multiply:
+                            retValue = Multiply(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.divide:
+                            retValue = Divide(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.power:
+                            retValue = Power(O1Value, O2Value);
+                            break;
+
+                        default:
+                            retValue = PerformUFuncOperation(ops, O1Value, O2Value);
+                            break;
+
+                    }
+                    retArray[R_Index] = retValue;
+
+                }
+
+            }
+            catch (System.OverflowException oe)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_OverflowError, oe.Message);
+            }
+            catch (Exception ex)
+            {
+                NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+            }
+        }
+
+        #endregion
+
         private double PerformUFuncOperation(UFuncOperation op, double aValue, double bValue)
         {
             double destValue = 0;
@@ -563,6 +664,8 @@ namespace NumpyLib
             return 1.0;
 
         }
+
+   
         #endregion
 
     }
