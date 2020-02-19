@@ -1233,20 +1233,36 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
+                    List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
+
                     while (loop.index < loop.size)
                     {
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
-                        if (!NPY_UFUNC_CHECK_ERROR(loop))
-                            goto fail;
+
+                        var BufPtrs = new VoidPtr[3];
+                        BufPtrs[0] = loop.bufptr[0] != null ? new VoidPtr(loop.bufptr[0]) : null;
+                        BufPtrs[1] = loop.bufptr[1] != null ? new VoidPtr(loop.bufptr[1]) : null;
+                        BufPtrs[2] = loop.bufptr[2] != null ? new VoidPtr(loop.bufptr[2]) : null;
+
+                        arrayOfBufPtrs.Add(BufPtrs);
+
                         NpyArray_ITER_NEXT(loop.it);
                         NpyArray_ITER_NEXT(loop.rit);
                         loop.bufptr[0] = loop.rit.dataptr;
                         loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
                         loop.index++;
                     }
+
+                    Parallel.For(0, arrayOfBufPtrs.Count, ii =>
+                    {
+                        loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                    });
+
+                    if (!NPY_UFUNC_CHECK_ERROR(loop))
+                        goto fail;
+
                     break;
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
                     /* Accumulate
