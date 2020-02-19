@@ -439,10 +439,10 @@ namespace NumpyLib
                     for (int i = 0; i < taskSize; i++)
                     {
                         int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex] / SizeOfItem, srcArray, src.Length)];
+                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
 
                         int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex] / SizeOfItem, operArray, oper.Length)];
+                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
 
                         double retValue = 0;
 
@@ -493,10 +493,10 @@ namespace NumpyLib
                     try
                     {
                         int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex] / SizeOfItem, srcArray, src.Length)];
+                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
 
                         int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex] / SizeOfItem, operArray, oper.Length)];
+                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
 
                         double retValue = 0;
 
