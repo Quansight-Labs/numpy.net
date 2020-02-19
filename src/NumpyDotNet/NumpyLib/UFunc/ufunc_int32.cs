@@ -223,6 +223,11 @@ namespace NumpyLib
         {
             throw new NotImplementedException();
         }
+
+        public void PerformReduceAtOpArrayIter(VoidPtr[] bufPtr, long[] steps, UFuncOperation ops, long N)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     #endregion
