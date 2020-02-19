@@ -85,58 +85,94 @@ namespace NumpyLib
 
             if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
             {
+                List<Exception> caughtExceptions = new List<Exception>();
 
                 Parallel.For(0, aSize, i =>
                 {
-                    var aValue = aValues[i];
-
-                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
-
-                    for (long j = 0; j < bSize; j++)
+                    try
                     {
-                        var bValue = bValues[j];
+                        var aValue = aValues[i];
 
-                        double destValue = PerformUFuncOperation(op, aValue, bValue);
+                        long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
 
-                        try
+                        for (long j = 0; j < bSize; j++)
                         {
-                            dp[destIndex] = destValue;
+                            var bValue = bValues[j];
+
+                            double destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                dp[destIndex] = destValue;
+                            }
+                            catch
+                            {
+                                operations.destSetItem(destIndex, 0, destArray);
+                            }
+                            destIndex++;
                         }
-                        catch
-                        {
-                            operations.destSetItem(destIndex, 0, destArray);
-                        }
-                        destIndex++;
                     }
+                    catch (Exception ex)
+                    {
+                        caughtExceptions.Add(ex);
+                    }
+ 
 
                 });
+
+                if (caughtExceptions.Count > 0)
+                {
+                    Exception ex = caughtExceptions[0];
+                    if (ex is System.OverflowException)
+                    {
+                        NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                        return;
+                    }
+
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                    return;
+                }
             }
             else
             {
-                for (long i = 0; i < aSize; i++)
+                try
                 {
-                    var aValue = aValues[i];
-
-                    for (long j = 0; j < bSize; j++)
+                    for (long i = 0; i < aSize; i++)
                     {
-                        var bValue = bValues[j];
+                        var aValue = aValues[i];
 
-                        double destValue = PerformUFuncOperation(op, aValue, bValue);
+                        for (long j = 0; j < bSize; j++)
+                        {
+                            var bValue = bValues[j];
 
-                        try
-                        {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            dp[AdjustedIndex] = destValue;
+                            double destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                            try
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                dp[AdjustedIndex] = destValue;
+                            }
+                            catch
+                            {
+                                long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                operations.destSetItem(AdjustedIndex, 0, destArray);
+                            }
+                            NpyArray_ITER_NEXT(DestIter);
                         }
-                        catch
-                        {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            operations.destSetItem(AdjustedIndex, 0, destArray);
-                        }
-                        NpyArray_ITER_NEXT(DestIter);
+
                     }
-
                 }
+                catch (System.OverflowException ex)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                    return;
+                }
+   
             }
 
 
@@ -302,6 +338,15 @@ namespace NumpyLib
             }
 
 
+        }
+
+        #endregion
+
+        #region REDUCEAT
+
+        public void PerformReduceAtOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+        {
+            PerformAccumulateOpArrayIter(bufPtr, steps, ops, N);
         }
 
         #endregion
@@ -634,7 +679,6 @@ namespace NumpyLib
 
         }
 
-   
         #endregion
 
     }
