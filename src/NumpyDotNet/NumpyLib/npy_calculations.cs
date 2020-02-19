@@ -637,52 +637,35 @@ namespace NumpyLib
 
         private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
         {
-            switch (destArray.ItemType)
+            iUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
+            if (UFunc != null)
             {
-                case NPY_TYPES.NPY_DOUBLE:
+                if (destArray.ItemType == srcArray.ItemType)
                 {
-                    if (destArray.ItemType == srcArray.ItemType)
+                    if (operArray.ItemType != destArray.ItemType && NpyArray_SIZE(operArray) <= NUMERICOPS_TASKSIZE)
                     {
-                        if (operArray.ItemType != destArray.ItemType && NpyArray_SIZE(operArray) <= NUMERICOPS_TASKSIZE)
-                        {
-                            operArray = NpyArray_CastToType(operArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(operArray));
-                        }
+                        operArray = NpyArray_CastToType(operArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(operArray));
                     }
-                    if (destArray.ItemType == operArray.ItemType)
-                    {
-                        if (srcArray.ItemType != srcArray.ItemType && NpyArray_SIZE(srcArray) <= NUMERICOPS_TASKSIZE)
-                        {
-                            srcArray = NpyArray_CastToType(srcArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(srcArray));
-                        }
-                    }
-
-                    if (destArray.ItemType == srcArray.ItemType && destArray.ItemType == operArray.ItemType)
-                    {
-                        bool handled = PerformNumericOpScalarAllSameType(destArray, srcArray, operArray, op, destArray.ItemType);
-                        return handled;
-                    }
-                    break;
                 }
-                default:
-                    break;
-            }
-            return false;
+                if (destArray.ItemType == operArray.ItemType)
+                {
+                    if (srcArray.ItemType != srcArray.ItemType && NpyArray_SIZE(srcArray) <= NUMERICOPS_TASKSIZE)
+                    {
+                        srcArray = NpyArray_CastToType(srcArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(srcArray));
+                    }
+                }
 
+                if (destArray.ItemType == srcArray.ItemType && destArray.ItemType == operArray.ItemType)
+                {
+                    UFunc.PerformScalarOpArrayIter(destArray, srcArray, operArray, op);
+                    return true;
+                }
+            }
+
+            return false;
     
         }
 
-        private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op, NPY_TYPES itemType)
-        {
-            switch (itemType)
-            {
-                case NPY_TYPES.NPY_DOUBLE:
-                    iUFUNC_Operations UFunc = new UFUNC_Double();
-                    UFunc.PerformScalarOpArrayIter(destArray, srcArray, operArray, op);
-                    return true;
-                default:
-                    return false;
-            }
-        }
 
         private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
         {

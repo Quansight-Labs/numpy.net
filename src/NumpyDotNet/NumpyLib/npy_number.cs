@@ -236,45 +236,29 @@ namespace NumpyLib
         {
             VoidPtr Result = bufPtr[2];
 
-            if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
+            if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
             {
-                if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
+                iUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                if (UFunc != null)
                 {
-                    if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                    if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
                     {
-                        iUFUNC_Operations UFunc = new UFUNC_Double();
                         UFunc.PerformReduceOpArrayIter(bufPtr, steps, Ops, N);
                         return;
                     }
-                }
-            }
-
-            if (op == GenericReductionOp.NPY_UFUNC_ACCUMULATE)
-            {
-                if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
-                {
-                    if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                    if (op == GenericReductionOp.NPY_UFUNC_ACCUMULATE)
                     {
-                        iUFUNC_Operations UFunc = new UFUNC_Double();
                         UFunc.PerformAccumulateOpArrayIter(bufPtr, steps, Ops, N);
                         return;
                     }
-                }
-            }
-
-            if (op == GenericReductionOp.NPY_UFUNC_REDUCEAT)
-            {
-                if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
-                {
-                    if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                    if (op == GenericReductionOp.NPY_UFUNC_REDUCEAT)
                     {
-                        iUFUNC_Operations UFunc = new UFUNC_Double();
                         UFunc.PerformReduceAtOpArrayIter(bufPtr, steps, Ops, N);
                         return;
                     }
                 }
             }
-
+ 
 
             switch (Result.type_num)
             {
