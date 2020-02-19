@@ -1092,13 +1092,32 @@ namespace NumpyLib
                         loop.index++;
                     }
 
+                    List<Exception> caughtExceptions = new List<Exception>();
+
                     Parallel.For(0, arrayOfBufPtrs.Count, ii =>
                     {
-                        loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                        try
+                        {
+                            loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                        }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
+                        }
                     });
 
-                    if (!NPY_UFUNC_CHECK_ERROR(loop))
+                    if (caughtExceptions.Count > 0)
+                    {
+                        Exception ex = caughtExceptions[0];
+                        if (ex is System.OverflowException)
+                        {
+                            NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                            goto fail;
+                        }
+
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                         goto fail;
+                    }
 
                     break;
 
@@ -1255,13 +1274,32 @@ namespace NumpyLib
                         loop.index++;
                     }
 
+                    List<Exception> caughtExceptions = new List<Exception>();
+
                     Parallel.For(0, arrayOfBufPtrs.Count, ii =>
                     {
-                        loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                        try
+                        {
+                            loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                        }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
+                        }
                     });
 
-                    if (!NPY_UFUNC_CHECK_ERROR(loop))
+                    if (caughtExceptions.Count > 0)
+                    {
+                        Exception ex = caughtExceptions[0];
+                        if (ex is System.OverflowException)
+                        {
+                            NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                            goto fail;
+                        }
+           
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                         goto fail;
+                    }
 
                     break;
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
