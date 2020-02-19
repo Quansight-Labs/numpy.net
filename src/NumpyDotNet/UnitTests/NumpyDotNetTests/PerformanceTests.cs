@@ -19,7 +19,7 @@ namespace NumpyDotNetTests
         {
             int LoopCount = 200;
 
-            var matrix = np.arange(1600000, dtype: np.Int64).reshape((40, -1));
+            var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -49,7 +49,7 @@ namespace NumpyDotNetTests
 
             var kk = new bool[Int32.MaxValue / 2];
 
-            var matrix = np.arange(16000000, dtype: np.Int64).reshape((40, -1));
+            var matrix = np.arange(16000000, dtype: np.Float64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -192,8 +192,8 @@ namespace NumpyDotNetTests
         public void Performance_AddReduce2()
         {
 
-            int LoopCount = 200;
-            var a = np.arange(0, 4000 * 4000, dtype: np.Float64).reshape(4000, 4000);
+            int LoopCount = 1;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -232,7 +232,30 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("AddAccumulate calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_AddAccumulate2()
+        {
+
+            int LoopCount = 200;
+            var a = np.arange(0, 4000 * 4000, dtype: np.Float64).reshape(4000,4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var b = np.ufunc.accumulate(UFuncOperation.add, a);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddAccumulate calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }

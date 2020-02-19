@@ -91,7 +91,7 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 200;
 
-        a = np.arange(0, 4000 * 4000, dtype=np.float64).reshape(4000,4000);
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
 
         start = tm.time()
         
@@ -111,6 +111,22 @@ class PerformanceTests(unittest.TestCase):
         LoopCount = 200;
 
         a = np.arange(10000000, dtype=np.float64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.accumulate(a)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
+    def test_AddAccumulate_Performance2(self):
+
+        LoopCount = 200;
+
+        a = np.arange(4000 * 4000, dtype=np.float64).reshape(4000,4000);
 
         start = tm.time()
         
