@@ -23,8 +23,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AddOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.add, null, a1, a2);
             print(b);
@@ -43,8 +43,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SubtractOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.subtract, null, a1, a2);
             print(b);
@@ -63,8 +63,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MultiplyOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.multiply, null, a1, a2);
             print(b);
@@ -83,8 +83,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_DivideOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.divide, null, a1, a2);
             print(b);
@@ -103,8 +103,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RemainderOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.remainder, null, a1, a2);
             print(b);
@@ -124,8 +124,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FModOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.fmod, null, a1, a2);
             print(b);
@@ -144,8 +144,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SquareOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.square, null, a1, a2);
@@ -166,8 +166,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ReciprocalOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.reciprocal, null, a1, a2);
@@ -188,8 +188,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_OnesLikeOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.ones_like, null, a1, a2);
@@ -209,8 +209,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SqrtOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.sqrt, null, a1, a2);
@@ -230,8 +230,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NegativeOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.negative, null, a1, a2);
@@ -251,8 +251,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AbsoluteOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.absolute, null, a1, a2);
@@ -272,8 +272,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_InvertOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.invert, null, a1, a2);
@@ -293,8 +293,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LeftShiftOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.left_shift, null, a1, a2);
@@ -315,8 +315,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RightShiftOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64) * 1024 * 4;
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32) * 1024 * 4;
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.right_shift, null, a1, a2);
@@ -337,8 +337,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseAndOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.bitwise_and, null, a1, a2);
@@ -358,8 +358,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseOrOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.bitwise_or, null, a1, a2);
@@ -379,8 +379,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseXorOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.outer(UFuncOperation.bitwise_xor, null, a1, a2);
@@ -401,8 +401,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.less, null, a1, a2);
             print(b);
@@ -419,8 +419,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessEqualOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.less_equal, null, a1, a2);
             print(b);
@@ -436,8 +436,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_EqualOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.equal, null, a1, a2);
             print(b);
@@ -454,8 +454,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NotEqualOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.not_equal, null, a1, a2);
             print(b);
@@ -471,8 +471,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.greater, null, a1, a2);
             print(b);
@@ -488,8 +488,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterEqualOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.greater_equal, null, a1, a2);
             print(b);
@@ -505,8 +505,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorDivideOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.floor_divide, null, a1, a2);
             print(b);
@@ -527,8 +527,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trueDivideOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.true_divide, null, a1, a2);
             print(b);
@@ -547,8 +547,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalAndOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.logical_and, null, a1, a2);
             print(b);
@@ -564,8 +564,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalOrOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.logical_or, null, a1, a2);
             print(b);
@@ -582,8 +582,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.floor, null, a1, a2);
             print(b);
@@ -603,8 +603,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_CeilOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.ceil, null, a1, a2);
             print(b);
@@ -623,8 +623,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MaximumOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.maximum, null, a1, a2);
             print(b);
@@ -643,8 +643,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MinimumOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.minimum, null, a1, a2);
             print(b);
@@ -663,8 +663,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RintOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.rint, null, a1, a2);
             print(b);
@@ -683,8 +683,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ConjugateOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.conjugate, null, a1, a2);
             print(b);
@@ -703,8 +703,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_IsNANOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.isnan, null, a1, a2);
             print(b);
@@ -722,8 +722,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMaxOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.fmax, null, a1, a2);
             print(b);
@@ -742,8 +742,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMinOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.fmin, null, a1, a2);
             print(b);
@@ -762,8 +762,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_HeavisideOuter_FLOAT()
         {
-            var a1 = np.arange(0, 5, dtype: np.Float64);
-            var a2 = np.arange(3, 8, dtype: np.Float64);
+            var a1 = np.arange(0, 5, dtype: np.Float32);
+            var a2 = np.arange(3, 8, dtype: np.Float32);
 
             var b = np.ufunc.outer(UFuncOperation.heaviside, null, a1, a2);
             print(b);
@@ -784,7 +784,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AddReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.add, a1);
             print(b);
@@ -798,7 +798,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SubtractReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.subtract, a1);
             print(b);
@@ -812,7 +812,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MultiplyReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.multiply, a1);
             print(b);
@@ -831,7 +831,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_DivideReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.divide, a1);
             print(b);
@@ -849,7 +849,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RemainderReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.remainder, a1);
             print(b);
@@ -862,7 +862,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FModReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.fmod, a1);
             print(b);
@@ -876,7 +876,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SquareReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.square, a1);
@@ -894,7 +894,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ReciprocalReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.reciprocal, a1);
@@ -910,7 +910,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_OnesLikeReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.ones_like, a1);
@@ -925,7 +925,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SqrtReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.sqrt, a1);
@@ -944,7 +944,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NegativeReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.negative, a1);
@@ -959,7 +959,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AbsoluteReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.absolute, a1);
@@ -974,7 +974,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_InvertReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.invert, a1);
@@ -989,7 +989,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LeftShiftReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.left_shift, a1);
@@ -1004,7 +1004,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RightShiftReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.right_shift, a1);
@@ -1020,7 +1020,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseAndReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.bitwise_and, a1);
@@ -1035,7 +1035,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseOrReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.bitwise_or, a1);
@@ -1050,7 +1050,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseXorReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduce(UFuncOperation.bitwise_xor, a1);
@@ -1066,7 +1066,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.less, a1);
             print(b);
@@ -1079,7 +1079,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessEqualReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.less_equal, a1);
             print(b);
@@ -1091,7 +1091,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_EqualReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.equal, a1);
             print(b);
@@ -1104,7 +1104,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NotEqualReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.not_equal, a1);
             print(b);
@@ -1115,7 +1115,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.greater, a1);
             print(b);
@@ -1126,7 +1126,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterEqualReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.greater_equal, a1);
             print(b);
@@ -1137,7 +1137,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorDivideReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.floor_divide, a1);
             print(b);
@@ -1152,7 +1152,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trueDivideReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.true_divide, a1);
             print(b);
@@ -1170,7 +1170,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalAndReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.logical_and, a1);
             print(b);
@@ -1182,7 +1182,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalOrReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.logical_or, a1);
             print(b);
@@ -1195,7 +1195,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.floor, a1);
             print(b);
@@ -1210,7 +1210,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_CeilReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.ceil, a1);
             print(b);
@@ -1224,7 +1224,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MaximumReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.maximum, a1);
             print(b);
@@ -1238,7 +1238,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MinimumReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.minimum, a1);
             print(b);
@@ -1252,7 +1252,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RintReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.rint, a1);
             print(b);
@@ -1266,7 +1266,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ConjugateReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.conjugate, a1);
             print(b);
@@ -1280,7 +1280,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_IsNANReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.isnan, a1);
             print(b);
@@ -1293,7 +1293,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMaxReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.fmax, a1);
             print(b);
@@ -1307,7 +1307,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMinReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.fmin, a1);
             print(b);
@@ -1321,7 +1321,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_HeavisideReduce_FLOAT()
         {
-            var a1 = np.arange(0, 100, dtype: np.Float64).reshape((10, 10));
+            var a1 = np.arange(0, 100, dtype: np.Float32).reshape((10, 10));
 
             var b = np.ufunc.reduce(UFuncOperation.heaviside, a1);
             print(b);
@@ -1337,7 +1337,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AddAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.add, a1);
             print(b);
@@ -1351,7 +1351,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SubtractAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.subtract, a1);
             print(b);
@@ -1365,7 +1365,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MultiplyAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.multiply, a1);
             print(b);
@@ -1379,7 +1379,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_DivideAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.divide, a1);
             print(b);
@@ -1393,7 +1393,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RemainderAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.remainder, a1);
             print(b);
@@ -1406,7 +1406,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FModAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.fmod, a1);
             print(b);
@@ -1420,7 +1420,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SquareAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.square, a1);
@@ -1436,7 +1436,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ReciprocalAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.reciprocal, a1);
@@ -1452,7 +1452,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_OnesLikeAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.ones_like, a1);
@@ -1467,7 +1467,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SqrtAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.sqrt, a1);
@@ -1482,7 +1482,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NegativeAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.negative, a1);
@@ -1497,7 +1497,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AbsoluteAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.absolute, a1);
@@ -1512,7 +1512,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_InvertAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.invert, a1);
@@ -1527,7 +1527,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LeftShiftAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.left_shift, a1);
@@ -1542,7 +1542,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RightShiftAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.right_shift, a1);
@@ -1558,7 +1558,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseAndAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_and, a1);
@@ -1573,7 +1573,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseOrAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_or, a1);
@@ -1588,7 +1588,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseXorAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.accumulate(UFuncOperation.bitwise_xor, a1);
@@ -1604,7 +1604,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.less, a1);
             print(b);
@@ -1617,7 +1617,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessEqualAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.less_equal, a1);
             print(b);
@@ -1629,7 +1629,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_EqualAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.equal, a1);
             print(b);
@@ -1642,7 +1642,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NotEqualAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.not_equal, a1);
             print(b);
@@ -1653,7 +1653,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.greater, a1);
             print(b);
@@ -1664,7 +1664,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterEqualAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.greater_equal, a1);
             print(b);
@@ -1675,7 +1675,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorDivideAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.floor_divide, a1);
             print(b);
@@ -1690,7 +1690,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trueDivideAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.true_divide, a1);
             print(b);
@@ -1704,7 +1704,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalAndAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.logical_and, a1);
             print(b);
@@ -1716,7 +1716,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalOrAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.logical_or, a1);
             print(b);
@@ -1729,7 +1729,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.floor, a1);
             print(b);
@@ -1744,7 +1744,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_CeilAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.ceil, a1);
             print(b);
@@ -1758,7 +1758,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MaximumAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.maximum, a1);
             print(b);
@@ -1772,7 +1772,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MinimumAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.minimum, a1);
             print(b);
@@ -1786,7 +1786,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RintAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.rint, a1);
             print(b);
@@ -1800,7 +1800,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ConjugateAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.conjugate, a1);
             print(b);
@@ -1814,7 +1814,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_IsNANAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.isnan, a1);
             print(b);
@@ -1827,7 +1827,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMaxAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.fmax, a1);
             print(b);
@@ -1841,7 +1841,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMinAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.fmin, a1);
             print(b);
@@ -1855,7 +1855,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_HeavisideAccumulate_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.accumulate(UFuncOperation.heaviside, a1);
             print(b);
@@ -1871,7 +1871,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AddReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.add, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1885,7 +1885,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SubtractReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.subtract, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1898,7 +1898,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MultiplyReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.multiply, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1912,7 +1912,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_DivideReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1926,7 +1926,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RemainderReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.remainder, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1939,7 +1939,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FModReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.fmod, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -1953,7 +1953,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SquareReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.square, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -1969,7 +1969,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ReciprocalReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.reciprocal, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -1985,7 +1985,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_OnesLikeReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.ones_like, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2000,7 +2000,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SqrtReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.sqrt, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2015,7 +2015,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NegativeReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.negative, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2030,7 +2030,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_AbsoluteReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.absolute, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2045,7 +2045,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_InvertReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.invert, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2060,7 +2060,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LeftShiftReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.left_shift, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2075,7 +2075,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RightShiftReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.right_shift, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2091,7 +2091,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseAndReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.bitwise_and, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2106,7 +2106,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseOrReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.bitwise_or, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2121,7 +2121,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_BitwiseXorReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             // note: python throws an exception here because squares don't have two arguments.  I don't care.
             var b = np.ufunc.reduceat(UFuncOperation.bitwise_xor, a1, new npy_intp[] { 0, 2 }, axis: 1);
@@ -2137,7 +2137,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.less, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2150,7 +2150,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LessEqualReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.less_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2162,7 +2162,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_EqualReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2175,7 +2175,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_NotEqualReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.not_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2186,7 +2186,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.greater, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2197,7 +2197,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_GreaterEqualReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.greater_equal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2208,7 +2208,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorDivideReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.floor_divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2223,7 +2223,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_trueDivideReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.true_divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2237,7 +2237,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalAndReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.logical_and, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2249,7 +2249,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_LogicalOrReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.logical_or, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2262,7 +2262,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FloorReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.floor, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2277,7 +2277,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_CeilReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.ceil, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2291,7 +2291,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MaximumReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.maximum, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2305,7 +2305,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_MinimumReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.minimum, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2319,7 +2319,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_RintReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.rint, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2333,7 +2333,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ConjugateReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.conjugate, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2347,7 +2347,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_IsNANReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.isnan, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2360,7 +2360,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMaxReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.fmax, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2374,7 +2374,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_FMinReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.fmin, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
@@ -2388,7 +2388,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_HeavisideReduceAt_FLOAT()
         {
-            var a1 = np.arange(0, 9, dtype: np.Float64).reshape((3, 3));
+            var a1 = np.arange(0, 9, dtype: np.Float32).reshape((3, 3));
 
             var b = np.ufunc.reduceat(UFuncOperation.heaviside, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
