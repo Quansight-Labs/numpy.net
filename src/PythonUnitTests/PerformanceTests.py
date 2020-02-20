@@ -11,7 +11,7 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 200;
 
-        matrix = np.arange(1600000).astype(np.int64).reshape((40, -1));
+        matrix = np.arange(1600000).astype(np.float64).reshape((40, -1));
 
         start = tm.time()
 
@@ -35,7 +35,7 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 200;
 
-        matrix = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+        matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
 
         start = tm.time()
 
@@ -97,8 +97,8 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.reduce(a)
-            #c = np.sum(b)
-            #print(c)
+            c = np.sum(b)
+            print(c)
 
         end = tm.time()
 

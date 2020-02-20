@@ -84,9 +84,9 @@ namespace NumpyDotNetTests
 
             sw.Start();
 
-            var matrix = np.arange(1600000).astype(np.Int64).reshape((40, -1));
+            var matrix = np.arange(1600000).astype(np.Float64).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as Int64[];
+            var src = matrix.Array.data.datap as double[];
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -192,7 +192,7 @@ namespace NumpyDotNetTests
         public void Performance_AddReduce2()
         {
 
-            int LoopCount = 1;
+            int LoopCount = 200;
             var a = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -201,8 +201,8 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                //var c = np.sum(b);
-                //Assert.AreEqual(127999992000000.0, c.item(0));
+                var c = np.sum(b);
+                Assert.AreEqual(1.279999992E+16, c.item(0));
             }
 
             sw.Stop();
@@ -334,8 +334,7 @@ namespace NumpyDotNetTests
         {
 
             int LoopCount = 200;
-            var c = np.arange(0, 2000, dtype: np.Float64);
-            var a = c[new Slice(0, 2000, 2)];
+            var a = np.arange(0, 1000, dtype: np.Float64);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
