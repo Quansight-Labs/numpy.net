@@ -70,7 +70,7 @@
     <Compile Include="PerformanceTests.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UFUNCTests.py">
+    <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WindowFunctions.py">
@@ -82,6 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UFUNCTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
