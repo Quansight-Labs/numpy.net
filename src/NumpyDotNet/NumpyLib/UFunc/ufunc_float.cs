@@ -244,6 +244,9 @@ namespace NumpyLib
         }
         private float Reciprocal(float bValue, float operand)
         {
+            if (bValue == 0)
+                return 0;
+
             return 1 / bValue;
         }
         private float OnesLike(float bValue, float operand)
@@ -326,6 +329,9 @@ namespace NumpyLib
         }
         private float TrueDivide(float bValue, float operand)
         {
+            if (operand == 0)
+                return 0;
+
             return bValue / operand;
         }
         private bool LogicalOr(float bValue, float operand)
