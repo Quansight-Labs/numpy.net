@@ -174,7 +174,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new float[,]
-                { { float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity,float.PositiveInfinity },
+                { { 0, 0, 0, 0,0 },
                   { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
                   { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f },
                   { 0.333333333333333f, 0.333333333333333f, 0.333333333333333f, 0.333333333333333f, 0.333333333333333f },
@@ -900,7 +900,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new float[] { float.PositiveInfinity, 1.0f, 0.5f, 0.333333333333333f, 0.25f, 0.2f, 0.166666666666667f, 0.142857142857143f, 0.125f, 0.111111111111111f };
+            var ExpectedData = new float[] { 0, 1.0f, 0.5f, 0.333333333333333f, 0.25f, 0.2f, 0.166666666666667f, 0.142857142857143f, 0.125f, 0.111111111111111f };
 
             AssertArray(b, ExpectedData);
 
@@ -1441,7 +1441,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new float[,] { { 0.0f, 1.0f, 2.0f }, { float.PositiveInfinity, 1.0f, 0.5f }, { 0.0f, 1.0f, 2.0f } };
+            var ExpectedData = new float[,] { { 0.0f, 1.0f, 2.0f }, { 0, 1.0f, 0.5f }, { 0.0f, 1.0f, 2.0f } };
 
             AssertArray(b, ExpectedData);
 
@@ -1974,7 +1974,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.reciprocal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new float[,] { { float.PositiveInfinity, 2.0f }, { 0.333333333333333f, 5.0f }, { 0.166666666666667f, 8.0f } };
+            var ExpectedData = new float[,] { { 0, 2.0f }, { 0.333333333333333f, 5.0f }, { 0.166666666666667f, 8.0f } };
 
             AssertArray(b, ExpectedData);
 
