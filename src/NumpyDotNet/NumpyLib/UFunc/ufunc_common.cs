@@ -1038,11 +1038,319 @@ namespace NumpyLib
             }
 
             #endregion
-            protected long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
+
+            #region UFUNC Outer
+            public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
+            {
+                var destSize = NpyArray_Size(destArray);
+                var aSize = NpyArray_Size(a);
+                var bSize = NpyArray_Size(b);
+
+                if (bSize == 0 || aSize == 0)
+                {
+                    NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                    return;
+                }
+
+                var aIter = NpyArray_IterNew(a);
+                var bIter = NpyArray_IterNew(b);
+                var DestIter = NpyArray_IterNew(destArray);
+
+                T[] aValues = new T[aSize];
+                for (long i = 0; i < aSize; i++)
+                {
+                    aValues[i] = ConvertToTemplate(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
+                    NpyArray_ITER_NEXT(aIter);
+                }
+
+                T[] bValues = new T[bSize];
+                for (long i = 0; i < bSize; i++)
+                {
+                    bValues[i] = ConvertToTemplate(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
+                    NpyArray_ITER_NEXT(bIter);
+                }
+
+
+                T[] dp = destArray.data.datap as T[];
+
+
+                if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
+                {
+                    List<Exception> caughtExceptions = new List<Exception>();
+
+                    Parallel.For(0, aSize, i =>
+                    {
+                        try
+                        {
+                            var aValue = aValues[i];
+
+                            long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+
+                            for (long j = 0; j < bSize; j++)
+                            {
+                                var bValue = bValues[j];
+
+                                T destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                                try
+                                {
+                                    dp[destIndex] = destValue;
+                                }
+                                catch
+                                {
+                                    operations.destSetItem(destIndex, 0, destArray);
+                                }
+                                destIndex++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
+                        }
+
+
+                    });
+
+                    if (caughtExceptions.Count > 0)
+                    {
+                        Exception ex = caughtExceptions[0];
+                        if (ex is System.OverflowException)
+                        {
+                            NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                            return;
+                        }
+
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                        return;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        for (long i = 0; i < aSize; i++)
+                        {
+                            var aValue = aValues[i];
+
+                            for (long j = 0; j < bSize; j++)
+                            {
+                                var bValue = bValues[j];
+
+                                T destValue = PerformUFuncOperation(op, aValue, bValue);
+
+                                try
+                                {
+                                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                    dp[AdjustedIndex] = destValue;
+                                }
+                                catch
+                                {
+                                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                                }
+                                NpyArray_ITER_NEXT(DestIter);
+                            }
+
+                        }
+                    }
+                    catch (System.OverflowException ex)
+                    {
+                        NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
+                        return;
+                    }
+
+                }
+
+
+            }
+
+            #endregion
+
+            #region UFUNC Reduce
+
+            public void PerformReduceOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+            {
+                VoidPtr Operand1 = bufPtr[0];
+                VoidPtr Operand2 = bufPtr[1];
+                VoidPtr Result = bufPtr[2];
+
+                npy_intp O1_Step = steps[0];
+                npy_intp O2_Step = steps[1];
+                npy_intp R_Step = steps[2];
+
+                npy_intp O1_Offset = Operand1.data_offset;
+                npy_intp O2_Offset = Operand2.data_offset;
+                npy_intp R_Offset = Result.data_offset;
+
+
+                T[] retArray = Result.datap as T[];
+                T[] Op1Array = Operand1.datap as T[];
+                T[] Op2Array = Operand2.datap as T[];
+
+                npy_intp R_Index = AdjustNegativeIndex(retArray, R_Offset / SizeOfItem);
+                npy_intp O1_Index = AdjustNegativeIndex(Op1Array, O1_Offset / SizeOfItem);
+
+                npy_intp O2_CalculatedStep = (O2_Step / SizeOfItem);
+                npy_intp O2_CalculatedOffset = (O2_Offset / SizeOfItem);
+
+
+                T retValue = retArray[R_Index];
+
+                // note: these can't be parrallized.
+                for (int i = 0; i < N; i++)
+                {
+                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+
+                    var Op1Value = retValue;
+                    var Op2Value = Op2Array[O2_Index];
+
+                    // for the common operations, do inline for speed.
+                    switch (ops)
+                    {
+                        case UFuncOperation.add:
+                            retValue = Add(Op1Value, Op2Value);
+                            break;
+                        case UFuncOperation.subtract:
+                            retValue = Subtract(Op1Value, Op2Value);
+                            break;
+                        case UFuncOperation.multiply:
+                            retValue = Multiply(Op1Value, Op2Value);
+                            break;
+                        case UFuncOperation.divide:
+                            retValue = Divide(Op1Value, Op2Value);
+                            break;
+                        case UFuncOperation.power:
+                            retValue = Power(Op1Value, Op2Value);
+                            break;
+
+                        default:
+                            retValue = PerformUFuncOperation(ops, Op1Value, Op2Value);
+                            break;
+
+                    }
+                }
+
+                retArray[R_Index] = retValue;
+                return;
+            }
+
+
+            #endregion
+
+            #region UFUNC Accumulate
+
+            public void PerformAccumulateOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+            {
+                VoidPtr Operand1 = bufPtr[0];
+                VoidPtr Operand2 = bufPtr[1];
+                VoidPtr Result = bufPtr[2];
+
+                npy_intp O1_Step = steps[0];
+                npy_intp O2_Step = steps[1];
+                npy_intp R_Step = steps[2];
+
+                if (Operand2 == null)
+                {
+                    Operand2 = Operand1;
+                    O2_Step = O1_Step;
+                }
+                if (Result == null)
+                {
+                    Result = Operand1;
+                    R_Step = O1_Step;
+                }
+
+                npy_intp O1_Offset = Operand1.data_offset;
+                npy_intp O2_Offset = Operand2.data_offset;
+                npy_intp R_Offset = Result.data_offset;
+
+
+                T[] retArray = Result.datap as T[];
+                T[] Op1Array = Operand1.datap as T[];
+                T[] Op2Array = Operand2.datap as T[];
+
+                npy_intp O1_CalculatedStep = (O1_Step / SizeOfItem);
+                npy_intp O1_CalculatedOffset = (O1_Offset / SizeOfItem);
+
+                npy_intp O2_CalculatedStep = (O2_Step / SizeOfItem);
+                npy_intp O2_CalculatedOffset = (O2_Offset / SizeOfItem);
+
+                npy_intp R_CalculatedStep = (R_Step / SizeOfItem);
+                npy_intp R_CalculatedOffset = (R_Offset / SizeOfItem);
+
+                for (int i = 0; i < N; i++)
+                {
+                    npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
+                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+                    npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
+
+                    var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                    var O2Value = Op2Array[O2_Index];                                            // get operand 2
+                    T retValue;
+
+                    // for the common operations, do inline for speed.
+                    switch (ops)
+                    {
+                        case UFuncOperation.add:
+                            retValue = Add(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.subtract:
+                            retValue = Subtract(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.multiply:
+                            retValue = Multiply(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.divide:
+                            retValue = Divide(O1Value, O2Value);
+                            break;
+                        case UFuncOperation.power:
+                            retValue = Power(O1Value, O2Value);
+                            break;
+
+                        default:
+                            retValue = PerformUFuncOperation(ops, O1Value, O2Value);
+                            break;
+
+                    }
+                    retArray[R_Index] = retValue;
+
+                }
+
+
+            }
+
+            #endregion
+
+            #region REDUCEAT
+
+            public void PerformReduceAtOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N)
+            {
+                PerformAccumulateOpArrayIter(bufPtr, steps, ops, N);
+            }
+
+            #endregion
+
+
+            protected int CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
             {
                 var OperIter = NpyArray_BroadcastToShape(Array, destArray.dimensions, destArray.nd);
                 return NpyArray_ITER_COUNT(OperIter);
             }
+
+            protected npy_intp AdjustNegativeIndex(T[] data, npy_intp index)
+            {
+                if (index < 0)
+                {
+                    index = data.Length - Math.Abs(index);
+                }
+                return index;
+            }
+
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);
@@ -1051,7 +1359,8 @@ namespace NumpyLib
             protected abstract T Power(T o1, T o2);
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
-  
+            protected abstract T ConvertToTemplate(object v);
+
 
         }
 
