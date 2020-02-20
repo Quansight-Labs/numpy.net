@@ -76,6 +76,9 @@
     <Compile Include="UFUNCTests\UFUNC_DOUBLE_Tests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UFUNCTests\UFUNC_FLOAT_Tests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WindowFunctions.py">
       <SubType>Code</SubType>
     </Compile>
