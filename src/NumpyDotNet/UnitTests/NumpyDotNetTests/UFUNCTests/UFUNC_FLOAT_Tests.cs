@@ -407,11 +407,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.less, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+            AssertArray(b, new bool[,] { { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { false, true, true, true, true },
+                                         { false, false, true, true, true } });
 
         }
 
@@ -425,11 +425,12 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.less_equal, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+            AssertArray(b, new bool[,] { { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { false, true, true, true, true } });
+
 
         }
 
@@ -445,8 +446,8 @@ namespace NumpyDotNetTests
             AssertArray(b, new bool[,] {{false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+                                        {true, false, false, false, false},
+                                        {false, true, false, false, false}});
 
         }
 
@@ -460,11 +461,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.not_equal, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+            AssertArray(b, new bool[,] { { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { true, true, true, true, true },
+                                         { false, true, true, true, true },
+                                         { true, false, true, true, true } });
 
         }
 
@@ -481,7 +482,7 @@ namespace NumpyDotNetTests
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+                                        {true, false, false, false, false}});
 
         }
 
@@ -497,8 +498,8 @@ namespace NumpyDotNetTests
             AssertArray(b, new bool[,] {{false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+                                        {true, false, false, false, false},
+                                        {true, true, false, false, false}});
 
         }
 
@@ -554,10 +555,10 @@ namespace NumpyDotNetTests
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true}});
 
         }
 
@@ -570,11 +571,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.logical_or, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false},
-                                        {false, false, false, false, false}});
+            AssertArray(b, new bool[,] {{true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true},
+                                        {true, true, true, true, true}});
 
         }
 

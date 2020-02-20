@@ -190,6 +190,9 @@ namespace NumpyLib
         {
             switch (npy_type)
             {
+                case NPY_TYPES.NPY_FLOAT:
+                    return new UFUNC_Float();
+
                 case NPY_TYPES.NPY_DOUBLE:
                     return new UFUNC_Double();
 
