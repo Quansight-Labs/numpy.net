@@ -776,8 +776,16 @@ namespace NumpyLib
 
         #endregion
 
-        internal abstract class UFUNC_BASE
+        internal abstract class UFUNC_BASE<T>
         {
+            public UFUNC_BASE(int sizeOfItem)
+            {
+                this.SizeOfItem = sizeOfItem;
+            }
+            protected int SizeOfItem;
+
+
+            #region SCALAR CALCULATIONS
             public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
             {
                 var destSize = NpyArray_Size(destArray);
@@ -810,15 +818,240 @@ namespace NumpyLib
                 return;
             }
 
+            protected void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+            {
+                T[] src = srcArray.data.datap as T[];
+                T[] dest = destArray.data.datap as T[];
+                T[] oper = operArray.data.datap as T[];
+
+                List<Exception> caughtExceptions = new List<Exception>();
+
+                Int32[] destOffsets = new Int32[taskSize];
+                Int32[] srcOffsets;
+                Int32[] operOffsets;
+
+                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
+                if (NpyArray_SAMESHAPEANDSTRIDES(destArray, srcArray))
+                {
+                    srcOffsets = destOffsets;
+                }
+                else
+                {
+                    var IterableArraySize = Math.Min(CalculateIterationArraySize(srcArray, destArray), taskSize);
+                    srcOffsets = new Int32[IterableArraySize];
+                    NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
+                }
+                if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
+                {
+                    operOffsets = destOffsets;
+                }
+                else
+                {
+                    var IterableArraySize = Math.Min(CalculateIterationArraySize(operArray, destArray), taskSize);
+                    operOffsets = new Int32[IterableArraySize];
+                    NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
+                }
+
+
+                Parallel.For(0, taskSize, i =>
+                {
+                    try
+                    {
+                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
+                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
+
+                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
+                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
+
+                        T retValue;
+
+                        try
+                        {
+                            // for the common operations, do inline for speed.
+                            switch (op)
+                            {
+                                case UFuncOperation.add:
+                                    retValue = Add(srcValue, operand);
+                                    break;
+                                case UFuncOperation.subtract:
+                                    retValue = Subtract(srcValue, operand);
+                                    break;
+                                case UFuncOperation.multiply:
+                                    retValue = Multiply(srcValue, operand);
+                                    break;
+                                case UFuncOperation.divide:
+                                    retValue = Divide(srcValue, operand);
+                                    break;
+                                case UFuncOperation.power:
+                                    retValue = Power(srcValue, operand);
+                                    break;
+
+                                default:
+                                    retValue = PerformUFuncOperation(op, srcValue, operand);
+                                    break;
+
+                            }
+
+                            dest[destOffsets[i] / SizeOfItem] = retValue;
+                        }
+                        catch
+                        {
+                            dest[destOffsets[i] / SizeOfItem] = default(T);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        caughtExceptions.Add(ex);
+                    }
+                });
+
+
+                if (caughtExceptions.Count > 0)
+                {
+                    throw caughtExceptions[0];
+                }
+            }
+
+            protected void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+            {
+                T[] src = srcArray.data.datap as T[];
+                T[] dest = destArray.data.datap as T[];
+                T[] oper = operArray.data.datap as T[];
+
+
+                int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
+                int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
+
+                var exceptions = new ConcurrentQueue<Exception>();
+
+                var loopCount = NpyArray_Size(destArray);
+
+                if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
+                {
+                    T operand = oper[0];
+
+                    Parallel.For(0, loopCount, index =>
+                    {
+                        try
+                        {
+                            T retValue;
+                            T srcValue = src[index - srcAdjustment];
+
+                            // for the common operations, do inline for speed.
+                            switch (op)
+                            {
+                                case UFuncOperation.add:
+                                    retValue = Add(srcValue, operand);
+                                    break;
+                                case UFuncOperation.subtract:
+                                    retValue = Subtract(srcValue, operand);
+                                    break;
+                                case UFuncOperation.multiply:
+                                    retValue = Multiply(srcValue, operand);
+                                    break;
+                                case UFuncOperation.divide:
+                                    retValue = Divide(srcValue, operand);
+                                    break;
+                                case UFuncOperation.power:
+                                    retValue = Power(srcValue, operand);
+                                    break;
+
+                                default:
+                                    retValue = PerformUFuncOperation(op, srcValue, operand);
+                                    break;
+
+                            }
+
+                            dest[index - destAdjustment] = retValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(T);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+
+                    });
+                }
+                else
+                {
+                    var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
+                    var operOffsets = new Int32[IterableArraySize];
+                    NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
+
+                    Parallel.For(0, loopCount, index =>
+                    {
+                        try
+                        {
+                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                            T operand = oper[operOffsets[operandIndex] / SizeOfItem];
+                            T srcValue = src[index - srcAdjustment];
+                            T retValue;
+
+                            // for the common operations, do inline for speed.
+                            switch (op)
+                            {
+                                case UFuncOperation.add:
+                                    retValue = Add(srcValue, operand);
+                                    break;
+                                case UFuncOperation.subtract:
+                                    retValue = Subtract(srcValue, operand);
+                                    break;
+                                case UFuncOperation.multiply:
+                                    retValue = Multiply(srcValue, operand);
+                                    break;
+                                case UFuncOperation.divide:
+                                    retValue = Divide(srcValue, operand);
+                                    break;
+                                case UFuncOperation.power:
+                                    retValue = Power(srcValue, operand);
+                                    break;
+
+                                default:
+                                    retValue = PerformUFuncOperation(op, srcValue, operand);
+                                    break;
+
+                            }
+
+                            dest[index - destAdjustment] = retValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(T);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+
+                    });
+
+                }
+
+                if (exceptions.Count > 0)
+                {
+                    throw exceptions.ElementAt(0);
+                }
+
+            }
+
+            #endregion
             protected long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
             {
                 var OperIter = NpyArray_BroadcastToShape(Array, destArray.dimensions, destArray.nd);
                 return NpyArray_ITER_COUNT(OperIter);
             }
 
-            protected abstract void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter);
-            protected abstract void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize);
-   
+            protected abstract T Add(T o1, T o2);
+            protected abstract T Subtract(T o1, T o2);
+            protected abstract T Multiply(T o1, T o2);
+            protected abstract T Divide(T o1, T o2);
+            protected abstract T Power(T o1, T o2);
+            protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
+
+  
 
         }
 

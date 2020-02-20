@@ -47,11 +47,15 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC DOUBLE
-    internal class UFUNC_Double : UFUNC_BASE, iUFUNC_Operations
+    internal class UFUNC_Double : UFUNC_BASE<double>, iUFUNC_Operations
     {
         const int NUMERICOPS_TASKSIZE = 1000;       // size of data to break into chunks
         const int NUMERICOPS_SMALL_TASKSIZE = 100;  // size of data to small to use parallel library
-        const int SizeOfItem = sizeof(double);
+
+        public UFUNC_Double() : base(sizeof(double))
+        {
+
+        }
 
         #region UFUNC Outer
         public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
@@ -356,232 +360,8 @@ namespace NumpyLib
 
         #endregion
 
-        #region SCALAR CALCULATIONS
 
-   
-        protected override void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
-        {
-            double[] src = srcArray.data.datap as double[];
-            double[] dest = destArray.data.datap as double[];
-            double[] oper = operArray.data.datap as double[];
-
-            List<Exception> caughtExceptions = new List<Exception>();
-
-            Int32[] destOffsets = new Int32[taskSize];
-            Int32[] srcOffsets;
-            Int32[] operOffsets;
-
-            NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
-            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, srcArray))
-            {
-                srcOffsets = destOffsets;
-            }
-            else
-            {
-                var IterableArraySize = Math.Min(CalculateIterationArraySize(srcArray, destArray), taskSize);
-                srcOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
-            }
-            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
-            {
-                operOffsets = destOffsets;
-            }
-            else
-            {
-                var IterableArraySize = Math.Min(CalculateIterationArraySize(operArray, destArray), taskSize);
-                operOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
-            }
-
-
-            Parallel.For(0, taskSize, i =>
-            {
-                try
-                {
-                    int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                    var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
-
-                    int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                    var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
-
-                    double retValue = 0;
-
-                    try
-                    {
-                        // for the common operations, do inline for speed.
-                        switch (op)
-                        {
-                            case UFuncOperation.add:
-                                retValue = Add(srcValue, operand);
-                                break;
-                            case UFuncOperation.subtract:
-                                retValue = Subtract(srcValue, operand);
-                                break;
-                            case UFuncOperation.multiply:
-                                retValue = Multiply(srcValue, operand);
-                                break;
-                            case UFuncOperation.divide:
-                                retValue = Divide(srcValue, operand);
-                                break;
-                            case UFuncOperation.power:
-                                retValue = Power(srcValue, operand);
-                                break;
-
-                            default:
-                                retValue = PerformUFuncOperation(op, srcValue, operand);
-                                break;
-
-                        }
-
-                        dest[destOffsets[i] / SizeOfItem] = retValue;
-                    }
-                    catch
-                    {
-                        dest[destOffsets[i] / SizeOfItem] = 0;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    caughtExceptions.Add(ex);
-                }
-            });
-
-
-            if (caughtExceptions.Count > 0)
-            {
-                throw caughtExceptions[0];
-            }
-        }
-
-        protected override void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
-        {
-            double[] src = srcArray.data.datap as double[];
-            double[] dest = destArray.data.datap as double[];
-            double[] oper = operArray.data.datap as double[];
-
-
-            int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-            int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
-
-            var exceptions = new ConcurrentQueue<Exception>();
-
-            var loopCount = NpyArray_Size(destArray);
-
-            if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
-            {
-                double operand = oper[0];
-
-                Parallel.For(0, loopCount, index =>
-                {
-                    try
-                    {
-                        double retValue;
-                        double srcValue = src[index - srcAdjustment];
-
-                        // for the common operations, do inline for speed.
-                        switch (op)
-                        {
-                            case UFuncOperation.add:
-                                retValue = Add(srcValue, operand);
-                                break;
-                            case UFuncOperation.subtract:
-                                retValue = Subtract(srcValue, operand);
-                                break;
-                            case UFuncOperation.multiply:
-                                retValue = Multiply(srcValue, operand);
-                                break;
-                            case UFuncOperation.divide:
-                                retValue = Divide(srcValue, operand);
-                                break;
-                            case UFuncOperation.power:
-                                retValue = Power(srcValue, operand);
-                                break;
-
-                            default:
-                                retValue = PerformUFuncOperation(op, srcValue, operand);
-                                break;
-
-                        }
-
-                        dest[index - destAdjustment] = retValue;
-                    }
-                    catch (System.OverflowException of)
-                    {
-                        dest[index - destAdjustment] = 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
-
-                });
-            }
-            else
-            {
-                var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
-                var operOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
-
-                Parallel.For(0, loopCount, index =>
-                {
-                    try
-                    {
-                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                        double operand = oper[operOffsets[operandIndex] / SizeOfItem];
-                        double srcValue = src[index - srcAdjustment];
-                        double retValue;
-
-                        // for the common operations, do inline for speed.
-                        switch (op)
-                        {
-                            case UFuncOperation.add:
-                                retValue = Add(srcValue, operand);
-                                break;
-                            case UFuncOperation.subtract:
-                                retValue = Subtract(srcValue, operand);
-                                break;
-                            case UFuncOperation.multiply:
-                                retValue = Multiply(srcValue, operand);
-                                break;
-                            case UFuncOperation.divide:
-                                retValue = Divide(srcValue, operand);
-                                break;
-                            case UFuncOperation.power:
-                                retValue = Power(srcValue, operand);
-                                break;
-
-                            default:
-                                retValue = PerformUFuncOperation(op, srcValue, operand);
-                                break;
-
-                        }
-
-                        dest[index - destAdjustment] = retValue;
-                    }
-                    catch (System.OverflowException of)
-                    {
-                        dest[index - destAdjustment] = 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
-
-                });
-
-            }
-
-            if (exceptions.Count > 0)
-            {
-                throw exceptions.ElementAt(0);
-            }
-
-        }
-
-
-        #endregion
-
-        private double PerformUFuncOperation(UFuncOperation op, double aValue, double bValue)
+        protected override double PerformUFuncOperation(UFuncOperation op, double aValue, double bValue)
         {
             double destValue = 0;
             bool boolValue = false;
@@ -724,21 +504,21 @@ namespace NumpyLib
         }
 
         #region double specific operation handlers
-        private double Add(double aValue, double bValue)
+        protected override double Add(double aValue, double bValue)
         {
             return aValue + bValue;
         }
 
-        private double Subtract(double aValue, double bValue)
+        protected override double Subtract(double aValue, double bValue)
         {
             return aValue - bValue;
         }
-        private double Multiply(double aValue, double bValue)
+        protected override double Multiply(double aValue, double bValue)
         {
             return aValue * bValue;
         }
 
-        private double Divide(double aValue, double bValue)
+        protected override double Divide(double aValue, double bValue)
         {
             if (bValue == 0)
                 return 0;
@@ -756,7 +536,7 @@ namespace NumpyLib
                 return 0;
             return aValue % bValue;
         }
-        private double Power(double aValue, double bValue)
+        protected override double Power(double aValue, double bValue)
         {
             return Math.Pow(aValue, bValue);
         }
