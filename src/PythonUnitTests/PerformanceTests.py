@@ -87,6 +87,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_AddReduce_Performance_FLOAT(self):
+
+        LoopCount = 200;
+
+        a = np.arange(10000000, dtype=np.float32);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduce(a)
+            print(b)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
     def test_AddReduce_Performance2(self):
 
         LoopCount = 200;
@@ -105,6 +122,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_AddReduce_Performance2_FLOAT(self):
+
+        LoopCount = 200;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.float32).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduce(a)
+            c = np.sum(b)
+            print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
 
     def test_AddAccumulate_Performance(self):
 

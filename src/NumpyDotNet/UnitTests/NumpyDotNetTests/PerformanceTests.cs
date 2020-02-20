@@ -341,7 +341,7 @@ namespace NumpyDotNetTests
         #endregion
 
         #region FLOAT tests
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_FLOAT()
         {
@@ -369,7 +369,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_NotContiguous_FLOAT()
         {
@@ -465,7 +465,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                //Assert.AreEqual(49999995000000.0, b.item(0));
+                Assert.AreEqual(4.871488E+13f, b.item(0));
                 // print(b);
             }
 
@@ -491,7 +491,8 @@ namespace NumpyDotNetTests
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
                 var c = np.sum(b);
-                Assert.AreEqual(1.279999992E+16, c.item(0));
+
+                Assert.AreEqual(1.27994739E+16f, c.item(0));
             }
 
             sw.Stop();
