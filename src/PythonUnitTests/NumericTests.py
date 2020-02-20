@@ -145,7 +145,7 @@ class NumericTests(unittest.TestCase):
       #print(x.strides)
 
     def test_full_3(self):
-      x = np.full(0,100)
+      x = np.full((100),100)
       print(x)
       kevin = x[62]
       print(kevin)

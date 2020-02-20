@@ -774,7 +774,7 @@ class ArrayCreationTests(unittest.TestCase):
         a = np.array([[1, 1], [2, 2], [3, 3]])
         b = np.insert(a, 1, 5);
 
-        c = nptest.insert(a, 0, [999,100,101])
+        c = np.insert(a, 0, [999,100,101])
 
         print(a)
         print(a.shape)
