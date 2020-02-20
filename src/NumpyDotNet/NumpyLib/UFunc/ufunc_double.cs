@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC DOUBLE
-    internal class UFUNC_Double : iUFUNC_Operations
+    internal class UFUNC_Double : UFUNC_BASE, iUFUNC_Operations
     {
         const int NUMERICOPS_TASKSIZE = 1000;       // size of data to break into chunks
         const int NUMERICOPS_SMALL_TASKSIZE = 100;  // size of data to small to use parallel library
@@ -358,46 +358,8 @@ namespace NumpyLib
 
         #region SCALAR CALCULATIONS
 
-        public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
-        {
-            var destSize = NpyArray_Size(destArray);
-
-            var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
-            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
-            var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
-
-            if (!SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
-            {
-                PerformNumericOpScalarIterContiguousNoIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter);
-                return;
-            }
-
-            long taskSize = NUMERICOPS_TASKSIZE;
-
-            for (long i = 0; i < destSize;)
-            {
-                long offset_cnt = Math.Min(taskSize, destSize - i);
-
-                PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, offset_cnt);
-
-                i += offset_cnt;
-
-                NpyArray_ITER_NEXT(SrcIter);
-                NpyArray_ITER_NEXT(DestIter);
-                NpyArray_ITER_NEXT(OperIter);
-            }
-
-            return;
-        }
-
-        private long CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
-        {
-            var OperIter = NpyArray_BroadcastToShape(Array, destArray.dimensions, destArray.nd);
-            return NpyArray_ITER_COUNT(OperIter);
-        }
-
-
-        private void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+   
+        protected override void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
         {
             double[] src = srcArray.data.datap as double[];
             double[] dest = destArray.data.datap as double[];
@@ -491,7 +453,7 @@ namespace NumpyLib
             }
         }
 
-        private void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        protected override void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             double[] src = srcArray.data.datap as double[];
             double[] dest = destArray.data.datap as double[];
