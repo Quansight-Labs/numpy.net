@@ -91,16 +91,16 @@ namespace NumpyDotNetTests
 
             var ExpectedData = new float[,]
                     {{0,  0,  0,  0,  0,},
-                     {0.33333333f, 0.25f,       0.2f,        0.16666667f, 0.14285714f},
-                     {0.66666667f, 0.5f,        0.4f,        0.33333333f, 0.28571429f},
-                     {1,         0.75f,       0.6f,        0.5f,        0.42857143f},
-                     {1.33333333f, 1,         0.8f,        0.66666667f, 0.57142857f}};
+                     {0.33333333f, 0.25f,       0.2f,        0.16666667f, 0.142857149f},
+                     {0.66666667f, 0.5f,        0.4f,        0.33333333f, 0.2857143f},
+                     {1,         0.75f,       0.6f,        0.5f,        0.428571433f},
+                     {1.33333333f, 1,         0.8f,        0.66666667f, 0.5714286f}};
 
             AssertArray(b, ExpectedData);
-
         }
 
-        [TestMethod]
+
+[TestMethod]
         public void test_RemainderOuter_FLOAT()
         {
             var a1 = np.arange(0, 5, dtype: np.Float32);
@@ -407,11 +407,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.less, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true },
-                                         { false, false, true, true, true } });
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -425,11 +425,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.less_equal, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true } });
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -445,8 +445,8 @@ namespace NumpyDotNetTests
             AssertArray(b, new bool[,] {{false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {true, false, false, false, false},
-                                        {false, true, false, false, false}});
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -460,11 +460,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.not_equal, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] { { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { true, true, true, true, true },
-                                         { false, true, true, true, true },
-                                         { true, false, true, true, true } });
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -481,7 +481,7 @@ namespace NumpyDotNetTests
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {true, false, false, false, false}});
+                                        {false, false, false, false, false}});
 
         }
 
@@ -497,8 +497,8 @@ namespace NumpyDotNetTests
             AssertArray(b, new bool[,] {{false, false, false, false, false},
                                         {false, false, false, false, false},
                                         {false, false, false, false, false},
-                                        {true, false, false, false, false},
-                                        {true, true, false, false, false}});
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -535,7 +535,7 @@ namespace NumpyDotNetTests
 
             var ExpectedData = new float[,]
                       {{0,  0,  0,  0,  0,},
-                     {0.33333333f, 0.25f,       0.2f,        0.16666667f, 0.14285714f},
+                     {0.33333333f, 0.25f,       0.2f,        0.16666667f, 0.142857149f},
                      {0.66666667f, 0.5f,        0.4f,        0.33333333f, 0.28571429f},
                      {1f,         0.75f,       0.6f,        0.5f,        0.42857143f},
                      {1.33333333f, 1,         0.8f,        0.66666667f, 0.57142857f}};
@@ -554,10 +554,10 @@ namespace NumpyDotNetTests
             print(b);
 
             AssertArray(b, new bool[,] {{false, false, false, false, false},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true}});
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -570,11 +570,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.outer(UFuncOperation.logical_or, null, a1, a2);
             print(b);
 
-            AssertArray(b, new bool[,] {{true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true},
-                                        {true, true, true, true, true}});
+            AssertArray(b, new bool[,] {{false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false},
+                                        {false, false, false, false, false}});
 
         }
 
@@ -818,11 +818,10 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new float[]
-                { 0.0f, 478015854767451.0f, 1242688846823424,
-                  2394832584543399, 4060162871525376, 6393838623046875,
-                  9585618768101376, 1.38656961199054E+16f,19511273389031424,
+                { 0.0f, 478015854767451.0f, 1.24268893E+15f,
+                  2394832584543399, 4.060163E+15f, 6393838623046875,
+                  9585618768101376, 1.38656974E+16f,19511273389031424,
                   26853950884211452 };
-
 
             AssertArray(b, ExpectedData);
 
@@ -882,7 +881,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.square, a1);
             print(b);
 
-            var ExpectedData = new float[] { 0.0f, 1.0f, 1.3407807929f, 1.932334983f,
+            var ExpectedData = new float[] { 0.0f, 1.0f, float.PositiveInfinity, float.PositiveInfinity,
                         float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity,
                         float.PositiveInfinity,float.PositiveInfinity, float.PositiveInfinity };
 
@@ -933,9 +932,8 @@ namespace NumpyDotNetTests
 
             var ExpectedData = new float[]
             { 0.0f, 1.0f, 1.00135471989211f, 1.00214803084618f,
-                1.0027112750502f, 1.00314837919044f, 1.0035056607184f,
-                1.00380783722035f, 1.00406966796055f, 1.00430067572887f };
-
+                1.0027112750502f, 1.00314832f, 1.0035056607184f,
+                1.0038079f, 1.00406966796055f, 1.00430067572887f };
 
             AssertArray(b, ExpectedData);
 
