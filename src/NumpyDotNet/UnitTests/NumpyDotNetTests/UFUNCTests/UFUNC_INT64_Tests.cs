@@ -174,11 +174,11 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new Int64[,]
-                     {{0, 0, 0, 0, 0,},
-                     {1, 1, 1, 1, 1,},
-                     {2, 2, 2, 2, 2},
-                     {0, 3, 3, 3, 3,},
-                     {1, 0, 4, 4, 4,}};
+                    { { 0, 0, 0, 0, 0 },
+                      { 1, 1, 1, 1, 1 },
+                      { 0, 0, 0, 0, 0 },
+                      { 0, 0, 0, 0, 0 },
+                      { 0, 0, 0, 0, 0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -217,11 +217,11 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new Int64[,]
-              { { 1, 1, 1, 1, 1 },
-                  { 1, 1, 1, 1, 1 },
-                  { 1, 1, 1, 1, 1 },
-                  { 1, 1, 1, 1, 1 },
-                  { 1, 1, 1, 1, 1 } };
+             { { 0, 0, 0, 0, 0 },
+               { 1, 1, 1, 1, 1 },
+               { 1, 1, 1, 1, 1 },
+               { 2, 2, 2, 2, 2 },
+               { 2, 2, 2, 2, 2 } };
 
             AssertArray(b, ExpectedData);
 
@@ -817,8 +817,11 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.multiply, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0 };
-   
+            var ExpectedData = new Int64[] 
+            
+                { 0, 478015854767451, 1242688846823424, 2394832584543399,
+                  4060162871525376, 6393838623046875, 9585618768101376,
+                  13865696119905399, 19511273389031424, 26853950884211451 };
 
             AssertArray(b, ExpectedData);
 
@@ -832,14 +835,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.divide, a1);
             print(b);
 
-            var ExpectedData = new Int64[,]
-
-               { { 0, 0, 0, 0, 0 },
-                  { 0, 0, 0, 0, 0 },
-                  { 0, 0, 0, 0, 0 },
-                  { 1, 0, 0, 0, 0 },
-                  { 1, 1, 0, 0, 0} };
-
+            var ExpectedData = new Int64[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+ 
             AssertArray(b, ExpectedData);
 
         }
@@ -880,7 +877,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.square, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0  };
+            var ExpectedData = new Int64[] {  0, 1, 0, 2118395047680534529, 0, 8643096425819600897, 0, -1057967576668459007, 0, -7087363323575676927 };
 
             AssertArray(b, ExpectedData);
 
@@ -896,7 +893,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0 };
+            var ExpectedData = new Int64[] { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             AssertArray(b, ExpectedData);
 
@@ -927,7 +924,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.sqrt, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0 };
+            var ExpectedData = new Int64[] {  0, 1, 1, 1, 1, 1, 1, 1, 1, 1  };
 
 
 
@@ -1151,7 +1148,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.true_divide, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0 };
+            var ExpectedData = new Int64[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
             AssertArray(b, ExpectedData);
@@ -1375,7 +1372,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.divide, a1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 0, 0 }, { 0, 0, 05 } };
+            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 0, 0 }, { 0, 0, 0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -1433,7 +1430,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 1, 0 }, { 0, 1, 2 } };
+            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 1, 0 }, { 0, 1, 0 } };
 
             AssertArray(b, ExpectedData);
 
@@ -1464,7 +1461,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.sqrt, a1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 1, 0 }, { 0, 1, 0 } };
+            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 1, 1 }, { 0, 1, 1 } };
+
 
             AssertArray(b, ExpectedData);
 
@@ -1686,7 +1684,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.true_divide, a1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 0, 0 }, { 0, 0, 5 } };
+            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 0, 0 }, { 0, 0, 0 } };
 
             AssertArray(b, ExpectedData);
         }
@@ -1997,7 +1995,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.sqrt, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 2 }, { 1, 5 }, { 2, 8 } };
+            var ExpectedData = new Int64[,] { { 0, 2 }, { 2, 5 }, { 2, 8 } };
+             
 
             AssertArray(b, ExpectedData);
 
