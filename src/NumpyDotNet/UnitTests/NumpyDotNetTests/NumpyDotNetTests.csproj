@@ -84,7 +84,7 @@
     <Compile Include="NotImplementedYet\HistogramTests.cs" />
     <Compile Include="NotImplementedYet\NOT_PLANNING_TODO_Tests.cs" />
     <Compile Include="IteratorTests.cs" />
-    <Compile Include="UFUNCTests.cs" />
+    <Compile Include="UFUNCTests\UFUNCTests.cs" />
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="MultithreadedTests.cs" />
     <Compile Include="WindowFunctions.cs" />
