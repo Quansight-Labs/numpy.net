@@ -864,7 +864,6 @@ namespace NumpyLib
                     NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
                 }
 
-
                 Parallel.For(0, taskSize, i =>
                 {
                     try
@@ -904,11 +903,11 @@ namespace NumpyLib
 
                             }
 
-                            dest[destOffsets[i] / SizeOfItem] = retValue;
+                            dest[AdjustedIndex_GetItemFunction(destOffsets[i], destArray, dest.Length)] = retValue;
                         }
                         catch
                         {
-                            dest[destOffsets[i] / SizeOfItem] = default(T);
+                            dest[AdjustedIndex_GetItemFunction(destOffsets[i], destArray, dest.Length)] = default(T);
                         }
                     }
                     catch (Exception ex)
