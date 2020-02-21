@@ -278,7 +278,7 @@ namespace NumpyLib
         }
         private Int32 Invert(Int32 bValue, Int32 operand)
         {
-            return bValue;
+            return ~bValue;
         }
         private Int32 LeftShift(Int32 bValue, Int32 operand)
         {

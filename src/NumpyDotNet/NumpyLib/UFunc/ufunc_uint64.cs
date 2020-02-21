@@ -277,7 +277,7 @@ namespace NumpyLib
         }
         private UInt64 Invert(UInt64 bValue, UInt64 operand)
         {
-            return bValue;
+            return ~bValue;
         }
         private UInt64 LeftShift(UInt64 bValue, UInt64 operand)
         {
