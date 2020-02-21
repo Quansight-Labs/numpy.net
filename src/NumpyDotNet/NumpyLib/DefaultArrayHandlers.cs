@@ -2334,6 +2334,8 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             UInt64 dValue = (UInt64)bValue;
+            if (dValue == 0)
+                return 0;
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -2348,7 +2350,7 @@ namespace NumpyLib
         }
         protected override object Absolute(object bValue, object operand)
         {
-            double dValue = (double)bValue;
+            double dValue = Convert.ToDouble(bValue);
             return Math.Abs(dValue);
         }
         protected override object Invert(object bValue, object operand)
