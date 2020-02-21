@@ -103,6 +103,11 @@ namespace NumpyDotNetTests
             MethodInfo.AddRange(GetArrayOfUnitTests<UFUNCTests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_INT32_Tests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_UINT32_Tests>());
+            MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_INT64_Tests>());
+            MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_UINT64_Tests>());
+            MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_FLOAT_Tests>());
+            MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_DOUBLE_Tests>());
+            MethodInfo.AddRange(GetArrayOfUnitTests<UFUNC_DECIMAL_Tests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<WindowFunctions>());
 
 
