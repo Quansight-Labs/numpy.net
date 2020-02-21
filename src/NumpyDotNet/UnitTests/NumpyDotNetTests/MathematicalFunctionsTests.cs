@@ -1060,49 +1060,27 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_cumprod_1()
         {
+            UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
+            x = x * 3;
 
-            bool CaughtException = false;
+            var y = np.cumprod(x);
+            print(y);
 
-            try
-            {
-                UInt32[] TestData = new UInt32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-                var x = np.array(TestData, dtype: np.UInt32).reshape(new shape(3, 2, -1));
-                x = x * 3;
-
-                var y = np.cumprod(x);
-                print(y);
-
-                AssertArray(y, new UInt32[] {30,1350,101250,13668750,3198487500,303198504,
+            AssertArray(y, new UInt32[] {30,1350,101250,13668750,3198487500,303198504,
                             506020528,1296087280,2717265488,1758620720,3495355360,3148109376 });
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("NpyExc_OverflowError"))
-                    CaughtException = true;
-            }
-            Assert.IsTrue(CaughtException);
-
-            try
-            {
-                Int32[] TestData2 = new Int32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
-                var x = np.array(TestData2, dtype: np.Int32).reshape(new shape(3, 2, -1));
-                x = x * 3;
-
-                var y = np.cumprod(x);
-
-                print(y);
-
-                AssertArray(y, new Int32[] { 30, 1350, 101250, 13668750, -1096479796, 303198504,
-                            506020528, 1296087280, -1577701808, 1758620720, -799611936 -1146857920});
-            }
-            catch (Exception ex)
-            {
-                CaughtException = true;
-            }
-            Assert.IsTrue(CaughtException);
 
 
+            Int32[] TestData2 = new Int32[] { 10, 15, 25, 45, 78, 90, 10, 15, 25, 45, 78, 90 };
+            x = np.array(TestData2, dtype: np.Int32).reshape(new shape(3, 2, -1));
+            x = x * 3;
 
+            y = np.cumprod(x);
+
+            print(y);
+
+            AssertArray(y, new Int32[] { 30, 1350, 101250, 13668750, -1096479796, 303198504,
+                            506020528, 1296087280, -1577701808, 1758620720, -799611936, -1146857920});
         }
 
         [TestMethod]
