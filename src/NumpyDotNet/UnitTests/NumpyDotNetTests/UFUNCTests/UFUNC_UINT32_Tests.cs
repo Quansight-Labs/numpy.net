@@ -280,11 +280,11 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new UInt32[,]
-                { { 0, 0, 0, 0, 0 },
-                  { 1, 1, 1, 1, 1 },
-                  { 2, 2, 2, 2, 2 },
-                  { 3, 3, 3, 3, 3 },
-                  { 4, 4, 4, 4, 4  } };
+                { { 4294967295, 4294967295, 4294967295, 4294967295, 4294967295 },
+                  { 4294967294, 4294967294, 4294967294, 4294967294, 4294967294 },
+                  { 4294967293, 4294967293, 4294967293, 4294967293, 4294967293 },
+                  { 4294967292, 4294967292, 4294967292, 4294967292, 4294967292 },
+                  { 4294967291, 4294967291, 4294967291, 4294967291, 4294967291 } };
 
             AssertArray(b, ExpectedData);
 
@@ -972,7 +972,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.invert, a1);
             print(b);
 
-            var ExpectedData = new UInt32[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var ExpectedData = new UInt32[] { 4294967295, 4294967294, 4294967293, 4294967292, 4294967291,
+                                              4294967290, 4294967289, 4294967288, 4294967287, 4294967286 };
 
             AssertArray(b, ExpectedData);
 
@@ -1511,7 +1512,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.invert, a1);
             print(b);
 
-            var ExpectedData = new UInt32[,] { { 0, 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
+            var ExpectedData = new UInt32[,] { { 0, 1, 2 }, { 4294967295, 4294967294, 4294967293 }, { 0, 1, 2 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2049,7 +2050,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.invert, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new UInt32[,] { { 0, 2 }, { 3, 5 }, { 6, 8 } };
+            var ExpectedData = new UInt32[,] { { 4294967295, 2 }, { 4294967292, 5 }, { 4294967289, 8 } };
 
             AssertArray(b, ExpectedData);
 

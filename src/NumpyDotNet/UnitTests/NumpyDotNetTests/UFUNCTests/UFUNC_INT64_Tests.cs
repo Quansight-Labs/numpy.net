@@ -280,11 +280,11 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new Int64[,]
-                { { 0, 0, 0, 0, 0 },
-                  { 1, 1, 1, 1, 1 },
-                  { 2, 2, 2, 2, 2 },
-                  { 3, 3, 3, 3, 3 },
-                  { 4, 4, 4, 4, 4  } };
+                { { -1, -1, -1, -1, -1 },
+                  { -2, -2, -2, -2, -2 },
+                  { -3, -3, -3, -3, -3 },
+                  { -4, -4, -4, -4, -4 },
+                  { -5, -5, -5, -5, -5 } };
 
             AssertArray(b, ExpectedData);
 
@@ -971,7 +971,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.invert, a1);
             print(b);
 
-            var ExpectedData = new Int64[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var ExpectedData = new Int64[] { -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
 
             AssertArray(b, ExpectedData);
 
@@ -1507,7 +1507,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.invert, a1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
+            var ExpectedData = new Int64[,] { { 0, 1, 2 }, { -1, -2, -3 }, { 0, 1, 2 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2041,7 +2041,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.invert, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new Int64[,] { { 0, 2 }, { 3, 5 }, { 6, 8 } };
+            var ExpectedData = new Int64[,] { { -1, 2 }, { -4, 5 }, { -7, 8 } };
 
             AssertArray(b, ExpectedData);
 
