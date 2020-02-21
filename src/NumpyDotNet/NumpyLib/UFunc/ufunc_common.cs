@@ -190,6 +190,9 @@ namespace NumpyLib
         {
             switch (npy_type)
             {
+                case NPY_TYPES.NPY_INT16:
+                    return new UFUNC_Int16();
+
                 case NPY_TYPES.NPY_INT32:
                     return new UFUNC_Int32();
 
