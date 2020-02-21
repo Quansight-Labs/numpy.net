@@ -468,6 +468,9 @@ namespace NumpyLib
         protected virtual object Reciprocal(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected virtual object OnesLike(dynamic bValue, object operand)
@@ -1047,6 +1050,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -1232,6 +1238,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             byte dValue = (byte)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -1417,6 +1426,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -1601,6 +1613,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -1784,6 +1799,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             Int32 dValue = (Int32)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -1968,6 +1986,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -2151,6 +2172,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -2574,6 +2598,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             float dValue = (float)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -2838,6 +2865,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             double dValue = (double)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -3116,6 +3146,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -3476,6 +3509,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             Complex dValue = (Complex)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
@@ -4017,6 +4053,9 @@ namespace NumpyLib
         protected override object Reciprocal(object bValue, object operand)
         {
             BigInteger dValue = (BigInteger)bValue;
+            if (dValue == 0)
+                return 0;
+
             return 1 / dValue;
         }
         protected override object Sqrt(object bValue, object operand)
