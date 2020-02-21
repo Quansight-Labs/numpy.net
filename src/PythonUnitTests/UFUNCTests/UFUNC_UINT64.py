@@ -22,6 +22,14 @@ class Test_UFUNC_UINT64(unittest.TestCase):
         b = np.subtract.outer(a1,a2)
         print(b)
 
+    def test_SubtractOuter_UINT32(self):
+
+        a1 = np.arange(0, 5, dtype=np.uint32);
+        a2 = np.arange(3, 8, dtype=np.uint32);
+  
+        b = np.subtract.outer(a1,a2)
+        print(b)
+
     def test_MultiplyOuter_UINT64(self):
 
         a1 = np.arange(0, 5, dtype=np.uint64);
@@ -402,9 +410,23 @@ class Test_UFUNC_UINT64(unittest.TestCase):
         b = np.subtract.reduce(a1)
         print(b)
 
+    def test_SubtractReduce_UINT32(self):
+
+        a1 = np.arange(0, 100, dtype=np.uint32).reshape((10,10)); 
+        
+        b = np.subtract.reduce(a1)
+        print(b)
+
     def test_MultiplyReduce_UINT64(self):
 
         a1 = np.arange(0, 100, dtype=np.uint64).reshape((10,10));
+  
+        b = np.multiply.reduce(a1)
+        print(b)
+
+    def test_MultiplyReduce_UINT32(self):
+
+        a1 = np.arange(0, 100, dtype=np.uint32).reshape((10,10));
   
         b = np.multiply.reduce(a1)
         print(b)
@@ -754,6 +776,13 @@ class Test_UFUNC_UINT64(unittest.TestCase):
         b = np.subtract.accumulate(a1)
         print(b)
 
+    def test_SubtractAccumulate_UINT32(self):
+
+        a1 = np.arange(0, 9, dtype=np.uint32).reshape((3,3));
+        
+        b = np.subtract.accumulate(a1)
+        print(b)
+
     def test_MultiplyAccumulate_UINT64(self):
 
         a1 = np.arange(0, 9, dtype=np.uint64).reshape((3,3));
@@ -1094,6 +1123,13 @@ class Test_UFUNC_UINT64(unittest.TestCase):
     def test_SubtractReduceAt_UINT64(self):
 
         a1 = np.arange(0, 9, dtype=np.uint64).reshape((3,3));
+        
+        b = np.subtract.reduceat(a1, [0, 2], axis = 1)
+        print(b)
+
+    def test_SubtractReduceAt_UINT32(self):
+
+        a1 = np.arange(0, 9, dtype=np.uint32).reshape((3,3));
         
         b = np.subtract.reduceat(a1, [0, 2], axis = 1)
         print(b)

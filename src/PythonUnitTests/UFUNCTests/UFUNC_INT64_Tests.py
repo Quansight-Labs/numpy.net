@@ -31,6 +31,15 @@ class Test_UFUNC_INT64_Tests(unittest.TestCase):
         b = np.multiply.outer(a1,a2)
         print(b)
 
+    def test_MultiplyOuter_INT32(self):
+
+        a1 = np.arange(0, 5, dtype=np.int32);
+        a2 = np.arange(3, 8, dtype=np.int32);
+  
+        b = np.multiply.outer(a1,a2)
+        print(b)
+
+
     def test_DivideOuter_INT64(self):
 
         a1 = np.arange(0, 5, dtype=np.int64);
