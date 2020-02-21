@@ -1121,7 +1121,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                Assert.AreEqual(49999995000000, b.item(0));
+                Assert.AreEqual((UInt64)49999995000000, b.item(0));
                 // print(b);
             }
 
@@ -1148,7 +1148,7 @@ namespace NumpyDotNetTests
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
                 var c = np.sum(b);
 
-                Assert.AreEqual(12799999920000000, c.item(0));
+                Assert.AreEqual((UInt64)12799999920000000, c.item(0));
             }
 
             sw.Stop();
