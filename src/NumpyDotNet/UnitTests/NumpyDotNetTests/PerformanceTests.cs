@@ -1931,7 +1931,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_AddOuter_INT32()
         {
@@ -1955,7 +1955,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_AddOuter_NotSameType_INT32()
         {
