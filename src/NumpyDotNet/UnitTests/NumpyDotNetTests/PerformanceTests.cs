@@ -1449,7 +1449,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                Assert.AreEqual((UInt64)49999995000000, b.item(0));
+                Assert.AreEqual(49999995000000m, b.item(0));
                 // print(b);
             }
 
@@ -1466,7 +1466,7 @@ namespace NumpyDotNetTests
         {
 
             int LoopCount = 200;
-            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.Decimal).reshape(-1, 4000);
+            var a = np.arange(0, 4000 * 4000, dtype: np.Decimal).reshape(-1, 4000);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -1476,7 +1476,7 @@ namespace NumpyDotNetTests
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
                 var c = np.sum(b);
 
-                Assert.AreEqual((UInt64)12799999920000000, c.item(0));
+                Assert.AreEqual(127999992000000m, c.item(0));
             }
 
             sw.Stop();
