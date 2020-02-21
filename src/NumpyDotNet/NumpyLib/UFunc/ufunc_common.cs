@@ -193,6 +193,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_INT64:
                     return new UFUNC_Int64();
 
+                case NPY_TYPES.NPY_UINT64:
+                    return new UFUNC_UInt64();
+
                 case NPY_TYPES.NPY_FLOAT:
                     return new UFUNC_Float();
 
