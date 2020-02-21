@@ -225,8 +225,18 @@ namespace NumpyLib
         private double Remainder(double aValue, double bValue)
         {
             if (bValue == 0)
+            {
                 return 0;
-            return aValue % bValue;
+            }
+            var rem = aValue % bValue;
+            if ((aValue > 0) == (bValue > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + bValue;
+            }
         }
         private double FMod(double aValue, double bValue)
         {

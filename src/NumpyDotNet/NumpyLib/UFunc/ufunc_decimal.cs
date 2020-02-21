@@ -225,8 +225,18 @@ namespace NumpyLib
         private decimal Remainder(decimal aValue, decimal bValue)
         {
             if (bValue == 0)
+            {
                 return 0;
-            return aValue % bValue;
+            }
+            var rem = aValue % bValue;
+            if ((aValue > 0) == (bValue > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + bValue;
+            }
         }
         private decimal FMod(decimal aValue, decimal bValue)
         {

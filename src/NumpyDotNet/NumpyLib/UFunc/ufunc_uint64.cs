@@ -225,8 +225,18 @@ namespace NumpyLib
         private UInt64 Remainder(UInt64 aValue, UInt64 bValue)
         {
             if (bValue == 0)
+            {
                 return 0;
-            return aValue % bValue;
+            }
+            var rem = aValue % bValue;
+            if ((aValue > 0) == (bValue > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + bValue;
+            }
         }
         private UInt64 FMod(UInt64 aValue, UInt64 bValue)
         {
