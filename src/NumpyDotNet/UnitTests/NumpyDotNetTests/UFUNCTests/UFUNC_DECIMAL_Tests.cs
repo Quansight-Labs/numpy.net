@@ -902,7 +902,8 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduce(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new decimal[] { 0, 1, 0.5m, 0.333333333333333m, 0.25m, 0.2m, 0.166666666666667m, 0.142857142857143m, 0.125m, 0.111111111111111m };
+            var ExpectedData = new decimal[] { 0.0m, 1.0m, 0.5m, 0.3333333333333333333333333333m, 0.25m, 0.2m,
+                0.1666666666666666666666666667m, 0.1428571428571428571428571429m, 0.125m, 0.1111111111111111111111111111m };
 
             AssertArray(b, ExpectedData);
 
@@ -934,9 +935,10 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new decimal[]
-            { 0, 1, 1.00135471989211m, 1.00214803084618m,
-                1.0027112750502m, 1.00314837919044m, 1.0035056607184m,
-                1.00380783722035m, 1.00406966796055m, 1.00430067572887m };
+            { 0.0m, 1.0m, 1.0013547198921082058808815268m, 1.0021480308461785852908275568m,
+              1.0027112750502024854307455885m, 1.0031483791904371250812466602m,
+                1.0035056607184029713229568578m, 1.0038078372203524883192828366m,
+                1.0040696679605541772931731058m, 1.0043006757288733052707978245m };
 
 
             AssertArray(b, ExpectedData);
@@ -1386,7 +1388,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.divide, a1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 1, 2 }, { 0, 0.25m, 0.4m }, { 0, 0.0357142857142857m, 0.05m } };
+            var ExpectedData = new decimal[,] { { 0, 1, 2 }, { 0, 0.25m, 0.4m }, { 0, 0.0357142857142857142857142857m, 0.05m } };
 
             AssertArray(b, ExpectedData);
 
@@ -1475,7 +1477,9 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.sqrt, a1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 1, 2 }, { 0, 1, 1.4142135623731m }, { 0, 1, 1.18920711500272m } };
+            var ExpectedData = new decimal[,] { { 0.0m, 1.0m, 2.0m },
+                                                { 0.0m, 1.0m, 1.4142135623730950488016887242m },
+                                                { 0.0m, 1.0m, 1.1892071150027210667174999706m } };
 
             AssertArray(b, ExpectedData);
 
@@ -1697,7 +1701,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.true_divide, a1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 1, 2 }, { 0, 0.25m, 0.4m }, { 0, 0.0357142857142857m, 0.05m } };
+            var ExpectedData = new decimal[,] { { 0, 1, 2 }, { 0, 0.25m, 0.4m }, { 0, 0.0357142857142857142857142857m, 0.05m } };
 
             AssertArray(b, ExpectedData);
         }
@@ -1919,7 +1923,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.75m, 5 }, { 0.857142857142857m, 8 } };
+            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.75m, 5 }, { 0.8571428571428571428571428571m, 8 } };
 
             AssertArray(b, ExpectedData);
 
@@ -1977,7 +1981,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.reciprocal, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.333333333333333m, 5 }, { 0.166666666666667m, 8 } };
+            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.3333333333333333333333333333m, 5 }, { 0.1666666666666666666666666667m, 8 } };
 
             AssertArray(b, ExpectedData);
 
@@ -2008,7 +2012,9 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.sqrt, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 2 }, { 1.73205080756888m, 5 }, { 2.44948974278318m, 8 } };
+            var ExpectedData = new decimal[,] { { 0.0m, 2.0m },
+                                                { 1.7320508075688772935274463415m, 5.0m },
+                                                { 2.4494897427831780981972840747m, 8.0m } };
 
             AssertArray(b, ExpectedData);
 
@@ -2230,7 +2236,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.reduceat(UFuncOperation.true_divide, a1, new npy_intp[] { 0, 2 }, axis: 1);
             print(b);
 
-            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.75m, 5 }, { 0.857142857142857m, 8 } };
+            var ExpectedData = new decimal[,] { { 0, 2 }, { 0.75m, 5 }, { 0.8571428571428571428571428571m, 8 } };
 
             AssertArray(b, ExpectedData);
         }
