@@ -382,10 +382,20 @@ namespace NumpyLib
         }
         private float FMax(float bValue, float operand)
         {
+            if (float.IsNaN(operand))
+                return bValue;
+            if (float.IsNaN(bValue))
+                return operand;
+
             return Math.Max(bValue, operand);
         }
         private float FMin(float bValue, float operand)
         {
+            if (float.IsNaN(operand))
+                return bValue;
+            if (float.IsNaN(bValue))
+                return operand;
+
             return Math.Min(bValue, operand);
         }
         private float Heaviside(float bValue, float operand)

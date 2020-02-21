@@ -382,10 +382,20 @@ namespace NumpyLib
         }
         private double FMax(double bValue, double operand)
         {
+            if (double.IsNaN(operand))
+                return bValue;
+            if (double.IsNaN(bValue))
+                return operand;
+
             return Math.Max(bValue, operand);
         }
         private double FMin(double bValue, double operand)
         {
+            if (double.IsNaN(operand))
+                return bValue;
+            if (double.IsNaN(bValue))
+                return operand;
+
             return Math.Min(bValue, operand);
         }
         private double Heaviside(double bValue, double operand)
