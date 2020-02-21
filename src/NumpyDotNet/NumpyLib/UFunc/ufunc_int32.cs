@@ -48,128 +48,151 @@ namespace NumpyLib
 
     #region UFUNC INT32
 
-    internal class UFUNC_Int32 : iUFUNC_Operations
+    internal class UFUNC_Int32 : UFUNC_BASE<Int32>, iUFUNC_Operations
     {
-        public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
+        public UFUNC_Int32() : base(sizeof(Int32))
         {
-            var destSize = NpyArray_Size(destArray);
-            var aSize = NpyArray_Size(a);
-            var bSize = NpyArray_Size(b);
-
-            if (bSize == 0 || aSize == 0)
-            {
-                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
-            }
-
-            var aIter = NpyArray_IterNew(a);
-            var bIter = NpyArray_IterNew(b);
-            var DestIter = NpyArray_IterNew(destArray);
-
-            Int32[] aValues = new Int32[aSize];
-            for (long i = 0; i < aSize; i++)
-            {
-                aValues[i] = Convert.ToInt32(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
-                NpyArray_ITER_NEXT(aIter);
-            }
-
-            Int32[] bValues = new Int32[bSize];
-            for (long i = 0; i < bSize; i++)
-            {
-                bValues[i] = Convert.ToInt32(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
-                NpyArray_ITER_NEXT(bIter);
-            }
-
-
-            Int32[] dp = destArray.data.datap as Int32[];
-
-
-            if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
-            {
-
-                Parallel.For(0, aSize, i =>
-                {
-                    var aValue = aValues[i];
-
-                    long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
-
-                    for (long j = 0; j < bSize; j++)
-                    {
-                        var bValue = bValues[j];
-
-                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
-
-                        try
-                        {
-                            dp[destIndex] = destValue;
-                        }
-                        catch
-                        {
-                            operations.destSetItem(destIndex, 0, destArray);
-                        }
-                        destIndex++;
-                    }
-
-                });
-            }
-            else
-            {
-                for (long i = 0; i < aSize; i++)
-                {
-                    var aValue = aValues[i];
-
-                    for (long j = 0; j < bSize; j++)
-                    {
-                        var bValue = bValues[j];
-
-                        Int32 destValue = PerformUFuncOperation(op, aValue, bValue);
-
-                        try
-                        {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            dp[AdjustedIndex] = destValue;
-                        }
-                        catch
-                        {
-                            long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                            operations.destSetItem(AdjustedIndex, 0, destArray);
-                        }
-                        NpyArray_ITER_NEXT(DestIter);
-                    }
-
-                }
-            }
-
 
         }
 
-        private Int32 PerformUFuncOperation(UFuncOperation op, Int32 aValue, Int32 bValue)
+        protected override Int32 ConvertToTemplate(object value)
         {
-            Int32 destValue;
+            return Convert.ToInt32(Convert.ToDouble(value));
+        }
+
+        protected override Int32 PerformUFuncOperation(UFuncOperation op, Int32 aValue, Int32 bValue)
+        {
+            Int32 destValue = 0;
+            bool boolValue = false;
+
             switch (op)
             {
                 case UFuncOperation.add:
-                    destValue = UFuncAdd(aValue, bValue);
+                    destValue = Add(aValue, bValue);
                     break;
                 case UFuncOperation.subtract:
-                    destValue = UFuncSubtract(aValue, bValue);
+                    destValue = Subtract(aValue, bValue);
                     break;
                 case UFuncOperation.multiply:
-                    destValue = UFuncMultiply(aValue, bValue);
+                    destValue = Multiply(aValue, bValue);
                     break;
                 case UFuncOperation.divide:
-                    destValue = UFuncDivide(aValue, bValue);
+                    destValue = Divide(aValue, bValue);
                     break;
                 case UFuncOperation.remainder:
-                    destValue = UFuncRemainder(aValue, bValue);
+                    destValue = Remainder(aValue, bValue);
                     break;
                 case UFuncOperation.fmod:
-                    destValue = UFuncFMod(aValue, bValue);
+                    destValue = FMod(aValue, bValue);
                     break;
                 case UFuncOperation.power:
-                    destValue = UFuncPower(aValue, bValue);
+                    destValue = Power(aValue, bValue);
                     break;
-
+                case UFuncOperation.square:
+                    destValue = Square(aValue, bValue);
+                    break;
+                case UFuncOperation.reciprocal:
+                    destValue = Reciprocal(aValue, bValue);
+                    break;
+                case UFuncOperation.ones_like:
+                    destValue = OnesLike(aValue, bValue);
+                    break;
+                case UFuncOperation.sqrt:
+                    destValue = Sqrt(aValue, bValue);
+                    break;
+                case UFuncOperation.negative:
+                    destValue = Negative(aValue, bValue);
+                    break;
+                case UFuncOperation.absolute:
+                    destValue = Absolute(aValue, bValue);
+                    break;
+                case UFuncOperation.invert:
+                    destValue = Invert(aValue, bValue);
+                    break;
+                case UFuncOperation.left_shift:
+                    destValue = LeftShift(aValue, bValue);
+                    break;
+                case UFuncOperation.right_shift:
+                    destValue = RightShift(aValue, bValue);
+                    break;
+                case UFuncOperation.bitwise_and:
+                    destValue = BitWiseAnd(aValue, bValue);
+                    break;
+                case UFuncOperation.bitwise_xor:
+                    destValue = BitWiseXor(aValue, bValue);
+                    break;
+                case UFuncOperation.bitwise_or:
+                    destValue = BitWiseOr(aValue, bValue);
+                    break;
+                case UFuncOperation.less:
+                    boolValue = Less(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.less_equal:
+                    boolValue = LessEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.equal:
+                    boolValue = Equal(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.not_equal:
+                    boolValue = NotEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.greater:
+                    boolValue = Greater(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.greater_equal:
+                    boolValue = GreaterEqual(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.floor_divide:
+                    destValue = FloorDivide(aValue, bValue);
+                    break;
+                case UFuncOperation.true_divide:
+                    destValue = TrueDivide(aValue, bValue);
+                    break;
+                case UFuncOperation.logical_or:
+                    boolValue = LogicalOr(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.logical_and:
+                    boolValue = LogicalAnd(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.floor:
+                    destValue = Floor(aValue, bValue);
+                    break;
+                case UFuncOperation.ceil:
+                    destValue = Ceiling(aValue, bValue);
+                    break;
+                case UFuncOperation.maximum:
+                    destValue = Maximum(aValue, bValue);
+                    break;
+                case UFuncOperation.minimum:
+                    destValue = Minimum(aValue, bValue);
+                    break;
+                case UFuncOperation.rint:
+                    destValue = Rint(aValue, bValue);
+                    break;
+                case UFuncOperation.conjugate:
+                    destValue = Conjugate(aValue, bValue);
+                    break;
+                case UFuncOperation.isnan:
+                    boolValue = IsNAN(aValue, bValue);
+                    destValue = boolValue ? 1 : 0;
+                    break;
+                case UFuncOperation.fmax:
+                    destValue = FMax(aValue, bValue);
+                    break;
+                case UFuncOperation.fmin:
+                    destValue = FMin(aValue, bValue);
+                    break;
+                case UFuncOperation.heaviside:
+                    destValue = Heaviside(aValue, bValue);
+                    break;
                 default:
                     destValue = 0;
                     break;
@@ -179,60 +202,202 @@ namespace NumpyLib
             return destValue;
         }
 
-        private Int32 UFuncAdd(Int32 aValue, Int32 bValue)
+        #region Int32 specific operation handlers
+        protected override Int32 Add(Int32 aValue, Int32 bValue)
         {
             return aValue + bValue;
         }
-        private Int32 UFuncSubtract(Int32 aValue, Int32 bValue)
+
+        protected override Int32 Subtract(Int32 aValue, Int32 bValue)
         {
             return aValue - bValue;
         }
-        private Int32 UFuncMultiply(Int32 aValue, Int32 bValue)
+        protected override Int32 Multiply(Int32 aValue, Int32 bValue)
         {
             return aValue * bValue;
         }
-        private Int32 UFuncDivide(Int32 aValue, Int32 bValue)
+
+        protected override Int32 Divide(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue / bValue;
         }
-        private Int32 UFuncRemainder(Int32 aValue, Int32 bValue)
+        private Int32 Remainder(Int32 aValue, Int32 bValue)
+        {
+            if (bValue == 0)
+            {
+                return 0;
+            }
+            var rem = aValue % bValue;
+            if ((aValue > 0) == (bValue > 0) || rem == 0)
+            {
+                return rem;
+            }
+            else
+            {
+                return rem + bValue;
+            }
+        }
+        private Int32 FMod(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue % bValue;
         }
-        private Int32 UFuncFMod(Int32 aValue, Int32 bValue)
+        protected override Int32 Power(Int32 aValue, Int32 bValue)
+        {
+            return Convert.ToInt32(Math.Pow(aValue, bValue));
+        }
+        private Int32 Square(Int32 bValue, Int32 operand)
+        {
+            return bValue * bValue;
+        }
+        private Int32 Reciprocal(Int32 bValue, Int32 operand)
         {
             if (bValue == 0)
                 return 0;
-            return aValue % bValue;
+
+            return 1 / bValue;
         }
-        private Int32 UFuncPower(Int32 aValue, Int32 bValue)
+        private Int32 OnesLike(Int32 bValue, Int32 operand)
         {
-            return Convert.ToInt32(Math.Pow((double)aValue, (double)bValue));
+            return 1;
+        }
+        private Int32 Sqrt(Int32 bValue, Int32 operand)
+        {
+            return Convert.ToInt32(Math.Sqrt(bValue));
+        }
+        private Int32 Negative(Int32 bValue, Int32 operand)
+        {
+            return -bValue;
+        }
+        private Int32 Absolute(Int32 bValue, Int32 operand)
+        {
+            return Math.Abs(bValue);
+        }
+        private Int32 Invert(Int32 bValue, Int32 operand)
+        {
+            return bValue;
+        }
+        private Int32 LeftShift(Int32 bValue, Int32 operand)
+        {
+            return bValue << Convert.ToInt32(operand);
+        }
+        private Int32 RightShift(Int32 bValue, Int32 operand)
+        {
+            return bValue >> Convert.ToInt32(operand);
+        }
+        private Int32 BitWiseAnd(Int32 bValue, Int32 operand)
+        {
+            return bValue & operand;
+        }
+        private Int32 BitWiseXor(Int32 bValue, Int32 operand)
+        {
+            return bValue ^ operand;
+        }
+        private Int32 BitWiseOr(Int32 bValue, Int32 operand)
+        {
+            return bValue | operand;
+        }
+        private bool Less(Int32 bValue, Int32 operand)
+        {
+            return bValue < operand;
+        }
+        private bool LessEqual(Int32 bValue, Int32 operand)
+        {
+            return bValue <= operand;
+        }
+        private bool Equal(Int32 bValue, Int32 operand)
+        {
+            return bValue == operand;
+        }
+        private bool NotEqual(Int32 bValue, Int32 operand)
+        {
+            return bValue != operand;
+        }
+        private bool Greater(Int32 bValue, Int32 operand)
+        {
+            return bValue > operand;
+        }
+        private bool GreaterEqual(Int32 bValue, Int32 operand)
+        {
+            return bValue >= (dynamic)operand;
+        }
+        private Int32 FloorDivide(Int32 bValue, Int32 operand)
+        {
+            if (operand == 0)
+            {
+                bValue = 0;
+                return bValue;
+            }
+            return Convert.ToInt32(Math.Floor(Convert.ToDouble(bValue) / Convert.ToDouble(operand)));
+        }
+        private Int32 TrueDivide(Int32 bValue, Int32 operand)
+        {
+            if (operand == 0)
+                return 0;
+
+            return bValue / operand;
+        }
+        private bool LogicalOr(Int32 bValue, Int32 operand)
+        {
+            return bValue != 0 || operand != 0;
+        }
+        private bool LogicalAnd(Int32 bValue, Int32 operand)
+        {
+            return bValue != 0 && operand != 0;
+        }
+        private Int32 Floor(Int32 bValue, Int32 operand)
+        {
+            return Convert.ToInt32(Math.Floor(Convert.ToDouble(bValue)));
+        }
+        private Int32 Ceiling(Int32 bValue, Int32 operand)
+        {
+            return Convert.ToInt32(Math.Ceiling(Convert.ToDouble(bValue)));
+        }
+        private Int32 Maximum(Int32 bValue, Int32 operand)
+        {
+            return Math.Max(bValue, operand);
+        }
+        private Int32 Minimum(Int32 bValue, Int32 operand)
+        {
+            return Math.Min(bValue, operand);
+        }
+        private Int32 Rint(Int32 bValue, Int32 operand)
+        {
+            return Convert.ToInt32(Math.Round(Convert.ToDouble(bValue)));
+        }
+        private Int32 Conjugate(Int32 bValue, Int32 operand)
+        {
+            return bValue;
+        }
+        private bool IsNAN(Int32 bValue, Int32 operand)
+        {
+            return false;
+        }
+        private Int32 FMax(Int32 bValue, Int32 operand)
+        {
+            return Math.Max(bValue, operand);
+        }
+        private Int32 FMin(Int32 bValue, Int32 operand)
+        {
+            return Math.Min(bValue, operand);
+        }
+        private Int32 Heaviside(Int32 bValue, Int32 operand)
+        {
+            if (bValue == 0)
+                return operand;
+
+            if (bValue < 0)
+                return 0;
+
+            return 1;
+
         }
 
-        public void PerformReduceOpArrayIter(VoidPtr[] bufPtr, long[] steps, UFuncOperation ops, long N)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
-        public void PerformAccumulateOpArrayIter(VoidPtr[] bufPtr, long[] steps, UFuncOperation ops, long N)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PerformReduceAtOpArrayIter(VoidPtr[] bufPtr, long[] steps, UFuncOperation ops, long N)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     #endregion
