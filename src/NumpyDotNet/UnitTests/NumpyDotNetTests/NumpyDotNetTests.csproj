@@ -88,6 +88,7 @@
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="MultithreadedTests.cs" />
     <Compile Include="UFUNCTests\UFUNC_DECIMAL_Tests.cs" />
+    <Compile Include="UFUNCTests\UFUNC_INT32_Tests.cs" />
     <Compile Include="UFUNCTests\UFUNC_UINT64_Tests.cs" />
     <Compile Include="UFUNCTests\UFUNC_INT64_Tests.cs" />
     <Compile Include="UFUNCTests\UFUNC_FLOAT_Tests.cs" />

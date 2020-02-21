@@ -410,6 +410,13 @@ class Test_UFUNC_INT64_Tests(unittest.TestCase):
         b = np.multiply.reduce(a1)
         print(b)
 
+    def test_MultiplyReduce_INT32(self):
+
+        a1 = np.arange(0, 100, dtype=np.int32).reshape((10,10));
+  
+        b = np.multiply.reduce(a1)
+        print(b)
+
     def test_DivideReduce_INT64(self):
 
         a1 = np.arange(0, 100, dtype=np.int64).reshape((10,10));
@@ -1101,6 +1108,13 @@ class Test_UFUNC_INT64_Tests(unittest.TestCase):
     def test_MultiplyReduceAt_INT64(self):
 
         a1 = np.arange(0, 9, dtype=np.int64).reshape((3,3));
+  
+        b = np.multiply.reduceat(a1, [0, 2], axis = 1)
+        print(b)
+        
+    def test_MultiplyReduceAt_INT32(self):
+
+        a1 = np.arange(0, 9, dtype=np.int32).reshape((3,3));
   
         b = np.multiply.reduceat(a1, [0, 2], axis = 1)
         print(b)
