@@ -61,27 +61,7 @@ namespace NumpyLib
         internal delegate int next_element(ref object o1, object o2, NpyArray_Descr ad, object o3);
         internal delegate int skip_separator(ref object o1, string s1, object o2);
 
-
-       /*
-       * This is a copy function for object arrays. It copies and manages the refcounts
-       * in one loop.
-       */
-        static void _strided_object_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, NpyArray_Descr ignore)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        static void _unaligned_strided_object_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, NpyArray_Descr ignore)
-        {
-            _strided_object_copy(dst, outstrides, src, instrides, N, elsize, ignore);
-        }
-        static void _strided_void_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, NpyArray_Descr ignore)
-        {
-            _strided_object_copy(dst, outstrides, src, instrides, N, elsize, ignore);
-        }
-
-
+   
         internal static void _unaligned_strided_byte_move(VoidPtr dst, npy_intp outstrides,
                                                           VoidPtr src, npy_intp instrides, 
                                                           npy_intp N, int elsize, NpyArray_Descr ignore)
@@ -1476,25 +1456,7 @@ namespace NumpyLib
          */
         internal static strided_copy_func_t strided_copy_func(NpyArray dest, NpyArray src, bool usecopy)
         {
-            if (NpyDataType_REFCHK(dest.descr))
-            {
-                if (NpyArray_ISOBJECT(dest))
-                {
-                    if (NpyArray_SAFEALIGNEDCOPY(dest) && (src == null || NpyArray_SAFEALIGNEDCOPY(src)))
-                    {
-                        return _strided_object_copy;
-                    }
-                    else
-                    {
-                        return _unaligned_strided_object_copy;
-                    }
-                }
-                else
-                {
-                    return _strided_void_copy;
-                }
-            }
-            else if (NpyArray_SAFEALIGNEDCOPY(dest) && (src == null || NpyArray_SAFEALIGNEDCOPY(src)))
+            if (NpyArray_SAFEALIGNEDCOPY(dest) && (src == null || NpyArray_SAFEALIGNEDCOPY(src)))
             {
                 return _strided_byte_copy;
             }
@@ -1530,22 +1492,35 @@ namespace NumpyLib
             elsize = NpyArray_ITEMSIZE(dest);
             descr = dest.descr;
 
+            List<VoidPtr> ListDit = new List<VoidPtr>();
+            List<VoidPtr> ListSit = new List<VoidPtr>();
+
             while (dit.index < dit.size)
             {
+                ListDit.Add(new VoidPtr(dit.dataptr));
+                ListSit.Add(new VoidPtr(sit.dataptr));
+                     
+                NpyArray_ITER_NEXT(dit);
+                NpyArray_ITER_NEXT(sit);
+            }
+
+            int ListCount = ListDit.Count;
+            Parallel.For(0, ListCount, i =>
+            {
                 /* strided copy of elsize bytes */
-                myfunc(dit.dataptr, dest.strides[maxaxis],
-                       sit.dataptr, src.strides[maxaxis],
+                myfunc(ListDit[i], dest.strides[maxaxis],
+                       ListSit[i], src.strides[maxaxis],
                        maxdim, elsize, descr);
+
                 if (swap)
                 {
-                    _strided_byte_swap(dit.dataptr,
+                    _strided_byte_swap(ListDit[i],
                                        dest.strides[maxaxis],
                                        dest.dimensions[maxaxis],
                                        elsize);
                 }
-                NpyArray_ITER_NEXT(dit);
-                NpyArray_ITER_NEXT(sit);
-            }
+            });
+
 
             Npy_DECREF(sit);
             Npy_DECREF(dit);
