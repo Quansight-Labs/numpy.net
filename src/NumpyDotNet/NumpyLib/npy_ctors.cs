@@ -1577,21 +1577,31 @@ namespace NumpyLib
              * Refcount note: src and dest may have different sizes
              */
 
+            List<VoidPtr> vp1 = new List<VoidPtr>();
+            List<VoidPtr> vp2 = new List<VoidPtr>();
+
             while (multi.index < multi.size)
             {
-                myfunc(multi.iters[0].dataptr,
+                vp1.Add(new VoidPtr(multi.iters[0].dataptr));
+                vp2.Add(new VoidPtr(multi.iters[1].dataptr));
+                NpyArray_MultiIter_NEXT(multi);
+            }
+
+            Parallel.For(0, vp1.Count, i =>
+            {
+                myfunc(vp1[i],
                        multi.iters[0].strides[maxaxis],
-                       multi.iters[1].dataptr,
+                       vp2[i],
                        multi.iters[1].strides[maxaxis],
                        maxdim, elsize, descr);
                 if (swap)
                 {
-                    _strided_byte_swap(multi.iters[0].dataptr,
+                    _strided_byte_swap(vp1[i],
                                        multi.iters[0].strides[maxaxis],
                                        maxdim, elsize);
                 }
                 NpyArray_MultiIter_NEXT(multi);
-            }
+            });
 
             Npy_DECREF(multi);
             return 0;
