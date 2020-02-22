@@ -223,6 +223,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_DECIMAL:
                     return new UFUNC_Decimal();
 
+                case NPY_TYPES.NPY_COMPLEX:
+                    return new UFUNC_Complex();
+
                 default:
                     return null;
             }
