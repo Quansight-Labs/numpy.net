@@ -2644,7 +2644,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_WhereOperation_DOUBLE()
         {
-            int LoopCount = 200;
+            int LoopCount = 20;
 
             var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
             var x1comp = np.arange(0, 1600000, 5, dtype: np.Float64).reshape((40, -1));
@@ -2674,6 +2674,58 @@ namespace NumpyDotNetTests
 
             Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine(output.ToString());
+            Console.WriteLine("************\n");
+        }
+
+        [TestMethod]
+        public void Performance_copy_DOUBLE()
+        {
+            int LoopCount = 2000;
+
+            var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            //matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var x1 = np.copy(matrix);
+            }
+
+            var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(output.ToString());
+            Console.WriteLine("************\n");
+        }
+
+        [TestMethod]
+        public void Performance_unique_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var matrix = np.arange(16000000, dtype: np.Float64).reshape(40,-1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            //matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var result = np.unique(matrix, return_counts: true, return_index: true, return_inverse: true);
+            }
+
+           // var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+           // Console.WriteLine(output.ToString());
             Console.WriteLine("************\n");
         }
 

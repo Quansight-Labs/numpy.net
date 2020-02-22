@@ -275,7 +275,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_WhereOperation_DOUBLE(self):
 
-        LoopCount = 200;
+        LoopCount = 20;
 
         matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
         x1comp = np.arange(0,16000000,5, dtype=np.float64).reshape((40, -1));
@@ -283,7 +283,7 @@ class PerformanceTests(unittest.TestCase):
 
         start = tm.time()
 
-        matrix = matrix[1:40:2, 1:-2:3]
+        #matrix = matrix[1:40:2, 1:-2:3]
 
         for i in range(LoopCount):
             x1 = np.where(matrix % 5 == 0);
@@ -301,6 +301,49 @@ class PerformanceTests(unittest.TestCase):
         print("Int64 calculations took %f milliseconds" %(diff))
         print(output)
 
+    def test_Performance_copy_DOUBLE(self):
+
+        LoopCount = 2000;
+
+        matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            x1 = np.copy(matrix);
+             
+
+        output = matrix[15:25:2, 15:25:2]
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+        print(output)
+
+    def test_Performance_unique_DOUBLE(self):
+
+        LoopCount = 20;
+
+        matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            uvalues, indexes, inverse, counts = np.unique(matrix, return_counts = True, return_index=True, return_inverse=True);
+             
+
+        output = matrix[15:25:2, 15:25:2]
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+        print(output)
 
 if __name__ == '__main__':
     unittest.main()
