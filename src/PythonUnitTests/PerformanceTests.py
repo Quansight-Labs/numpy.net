@@ -345,5 +345,26 @@ class PerformanceTests(unittest.TestCase):
         print("Int64 calculations took %f milliseconds" %(diff))
         print(output)
 
+    def test_Performance_insert_DOUBLE(self):
+
+        LoopCount = 2;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        m2 = np.arange(16000000, dtype=np.float64);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            inserted = np.insert(m1, slice(None), m2)
+             
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()

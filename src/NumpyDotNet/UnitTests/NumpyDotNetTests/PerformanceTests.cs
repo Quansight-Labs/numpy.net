@@ -2641,6 +2641,7 @@ namespace NumpyDotNetTests
         }
         #endregion
 
+        [Ignore]
         [TestMethod]
         public void Performance_WhereOperation_DOUBLE()
         {
@@ -2677,6 +2678,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void Performance_copy_DOUBLE()
         {
@@ -2703,10 +2705,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void Performance_unique_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount = 1;
 
             var matrix = np.arange(16000000, dtype: np.Float64).reshape(40,-1);
 
@@ -2726,6 +2729,31 @@ namespace NumpyDotNetTests
 
             Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
            // Console.WriteLine(output.ToString());
+            Console.WriteLine("************\n");
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_insert_DOUBLE()
+        {
+            int LoopCount = 2;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var m2 = np.arange(16000000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var inserted = np.insert(m1, new Slice(null), m2);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
