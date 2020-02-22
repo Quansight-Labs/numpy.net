@@ -2205,10 +2205,8 @@ namespace NumpyLib
                         _strided_byte_swap(valbuffer, (npy_intp)elsize, N, elsize);
                     }
                     iptr = indbuffer;
-                    for (i = 0; i < N; i++)
-                    {
-                        SetIndex(iptr, iptr.data_offset / sizeof(npy_intp) + i, i);
-                    }
+                    BuildINTPArray(iptr, N);
+
                     if (argsort(valbuffer, iptr, N, op) < 0)
                     {
                         NpyDataMem_FREE(valbuffer);
@@ -2228,11 +2226,9 @@ namespace NumpyLib
                 while (size-- > 0)
                 {
                     iptr = rit.dataptr;
-                    for (i = 0; i < N; i++)
-                    {
-                        SetIndex(iptr, iptr.data_offset/sizeof(npy_intp) + i, i);
-                    }
-                    
+
+                    BuildINTPArray(iptr, N);
+                       
                     if (argsort(it.dataptr, iptr, N, op) < 0)
                     {
                         goto fail;
@@ -2252,6 +2248,35 @@ namespace NumpyLib
             Npy_XDECREF(it);
             Npy_XDECREF(rit);
             return null;
+        }
+
+        internal static void BuildINTPArray(VoidPtr iptr, npy_intp N)
+        {
+            var intpArr = iptr.datap as npy_intp[];
+
+            // lets do the divide only once
+            npy_intp data_offset = iptr.data_offset / sizeof(npy_intp);
+
+            if (iptr.data_offset >= 0)
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    var index = data_offset + i;
+                    intpArr[index] = i;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    var index = data_offset + i;
+                    index = AdjustNegativeIndex<npy_intp>(iptr, index);
+
+                    intpArr[index] = i;
+                }
+            }
+
+  
         }
 
 
