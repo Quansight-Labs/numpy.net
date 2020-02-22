@@ -1600,7 +1600,6 @@ namespace NumpyLib
                                        multi.iters[0].strides[maxaxis],
                                        maxdim, elsize);
                 }
-                NpyArray_MultiIter_NEXT(multi);
             });
 
             Npy_DECREF(multi);
