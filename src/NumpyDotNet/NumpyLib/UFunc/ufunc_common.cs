@@ -839,7 +839,7 @@ namespace NumpyLib
                     return;
                 }
 
-                long taskSize = NUMERICOPS_TASKSIZE;
+                long taskSize = NUMERICOPS_TASKSIZE * 10;
 
                 for (long i = 0; i < destSize;)
                 {
