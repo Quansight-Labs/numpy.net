@@ -2807,5 +2807,30 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_intersect_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+            var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray c = np.intersect1d(m1, m2);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
     }
 }

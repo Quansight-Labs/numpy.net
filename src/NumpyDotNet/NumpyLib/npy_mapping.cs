@@ -470,7 +470,7 @@ namespace NumpyLib
             copyswap = ret.descr.f.copyswap;
             NpyArray_MapIterReset(mit);
 
-            copyswap = GetTestCopySwap(it.dataptr, mit.dataptr, swap, ret);
+            //copyswap = GetTestCopySwap(it.dataptr, mit.dataptr, swap, ret);
             while (index-- > 0)
             {
                 copyswap(it.dataptr, mit.dataptr, swap, ret);
