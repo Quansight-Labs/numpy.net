@@ -1568,7 +1568,9 @@ namespace NumpyLib
                 return this.dvalue.CompareTo(cv.dvalue);    
             }
         }
-     
+
+  
+
 
         private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex) where T : IComparable
         {
@@ -1591,7 +1593,46 @@ namespace NumpyLib
                 _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
             }
         }
-           
+
+        class ArgSortData_COMPLEX : IComparable
+        {
+            System.Numerics.Complex dvalue;
+            public npy_intp index;
+
+            public ArgSortData_COMPLEX(npy_intp index, System.Numerics.Complex d)
+            {
+                this.index = index;
+                this.dvalue = d;
+            }
+
+            public int CompareTo(object obj)
+            {
+                ArgSortData_COMPLEX cv = obj as ArgSortData_COMPLEX;
+                return this.dvalue.Real.CompareTo(cv.dvalue.Real);
+            }
+        }
+        private static void argSortIndexes_COMPLEX(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
+        {
+            var data = sortData.datap as System.Numerics.Complex[];
+
+            var argSortDouble = new ArgSortData_COMPLEX[m];
+
+            var adjustedIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
+
+            for (int i = 0; i < m; i++)
+            {
+                argSortDouble[i] = new ArgSortData_COMPLEX(i, data[i + adjustedIndex]);
+            }
+
+            Array.Sort(argSortDouble);
+
+            npy_intp[] _ip = (npy_intp[])ip.datap;
+            for (int i = 0; i < m; i++)
+            {
+                _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
+            }
+        }
+
         private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
         {
             switch (sortData.type_num)
@@ -1633,12 +1674,13 @@ namespace NumpyLib
                     argSortIndexes<decimal>(ip, m, sortData, startingIndex);
                     return;
                 case NPY_TYPES.NPY_COMPLEX:
-                    //argSortIndexes<System.Numerics.Complex>(ip, m, sortData, startingIndex);
+                    argSortIndexes_COMPLEX(ip, m, sortData, startingIndex);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
                     argSortIndexes<System.Numerics.BigInteger>(ip, m, sortData, startingIndex);
                     return;
                 case NPY_TYPES.NPY_OBJECT:
+                    // todo: need to implement version for these data types
                     //argSortIndexes<System.Object>(ip, m, sortData, startingIndex);
                     break;
                 case NPY_TYPES.NPY_STRING:
