@@ -1551,13 +1551,108 @@ namespace NumpyLib
 
         }
 
+        class ArgSortData<T> : IComparable where T : IComparable
+        {
+            T dvalue;
+            public npy_intp index;
 
+            public ArgSortData(npy_intp index, T d)
+            {
+                this.index = index;
+                this.dvalue = d;
+            }
+
+            public int CompareTo(object obj)
+            {
+                ArgSortData<T> cv = obj as ArgSortData<T>;
+                return this.dvalue.CompareTo(cv.dvalue);    
+            }
+        }
+     
+
+        private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex) where T : IComparable
+        {
+            T[] data = sortData.datap as T[];
+
+            var argSortDouble = new ArgSortData<T>[m];
+
+            var adjustedIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
+
+            for (int i = 0; i < m; i++)
+            {
+                argSortDouble[i] = new ArgSortData<T>(i, data[i+ adjustedIndex]);
+            }
+
+            Array.Sort(argSortDouble);
+
+            npy_intp[] _ip = (npy_intp[])ip.datap;
+            for (int i = 0; i < m; i++)
+            {
+                _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
+            }
+        }
+           
         private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
         {
+            switch (sortData.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    argSortIndexes<bool>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_BYTE:
+                    argSortIndexes<sbyte>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_UBYTE:
+                    argSortIndexes<byte>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_INT16:
+                    argSortIndexes<Int16>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_UINT16:
+                    argSortIndexes<UInt16>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_INT32:
+                    argSortIndexes<Int32>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_UINT32:
+                    argSortIndexes<UInt32>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_INT64:
+                    argSortIndexes<Int64>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_UINT64:
+                    argSortIndexes<UInt64>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_FLOAT:
+                    argSortIndexes<float>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_DOUBLE:
+                    argSortIndexes<double>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_DECIMAL:
+                    argSortIndexes<decimal>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_COMPLEX:
+                    //argSortIndexes<System.Numerics.Complex>(ip, m, sortData, startingIndex);
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    argSortIndexes<System.Numerics.BigInteger>(ip, m, sortData, startingIndex);
+                    return;
+                case NPY_TYPES.NPY_OBJECT:
+                    //argSortIndexes<System.Object>(ip, m, sortData, startingIndex);
+                    break;
+                case NPY_TYPES.NPY_STRING:
+                    argSortIndexes<System.String>(ip, m, sortData, startingIndex);
+                    return;
+                default:
+                    break;
+
+            }
+
             dynamic lastLowest = ArgSortMinValue(sortData.type_num);
             dynamic _MaxValue = ArgSortMaxValue(sortData.type_num);
 
-            for (int i = 0; i < m; )
+            for (int i = 0; i < m;)
             {
                 npy_intp endingIndex = m + startingIndex;
                 lastLowest = getNextLowest(lastLowest, sortData, startingIndex, endingIndex, _MaxValue);
@@ -1571,11 +1666,13 @@ namespace NumpyLib
                         break;
                     }
                     npy_intp[] _ip = (npy_intp[])ip.datap;
-                    _ip[i + ip.data_offset/sizeof(npy_intp)] = foundIndex-startingIndex;
+                    _ip[i + ip.data_offset / sizeof(npy_intp)] = foundIndex - startingIndex;
                     foundIndex++;
                     i++;
                 }
             }
+
+
 
             return;
         }
@@ -1592,7 +1689,7 @@ namespace NumpyLib
             for (npy_intp i = startingIndex; i < endingIndex; i++)
             {
                 if (array[i] == nextLowest)
-                    return i-indexAdjustment;
+                    return i - indexAdjustment;
             }
 
             return -1;
@@ -1617,7 +1714,7 @@ namespace NumpyLib
             }
 
             return foundLowest;
-            
+
         }
 
         internal static NpyArray NpyArray_LexSort(NpyArray []mps, int n, int axis)
@@ -2120,6 +2217,7 @@ namespace NumpyLib
                     {
                         SetIndex(iptr, iptr.data_offset/sizeof(npy_intp) + i, i);
                     }
+                    
                     if (argsort(it.dataptr, iptr, N, op) < 0)
                     {
                         goto fail;
