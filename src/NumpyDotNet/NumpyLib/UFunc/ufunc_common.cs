@@ -229,6 +229,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_BIGINT:
                     return new UFUNC_BigInt();
 
+                //case NPY_TYPES.NPY_OBJECT:
+                //    return new UFUNC_Object();
+
                 default:
                     return null;
             }
