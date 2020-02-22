@@ -1204,6 +1204,8 @@ namespace NumpyLib
 
             data = dptr.datap as bool[];
             dptr_index = 0;
+
+            //copyswap = GetTestCopySwap(optr, self.dataptr, swap, result);
             while (i-- > 0)
             {
                 if (data[dptr_index])
