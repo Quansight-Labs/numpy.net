@@ -2223,19 +2223,33 @@ namespace NumpyLib
             }
             else
             {
+                List<VoidPtr> vp1 = new List<VoidPtr>();
+                List<VoidPtr> vp2 = new List<VoidPtr>();
+
                 while (size-- > 0)
                 {
                     iptr = rit.dataptr;
 
                     BuildINTPArray(iptr, N);
-                       
-                    if (argsort(it.dataptr, iptr, N, op) < 0)
-                    {
-                        goto fail;
-                    }
+                    vp1.Add(new VoidPtr(it.dataptr));
+                    vp2.Add(new VoidPtr(iptr));
+      
                     NpyArray_ITER_NEXT(it);
                     NpyArray_ITER_NEXT(rit);
                 }
+
+                bool failure_detected = false;
+                Parallel.For(0, vp1.Count, ii =>
+                {
+                    if (argsort(vp1[ii], vp2[ii], N, op) < 0)
+                    {
+                        failure_detected = true;
+                    }
+                });
+
+                if (failure_detected)
+                    goto fail;
+
             }
 
 
