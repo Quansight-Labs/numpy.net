@@ -2757,5 +2757,55 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_append_DOUBLE()
+        {
+            int LoopCount = 2;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40,-1);
+            var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var inserted = np.append(m1, m2, axis: 1);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_broadcastcopy_DOUBLE2()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(32000000, dtype: np.Float64).reshape(40, -1);
+            var m2 = np.arange(16000000, dtype: np.Float64).reshape(10, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1[":", ":"] = 99;
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
     }
 }
