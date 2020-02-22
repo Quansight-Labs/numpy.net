@@ -7,6 +7,11 @@ using System.Text;
 using System.Linq;
 using NumpyLib;
 using System.Threading.Tasks;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -2635,6 +2640,42 @@ namespace NumpyDotNetTests
 
         }
         #endregion
+
+        [TestMethod]
+        public void Performance_WhereOperation_DOUBLE()
+        {
+            int LoopCount = 200;
+
+            var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
+            var x1comp = np.arange(0, 1600000, 5, dtype: np.Float64).reshape((40, -1));
+            var x2comp = np.arange(0, 1600000, 10, dtype: np.Float64).reshape((40, -1));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            //matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var x1 = np.where(matrix % 5 == 0);
+                var x2 = np.where(matrix % 10 == 0);
+
+                var b1 = (ndarray[])np.where(x1 != x1comp);
+                var b2 = (ndarray[])np.where(x2 != x2comp);
+
+                AssertArray(b1[0], new npy_intp[] { 0 });
+                AssertArray(b2[0], new npy_intp[] { 0 });
+
+            }
+
+            var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(output.ToString());
+            Console.WriteLine("************\n");
+        }
 
     }
 }

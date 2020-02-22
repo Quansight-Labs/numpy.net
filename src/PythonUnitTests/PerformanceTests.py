@@ -273,6 +273,34 @@ class PerformanceTests(unittest.TestCase):
         z = x + y
         print(z)
 
+    def test_Performance_WhereOperation_DOUBLE(self):
+
+        LoopCount = 200;
+
+        matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
+        x1comp = np.arange(0,16000000,5, dtype=np.float64).reshape((40, -1));
+        x2comp = np.arange(0,16000000,10, dtype=np.float64).reshape((40, -1));
+
+        start = tm.time()
+
+        matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            x1 = np.where(matrix % 5 == 0);
+            x2 = np.where(matrix % 10 == 0);
+
+            b1 = np.where(x1 != x1comp)
+            b2 = np.where(x2 != x2comp)
+            
+
+        output = matrix[15:25:2, 15:25:2]
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+        print(output)
+
 
 if __name__ == '__main__':
     unittest.main()
