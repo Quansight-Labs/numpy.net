@@ -60,14 +60,13 @@ namespace NumpyLib
             NpyArray self;
             NpyArray indices;
             int nd;
-            npy_intp i, j, max_item, nelem;
+            npy_intp max_item, nelem;
             npy_intp n, m, chunk;
             npy_intp []shape = new npy_intp[npy_defs.NPY_MAXDIMS];
             VoidPtr src;
             VoidPtr dest;
             bool copyret = false;
             int err;
-            npy_intp tmp = 0;
 
             indices = null;
             self = NpyArray_CheckAxis(self0, ref axis, NPYARRAYFLAGS.NPY_CARRAY);
@@ -82,8 +81,8 @@ namespace NumpyLib
                 return null;
             }
             n = m = chunk = 1;
-            nd = self.nd + indices.nd - 1;
-            for (i = 0; i < nd; i++)
+            nd = self.nd + indices.nd -1;
+            for (int i = 0; i < nd; i++)
             {
                 if (i < axis)
                 {
@@ -164,33 +163,40 @@ namespace NumpyLib
                 switch (clipmode)
                 {
                     case NPY_CLIPMODE.NPY_RAISE:
-                        for (i = 0; i < n; i++)
+                        for (int i = 0; i < n; i++)
                         {
-                            for (j = 0; j < m; j++)
+                            bool out_of_range = false;
+                            Parallel.For(0, m, j =>
                             {
-                                tmp = indicesData[j];
+                                var tmp = indicesData[j];
                                 if (tmp < 0)
                                 {
                                     tmp = tmp + max_item;
                                 }
                                 if ((tmp < 0) || (tmp >= max_item))
                                 {
-                                    NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
-                                    goto fail;
+                                    out_of_range = true;
                                 }
 
-                                memmove(dest, dest_index, src, src_index + (tmp * chunk), chunk);
-                                dest_index += chunk;
+                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            });
+
+                            if (out_of_range)
+                            {
+                                NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
+                                goto fail;
                             }
+
+                            dest_index += m * chunk;
                             src_index += chunk * max_item;
                         }
                         break;
                     case NPY_CLIPMODE.NPY_WRAP:
-                        for (i = 0; i < n; i++)
+                        for (int i = 0; i < n; i++)
                         {
-                            for (j = 0; j < m; j++)
+                            Parallel.For(0, m, j =>
                             {
-                                tmp = indicesData[j];
+                                var tmp = indicesData[j];
                                 if (tmp < 0)
                                 {
                                     while (tmp < 0)
@@ -206,18 +212,19 @@ namespace NumpyLib
                                     }
                                 }
 
-                                memmove(dest, dest_index, src, src_index + (tmp * chunk), chunk);
-                                dest_index += chunk;
-                            }
+                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            });
+
+                            dest_index += m * chunk;
                             src_index += chunk * max_item;
                         }
                         break;
                     case NPY_CLIPMODE.NPY_CLIP:
-                        for (i = 0; i < n; i++)
+                        for (int i = 0; i < n; i++)
                         {
-                            for (j = 0; j < m; j++)
+                            Parallel.For(0, m, j =>
                             {
-                                tmp = indicesData[j];
+                                var tmp = indicesData[j];
                                 if (tmp < 0)
                                 {
                                     tmp = 0;
@@ -227,10 +234,10 @@ namespace NumpyLib
                                     tmp = max_item - 1;
                                 }
 
+                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            });
 
-                                memmove(dest, dest_index, src, src_index + (tmp * chunk), chunk);
-                                dest_index += chunk;
-                            }
+                            dest_index += (m * chunk);
                             src_index += chunk * max_item;
                         }
                         break;
