@@ -2881,6 +2881,32 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_partition_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
+            var indices = np.arange(0, 16000000, 2, dtype: np.Int32).reshape(20, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var perm1 = np.partition(m1, 1, axis: 0);
+                var perm2 = np.partition(m1, 2, axis: 1);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
 
 
     }
