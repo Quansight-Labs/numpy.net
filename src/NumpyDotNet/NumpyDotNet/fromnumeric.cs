@@ -149,6 +149,7 @@ namespace NumpyDotNet
                 axis = 0;
             }
 
+            a = a.ravel();
             return NpyCoreApi.TakeFrom(a, indices, axis.Value, _out, mode);
         }
 
