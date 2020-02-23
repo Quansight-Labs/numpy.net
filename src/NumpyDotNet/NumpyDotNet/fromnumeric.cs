@@ -146,6 +146,7 @@ namespace NumpyDotNet
             
             if (axis == null)
             {
+                a = a.flatten();
                 axis = 0;
             }
 
