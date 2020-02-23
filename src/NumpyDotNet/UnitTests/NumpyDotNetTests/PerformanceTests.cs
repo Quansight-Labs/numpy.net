@@ -15,6 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -2910,4 +2911,6 @@ namespace NumpyDotNetTests
 
 
     }
+
+#endif
 }
