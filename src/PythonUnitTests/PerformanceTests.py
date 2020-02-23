@@ -409,5 +409,25 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
+    def test_Performance_intersect_DOUBLE(self):
+
+        LoopCount = 2;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            perm1 = np.argsort(m1, kind = 'mergesort')
+             
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()
