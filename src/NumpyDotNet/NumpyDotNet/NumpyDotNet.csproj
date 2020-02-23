@@ -8,13 +8,13 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2020, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.21</Version>
+    <Version>0.9.30</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>Adding support for System.String as a native data type. Supporting DateTime/Timespan as Object data types. HUGE performance improvements in calculation engine and the overall system.</PackageReleaseNotes>
+    <PackageReleaseNotes>Performance improvement release.  Depending on the operation, 2x-100x improvement.  Single threaded performance comparable to C based python version in most cases.  Faster than python in a few cases.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
