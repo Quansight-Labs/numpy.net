@@ -235,12 +235,24 @@ namespace NumpyLib
 
         internal static void _strided_byte_copy<T>(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
         {
+            tout_index /= elsize;
+            tin_index /= elsize;
+            instrides /= elsize;
+            outstrides /= elsize;
+
             for (int i = 0; i < N; i++)
             {
-                da[(tout_index + (i * outstrides)) / elsize] = sa[(tin_index + (i * instrides)) / elsize];
-                //tin_index += (int)instrides;
-                //tout_index += (int)outstrides;
+                da[tout_index] = sa[tin_index];
+                tin_index += (int)instrides;
+                tout_index += (int)outstrides;
             }
+
+            //Parallel.For(0, N, i =>
+            //{
+            //    da[tout_index + (i * instrides)] = sa[tin_index + (i * instrides)];
+            //    //tin_index += (int)instrides;
+            //    //tout_index += (int)outstrides;
+            //});
         }
 
         /*
@@ -1528,10 +1540,10 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(it);
             }
 
-            for (int i = 0; i < vp1.Count; i++)
+            Parallel.For(0, vp1.Count, i=>
             {
                 myfunc(vp1[i], (npy_intp)elsize, vp2[i], NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
-            } //);
+            });
 
             if (src != orig_src)
             {
