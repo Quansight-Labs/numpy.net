@@ -2860,7 +2860,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_take_DOUBLE()
         {
-            int LoopCount = 2;
+            int LoopCount = 20;
 
             var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
             var indices = np.arange(0, 16000000, 2, dtype: np.Int32).reshape(20,-1);

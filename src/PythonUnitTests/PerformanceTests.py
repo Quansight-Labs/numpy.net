@@ -431,7 +431,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_take_DOUBLE(self):
 
-        LoopCount = 2;
+        LoopCount = 20;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
         indices = np.arange(0,16000000, 2,dtype=np.int32).reshape(20,-1);
