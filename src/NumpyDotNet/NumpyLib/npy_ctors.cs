@@ -61,15 +61,15 @@ namespace NumpyLib
         internal delegate int next_element(ref object o1, object o2, NpyArray_Descr ad, object o3);
         internal delegate int skip_separator(ref object o1, string s1, object o2);
 
-   
+
         internal static void _unaligned_strided_byte_move(VoidPtr dst, npy_intp outstrides,
-                                                          VoidPtr src, npy_intp instrides, 
+                                                          VoidPtr src, npy_intp instrides,
                                                           npy_intp N, int elsize, NpyArray_Descr ignore)
         {
             _strided_byte_copy(dst, outstrides, src, instrides, N, elsize, ignore);
         }
 
- 
+
         internal static void _unaligned_strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                           VoidPtr src, npy_intp instrides,
                                                           npy_intp N, int elsize, NpyArray_Descr ignore)
@@ -77,22 +77,151 @@ namespace NumpyLib
             _strided_byte_copy(dst, outstrides, src, instrides, N, elsize, ignore);
         }
 
+
         internal static void _strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                    VoidPtr src, npy_intp instrides,
                                                    npy_intp N, int elsize, NpyArray_Descr ignore)
         {
 
-            int tin_index = 0;
-            int tout_index = 0;
+     
             try
             {
-                for (int i = 0; i < N; i++)
+                if (dst.type_num == src.type_num)
                 {
-                    memmove(dst, tout_index, src, tin_index, elsize);
+                    int tin_index = (int)src.data_offset;
+                    int tout_index = (int)dst.data_offset;
 
-                    tin_index += (int)instrides;
-                    tout_index += (int)outstrides;
+                    switch (dst.type_num)
+                    {
+                        case NPY_TYPES.NPY_BOOL:
+                        {
+                            var da = dst.datap as bool[];
+                            var sa = src.datap as bool[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_BYTE:
+                        {
+                            var da = dst.datap as sbyte[];
+                            var sa = src.datap as sbyte[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_UBYTE:
+                        {
+                            var da = dst.datap as byte[];
+                            var sa = src.datap as byte[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_INT16:
+                        {
+                            var da = dst.datap as Int16[];
+                            var sa = src.datap as Int16[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_UINT16:
+                        {
+                            var da = dst.datap as UInt16[];
+                            var sa = src.datap as UInt16[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_INT32:
+                        {
+                            var da = dst.datap as Int32[];
+                            var sa = src.datap as Int32[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_UINT32:
+                        {
+                            var da = dst.datap as UInt32[];
+                            var sa = src.datap as UInt32[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_INT64:
+                        {
+                            var da = dst.datap as Int64[];
+                            var sa = src.datap as Int64[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_UINT64:
+                        {
+                            var da = dst.datap as UInt64[];
+                            var sa = src.datap as UInt64[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_FLOAT:
+                        {
+                            var da = dst.datap as float[];
+                            var sa = src.datap as float[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_DOUBLE:
+                        {
+                            var da = dst.datap as double[];
+                            var sa = src.datap as double[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_DECIMAL:
+                        {
+                            var da = dst.datap as decimal[];
+                            var sa = src.datap as decimal[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_COMPLEX:
+                        {
+                            var da = dst.datap as System.Numerics.Complex[];
+                            var sa = src.datap as System.Numerics.Complex[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_BIGINT:
+                        {
+                            var da = dst.datap as System.Numerics.BigInteger[];
+                            var sa = src.datap as System.Numerics.BigInteger[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_OBJECT:
+                        {
+                            var da = dst.datap as System.Object[];
+                            var sa = src.datap as System.Object[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                        case NPY_TYPES.NPY_STRING:
+                        {
+                            var da = dst.datap as System.String[];
+                            var sa = src.datap as System.String[];
+                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+                            return;
+                        }
+                    }
+
                 }
+                else
+                {
+                    int tin_index = 0;
+                    int tout_index = 0;
+
+                    for (int i = 0; i < N; i++)
+                    {
+                        memmove(dst, tout_index, src, tin_index, elsize);
+
+                        tin_index += (int)instrides;
+                        tout_index += (int)outstrides;
+                    }
+                }
+      
             }
             catch (Exception ex)
             {
@@ -103,7 +232,17 @@ namespace NumpyLib
 
         }
 
-  
+
+        internal static void _strided_byte_copy<T>(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
+        {
+            for (int i = 0; i < N; i++)
+            {
+                da[(tout_index + (i * outstrides)) / elsize] = sa[(tin_index + (i * instrides)) / elsize];
+                //tin_index += (int)instrides;
+                //tout_index += (int)outstrides;
+            }
+        }
+
         /*
          * This is the main array creation routine.
          *
@@ -1377,12 +1516,22 @@ namespace NumpyLib
             elsize = descr.elsize;
             nbytes = (npy_intp)(elsize * NpyArray_DIM(src, axis));
 
+            List<VoidPtr> vp1 = new List<VoidPtr>();
+            List<VoidPtr> vp2 = new List<VoidPtr>();
+
             while (it.index < it.size)
             {
-                myfunc(dptr,(npy_intp)elsize, it.dataptr, NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
+                vp1.Add(new VoidPtr(dptr));
+                vp2.Add(new VoidPtr(it.dataptr));
+
                 dptr.data_offset += nbytes;
                 NpyArray_ITER_NEXT(it);
             }
+
+            for (int i = 0; i < vp1.Count; i++)
+            {
+                myfunc(vp1[i], (npy_intp)elsize, vp2[i], NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
+            } //);
 
             if (src != orig_src)
             {
