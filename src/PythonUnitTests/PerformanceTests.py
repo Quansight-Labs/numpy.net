@@ -429,5 +429,26 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
+    def test_Performance_take_DOUBLE(self):
+
+        LoopCount = 2;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
+        indices = np.arange(0,16000000, 2,dtype=np.int32).reshape(20,-1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            perm1 = np.take(m1, indices)
+             
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()
