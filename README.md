@@ -31,7 +31,13 @@ https://www.nuget.org/packages/NumpyDotNet.SampleApps/
 The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
 
 ## High performance calculations
-We recently reworked our calculation engine to take advantage of the .NET Parallel libraries.  This has caused a massive improvement in performance/reduced calculation times. We are approaching the "C" based NumPy in performance now.  We hope to continue to fine tune the performance in future releases.
+We recently reworked our calculation engine to take advantage of the .NET Parallel libraries and we inlined as much as we could.
+
+This has caused a massive improvement in performance/reduced calculation times. We are comparable to the "C" based NumPy in performance now.  In a few cases, we seem to be faster.  We hope to continue to fine tune the performance in future releases.
+
+To take full advantage of the optimizations, try to do calculations with same type arrays.  For example, adding 2 large Float64/double arrays will typically be faster than adding 1 large double array and 1 large integer array.  We are able to follow highly optimized paths if the data is the same type.  
+
+We do try to upscale smaller arrays internally before doing the calculations so that we can take advantage of the higher performance.
 
 ## Full multi-threading support
 Unlike most NumPy implementations, our library does not require the GIL (Global Interpreter Lock).  This allows us to offer a fully multi-threaded library.  You are free to launch as many threads as you want to manipulate our ndarray objects. If your application can take advantage of that, you may be able to achieve much higher overall performance.
@@ -61,7 +67,7 @@ Take note that if multiple threads are manipulating the same ndarray object, you
 
 ##### Future plans include support for:
 
-* additional performance tunings.  (we think we can be much faster)
+* additional performance tunings.  (we think we can improve performance of selected functions and some minor overall improvements.)
 * random number functionality (np.random API)
 * np.pad ??
 * masked arrays??
