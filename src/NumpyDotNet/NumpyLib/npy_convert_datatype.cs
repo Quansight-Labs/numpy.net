@@ -477,16 +477,6 @@ namespace NumpyLib
                 return -1;
             }
   
-            if (NpyDataType_FLAGCHK(dest.descr, NpyArray_Descr_Flags.NPY_NEEDS_INIT))
-            {
-                //memset(buffers[0], 0, N * delsize);
-            }
-            if (NpyDataType_FLAGCHK(src.descr, NpyArray_Descr_Flags.NPY_NEEDS_INIT))
-            {
-                //memset(buffers[1], 0, N * selsize);
-            }
-
-
             while (multi.index < multi.size)
             {
                 _strided_buffered_cast(multi.iters[0].dataptr,

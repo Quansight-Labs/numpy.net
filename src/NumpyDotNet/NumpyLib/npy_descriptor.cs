@@ -97,37 +97,7 @@ namespace NumpyLib
     [Flags]
     public enum NpyArray_Descr_Flags: int
     {
-        /* The item must be reference counted when it is inserted or extracted. */
-        NPY_ITEM_REFCOUNT =  0x01,
-        /* Same as needing REFCOUNT */
-        NPY_ITEM_HASOBJECT = 0x01,
-        /* Convert to list for pickling */
-        NPY_LIST_PICKLE = 0x02,
-        /* The item is a POINTER  */
-        NPY_ITEM_IS_POINTER = 0x04,
-        /* memory needs to be initialized for this data-type */
-        NPY_NEEDS_INIT = 0x08,
-        /* operations need Python C-API so don't give-up thread. */
-        NPY_NEEDS_PYAPI = 0x10,
-        /* Use f.getitem when extracting elements of this data-type */
-        NPY_USE_GETITEM = 0x20,
-        /* Use f.setitem when setting creating 0-d array from this data-type.*/
-        NPY_USE_SETITEM = 0x40,
-
-
-        /* Data-type needs extra initialization on creation */
-        NPY_EXTRA_DTYPE_INIT = 0x80,
-
-        /* When creating an array of this type -- call extra function */
-        NPY_UFUNC_OUTPUT_CREATION = 0x100,
-
-        /*
-         *These are inherited for global data-type if any data-types in the
-         * field have them
-         */
-        NPY_FROM_FIELDS = (NPY_NEEDS_INIT | NPY_LIST_PICKLE | NPY_ITEM_REFCOUNT | NPY_NEEDS_PYAPI),
-
-        NPY_OBJECT_DTYPE_FLAGS  = (NPY_LIST_PICKLE | NPY_USE_GETITEM | NPY_ITEM_IS_POINTER | NPY_ITEM_REFCOUNT | NPY_NEEDS_INIT | NPY_NEEDS_PYAPI),
+   
 
     }
 
@@ -365,11 +335,6 @@ namespace NumpyLib
         internal static bool NpyDataType_FLAGCHK(NpyArray_Descr dtype, NpyArray_Descr_Flags flag)
         {
             return ((dtype.flags & flag) != 0);
-        }
-
-        internal static bool NpyDataType_REFCHK(NpyArray_Descr dtype)
-        {
-            return NpyDataType_FLAGCHK(dtype, NpyArray_Descr_Flags.NPY_ITEM_REFCOUNT);
         }
 
         internal static NpyArray_Descr NpyArray_DescrNewFromType(NPY_TYPES type_num)
@@ -627,41 +592,7 @@ namespace NumpyLib
             }
             return true;
         }
-        internal static NpyArray_Descr_Flags npy_descr_find_object_flag(NpyArray_Descr self)
-        {
-            if (self.flags != 0 || self.type_num == NPY_TYPES.NPY_OBJECT || self.kind == NPY_TYPECHAR.NPY_OBJECTLTR)
-            {
-                return NpyArray_Descr_Flags.NPY_OBJECT_DTYPE_FLAGS;
-            }
-
-            if (self.names != null)
-            {
-                NpyDict_Iter pos = new NpyDict_Iter();
-                NpyDict_KVPair KVPair = new NpyDict_KVPair();
-                KVPair.key = null;
-                KVPair.value = null;
-
-                NpyDict_IterInit(pos);
-                while (NpyDict_IterNext(self.fields, pos, KVPair))
-                {
-                    string key = (string)KVPair.key;
-                    NpyArray_DescrField value = (NpyArray_DescrField)KVPair.value;
-
-                    if (null != value.title && value.title.CompareTo(key) != 0)
-                    {
-                        continue;
-                    }
-                    if (npy_descr_find_object_flag(value.descr) != 0)
-                    {
-                        value.descr.flags = NpyArray_Descr_Flags.NPY_OBJECT_DTYPE_FLAGS;
-                        return NpyArray_Descr_Flags.NPY_OBJECT_DTYPE_FLAGS;
-                    }
-                }
-            }
-            return 0;
-
-        }
-     
+       
     }
 
 

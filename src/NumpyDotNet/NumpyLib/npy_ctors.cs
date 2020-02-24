@@ -415,7 +415,7 @@ namespace NumpyLib
                 return -1;
             }
             same = NpyArray_SAMESHAPE(dest,src);
-            simple = same && !NpyDataType_REFCHK(dest.descr) &&
+            simple = same && 
                 (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
                 ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
@@ -833,15 +833,7 @@ namespace NumpyLib
                     goto fail;
                 }
                 self.flags |= NPYARRAYFLAGS.NPY_OWNDATA;
-
-                /*
-                 * It is bad to have unitialized OBJECT pointers
-                 * which could also be sub-fields of a VOID array
-                 */
-                if (NpyDataType_FLAGCHK(descr, NpyArray_Descr_Flags.NPY_NEEDS_INIT))
-                {
-                    memset(data, 0, (int)sd);
-                }
+  
             }
             else
             {
@@ -1250,7 +1242,7 @@ namespace NumpyLib
                 return -1;
             }
 
-            simple = !NpyDataType_REFCHK(dest.descr) &&
+            simple = 
                  (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
                 ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
@@ -1283,26 +1275,13 @@ namespace NumpyLib
             }
             elsize = dest.descr.elsize;
 
-            if (!NpyDataType_REFCHK(dest.descr))
+            while (idest.index < idest.size)
             {
-                while (idest.index < idest.size)
-                {
-                    memcpy(idest.dataptr, isrc.dataptr, elsize);
-                    NpyArray_ITER_NEXT(idest);
-                    NpyArray_ITER_NEXT(isrc);
-                }
+                memcpy(idest.dataptr, isrc.dataptr, elsize);
+                NpyArray_ITER_NEXT(idest);
+                NpyArray_ITER_NEXT(isrc);
             }
-            else
-            {
-                myfunc = strided_copy_func(dest, src, true);
-                while (idest.index < idest.size)
-                {
-                    NpyArray_Descr descr = dest.descr;
-                    myfunc(idest.dataptr, 0, isrc.dataptr, 0, 1, elsize, descr);
-                    NpyArray_ITER_NEXT(idest);
-                    NpyArray_ITER_NEXT(isrc);
-                }
-            }
+
             return 0;
         }
 
@@ -1483,16 +1462,7 @@ namespace NumpyLib
             orig_src = src;
             if (NpyArray_NDIM(src) == 0)
             {
-                /* Refcount note: src and dst have the same size */
-                if (NpyDataType_REFCHK(dst.descr))
-                {
-                    myfunc = strided_copy_func(dst, src, true);
-                    myfunc(dst.data, 0, src.data, 0, 1, dst.descr.elsize, dst.descr);
-                }
-                else
-                {
-                    memcpy(NpyArray_BYTES(dst), NpyArray_BYTES(src), (long)NpyArray_BYTES_Length(src));
-                }
+                memcpy(NpyArray_BYTES(dst), NpyArray_BYTES(src), (long)NpyArray_BYTES_Length(src));
                 return 0;
             }
 
@@ -1715,14 +1685,7 @@ namespace NumpyLib
             maxaxis = NpyArray_RemoveSmallest(multi);
             if (maxaxis < 0)
             {
-                if (NpyDataType_REFCHK(dest.descr))
-                {
-                    myfunc(dest.data, 0, src.data, 0, 1, elsize, descr);
-                }
-                else
-                {
-                    memcpy(dest.data, src.data, elsize);
-                }
+                memcpy(dest.data, src.data, elsize);
                 if (swap)
                 {
                     npy_byte_swap_vector(dest.data, 1, elsize);

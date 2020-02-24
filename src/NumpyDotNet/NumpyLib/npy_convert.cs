@@ -90,16 +90,6 @@ namespace NumpyLib
 
             Npy_INCREF(newtype);
 
-            if (NpyDataType_FLAGCHK(newtype, NpyArray_Descr_Flags.NPY_ITEM_HASOBJECT) ||
-                NpyDataType_FLAGCHK(newtype, NpyArray_Descr_Flags.NPY_ITEM_IS_POINTER) ||
-                NpyDataType_FLAGCHK(NpyArray_DESCR(self), NpyArray_Descr_Flags.NPY_ITEM_HASOBJECT) ||
-                NpyDataType_FLAGCHK(NpyArray_DESCR(self), NpyArray_Descr_Flags.NPY_ITEM_IS_POINTER))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_TypeError, "Cannot change data-type for object array.");
-                Npy_DECREF(newtype);
-                return -1;
-            }
-
             if (newtype.elsize == 0)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_TypeError, "data-type must not be 0-sized");
@@ -367,12 +357,6 @@ namespace NumpyLib
 
         internal static int NpyArray_ToBinaryStream(NpyArray self, Stream fs)
         {
-            /* binary data */
-            if (NpyDataType_FLAGCHK(self.descr, NpyArray_Descr_Flags.NPY_LIST_PICKLE))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "cannot write object arrays to a file in binary mode");
-                return -1;
-            }
 
             if (NpyArray_ISCONTIGUOUS(self))
             {
@@ -413,12 +397,6 @@ namespace NumpyLib
 
         internal static int NpyArray_ToTextStream(NpyArray self, Stream fs, string sep, string format)
         {
-            if (NpyDataType_FLAGCHK(self.descr, NpyArray_Descr_Flags.NPY_LIST_PICKLE))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "cannot write object arrays to a file in text mode");
-                return -1;
-            }
-
             if (NpyArray_ISCONTIGUOUS(self))
             {
                 if (NpyArray_WriteTextStream(fs, self.data, NpyArray_SIZE(self), sep, format) == false)
@@ -807,12 +785,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_FromTextStream(Stream fileStream, NpyArray_Descr descr, npy_intp num, string sep)
         {
-            if (NpyDataType_REFCHK(descr))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Cannot read into object array");
-                Npy_DECREF(descr);
-                return null;
-            }
+
             if (descr.elsize == 0)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "The elements are 0-sized.");
@@ -871,12 +844,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_FromBinaryStream(Stream fileStream, NpyArray_Descr descr, npy_intp num)
         {
-            if (NpyDataType_REFCHK(descr))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Cannot read into object array");
-                Npy_DECREF(descr);
-                return null;
-            }
+ 
             if (descr.elsize == 0)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "The elements are 0-sized.");

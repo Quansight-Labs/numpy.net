@@ -528,29 +528,7 @@ namespace NumpyLib
             swap = (NpyArray_ISNOTSWAPPED(mit.ait.ao) != NpyArray_ISNOTSWAPPED(arr));
             copyswap = arr.descr.f.copyswap;
             NpyArray_MapIterReset(mit);
-            /* Need to decref arrays with objects in them */
-            if (NpyDataType_FLAGCHK(arr.descr, NpyArray_Descr_Flags.NPY_ITEM_HASOBJECT))
-            {
-                int elsize = NpyArray_ITEMSIZE(arr);
-                byte[] buf =  new byte[elsize];
-                while (index-- > 0)
-                {
-                    memcpy(new VoidPtr(buf), it.dataptr, elsize);
-                    NpyArray_Item_INCREF(buf, arr.descr);
-                    NpyArray_Item_XDECREF(mit.dataptr, arr.descr);
-                    memcpy(mit.dataptr, new VoidPtr(buf), elsize);
-                    /* ignored unless VOID array with object's */
-                    if (swap)
-                    {
-                        copyswap(mit.dataptr, null, swap, arr);
-                    }
-                    NpyArray_MapIterNext(mit);
-                    NpyArray_ITER_NEXT(it);
-                }
-                Npy_DECREF(arr);
-                Npy_DECREF(it);
-                return 0;
-            }
+ 
             while (index-- > 0)
             {
                 memmove(mit.dataptr,it.dataptr, NpyArray_ITEMSIZE(arr));

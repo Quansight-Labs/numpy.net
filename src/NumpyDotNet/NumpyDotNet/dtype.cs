@@ -292,9 +292,6 @@ namespace NumpyDotNet {
                 NpyCoreApi.SetNamesList(this, ival.Cast<String>().ToArray());
             }
         }
-
-        public bool hasobject { get { return this.ChkFlags(NpyArray_Descr_Flags.NPY_ITEM_HASOBJECT); } }
-
    
 
         public string kind { get { return new string((char)this.Kind, 1); } }
@@ -391,10 +388,6 @@ namespace NumpyDotNet {
 
         internal bool ChkFlags(NpyArray_Descr_Flags flags) {
             return (Flags & flags) == flags;
-        }
-
-        internal bool IsObject {
-            get { return ChkFlags(NpyArray_Descr_Flags.NPY_ITEM_REFCOUNT); }
         }
 
         public NPY_TYPES TypeNum {

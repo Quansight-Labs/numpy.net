@@ -937,21 +937,6 @@ namespace NumpyLib
 
             if ((self.flags & NPYARRAYFLAGS.NPY_OWNDATA) > 0 && self.data != null)
             {
-                /* Free internal references if an Object array */
-                if (NpyDataType_FLAGCHK(self.descr, NpyArray_Descr_Flags.NPY_ITEM_REFCOUNT))
-                {
-                    Npy_INCREF(self); /* hold on to self in next call */
-                    NpyArray_XDECREF(self);
-                    /*
-                     * Don't need to DECREF -- because we are deleting
-                     * self already...
-                     */
-                    if (self.nob_refcnt == 1)
-                    {
-                        result = 1;
-                    }
-                }
-
                 NpyDataMem_FREE(self.data);
                 self.data = null;
             }

@@ -521,15 +521,13 @@ namespace NumpyDotNet
             ar1 = np.asarray(ar1).ravel();
             ar2 = np.asarray(ar2).ravel();
 
-            //Check if one of the arrays may contain arbitrary objects
-            bool contains_object = ar1.Dtype.hasobject || ar2.Dtype.hasobject;
-
+ 
             // This code is run when
             // a) the first condition is true, making the code significantly faster
             // b) the second condition is true (i.e. `ar1` or `ar2` may contain
             // arbitrary objects), since then sorting is not guaranteed to work
 
-            if (len(ar2) < 10 * Math.Pow(len(ar1), 0.145) || contains_object)
+            if (len(ar2) < 10 * Math.Pow(len(ar1), 0.145))
             {
                 ndarray mask;
                 if (invert)

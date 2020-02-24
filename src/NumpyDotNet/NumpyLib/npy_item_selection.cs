@@ -328,152 +328,70 @@ namespace NumpyLib
             npy_intp[] indicesData = indices.data.datap as npy_intp[];
 
 
-            if (NpyDataType_REFCHK(self.descr))
+
+            switch (clipmode)
             {
-                buf = new VoidPtr(new byte[chunk]);
-                switch (clipmode)
-                {
-                    case NPY_CLIPMODE.NPY_RAISE:
-                        for (i = 0; i < ni; i++)
+                case NPY_CLIPMODE.NPY_RAISE:
+                    for (i = 0; i < ni; i++)
+                    {
+                        src = new VoidPtr(values.data, chunk * (i % nv));
+                        tmp = indicesData[i];
+                        if (tmp < 0)
                         {
-                            src = new VoidPtr(values.data,  chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
-                            {
-                                tmp = tmp + max_item;
-                            }
-                            if ((tmp < 0) || (tmp >= max_item))
-                            {
-                                NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
-                                goto fail;
-                            }
-
-                            memcpy(buf, src , chunk);
-                            NpyArray_Item_INCREF(buf, self.descr);
-
-                            NpyArray_Item_XDECREF(dest, self.descr);
-               
-                            memcpy(new VoidPtr(dest, tmp * chunk), buf, chunk);
+                            tmp = tmp + max_item;
                         }
-                        break;
-                    case NPY_CLIPMODE.NPY_WRAP:
-                        for (i = 0; i < ni; i++)
+                        if ((tmp < 0) || (tmp >= max_item))
                         {
-                            src = new VoidPtr(values.data, chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
-                            {
-                                while (tmp < 0)
-                                {
-                                    tmp += max_item;
-                                }
-                            }
-                            else if (tmp >= max_item)
-                            {
-                                while (tmp >= max_item)
-                                {
-                                    tmp -= max_item;
-                                }
-                            }
-
-                            memcpy(buf, src, chunk);
-                            NpyArray_Item_INCREF(buf, self.descr);
-
-                            NpyArray_Item_XDECREF(dest, self.descr);
- 
-                            memcpy(new VoidPtr(dest, tmp * chunk), buf, chunk);
+                            NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
+                            goto fail;
                         }
-                        break;
-                    case NPY_CLIPMODE.NPY_CLIP:
-                        for (i = 0; i < ni; i++)
+
+                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                    }
+                    break;
+                case NPY_CLIPMODE.NPY_WRAP:
+                    for (i = 0; i < ni; i++)
+                    {
+                        src = new VoidPtr(values.data, chunk * (i % nv));
+                        tmp = indicesData[i];
+                        if (tmp < 0)
                         {
-                            src = new VoidPtr(values.data, chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
+                            while (tmp < 0)
                             {
-                                tmp = 0;
+                                tmp += max_item;
                             }
-                            else if (tmp >= max_item)
-                            {
-                                tmp = max_item - 1;
-                            }
-
-                            memcpy(buf, src, chunk);
-
-                            NpyArray_Item_INCREF(buf, self.descr);
-
-                            NpyArray_Item_XDECREF(dest, self.descr);
-
-                            memcpy(new VoidPtr(dest, tmp * chunk), buf, chunk);
                         }
-                        break;
-                }
+                        else if (tmp >= max_item)
+                        {
+                            while (tmp >= max_item)
+                            {
+                                tmp -= max_item;
+                            }
+                        }
+
+
+                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                    }
+                    break;
+                case NPY_CLIPMODE.NPY_CLIP:
+                    for (i = 0; i < ni; i++)
+                    {
+                        src = new VoidPtr(values.data, chunk * (i % nv));
+                        tmp = indicesData[i];
+                        if (tmp < 0)
+                        {
+                            tmp = 0;
+                        }
+                        else if (tmp >= max_item)
+                        {
+                            tmp = max_item - 1;
+                        }
+
+                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                    }
+                    break;
             }
-            else
-            {
-                switch (clipmode)
-                {
-                    case NPY_CLIPMODE.NPY_RAISE:
-                        for (i = 0; i < ni; i++)
-                        {
-                            src = new VoidPtr(values.data, chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
-                            {
-                                tmp = tmp + max_item;
-                            }
-                            if ((tmp < 0) || (tmp >= max_item))
-                            {
-                                NpyErr_SetString(npyexc_type.NpyExc_IndexError,"index out of range for array");
-                                goto fail;
-                            }
 
-                            memmove(new VoidPtr(dest,tmp * chunk), src, chunk);
-                        }
-                        break;
-                    case NPY_CLIPMODE.NPY_WRAP:
-                        for (i = 0; i < ni; i++)
-                        {
-                            src = new VoidPtr(values.data, chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
-                            {
-                                while (tmp < 0)
-                                {
-                                    tmp += max_item;
-                                }
-                            }
-                            else if (tmp >= max_item)
-                            {
-                                while (tmp >= max_item)
-                                {
-                                    tmp -= max_item;
-                                }
-                            }
-
-
-                            memmove(new VoidPtr(dest,tmp * chunk), src, chunk);
-                        }
-                        break;
-                    case NPY_CLIPMODE.NPY_CLIP:
-                        for (i = 0; i < ni; i++)
-                        {
-                            src = new VoidPtr(values.data, chunk * (i % nv));
-                            tmp = indicesData[i];
-                            if (tmp < 0)
-                            {
-                                tmp = 0;
-                            }
-                            else if (tmp >= max_item)
-                            {
-                                tmp = max_item - 1;
-                            }
-
-                            memmove(new VoidPtr(dest,tmp * chunk), src, chunk);
-                        }
-                        break;
-                }
-            }
 
             finish:
             if (buf != null)
@@ -559,42 +477,22 @@ namespace NumpyLib
             }
 
             bool[] maskData = mask.data.datap as bool[];
-            if (NpyDataType_REFCHK(self.descr))
+
+            func = self.descr.f.fastputmask;
+            if (func == null)
             {
-                VoidPtr buf = new VoidPtr(new byte[chunk]);
                 for (i = 0; i < ni; i++)
                 {
                     if (maskData[i])
                     {
                         src = new VoidPtr(values, chunk * (i % nv));
-                        memcpy(buf, src, chunk);
-                        NpyArray_Item_INCREF(buf, self.descr);
-
-                        NpyArray_Item_XDECREF(dest, self.descr);
-  
-                        memcpy(dest + i * chunk, buf, chunk);
+                        memmove(dest + i * chunk, src, chunk);
                     }
                 }
-                npy_free(buf);
             }
             else
             {
-                func = self.descr.f.fastputmask;
-                if (func == null)
-                {
-                    for (i = 0; i < ni; i++)
-                    {
-                        if (maskData[i])
-                        {
-                            src = new VoidPtr(values, chunk * (i % nv));
-                            memmove(dest + i * chunk, src, chunk);
-                        }
-                    }
-                }
-                else
-                {
-                    func(dest, mask.data, ni, values.data, nv);
-                }
+                func(dest, mask.data, ni, values.data, nv);
             }
 
             Npy_XDECREF(values);
@@ -873,7 +771,6 @@ namespace NumpyLib
             npy_intp astride = NpyArray_STRIDE(op, axis);
             bool swap = NpyArray_ISBYTESWAPPED(op);
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
-            bool hasrefs = NpyDataType_REFCHK(NpyArray_DESCR(op));
 
             NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
             VoidPtr buffer = null;
@@ -914,27 +811,7 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    if (hasrefs)
-                    {
-                        /*
-                         * For dtype's with objects, copyswapn Py_XINCREF's src
-                         * and Py_XDECREF's dst. This would crash if called on
-                         * an uninitialized buffer, or leak a reference to each
-                         * object if initialized.
-                         *
-                         * So, first do the copy with no refcounting...
-                         */
-                        _unaligned_strided_byte_copy(buffer, elsize, it.dataptr, astride, N, elsize, null);
-                        /* ...then swap in-place if needed */
-                        if (swap)
-                        {
-                            copyswapn(buffer, elsize, null, 0, N, swap, op);
-                        }
-                    }
-                    else
-                    {
-                        copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
-                    }
+                    copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
                     bufptr = new VoidPtr(buffer);
                 }
                 /*
@@ -948,10 +825,6 @@ namespace NumpyLib
                 if (part == null)
                 {
                     ret = sort(bufptr, N, op);
-                    if (hasrefs && NpyErr_Occurred())
-                    {
-                        ret = -1;
-                    }
                     if (ret < 0)
                     {
                         goto fail;
@@ -965,10 +838,6 @@ namespace NumpyLib
                     for (i = 0; i < nkth; ++i)
                     {
                         ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
-                        if (hasrefs && NpyErr_Occurred())
-                        {
-                            ret = -1;
-                        }
                         if (ret < 0)
                         {
                             goto fail;
@@ -978,18 +847,7 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    if (hasrefs)
-                    {
-                        if (swap)
-                        {
-                            copyswapn(buffer, elsize, null, 0, N, swap, op);
-                        }
-                        _unaligned_strided_byte_copy(it.dataptr, astride, buffer, elsize, N, elsize, null);
-                    }
-                    else
-                    {
-                        copyswapn(it.dataptr, astride, buffer, elsize, N, swap, op);
-                    }
+                    copyswapn(it.dataptr, astride, buffer, elsize, N, swap, op);
                 }
 
                 NpyArray_ITER_NEXT(it);
@@ -1018,7 +876,6 @@ namespace NumpyLib
             npy_intp astride = NpyArray_STRIDE(op, axis);
             bool swap = NpyArray_ISBYTESWAPPED(op);
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
-            bool hasrefs = NpyDataType_REFCHK(NpyArray_DESCR(op));
             bool needidxbuffer;
 
             NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
@@ -1088,29 +945,7 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    if (hasrefs)
-                    {
-                        /*
-                         * For dtype's with objects, copyswapn Py_XINCREF's src
-                         * and Py_XDECREF's dst. This would crash if called on
-                         * an uninitialized valbuffer, or leak a reference to
-                         * each object item if initialized.
-                         *
-                         * So, first do the copy with no refcounting...
-                         */
-                        _unaligned_strided_byte_copy(valbuffer, elsize,
-                                                     it.dataptr, astride, N, elsize, null);
-                        /* ...then swap in-place if needed */
-                        if (swap)
-                        {
-                            copyswapn(valbuffer, elsize, null, 0, N, swap, op);
-                        }
-                    }
-                    else
-                    {
-                        copyswapn(valbuffer, elsize,
-                                  it.dataptr, astride, N, swap, op);
-                    }
+                    copyswapn(valbuffer, elsize, it.dataptr, astride, N, swap, op);
                     valptr = new VoidPtr(valbuffer);
                 }
 

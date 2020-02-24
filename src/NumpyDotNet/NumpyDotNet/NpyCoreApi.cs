@@ -1446,16 +1446,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static NpyArray_Descr_Flags DescrFindObjectFlag(dtype type)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                return numpyAPI.NpyArray_DescrFindObjectFlag(type.Descr);
-            }
-        }
-
         internal static ndarray Flatten(ndarray arr, NPY_ORDER order)
         {
 #if ENABLELOCKING

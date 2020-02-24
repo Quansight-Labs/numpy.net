@@ -746,10 +746,7 @@ namespace NumpyLib
         {
             return numpyinternal.npy_arraydescr_isnative(self);
         }
-        public static NpyArray_Descr_Flags NpyArray_DescrFindObjectFlag(NpyArray_Descr self)
-        {
-            return numpyinternal.npy_descr_find_object_flag(self);
-        }
+  
 
         public static NpyArray_Descr NpyArrayAccess_InheritDescriptor(NpyArray_Descr type, NpyArray_Descr conv)
         {

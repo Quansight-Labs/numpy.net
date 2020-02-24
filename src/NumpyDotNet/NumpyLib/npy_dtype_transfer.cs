@@ -557,8 +557,7 @@ namespace NumpyLib
             * return a simple copy
             */
             if (NpyArray_EquivTypes(src_dtype, dst_dtype) &&
-                    !NpyDataType_REFCHK(src_dtype) && !NpyDataType_REFCHK(dst_dtype) &&
-                    (!NpyDataType_HASFIELDS(dst_dtype) ||
+                     (!NpyDataType_HASFIELDS(dst_dtype) ||
                       is_dtype_struct_simple_unaligned_layout(dst_dtype)))
             {
                 /*

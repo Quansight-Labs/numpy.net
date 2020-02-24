@@ -51,15 +51,8 @@ namespace NumpyDotNet
 
         internal void FillWithScalar(object scalar)
         {
-            if (Dtype.IsObject)
-            {
-                NpyCoreApi.FillWithObject(this, scalar);
-            }
-            else
-            {
-                ndarray zero_d_array = np.FromAny(scalar, Dtype, flags: NPYARRAYFLAGS.NPY_ALIGNED);
-                NpyCoreApi.FillWithScalar(this, zero_d_array);
-            }
+            ndarray zero_d_array = np.FromAny(scalar, Dtype, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            NpyCoreApi.FillWithScalar(this, zero_d_array);
         }
 
 

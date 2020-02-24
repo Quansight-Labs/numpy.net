@@ -831,25 +831,12 @@ namespace NumpyDotNet {
 
 
             ndarray result = NpyCoreApi.AllocArray(mps[0].Dtype, dims.Length, dims, false);
-            if (!result.Dtype.IsObject)
+
+            if (NpyCoreApi.CombineInto(result, mps) < 0)
             {
-                if (NpyCoreApi.CombineInto(result, mps) < 0)
-                {
-                    throw new ArgumentException("unable to concatenate these arrays");
-                }
+                throw new ArgumentException("unable to concatenate these arrays");
             }
-            else
-            {
-                // Do a high-level copy to get the references right.
-                long j = 0;
-                flatiter flat = result.Flat;
-                foreach (ndarray a1 in mps)
-                {
-                    long size = a1.Size;
-                    flat[new Slice(j, j + size)] = a1.flat;
-                    j += size;
-                }
-            }
+
             if (0 < axis && axis < NpyDefs.NPY_MAXDIMS || axis < 0)
             {
                 result = result.SwapAxes(axis.Value, 0);
