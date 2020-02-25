@@ -794,23 +794,14 @@ namespace NumpyLib
             }
             size = it.size;
 
-            if (needcopy)
-            {
-                buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                if (buffer == null)
-                {
-                    ret = -1;
-                    goto fail;
-                }
-            }
-
-
+    
             while (size-- > 0)
             {
                 VoidPtr bufptr = new VoidPtr(it.dataptr);
 
                 if (needcopy)
                 {
+                    buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
                     copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
                     bufptr = new VoidPtr(buffer);
                 }
