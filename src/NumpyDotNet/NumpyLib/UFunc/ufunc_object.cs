@@ -218,8 +218,6 @@ namespace NumpyLib
 
         protected override System.Object Divide(dynamic aValue, dynamic bValue)
         {
-            if (bValue == 0)
-                return 0;
             return aValue / bValue;
         }
         private System.Object Remainder(dynamic aValue, dynamic bValue)
@@ -270,16 +268,17 @@ namespace NumpyLib
         }
         private System.Object Invert(dynamic bValue, dynamic operand)
         {
-            return bValue;
+            dynamic dValue = bValue;
+            return ~dValue;
         }
         private System.Object LeftShift(dynamic bValue, dynamic operand)
         {
-            UInt64 dValue = (UInt64)bValue;
+            dynamic dValue = bValue;
             return dValue << Convert.ToInt32(operand);
         }
         private System.Object RightShift(dynamic bValue, dynamic operand)
         {
-            UInt64 dValue = (UInt64)bValue;
+            dynamic dValue = bValue;
             return dValue >> Convert.ToInt32(operand);
         }
         private System.Object BitWiseAnd(dynamic bValue, dynamic operand)
@@ -402,10 +401,15 @@ namespace NumpyLib
         }
         private System.Object Heaviside(dynamic bValue, dynamic operand)
         {
-            if (bValue == 0.0)
-                return operand;
+            double x = Convert.ToDouble(bValue);
 
-            if (bValue < 0.0)
+            if (double.IsNaN(x))
+                return double.NaN;
+
+            if (x == 0.0)
+                return Convert.ToDouble(operand);
+
+            if (x < 0.0)
                 return 0.0;
 
             return 1.0;

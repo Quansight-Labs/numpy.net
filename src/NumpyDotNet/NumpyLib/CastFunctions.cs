@@ -883,6 +883,9 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_OBJECT:
                     CastObjectToObject(Src, src_offset, Dest, dest_offset, srclen);
                     break;
+                case NPY_TYPES.NPY_STRING:
+                    CastStringToObject(Src, src_offset, Dest, dest_offset, srclen);
+                    break;
             }
 
 
@@ -3874,6 +3877,19 @@ namespace NumpyLib
         static void CastObjectToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
             var s = Src.datap as object[];
+            var d = Dest.datap as object[];
+
+            npy_intp index = 0;
+            while (srclen-- > 0)
+            {
+                d[index + dest_offset] = s[index + src_offset];
+                index++;
+            }
+        }
+
+        static void CastStringToObject(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
+        {
+            var s = Src.datap as System.String[];
             var d = Dest.datap as object[];
 
             npy_intp index = 0;
