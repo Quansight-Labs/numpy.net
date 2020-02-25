@@ -184,6 +184,11 @@ namespace NumpyLib
 
         public override bool LT(NPY_TYPES num_type, float a, float b)
         {
+            if (float.IsNaN(a))
+                return false;
+            if (float.IsNaN(b))
+                return true;
+     
             return a < b;
         }
 
@@ -198,6 +203,11 @@ namespace NumpyLib
 
         public override bool LT(NPY_TYPES num_type, double a, double b)
         {
+            if (double.IsNaN(a))
+                return false;
+            if (double.IsNaN(b))
+                return true;
+
             return a < b;
         }
 
@@ -787,7 +797,7 @@ namespace NumpyLib
             return Common_ArgPartitionFunc;
         }
 
-        private static int Common_PartitionFuncNEW(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
+        private static int Common_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
         {
             switch (v.type_num)
             {
@@ -810,64 +820,24 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_UINT64:
                     return new partition_UInt64().partition_introselect(v, num, kth, pivots, ref npiv, false);
                 case NPY_TYPES.NPY_FLOAT:
-                    return new partition_Float().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_Float().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DOUBLE:
                     return new partition_Double().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DECIMAL:
-                    return new partition_Decimal().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_Decimal().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_COMPLEX:
-                    return new partition_Complex().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_Complex().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_BIGINT:
-                    return new partition_BigInt().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_BigInt().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_OBJECT:
-                    return new partition_Object().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_Object().partition_introselect(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_STRING:
-                    return new partition_String().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                    return new partition_String().partition_introselect(v, num, kth, pivots, ref npiv, true);
             }
             return 0;
         }
 
-        private static int Common_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
-        {
-            switch (v.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    return partition_introselect<bool>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_BYTE:
-                    return partition_introselect<sbyte>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_UBYTE:
-                    return partition_introselect<byte>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_INT16:
-                    return partition_introselect<Int16>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_UINT16:
-                    return partition_introselect<UInt16>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_INT32:
-                    return partition_introselect<Int32>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_UINT32:
-                    return partition_introselect<UInt32>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_INT64:
-                    return partition_introselect<Int64>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_UINT64:
-                    return partition_introselect<UInt64>(v, num, kth, pivots, ref npiv, false);
-                case NPY_TYPES.NPY_FLOAT:
-                    return partition_introselect<float>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_DOUBLE:
-                    return partition_introselect<double>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_DECIMAL:
-                    return partition_introselect<decimal>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_COMPLEX:
-                    return partition_introselect<System.Numerics.Complex>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_BIGINT:
-                    return partition_introselect<System.Numerics.BigInteger>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_OBJECT:
-                    return partition_introselect<Object>(v, num, kth, pivots, ref npiv, true);
-                case NPY_TYPES.NPY_STRING:
-                    return partition_introselect<string>(v, num, kth, pivots, ref npiv, true);
-            }
-            return 0;
-        }
-
-
+  
         private static int Common_ArgPartitionFunc(VoidPtr v, VoidPtr tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
         {
             switch (v.type_num)
