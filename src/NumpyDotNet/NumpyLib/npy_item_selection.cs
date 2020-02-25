@@ -878,8 +878,7 @@ namespace NumpyLib
             bool needidxbuffer;
 
             NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
-            VoidPtr valbuffer = null;
-            VoidPtr idxbuffer = null;
+ 
 
             NpyArray rop;
             npy_intp rstride;
@@ -908,48 +907,41 @@ namespace NumpyLib
 
             it = NpyArray_IterAllButAxis(op, ref axis);
             rit = NpyArray_IterAllButAxis(rop, ref axis);
-            if (it == null || rit == null)
-            {
-                ret = -1;
-                goto fail;
-            }
+    
             size = it.size;
 
-            if (needcopy)
-            {
-                valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                if (valbuffer == null)
-                {
-                    ret = -1;
-                    goto fail;
-                }
-            }
-
-            if (needidxbuffer)
-            {
-                idxbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
-                if (idxbuffer == null)
-                {
-                    ret = -1;
-                    goto fail;
-                }
-            }
+            List<VoidPtr> vp1 = new List<VoidPtr>();
+            List<VoidPtr> vp2 = new List<VoidPtr>();
 
             while (size-- > 0)
             {
-                VoidPtr valptr = new VoidPtr(it.dataptr);
-                VoidPtr idxptr = new VoidPtr(rit.dataptr);
+                vp1.Add(new VoidPtr(it.dataptr));
+                vp2.Add(new VoidPtr(rit.dataptr));
+                
+                NpyArray_ITER_NEXT(it);
+                NpyArray_ITER_NEXT(rit);
+            }
+
+            for (int ii = 0; ii < vp1.Count; ii++)
+            {
+                VoidPtr valbuffer = null;
+                VoidPtr idxbuffer = null;
+
+                VoidPtr valptr = new VoidPtr(vp1[ii]);
+                VoidPtr idxptr = new VoidPtr(vp2[ii]);
                 VoidPtr iptr;
                 int i;
 
                 if (needcopy)
                 {
-                    copyswapn(valbuffer, elsize, it.dataptr, astride, N, swap, op);
+                    valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
+                    copyswapn(valbuffer, elsize, vp1[ii], astride, N, swap, op);
                     valptr = new VoidPtr(valbuffer);
                 }
 
                 if (needidxbuffer)
                 {
+                    idxbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
                     idxptr = new VoidPtr(idxbuffer);
                 }
 
@@ -989,7 +981,7 @@ namespace NumpyLib
 
                 if (needidxbuffer)
                 {
-                    VoidPtr rptr = new VoidPtr(rit.dataptr);
+                    VoidPtr rptr = new VoidPtr(vp2[ii]);
                     var rptrSize = GetTypeSize(rptr);
 
                     iptr = new VoidPtr(idxbuffer);
@@ -1003,8 +995,6 @@ namespace NumpyLib
                     }
                 }
 
-                NpyArray_ITER_NEXT(it);
-                NpyArray_ITER_NEXT(rit);
             }
 
             fail:
