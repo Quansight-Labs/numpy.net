@@ -1048,21 +1048,24 @@ namespace NumpyLib
                 return null;
             }
 
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+
             switch (loop.meth)
             {
                 case UFuncLoopMethod.ZERO_EL_REDUCELOOP:
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
                     for (i = 0; i < loop.size; i++)
                     {
-                        memmove(loop.bufptr[0], loop.idptr, loop.outsize);
+                        helper.memmove(loop.bufptr[0], 0, loop.idptr, 0, loop.outsize);
                         loop.bufptr[0] += loop.outsize;
                     }
                     break;
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /*fprintf(stderr, "ONEDIM..%d\n", loop.size); */
+
                     while (loop.index < loop.size)
                     {
-                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
@@ -1072,10 +1075,10 @@ namespace NumpyLib
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
                     List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
+
                     while (loop.index < loop.size)
                     {
- 
-                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
@@ -1227,6 +1230,8 @@ namespace NumpyLib
                 return null;
             }
 
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+
             switch (loop.meth)
             {
                 case UFuncLoopMethod.ZERO_EL_REDUCELOOP:
@@ -1243,7 +1248,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
                     while (loop.index < loop.size)
                     {
-                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
@@ -1256,7 +1261,7 @@ namespace NumpyLib
 
                     while (loop.index < loop.size)
                     {
-                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
