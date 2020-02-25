@@ -154,7 +154,7 @@ namespace NumpyLib
             return sizeof(bool);
         }
 
-        public override bool LT(NPY_TYPES num_type, bool a, bool b)
+        public override bool LT(bool a, bool b)
         {
             if (a == b)
                 return false;
@@ -172,7 +172,7 @@ namespace NumpyLib
             return sizeof(byte);
         }
 
-        public override bool LT(NPY_TYPES num_type, byte a, byte b)
+        public override bool LT(byte a, byte b)
         {
             return a < b;
         }
@@ -186,7 +186,7 @@ namespace NumpyLib
             return sizeof(sbyte);
         }
 
-        public override bool LT(NPY_TYPES num_type, sbyte a, sbyte b)
+        public override bool LT(sbyte a, sbyte b)
         {
             return a < b;
         }
@@ -200,7 +200,7 @@ namespace NumpyLib
             return sizeof(Int16);
         }
 
-        public override bool LT(NPY_TYPES num_type, Int16 a, Int16 b)
+        public override bool LT(Int16 a, Int16 b)
         {
             return a < b;
         }
@@ -214,7 +214,7 @@ namespace NumpyLib
             return sizeof(UInt16);
         }
 
-        public override bool LT(NPY_TYPES num_type, UInt16 a, UInt16 b)
+        public override bool LT(UInt16 a, UInt16 b)
         {
             return a < b;
         }
@@ -228,7 +228,7 @@ namespace NumpyLib
             return sizeof(Int32);
         }
 
-        public override bool LT(NPY_TYPES num_type, Int32 a, Int32 b)
+        public override bool LT(Int32 a, Int32 b)
         {
             return a < b;
         }
@@ -242,7 +242,7 @@ namespace NumpyLib
             return sizeof(UInt32);
         }
 
-        public override bool LT(NPY_TYPES num_type, UInt32 a, UInt32 b)
+        public override bool LT(UInt32 a, UInt32 b)
         {
             return a < b;
         }
@@ -256,7 +256,7 @@ namespace NumpyLib
             return sizeof(Int64);
         }
 
-        public override bool LT(NPY_TYPES num_type, Int64 a, Int64 b)
+        public override bool LT(Int64 a, Int64 b)
         {
             return a < b;
         }
@@ -270,7 +270,7 @@ namespace NumpyLib
             return sizeof(UInt64);
         }
 
-        public override bool LT(NPY_TYPES num_type, UInt64 a, UInt64 b)
+        public override bool LT(UInt64 a, UInt64 b)
         {
             return a < b;
         }
@@ -284,7 +284,7 @@ namespace NumpyLib
             return sizeof(float);
         }
 
-        public override bool LT(NPY_TYPES num_type, float a, float b)
+        public override bool LT(float a, float b)
         {
             if (float.IsNaN(a))
                 return false;
@@ -303,7 +303,7 @@ namespace NumpyLib
             return sizeof(double);
         }
 
-        public override bool LT(NPY_TYPES num_type, double a, double b)
+        public override bool LT(double a, double b)
         {
             if (double.IsNaN(a))
                 return false;
@@ -322,7 +322,7 @@ namespace NumpyLib
             return sizeof(double) * 2;
         }
 
-        public override bool LT(NPY_TYPES num_type, decimal a, decimal b)
+        public override bool LT(decimal a, decimal b)
         {
             return a < b;
         }
@@ -336,7 +336,7 @@ namespace NumpyLib
             return sizeof(decimal);
         }
 
-        public override bool LT(NPY_TYPES num_type, System.Numerics.Complex a, System.Numerics.Complex b)
+        public override bool LT(System.Numerics.Complex a, System.Numerics.Complex b)
         {
             var CompareResult = a.Real.CompareTo(b.Real);
             return CompareResult < 0;
@@ -351,7 +351,7 @@ namespace NumpyLib
             return sizeof(double) * 4;
         }
 
-        public override bool LT(NPY_TYPES num_type, System.Numerics.BigInteger a, System.Numerics.BigInteger b)
+        public override bool LT(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
         {
             return a < b;
         }
@@ -365,7 +365,7 @@ namespace NumpyLib
             return IntPtr.Size;
         }
 
-        public override bool LT(NPY_TYPES num_type, dynamic invalue, dynamic comparevalue)
+        public override bool LT(dynamic invalue, dynamic comparevalue)
         {
             if (invalue is IComparable && comparevalue is IComparable)
             {
@@ -388,7 +388,7 @@ namespace NumpyLib
             return IntPtr.Size;
         }
 
-        public override bool LT(NPY_TYPES num_type, string invalue, string comparevalue)
+        public override bool LT(string invalue, string comparevalue)
         {
             if (invalue == null)
             {
@@ -408,7 +408,7 @@ namespace NumpyLib
     internal abstract class partition<T>
     {
         public abstract int GetTypeSize(VoidPtr v);
-        public abstract bool LT(NPY_TYPES num_type, T a, T b);
+        public abstract bool LT(T a, T b);
 
         public int partition_introselect(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, bool inexact)
         {
@@ -446,6 +446,8 @@ namespace NumpyLib
              * use a faster O(n*kth) algorithm for very small kth
              * e.g. for interpolating percentile
              */
+
+            T[] vv;
             if (kth - low < 3)
             {
                 DUMBSELECT(v, low, high - low + 1, kth - low);
@@ -457,22 +459,26 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = GetItem(v, low);
+
+                vv = v.datap as T[];
+                T maxval = vv[v.data_offset + low];
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(v.type_num, GetItem(v, k), maxval))
+                    if (!LT(vv[v.data_offset + k], maxval))
                     {
                         maxidx = k;
-                        maxval = GetItem(v, k);
+                        maxval = vv[v.data_offset + k];
                     }
                 }
-                SWAP(v, kth, maxidx);
+                SWAP(vv, v.data_offset, kth, maxidx);
                 return 0;
             }
 
             depth_limit = npy_get_msb(num) * 2;
 
             /* guarantee three elements */
+
+            vv = v.datap as T[];
             for (; low + 1 < high;)
             {
                 npy_intp ll = low + 1;
@@ -494,7 +500,7 @@ namespace NumpyLib
                 {
                     npy_intp mid;
                     mid = ll + median_of_median5(v, ll, hh - ll, null, null, inexact);
-                    SWAP(v, mid, low);
+                    SWAP(vv, v.data_offset, mid, low);
                     /* adapt for the larger partition than med3 pivot */
                     ll--;
                     hh++;
@@ -507,10 +513,10 @@ namespace NumpyLib
                  * previous swapping removes need for bound checks
                  * pivot 3-lowest [x x x] 3-highest
                  */
-                UNGUARDED_PARTITION(v, GetItem(v, low), ref ll, ref hh);
+                UNGUARDED_PARTITION(v, vv[v.data_offset + low], ref ll, ref hh);
 
                 /* move pivot into position */
-                SWAP(v, low, hh);
+                SWAP(vv,v.data_offset, low, hh);
 
                 /* kth pivot stored later */
                 if (hh != kth)
@@ -527,9 +533,9 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(v.type_num, GetItem(v, high), GetItem(v, low)))
+                if (LT(vv[v.data_offset + high], vv[v.data_offset + low]))
                 {
-                    SWAP(v, high, low);
+                    SWAP(vv, v.data_offset, high, low);
                 }
             }
             store_pivot(kth, kth, pivots, ref npiv);
@@ -581,6 +587,9 @@ namespace NumpyLib
              * use a faster O(n*kth) algorithm for very small kth
              * e.g. for interpolating percentile
              */
+
+            T[] vv;
+
             if (kth - low < 3)
             {
                 DUMBSELECT(v, tosortvp, low, high - low + 1, kth - low);
@@ -592,13 +601,16 @@ namespace NumpyLib
                 /* useful to check if NaN present via partition(d, (x, -1)) */
                 npy_intp k;
                 npy_intp maxidx = low;
-                T maxval = GetItem(v, IDX(tosortvp, low));
+
+                vv = v.datap as T[];
+
+                T maxval = vv[v.data_offset + IDX(tosortvp, low)];
                 for (k = low + 1; k < num; k++)
                 {
-                    if (!LT(v.type_num, GetItem(v, IDX(tosortvp, k)), maxval))
+                    if (!LT(vv[v.data_offset + IDX(tosortvp, k)], maxval))
                     {
                         maxidx = k;
-                        maxval = GetItem(v, IDX(tosortvp, k));
+                        maxval = vv[v.data_offset + IDX(tosortvp, k)];
                     }
                 }
                 SWAP_IDX(tosortvp, kth, maxidx);
@@ -623,7 +635,7 @@ namespace NumpyLib
                     npy_intp mid = low + (high - low) / 2;
                     /* median of 3 pivot strategy,
                      * swapping for efficient partition */
-                    MEDIAN3_SWAP<T>(v, tosortvp, low, mid, high);
+                    MEDIAN3_SWAP(v, tosortvp, low, mid, high);
                 }
                 else
                 {
@@ -642,7 +654,9 @@ namespace NumpyLib
                  * previous swapping removes need for bound checks
                  * pivot 3-lowest [x x x] 3-highest
                  */
-                UNGUARDED_PARTITION(v, tosortvp, GetItem(v, IDX(tosortvp, low)), ref ll, ref hh);
+                vv = v.datap as T[];
+
+                UNGUARDED_PARTITION(v, tosortvp, vv[v.data_offset + IDX(tosortvp, low)], ref ll, ref hh);
 
                 /* move pivot into position */
                 SWAP_IDX(tosortvp, low, hh);
@@ -662,7 +676,9 @@ namespace NumpyLib
             /* two elements */
             if (high == low + 1)
             {
-                if (LT(v.type_num, GetItem(v, IDX(tosortvp, high)), GetItem(v, IDX(tosortvp, low))))
+                vv = v.datap as T[];
+
+                if (LT(vv[v.data_offset + IDX(tosortvp, high)], vv[v.data_offset + IDX(tosortvp, low)]))
                 {
                     SWAP_IDX(tosortvp, high, low);
                 }
@@ -680,39 +696,43 @@ namespace NumpyLib
         */
         private int DUMBSELECT(VoidPtr v, npy_intp left, npy_intp num, npy_intp kth)
         {
+            T[] vv = v.datap as T[];
+
             npy_intp i;
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = GetItem(v, i + left);
+                T minval = vv[v.data_offset + (i + left)];
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(v.type_num, GetItem(v, k + left), minval))
+                    if (LT(vv[v.data_offset + (k + left)], minval))
                     {
                         minidx = k;
-                        minval = GetItem(v, k + left);
+                        minval = vv[v.data_offset + (k + left)];
                     }
                 }
-                SWAP(v, i + left, minidx + left);
+                SWAP(vv, v.data_offset, i + left, minidx + left);
             }
 
             return 0;
         }
         int DUMBSELECT(VoidPtr v, VoidPtr tosort, npy_intp left, npy_intp num, npy_intp kth)
         {
+            T[] vv = v.datap as T[];
+
             npy_intp i;
             for (i = 0; i <= kth; i++)
             {
                 npy_intp minidx = i;
-                T minval = GetItem(v, IDX(tosort, i + left));
+                T minval = vv[v.data_offset + IDX(tosort, i + left)];
                 npy_intp k;
                 for (k = i + 1; k < num; k++)
                 {
-                    if (LT(v.type_num, GetItem(v, IDX(tosort, k + left)), minval))
+                    if (LT(vv[v.data_offset + IDX(tosort, k + left)], minval))
                     {
                         minidx = k;
-                        minval = GetItem(v, IDX(tosort, k + left));
+                        minval = vv[v.data_offset + IDX(tosort, k + left)];
                     }
                 }
                 SWAP_IDX(tosort, i + left, minidx + left);
@@ -730,6 +750,13 @@ namespace NumpyLib
             vv[v.data_offset + aindex] = tmp;
         }
 
+        public void SWAP(T[] vv, npy_intp data_offset, npy_intp aindex, npy_intp bindex)
+        {
+            T tmp = vv[data_offset + bindex];
+            vv[data_offset + bindex] = vv[data_offset + aindex];
+            vv[data_offset + aindex] = tmp;
+        }
+
         /*
         * median of 3 pivot strategy
         * gets min and median and moves median to low and min to low + 1
@@ -737,25 +764,29 @@ namespace NumpyLib
         */
         void MEDIAN3_SWAP(VoidPtr v, npy_intp low, npy_intp mid, npy_intp high)
         {
-            if (LT(v.type_num, GetItem(v, high), GetItem(v, mid)))
-                SWAP(v, high, mid);
-            if (LT(v.type_num, GetItem(v, high), GetItem(v, low)))
-                SWAP(v, high, low);
+            T[] vv = v.datap as T[];
+
+            if (LT(vv[v.data_offset + high], vv[v.data_offset + mid]))
+                SWAP(vv,v.data_offset, high, mid);
+            if (LT(vv[v.data_offset + high], vv[v.data_offset + low]))
+                SWAP(vv, v.data_offset, high, low);
             /* move pivot to low */
-            if (LT(v.type_num, GetItem(v, low), GetItem(v, mid)))
-                SWAP(v, low, mid);
+            if (LT(vv[v.data_offset + low], vv[v.data_offset + mid]))
+                SWAP(vv, v.data_offset, low, mid);
             /* move 3-lowest element to low + 1 */
-            SWAP(v, mid, low + 1);
+            SWAP(vv, v.data_offset, mid, low + 1);
         }
 
-        void MEDIAN3_SWAP<T>(VoidPtr v, VoidPtr tosort, npy_intp low, npy_intp mid, npy_intp high)
+        void MEDIAN3_SWAP(VoidPtr v, VoidPtr tosort, npy_intp low, npy_intp mid, npy_intp high)
         {
-            if (LT(v.type_num, GetItem(v, IDX(tosort, high)), GetItem(v, IDX(tosort, mid))))
+            T[] vv = v.datap as T[];
+
+            if (LT(vv[v.data_offset + IDX(tosort, high)], vv[v.data_offset + IDX(tosort, mid)]))
                 SWAP_IDX(tosort, high, mid);
-            if (LT(v.type_num, GetItem(v, IDX(tosort, high)), GetItem(v, IDX(tosort, low))))
+            if (LT(vv[v.data_offset + IDX(tosort, high)], vv[v.data_offset + IDX(tosort, low)]))
                 SWAP_IDX(tosort, high, low);
             /* move pivot to low */
-            if (LT(v.type_num, GetItem(v, IDX(tosort, low)), GetItem(v, IDX(tosort, mid))))
+            if (LT(vv[v.data_offset + IDX(tosort, low)], vv[v.data_offset + IDX(tosort, mid)]))
                 SWAP_IDX(tosort, low, mid);
             /* move 3-lowest element to low + 1 */
             SWAP_IDX(tosort, mid, low + 1);
@@ -763,38 +794,42 @@ namespace NumpyLib
 
         static void SWAP_IDX(VoidPtr v, npy_intp a, npy_intp b)
         {
-            npy_intp tmp = GetIDX(v, b);
-            SetIDX(v, b, GetIDX(v, a));
-            SetIDX(v, a, tmp);
+            npy_intp[] vv = v.datap as npy_intp[];
+            npy_intp tmp = vv[v.data_offset + b];
+
+            vv[v.data_offset + b] = vv[v.data_offset + a];
+            vv[v.data_offset + a] = tmp;
         }
 
         /* select index of median of five elements */
         npy_intp MEDIAN5(VoidPtr v, npy_intp voffset)
         {
+            T[] vv = v.datap as T[];
+
             /* could be optimized as we only need the index (no swaps) */
-            if (LT(v.type_num, GetItem(v, voffset + 1), GetItem(v, voffset + 0)))
+            if (LT(vv[v.data_offset + voffset+1], vv[v.data_offset + voffset+0]))
             {
-                SWAP(v, voffset + 1, voffset + 0);
+                SWAP(vv, v.data_offset, voffset + 1, voffset + 0);
             }
-            if (LT(v.type_num, GetItem(v, voffset + 4), GetItem(v, voffset + 3)))
+            if (LT(vv[v.data_offset + voffset + 4], vv[v.data_offset + voffset + 3]))
             {
-                SWAP(v, voffset + 4, voffset + 3);
+                SWAP(vv, v.data_offset, voffset + 4, voffset + 3);
             }
-            if (LT(v.type_num, GetItem(v, voffset + 3), GetItem(v, voffset + 0)))
+            if (LT(vv[v.data_offset + voffset + 3], vv[v.data_offset + voffset + 0]))
             {
-                SWAP(v, voffset + 3, voffset + 0);
+                SWAP(vv, v.data_offset, voffset + 3, voffset + 0);
             }
-            if (LT(v.type_num, GetItem(v, voffset + 4), GetItem(v, voffset + 1)))
+            if (LT(vv[v.data_offset + voffset + 4], vv[v.data_offset + voffset + 1]))
             {
-                SWAP(v, voffset + 4, voffset + 1);
+                SWAP(vv, v.data_offset, voffset + 4, voffset + 1);
             }
-            if (LT(v.type_num, GetItem(v, voffset + 2), GetItem(v, voffset + 1)))
+            if (LT(vv[v.data_offset + voffset + 2], vv[v.data_offset + voffset + 1]))
             {
-                SWAP(v, voffset + 2, voffset + 1);
+                SWAP(vv, v.data_offset, voffset + 2, voffset + 1);
             }
-            if (LT(v.type_num, GetItem(v, voffset + 3), GetItem(v, voffset + 2)))
+            if (LT(vv[v.data_offset + voffset + 3], vv[v.data_offset + voffset + 2]))
             {
-                if (LT(v.type_num, GetItem(v, voffset + 3), GetItem(v, voffset + 1)))
+                if (LT(vv[v.data_offset + voffset + 3], vv[v.data_offset + voffset + 1]))
                 {
                     return 1;
                 }
@@ -813,30 +848,32 @@ namespace NumpyLib
         /* select index of median of five elements */
         npy_intp MEDIAN5(VoidPtr v, VoidPtr tosort, npy_intp voffset)
         {
+            T[] vv = v.datap as T[];
+
             /* could be optimized as we only need the index (no swaps) */
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 1)), GetItem(v, IDX(tosort, voffset + 0))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 1)], vv[v.data_offset + IDX(tosort, voffset + 0)]))
             {
                 SWAP_IDX(tosort, voffset + 1, voffset + 0);
             }
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 4)), GetItem(v, IDX(tosort, voffset + 3))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 4)], vv[v.data_offset + IDX(tosort, voffset + 3)]))
             {
                 SWAP_IDX(tosort, voffset + 4, voffset + 3);
             }
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 3)), GetItem(v, IDX(tosort, voffset + 0))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 3)], vv[v.data_offset + IDX(tosort, voffset + 0)]))
             {
                 SWAP_IDX(tosort, voffset + 3, voffset + 0);
             }
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 4)), GetItem(v, IDX(tosort, voffset + 1))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 4)], vv[v.data_offset + IDX(tosort, voffset + 1)]))
             {
                 SWAP_IDX(tosort, voffset + 4, voffset + 1);
             }
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 2)), GetItem(v, IDX(tosort, voffset + 1))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 2)], vv[v.data_offset + IDX(tosort, voffset + 1)]))
             {
                 SWAP_IDX(tosort, voffset + 2, voffset + 1);
             }
-            if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 3)), GetItem(v, IDX(tosort, voffset + 2))))
+            if (LT(vv[v.data_offset + IDX(tosort, voffset + 3)], vv[v.data_offset + IDX(tosort, voffset + 2)]))
             {
-                if (LT(v.type_num, GetItem(v, IDX(tosort, voffset + 3)), GetItem(v, IDX(tosort, voffset + 1))))
+                if (LT(vv[v.data_offset + IDX(tosort, voffset + 3)], vv[v.data_offset + IDX(tosort, voffset + 1)]))
                 {
                     return 1;
                 }
@@ -863,10 +900,12 @@ namespace NumpyLib
             npy_intp right = num - 1;
             npy_intp nmed = (right + 1) / 5;
 
+            T[] vv = v.datap as T[];
+
             for (i = 0, subleft = 0; i < nmed; i++, subleft += 5)
             {
                 npy_intp m = MEDIAN5(v, subleft);
-                SWAP(v, voffset + subleft + m, voffset + i);
+                SWAP(vv, v.data_offset, voffset + subleft + m, voffset + i);
             }
 
             if (nmed > 2)
@@ -928,24 +967,28 @@ namespace NumpyLib
      */
         void UNGUARDED_PARTITION(VoidPtr v, T pivot, ref npy_intp ll, ref npy_intp hh)
         {
+            T[] vv = v.datap as T[];
+
             for (; ; )
             {
-                do ll++; while (LT(v.type_num, GetItem(v, ll), pivot));
-                do hh--; while (LT(v.type_num, pivot, GetItem(v, hh)));
+                do ll++; while (LT(vv[v.data_offset + ll], pivot));
+                do hh--; while (LT(pivot, vv[v.data_offset + hh]));
 
                 if (hh < ll)
                     break;
 
-                SWAP(v, ll, hh);
+                SWAP(vv, v.data_offset, ll, hh);
             }
         }
 
         void UNGUARDED_PARTITION(VoidPtr v, VoidPtr tosort, T pivot, ref npy_intp ll, ref npy_intp hh)
         {
+            T[] vv = v.datap as T[];
+
             for (; ; )
             {
-                do ll++; while (LT(v.type_num, GetItem(v, IDX(tosort, ll)), pivot));
-                do hh--; while (LT(v.type_num, pivot, GetItem(v, IDX(tosort, hh))));
+                do ll++; while (LT(vv[v.data_offset + IDX(tosort, ll)], pivot));
+                do hh--; while (LT(pivot, vv[v.data_offset + IDX(tosort, hh)]));
 
                 if (hh < ll)
                     break;
