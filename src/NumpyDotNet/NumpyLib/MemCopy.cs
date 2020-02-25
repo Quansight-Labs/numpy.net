@@ -3308,18 +3308,6 @@ namespace NumpyLib
             return sizeof(bool);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as bool[];
-            var sa = src.datap as bool[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
- 
     }
 
     class UByteCopyHelper : CopyHelper<byte>, ICopyHelper
@@ -3328,19 +3316,6 @@ namespace NumpyLib
         {
             return sizeof(byte);
         }
-
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as byte[];
-            var sa = src.datap as byte[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
-
    
     }
 
@@ -3350,18 +3325,7 @@ namespace NumpyLib
         {
             return sizeof(sbyte);
         }
-
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as sbyte[];
-            var sa = src.datap as sbyte[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+ 
     }
 
     class Int16CopyHelper : CopyHelper<Int16>, ICopyHelper
@@ -3371,17 +3335,6 @@ namespace NumpyLib
             return sizeof(Int16);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as Int16[];
-            var sa = src.datap as Int16[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
 
@@ -3392,17 +3345,6 @@ namespace NumpyLib
             return sizeof(UInt16);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as UInt16[];
-            var sa = src.datap as UInt16[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
     class Int32CopyHelper : CopyHelper<Int32>, ICopyHelper
@@ -3412,17 +3354,6 @@ namespace NumpyLib
             return sizeof(Int32);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as Int32[];
-            var sa = src.datap as Int32[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
 
@@ -3433,17 +3364,7 @@ namespace NumpyLib
             return sizeof(UInt32);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as UInt32[];
-            var sa = src.datap as UInt32[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+  
     }
 
     class Int64CopyHelper : CopyHelper<Int64>, ICopyHelper
@@ -3453,17 +3374,6 @@ namespace NumpyLib
             return sizeof(Int64);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as Int64[];
-            var sa = src.datap as Int64[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
 
     }
 
@@ -3475,17 +3385,6 @@ namespace NumpyLib
             return sizeof(UInt64);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as UInt64[];
-            var sa = src.datap as UInt64[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
 
@@ -3497,17 +3396,6 @@ namespace NumpyLib
             return sizeof(float);
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as float[];
-            var sa = src.datap as float[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
 
@@ -3517,18 +3405,7 @@ namespace NumpyLib
         {
             return sizeof(double);
         }
-
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as double[];
-            var sa = src.datap as double[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+ 
     }
 
     class DecimalCopyHelper : CopyHelper<decimal>, ICopyHelper
@@ -3537,18 +3414,7 @@ namespace NumpyLib
         {
             return sizeof(decimal);
         }
-
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as decimal[];
-            var sa = src.datap as decimal[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+ 
     }
 
     class ComplexCopyHelper : CopyHelper<System.Numerics.Complex>, ICopyHelper
@@ -3558,17 +3424,6 @@ namespace NumpyLib
             return sizeof(double) * 2;
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as System.Numerics.Complex[];
-            var sa = src.datap as System.Numerics.Complex[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
     class BigIntCopyHelper : CopyHelper<System.Numerics.BigInteger>, ICopyHelper
@@ -3578,17 +3433,7 @@ namespace NumpyLib
             return sizeof(double) * 4;
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as System.Numerics.BigInteger[];
-            var sa = src.datap as System.Numerics.BigInteger[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+ 
     }
 
 
@@ -3600,17 +3445,7 @@ namespace NumpyLib
         }
 
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as System.Object[];
-            var sa = src.datap as System.Object[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
+   
     }
 
     class StringCopyHelper : CopyHelper<System.String>, ICopyHelper
@@ -3620,17 +3455,6 @@ namespace NumpyLib
             return IntPtr.Size;
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                 VoidPtr src, npy_intp instrides,
-                                                 npy_intp N, int elsize)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as System.String[];
-            var sa = src.datap as System.String[];
-            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-        }
     }
 
     public interface ICopyHelper
@@ -3643,8 +3467,16 @@ namespace NumpyLib
     {
         public abstract int GetTypeSize(VoidPtr vp);
 
-        protected void strided_byte_copy(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                            VoidPtr src, npy_intp instrides,
+                                            npy_intp N, int elsize)
         {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as T[];
+            var sa = src.datap as T[];
+
             tout_index /= elsize;
             tin_index /= elsize;
             instrides /= elsize;
@@ -3663,7 +3495,9 @@ namespace NumpyLib
             //    //tin_index += (int)instrides;
             //    //tout_index += (int)outstrides;
             //});
+
         }
+
 
         public void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap)
         {
