@@ -3461,6 +3461,7 @@ namespace NumpyLib
     {
         void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
+        void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
     }
 
     abstract class CopyHelper<T>
@@ -3497,8 +3498,7 @@ namespace NumpyLib
             //});
 
         }
-
-
+               
         public void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap)
         {
             int elsize = GetTypeSize(_dst);
@@ -3546,6 +3546,30 @@ namespace NumpyLib
                     _dst.data_offset += dstride;
                 }
             }
+        }
+
+        public void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
+        {
+            T[] _dst = dest.datap as T[];
+            T[] _src = src.datap as T[];
+
+            var ItemSize = GetTypeSize(dest);
+
+            long ElementCount = len / ItemSize;
+            long sOffset = (src.data_offset + src_offset) / ItemSize;
+            long dOffset = (dest.data_offset + dest_offset) / ItemSize;
+
+            if (ElementCount == 1)
+            {
+                _dst[dOffset] = _src[sOffset];
+            }
+            else
+            {
+                var temp = new T[ElementCount];
+                Array.Copy(_src, sOffset, temp, 0, ElementCount);
+                Array.Copy(temp, 0, _dst, dOffset, ElementCount);
+            }
+ 
         }
 
         protected void swapvalue(VoidPtr dest, int ItemSize)
