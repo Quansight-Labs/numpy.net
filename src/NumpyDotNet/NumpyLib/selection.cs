@@ -45,6 +45,150 @@ using npy_uintp = System.UInt32;
 
 namespace NumpyLib
 {
+    internal class partition_bool : partition<bool>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(bool);
+        }
+
+        public override bool LT(NPY_TYPES num_type, bool a, bool b)
+        {
+            if (a == b)
+                return false;
+            if (a == false)
+                return true;
+            return false;
+        }
+
+    }
+
+    internal class partition_ubyte : partition<byte>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(byte);
+        }
+
+        public override bool LT(NPY_TYPES num_type, byte a, byte b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_sbyte : partition<sbyte>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(sbyte);
+        }
+
+        public override bool LT(NPY_TYPES num_type, sbyte a, sbyte b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Int16 : partition<Int16>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(Int16);
+        }
+
+        public override bool LT(NPY_TYPES num_type, Int16 a, Int16 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_UInt16 : partition<UInt16>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(UInt16);
+        }
+
+        public override bool LT(NPY_TYPES num_type, UInt16 a, UInt16 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Int32 : partition<Int32>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(Int32);
+        }
+
+        public override bool LT(NPY_TYPES num_type, Int32 a, Int32 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_UInt32 : partition<UInt32>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(UInt32);
+        }
+
+        public override bool LT(NPY_TYPES num_type, UInt32 a, UInt32 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Int64 : partition<Int64>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(Int64);
+        }
+
+        public override bool LT(NPY_TYPES num_type, Int64 a, Int64 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_UInt64 : partition<UInt64>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(UInt64);
+        }
+
+        public override bool LT(NPY_TYPES num_type, UInt64 a, UInt64 b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Float : partition<float>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(float);
+        }
+
+        public override bool LT(NPY_TYPES num_type, float a, float b)
+        {
+            return a < b;
+        }
+
+    }
+
     internal class partition_Double : partition<double>
     {
         public override int GetTypeSize(VoidPtr v)
@@ -55,6 +199,96 @@ namespace NumpyLib
         public override bool LT(NPY_TYPES num_type, double a, double b)
         {
             return a < b;
+        }
+
+    }
+
+    internal class partition_Decimal : partition<decimal>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(double) * 2;
+        }
+
+        public override bool LT(NPY_TYPES num_type, decimal a, decimal b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Complex : partition<System.Numerics.Complex>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(decimal);
+        }
+
+        public override bool LT(NPY_TYPES num_type, System.Numerics.Complex a, System.Numerics.Complex b)
+        {
+            var CompareResult = a.Real.CompareTo(b.Real);
+            return CompareResult < 0;
+        }
+
+    }
+
+    internal class partition_BigInt : partition<System.Numerics.BigInteger>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return sizeof(double) * 4;
+        }
+
+        public override bool LT(NPY_TYPES num_type, System.Numerics.BigInteger a, System.Numerics.BigInteger b)
+        {
+            return a < b;
+        }
+
+    }
+
+    internal class partition_Object : partition<System.Object>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return IntPtr.Size;
+        }
+
+        public override bool LT(NPY_TYPES num_type, dynamic invalue, dynamic comparevalue)
+        {
+            if (invalue is IComparable && comparevalue is IComparable)
+            {
+                if (invalue == comparevalue)
+                    return false;
+                if (invalue < comparevalue)
+                    return true;
+                return false;
+            }
+
+            return false;
+        }
+
+    }
+
+    internal class partition_String : partition<System.String>
+    {
+        public override int GetTypeSize(VoidPtr v)
+        {
+            return IntPtr.Size;
+        }
+
+        public override bool LT(NPY_TYPES num_type, string invalue, string comparevalue)
+        {
+            if (invalue == null)
+            {
+                if (comparevalue == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            var c = string.Compare(invalue.ToString(), comparevalue.ToString());
+            return c < 0;
         }
 
     }
@@ -553,6 +787,46 @@ namespace NumpyLib
             return Common_ArgPartitionFunc;
         }
 
+        private static int Common_PartitionFuncNEW(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
+        {
+            switch (v.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return new partition_bool().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_BYTE:
+                    return new partition_sbyte().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UBYTE:
+                    return new partition_ubyte().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT16:
+                    return new partition_Int16().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT16:
+                    return new partition_UInt16().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT32:
+                    return new partition_Int32().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT32:
+                    return new partition_UInt32().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_INT64:
+                    return new partition_Int64().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_UINT64:
+                    return new partition_UInt64().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_FLOAT:
+                    return new partition_Float().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_DOUBLE:
+                    return new partition_Double().partition_introselect(v, num, kth, pivots, ref npiv, true);
+                case NPY_TYPES.NPY_DECIMAL:
+                    return new partition_Decimal().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_COMPLEX:
+                    return new partition_Complex().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_BIGINT:
+                    return new partition_BigInt().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_OBJECT:
+                    return new partition_Object().partition_introselect(v, num, kth, pivots, ref npiv, false);
+                case NPY_TYPES.NPY_STRING:
+                    return new partition_String().partition_introselect(v, num, kth, pivots, ref npiv, false);
+            }
+            return 0;
+        }
+
         private static int Common_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
         {
             switch (v.type_num)
@@ -578,8 +852,7 @@ namespace NumpyLib
                 case NPY_TYPES.NPY_FLOAT:
                     return partition_introselect<float>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DOUBLE:
-                    var xxx = new partition_Double();
-                    return xxx.partition_introselect(v, num, kth, pivots, ref npiv, true);
+                    return partition_introselect<double>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_DECIMAL:
                     return partition_introselect<decimal>(v, num, kth, pivots, ref npiv, true);
                 case NPY_TYPES.NPY_COMPLEX:
@@ -593,6 +866,7 @@ namespace NumpyLib
             }
             return 0;
         }
+
 
         private static int Common_ArgPartitionFunc(VoidPtr v, VoidPtr tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used)
         {
