@@ -794,15 +794,24 @@ namespace NumpyLib
             }
             size = it.size;
 
+
+            List<VoidPtr> vp1 = new List<VoidPtr>();
     
             while (size-- > 0)
             {
-                VoidPtr bufptr = new VoidPtr(it.dataptr);
+                vp1.Add(new VoidPtr(it.dataptr));
+                NpyArray_ITER_NEXT(it);
+            }
+
+            for (int ii = 0; ii < vp1.Count; ii++)
+            {
+
+                VoidPtr bufptr = new VoidPtr(vp1[ii]);
 
                 if (needcopy)
                 {
                     buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    copyswapn(buffer, elsize, it.dataptr, astride, N, swap, op);
+                    copyswapn(buffer, elsize, vp1[ii], astride, N, swap, op);
                     bufptr = new VoidPtr(buffer);
                 }
                 /*
@@ -823,10 +832,9 @@ namespace NumpyLib
                 }
                 else
                 {
-                    npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
+                    npy_intp[] pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
                     npy_intp? npiv = 0;
-                    npy_intp i;
-                    for (i = 0; i < nkth; ++i)
+                    for (npy_intp i = 0; i < nkth; ++i)
                     {
                         ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
                         if (ret < 0)
@@ -838,10 +846,9 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    copyswapn(it.dataptr, astride, buffer, elsize, N, swap, op);
+                    copyswapn(vp1[ii], astride, buffer, elsize, N, swap, op);
                 }
 
-                NpyArray_ITER_NEXT(it);
             }
 
             fail:
