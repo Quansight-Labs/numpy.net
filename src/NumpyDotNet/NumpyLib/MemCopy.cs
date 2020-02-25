@@ -45,6 +45,7 @@ namespace NumpyLib
 {
     public class MemCopy
     {
+  
         // todo: take these out when performance improvements complete
         public static long MemCpy_TotalCount = 0;
         public static long MemCpy_ShortBufferCount = 0;
@@ -3060,6 +3061,80 @@ namespace NumpyLib
         }
 
         #endregion
+
+        public static ICopyHelper GetMemcopyHelper(VoidPtr dst)
+        {
+            switch (dst.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                {
+                    return new BoolCopyHelper();
+                }
+                case NPY_TYPES.NPY_BYTE:
+                {
+                    return new SByteCopyHelper();
+                }
+                case NPY_TYPES.NPY_UBYTE:
+                {
+                    return new UByteCopyHelper();
+                }
+                case NPY_TYPES.NPY_INT16:
+                {
+                    return new Int16CopyHelper();
+                }
+                case NPY_TYPES.NPY_UINT16:
+                {
+                    return new UInt16CopyHelper();
+                }
+                case NPY_TYPES.NPY_INT32:
+                {
+                    return new Int32CopyHelper();
+                }
+                case NPY_TYPES.NPY_UINT32:
+                {
+                    return new UInt32CopyHelper();
+                }
+                case NPY_TYPES.NPY_INT64:
+                {
+                    return new Int64CopyHelper();
+                }
+                case NPY_TYPES.NPY_UINT64:
+                {
+                    return new UInt64CopyHelper();
+                }
+                case NPY_TYPES.NPY_FLOAT:
+                {
+                    return new FloatCopyHelper();
+                }
+                case NPY_TYPES.NPY_DOUBLE:
+                {
+                    return new DoubleCopyHelper();
+                }
+                case NPY_TYPES.NPY_DECIMAL:
+                {
+                    return new DecimalCopyHelper();
+                }
+                case NPY_TYPES.NPY_COMPLEX:
+                {
+                    return new ComplexCopyHelper();
+                }
+                case NPY_TYPES.NPY_BIGINT:
+                {
+                    return new BigIntCopyHelper();
+                }
+                case NPY_TYPES.NPY_OBJECT:
+                {
+                    return new ObjectCopyHelper();
+                }
+                case NPY_TYPES.NPY_STRING:
+                {
+                    return new StringCopyHelper();
+                }
+                default:
+                    throw new NotImplementedException("The specified data type is not handled");
+            }
+        }
+
     }
 
     class MemSet
@@ -3220,6 +3295,289 @@ namespace NumpyLib
                 MemoryAccess.SetByte(destArray, i + destOffset, setValue);
             }
         }
+
+    }
+
+
+    class BoolCopyHelper : CopyHelper<bool> , ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as bool[];
+            var sa = src.datap as bool[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+
+    }
+
+    class UByteCopyHelper : CopyHelper<byte>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as byte[];
+            var sa = src.datap as byte[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class SByteCopyHelper : CopyHelper<sbyte>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as sbyte[];
+            var sa = src.datap as sbyte[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class Int16CopyHelper : CopyHelper<Int16>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as Int16[];
+            var sa = src.datap as Int16[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+    class UInt16CopyHelper : CopyHelper<UInt16>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as UInt16[];
+            var sa = src.datap as UInt16[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class Int32CopyHelper : CopyHelper<Int32>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as Int32[];
+            var sa = src.datap as Int32[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+    class UInt32CopyHelper : CopyHelper<UInt32>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as UInt32[];
+            var sa = src.datap as UInt32[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class Int64CopyHelper : CopyHelper<Int64>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as Int64[];
+            var sa = src.datap as Int64[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+    class UInt64CopyHelper : CopyHelper<UInt64>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as UInt64[];
+            var sa = src.datap as UInt64[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+
+    class FloatCopyHelper : CopyHelper<float>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as float[];
+            var sa = src.datap as float[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+    class DoubleCopyHelper : CopyHelper<double>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as double[];
+            var sa = src.datap as double[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class DecimalCopyHelper : CopyHelper<decimal>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as decimal[];
+            var sa = src.datap as decimal[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class ComplexCopyHelper : CopyHelper<System.Numerics.Complex>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as System.Numerics.Complex[];
+            var sa = src.datap as System.Numerics.Complex[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class BigIntCopyHelper : CopyHelper<System.Numerics.BigInteger>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as System.Numerics.BigInteger[];
+            var sa = src.datap as System.Numerics.BigInteger[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+
+    class ObjectCopyHelper : CopyHelper<System.Object>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as System.Object[];
+            var sa = src.datap as System.Object[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    class StringCopyHelper : CopyHelper<System.String>, ICopyHelper
+    {
+        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
+                                                 VoidPtr src, npy_intp instrides,
+                                                 npy_intp N, int elsize)
+        {
+            int tin_index = (int)src.data_offset;
+            int tout_index = (int)dst.data_offset;
+
+            var da = dst.datap as System.String[];
+            var sa = src.datap as System.String[];
+            strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
+        }
+    }
+
+    public interface ICopyHelper
+    {
+        void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
+    }
+
+    class CopyHelper<T>
+    {
+ 
+        protected void strided_byte_copy(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
+        {
+            tout_index /= elsize;
+            tin_index /= elsize;
+            instrides /= elsize;
+            outstrides /= elsize;
+
+            for (int i = 0; i < N; i++)
+            {
+                da[tout_index] = sa[tin_index];
+                tin_index += (int)instrides;
+                tout_index += (int)outstrides;
+            }
+
+            //Parallel.For(0, N, i =>
+            //{
+            //    da[tout_index + (i * instrides)] = sa[tin_index + (i * instrides)];
+            //    //tin_index += (int)instrides;
+            //    //tout_index += (int)outstrides;
+            //});
+        }
+
+
 
     }
 }

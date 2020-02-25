@@ -88,125 +88,8 @@ namespace NumpyLib
             {
                 if (dst.type_num == src.type_num)
                 {
-                    int tin_index = (int)src.data_offset;
-                    int tout_index = (int)dst.data_offset;
-
-                    switch (dst.type_num)
-                    {
-                        case NPY_TYPES.NPY_BOOL:
-                        {
-                            var da = dst.datap as bool[];
-                            var sa = src.datap as bool[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_BYTE:
-                        {
-                            var da = dst.datap as sbyte[];
-                            var sa = src.datap as sbyte[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_UBYTE:
-                        {
-                            var da = dst.datap as byte[];
-                            var sa = src.datap as byte[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_INT16:
-                        {
-                            var da = dst.datap as Int16[];
-                            var sa = src.datap as Int16[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_UINT16:
-                        {
-                            var da = dst.datap as UInt16[];
-                            var sa = src.datap as UInt16[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_INT32:
-                        {
-                            var da = dst.datap as Int32[];
-                            var sa = src.datap as Int32[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_UINT32:
-                        {
-                            var da = dst.datap as UInt32[];
-                            var sa = src.datap as UInt32[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_INT64:
-                        {
-                            var da = dst.datap as Int64[];
-                            var sa = src.datap as Int64[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_UINT64:
-                        {
-                            var da = dst.datap as UInt64[];
-                            var sa = src.datap as UInt64[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_FLOAT:
-                        {
-                            var da = dst.datap as float[];
-                            var sa = src.datap as float[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_DOUBLE:
-                        {
-                            var da = dst.datap as double[];
-                            var sa = src.datap as double[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_DECIMAL:
-                        {
-                            var da = dst.datap as decimal[];
-                            var sa = src.datap as decimal[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_COMPLEX:
-                        {
-                            var da = dst.datap as System.Numerics.Complex[];
-                            var sa = src.datap as System.Numerics.Complex[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_BIGINT:
-                        {
-                            var da = dst.datap as System.Numerics.BigInteger[];
-                            var sa = src.datap as System.Numerics.BigInteger[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_OBJECT:
-                        {
-                            var da = dst.datap as System.Object[];
-                            var sa = src.datap as System.Object[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                        case NPY_TYPES.NPY_STRING:
-                        {
-                            var da = dst.datap as System.String[];
-                            var sa = src.datap as System.String[];
-                            _strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
-                            return;
-                        }
-                    }
-
+                    var helper = MemCopy.GetMemcopyHelper(dst);
+                    helper.strided_byte_copy(dst, outstrides, src, instrides, N, elsize);
                 }
                 else
                 {
@@ -230,29 +113,6 @@ namespace NumpyLib
 
             return;
 
-        }
-
-
-        internal static void _strided_byte_copy<T>(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
-        {
-            tout_index /= elsize;
-            tin_index /= elsize;
-            instrides /= elsize;
-            outstrides /= elsize;
-
-            for (int i = 0; i < N; i++)
-            {
-                da[tout_index] = sa[tin_index];
-                tin_index += (int)instrides;
-                tout_index += (int)outstrides;
-            }
-
-            //Parallel.For(0, N, i =>
-            //{
-            //    da[tout_index + (i * instrides)] = sa[tin_index + (i * instrides)];
-            //    //tin_index += (int)instrides;
-            //    //tout_index += (int)outstrides;
-            //});
         }
 
         /*
