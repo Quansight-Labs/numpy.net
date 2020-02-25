@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC INT32
 
-    internal class UFUNC_Int32 : UFUNC_BASE<Int32>, iUFUNC_Operations
+    internal class UFUNC_Int32 : UFUNC_BASE<Int32>, IUFUNC_Operations
     {
         public UFUNC_Int32() : base(sizeof(Int32))
         {

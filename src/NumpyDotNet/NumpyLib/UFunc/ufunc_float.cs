@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC FLOAT
-    internal class UFUNC_Float : UFUNC_BASE<float>, iUFUNC_Operations
+    internal class UFUNC_Float : UFUNC_BASE<float>, IUFUNC_Operations
     {
         public UFUNC_Float() : base(sizeof(float))
         {

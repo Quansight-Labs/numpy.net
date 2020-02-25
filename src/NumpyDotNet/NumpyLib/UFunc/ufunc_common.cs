@@ -186,7 +186,7 @@ namespace NumpyLib
 
         #region UFUNC Handlers
 
-        private static iUFUNC_Operations GetUFuncHandler(NPY_TYPES npy_type)
+        private static IUFUNC_Operations GetUFuncHandler(NPY_TYPES npy_type)
         {
             switch (npy_type)
             {
@@ -244,7 +244,7 @@ namespace NumpyLib
 
             if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
             {
-                iUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
                 if (UFunc != null)
                 {
                     if (op == GenericReductionOp.NPY_UFUNC_REDUCE)

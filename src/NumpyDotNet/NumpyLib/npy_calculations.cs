@@ -637,7 +637,7 @@ namespace NumpyLib
 
         private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
         {
-            iUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
+            IUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
             if (UFunc != null)
             {
                 if (destArray.ItemType == srcArray.ItemType)

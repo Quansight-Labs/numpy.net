@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC BYTE
 
-    internal class UFUNC_UByte : UFUNC_BASE<byte>, iUFUNC_Operations
+    internal class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
     {
         public UFUNC_UByte() : base(sizeof(byte))
         {

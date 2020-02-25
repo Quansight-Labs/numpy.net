@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC INT64
-    internal class UFUNC_Int64 : UFUNC_BASE<Int64>, iUFUNC_Operations
+    internal class UFUNC_Int64 : UFUNC_BASE<Int64>, IUFUNC_Operations
     {
         public UFUNC_Int64() : base(sizeof(Int64))
         {

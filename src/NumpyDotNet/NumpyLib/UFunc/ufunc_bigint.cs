@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC BIGINT
-    internal class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, iUFUNC_Operations
+    internal class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
     {
         public UFUNC_BigInt() : base(sizeof(double) * 4)
         {
