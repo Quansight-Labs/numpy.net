@@ -922,7 +922,8 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(rit);
             }
 
-            for (int ii = 0; ii < vp1.Count; ii++)
+            bool has_failed = false;
+            Parallel.For(0, vp1.Count, ii =>
             {
                 VoidPtr valbuffer = null;
                 VoidPtr idxbuffer = null;
@@ -960,12 +961,12 @@ namespace NumpyLib
 
                     if (ret < 0)
                     {
-                        goto fail;
+                        has_failed = true;
                     }
                 }
                 else
                 {
-                    npy_intp []pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
+                    npy_intp[] pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
                     npy_intp? npiv = 0;
 
                     for (i = 0; i < nkth; ++i)
@@ -974,7 +975,7 @@ namespace NumpyLib
 
                         if (ret < 0)
                         {
-                            goto fail;
+                            has_failed = true;
                         }
                     }
                 }
@@ -995,11 +996,11 @@ namespace NumpyLib
                     }
                 }
 
-            }
+            });
 
             fail:
 
-            if (ret < 0)
+            if (has_failed)
             {
                 if (!NpyErr_Occurred())
                 {
