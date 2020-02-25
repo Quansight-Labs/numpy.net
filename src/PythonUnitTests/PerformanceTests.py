@@ -472,5 +472,27 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
+    def test_Performance_argpartition_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
+        indices = np.arange(0,16000000, 2,dtype=np.int32).reshape(20,-1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            perm1 = np.argpartition(m1, 1, axis= 0)
+            perm2 = np.argpartition(m1, 2, axis= 1)
+             
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()
