@@ -773,7 +773,7 @@ namespace NumpyLib
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
 
             NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
-            VoidPtr buffer = null;
+      
 
             NpyArrayIterObject it;
             npy_intp size;
@@ -803,9 +803,10 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(it);
             }
 
-            for (int ii = 0; ii < vp1.Count; ii++)
+            bool has_failed = false;
+            Parallel.For(0, vp1.Count, ii =>
             {
-
+                VoidPtr buffer = null;
                 VoidPtr bufptr = new VoidPtr(vp1[ii]);
 
                 if (needcopy)
@@ -827,7 +828,7 @@ namespace NumpyLib
                     ret = sort(bufptr, N, op);
                     if (ret < 0)
                     {
-                        goto fail;
+                        has_failed = true;
                     }
                 }
                 else
@@ -839,7 +840,7 @@ namespace NumpyLib
                         ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
                         if (ret < 0)
                         {
-                            goto fail;
+                            has_failed = true;
                         }
                     }
                 }
@@ -849,10 +850,10 @@ namespace NumpyLib
                     copyswapn(vp1[ii], astride, buffer, elsize, N, swap, op);
                 }
 
-            }
+            });
 
             fail:
-            if (ret < 0 && !NpyErr_Occurred())
+            if (has_failed && !NpyErr_Occurred())
             {
                 /* Out of memory during sorting or buffer creation */
                 NpyErr_NoMemory();
