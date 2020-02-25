@@ -1953,7 +1953,7 @@ namespace NumpyLib
 
                 while (size-- > 0)
                 {
-                    _unaligned_strided_byte_copy(buffer, (npy_intp)elsize, it.dataptr,
+                    _strided_byte_copy(buffer, (npy_intp)elsize, it.dataptr,
                                                  astride, N, elsize, null);
                     if (swap)
                     {
@@ -1968,7 +1968,7 @@ namespace NumpyLib
                     {
                         _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
                     }
-                    _unaligned_strided_byte_copy(it.dataptr, astride, buffer,
+                    _strided_byte_copy(it.dataptr, astride, buffer,
                                                  (npy_intp)elsize, N, elsize, null);
                     NpyArray_ITER_NEXT(it);
                 }
@@ -2040,7 +2040,7 @@ namespace NumpyLib
                 indbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
                 while (size-- > 0)
                 {
-                    _unaligned_strided_byte_copy(valbuffer, (npy_intp)elsize,
+                    _strided_byte_copy(valbuffer, (npy_intp)elsize,
                                                  it.dataptr, astride, N, elsize, null);
                     if (swap)
                     {
@@ -2055,7 +2055,7 @@ namespace NumpyLib
                         NpyDataMem_FREE(indbuffer);
                         goto fail;
                     }
-                    _unaligned_strided_byte_copy(rit.dataptr, rstride, indbuffer,
+                    _strided_byte_copy(rit.dataptr, rstride, indbuffer,
                                                  sizeof(npy_intp), N, sizeof(npy_intp), null);
                     NpyArray_ITER_NEXT(it);
                     NpyArray_ITER_NEXT(rit);

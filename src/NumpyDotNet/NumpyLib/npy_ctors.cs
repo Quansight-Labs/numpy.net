@@ -62,22 +62,6 @@ namespace NumpyLib
         internal delegate int skip_separator(ref object o1, string s1, object o2);
 
 
-        internal static void _unaligned_strided_byte_move(VoidPtr dst, npy_intp outstrides,
-                                                          VoidPtr src, npy_intp instrides,
-                                                          npy_intp N, int elsize, NpyArray_Descr ignore)
-        {
-            _strided_byte_copy(dst, outstrides, src, instrides, N, elsize, ignore);
-        }
-
-
-        internal static void _unaligned_strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                          VoidPtr src, npy_intp instrides,
-                                                          npy_intp N, int elsize, NpyArray_Descr ignore)
-        {
-            _strided_byte_copy(dst, outstrides, src, instrides, N, elsize, ignore);
-        }
-
-
         internal static void _strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                    VoidPtr src, npy_intp instrides,
                                                    npy_intp N, int elsize, NpyArray_Descr ignore)
@@ -1453,11 +1437,11 @@ namespace NumpyLib
             }
             else if (usecopy)
             {
-                return _unaligned_strided_byte_copy;
+                return _strided_byte_copy;
             }
             else
             {
-                return _unaligned_strided_byte_move;
+                return _strided_byte_copy;
             }
         }
 
