@@ -192,22 +192,39 @@ namespace NumpyLib
 
             copyswap = NpyArray_DESCR(arr).f.copyswap;
 
-            VoidPtr _dst = new VoidPtr(dst);
-            VoidPtr _src = src != null ? new VoidPtr(src) : null;
-
-            for (i = 0; i < n; i++)
+            if (src != null && dst.type_num != src.type_num)
             {
-                copyswap(_dst, _src, swap, arr);
+                VoidPtr _dst = new VoidPtr(dst);
+                VoidPtr _src = new VoidPtr(src);
 
-                _dst.data_offset += dstride;
-                if (_src != null)
+                for (i = 0; i < n; i++)
                 {
+                    NpyArray_CopySwapFunc(_dst, _src, swap, arr);
+
+                    if (swap)
+                    {
+                        swapvalue(_dst, arr.ItemSize);
+                    }
+
+                    _dst.data_offset += dstride;
                     _src.data_offset += sstride;
                 }
+                return;
             }
+            else
+            {
+                VoidPtr _dst = new VoidPtr(dst);
+                VoidPtr _src = src != null ? new VoidPtr(src) : null;
+
+                var helper = MemCopy.GetMemcopyHelper(_dst);
+                helper.default_copyswap(_dst, dstride, _src, sstride, n, swap);
+
+            }
+
+
         }
 
-     
+  
 
     }
 }

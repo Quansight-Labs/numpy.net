@@ -3107,6 +3107,8 @@ namespace NumpyLib
                     return new FloatCopyHelper();
                 }
                 case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_COMPLEXREAL:
+                case NPY_TYPES.NPY_COMPLEXIMAG:
                 {
                     return new DoubleCopyHelper();
                 }
@@ -3301,6 +3303,11 @@ namespace NumpyLib
 
     class BoolCopyHelper : CopyHelper<bool> , ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(bool);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3312,11 +3319,16 @@ namespace NumpyLib
             var sa = src.datap as bool[];
             strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
         }
-
+ 
     }
 
     class UByteCopyHelper : CopyHelper<byte>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(byte);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3328,10 +3340,17 @@ namespace NumpyLib
             var sa = src.datap as byte[];
             strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
         }
+
+   
     }
 
     class SByteCopyHelper : CopyHelper<sbyte>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(sbyte);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3347,6 +3366,11 @@ namespace NumpyLib
 
     class Int16CopyHelper : CopyHelper<Int16>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(Int16);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3363,6 +3387,11 @@ namespace NumpyLib
 
     class UInt16CopyHelper : CopyHelper<UInt16>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(UInt16);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3378,6 +3407,11 @@ namespace NumpyLib
 
     class Int32CopyHelper : CopyHelper<Int32>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(Int32);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3394,6 +3428,11 @@ namespace NumpyLib
 
     class UInt32CopyHelper : CopyHelper<UInt32>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(UInt32);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3409,6 +3448,11 @@ namespace NumpyLib
 
     class Int64CopyHelper : CopyHelper<Int64>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(Int64);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3420,11 +3464,17 @@ namespace NumpyLib
             var sa = src.datap as Int64[];
             strided_byte_copy(da, outstrides, sa, instrides, N, tout_index, tin_index, elsize);
         }
+
     }
 
 
     class UInt64CopyHelper : CopyHelper<UInt64>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(UInt64);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3442,6 +3492,11 @@ namespace NumpyLib
 
     class FloatCopyHelper : CopyHelper<float>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(float);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3458,6 +3513,11 @@ namespace NumpyLib
 
     class DoubleCopyHelper : CopyHelper<double>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(double);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3473,6 +3533,11 @@ namespace NumpyLib
 
     class DecimalCopyHelper : CopyHelper<decimal>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(decimal);
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3488,6 +3553,11 @@ namespace NumpyLib
 
     class ComplexCopyHelper : CopyHelper<System.Numerics.Complex>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(double) * 2;
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3503,6 +3573,11 @@ namespace NumpyLib
 
     class BigIntCopyHelper : CopyHelper<System.Numerics.BigInteger>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return sizeof(double) * 4;
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3519,6 +3594,12 @@ namespace NumpyLib
 
     class ObjectCopyHelper : CopyHelper<System.Object>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return IntPtr.Size; 
+        }
+
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3534,6 +3615,11 @@ namespace NumpyLib
 
     class StringCopyHelper : CopyHelper<System.String>, ICopyHelper
     {
+        public override int GetTypeSize(VoidPtr vp)
+        {
+            return IntPtr.Size;
+        }
+
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                  VoidPtr src, npy_intp instrides,
                                                  npy_intp N, int elsize)
@@ -3550,11 +3636,13 @@ namespace NumpyLib
     public interface ICopyHelper
     {
         void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
+        void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
     }
 
-    class CopyHelper<T>
+    abstract class CopyHelper<T>
     {
- 
+        public abstract int GetTypeSize(VoidPtr vp);
+
         protected void strided_byte_copy(T[] da, npy_intp outstrides, T[] sa, npy_intp instrides, npy_intp N, int tout_index, int tin_index, int elsize)
         {
             tout_index /= elsize;
@@ -3575,6 +3663,185 @@ namespace NumpyLib
             //    //tin_index += (int)instrides;
             //    //tout_index += (int)outstrides;
             //});
+        }
+
+        public void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap)
+        {
+            int elsize = GetTypeSize(_dst);
+
+            if (_src != null)
+            {
+                T[] d = _dst.datap as T[];
+                T[] s = _src.datap as T[];
+
+                if (swap)
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        d[_dst.data_offset / elsize] = s[_src.data_offset / elsize];
+
+                        swapvalue(_dst, elsize);
+
+                        _dst.data_offset += dstride;
+                        _src.data_offset += sstride;
+                    }
+                }
+                else
+                {
+                    _dst.data_offset /= elsize;
+                    dstride /= elsize;
+                    sstride /= elsize;
+                    _src.data_offset /= elsize;
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        d[_dst.data_offset] = s[_src.data_offset];
+                        _dst.data_offset += dstride;
+                        _src.data_offset += sstride;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    if (swap)
+                    {
+                        swapvalue(_dst, elsize);
+                    }
+                    _dst.data_offset += dstride;
+                }
+            }
+        }
+
+        protected void swapvalue(VoidPtr dest, int ItemSize)
+        {
+            npy_intp item_offset = dest.data_offset / ItemSize;
+
+            switch (dest.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                {
+                    return;
+                }
+                case NPY_TYPES.NPY_BYTE:
+                {
+                    return;
+                }
+                case NPY_TYPES.NPY_UBYTE:
+                {
+                    return;
+                }
+                case NPY_TYPES.NPY_INT16:
+                {
+                    Int16[] bdata = dest.datap as Int16[];
+                    Int16 value = bdata[item_offset];
+
+                    var uvalue = (UInt16)value;
+                    UInt16 swapped = (UInt16)
+                        ((0x00FF) & (uvalue >> 8)
+                        | (0xFF00) & (uvalue << 8));
+                    bdata[item_offset] = (Int16)swapped;
+
+                    return;
+                }
+
+                case NPY_TYPES.NPY_UINT16:
+                {
+                    UInt16[] bdata = dest.datap as UInt16[];
+                    UInt16 value = bdata[item_offset];
+
+                    var uvalue = (UInt16)value;
+                    UInt16 swapped = (UInt16)
+                        ((0x00FF) & (uvalue >> 8)
+                        | (0xFF00) & (uvalue << 8));
+                    bdata[item_offset] = (UInt16)swapped;
+
+                    return;
+                }
+
+                case NPY_TYPES.NPY_INT32:
+                {
+                    Int32[] bdata = dest.datap as Int32[];
+                    Int32 value = bdata[item_offset];
+
+                    var uvalue = (UInt32)value;
+                    UInt32 swapped =
+                         ((0x000000FF) & (uvalue >> 24)
+                         | (0x0000FF00) & (uvalue >> 8)
+                         | (0x00FF0000) & (uvalue << 8)
+                         | (0xFF000000) & (uvalue << 24));
+                    bdata[item_offset] = (Int32)swapped;
+                    break;
+
+                }
+
+                case NPY_TYPES.NPY_UINT32:
+                {
+                    UInt32[] bdata = dest.datap as UInt32[];
+                    UInt32 value = bdata[item_offset];
+
+                    var uvalue = (UInt32)value;
+                    UInt32 swapped =
+                         ((0x000000FF) & (uvalue >> 24)
+                         | (0x0000FF00) & (uvalue >> 8)
+                         | (0x00FF0000) & (uvalue << 8)
+                         | (0xFF000000) & (uvalue << 24));
+                    bdata[item_offset] = (UInt32)swapped;
+                    break;
+
+                }
+
+                case NPY_TYPES.NPY_INT64:
+                {
+                    Int64[] bdata = dest.datap as Int64[];
+                    Int64 value = bdata[item_offset];
+
+                    var uvalue = (UInt64)value;
+                    UInt64 swapped =
+                         ((0x00000000000000FF) & (uvalue >> 56)
+                         | (0x000000000000FF00) & (uvalue >> 40)
+                         | (0x0000000000FF0000) & (uvalue >> 24)
+                         | (0x00000000FF000000) & (uvalue >> 8)
+                         | (0x000000FF00000000) & (uvalue << 8)
+                         | (0x0000FF0000000000) & (uvalue << 24)
+                         | (0x00FF000000000000) & (uvalue << 40)
+                         | (0xFF00000000000000) & (uvalue << 56));
+                    bdata[item_offset] = (Int64)swapped;
+                    break;
+
+                }
+
+                case NPY_TYPES.NPY_UINT64:
+                {
+                    UInt64[] bdata = dest.datap as UInt64[];
+                    UInt64 value = bdata[item_offset];
+
+                    var uvalue = (UInt64)value;
+                    UInt64 swapped =
+                         ((0x00000000000000FF) & (uvalue >> 56)
+                         | (0x000000000000FF00) & (uvalue >> 40)
+                         | (0x0000000000FF0000) & (uvalue >> 24)
+                         | (0x00000000FF000000) & (uvalue >> 8)
+                         | (0x000000FF00000000) & (uvalue << 8)
+                         | (0x0000FF0000000000) & (uvalue << 24)
+                         | (0x00FF000000000000) & (uvalue << 40)
+                         | (0xFF00000000000000) & (uvalue << 56));
+                    bdata[item_offset] = (UInt64)swapped;
+                    break;
+
+                }
+
+                // these data types can't be swapped
+                case NPY_TYPES.NPY_DECIMAL:
+                case NPY_TYPES.NPY_COMPLEX:
+                case NPY_TYPES.NPY_BIGINT:
+                case NPY_TYPES.NPY_OBJECT:
+                    return;
+
+
+
+            }
         }
 
 
