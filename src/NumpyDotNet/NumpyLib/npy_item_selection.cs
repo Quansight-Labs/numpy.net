@@ -789,8 +789,7 @@ namespace NumpyLib
 
             List<VoidPtr> iterList = new List<VoidPtr>();
             List<Task> tasks = new List<Task>();
-            npy_intp taskCountMax = 10000;
-            npy_intp taskCount = Math.Min(taskCountMax, size);
+            npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
 
             int errorsDetected = 0;
             while (size-- > 0)
@@ -808,7 +807,7 @@ namespace NumpyLib
                     });
                     tasks.Add(task);
                     iterList = new List<VoidPtr>();
-                    taskCount = Math.Min(taskCountMax, size);
+                    taskCount = Math.Min(iterationTaskCountMax, size);
                 }
                 NpyArray_ITER_NEXT(it);
             }
@@ -822,7 +821,7 @@ namespace NumpyLib
             return 0;
         }
 
-        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errosrDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errorsDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
         {
             npy_intp N = NpyArray_DIM(op, axis);
             int elsize = NpyArray_ITEMSIZE(op);
@@ -885,7 +884,7 @@ namespace NumpyLib
 
             if (!parallelLoopResult.IsCompleted || has_failed)
             {
-                Interlocked.Increment(ref errosrDetected);
+                Interlocked.Increment(ref errorsDetected);
             }
         }
 
@@ -933,33 +932,95 @@ namespace NumpyLib
     
             size = it.size;
 
-            List<VoidPtr> vp1 = new List<VoidPtr>();
-            List<VoidPtr> vp2 = new List<VoidPtr>();
+            List<VoidPtr> opIterList = new List<VoidPtr>();
+            List<VoidPtr> ropIterList = new List<VoidPtr>();
+            List<Task> tasks = new List<Task>();
+            npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
+
+            int errorsDetected = 0;
 
             while (size-- > 0)
             {
-                vp1.Add(new VoidPtr(it.dataptr));
-                vp2.Add(new VoidPtr(rit.dataptr));
-                
+                opIterList.Add(new VoidPtr(it.dataptr));
+                ropIterList.Add(new VoidPtr(rit.dataptr));
+
+                if (opIterList.Count == taskCount)
+                {
+                    var workerThreadOpIterList = opIterList;
+                    var workerThreadRopIterList = ropIterList;
+
+                    var task = Task.Run(() =>
+                    {
+                        _new_argsortlike_worker_thread(workerThreadOpIterList, workerThreadRopIterList, ref errorsDetected,
+                               op, axis, argsort, argpart, kth, nkth, needidxbuffer, rstride);
+
+                        // free data ASAP
+                        workerThreadOpIterList.Clear();
+                        workerThreadOpIterList = null;
+                        workerThreadRopIterList.Clear();
+                        workerThreadRopIterList = null;
+                    });
+                    tasks.Add(task);
+
+                    opIterList = new List<VoidPtr>();
+                    ropIterList = new List<VoidPtr>();
+
+                    taskCount = Math.Min(iterationTaskCountMax, size);
+                }
+
+
                 NpyArray_ITER_NEXT(it);
                 NpyArray_ITER_NEXT(rit);
             }
 
+            Task.WaitAll(tasks.ToArray());
+
+            if (errorsDetected > 0)
+            {
+                if (!NpyErr_Occurred())
+                {
+                    /* Out of memory during sorting or buffer creation */
+                    NpyErr_NoMemory();
+                }
+                Npy_XDECREF(rop);
+                rop = null;
+            }
+            Npy_XDECREF(it);
+            Npy_XDECREF(rit);
+
+            return rop;
+        }
+
+        private static void _new_argsortlike_worker_thread(List<VoidPtr> opIterList, List<VoidPtr> ropIterList, ref int errorsDetected, 
+                    NpyArray op, int axis, NpyArray_ArgSortFunc argsort, NpyArray_ArgPartitionFunc argpart,
+                    npy_intp[] kth, npy_intp nkth, bool needidxbuffer, npy_intp rstride)
+        {
+            npy_intp N = NpyArray_DIM(op, axis);
+            int elsize = NpyArray_ITEMSIZE(op);
+            npy_intp astride = NpyArray_STRIDE(op, axis);
+            bool swap = NpyArray_ISBYTESWAPPED(op);
+            bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
+
+            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
+
+            int ret = 0;
+
             bool has_failed = false;
-            Parallel.For(0, vp1.Count, ii =>
+
+            var parallelLoopResult = Parallel.For(0, opIterList.Count, ii =>
             {
                 VoidPtr valbuffer = null;
                 VoidPtr idxbuffer = null;
 
-                VoidPtr valptr = new VoidPtr(vp1[ii]);
-                VoidPtr idxptr = new VoidPtr(vp2[ii]);
+                VoidPtr valptr = new VoidPtr(opIterList[ii]);
+                VoidPtr idxptr = new VoidPtr(ropIterList[ii]);
                 VoidPtr iptr;
                 int i;
 
                 if (needcopy)
                 {
                     valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    copyswapn(valbuffer, elsize, vp1[ii], astride, N, swap, op);
+                    copyswapn(valbuffer, elsize, opIterList[ii], astride, N, swap, op);
                     valptr = new VoidPtr(valbuffer);
                 }
 
@@ -1005,7 +1066,7 @@ namespace NumpyLib
 
                 if (needidxbuffer)
                 {
-                    VoidPtr rptr = new VoidPtr(vp2[ii]);
+                    VoidPtr rptr = new VoidPtr(ropIterList[ii]);
                     var rptrSize = GetTypeSize(rptr);
 
                     iptr = new VoidPtr(idxbuffer);
@@ -1021,22 +1082,10 @@ namespace NumpyLib
 
             });
 
-            fail:
-
-            if (has_failed)
+            if (!parallelLoopResult.IsCompleted || has_failed)
             {
-                if (!NpyErr_Occurred())
-                {
-                    /* Out of memory during sorting or buffer creation */
-                    NpyErr_NoMemory();
-                }
-                Npy_XDECREF(rop);
-                rop = null;
+                Interlocked.Increment(ref errorsDetected);
             }
-            Npy_XDECREF(it);
-            Npy_XDECREF(rit);
-
-            return rop;
         }
 
 
