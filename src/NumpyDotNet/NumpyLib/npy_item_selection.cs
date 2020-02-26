@@ -802,6 +802,9 @@ namespace NumpyLib
                     var task = Task.Run(() =>
                     {
                         _new_sortlike_worker_thread(workerThreadIterList, ref errorsDetected, op, axis, sort, part, kth, nkth);
+                        // free data ASAP
+                        workerThreadIterList.Clear();
+                        workerThreadIterList = null;
                     });
                     tasks.Add(task);
                     iterList = new List<VoidPtr>();
