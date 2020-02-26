@@ -2127,31 +2127,53 @@ namespace NumpyLib
             }
             else
             {
-                List<VoidPtr> vp1 = new List<VoidPtr>();
-                List<VoidPtr> vp2 = new List<VoidPtr>();
+                List<VoidPtr> dataList = new List<VoidPtr>();
+                List<VoidPtr> argList = new List<VoidPtr>();
+
+                List<Task> tasks = new List<Task>();
+                npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
+
+                int errorsDetected = 0;
 
                 while (size-- > 0)
                 {
                     iptr = rit.dataptr;
 
                     BuildINTPArray(iptr, N);
-                    vp1.Add(new VoidPtr(it.dataptr));
-                    vp2.Add(new VoidPtr(iptr));
-      
+                    dataList.Add(new VoidPtr(it.dataptr));
+                    argList.Add(new VoidPtr(iptr));
+
+                    if (dataList.Count == taskCount)
+                    {
+                        var workerThreadDataList = dataList;
+                        var workerThreadArgList = argList;
+
+                        var task = Task.Run(() =>
+                        {
+                            _new_argsort_nocopy_worker_thread(workerThreadDataList, workerThreadArgList, ref errorsDetected,
+                                   op, argsort, N);
+
+                            // free data ASAP
+                            workerThreadDataList.Clear();
+                            workerThreadDataList = null;
+                            workerThreadArgList.Clear();
+                            workerThreadArgList = null;
+                        });
+                        tasks.Add(task);
+
+                        dataList = new List<VoidPtr>();
+                        argList = new List<VoidPtr>();
+
+                        taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+                    }
+
                     NpyArray_ITER_NEXT(it);
                     NpyArray_ITER_NEXT(rit);
                 }
 
-                bool failure_detected = false;
-                Parallel.For(0, vp1.Count, ii =>
-                {
-                    if (argsort(vp1[ii], vp2[ii], N, op) < 0)
-                    {
-                        failure_detected = true;
-                    }
-                });
-
-                if (failure_detected)
+                Task.WaitAll(tasks.ToArray());
+                                
+                if (errorsDetected > 0)
                     goto fail;
 
             }
@@ -2166,6 +2188,24 @@ namespace NumpyLib
             Npy_XDECREF(it);
             Npy_XDECREF(rit);
             return null;
+        }
+
+        internal static void _new_argsort_nocopy_worker_thread(List<VoidPtr> dataList, List<VoidPtr> argList, ref int errorsDetected,
+                            NpyArray op, NpyArray_ArgSortFunc argsort, npy_intp N)
+        {
+            bool failure_detected = false;
+            var parallelLoopResult = Parallel.For(0, dataList.Count, ii =>
+            {
+                if (argsort(dataList[ii], argList[ii], N, op) < 0)
+                {
+                    failure_detected = true;
+                }
+            });
+
+            if (!parallelLoopResult.IsCompleted || failure_detected)
+            {
+                Interlocked.Increment(ref errorsDetected);
+            }
         }
 
         internal static void BuildINTPArray(VoidPtr iptr, npy_intp N)
