@@ -34,6 +34,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 #if NPY_INTP_64
 using npy_intp = System.Int64;
@@ -767,18 +768,9 @@ namespace NumpyLib
         private static int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
         {
             npy_intp N = NpyArray_DIM(op, axis);
-            int elsize = NpyArray_ITEMSIZE(op);
-            npy_intp astride = NpyArray_STRIDE(op, axis);
-            bool swap = NpyArray_ISBYTESWAPPED(op);
-            bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
-
-            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
-      
-
             NpyArrayIterObject it;
             npy_intp size;
 
-            int ret = 0;
 
 
             /* Check if there is any sorting to do */
@@ -795,24 +787,60 @@ namespace NumpyLib
             size = it.size;
 
 
-            List<VoidPtr> vp1 = new List<VoidPtr>();
-    
+            List<VoidPtr> iterList = new List<VoidPtr>();
+            List<Task> tasks = new List<Task>();
+            npy_intp taskCountMax = 10000;
+            npy_intp taskCount = Math.Min(taskCountMax, size);
+
+            int errorsDetected = 0;
             while (size-- > 0)
             {
-                vp1.Add(new VoidPtr(it.dataptr));
+                iterList.Add(new VoidPtr(it.dataptr));
+                if (iterList.Count == taskCount)
+                {
+                    var workerThreadIterList = iterList;
+                    var task = Task.Run(() =>
+                    {
+                        _new_sortlike_worker_thread(workerThreadIterList, ref errorsDetected, op, axis, sort, part, kth, nkth);
+                    });
+                    tasks.Add(task);
+                    iterList = new List<VoidPtr>();
+                    taskCount = Math.Min(taskCountMax, size);
+                }
                 NpyArray_ITER_NEXT(it);
             }
 
+            Task.WaitAll(tasks.ToArray());
+
+            Npy_DECREF(it);
+
+            if (errorsDetected > 0)
+                return -1;
+            return 0;
+        }
+
+        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errosrDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        {
+            npy_intp N = NpyArray_DIM(op, axis);
+            int elsize = NpyArray_ITEMSIZE(op);
+            npy_intp astride = NpyArray_STRIDE(op, axis);
+            bool swap = NpyArray_ISBYTESWAPPED(op);
+            bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
+
+            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
+            int ret = 0;
+
             bool has_failed = false;
-            Parallel.For(0, vp1.Count, ii =>
+
+            var parallelLoopResult = Parallel.For(0, iterList.Count,  ii =>
             {
                 VoidPtr buffer = null;
-                VoidPtr bufptr = new VoidPtr(vp1[ii]);
+                VoidPtr bufptr = new VoidPtr(iterList[ii]);
 
                 if (needcopy)
                 {
                     buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    copyswapn(buffer, elsize, vp1[ii], astride, N, swap, op);
+                    copyswapn(buffer, elsize, iterList[ii], astride, N, swap, op);
                     bufptr = new VoidPtr(buffer);
                 }
                 /*
@@ -847,24 +875,16 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    copyswapn(vp1[ii], astride, buffer, elsize, N, swap, op);
+                    copyswapn(iterList[ii], astride, buffer, elsize, N, swap, op);
                 }
 
             });
 
-            fail:
-            if (has_failed && !NpyErr_Occurred())
+            if (!parallelLoopResult.IsCompleted || has_failed)
             {
-                /* Out of memory during sorting or buffer creation */
-                NpyErr_NoMemory();
+                Interlocked.Increment(ref errosrDetected);
             }
-            Npy_DECREF(it);
-
-            return ret;
-
-
         }
-
 
         private static NpyArray _new_argsortlike(NpyArray op, int axis, 
                     NpyArray_ArgSortFunc argsort, NpyArray_ArgPartitionFunc argpart,  
