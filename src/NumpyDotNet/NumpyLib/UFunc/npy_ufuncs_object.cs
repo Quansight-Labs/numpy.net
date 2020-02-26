@@ -1075,6 +1075,10 @@ namespace NumpyLib
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
                     List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
+                    List<Exception> caughtExceptions = new List<Exception>();
+
+                    List<Task> tasks = new List<Task>();
+                    npy_intp taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
 
                     while (loop.index < loop.size)
                     {
@@ -1089,25 +1093,33 @@ namespace NumpyLib
 
                         arrayOfBufPtrs.Add(BufPtrs);
 
+                        if (arrayOfBufPtrs.Count == taskCount)
+                        {
+                            var workerThreadOpIterList = arrayOfBufPtrs;
+
+                            var task = Task.Run(() =>
+                            {
+                                NpyUFUNC_GenericReduction_worker_thread(operation, self, workerThreadOpIterList, loop, caughtExceptions);
+
+                                // free data ASAP
+                                workerThreadOpIterList.Clear();
+                                workerThreadOpIterList = null;
+                            });
+                            tasks.Add(task);
+
+                            arrayOfBufPtrs = new List<VoidPtr[]>();
+
+                            taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
+                        }
+                      
+
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.bufptr[2] = loop.bufptr[0];
                         loop.index++;
                     }
 
-                    List<Exception> caughtExceptions = new List<Exception>();
-
-                    Parallel.For(0, arrayOfBufPtrs.Count, ii =>
-                    {
-                        try
-                        {
-                            loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
-                        }
-                        catch (Exception ex)
-                        {
-                            caughtExceptions.Add(ex);
-                        }
-                    });
+                    Task.WaitAll(tasks.ToArray());
 
                     if (caughtExceptions.Count > 0)
                     {
@@ -1214,6 +1226,24 @@ namespace NumpyLib
             return null;
         }
 
+        private static void NpyUFUNC_GenericReduction_worker_thread(GenericReductionOp operation, NpyUFuncObject self, List<VoidPtr[]> arrayOfBufPtrs, NpyUFuncReduceObject loop, List<Exception> caughtExceptions)
+        {
+            Parallel.For(0, arrayOfBufPtrs.Count, ii =>
+            {
+                try
+                {
+                    loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
+                }
+                catch (Exception ex)
+                {
+                    lock (caughtExceptions)
+                    {
+                        caughtExceptions.Add(ex);
+                    }
+                }
+            });
+        }
+
         private static NpyArray NpyUFunc_Accumulate(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
         {
             NpyArray ret = null;
@@ -1258,6 +1288,7 @@ namespace NumpyLib
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
                     List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
+                    // kevin: move to worker thread model.
 
                     while (loop.index < loop.size)
                     {
