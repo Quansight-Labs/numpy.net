@@ -1295,23 +1295,14 @@ namespace NumpyLib
          */
         internal static int _flat_copyinto(NpyArray dst, NpyArray src, NPY_ORDER order)
         {
-            NpyArrayIterObject it;
-            NpyArray orig_src;
-            strided_copy_func_t myfunc;
-            VoidPtr dptr;
-            int axis;
-            int elsize;
-            npy_intp nbytes;
-            NpyArray_Descr descr;
-
-            orig_src = src;
+            NpyArray orig_src = src;
             if (NpyArray_NDIM(src) == 0)
             {
                 memcpy(NpyArray_BYTES(dst), NpyArray_BYTES(src), (long)NpyArray_BYTES_Length(src));
                 return 0;
             }
 
-            axis = NpyArray_NDIM(src) - 1;
+            int axis = NpyArray_NDIM(src) - 1;
 
             if (order == NPY_ORDER.NPY_FORTRANORDER)
             {
@@ -1326,7 +1317,7 @@ namespace NumpyLib
                 }
             }
 
-            it = NpyArray_IterAllButAxis(src, ref axis);
+            NpyArrayIterObject it = NpyArray_IterAllButAxis(src, ref axis);
             if (it == null)
             {
                 if (src != orig_src)
@@ -1336,39 +1327,85 @@ namespace NumpyLib
                 return -1;
             }
 
-            myfunc = strided_copy_func(src, null, true);
+            strided_copy_func_t myfunc = strided_copy_func(src, null, true);
 
-            dptr = new VoidPtr(dst);
-            descr = dst.descr;
-            elsize = descr.elsize;
-            nbytes = (npy_intp)(elsize * NpyArray_DIM(src, axis));
+            VoidPtr dptr = new VoidPtr(dst);
+            NpyArray_Descr descr = dst.descr;
+            int elsize = descr.elsize;
+            npy_intp nbytes = (npy_intp)(elsize * NpyArray_DIM(src, axis));
 
             List<VoidPtr> vp1 = new List<VoidPtr>();
             List<VoidPtr> vp2 = new List<VoidPtr>();
+            List<Task> tasks = new List<Task>();
+            npy_intp taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+
+            int errorsDetected = 0;
 
             while (it.index < it.size)
             {
                 vp1.Add(new VoidPtr(dptr));
                 vp2.Add(new VoidPtr(it.dataptr));
 
+                if (vp1.Count == taskCount)
+                {
+                    var workerThreadOpIterList = vp1;
+                    var workerThreadRopIterList = vp2;
+
+                    var task = Task.Run(() =>
+                    {
+                        _flat_copyinto_worker_thread(workerThreadOpIterList, workerThreadRopIterList, ref errorsDetected,
+                               dst, src, myfunc, axis);
+
+                        // free data ASAP
+                        workerThreadOpIterList.Clear();
+                        workerThreadOpIterList = null;
+                        workerThreadRopIterList.Clear();
+                        workerThreadRopIterList = null;
+                    });
+                    tasks.Add(task);
+
+                    vp1 = new List<VoidPtr>();
+                    vp2 = new List<VoidPtr>();
+
+                    taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+                }
+
+
                 dptr.data_offset += nbytes;
                 NpyArray_ITER_NEXT(it);
             }
 
-            Parallel.For(0, vp1.Count, i=>
-            {
-                myfunc(vp1[i], (npy_intp)elsize, vp2[i], NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
-            });
+            Task.WaitAll(tasks.ToArray());
 
             if (src != orig_src)
             {
                 Npy_DECREF(src);
             }
             Npy_DECREF(it);
+
+            if (errorsDetected > 0)
+            {
+                return -1;
+            }
             return 0;
         }
 
-    
+        internal static void _flat_copyinto_worker_thread(List<VoidPtr> vp1, List<VoidPtr> vp2, ref int errorsDetected,
+                                NpyArray dst, NpyArray src, strided_copy_func_t myfunc, int axis)
+        {
+            NpyArray_Descr descr = dst.descr;
+            int elsize = elsize = descr.elsize;
+
+            var parallelLoopResult = Parallel.For(0, vp1.Count, i =>
+            {
+                myfunc(vp1[i], (npy_intp)elsize, vp2[i], NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
+            });
+
+            if (!parallelLoopResult.IsCompleted)
+            {
+                Interlocked.Increment(ref errorsDetected);
+            }
+        }
 
         internal static void _strided_byte_swap(VoidPtr dest, npy_intp stride, npy_intp n, int size)
         {
