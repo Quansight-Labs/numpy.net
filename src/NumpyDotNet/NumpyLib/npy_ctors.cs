@@ -44,6 +44,7 @@ using size_t = System.UInt64;
 using NpyArray_UCS4 = System.UInt32;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace NumpyLib
 {
@@ -1504,14 +1505,12 @@ namespace NumpyLib
 
         internal static int _broadcast_copy(NpyArray dest, NpyArray src, strided_copy_func_t myfunc, bool swap)
         {
-            int elsize;
             NpyArrayMultiIterObject multi;
             int maxaxis;
             npy_intp maxdim;
-            NpyArray_Descr descr;
+            NpyArray_Descr descr = dest.descr;
+            int elsize = descr.elsize;
 
-            descr = dest.descr;
-            elsize = descr.elsize;
             multi = NpyArray_MultiIterFromArrays(null, 0, 2, dest, src);
             if (multi == null)
             {
@@ -1545,32 +1544,87 @@ namespace NumpyLib
              * Refcount note: src and dest may have different sizes
              */
 
-            List<VoidPtr> vp1 = new List<VoidPtr>();
-            List<VoidPtr> vp2 = new List<VoidPtr>();
+            List<VoidPtr> iterList1 = new List<VoidPtr>();
+            List<VoidPtr> iterList2 = new List<VoidPtr>();
+            List<Task> tasks = new List<Task>();
+            npy_intp taskCount = Math.Min(iterationTaskCountMax, multi.size - multi.index);
+
+            int errorsDetected = 0;
 
             while (multi.index < multi.size)
             {
-                vp1.Add(new VoidPtr(multi.iters[0].dataptr));
-                vp2.Add(new VoidPtr(multi.iters[1].dataptr));
+                iterList1.Add(new VoidPtr(multi.iters[0].dataptr));
+                iterList2.Add(new VoidPtr(multi.iters[1].dataptr));
+
+                if (iterList1.Count == taskCount)
+                {
+                    var workerThreadIterList1 = iterList1;
+                    var workerThreadIterList2 = iterList2;
+
+                    var task = Task.Run(() =>
+                    {
+                        _broadcast_copy_worker_thread(workerThreadIterList1, workerThreadIterList2, ref errorsDetected,
+                            dest, src, myfunc, swap, maxaxis, maxdim, multi.iters[0].strides, multi.iters[1].strides);
+
+                        // free data ASAP
+                        workerThreadIterList1.Clear();
+                        workerThreadIterList1 = null;
+                        workerThreadIterList2.Clear();
+                        workerThreadIterList2 = null;
+                    });
+                    tasks.Add(task);
+
+                    iterList1 = new List<VoidPtr>();
+                    iterList2 = new List<VoidPtr>();
+
+                    taskCount = Math.Min(iterationTaskCountMax, multi.size - multi.index);
+                }
+
                 NpyArray_MultiIter_NEXT(multi);
             }
 
-            Parallel.For(0, vp1.Count, i =>
+
+            Task.WaitAll(tasks.ToArray());
+
+            Npy_DECREF(multi);
+
+            if (errorsDetected > 0)
             {
-                myfunc(vp1[i],
-                       multi.iters[0].strides[maxaxis],
-                       vp2[i],
-                       multi.iters[1].strides[maxaxis],
+                return -1;
+            }
+
+            return 0;
+        }
+
+        internal static int _broadcast_copy_worker_thread(
+                List<VoidPtr> iterList1, List<VoidPtr> iterList2, ref int errorsDetected,
+                NpyArray dest, NpyArray src, strided_copy_func_t myfunc, bool swap, 
+                int maxaxis, npy_intp maxdim, npy_intp[] strides0, npy_intp[] strides1)
+        {
+            NpyArray_Descr descr = dest.descr;
+            int elsize = descr.elsize;
+
+            var parallelLoopResult = Parallel.For(0, iterList1.Count, i =>
+            {
+                myfunc(iterList1[i],
+                       strides0[maxaxis],
+                       iterList2[i],
+                       strides1[maxaxis],
                        maxdim, elsize, descr);
+
                 if (swap)
                 {
-                    _strided_byte_swap(vp1[i],
-                                       multi.iters[0].strides[maxaxis],
+                    _strided_byte_swap(iterList1[i],
+                                       strides0[maxaxis],
                                        maxdim, elsize);
                 }
             });
 
-            Npy_DECREF(multi);
+            if (!parallelLoopResult.IsCompleted)
+            {
+                Interlocked.Increment(ref errorsDetected);
+            }
+
             return 0;
         }
 
