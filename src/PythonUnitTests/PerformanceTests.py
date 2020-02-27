@@ -559,5 +559,47 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))
 
+    
+    def test_Performance_IterSubscriptAssignSlice_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m1.flat[2:-2:2] = 99;
+            #m4 = np.sum(m3)
+            #print(m4)
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))
+
+    def test_Performance_IterSubscriptAssignSlice2_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        m2 = np.arange(160, dtype=np.float64)
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m1.flat[2:-2:2] = m2;
+            #m4 = np.sum(m3)
+            #print(m4)
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()

@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3013,7 +3013,53 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        //[Ignore]
+        [TestMethod]
+        public void Performance_IterSubscriptAssignSlice_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1.Flat["2:-2:2"] = 99;
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        [TestMethod]
+        public void Performance_IterSubscriptAssignSlice2_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var m2 = np.arange(16000000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1.Flat["2:-2:2"] = m2;
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+
+        [Ignore]
         [TestMethod]
         public void Performance_in1d_DOUBLE()
         {

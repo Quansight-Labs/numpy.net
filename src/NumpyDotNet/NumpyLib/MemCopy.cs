@@ -3466,6 +3466,8 @@ namespace NumpyLib
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
+        void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap);
+
     }
 
     abstract class CopyHelper<T>
@@ -3650,6 +3652,54 @@ namespace NumpyLib
             return -1;
         }
 
+        public void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap)
+        {
+            int elsize = GetTypeSize(destIter.dataptr);
+
+            T[] d = destIter.dataptr.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            if (srcIter.size == 1)
+            {
+                srcIter.dataptr.data_offset /= elsize;
+
+                while (steps-- > 0)
+                {
+                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, start);
+
+                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+
+                    if (swap)
+                    {
+                        swapvalue(destIter.dataptr, elsize);
+                    }
+   
+                    start += step_size;
+                }
+            }
+            else
+            {
+                while (steps-- > 0)
+                {
+                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, start);
+
+                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+
+                    if (swap)
+                    {
+                        swapvalue(destIter.dataptr, elsize);
+                    }
+
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter);
+                    if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
+                    {
+                        numpyinternal.NpyArray_ITER_RESET(srcIter);
+                    }
+                    start += step_size;
+                }
+            }
+    
+        }
 
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
         {

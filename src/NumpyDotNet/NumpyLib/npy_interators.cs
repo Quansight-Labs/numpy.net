@@ -963,8 +963,15 @@ namespace NumpyLib
         {
             Debug.Assert(Validate(it));
             it.index = 0;
-            it.dataptr = new VoidPtr(it.ao);
-            memset(new VoidPtr(it.coordinates), 0, (it.nd_m1+1) * sizeof(npy_intp));
+            if (it.dataptr.datap != null)
+            {
+                it.dataptr.data_offset = it.ao.data.data_offset;
+            }
+            else
+            {
+                it.dataptr = new VoidPtr(it.ao);
+            }
+            Array.Clear(it.coordinates, 0, it.coordinates.Length);
         }
 
         static int array_iter_base_init(NpyArrayIterObject it, NpyArray ao)
@@ -1283,7 +1290,6 @@ namespace NumpyLib
             NpyArray converted_value;
             npy_intp steps, start, step_size;
             bool swap;
-            NpyArray_CopySwapFunc copyswap;
             NpyArrayIterObject value_iter = null;
 
  
@@ -1305,25 +1311,15 @@ namespace NumpyLib
             if (value_iter.size > 0)
             {
                 steps = NpyArray_SliceSteps(slice);
-                copyswap = self.ao.descr.f.copyswap;
                 start = slice.start;
                 step_size = slice.step;
                 swap = (NpyArray_ISNOTSWAPPED(self.ao) !=
                         NpyArray_ISNOTSWAPPED(converted_value));
 
                 NpyArray_ITER_RESET(self);
-                while (steps-- > 0)
-                {
-                    NpyArray_ITER_GOTO1D(self, start);
-
-                    copyswap(self.dataptr, value_iter.dataptr, swap, self.ao);
-                    NpyArray_ITER_NEXT(value_iter);
-                    if (!NpyArray_ITER_NOTDONE(value_iter))
-                    {
-                        NpyArray_ITER_RESET(value_iter);
-                    }
-                    start += step_size;
-                }
+                var helper = MemCopy.GetMemcopyHelper(self.dataptr);
+                helper.IterSubscriptAssignSlice(self, value_iter, steps, start, step_size, swap);
+    
                 NpyArray_ITER_RESET(self);
             }
 
@@ -1332,6 +1328,7 @@ namespace NumpyLib
 
             return 0;
         }
+
 
         internal static int NpyArray_IterSubscriptAssignIntp(NpyArrayIterObject self, npy_intp index, NpyArray value)
         {
