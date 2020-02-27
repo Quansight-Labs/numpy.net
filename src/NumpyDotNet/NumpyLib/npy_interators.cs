@@ -1195,23 +1195,17 @@ namespace NumpyLib
 
             return result;
         }
-
    
 
-        internal static NpyArray NpyArray_IterSubscriptIntpArray(NpyArrayIterObject self, NpyArray index)
+        internal static NpyArray NpyArray_IterSubscriptIntpArray(NpyArrayIterObject self, NpyArray Intp_Array)
         {
             NpyArray result;
-            NpyArray_CopySwapFunc copyswap;
             NpyArrayIterObject index_iter;
-            npy_intp i, num;
-            VoidPtr optr;
-            int elsize;
-            bool swap;
 
             /* Build the result in the same shape as the index. */
             Npy_INCREF(self.ao.descr);
             result = NpyArray_Alloc(self.ao.descr,
-                                    index.nd, index.dimensions,
+                                    Intp_Array.nd, Intp_Array.dimensions,
                                     false, Npy_INTERFACE(self.ao));
             if (result == null)
             {
@@ -1219,43 +1213,30 @@ namespace NumpyLib
             }
 
             /* Copy in the data. */
-            index_iter = NpyArray_IterNew(index);
+            index_iter = NpyArray_IterNew(Intp_Array);
             if (index_iter == null)
             {
                 Npy_DECREF(result);
                 return null;
             }
-            copyswap = result.descr.f.copyswap;
-            i = index_iter.size;
-            swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(result));
-            optr = new VoidPtr(result);
-            elsize = result.descr.elsize;
+
+            bool swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(result));
+            VoidPtr optr = new VoidPtr(result);
 
             NpyArray_ITER_RESET(self);
 
-            npy_intp[] dataptr = index_iter.dataptr.datap as npy_intp[];
-            while (i-- > 0)
+            var helper = MemCopy.GetMemcopyHelper(optr);
+            npy_intp num = helper.IterSubscriptIntpArray(self, index_iter, optr, swap);
+            if (num > 0)
             {
-                num = dataptr[index_iter.dataptr.data_offset / sizeof(npy_intp)];
-                if (num < 0)
-                {
-                    num += self.size;
-                }
-                if (num < 0 || num >= self.size)
-                {
-                    string msg = string.Format("index {0} out of bounds 0<=index<{1}", num, self.size);
-                    NpyErr_SetString(npyexc_type.NpyExc_IndexError, msg);
-                    Npy_DECREF(index_iter);
-                    Npy_DECREF(result);
-                    NpyArray_ITER_RESET(self);
-                    return null;
-                }
-                NpyArray_ITER_GOTO1D(self, num);
-
-                copyswap(optr, self.dataptr, swap, result);
-                optr.data_offset += elsize;
-                NpyArray_ITER_NEXT(index_iter);
+                string msg = string.Format("index {0} out of bounds 0<=index<{1}", num, self.size);
+                NpyErr_SetString(npyexc_type.NpyExc_IndexError, msg);
+                Npy_DECREF(index_iter);
+                Npy_DECREF(result);
+                NpyArray_ITER_RESET(self);
+                return null;
             }
+
             Npy_DECREF(index_iter);
             NpyArray_ITER_RESET(self);
 
