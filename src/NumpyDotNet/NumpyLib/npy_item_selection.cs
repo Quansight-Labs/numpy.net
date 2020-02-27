@@ -1474,43 +1474,54 @@ namespace NumpyLib
         }
 
         #region ArgSort MERGESORT
-        private static void ArgSortMainMerge<T>(ArgSortData<T>[] args, npy_intp left, npy_intp mid, npy_intp right) where T : IComparable
-        {
-            ArgSortData<T>[] temp = new ArgSortData<T>[args.Length];
-            npy_intp i, eol, num, pos;
-            eol = (mid - 1);
-            pos = left;
-            num = (right - left + 1);
 
-            while ((left <= eol) && (mid <= right))
+        private static void ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right) where T : IComparable
+        {
+            if (left < right)
             {
-                if (args[left].CompareTo(args[mid]) <= 0)
-                    temp[pos++] = args[left++];
+                npy_intp middle = (left + right) / 2;
+
+                ArgMergeSort(input, left, middle);
+                ArgMergeSort(input, middle + 1, right);
+
+                ArgMerge(input, left, middle, right);
+            }
+        }
+        private static void ArgMerge<T>(ArgSortData<T>[] input, npy_intp left, npy_intp middle, npy_intp right) where T : IComparable
+        {
+            var leftArray = new ArgSortData<T>[middle - left + 1];
+            var rightArray = new ArgSortData<T>[right - middle];
+
+            Array.Copy(input, left, leftArray, 0, middle - left + 1);
+            Array.Copy(input, middle + 1, rightArray, 0, right - middle);
+
+            int i = 0;
+            int j = 0;
+            for (npy_intp k = left; k < right + 1; k++)
+            {
+                if (i == leftArray.Length)
+                {
+                    input[k] = rightArray[j];
+                    j++;
+                }
+                else if (j == rightArray.Length)
+                {
+                    input[k] = leftArray[i];
+                    i++;
+                }
+                else if (leftArray[i].CompareTo(rightArray[j]) <= 0)
+                {
+                    input[k] = leftArray[i];
+                    i++;
+                }
                 else
-                    temp[pos++] = args[mid++];
-            }
-            while (left <= eol)
-                temp[pos++] = args[left++];
-            while (mid <= right)
-                temp[pos++] = args[mid++];
-            for (i = 0; i < num; i++)
-            {
-                args[right] = temp[right];
-                right--;
+                {
+                    input[k] = rightArray[j];
+                    j++;
+                }
             }
         }
-
-        private static void ArgSortMerge<T>(ArgSortData<T>[] args, npy_intp left, npy_intp right) where T : IComparable
-        {
-            npy_intp mid;
-            if (right > left)
-            {
-                mid = (right + left) / 2;
-                ArgSortMerge(args, left, mid);
-                ArgSortMerge(args, (mid + 1), right);
-                ArgSortMainMerge<T>(args, left, (mid + 1), right);
-            }
-        }
+   
         #endregion
 
         private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind) where T : IComparable
@@ -1528,7 +1539,7 @@ namespace NumpyLib
 
             if (kind == NPY_SORTKIND.NPY_MERGESORT)
             {
-                ArgSortMerge(argSortDouble, 0, m - 1);
+                ArgMergeSort(argSortDouble, 0, m - 1);
             }
             else
             {
