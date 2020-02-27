@@ -1052,7 +1052,6 @@ namespace NumpyLib
             NpyArray result;
             npy_intp[] steps = new npy_intp[1] { 0 };
             npy_intp start, step_size;
-            int elsize; 
             bool swap;
             VoidPtr dptr;
             NpyArray_CopySwapFunc copyswap;
@@ -1070,10 +1069,8 @@ namespace NumpyLib
             }
 
             /* Copy in the data. */
-            copyswap = result.descr.f.copyswap;
             start = slice.start;
             step_size = slice.step;
-            elsize = result.descr.elsize;
             swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(result));
             dptr = new VoidPtr(result);
 
