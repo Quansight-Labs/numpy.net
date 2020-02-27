@@ -3460,8 +3460,10 @@ namespace NumpyLib
     public interface ICopyHelper
     {
         void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
+        void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
+        void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3498,7 +3500,58 @@ namespace NumpyLib
             //});
 
         }
-               
+
+        public void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
+                 npy_intp start, npy_intp step_size, bool swap)
+        {
+
+            int elsize = GetTypeSize(_dst);
+
+            T[] d = _dst.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            npy_intp stepper = steps[0];
+
+            _dst.data_offset /= elsize;
+
+            while (stepper-- > 0)
+            {
+                numpyinternal.NpyArray_ITER_GOTO1D(srcIter, start);
+
+                d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+
+                if (swap)
+                {
+                    swapvalue(_dst, elsize);
+                }
+
+                start += step_size;
+            }
+
+
+            steps[0] = stepper;
+        }
+
+
+        public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
+        {
+
+            int elsize = GetTypeSize(_dst);
+
+            if (_src != null)
+            {
+                T[] d = _dst.datap as T[];
+                T[] s = _src.datap as T[];
+
+                d[_dst.data_offset / elsize] = s[_src.data_offset / elsize];
+            }
+
+            if (swap)
+            {
+                swapvalue(_dst, elsize);
+            }
+        }
+
         public void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap)
         {
             int elsize = GetTypeSize(_dst);

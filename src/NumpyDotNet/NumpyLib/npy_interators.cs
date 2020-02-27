@@ -1079,20 +1079,15 @@ namespace NumpyLib
 
             NpyArray_ITER_RESET(self);
 
-            while (steps[0]-- > 0)
-            {
-                NpyArray_ITER_GOTO1D(self, start);
- 
-                copyswap(dptr, self.dataptr, swap, result);
-                dptr.data_offset += elsize;
-                start += step_size;
-            }
+            var helper = MemCopy.GetMemcopyHelper(dptr);
+            helper.IterSubscriptSlice(steps, self, dptr, start, step_size, swap);
+
             NpyArray_ITER_RESET(self);
 
             return result;
         }
 
-
+      
         internal static void NpyArray_ITER_GOTO1D(NpyArrayIterObject it, npy_intp indices)
         {
             Debug.Assert(Validate(it));
@@ -1103,17 +1098,15 @@ namespace NumpyLib
             it.index = indices;
             if (it.nd_m1 == 0)
             {
-                it.dataptr = new VoidPtr(it.ao);
-                it.dataptr.data_offset += indices * it.strides[0];
+                it.dataptr.data_offset = it.ao.data.data_offset + (indices * it.strides[0]);
             }
             else if (it.contiguous)
             {
-                it.dataptr = new VoidPtr(it.ao);
-                it.dataptr.data_offset += (npy_intp)(indices * it.ao.descr.elsize);
+                it.dataptr.data_offset = it.ao.data.data_offset + (indices * it.ao.descr.elsize);
             }
             else
             {
-                it.dataptr = new VoidPtr(it.ao);
+                it.dataptr.data_offset = it.ao.data.data_offset;
                 for (int index = 0; index <= it.nd_m1; index++)
                 {
                     it.dataptr.data_offset += (indices / it.factors[index]) * it.strides[index];
@@ -1127,7 +1120,7 @@ namespace NumpyLib
             Debug.Assert(Validate(it));
             int i;
             it.index = 0;
-            it.dataptr = new VoidPtr(it.ao);
+            it.dataptr.data_offset = it.ao.data.data_offset;
             for (i = it.nd_m1; i >= 0; i--)
             {
                 if (destination[i] < 0)
