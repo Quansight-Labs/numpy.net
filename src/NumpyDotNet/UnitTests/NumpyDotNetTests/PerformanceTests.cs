@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -2912,7 +2912,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_argpartition_DOUBLE()
         {
-            int LoopCount = 1;
+            int LoopCount = 20;
 
             var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
             var indices = np.arange(0, 16000000, 2, dtype: np.Int32).reshape(20, -1);
@@ -2934,6 +2934,33 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_IterSubscriptSlice_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                int start = 0;
+                int stop = -1;
+                int step = 2;
+
+                var perm1 = m1.Flat[new Slice(start, stop, step)];
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
 
 
     }
