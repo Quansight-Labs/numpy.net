@@ -1138,8 +1138,6 @@ namespace NumpyLib
             npy_intp stride;
             VoidPtr dptr;
             VoidPtr optr;
-            int elsize;
-            NpyArray_CopySwapFunc copyswap;
             bool swap;
 
             if (index.nd != 1)
@@ -1185,39 +1183,20 @@ namespace NumpyLib
             }
 
             /* Copy in the data. */
-            copyswap = result.descr.f.copyswap;
             swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(result));
-            elsize = result.descr.elsize;
             optr = new VoidPtr(result);
             dptr = new VoidPtr(index);
             NpyArray_ITER_RESET(self);
 
-            data = dptr.datap as bool[];
-
-            NpyArray_IterSubscriptBoolArray_XXX(self, optr, result, data, stride, bool_size, copyswap, swap);
-         
-            Debug.Assert(optr.datap == result.data.datap && optr.data_offset == (result_size * elsize));
+            var helper = MemCopy.GetMemcopyHelper(optr);
+            helper.IterSubscriptBoolArray(self, optr, data, stride, bool_size, swap);
+        
             NpyArray_ITER_RESET(self);
 
             return result;
         }
 
-        internal static void NpyArray_IterSubscriptBoolArray_XXX(NpyArrayIterObject self, VoidPtr optr, NpyArray result, bool[] data, npy_intp stride, npy_intp bool_array_size, NpyArray_CopySwapFunc copyswap, bool swap)
-        {
-            npy_intp dptr_index = 0;
-            int elsize = GetTypeSize(optr);
-
-            while (bool_array_size-- > 0)
-            {
-                if (data[dptr_index])
-                {
-                    copyswap(optr, self.dataptr, swap, result);
-                    optr.data_offset += elsize;
-                }
-                dptr_index += stride;
-                NpyArray_ITER_NEXT(self);
-            }
-        }
+   
 
         internal static NpyArray NpyArray_IterSubscriptIntpArray(NpyArrayIterObject self, NpyArray index)
         {

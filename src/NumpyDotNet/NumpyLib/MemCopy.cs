@@ -3464,6 +3464,7 @@ namespace NumpyLib
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
+        void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3530,6 +3531,27 @@ namespace NumpyLib
 
 
             steps[0] = stepper;
+        }
+
+        public void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap)
+        {
+            int elsize = GetTypeSize(_dst);
+
+            T[] d = _dst.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            _dst.data_offset /= elsize;
+
+            npy_intp dptr_index = 0;
+            while (bool_array_size-- > 0)
+            {
+                if (bool_array[dptr_index])
+                {
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+                }
+                dptr_index += stride;
+                numpyinternal.NpyArray_ITER_NEXT(srcIter);
+            }
         }
 
 
