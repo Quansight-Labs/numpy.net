@@ -765,7 +765,7 @@ namespace NumpyLib
             return null;
         }
 
-        private static int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        private static int _new_sortlike(NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth, NPY_SORTKIND kind)
         {
             npy_intp N = NpyArray_DIM(op, axis);
             NpyArrayIterObject it;
@@ -800,7 +800,7 @@ namespace NumpyLib
                     var workerThreadIterList = iterList;
                     var task = Task.Run(() =>
                     {
-                        _new_sortlike_worker_thread(workerThreadIterList, ref errorsDetected, op, axis, sort, part, kth, nkth);
+                        _new_sortlike_worker_thread(workerThreadIterList, ref errorsDetected, op, axis, sort, part, kth, nkth,kind);
                         // free data ASAP
                         workerThreadIterList.Clear();
                         workerThreadIterList = null;
@@ -821,7 +821,7 @@ namespace NumpyLib
             return 0;
         }
 
-        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errorsDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth)
+        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errorsDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth, NPY_SORTKIND kind)
         {
             npy_intp N = NpyArray_DIM(op, axis);
             int elsize = NpyArray_ITEMSIZE(op);
@@ -855,7 +855,7 @@ namespace NumpyLib
 
                 if (part == null)
                 {
-                    ret = sort(bufptr, N, op);
+                    ret = sort(bufptr, N, op, kind);
                     if (ret < 0)
                     {
                         has_failed = true;
@@ -1041,7 +1041,7 @@ namespace NumpyLib
 
                 if (argpart == null)
                 {
-                    ret = argsort(valptr, idxptr, N, op);
+                    ret = argsort(valptr, idxptr, N, op, NPY_SORTKIND.NPY_QUICKSORT);
 
                     if (ret < 0)
                     {
@@ -1248,7 +1248,7 @@ namespace NumpyLib
 
  
 
-        internal static int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND which)
+        internal static int NpyArray_Partition(NpyArray op, NpyArray ktharray, int axis,  NPY_SELECTKIND kind)
         {
             NpyArray kthrvl;
             NpyArray_PartitionFunc part;
@@ -1268,7 +1268,7 @@ namespace NumpyLib
                 return -1;
             }
        
-            part = get_partition_func(NpyArray_TYPE(op), which);
+            part = get_partition_func(NpyArray_TYPE(op), kind);
             if (part == null)
             {
                 /* Use sorting, slower but equivalent */
@@ -1290,7 +1290,7 @@ namespace NumpyLib
                 return -1;
             }
 
-            ret = _new_sortlike(op, axis, sort, part, NpyArray_DATA(kthrvl).datap as npy_intp[], NpyArray_SIZE(kthrvl));
+            ret = _new_sortlike(op, axis, sort, part, NpyArray_DATA(kthrvl).datap as npy_intp[], NpyArray_SIZE(kthrvl), NPY_SORTKIND.NPY_QUICKSORT);
 
             Npy_DECREF(kthrvl);
 
@@ -1972,7 +1972,7 @@ namespace NumpyLib
         #region sorting algorithms
         private static void qsort(VoidPtr ip, npy_intp ip_index, npy_intp length, int elsize, Func<object, object, int> qsortCompare)
         {
-            NpyArray_SortFunc(new VoidPtr(ip, ip_index), length, null);
+            NpyArray_SortFunc(new VoidPtr(ip, ip_index), length, null, NPY_SORTKIND.NPY_QUICKSORT);
         }
 
         /*
@@ -1983,7 +1983,7 @@ namespace NumpyLib
         * it to the sorting routine.  An iterator is constructed and adjusted to walk
         * over all but the desired sorting axis.
         */
-        static int _new_sort(NpyArray op, int axis, NPY_SORTKIND which)
+        static int _new_sort(NpyArray op, int axis, NPY_SORTKIND kind)
         {
             NpyArrayIterObject it;
             bool needcopy = false;
@@ -2001,7 +2001,7 @@ namespace NumpyLib
                 return -1;
             }
 
-            sort = op.descr.f.sort[(int)which];
+            sort = op.descr.f.sort[(int)kind];
             size = it.size;
             N = op.dimensions[axis];
             elsize = op.descr.elsize;
@@ -2021,7 +2021,7 @@ namespace NumpyLib
                     {
                         _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
                     }
-                    if (sort(buffer, N, op) < 0)
+                    if (sort(buffer, N, op, kind) < 0)
                     {
                         NpyDataMem_FREE(buffer);
                         goto fail;
@@ -2040,7 +2040,7 @@ namespace NumpyLib
             {
                 while (size-- > 0)
                 {
-                    if (sort(it.dataptr, N, op) < 0)
+                    if (sort(it.dataptr, N, op, kind) < 0)
                     {
                         goto fail;
                     }
@@ -2055,7 +2055,7 @@ namespace NumpyLib
             return 0;
         }
 
-        static NpyArray _new_argsort(NpyArray op, int axis, NPY_SORTKIND which)
+        static NpyArray _new_argsort(NpyArray op, int axis, NPY_SORTKIND kind)
         {
 
             NpyArrayIterObject it = null;
@@ -2085,7 +2085,7 @@ namespace NumpyLib
             }
             swap = !NpyArray_ISNOTSWAPPED(op);
 
-            argsort = op.descr.f.argsort[(int)which];
+            argsort = op.descr.f.argsort[(int)kind];
             size = it.size;
             N = op.dimensions[axis];
             elsize = op.descr.elsize;
@@ -2111,7 +2111,7 @@ namespace NumpyLib
                     iptr = indbuffer;
                     BuildINTPArray(iptr, N);
 
-                    if (argsort(valbuffer, iptr, N, op) < 0)
+                    if (argsort(valbuffer, iptr, N, op, kind) < 0)
                     {
                         NpyDataMem_FREE(valbuffer);
                         NpyDataMem_FREE(indbuffer);
@@ -2151,7 +2151,7 @@ namespace NumpyLib
                         var task = Task.Run(() =>
                         {
                             _new_argsort_nocopy_worker_thread(workerThreadDataList, workerThreadArgList, ref errorsDetected,
-                                   op, argsort, N);
+                                   op, argsort, N,kind);
 
                             // free data ASAP
                             workerThreadDataList.Clear();
@@ -2191,12 +2191,12 @@ namespace NumpyLib
         }
 
         internal static void _new_argsort_nocopy_worker_thread(List<VoidPtr> dataList, List<VoidPtr> argList, ref int errorsDetected,
-                            NpyArray op, NpyArray_ArgSortFunc argsort, npy_intp N)
+                            NpyArray op, NpyArray_ArgSortFunc argsort, npy_intp N, NPY_SORTKIND kind)
         {
             bool failure_detected = false;
             var parallelLoopResult = Parallel.For(0, dataList.Count, ii =>
             {
-                if (argsort(dataList[ii], argList[ii], N, op) < 0)
+                if (argsort(dataList[ii], argList[ii], N, op, kind) < 0)
                 {
                     failure_detected = true;
                 }

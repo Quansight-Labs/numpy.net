@@ -1200,7 +1200,7 @@ namespace NumpyLib
 
         #endregion
 
-        internal static int NpyArray_SortFunc(object o1, npy_intp length, NpyArray NOTUSED)
+        internal static int NpyArray_SortFunc(object o1, npy_intp length, NpyArray NOTUSED, NPY_SORTKIND kind)
         {
             VoidPtr arr = o1 as VoidPtr;
             return NpyArray_SortFuncTypeNum(arr, (int)(arr.data_offset / GetTypeSize(arr.type_num)), (int)length);
@@ -1213,7 +1213,7 @@ namespace NumpyLib
         }
 
 
-        internal static int NpyArray_ArgSortFunc(object o1, VoidPtr indices, npy_intp m, NpyArray a)
+        internal static int NpyArray_ArgSortFunc(object o1, VoidPtr indices, npy_intp m, NpyArray a, NPY_SORTKIND kind)
         {
             VoidPtr sortData = o1 as VoidPtr;
             ArgSortIndexes(indices, m, new VoidPtr(sortData), 0);
