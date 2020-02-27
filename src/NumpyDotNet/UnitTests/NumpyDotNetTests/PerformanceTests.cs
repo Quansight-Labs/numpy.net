@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -2962,11 +2962,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_IterSubscriptBoolArray_DOUBLE()
         {
-            int LoopCount = 1;
+            int LoopCount = 20;
 
             var m1 = np.arange(16000000, dtype: np.Float64);
             var mask = np.ndarray(m1.shape, dtype: np.Bool);
@@ -2981,6 +2981,29 @@ namespace NumpyDotNetTests
                 ndarray m3 = m1.A(mask) as ndarray;
                 //ndarray m4 = np.sum(m3);
                 //print(m4);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        [TestMethod]
+        public void Performance_IterSubscriptIntpArray_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var index = np.arange(0,16000000, 2, dtype: np.intp);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = m1.A(index) as ndarray;
             }
 
 
@@ -3017,7 +3040,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-
+        
     }
 
 #endif
