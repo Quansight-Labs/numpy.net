@@ -1473,8 +1473,45 @@ namespace NumpyLib
             }
         }
 
-  
+        #region ArgSort MERGESORT
+        private static void ArgSortMainMerge<T>(ArgSortData<T>[] args, npy_intp left, npy_intp mid, npy_intp right) where T : IComparable
+        {
+            ArgSortData<T>[] temp = new ArgSortData<T>[args.Length];
+            npy_intp i, eol, num, pos;
+            eol = (mid - 1);
+            pos = left;
+            num = (right - left + 1);
 
+            while ((left <= eol) && (mid <= right))
+            {
+                if (args[left].CompareTo(args[mid]) <= 0)
+                    temp[pos++] = args[left++];
+                else
+                    temp[pos++] = args[mid++];
+            }
+            while (left <= eol)
+                temp[pos++] = args[left++];
+            while (mid <= right)
+                temp[pos++] = args[mid++];
+            for (i = 0; i < num; i++)
+            {
+                args[right] = temp[right];
+                right--;
+            }
+        }
+
+        private static void ArgSortMerge<T>(ArgSortData<T>[] args, npy_intp left, npy_intp right) where T : IComparable
+        {
+            npy_intp mid;
+            if (right > left)
+            {
+                mid = (right + left) / 2;
+                ArgSortMerge(args, left, mid);
+                ArgSortMerge(args, (mid + 1), right);
+                ArgSortMainMerge<T>(args, left, (mid + 1), right);
+            }
+        }
+        #endregion
 
         private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind) where T : IComparable
         {
@@ -1489,7 +1526,14 @@ namespace NumpyLib
                 argSortDouble[i] = new ArgSortData<T>(i, data[i+ adjustedIndex]);
             }
 
-            Array.Sort(argSortDouble);
+            if (kind == NPY_SORTKIND.NPY_MERGESORT)
+            {
+                ArgSortMerge(argSortDouble, 0, m - 1);
+            }
+            else
+            {
+                Array.Sort(argSortDouble);
+            }
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
             for (int i = 0; i < m; i++)
@@ -1497,6 +1541,8 @@ namespace NumpyLib
                 _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
             }
         }
+
+    
 
         class ArgSortData_COMPLEX : IComparable
         {
