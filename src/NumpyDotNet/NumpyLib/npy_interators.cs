@@ -1273,7 +1273,7 @@ namespace NumpyLib
             NpyArray_ITER_RESET(self);
             NpyArray_ITER_GOTO1D(self, index);
 
-            result.descr.f.copyswap(result.data, self.dataptr, swap, self.ao);
+            MemCopy.GetMemcopyHelper(result.data).copyswap(result.data, self.dataptr, swap);
             NpyArray_ITER_RESET(self);
             return result;
         }
