@@ -1134,7 +1134,7 @@ namespace NumpyLib
         {
             NpyArray result;
             npy_intp bool_size, i;
-            npy_intp []result_size = new npy_intp[1] { 0 };
+            npy_intp result_size;
             npy_intp stride;
             VoidPtr dptr;
             VoidPtr optr;
@@ -1163,21 +1163,22 @@ namespace NumpyLib
             Debug.Assert(index.descr.elsize == 1);
 
             i = bool_size;
-            result_size[0] = 0;
+            result_size = 0;
+
             bool[] data = dptr.datap as bool[];
             npy_intp dptr_index = 0;
             while (i-- > 0)
             {
                 if (data[dptr_index])
                 {
-                    ++result_size[0];
+                    ++result_size;
                 }
                 dptr_index += stride;
             }
 
             /* Build the result. */
             Npy_INCREF(self.ao.descr);
-            result = NpyArray_Alloc(self.ao.descr, 1, result_size, false, Npy_INTERFACE(self.ao));
+            result = NpyArray_Alloc(self.ao.descr, 1, new npy_intp[] { result_size }, false, Npy_INTERFACE(self.ao));
             if (result == null)
             {
                 return null;
@@ -1190,13 +1191,23 @@ namespace NumpyLib
             optr = new VoidPtr(result);
             dptr = new VoidPtr(index);
             NpyArray_ITER_RESET(self);
-            i = bool_size;
 
             data = dptr.datap as bool[];
-            dptr_index = 0;
 
-            //copyswap = GetTestCopySwap(optr, self.dataptr, swap, result);
-            while (i-- > 0)
+            NpyArray_IterSubscriptBoolArray_XXX(self, optr, result, data, stride, bool_size, copyswap, swap);
+         
+            Debug.Assert(optr.datap == result.data.datap && optr.data_offset == (result_size * elsize));
+            NpyArray_ITER_RESET(self);
+
+            return result;
+        }
+
+        internal static void NpyArray_IterSubscriptBoolArray_XXX(NpyArrayIterObject self, VoidPtr optr, NpyArray result, bool[] data, npy_intp stride, npy_intp bool_array_size, NpyArray_CopySwapFunc copyswap, bool swap)
+        {
+            npy_intp dptr_index = 0;
+            int elsize = GetTypeSize(optr);
+
+            while (bool_array_size-- > 0)
             {
                 if (data[dptr_index])
                 {
@@ -1206,10 +1217,6 @@ namespace NumpyLib
                 dptr_index += stride;
                 NpyArray_ITER_NEXT(self);
             }
-            Debug.Assert(optr.datap == result.data.datap && optr.data_offset == (result_size[0] * elsize));
-            NpyArray_ITER_RESET(self);
-
-            return result;
         }
 
         internal static NpyArray NpyArray_IterSubscriptIntpArray(NpyArrayIterObject self, NpyArray index)
