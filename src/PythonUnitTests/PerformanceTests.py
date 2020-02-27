@@ -514,5 +514,29 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
+    def test_Performance_IterSubscriptBoolArray_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        mask = np.ndarray(m1.shape, dtype=np.bool);
+        mask[:] = False;
+        mask[::2] = True;
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m3 = m1[mask];
+            #m4 = np.sum(m3)
+            #print(m4)
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()

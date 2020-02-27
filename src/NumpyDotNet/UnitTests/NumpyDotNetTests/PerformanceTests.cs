@@ -2847,7 +2847,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                ndarray perm1 = np.argsort(m1, kind: NPY_SORTKIND.NPY_MERGESORT);
+                ndarray perm1 = np.argsort(m1, kind: NPY_SORTKIND.NPY_QUICKSORT);
             }
 
 
@@ -2959,6 +2959,61 @@ namespace NumpyDotNetTests
             sw.Stop();
 
             Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_IterSubscriptBoolArray_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var mask = np.ndarray(m1.shape, dtype: np.Bool);
+            mask[":"] = false;
+            mask["::2"] = true;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = m1.A(mask) as ndarray;
+                //ndarray m4 = np.sum(m3);
+                //print(m4);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_in1d_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(160000, dtype: np.Float64);
+            var m2 = np.arange(0, 160000, 2, dtype: np.Float64);
+            ndarray mask = np.in1d(m1, m2);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = m1.A(mask) as ndarray;
+                ndarray m4 = np.sum(m3);
+                print(m4);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
