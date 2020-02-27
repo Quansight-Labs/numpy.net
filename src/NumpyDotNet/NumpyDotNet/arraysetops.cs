@@ -521,7 +521,7 @@ namespace NumpyDotNet
             ar1 = np.asarray(ar1).ravel();
             ar2 = np.asarray(ar2).ravel();
 
- 
+
             // This code is run when
             // a) the first condition is true, making the code significantly faster
             // b) the second condition is true (i.e. `ar1` or `ar2` may contain
@@ -564,7 +564,7 @@ namespace NumpyDotNet
                             ndarray temp = ar1 == a;
                             mask |= temp;
                         }
-  
+
                     }
 
                 }
@@ -576,7 +576,7 @@ namespace NumpyDotNet
             ndarray rev_idx = null;
             if (!assume_unique)
             {
-                var temp = np.unique(ar1, return_inverse: true);
+                var temp = np.unique(ar1, return_inverse: true, return_index: true);
                 ar1 = temp.data;
                 rev_idx = temp.indices;
 
