@@ -1299,7 +1299,7 @@ namespace NumpyLib
         }
 
   
-        internal static NpyArray NpyArray_ArgSort(NpyArray op, int axis, NPY_SORTKIND which)
+        internal static NpyArray NpyArray_ArgSort(NpyArray op, int axis, NPY_SORTKIND kind)
         {
             NpyArray ap = null, ret = null, op2;
             VoidPtr ip;
@@ -1331,14 +1331,14 @@ namespace NumpyLib
             }
 
             ///* Determine if we should use new algorithm or not */
-            if (op2.descr.f.argsort[(int)which] != null)
+            if (op2.descr.f.argsort[(int)kind] != null)
             {
-                ret = _new_argsort(op2, axis, which);
+                ret = _new_argsort(op2, axis, kind);
                 Npy_DECREF(op2);
                 return ret;
             }
 
-            if ((which != NPY_SORTKIND.NPY_QUICKSORT) || op2.descr.f.compare == null)
+            if ((kind != NPY_SORTKIND.NPY_QUICKSORT) || op2.descr.f.compare == null)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_TypeError, "requested sort not available for type");
                 Npy_DECREF(op2);
@@ -1376,7 +1376,7 @@ namespace NumpyLib
 
             for (i = 0; i < n; i++, ip.data_offset += m * sizeof(npy_intp), sortData += m * argsort_elsize)
             {
-                ArgSortIndexes(ip, m, sortData, 0);
+                ArgSortIndexes(ip, m, sortData, 0, kind);
             }
 
 
@@ -1476,7 +1476,7 @@ namespace NumpyLib
   
 
 
-        private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex) where T : IComparable
+        private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind) where T : IComparable
         {
             T[] data = sortData.datap as T[];
 
@@ -1533,7 +1533,7 @@ namespace NumpyLib
             }
         }
 
-        private static void argSortIndexes_COMPLEX(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
+        private static void argSortIndexes_COMPLEX(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
         {
             var data = sortData.datap as System.Numerics.Complex[];
 
@@ -1555,7 +1555,7 @@ namespace NumpyLib
             }
         }
 
-        private static void argSortIndexes_OBJECT(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
+        private static void argSortIndexes_OBJECT(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
         {
             var data = sortData.datap as System.Object[];
 
@@ -1577,57 +1577,57 @@ namespace NumpyLib
             }
         }
 
-        private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex)
+        private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
         {
             switch (sortData.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    argSortIndexes<bool>(ip, m, sortData, startingIndex);
+                    argSortIndexes<bool>(ip, m, sortData, startingIndex,kind);
                     return;
                 case NPY_TYPES.NPY_BYTE:
-                    argSortIndexes<sbyte>(ip, m, sortData, startingIndex);
+                    argSortIndexes<sbyte>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_UBYTE:
-                    argSortIndexes<byte>(ip, m, sortData, startingIndex);
+                    argSortIndexes<byte>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_INT16:
-                    argSortIndexes<Int16>(ip, m, sortData, startingIndex);
+                    argSortIndexes<Int16>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_UINT16:
-                    argSortIndexes<UInt16>(ip, m, sortData, startingIndex);
+                    argSortIndexes<UInt16>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_INT32:
-                    argSortIndexes<Int32>(ip, m, sortData, startingIndex);
+                    argSortIndexes<Int32>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_UINT32:
-                    argSortIndexes<UInt32>(ip, m, sortData, startingIndex);
+                    argSortIndexes<UInt32>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_INT64:
-                    argSortIndexes<Int64>(ip, m, sortData, startingIndex);
+                    argSortIndexes<Int64>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_UINT64:
-                    argSortIndexes<UInt64>(ip, m, sortData, startingIndex);
+                    argSortIndexes<UInt64>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_FLOAT:
-                    argSortIndexes<float>(ip, m, sortData, startingIndex);
+                    argSortIndexes<float>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_DOUBLE:
-                    argSortIndexes<double>(ip, m, sortData, startingIndex);
+                    argSortIndexes<double>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_DECIMAL:
-                    argSortIndexes<decimal>(ip, m, sortData, startingIndex);
+                    argSortIndexes<decimal>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_COMPLEX:
-                    argSortIndexes_COMPLEX(ip, m, sortData, startingIndex);
+                    argSortIndexes_COMPLEX(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_BIGINT:
-                    argSortIndexes<System.Numerics.BigInteger>(ip, m, sortData, startingIndex);
+                    argSortIndexes<System.Numerics.BigInteger>(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_OBJECT:
-                    argSortIndexes_OBJECT(ip, m, sortData, startingIndex);
+                    argSortIndexes_OBJECT(ip, m, sortData, startingIndex, kind);
                     return;
                 case NPY_TYPES.NPY_STRING:
-                    argSortIndexes<System.String>(ip, m, sortData, startingIndex);
+                    argSortIndexes<System.String>(ip, m, sortData, startingIndex, kind);
                     return;
                 default:
                     throw new Exception("ArgSortIndexes does not support this data type");

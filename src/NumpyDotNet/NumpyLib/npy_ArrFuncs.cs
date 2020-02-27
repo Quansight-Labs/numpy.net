@@ -1216,7 +1216,14 @@ namespace NumpyLib
         internal static int NpyArray_ArgSortFunc(object o1, VoidPtr indices, npy_intp m, NpyArray a, NPY_SORTKIND kind)
         {
             VoidPtr sortData = o1 as VoidPtr;
-            ArgSortIndexes(indices, m, new VoidPtr(sortData), 0);
+            if (kind == NPY_SORTKIND.NPY_MERGESORT)
+            {
+                ArgSortIndexes(indices, m, new VoidPtr(sortData), 0, kind);
+            }
+            else
+            {
+                ArgSortIndexes(indices, m, new VoidPtr(sortData), 0, kind);
+            }
             return 0;
         }
 
