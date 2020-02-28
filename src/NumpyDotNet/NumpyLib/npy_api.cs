@@ -272,7 +272,6 @@ namespace NumpyLib
 
         public int consec;
         public VoidPtr dataptr = new VoidPtr();
-        public NpyArray_CopySwapFunc copyswap;
     }
 
     public class NpyArrayNeighborhoodIterObject

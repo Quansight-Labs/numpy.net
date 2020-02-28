@@ -124,15 +124,7 @@ namespace NumpyLib
                 }
             }
             mit.numiter = j;
-            if (j > 0)
-            {
-                mit.copyswap = mit.iters[0].ao.descr.f.copyswap;
-            }
-            else
-            {
-                mit.copyswap = null;
-            }
-
+ 
             /* Broadcast the index iterators. */
             if (NpyArray_Broadcast(mit) < 0)
             {
@@ -328,11 +320,8 @@ namespace NumpyLib
             NpyArrayIterObject it;
             npy_intp i, j;
             npy_intp []coord = new npy_intp[npy_defs.NPY_MAXDIMS];
-            NpyArray_CopySwapFunc copyswap;
 
             mit.index = 0;
-
-            copyswap = mit.copyswap;
 
             if (mit.subspace != null)
             {
@@ -344,8 +333,13 @@ namespace NumpyLib
                     NpyArray_ITER_RESET(it);
                     j = mit.iteraxes[i];
 
-                    VoidPtr _coord = new VoidPtr(coord);
-                    copyswap(_coord + j * sizeof(npy_intp), it.dataptr, !NpyArray_ISNOTSWAPPED(it.ao),it.ao);
+                    npy_intp[] s = it.dataptr.datap as npy_intp[];
+                    coord[j] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                    //{
+                    //    // not sure I need to do anything here.
+                    //}
+
                 }
                 NpyArray_ITER_GOTO(mit.ait, coord);
                 mit.subspace.dataptr = new VoidPtr(mit.ait.dataptr);
@@ -360,8 +354,12 @@ namespace NumpyLib
                     {
                         NpyArray_ITER_RESET(it);
 
-                        VoidPtr _coord = new VoidPtr(coord);
-                        copyswap(_coord + i * sizeof(npy_intp), it.dataptr, !NpyArray_ISNOTSWAPPED(it.ao), it.ao);
+                        npy_intp[] s = it.dataptr.datap as npy_intp[];
+                        coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                        //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                        //{
+                        //    // not sure I need to do anything here.
+                        //}
                     }
                     else
                     {
@@ -381,14 +379,12 @@ namespace NumpyLib
             NpyArrayIterObject it;
             npy_intp i, j;
             npy_intp []coord = new npy_intp[npy_defs.NPY_MAXDIMS];
-            NpyArray_CopySwapFunc copyswap;
 
             mit.index += 1;
             if (mit.index >= mit.size)
             {
                 return;
             }
-            copyswap = mit.copyswap;
             /* Sub-space iteration */
             if (mit.subspace != null)
             {
@@ -404,8 +400,12 @@ namespace NumpyLib
                         NpyArray_ITER_NEXT(it);
                         j = mit.iteraxes[i];
 
-                        VoidPtr _coord = new VoidPtr(coord);
-                        copyswap(_coord + j * sizeof(npy_intp), it.dataptr, !NpyArray_ISNOTSWAPPED(it.ao), it.ao);
+                        npy_intp[] s = it.dataptr.datap as npy_intp[];
+                        coord[j] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                        //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                        //{
+                        //    // not sure I need to do anything here.
+                        //}
                     }
                     NpyArray_ITER_GOTO(mit.ait, coord);
                     mit.subspace.dataptr = new VoidPtr(mit.ait.dataptr);
@@ -419,8 +419,12 @@ namespace NumpyLib
                     it = mit.iters[i];
                     NpyArray_ITER_NEXT(it);
 
-                    VoidPtr _coord = new VoidPtr(coord);
-                    copyswap(_coord + i * sizeof(npy_intp), it.dataptr, !NpyArray_ISNOTSWAPPED(it.ao), it.ao);
+                    npy_intp[] s = it.dataptr.datap as npy_intp[];
+                    coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                    //{
+                    //    // not sure I need to do anything here.
+                    //}
                 }
                 NpyArray_ITER_GOTO(mit.ait, coord);
                 mit.dataptr = new VoidPtr(mit.ait.dataptr);
