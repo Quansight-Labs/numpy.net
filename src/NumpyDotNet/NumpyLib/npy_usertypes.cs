@@ -187,17 +187,13 @@ namespace NumpyLib
 
         static void _default_copyswap(VoidPtr dst, npy_intp dstride, VoidPtr src, npy_intp sstride, npy_intp n, bool swap, NpyArray arr)
         {
-            npy_intp i;
-            NpyArray_CopySwapFunc copyswap;
-
-            copyswap = NpyArray_DESCR(arr).f.copyswap;
 
             if (src != null && dst.type_num != src.type_num)
             {
                 VoidPtr _dst = new VoidPtr(dst);
                 VoidPtr _src = new VoidPtr(src);
 
-                for (i = 0; i < n; i++)
+                for (npy_intp i = 0; i < n; i++)
                 {
                     NpyArray_CopySwapFunc(_dst, _src, swap, arr);
 
