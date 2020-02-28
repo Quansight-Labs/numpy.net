@@ -623,5 +623,43 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))
 
+    def test_Performance_IterSubscriptAssignIntpArray_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        mask = np.arange(16000000, dtype=np.intp);
+
+        start = tm.time()
+
+
+        for i in range(LoopCount):
+            m1[mask] = 99;
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))
+
+    def test_Performance_IterSubscriptAssignIntpArray2_DOUBLE(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(4,-1);
+        mask = np.arange(16000000, dtype=np.intp).reshape(4,-1);
+
+        start = tm.time()
+
+
+        for i in range(LoopCount):
+            m1[mask] = [99, 88, 77, 66];
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))
+
 if __name__ == '__main__':
     unittest.main()

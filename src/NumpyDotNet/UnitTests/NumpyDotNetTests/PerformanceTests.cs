@@ -19,7 +19,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
-        #region DOUBLE tests
+    #region DOUBLE tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_DOUBLE()
@@ -344,9 +344,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region FLOAT tests
+    #region FLOAT tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_FLOAT()
@@ -672,9 +672,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region INT64 tests
+    #region INT64 tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_INT64()
@@ -1000,9 +1000,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region UINT64 tests
+    #region UINT64 tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_UINT64()
@@ -1328,9 +1328,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region DECIMAL tests
+    #region DECIMAL tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_DECIMAL()
@@ -1656,9 +1656,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region INT32 tests
+    #region INT32 tests
 
         [Ignore]
         [TestMethod]
@@ -1985,9 +1985,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region UINT32 tests
+    #region UINT32 tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_UINT32()
@@ -2313,9 +2313,9 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
-        #region COMPLEX tests
+    #region COMPLEX tests
         [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_COMPLEX()
@@ -2640,7 +2640,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-        #endregion
+    #endregion
 
         [Ignore]
         [TestMethod]
@@ -3013,6 +3013,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void Performance_IterSubscriptAssignSlice_DOUBLE()
         {
@@ -3035,6 +3036,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
         [TestMethod]
         public void Performance_IterSubscriptAssignSlice2_DOUBLE()
         {
@@ -3058,7 +3060,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_IterSubscriptAssignBoolArray_DOUBLE()
         {
@@ -3084,8 +3086,34 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-
         [Ignore]
+        [TestMethod]
+        public void Performance_IterSubscriptAssignIntpArray_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var mask = np.arange(16000000, dtype: np.intp);
+  
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1[mask] = 99;
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+   
+
+        //[Ignore]
         [TestMethod]
         public void Performance_in1d_DOUBLE()
         {
