@@ -3111,7 +3111,33 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-   
+        //[Ignore]
+        [TestMethod]
+        public void Performance_GetMap_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+            var mask = np.arange(16000000, dtype: np.Bool).reshape(40, -1);
+            mask[":"] = false;
+            mask["::2"] = true;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var m2 = m1[mask];
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+
 
         //[Ignore]
         [TestMethod]
