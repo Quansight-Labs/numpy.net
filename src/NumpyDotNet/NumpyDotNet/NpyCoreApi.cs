@@ -842,20 +842,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void FillWithObject(ndarray arr, object obj)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                if (numpyAPI.NpyArray_FillWithObject(arr.Array, obj) < 0)
-                {
-                    CheckError();
-                }
-            }
-
-        }
-
         internal static void FillWithScalar(ndarray arr, ndarray zero_d_array)
         {
 #if ENABLELOCKING

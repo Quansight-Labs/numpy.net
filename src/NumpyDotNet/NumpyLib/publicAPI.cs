@@ -418,10 +418,6 @@ namespace NumpyLib
             return numpyinternal.NpyArray_ToBinaryFile(self, fp);
         }
 
-        public static int NpyArray_FillWithObject(NpyArray arr, object objArray)
-        {
-            return numpyinternal.NpyArray_FillWithObject(arr, objArray);
-        }
 
         public static int NpyArray_FillWithScalar(NpyArray arr, NpyArray zero_d_array)
         {

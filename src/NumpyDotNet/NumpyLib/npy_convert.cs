@@ -212,64 +212,6 @@ namespace NumpyLib
             return ret;
         }
 
-        internal static int NpyArray_FillWithObject(NpyArray arr, object obj)
-        {
-            int itemsize;
-            npy_intp size;
-            NpyArray_CopySwapFunc copyswap;
-
-            VoidPtr objvp = new VoidPtr(obj, NPY_TYPES.NPY_OBJECT);
-
-            if (!NpyArray_ISOBJECT(arr))
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "Array is not an object array.");
-            }
-
-            size = NpyArray_SIZE(arr);
-            if (size == 0)
-            {
-                return 0;
-            }
-
-            copyswap = NpyArray_DESCR(arr).f.copyswap;
-            if (NpyArray_ISONESEGMENT(arr))
-            {
-                VoidPtr toptr = new VoidPtr(arr);
-                NpyArray_FillWithScalarFunc fillwithscalar = NpyArray_DESCR(arr).f.fillwithscalar;
-                itemsize = NpyArray_ITEMSIZE(arr);
-                if (fillwithscalar != null && NpyArray_ISALIGNED(arr))
-                {
-                    copyswap(toptr, objvp, false, null);
-                    fillwithscalar(toptr + itemsize, size-1, toptr, arr);
-                }
-                else
-                {
-                    while (size > 0)
-                    {
-                        copyswap(toptr, objvp, false, arr);
-                        toptr.data_offset += itemsize;
-                        size -= itemsize;
-                    }
-                }
-            }
-            else
-            {
-                NpyArrayIterObject iter;
-
-                iter = NpyArray_IterNew(arr);
-                if (iter == null)
-                {
-                    return -1;
-                }
-                while (size-- > 0)
-                {
-                    copyswap(iter.dataptr, objvp, false, arr);
-                    NpyArray_ITER_NEXT(iter);
-                }
-                Npy_DECREF(iter);
-            }
-            return 0;
-        }
 
         internal static int NpyArray_FillWithScalar(NpyArray arr, NpyArray zero_d_array)
         {
