@@ -3465,9 +3465,10 @@ namespace NumpyLib
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
-        npy_intp IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
+        npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
         void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptAssignBoolArray(NpyArrayIterObject self, NpyArrayIterObject value_iter, npy_intp bool_size, bool[] dptr, npy_intp stride, bool swap);
+        npy_intp? IterSubscriptAssignIntpArray(NpyArrayIterObject destIter, NpyArrayIterObject indexIter, NpyArrayIterObject srcIter, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3526,7 +3527,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        swapvalue(_dst, elsize);
+                        numpyinternal.swapvalue(_dst, elsize);
                     }
                     _dst.data_offset += elsize;
 
@@ -3568,7 +3569,7 @@ namespace NumpyLib
                     if (bool_array[dptr_index])
                     {
                         d[_dst.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
-                        swapvalue(_dst, elsize);
+                        numpyinternal.swapvalue(_dst, elsize);
                         _dst.data_offset += elsize;
                     }
                     dptr_index += stride;
@@ -3592,7 +3593,7 @@ namespace NumpyLib
      
         }
 
-        public npy_intp IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap)
+        public npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap)
         {
             npy_intp[] dataptr = index_iter.dataptr.datap as npy_intp[];
             var elsize = GetTypeSize(_dst);
@@ -3619,7 +3620,7 @@ namespace NumpyLib
                     d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
                     _dst.data_offset += elsize;
 
-                    swapvalue(_dst, elsize);
+                    numpyinternal.swapvalue(_dst, elsize);
 
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
@@ -3647,9 +3648,7 @@ namespace NumpyLib
                 }
             }
 
-    
-
-            return -1;
+            return null;
         }
 
         public void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap)
@@ -3671,7 +3670,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        swapvalue(destIter.dataptr, elsize);
+                        numpyinternal.swapvalue(destIter.dataptr, elsize);
                     }
    
                     start += step_size;
@@ -3687,7 +3686,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        swapvalue(destIter.dataptr, elsize);
+                        numpyinternal.swapvalue(destIter.dataptr, elsize);
                     }
 
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -3722,7 +3721,7 @@ namespace NumpyLib
 
                         if (swap)
                         {
-                            swapvalue(destIter.dataptr, elsize);
+                            numpyinternal.swapvalue(destIter.dataptr, elsize);
                         }
 
                     }
@@ -3740,7 +3739,7 @@ namespace NumpyLib
 
                         if (swap)
                         {
-                            swapvalue(destIter.dataptr, elsize);
+                            numpyinternal.swapvalue(destIter.dataptr, elsize);
                         }
 
                         numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -3755,6 +3754,79 @@ namespace NumpyLib
             }
 
       
+        }
+
+        public npy_intp? IterSubscriptAssignIntpArray(NpyArrayIterObject destIter, NpyArrayIterObject indexIter, NpyArrayIterObject srcIter, bool swap)
+        {
+            int elsize = GetTypeSize(destIter.dataptr);
+
+            T[] d = destIter.dataptr.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            npy_intp[] dataptr = indexIter.dataptr.datap as npy_intp[];
+            npy_intp i = indexIter.size;
+
+            if (srcIter.size == 1)
+            {
+                srcIter.dataptr.data_offset /= elsize;
+
+                while (i-- > 0)
+                {
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset / sizeof(npy_intp)];
+                    if (num < 0)
+                    {
+                        num += destIter.size;
+                    }
+                    if (num < 0 || num >= destIter.size)
+                    {
+                        return num;
+                    }
+                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
+
+                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+
+                    if (swap)
+                    {
+                        numpyinternal.swapvalue(destIter.dataptr, elsize);
+                    }
+    
+                    numpyinternal.NpyArray_ITER_NEXT(indexIter);
+                }
+            }
+            else
+            {
+                while (i-- > 0)
+                {
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset / sizeof(npy_intp)];
+                    if (num < 0)
+                    {
+                        num += destIter.size;
+                    }
+                    if (num < 0 || num >= destIter.size)
+                    {
+                        return num;
+                    }
+                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
+
+                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+
+                    if (swap)
+                    {
+                        numpyinternal.swapvalue(destIter.dataptr, elsize);
+                    }
+
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter);
+                    if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
+                    {
+                        numpyinternal.NpyArray_ITER_RESET(srcIter);
+                    }
+                    numpyinternal.NpyArray_ITER_NEXT(indexIter);
+                }
+            }
+
+   
+
+            return null;
         }
 
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
@@ -3772,7 +3844,7 @@ namespace NumpyLib
 
             if (swap)
             {
-                swapvalue(_dst, elsize);
+                numpyinternal.swapvalue(_dst, elsize);
             }
         }
 
@@ -3791,7 +3863,7 @@ namespace NumpyLib
                     {
                         d[_dst.data_offset / elsize] = s[_src.data_offset / elsize];
 
-                        swapvalue(_dst, elsize);
+                        numpyinternal.swapvalue(_dst, elsize);
 
                         _dst.data_offset += dstride;
                         _src.data_offset += sstride;
@@ -3818,7 +3890,7 @@ namespace NumpyLib
                 {
                     if (swap)
                     {
-                        swapvalue(_dst, elsize);
+                        numpyinternal.swapvalue(_dst, elsize);
                     }
                     _dst.data_offset += dstride;
                 }
@@ -3849,135 +3921,6 @@ namespace NumpyLib
  
         }
 
-        protected void swapvalue(VoidPtr dest, int ItemSize)
-        {
-            npy_intp item_offset = dest.data_offset / ItemSize;
-
-            switch (dest.type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                {
-                    return;
-                }
-                case NPY_TYPES.NPY_BYTE:
-                {
-                    return;
-                }
-                case NPY_TYPES.NPY_UBYTE:
-                {
-                    return;
-                }
-                case NPY_TYPES.NPY_INT16:
-                {
-                    Int16[] bdata = dest.datap as Int16[];
-                    Int16 value = bdata[item_offset];
-
-                    var uvalue = (UInt16)value;
-                    UInt16 swapped = (UInt16)
-                        ((0x00FF) & (uvalue >> 8)
-                        | (0xFF00) & (uvalue << 8));
-                    bdata[item_offset] = (Int16)swapped;
-
-                    return;
-                }
-
-                case NPY_TYPES.NPY_UINT16:
-                {
-                    UInt16[] bdata = dest.datap as UInt16[];
-                    UInt16 value = bdata[item_offset];
-
-                    var uvalue = (UInt16)value;
-                    UInt16 swapped = (UInt16)
-                        ((0x00FF) & (uvalue >> 8)
-                        | (0xFF00) & (uvalue << 8));
-                    bdata[item_offset] = (UInt16)swapped;
-
-                    return;
-                }
-
-                case NPY_TYPES.NPY_INT32:
-                {
-                    Int32[] bdata = dest.datap as Int32[];
-                    Int32 value = bdata[item_offset];
-
-                    var uvalue = (UInt32)value;
-                    UInt32 swapped =
-                         ((0x000000FF) & (uvalue >> 24)
-                         | (0x0000FF00) & (uvalue >> 8)
-                         | (0x00FF0000) & (uvalue << 8)
-                         | (0xFF000000) & (uvalue << 24));
-                    bdata[item_offset] = (Int32)swapped;
-                    break;
-
-                }
-
-                case NPY_TYPES.NPY_UINT32:
-                {
-                    UInt32[] bdata = dest.datap as UInt32[];
-                    UInt32 value = bdata[item_offset];
-
-                    var uvalue = (UInt32)value;
-                    UInt32 swapped =
-                         ((0x000000FF) & (uvalue >> 24)
-                         | (0x0000FF00) & (uvalue >> 8)
-                         | (0x00FF0000) & (uvalue << 8)
-                         | (0xFF000000) & (uvalue << 24));
-                    bdata[item_offset] = (UInt32)swapped;
-                    break;
-
-                }
-
-                case NPY_TYPES.NPY_INT64:
-                {
-                    Int64[] bdata = dest.datap as Int64[];
-                    Int64 value = bdata[item_offset];
-
-                    var uvalue = (UInt64)value;
-                    UInt64 swapped =
-                         ((0x00000000000000FF) & (uvalue >> 56)
-                         | (0x000000000000FF00) & (uvalue >> 40)
-                         | (0x0000000000FF0000) & (uvalue >> 24)
-                         | (0x00000000FF000000) & (uvalue >> 8)
-                         | (0x000000FF00000000) & (uvalue << 8)
-                         | (0x0000FF0000000000) & (uvalue << 24)
-                         | (0x00FF000000000000) & (uvalue << 40)
-                         | (0xFF00000000000000) & (uvalue << 56));
-                    bdata[item_offset] = (Int64)swapped;
-                    break;
-
-                }
-
-                case NPY_TYPES.NPY_UINT64:
-                {
-                    UInt64[] bdata = dest.datap as UInt64[];
-                    UInt64 value = bdata[item_offset];
-
-                    var uvalue = (UInt64)value;
-                    UInt64 swapped =
-                         ((0x00000000000000FF) & (uvalue >> 56)
-                         | (0x000000000000FF00) & (uvalue >> 40)
-                         | (0x0000000000FF0000) & (uvalue >> 24)
-                         | (0x00000000FF000000) & (uvalue >> 8)
-                         | (0x000000FF00000000) & (uvalue << 8)
-                         | (0x0000FF0000000000) & (uvalue << 24)
-                         | (0x00FF000000000000) & (uvalue << 40)
-                         | (0xFF00000000000000) & (uvalue << 56));
-                    bdata[item_offset] = (UInt64)swapped;
-                    break;
-
-                }
-
-                // these data types can't be swapped
-                case NPY_TYPES.NPY_DECIMAL:
-                case NPY_TYPES.NPY_COMPLEX:
-                case NPY_TYPES.NPY_BIGINT:
-                case NPY_TYPES.NPY_OBJECT:
-                    return;
-
-
-
-            }
-        }
 
 
 

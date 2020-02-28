@@ -1231,10 +1231,10 @@ namespace NumpyLib
             NpyArray_ITER_RESET(self);
 
             var helper = MemCopy.GetMemcopyHelper(optr);
-            npy_intp num = helper.IterSubscriptIntpArray(self, index_iter, optr, swap);
-            if (num > 0)
+            npy_intp? num = helper.IterSubscriptIntpArray(self, index_iter, optr, swap);
+            if (num.HasValue)
             {
-                string msg = string.Format("index {0} out of bounds 0<=index<{1}", num, self.size);
+                string msg = string.Format("index {0} out of bounds 0<=index<{1}", num.Value, self.size);
                 NpyErr_SetString(npyexc_type.NpyExc_IndexError, msg);
                 Npy_DECREF(index_iter);
                 Npy_DECREF(result);
@@ -1423,28 +1423,21 @@ namespace NumpyLib
 
         static int NpyArray_IterSubscriptAssignIntpArray(NpyArrayIterObject self, NpyArray index, NpyArray value)
         {
-            NpyArray converted_value;
-            NpyArray_CopySwapFunc copyswap;
-            NpyArrayIterObject index_iter, value_iter;
-            npy_intp i, num;
-            bool swap;
-
-
             Npy_INCREF(self.ao.descr);
-            converted_value = NpyArray_FromArray(value, self.ao.descr, 0);
+            NpyArray converted_value = NpyArray_FromArray(value, self.ao.descr, 0);
             if (converted_value == null)
             {
                 return -1;
             }
 
-            index_iter = NpyArray_IterNew(index);
+            NpyArrayIterObject index_iter = NpyArray_IterNew(index);
             if (index_iter == null)
             {
                 Npy_DECREF(converted_value);
                 return -1;
             }
 
-            value_iter = NpyArray_IterNew(converted_value);
+            NpyArrayIterObject value_iter = NpyArray_IterNew(converted_value);
             if (value_iter == null)
             {
                 Npy_DECREF(index_iter);
@@ -1455,41 +1448,23 @@ namespace NumpyLib
 
             if (value_iter.size > 0)
             {
-
-                copyswap = self.ao.descr.f.copyswap;
-                i = index_iter.size;
-                swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(converted_value));
+                bool swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(converted_value));
 
                 NpyArray_ITER_RESET(self);
 
-                npy_intp[] dataptr = index_iter.dataptr.datap as npy_intp[];
-                while (i-- > 0)
+                var helper = MemCopy.GetMemcopyHelper(self.dataptr);
+                npy_intp? num = helper.IterSubscriptAssignIntpArray(self, index_iter, value_iter, swap);
+                if (num.HasValue)
                 {
-                    num = dataptr[index_iter.dataptr.data_offset / sizeof(npy_intp)];
-                    if (num < 0)
-                    {
-                        num += self.size;
-                    }
-                    if (num < 0 || num >= self.size)
-                    {
-                        string msg = string.Format("index {0} out of bounds 0<=index<{1}", num, self.size);
-                        NpyErr_SetString(npyexc_type.NpyExc_IndexError, msg);
- 
-                        Npy_DECREF(index_iter);
-                        Npy_DECREF(value_iter);
-                        NpyArray_ITER_RESET(self);
-                        return -1;
-                    }
-                    NpyArray_ITER_GOTO1D(self, num);
+                    string msg = string.Format("index {0} out of bounds 0<=index<{1}", num.Value, self.size);
+                    NpyErr_SetString(npyexc_type.NpyExc_IndexError, msg);
 
-                    copyswap(self.dataptr, value_iter.dataptr, swap, self.ao);
-                    NpyArray_ITER_NEXT(value_iter);
-                    if (!NpyArray_ITER_NOTDONE(value_iter))
-                    {
-                        NpyArray_ITER_RESET(value_iter);
-                    }
-                    NpyArray_ITER_NEXT(index_iter);
+                    Npy_DECREF(index_iter);
+                    Npy_DECREF(value_iter);
+                    NpyArray_ITER_RESET(self);
+                    return -1;
                 }
+    
                 NpyArray_ITER_RESET(self);
             }
             Npy_DECREF(index_iter);
