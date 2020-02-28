@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3049,6 +3049,32 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 m1.Flat["2:-2:2"] = m2;
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_IterSubscriptAssignBoolArray_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64);
+            var mask = np.ndarray(m1.shape, dtype: np.Bool);
+            mask[":"] = false;
+            mask["::2"] = true;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1[mask] = 99;
             }
 
 

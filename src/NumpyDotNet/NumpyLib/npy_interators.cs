@@ -1041,7 +1041,7 @@ namespace NumpyLib
 
                 swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(result));
 
-                result.descr.f.copyswap(result.data, self.dataptr, swap, self.ao);
+                MemCopy.GetMemcopyHelper(result.data).copyswap(result.data, self.dataptr, swap);
                 return result;
             }
             else
@@ -1061,8 +1061,6 @@ namespace NumpyLib
             npy_intp start, step_size;
             bool swap;
             VoidPtr dptr;
-            NpyArray_CopySwapFunc copyswap;
-
  
             /* Build the result. */
             steps[0] = NpyArray_SliceSteps(slice);
@@ -1354,7 +1352,7 @@ namespace NumpyLib
             NpyArray_ITER_RESET(self);
             NpyArray_ITER_GOTO1D(self, index);
 
-            self.ao.descr.f.copyswap(self.dataptr, converted_value.data, swap, self.ao);
+            MemCopy.GetMemcopyHelper(self.dataptr).copyswap(self.dataptr, converted_value.data, swap);
             NpyArray_ITER_RESET(self);
 
             Npy_DECREF(converted_value);
@@ -1364,10 +1362,9 @@ namespace NumpyLib
         internal static int NpyArray_IterSubscriptAssignBoolArray(NpyArrayIterObject self, NpyArray index, NpyArray value)
         {
             NpyArray converted_value;
-            npy_intp bool_size, i;
+            npy_intp bool_size;
             npy_intp stride;
             bool[] dptr;
-            NpyArray_CopySwapFunc copyswap;
             NpyArrayIterObject value_iter;
             bool swap;
 
@@ -1405,30 +1402,16 @@ namespace NumpyLib
                 /* Copy in the data. */
                 stride = index.strides[0];
 
-                object o1 = index.data.datap;
-                dptr = (bool[])o1;
+                dptr = index.data.datap as bool[];
 
                 Debug.Assert(index.descr.elsize == 1);
-                copyswap = self.ao.descr.f.copyswap;
                 swap = (NpyArray_ISNOTSWAPPED(self.ao) != NpyArray_ISNOTSWAPPED(converted_value));
 
                 NpyArray_ITER_RESET(self);
-                i = bool_size;
-                int dptr_index = 0;
-                while (i-- > 0)
-                {
-                    if (dptr[dptr_index])
-                    {
-                        copyswap(self.dataptr, value_iter.dataptr, swap, self.ao);
-                        NpyArray_ITER_NEXT(value_iter);
-                        if (!NpyArray_ITER_NOTDONE(value_iter))
-                        {
-                            NpyArray_ITER_RESET(value_iter);
-                        }
-                    }
-                    dptr_index += (int)stride;
-                    NpyArray_ITER_NEXT(self);
-                }
+
+                var helper = MemCopy.GetMemcopyHelper(self.dataptr);
+                helper.IterSubscriptAssignBoolArray(self, value_iter, bool_size, dptr, stride, swap);
+         
                 NpyArray_ITER_RESET(self);
             }
 

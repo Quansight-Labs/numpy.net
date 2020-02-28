@@ -3467,7 +3467,7 @@ namespace NumpyLib
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
         void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap);
-
+        void IterSubscriptAssignBoolArray(NpyArrayIterObject self, NpyArrayIterObject value_iter, npy_intp bool_size, bool[] dptr, npy_intp stride, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3699,6 +3699,62 @@ namespace NumpyLib
                 }
             }
     
+        }
+
+        public void IterSubscriptAssignBoolArray(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp bool_size, bool[] bool_mask, npy_intp stride, bool swap)
+        {
+            int elsize = GetTypeSize(destIter.dataptr);
+
+            T[] d = destIter.dataptr.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            npy_intp dptr_index = 0;
+
+            srcIter.dataptr.data_offset /= elsize;
+
+            if (srcIter.size == 1)
+            {
+                while (bool_size-- > 0)
+                {
+                    if (bool_mask[dptr_index])
+                    {
+                        d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+
+                        if (swap)
+                        {
+                            swapvalue(destIter.dataptr, elsize);
+                        }
+
+                    }
+                    dptr_index += stride;
+                    numpyinternal.NpyArray_ITER_NEXT(destIter);
+                }
+            }
+            else
+            {
+                while (bool_size-- > 0)
+                {
+                    if (bool_mask[dptr_index])
+                    {
+                        d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+
+                        if (swap)
+                        {
+                            swapvalue(destIter.dataptr, elsize);
+                        }
+
+                        numpyinternal.NpyArray_ITER_NEXT(srcIter);
+                        if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
+                        {
+                            numpyinternal.NpyArray_ITER_RESET(srcIter);
+                        }
+                    }
+                    dptr_index += stride;
+                    numpyinternal.NpyArray_ITER_NEXT(destIter);
+                }
+            }
+
+      
         }
 
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
