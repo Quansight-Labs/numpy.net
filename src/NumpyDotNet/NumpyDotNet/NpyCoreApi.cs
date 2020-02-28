@@ -1957,36 +1957,6 @@ namespace NumpyDotNet {
             }
         }
 
-        internal static void CopySwapIn(ndarray arr, long offset, VoidPtr data, bool swap)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                numpyAPI.NpyArrayAccess_CopySwapIn(arr.Array, offset, data, swap);
-            }
-        }
-
-        internal static void CopySwapOut(ndarray arr, long offset, VoidPtr data, bool swap)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                numpyAPI.NpyArrayAccess_CopySwapOut(arr.Array, offset, data, swap);
-            }
-        }
-
-        internal static void CopySwapScalar(dtype dtype, VoidPtr dest, VoidPtr src, bool swap)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                numpyAPI.NpyArrayAccess_CopySwapScalar(dtype.Descr, dest, src, swap);
-            }
-        }
-
         internal static void SetNamesList(dtype descr, string[] nameslist)
         {
 #if ENABLELOCKING

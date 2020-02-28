@@ -411,22 +411,5 @@ namespace NumpyLib
             return NpyArray_MultiIterFromArrays(arrays, n, 0);
         }
 
-        internal static void NpyArrayAccess_CopySwapIn(NpyArray arr, Int64 offset, VoidPtr data, bool swap)
-        {
-            arr.descr.f.copyswap(arr.data + offset, data, swap, arr);
-        }
-
-        internal static void NpyArrayAccess_CopySwapOut(NpyArray arr, Int64 offset, VoidPtr data, bool swap)
-        {
-            arr.descr.f.copyswap(data, arr.data + offset, swap, arr);
-        }
-
-        // Similar to above, but does not handle string, void or other flexibly sized types because it can't pass
-        // an array pointer in.  This is specifically used for fixed scalar types.
-        internal static void NpyArrayAccess_CopySwapScalar(NpyArray_Descr descr, VoidPtr dest, VoidPtr src, bool swap)
-        {
-            descr.f.copyswap(dest, src, swap, null);
-        }
-
     }
 }

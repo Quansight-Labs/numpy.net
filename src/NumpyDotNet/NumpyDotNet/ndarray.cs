@@ -1560,30 +1560,7 @@ namespace NumpyDotNet
                  }
             }
         }
-
-        /// <summary>
-        /// Copies data into the array from 'data'.  Offset is the offset into this
-        /// array's data space in bytes.  The number of bytes copied is based on the
-        /// element size of the array's dtype.
-        /// </summary>
-        /// <param name="offset">Offset into this array's data (bytes)</param>
-        /// <param name="data">Memory address to copy the data from</param>
-        /// <param name="swap">If true data is byte-swapped during copy</param>
-        internal void CopySwapIn(long offset, VoidPtr data, bool swap) {
-            NpyCoreApi.CopySwapIn(this, offset, data, swap);
-        }
-
-        /// <summary>
-        /// Copies data out of the array into 'data'. Offset is the offset into this
-        /// array's data space in bytes. Number of bytes copied is based on the
-        /// element size of the array's dtype.
-        /// </summary>
-        /// <param name="offset">Offset into array's data in bytes</param>
-        /// <param name="data">Memory address to copy the data to</param>
-        /// <param name="swap">If true, results are byte-swapped from the array's image</param>
-        internal void CopySwapOut(long offset, VoidPtr data, bool swap) {
-            NpyCoreApi.CopySwapOut(this, offset, data, swap);
-        }
+  
 
         #endregion
 
