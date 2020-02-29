@@ -686,5 +686,58 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))  
 
+    def test_Performance_Qadiym_test(self):
+
+        # basic parameters
+        seed = 1337 # PRNG seed
+        L = 8 # number of layers
+        H = 32 # hidden layer size
+        O = 3 # O=3 for RGB, O=1 for grayscale
+        nrows = 512 # height of the output image
+        ncols = 512 # width of the output image
+
+        #construct a 2D array in which each row has numbers between -1.0 and 1.0
+        rowmat = (np.tile(np.linspace(0, nrows-1, nrows, dtype=np.float32), ncols).reshape(ncols, nrows).T - nrows/2.0)/(min(nrows, ncols)/2.0)
+        print(rowmat.shape)
+
+        #construct a 2D array in which each column has numbers between -1.0 and 1.0
+        colmat = (np.tile(np.linspace(0, ncols-1, ncols, dtype=np.float32), nrows).reshape(nrows, ncols) - ncols/2.0)/(min(nrows, ncols)/2.0)
+        print(colmat.shape)
+
+        #stack the obtained arrays together and reshape the result into a (nrows*ncols)x3 matrix that will be the input to the CPPN
+        inputs = [rowmat, colmat, np.sqrt(np.power(rowmat, 2)+np.power(colmat, 2))]
+        inputs = np.stack(inputs).transpose(1, 2, 0).reshape(-1, len(inputs))
+        
+        #init the PRNG seed
+        if seed is not None:
+            np.random.seed(seed)
+
+        #apply the CPPN (note that we generate its weights on the fly and never store them)
+
+        results = inputs.copy()
+
+        for i in range(0, L):
+            if i==L-1:
+                W = np.random.randn(results.shape[1], O)
+            else:
+                W = np.random.randn(results.shape[1], H)
+            results = np.tanh(np.matmul(results, W))
+
+        # rescale the input to (0.0, 1.0)
+        results = (1 + results)/2.0
+    
+        #reshape the result into an image and convert its pixels to uint8 numbers
+
+        results = (255.0*results.reshape(nrows, ncols, results.shape[-1])).astype(np.uint8)
+        print(results.shape)
+
+    def test_matrixproduct_1(self):
+
+        a = np.arange(9).reshape(3, 3);
+        b = np.arange(9).reshape(3, 3);
+
+        ret = np.matmul(a, b);
+        print(ret)
+
 if __name__ == '__main__':
     unittest.main()

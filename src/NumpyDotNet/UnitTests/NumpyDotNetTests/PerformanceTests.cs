@@ -3238,7 +3238,63 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        
+        [TestMethod]
+        public void Performance_Qadiym_test()
+        {
+            int? seed = 1337;    //PRNG seed
+            int L = 8;          //number of layers
+            int H = 32;         //hidden layer size
+            int O = 3;          // O=3 for RGB, O=1 for grayscale
+            int nrows = 512;    //height of the output image
+            int ncols = 512;    // width of the output image
+
+            //construct a 2D array in which each row has numbers between -1.0 and 1.0
+            double ret_step = 0;
+
+            ndarray rowmat = (np.tile(np.linspace(0, nrows - 1, ref ret_step, nrows, dtype: np.Float32), ncols).reshape(ncols, nrows).T - nrows / 2.0) / (Math.Min(nrows, ncols) / 2.0);
+            print(rowmat.shape);
+
+            // construct a 2D array in which each column has numbers between -1.0 and 1.0
+            ndarray colmat = (np.tile(np.linspace(0, ncols - 1, ref ret_step, ncols, dtype: np.Float32), nrows).reshape(nrows, ncols) - ncols / 2.0) / (Math.Min(nrows, ncols) / 2.0);
+            print(colmat.shape);
+
+            //stack the obtained arrays together and reshape the result into a(nrows * ncols)x3 matrix that will be the input to the CPPN
+            List<ndarray> inputs = new List<ndarray>();
+            inputs.Add(rowmat);
+            inputs.Add(colmat);
+            inputs.Add(np.sqrt(np.power(rowmat, 2) + np.power(colmat, 2)));
+
+            ndarray inputstack = np.stack(inputs.ToArray()).Transpose(new npy_intp[] { 1, 2, 0 }).reshape(-1, inputs.Count);
+
+            //init the PRNG seed
+            if (seed != null)
+            {
+                np.random.seed(seed);
+            }
+
+            //apply the CPPN (note that we generate its weights on the fly and never store them)
+
+            ndarray W;
+            var results = inputstack.Copy();
+            for (int i = 0; i < L; i++)
+            {
+                if (i == L - 1)
+                    W = np.random.randn(results.shape.iDims[1], O);
+                else
+                    W = np.random.randn(results.shape.iDims[1], H);
+                results = np.tanh(np.matmul(results, W));
+            }
+
+            //rescale the input to(0.0, 1.0)
+            results = (1 + results) / 2.0;
+
+            //reshape the result into an image and convert its pixels to uint8 numbers
+            results = (255.0 * results.reshape(nrows, ncols, results.shape.iDims[results.shape.iDims.Length-1])).astype(np.UInt8);
+
+            return;
+        }
+
+
     }
 
 #endif
