@@ -1750,10 +1750,109 @@ namespace NumpyLib
             return null;
         }
 
-        internal static int NpyArray_NonZero(NpyArray self, NpyArray[] index_arrays, object obj)
+        internal static int NpyArray_NonZeroBool(NpyArray self, NpyArray[] index_arrays, object obj)
         {
             int n = self.nd, j;
-            npy_intp[] count = new npy_intp[1] { 0 };
+            npy_intp count = 0;
+            npy_intp i, size;
+            NpyArrayIterObject it = null;
+            NpyArray item;
+            VoidPtr[] dptr = new VoidPtr[npy_defs.NPY_MAXDIMS];
+
+            if (self.ItemType != NPY_TYPES.NPY_BOOL)
+            {
+                throw new Exception("NpyArray_NonZeroBool called for non-bool array");
+            }
+
+            bool[] bdata = self.data.datap as bool[];
+
+            for (i = 0; i < n; i++)
+            {
+                index_arrays[i] = null;
+            }
+
+            it = NpyArray_IterNew(self);
+            if (it == null)
+            {
+                return -1;
+            }
+            size = it.size;
+            for (i = 0; i < size; i++)
+            {
+                if (bdata[it.dataptr.data_offset])
+                {
+                    count++;
+                }
+                NpyArray_ITER_NEXT(it);
+            }
+
+            NpyArray_ITER_RESET(it);
+            for (j = 0; j < n; j++)
+            {
+                item = NpyArray_New(null, 1, new npy_intp[] { count }, NPY_TYPES.NPY_INTP, null, null, 0, 0, obj);
+                if (item == null)
+                {
+                    goto fail;
+                }
+                index_arrays[j] = item;
+                dptr[j] = NpyArray_DATA(item);
+            }
+            if (n == 1)
+            {
+                npy_intp[] dp = dptr[0].datap as npy_intp[];
+                npy_intp dp_offset = 0;
+                for (i = 0; i < size; i++)
+                {
+                    if (bdata[it.dataptr.data_offset])
+                    {
+                        dp[dp_offset] = i;
+                        dp_offset += 1;
+                    }
+                    NpyArray_ITER_NEXT(it);
+                }
+            }
+            else
+            {
+                npy_intp[] dp_offsets = new npy_intp[npy_defs.NPY_MAXDIMS];
+
+                /* reset contiguous so that coordinates gets updated */
+                it.contiguous = false;
+                for (i = 0; i < size; i++)
+                {
+                    if (bdata[it.dataptr.data_offset])
+                    {
+                        for (j = 0; j < n; j++)
+                        {
+                            npy_intp[] dp = dptr[j].datap as npy_intp[];
+                            dp[dptr[j].data_offset + dp_offsets[j]] = it.coordinates[j];
+                            dp_offsets[j] += 1;
+                        }
+                    }
+                    NpyArray_ITER_NEXT(it);
+                }
+            }
+
+            Npy_DECREF(it);
+            return 0;
+
+            fail:
+            for (i = 0; i < n; i++)
+            {
+                Npy_XDECREF(index_arrays[i]);
+            }
+            Npy_XDECREF(it);
+            return -1;
+        }
+
+        internal static int NpyArray_NonZero(NpyArray self, NpyArray[] index_arrays, object obj)
+        {
+            if (self.ItemType == NPY_TYPES.NPY_BOOL)
+            {
+                return NpyArray_NonZeroBool(self, index_arrays, obj);
+            }
+
+            int n = self.nd, j;
+            npy_intp count = 0;
             npy_intp i, size;
             NpyArrayIterObject it = null;
             NpyArray item;
@@ -1775,7 +1874,7 @@ namespace NumpyLib
             {
                 if (nonzero(it.dataptr, it.dataptr.data_offset / self.ItemSize))
                 {
-                    count[0]++;
+                    count++;
                 }
                 NpyArray_ITER_NEXT(it);
             }
@@ -1783,7 +1882,7 @@ namespace NumpyLib
             NpyArray_ITER_RESET(it);
             for (j = 0; j < n; j++)
             {
-                item = NpyArray_New(null, 1, count, NPY_TYPES.NPY_INTP, null, null, 0, 0, obj);
+                item = NpyArray_New(null, 1, new npy_intp[] { count }, NPY_TYPES.NPY_INTP, null, null, 0, 0, obj);
                 if (item == null)
                 {
                     goto fail;
