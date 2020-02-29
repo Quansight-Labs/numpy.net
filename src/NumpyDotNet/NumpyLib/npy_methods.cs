@@ -95,10 +95,8 @@ namespace NumpyLib
         {
             NpyArray ret;
             npy_intp size;
-            NpyArray_CopySwapNFunc copyswapn;
             NpyArrayIterObject it;
 
-            copyswapn = self.descr.f.copyswapn;
             if (inplace)
             {
                 if (!NpyArray_ISWRITEABLE(self))
@@ -109,7 +107,7 @@ namespace NumpyLib
                 size = NpyArray_SIZE(self);
                 if (NpyArray_ISONESEGMENT(self))
                 {
-                    copyswapn(new VoidPtr(self), self.descr.elsize,  null, -1, size, true, self);
+                    _default_copyswap(new VoidPtr(self), self.descr.elsize,  null, -1, size, true, self);
                 }
                 else
                 { /* Use iterator */
@@ -120,7 +118,7 @@ namespace NumpyLib
                     size = self.dimensions[axis];
                     while (it.index < it.size)
                     {
-                        copyswapn(it.dataptr, stride, null, -1, size, true, self);
+                        _default_copyswap(it.dataptr, stride, null, -1, size, true, self);
                         NpyArray_ITER_NEXT(it);
                     }
                     Npy_DECREF(it);

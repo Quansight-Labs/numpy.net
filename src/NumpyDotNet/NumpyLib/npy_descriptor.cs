@@ -608,12 +608,7 @@ namespace NumpyLib
         public NpyArray_GetItemFunc getitem;
         public NpyArray_SetItemFunc setitem;
 
-        /*
-         * Copy and/or swap data.  Memory areas may not overlap
-         * Use memmove first if they might
-         */
-        public NpyArray_CopySwapNFunc copyswapn;
-
+ 
         /*
          * Function to compare items
          * Can be null

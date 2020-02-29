@@ -66,12 +66,7 @@ namespace NumpyLib
 
                 getitem = null,
                 setitem = null,
-                //
-                // Copy and/or swap data.  Memory areas may not overlap
-                // Use memmove first if they might
-                //
-                copyswapn = NpyArray_CopySwapNFunc,
-
+     
                 // 
                 // Function to compare items
                 // Can be null
@@ -770,10 +765,6 @@ namespace NumpyLib
         }
         #endregion
 
-        internal static void NpyArray_CopySwapNFunc(VoidPtr Dest, npy_intp dstride, VoidPtr Src, npy_intp sstride, npy_intp N, bool swap, NpyArray npa)
-        {
-            _default_copyswap(Dest, dstride, Src, sstride, N, swap, npa);
-        }
 
         #region copyswap
 
@@ -823,7 +814,7 @@ namespace NumpyLib
                 itemsize = newDescr.elsize;
                 num = descr.elsize / itemsize;
 
-                newDescr.f.copyswapn(dest, itemsize, Source, itemsize, num, swap, arr);
+                _default_copyswap(dest, itemsize, Source, itemsize, num, swap, arr);
                 arr.descr = descr;
                 return;
             }

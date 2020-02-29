@@ -450,8 +450,8 @@ namespace NumpyLib
                 return -1;
             }
 
-            icopyfunc = src.descr.f.copyswapn;
-            ocopyfunc = dest.descr.f.copyswapn;
+            icopyfunc = _default_copyswap;
+            ocopyfunc = _default_copyswap;
             maxaxis = NpyArray_RemoveSmallest(multi);
             if (maxaxis < 0)
             {

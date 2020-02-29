@@ -54,7 +54,6 @@ namespace NumpyLib
             f.cast = null;
             f.getitem = null;
             f.setitem = null;
-            f.copyswapn = null;
             f.compare = null;
             f.argmax = null;
             f.dotfunc = null;
@@ -107,10 +106,7 @@ namespace NumpyLib
             {
                 f.nonzero = DefaultArrayHandlers.GetArrayHandler(typenum).NonZero;
             }
-            if (f.copyswapn == null)
-            {
-                f.copyswapn = _default_copyswap;
-            }
+  
             if (f.getitem == null || f.setitem == null)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "a required array function is missing.");

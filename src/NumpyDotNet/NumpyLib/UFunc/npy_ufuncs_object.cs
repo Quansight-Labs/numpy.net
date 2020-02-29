@@ -506,7 +506,7 @@ namespace NumpyLib
 
                         for (i = 0; i < self.nargs; i++)
                         {
-                            copyswapn[i] = NpyArray_DESCR(mps[i]).f.copyswapn;
+                            copyswapn[i] = _default_copyswap;
                             mpselsize[i] = NpyArray_DESCR(mps[i]).elsize;
   
                             laststrides[i] = iters[i].strides[loop.lastdim];

@@ -829,7 +829,6 @@ namespace NumpyLib
             bool swap = NpyArray_ISBYTESWAPPED(op);
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
 
-            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
             int ret = 0;
 
             bool has_failed = false;
@@ -842,7 +841,7 @@ namespace NumpyLib
                 if (needcopy)
                 {
                     buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    copyswapn(buffer, elsize, iterList[ii], astride, N, swap, op);
+                    _default_copyswap(buffer, elsize, iterList[ii], astride, N, swap, op);
                     bufptr = new VoidPtr(buffer);
                 }
                 /*
@@ -877,7 +876,7 @@ namespace NumpyLib
 
                 if (needcopy)
                 {
-                    copyswapn(iterList[ii], astride, buffer, elsize, N, swap, op);
+                    _default_copyswap(iterList[ii], astride, buffer, elsize, N, swap, op);
                 }
 
             });
@@ -899,8 +898,6 @@ namespace NumpyLib
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
             bool needidxbuffer;
 
-            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
- 
 
             NpyArray rop;
             npy_intp rstride;
@@ -1001,8 +998,6 @@ namespace NumpyLib
             bool swap = NpyArray_ISBYTESWAPPED(op);
             bool needcopy = !NpyArray_ISALIGNED(op) || swap || astride != elsize;
 
-            NpyArray_CopySwapNFunc copyswapn = NpyArray_DESCR(op).f.copyswapn;
-
             int ret = 0;
 
             bool has_failed = false;
@@ -1020,7 +1015,7 @@ namespace NumpyLib
                 if (needcopy)
                 {
                     valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    copyswapn(valbuffer, elsize, opIterList[ii], astride, N, swap, op);
+                    _default_copyswap(valbuffer, elsize, opIterList[ii], astride, N, swap, op);
                     valptr = new VoidPtr(valbuffer);
                 }
 
