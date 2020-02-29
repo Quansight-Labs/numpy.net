@@ -488,9 +488,6 @@ namespace NumpyLib
         internal static int NpyArray_SetMap(NpyArrayMapIterObject mit, NpyArray arr)
         {
             NpyArrayIterObject it;
-            npy_intp index;
-            bool swap;
-            NpyArray_CopySwapFunc copyswap;
 
             /* Unbound Map Iterator */
             if (mit.ait == null)
@@ -519,25 +516,17 @@ namespace NumpyLib
                 return -1;
             }
 
-            index = mit.size;
-            swap = (NpyArray_ISNOTSWAPPED(mit.ait.ao) != NpyArray_ISNOTSWAPPED(arr));
-            copyswap = arr.descr.f.copyswap;
+            bool swap = (NpyArray_ISNOTSWAPPED(mit.ait.ao) != NpyArray_ISNOTSWAPPED(arr));
             NpyArray_MapIterReset(mit);
- 
-            while (index-- > 0)
-            {
-                memmove(mit.dataptr,it.dataptr, NpyArray_ITEMSIZE(arr));
-                if (swap)
-                {
-                    copyswap(mit.dataptr, null, swap, arr);
-                }
-                NpyArray_MapIterNext(mit);
-                NpyArray_ITER_NEXT(it);
-            }
+
+            var helper = MemCopy.GetMemcopyHelper(mit.dataptr);
+            helper.SetMap(mit, it, swap);
+    
             Npy_DECREF(arr);
             Npy_DECREF(it);
             return 0;
         }
+
 
         internal static NpyArray NpyArray_ArrayItem(NpyArray self, npy_intp i)
         {
