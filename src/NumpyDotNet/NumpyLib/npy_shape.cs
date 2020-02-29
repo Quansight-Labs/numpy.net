@@ -174,8 +174,8 @@ namespace NumpyLib
 
             NPYARRAYFLAGS flags = 0;
             sd = (size_t)npy_array_fill_strides(new_strides, new_dimensions, new_nd, sd, self.flags, ref flags); self.flags = flags;
-            memmove(new VoidPtr(self.dimensions), new VoidPtr(new_dimensions), new_nd * sizeof(npy_intp));
-            memmove(new VoidPtr(self.strides), new VoidPtr(new_strides), new_nd * sizeof(npy_intp));
+            Array.Copy(new_dimensions, self.dimensions, new_nd);
+            Array.Copy(new_strides, self.strides, new_nd);
             return 0;
         }
 

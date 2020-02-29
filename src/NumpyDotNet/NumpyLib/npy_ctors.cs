@@ -192,11 +192,11 @@ namespace NumpyLib
             {
                 goto finish;
             }
-            if (isfortran)
-            {
-                memmove(new VoidPtr(newdims), numnew, new VoidPtr(newdims), 0, oldnd * sizeof(npy_intp));
-                mydim = newdims;
-            }
+            //if (isfortran)
+            //{
+            //    memmove(new VoidPtr(newdims), numnew, new VoidPtr(newdims), 0, oldnd * sizeof(npy_intp));
+            //    mydim = newdims;
+            //}
             for (i = 0; i < numnew; i++)
             {
                 mydim[i] = (npy_intp)old.subarray.shape_dims[i];
@@ -210,11 +210,11 @@ namespace NumpyLib
 
                 mystrides = newstrides;
                 mystridesindex = oldnd;
-                if (isfortran)
-                {
-                    memmove(new VoidPtr(newstrides), numnew, new VoidPtr(newstrides), 0, oldnd * sizeof(npy_intp));
-                    mystrides = newstrides;
-                }
+                //if (isfortran)
+                //{
+                //    memmove(new VoidPtr(newstrides), numnew, new VoidPtr(newstrides), 0, oldnd * sizeof(npy_intp));
+                //    mystrides = newstrides;
+                //}
                 /* Make new strides -- alwasy C-contiguous */
                 tempsize = (npy_intp)des.elsize;
                 for (i = numnew - 1; i >= 0; i--)
@@ -511,11 +511,10 @@ namespace NumpyLib
                 isfortran = (data != null && ((flags & NPYARRAYFLAGS.NPY_FORTRAN) > 0) &&
                              !((flags & NPYARRAYFLAGS.NPY_CONTIGUOUS) > 0)) ||
                             ((data == null) && (flags != 0));
-                memcpy(newdims, dims, nd * sizeof(npy_intp));
+                Array.Copy(dims, newdims, nd);
                 if (strides != null)
                 {
-                    //newstrides = newdims + npy_defs.NPY_MAXDIMS;
-                    memcpy(newstrides, strides, nd * sizeof(npy_intp));
+                    Array.Copy(strides, newstrides, nd); 
                 }
                 nd = _update_descr_and_dimensions(ref descr, newdims,
                                                  newstrides, nd, isfortran);
