@@ -846,7 +846,7 @@ namespace NumpyLib
                         continue;
                     }
                     arr.descr = value.descr;
-                    value.descr.f.copyswap(dest + value.offset, Source + value.offset, swap, arr);
+                    MemCopy.GetMemcopyHelper(dest).copyswap(dest + value.offset, Source + value.offset, swap);
                 }
                 arr.descr = descr;
                 return;
