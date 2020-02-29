@@ -3839,13 +3839,29 @@ namespace NumpyLib
 
             var numIndexes = destIter.size;
 
-            while (numIndexes-- > 0)
-            {
-                d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
 
-                numpyinternal.NpyArray_MapIterNext(srcIter);
-                numpyinternal.NpyArray_ITER_NEXT(destIter);
+            if (destIter.contiguous)
+            {
+                destIter.dataptr.data_offset /= elsize;
+
+                while (numIndexes-- > 0)
+                {
+                    d[destIter.dataptr.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+
+                    numpyinternal.NpyArray_MapIterNext(srcIter);
+                }
             }
+            else
+            {
+                while (numIndexes-- > 0)
+                {
+                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+
+                    numpyinternal.NpyArray_MapIterNext(srcIter);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter);
+                }
+            }
+    
         }
 
 
