@@ -215,10 +215,7 @@ namespace NumpyLib
 
         internal static int NpyArray_FillWithScalar(NpyArray arr, NpyArray zero_d_array)
         {
-            int itemsize;
-            bool swap;
             npy_intp size;
-            NpyArray_CopySwapFunc copyswap;
             NpyArray from;
             VoidPtr fromptr;
 
@@ -244,29 +241,15 @@ namespace NumpyLib
                 Npy_INCREF(from);
             }
 
-            swap = (NpyArray_ISNOTSWAPPED(arr) != NpyArray_ISNOTSWAPPED(from));
+            bool swap = (NpyArray_ISNOTSWAPPED(arr) != NpyArray_ISNOTSWAPPED(from));
             fromptr = new VoidPtr(from);
 
 
-            copyswap = NpyArray_DESCR(arr).f.copyswap;
             if (NpyArray_ISONESEGMENT(arr))
             {
                 VoidPtr toptr = new VoidPtr(arr);
-                NpyArray_FillWithScalarFunc fillwithscalar = NpyArray_DESCR(arr).f.fillwithscalar;
-                itemsize = NpyArray_ITEMSIZE(arr);
-                if (fillwithscalar != null && NpyArray_ISALIGNED(arr))
-                {
-                    copyswap(toptr, fromptr, swap, from);
-                    fillwithscalar(toptr + itemsize, size-1, toptr, arr);
-                }
-                else
-                {
-                    while (size-- > 0)
-                    {
-                        copyswap(toptr, fromptr, swap, arr);
-                        toptr.data_offset += itemsize;
-                    }
-                }
+                var helper = MemCopy.GetMemcopyHelper(toptr);
+                helper.FillWithScalar(toptr, fromptr, size, swap);
             }
             else
             {
@@ -278,16 +261,16 @@ namespace NumpyLib
                     Npy_DECREF(from);
                     return -1;
                 }
-                while (size-- > 0)
-                {
-                    copyswap(iter.dataptr, fromptr, swap, arr);
-                    NpyArray_ITER_NEXT(iter);
-                }
+
+                var helper = MemCopy.GetMemcopyHelper(iter.dataptr);
+                helper.FillWithScalarIter(iter, fromptr, size, swap);
+  
                 Npy_DECREF(iter);
             }
             Npy_DECREF(from);
             return 0;
         }
+
 
         internal static int NpyArray_ToBinaryFile(NpyArray self, FileInfo fp)
         {
