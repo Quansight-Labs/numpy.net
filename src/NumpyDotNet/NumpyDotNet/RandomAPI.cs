@@ -47,32 +47,290 @@ namespace NumpyDotNet
     {
         public static class random
         {
+            static Random r = new Random();
+
             public static void seed(Int32? seed)
             {
-
+                lock(r)
+                {
+                    if (seed.HasValue)
+                        r = new Random(seed.Value);
+                    else
+                        r = new Random();
+                }
             }
 
+            #region rand
+            public static float rand()
+            {
+                lock (r)
+                {
+                    return Convert.ToSingle(r.NextDouble());
+                }
+            }
+
+            public static ndarray rand(params Int32[] newshape)
+            {
+                return _rand(ConvertToShape(newshape));
+            }
+
+            public static ndarray rand(params Int64[] newshape)
+            {
+                 return _rand(ConvertToShape(newshape));
+            }
+
+            private static ndarray _rand(npy_intp[] newdims)
+            {
+                float[] randomData = new float[CountTotalElements(newdims)];
+                FillWithRand(randomData);
+       
+                return np.array(randomData, dtype: np.Float32).reshape(newdims);
+            }
+
+            private static void FillWithRand(float[] randomData)
+            {
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        randomData[i] = Convert.ToSingle(r.NextDouble());
+                    }
+                }
+   
+            }
+            #endregion
+
+            #region randn
             public static float randn()
             {
-                return 0f;
+                lock (r)
+                {
+                    return Convert.ToSingle(r.NextDouble() * r.Next());
+                }
             }
 
             public static ndarray randn(params Int32[] newshape)
             {
-                npy_intp[] newdims = new npy_intp[newshape.Length];
-                for (int i = 0; i < newshape.Length; i++)
-                    newdims[i] = newshape[i];
-
-                return null;
+                 return _randn(ConvertToShape(newshape));
             }
 
             public static ndarray randn(params Int64[] newshape)
             {
+                return _randn(ConvertToShape(newshape));
+            }
+
+            private static ndarray _randn(npy_intp[] newdims)
+            {
+                float[] randomData = new float[CountTotalElements(newdims)];
+                FillWithRandn(randomData);
+
+                return np.array(randomData, dtype: np.Float32).reshape(newdims);
+            }
+
+            private static void FillWithRandn(float[] randomData)
+            {
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        randomData[i] = Convert.ToSingle(r.NextDouble() * r.Next());
+                    }
+                }
+
+            }
+            #endregion
+
+            #region randint
+
+            public static ndarray randint(int low, int? high = null, params Int32[] newshape)
+            {
+                return _randint(low, high, ConvertToShape(newshape));
+            }
+
+            public static ndarray randint(int low, int? high = null, params Int64[] newshape)
+            {
+                return _randint(low, high, ConvertToShape(newshape));
+            }
+
+            private static ndarray _randint(int low, int? high, npy_intp[] newdims)
+            {
+                Int32[] randomData = new Int32[CountTotalElements(newdims)];
+                FillWithRandnInt32(low, high, randomData);
+
+                return np.array(randomData, dtype: np.Int32).reshape(newdims);
+            }
+
+            private static void FillWithRandnInt32(int low, int? high, Int32[] randomData)
+            {
+                int _low = low;
+                int _high = low;
+                if (!high.HasValue)
+                {
+                    _high = Math.Max(0, low - 1);
+                    _low = 0;
+                }
+                else
+                {
+                    _high = high.Value - 1;
+                }
+
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        randomData[i] = r.Next(_low, _high);
+                    }
+                }
+
+            }
+            #endregion
+
+            #region randint64
+
+            public static ndarray randint64(params Int32[] newshape)
+            {
+                return _randint64(ConvertToShape(newshape));
+            }
+
+            public static ndarray randint64(params Int64[] newshape)
+            {
+                return _randint64(ConvertToShape(newshape));
+            }
+
+            private static ndarray _randint64(npy_intp[] newdims)
+            {
+                Int64[] randomData = new Int64[CountTotalElements(newdims)];
+                FillWithRandnInt64(randomData);
+
+                return np.array(randomData, dtype: np.Int32).reshape(newdims);
+            }
+
+            private static void FillWithRandnInt64(Int64[] randomData)
+            {
+    
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        Int32 HighWord = r.Next();
+                        Int32 LowWord = r.Next();
+                        randomData[i] = HighWord << 32 | LowWord;
+                    }
+                }
+
+            }
+            #endregion
+
+            #region randd
+            public static double randd()
+            {
+                lock (r)
+                {
+                    return r.NextDouble() * r.Next();
+                }
+            }
+
+            public static ndarray randd(params Int32[] newshape)
+            {
+                return _randd(ConvertToShape(newshape));
+            }
+
+            public static ndarray randd(params Int64[] newshape)
+            {
+                return _randd(ConvertToShape(newshape));
+            }
+
+            private static ndarray _randd(npy_intp[] newdims)
+            {
+                double[] randomData = new double[CountTotalElements(newdims)];
+                FillWithRandd(randomData);
+
+                return np.array(randomData, dtype: np.Float64).reshape(newdims);
+            }
+
+            private static void FillWithRandd(double[] randomData)
+            {
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        randomData[i] = r.NextDouble() * r.Next();
+                    }
+                }
+
+            }
+            #endregion
+
+            #region bytes
+            public static byte bytes()
+            {
+                lock (r)
+                {
+                    byte[] b = new byte[0];
+                    r.NextBytes(b);
+                    return b[0];
+                }
+            }
+
+            public static ndarray bytes(params Int32[] newshape)
+            {
+                return _bytes(ConvertToShape(newshape));
+            }
+
+            public static ndarray bytes(params Int64[] newshape)
+            {
+                return _bytes(ConvertToShape(newshape));
+            }
+
+            private static ndarray _bytes(npy_intp[] newdims)
+            {
+                byte[] randomData = new byte[CountTotalElements(newdims)];
+                FillWithRandbytes(randomData);
+
+                return np.array(randomData, dtype: np.UInt8).reshape(newdims);
+            }
+
+            private static void FillWithRandbytes(byte[] randomData)
+            {
+                lock (r)
+                {
+                    r.NextBytes(randomData);
+                }
+
+            }
+            #endregion
+
+            private static npy_intp[] ConvertToShape(Int32[] newshape)
+            {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
                 for (int i = 0; i < newshape.Length; i++)
+                {
                     newdims[i] = newshape[i];
+                }
 
-                return null;
+                return newdims;
+            }
+
+            private static npy_intp[] ConvertToShape(Int64[] newshape)
+            {
+                npy_intp[] newdims = new npy_intp[newshape.Length];
+                for (int i = 0; i < newshape.Length; i++)
+                {
+                    newdims[i] = newshape[i];
+                }
+
+                return newdims;
+            }
+
+            private static npy_intp CountTotalElements(npy_intp[] dims)
+            {
+                npy_intp TotalElements = 1;
+                for (int i = 0; i < dims.Length; i++)
+                {
+                    TotalElements *= dims[i];
+                }
+
+                return TotalElements;
             }
         }
     }
