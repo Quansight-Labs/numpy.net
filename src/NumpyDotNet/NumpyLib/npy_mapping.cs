@@ -427,7 +427,7 @@ namespace NumpyLib
                     //}
                 }
                 NpyArray_ITER_GOTO(mit.ait, coord);
-                mit.dataptr = new VoidPtr(mit.ait.dataptr);
+                mit.dataptr.data_offset = mit.ait.dataptr.data_offset;
             }
             return;
         }
