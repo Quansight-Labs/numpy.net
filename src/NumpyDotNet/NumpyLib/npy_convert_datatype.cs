@@ -515,12 +515,8 @@ namespace NumpyLib
             bool inswap, outswap = false;
             bool obuf = !NpyArray_ISCARRAY(dst);
             int oelsize = dst.descr.elsize;
-            NpyArray_CopySwapFunc in_csn;
-            NpyArray_CopySwapFunc out_csn;
             int retval = -1;
 
-            in_csn = src.descr.f.copyswap;
-            out_csn = dst.descr.f.copyswap;
 
             /*
              * If the input or output is STRING, UNICODE, or VOID
@@ -569,7 +565,7 @@ namespace NumpyLib
                 NpyArray_ITER_RESET(it_in);
                 while (index-- > 0)
                 {
-                    in_csn(bptr, it_in.dataptr, inswap, src);
+                    _default_copyswap(bptr, 0, it_in.dataptr, 0, 1, inswap, src);
                     bptr.data_offset += elsize;
                     NpyArray_ITER_NEXT(it_in);
                     el += 1;
@@ -582,7 +578,8 @@ namespace NumpyLib
                             /* Copy from outbuffer to array */
                             for (i = 0; i < el; i++)
                             {
-                                out_csn(it_out.dataptr, optr, outswap, dst);
+                                _default_copyswap(it_out.dataptr, 0, optr, 0, 1, outswap, dst);
+
                                 optr.data_offset += oelsize;
                                 NpyArray_ITER_NEXT(it_out);
                             }

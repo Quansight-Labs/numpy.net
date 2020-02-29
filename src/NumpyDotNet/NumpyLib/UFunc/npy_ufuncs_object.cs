@@ -1149,6 +1149,8 @@ namespace NumpyLib
                      * 4. Repeat 2 until row is done.
                      */
                     /* fprintf(stderr, "BUFFERED..%d %d\n", loop.size, loop.swap); */
+
+
                     while (loop.index < loop.size)
                     {
                         loop.inptr = loop.it.dataptr;
@@ -1156,17 +1158,14 @@ namespace NumpyLib
                         if (loop.cast != null)
                         {
                             /* A little tricky because we need to cast it first */
-                            NpyArray_DESCR(arr).f.copyswap(loop.buffer, loop.inptr,
-                                                             loop.swap, null);
+                            helper.copyswap(loop.buffer, loop.inptr, loop.swap);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
                             memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
                         }
                         else
                         {
                             /* Simple copy */
-                            NpyArray_DESCR(arr).f.copyswap(loop.bufptr[0],
-                                                             loop.inptr,
-                                                             loop.swap, null);
+                            helper.copyswap(loop.bufptr[0],loop.inptr,loop.swap);
                         }
                         loop.inptr += loop.instrides;
                         n = 1;
@@ -1180,8 +1179,7 @@ namespace NumpyLib
                                 {
                                     break;
                                 }
-                                NpyArray_DESCR(arr).f.copyswap(dptr, loop.inptr,
-                                                                 loop.swap, null);
+                                helper.copyswap(dptr, loop.inptr, loop.swap);
                                 loop.inptr += loop.instrides;
                                 dptr += loop.insize;
                             }
@@ -1370,17 +1368,14 @@ namespace NumpyLib
                         {
                             /* A little tricky because we need to
                              cast it first */
-                            NpyArray_DESCR(arr).f.copyswap(loop.buffer, loop.inptr,
-                                                             loop.swap, null);
+                            helper.copyswap(loop.buffer, loop.inptr,loop.swap);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
                             memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
                         }
                         else
                         {
                             /* Simple copy */
-                            NpyArray_DESCR(arr).f.copyswap(loop.bufptr[0],
-                                                             loop.inptr,
-                                                             loop.swap, null);
+                            helper.copyswap(loop.bufptr[0],loop.inptr,loop.swap);
                         }
                         loop.inptr += loop.instrides;
                         n = 1;
@@ -1394,8 +1389,7 @@ namespace NumpyLib
                                 {
                                     break;
                                 }
-                                NpyArray_DESCR(arr).f.copyswap(dptr, loop.inptr,
-                                                                 loop.swap, null);
+                                helper.copyswap(dptr, loop.inptr,loop.swap);
                                 loop.inptr += loop.instrides;
                                 dptr += loop.insize;
                             }
@@ -1475,6 +1469,8 @@ namespace NumpyLib
                 return null;
             }
 
+            var helper = MemCopy.GetMemcopyHelper(arr.data);
+
             switch (loop.meth)
             {
                 case UFuncLoopMethod.ZERO_EL_REDUCELOOP:
@@ -1543,8 +1539,7 @@ namespace NumpyLib
                                     {
                                         break;
                                     }
-                                    NpyArray_DESCR(arr).f.copyswap(dptr, loop.inptr,
-                                                                     loop.swap, null);
+                                    helper.copyswap(dptr, loop.inptr,loop.swap);
                                     loop.inptr += loop.instrides;
                                     dptr += loop.insize;
                                 }

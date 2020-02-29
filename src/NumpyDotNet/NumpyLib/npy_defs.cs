@@ -516,7 +516,6 @@ namespace NumpyLib
     public delegate int NpyArray_SetItemFunc(npy_intp index, object value, NpyArray a);
 
     public delegate void NpyArray_CopySwapNFunc(VoidPtr Dest, npy_intp dstrides, VoidPtr Src, npy_intp sstrides, npy_intp len, bool swap, NpyArray npa);
-    public delegate void NpyArray_CopySwapFunc(VoidPtr Dest, VoidPtr Src, bool swap, NpyArray npa);
 
     public delegate bool NpyArray_NonzeroFunc(VoidPtr vp, npy_intp index);
 

@@ -613,7 +613,6 @@ namespace NumpyLib
          * Use memmove first if they might
          */
         public NpyArray_CopySwapNFunc copyswapn;
-        public NpyArray_CopySwapFunc copyswap;
 
         /*
          * Function to compare items
@@ -793,7 +792,6 @@ namespace NumpyLib
 
         /* Object type methods. */
         public NpyArray_CopySwapNFunc OBJECT_copyswapn;
-        public NpyArray_CopySwapFunc OBJECT_copyswap;
         public NpyArray_CompareFunc OBJECT_compare;
         public NpyArray_ArgFunc OBJECT_argmax;
         public NpyArray_DotFunc OBJECT_dotfunc;
