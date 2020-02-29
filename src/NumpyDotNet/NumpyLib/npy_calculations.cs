@@ -640,14 +640,14 @@ namespace NumpyLib
             IUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
             if (UFunc != null)
             {
-                if (destArray.ItemType == srcArray.ItemType)
+                if (destArray.ItemType == srcArray.ItemType && destArray.ItemType != NPY_TYPES.NPY_BOOL)
                 {
                     if (operArray.ItemType != destArray.ItemType && NpyArray_SIZE(operArray) <= NUMERICOPS_TASKSIZE)
                     {
                         operArray = NpyArray_CastToType(operArray, NpyArray_DescrFromType(destArray.ItemType), NpyArray_ISFORTRAN(operArray));
                     }
                 }
-                if (destArray.ItemType == operArray.ItemType)
+                if (destArray.ItemType == operArray.ItemType && destArray.ItemType != NPY_TYPES.NPY_BOOL)
                 {
                     if (srcArray.ItemType != srcArray.ItemType && NpyArray_SIZE(srcArray) <= NUMERICOPS_TASKSIZE)
                     {

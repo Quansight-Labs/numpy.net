@@ -15,12 +15,12 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
     #region DOUBLE tests
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_DOUBLE()
         {
@@ -3127,7 +3127,7 @@ namespace NumpyDotNetTests
 
             for (int i = 0; i < LoopCount; i++)
             {
-                var m2 = m1[mask];
+                var m2 = m1.A(mask);
             }
 
 
@@ -3187,9 +3187,35 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-
-        //[Ignore]
         [TestMethod]
+        public void Performance_BOOLRETURN_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var x = m1 < 1000;
+            var y = m1 > 100000;
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray b = np.less_equal(x, y);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+
+
+    //[Ignore]
+    [TestMethod]
         public void Performance_in1d_DOUBLE()
         {
             int LoopCount = 1;

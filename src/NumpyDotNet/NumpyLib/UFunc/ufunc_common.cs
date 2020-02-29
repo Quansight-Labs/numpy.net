@@ -190,6 +190,9 @@ namespace NumpyLib
         {
             switch (npy_type)
             {
+                case NPY_TYPES.NPY_BOOL:
+                    return new UFUNC_Bool();
+
                 case NPY_TYPES.NPY_BYTE:
                     return new UFUNC_SByte();
 

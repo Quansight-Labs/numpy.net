@@ -62,7 +62,7 @@ namespace NumpyLib
 
 
             IUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
-            if (UFunc != null)
+            if (UFunc != null && destArray.ItemType != NPY_TYPES.NPY_BOOL)
             {
                 UFunc.PerformOuterOpArrayIter(a, b, destArray, operations, ops);
             }
