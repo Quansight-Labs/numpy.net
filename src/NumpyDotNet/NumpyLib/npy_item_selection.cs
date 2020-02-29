@@ -57,7 +57,6 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_TakeFrom(NpyArray self0, NpyArray indices0, int axis, NpyArray ret, NPY_CLIPMODE clipmode)
         {
-            NpyArray_FastTakeFunc func;
             NpyArray self;
             NpyArray indices;
             int nd;
@@ -158,100 +157,90 @@ namespace NumpyLib
 
             npy_intp[] indicesData = indices.data.datap as npy_intp[];
 
-            func = self.descr.f.fasttake;
-            if (func == null)
+
+            switch (clipmode)
             {
-                switch (clipmode)
-                {
-                    case NPY_CLIPMODE.NPY_RAISE:
-                        for (int i = 0; i < n; i++)
+                case NPY_CLIPMODE.NPY_RAISE:
+                    for (int i = 0; i < n; i++)
+                    {
+                        bool out_of_range = false;
+                        Parallel.For(0, m, j =>
                         {
-                            bool out_of_range = false;
-                            Parallel.For(0, m, j =>
+                            var tmp = indicesData[j];
+                            if (tmp < 0)
                             {
-                                var tmp = indicesData[j];
-                                if (tmp < 0)
-                                {
-                                    tmp = tmp + max_item;
-                                }
-                                if ((tmp < 0) || (tmp >= max_item))
-                                {
-                                    out_of_range = true;
-                                }
-
-                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
-                            });
-
-                            if (out_of_range)
+                                tmp = tmp + max_item;
+                            }
+                            if ((tmp < 0) || (tmp >= max_item))
                             {
-                                NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
-                                goto fail;
+                                out_of_range = true;
                             }
 
-                            dest_index += m * chunk;
-                            src_index += chunk * max_item;
-                        }
-                        break;
-                    case NPY_CLIPMODE.NPY_WRAP:
-                        for (int i = 0; i < n; i++)
+                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                        });
+
+                        if (out_of_range)
                         {
-                            Parallel.For(0, m, j =>
-                            {
-                                var tmp = indicesData[j];
-                                if (tmp < 0)
-                                {
-                                    while (tmp < 0)
-                                    {
-                                        tmp += max_item;
-                                    }
-                                }
-                                else if (tmp >= max_item)
-                                {
-                                    while (tmp >= max_item)
-                                    {
-                                        tmp -= max_item;
-                                    }
-                                }
-
-                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
-                            });
-
-                            dest_index += m * chunk;
-                            src_index += chunk * max_item;
+                            NpyErr_SetString(npyexc_type.NpyExc_IndexError, "index out of range for array");
+                            goto fail;
                         }
-                        break;
-                    case NPY_CLIPMODE.NPY_CLIP:
-                        for (int i = 0; i < n; i++)
+
+                        dest_index += m * chunk;
+                        src_index += chunk * max_item;
+                    }
+                    break;
+                case NPY_CLIPMODE.NPY_WRAP:
+                    for (int i = 0; i < n; i++)
+                    {
+                        Parallel.For(0, m, j =>
                         {
-                            Parallel.For(0, m, j =>
+                            var tmp = indicesData[j];
+                            if (tmp < 0)
                             {
-                                var tmp = indicesData[j];
-                                if (tmp < 0)
+                                while (tmp < 0)
                                 {
-                                    tmp = 0;
+                                    tmp += max_item;
                                 }
-                                else if (tmp >= max_item)
+                            }
+                            else if (tmp >= max_item)
+                            {
+                                while (tmp >= max_item)
                                 {
-                                    tmp = max_item - 1;
+                                    tmp -= max_item;
                                 }
+                            }
 
-                                memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
-                            });
+                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                        });
 
-                            dest_index += (m * chunk);
-                            src_index += chunk * max_item;
-                        }
-                        break;
-                }
+                        dest_index += m * chunk;
+                        src_index += chunk * max_item;
+                    }
+                    break;
+                case NPY_CLIPMODE.NPY_CLIP:
+                    for (int i = 0; i < n; i++)
+                    {
+                        Parallel.For(0, m, j =>
+                        {
+                            var tmp = indicesData[j];
+                            if (tmp < 0)
+                            {
+                                tmp = 0;
+                            }
+                            else if (tmp >= max_item)
+                            {
+                                tmp = max_item - 1;
+                            }
+
+                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                        });
+
+                        dest_index += (m * chunk);
+                        src_index += chunk * max_item;
+                    }
+                    break;
             }
-            else
-            {
-                err = func(dest, src, ConvertToIntP(indices.data),  max_item, n, m, nelem, clipmode);
-                if (err != 0)
-                {
-                    goto fail;
-                }
-            }
+
 
             NpyArray_INCREF(ret);
             Npy_XDECREF(indices);

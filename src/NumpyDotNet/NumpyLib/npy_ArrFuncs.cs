@@ -141,9 +141,7 @@ namespace NumpyLib
                 cancastto = null,
 
 
-                fastclip = NpyArray_FastClipFunc,
                 fastputmask = NpyArray_FastPutmaskFunc,
-                fasttake = null, // NpyArray_FastTakeFunc,
             };
 
             
@@ -1050,10 +1048,7 @@ namespace NumpyLib
             return NPY_SCALARKIND.NPY_BOOL_SCALAR;
         }
 
-        internal static void NpyArray_FastClipFunc(VoidPtr _in, npy_intp n_in, VoidPtr min, VoidPtr max, VoidPtr _out)
-        {
-
-        }
+  
         internal static void NpyArray_FastPutmaskFunc(VoidPtr _in, VoidPtr mask, npy_intp ni, VoidPtr vals, npy_intp nv)
         {
             npy_intp i, j;

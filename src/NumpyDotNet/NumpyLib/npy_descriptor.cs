@@ -688,9 +688,7 @@ namespace NumpyLib
         public Dictionary<NPY_SCALARKIND, object> cancastscalarkindto;
         public List<NPY_TYPES> cancastto = null;
 
-        public NpyArray_FastClipFunc fastclip;
         public NpyArray_FastPutmaskFunc fastputmask;
-        public NpyArray_FastTakeFunc fasttake;
 
         /*
          * A little room to grow --- should use generic function
