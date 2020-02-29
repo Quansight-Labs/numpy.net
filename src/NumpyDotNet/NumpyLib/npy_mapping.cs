@@ -435,10 +435,6 @@ namespace NumpyLib
         internal static NpyArray NpyArray_GetMap(NpyArrayMapIterObject mit)
         {
             NpyArrayIterObject it;
-            NpyArray ret, temp;
-            npy_intp index;
-            bool swap;
-            NpyArray_CopySwapFunc copyswap;
 
             /* Unbound map iterator --- Bind should have been called */
             if (mit.ait == null)
@@ -449,9 +445,9 @@ namespace NumpyLib
             /* This relies on the map iterator object telling us the shape
                of the new array in nd and dimensions.
             */
-            temp = mit.ait.ao;
+            NpyArray temp = mit.ait.ao;
             Npy_INCREF(temp.descr);
-            ret = NpyArray_Alloc(temp.descr, mit.nd, mit.dimensions,
+            NpyArray ret = NpyArray_Alloc(temp.descr, mit.nd, mit.dimensions,
                                  NpyArray_ISFORTRAN(temp), Npy_INTERFACE(temp));
             if (ret == null)
             {
@@ -469,18 +465,13 @@ namespace NumpyLib
                 Npy_DECREF(ret);
                 return null;
             }
-            index = it.size;
-            swap = (NpyArray_ISNOTSWAPPED(temp) != NpyArray_ISNOTSWAPPED(ret));
-            copyswap = ret.descr.f.copyswap;
+
+            bool swap = (NpyArray_ISNOTSWAPPED(temp) != NpyArray_ISNOTSWAPPED(ret));
             NpyArray_MapIterReset(mit);
 
-            //copyswap = GetTestCopySwap(it.dataptr, mit.dataptr, swap, ret);
-            while (index-- > 0)
-            {
-                copyswap(it.dataptr, mit.dataptr, swap, ret);
-                NpyArray_MapIterNext(mit);
-                NpyArray_ITER_NEXT(it);
-            }
+            var helper = MemCopy.GetMemcopyHelper(it.dataptr);
+            helper.GetMap(it, mit, swap);
+
             Npy_DECREF(it);
 
             /* check for consecutive axes */

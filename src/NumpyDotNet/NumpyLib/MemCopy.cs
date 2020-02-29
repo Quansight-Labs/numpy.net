@@ -3469,6 +3469,7 @@ namespace NumpyLib
         void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptAssignBoolArray(NpyArrayIterObject self, NpyArrayIterObject value_iter, npy_intp bool_size, bool[] dptr, npy_intp stride, bool swap);
         npy_intp? IterSubscriptAssignIntpArray(NpyArrayIterObject destIter, NpyArrayIterObject indexIter, NpyArrayIterObject srcIter, bool swap);
+        void GetMap(NpyArrayIterObject it, NpyArrayMapIterObject mit, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3828,6 +3829,25 @@ namespace NumpyLib
 
             return null;
         }
+
+        public void GetMap(NpyArrayIterObject destIter, NpyArrayMapIterObject srcIter, bool swap)
+        {
+            int elsize = GetTypeSize(destIter.dataptr);
+
+            T[] d = destIter.dataptr.datap as T[];
+            T[] s = srcIter.dataptr.datap as T[];
+
+            var numIndexes = destIter.size;
+
+            while (numIndexes-- > 0)
+            {
+                d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+
+                numpyinternal.NpyArray_MapIterNext(srcIter);
+                numpyinternal.NpyArray_ITER_NEXT(destIter);
+            }
+        }
+
 
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
         {
