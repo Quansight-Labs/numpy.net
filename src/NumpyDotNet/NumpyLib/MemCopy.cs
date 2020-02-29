@@ -3471,6 +3471,8 @@ namespace NumpyLib
         npy_intp? IterSubscriptAssignIntpArray(NpyArrayIterObject destIter, NpyArrayIterObject indexIter, NpyArrayIterObject srcIter, bool swap);
         void GetMap(NpyArrayIterObject it, NpyArrayMapIterObject mit, bool swap);
         void SetMap(NpyArrayMapIterObject destIter, NpyArrayIterObject srcIter, bool swap);
+        void FillWithScalar(VoidPtr destPtr, VoidPtr srcPtr, npy_intp size, bool swap);
+        void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap);
     }
 
     abstract class CopyHelper<T>
@@ -3905,7 +3907,46 @@ namespace NumpyLib
 
         }
 
+        public void FillWithScalar(VoidPtr destPtr, VoidPtr srcPtr, npy_intp size, bool swap)
+        {
+            int elsize = GetTypeSize(destPtr);
 
+            T[] d = destPtr.datap as T[];
+            T[] s = srcPtr.datap as T[];
+            T fillValue = s[0];
+
+            destPtr.data_offset /= elsize;
+            while (size-- > 0)
+            {
+                d[destPtr.data_offset++] = fillValue;
+
+                if (swap)
+                {
+                    numpyinternal.swapvalue(destPtr, elsize);
+                }
+            }
+        }
+
+        public void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap)
+        {
+            int elsize = GetTypeSize(destIter.dataptr);
+
+            T[] d = destIter.dataptr.datap as T[];
+            T[] s = srcPtr.datap as T[];
+            T fillValue = s[0];
+
+            while (size-- > 0)
+            {
+                d[destIter.dataptr.data_offset / elsize] = fillValue;
+
+                if (swap)
+                {
+                    numpyinternal.swapvalue(destIter.dataptr, elsize);
+                }
+
+                numpyinternal.NpyArray_ITER_NEXT(destIter);
+            }
+        }
 
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
         {

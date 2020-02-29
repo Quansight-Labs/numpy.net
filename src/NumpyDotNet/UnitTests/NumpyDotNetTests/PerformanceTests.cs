@@ -3162,6 +3162,30 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [TestMethod]
+        public void Performance_FillScalar_DOUBLE()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+            var m2 = m1["::2"] as ndarray;
+
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                m1.fill(33);
+                m2.fill(66);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
 
 
         //[Ignore]
