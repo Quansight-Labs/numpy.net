@@ -665,5 +665,26 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))  
 
+
+    def test_Performance_in1d_DOUBLE(self):
+
+        LoopCount = 1;
+
+        m1 = np.arange(16000000, dtype=np.float64);
+        m2 = np.arange(0, 16000000, 2, dtype=np.float64);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m3 = np.in1d(m1,m2);
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))  
+
 if __name__ == '__main__':
     unittest.main()

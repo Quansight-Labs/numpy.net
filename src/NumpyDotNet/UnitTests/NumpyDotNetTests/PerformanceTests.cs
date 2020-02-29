@@ -3140,7 +3140,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_SetMap_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount = 1;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var mask = np.arange(16000000, dtype: np.Bool).reshape(40, -1);
@@ -3220,18 +3220,15 @@ namespace NumpyDotNetTests
         {
             int LoopCount = 1;
 
-            var m1 = np.arange(16000000, dtype: np.Float64);
-            var m2 = np.arange(0, 16000000, 2, dtype: np.Float64);
-            ndarray mask = np.in1d(m1, m2);
+            var m1 = np.arange(16000000, dtype: np.Int64);
+            var m2 = np.arange(0, 16000000, 2, dtype: np.Int64);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             for (int i = 0; i < LoopCount; i++)
             {
-                ndarray m3 = m1.A(mask) as ndarray;
-                ndarray m4 = np.sum(m3);
-                print(m4);
+                ndarray m3 = np.in1d(m1, m2);
             }
 
 
