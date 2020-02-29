@@ -867,6 +867,11 @@ namespace NumpyDotNet {
             return NpyCoreApi.MatrixProduct(a1, a2, d.TypeNum);
         }
 
+        public static ndarray matmul(object o1, object o2)
+        {
+            return MatrixProduct(o1, o2);
+        }
+
         public static ndarray MatrixProduct(object o1, object o2)
         {
             dtype d = FindArrayType(o1, null);
