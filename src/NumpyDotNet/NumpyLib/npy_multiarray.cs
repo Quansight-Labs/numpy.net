@@ -876,21 +876,10 @@ namespace NumpyLib
             axis = ap1.nd - 1;
             it1 = NpyArray_IterAllButAxis(ap1, ref axis);
             it2 = NpyArray_IterAllButAxis(ap2, ref matchDim);
-            while (true)
-            {
-                while (it2.index < it2.size)
-                {
-                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l, ret);
-                    op.data_offset += os;
-                    NpyArray_ITER_NEXT(it2);
-                }
-                NpyArray_ITER_NEXT(it1);
-                if (it1.index >= it1.size)
-                {
-                    break;
-                }
-                NpyArray_ITER_RESET(it2);
-            }
+
+            var helper = MemCopy.GetMemcopyHelper(it1.dataptr);
+            helper.MatrixProduct(it1, it2, op, is1, is2, os, l);
+   
             Npy_DECREF(it1);
             Npy_DECREF(it2);
             if (NpyErr_Occurred())
@@ -903,6 +892,7 @@ namespace NumpyLib
             Npy_XDECREF(ret);
             return null;
         }
+
 
         internal static NpyArray NpyArray_ContiguousFromArray(NpyArray op, NPY_TYPES type)
         {

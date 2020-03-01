@@ -3308,6 +3308,16 @@ namespace NumpyLib
             return sizeof(bool);
         }
 
+        protected override bool T_dot(bool tmp, bool[] ip1, bool[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            if ((ip1[ip1_index] == true) && (ip2[ip2_index] == true))
+            {
+                tmp = true;
+                return tmp;
+            }
+            return tmp;
+        }
+
     }
 
     class UByteCopyHelper : CopyHelper<byte>, ICopyHelper
@@ -3316,7 +3326,13 @@ namespace NumpyLib
         {
             return sizeof(byte);
         }
-   
+
+        protected override byte T_dot(byte tmp, byte[] ip1, byte[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (byte)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class SByteCopyHelper : CopyHelper<sbyte>, ICopyHelper
@@ -3325,7 +3341,14 @@ namespace NumpyLib
         {
             return sizeof(sbyte);
         }
- 
+
+
+        protected override sbyte T_dot(sbyte tmp, sbyte[] ip1, sbyte[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (sbyte)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class Int16CopyHelper : CopyHelper<Int16>, ICopyHelper
@@ -3333,6 +3356,12 @@ namespace NumpyLib
         public override int GetTypeSize(VoidPtr vp)
         {
             return sizeof(Int16);
+        }
+
+        protected override Int16 T_dot(Int16 tmp, Int16[] ip1, Int16[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (Int16)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
         }
 
     }
@@ -3345,6 +3374,13 @@ namespace NumpyLib
             return sizeof(UInt16);
         }
 
+
+        protected override UInt16 T_dot(UInt16 tmp, UInt16[] ip1, UInt16[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (UInt16)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class Int32CopyHelper : CopyHelper<Int32>, ICopyHelper
@@ -3352,6 +3388,13 @@ namespace NumpyLib
         public override int GetTypeSize(VoidPtr vp)
         {
             return sizeof(Int32);
+        }
+
+
+        protected override Int32 T_dot(Int32 tmp, Int32[] ip1, Int32[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (Int32)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
         }
 
     }
@@ -3364,7 +3407,14 @@ namespace NumpyLib
             return sizeof(UInt32);
         }
 
-  
+
+        protected override UInt32 T_dot(UInt32 tmp, UInt32[] ip1, UInt32[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (UInt32)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
+
     }
 
     class Int64CopyHelper : CopyHelper<Int64>, ICopyHelper
@@ -3374,6 +3424,11 @@ namespace NumpyLib
             return sizeof(Int64);
         }
 
+        protected override Int64 T_dot(Int64 tmp, Int64[] ip1, Int64[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (Int64)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
 
     }
 
@@ -3383,6 +3438,12 @@ namespace NumpyLib
         public override int GetTypeSize(VoidPtr vp)
         {
             return sizeof(UInt64);
+        }
+
+        protected override UInt64 T_dot(UInt64 tmp, UInt64[] ip1, UInt64[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (UInt64)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
         }
 
     }
@@ -3396,6 +3457,13 @@ namespace NumpyLib
             return sizeof(float);
         }
 
+
+        protected override float T_dot(float tmp, float[] ip1, float[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (float)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
 
@@ -3405,7 +3473,14 @@ namespace NumpyLib
         {
             return sizeof(double);
         }
- 
+
+
+        protected override double T_dot(double tmp, double[] ip1, double[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (double)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class DecimalCopyHelper : CopyHelper<decimal>, ICopyHelper
@@ -3414,7 +3489,13 @@ namespace NumpyLib
         {
             return sizeof(decimal);
         }
- 
+
+        protected override decimal T_dot(decimal tmp, decimal[] ip1, decimal[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (decimal)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class ComplexCopyHelper : CopyHelper<System.Numerics.Complex>, ICopyHelper
@@ -3422,6 +3503,13 @@ namespace NumpyLib
         public override int GetTypeSize(VoidPtr vp)
         {
             return sizeof(double) * 2;
+        }
+
+
+        protected override System.Numerics.Complex T_dot(System.Numerics.Complex tmp, System.Numerics.Complex[] ip1, System.Numerics.Complex[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (System.Numerics.Complex)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
         }
 
     }
@@ -3433,7 +3521,14 @@ namespace NumpyLib
             return sizeof(double) * 4;
         }
 
- 
+
+        protected override System.Numerics.BigInteger T_dot(System.Numerics.BigInteger tmp, System.Numerics.BigInteger[] ip1, System.Numerics.BigInteger[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            tmp += (System.Numerics.BigInteger)(ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
+
     }
 
 
@@ -3445,7 +3540,18 @@ namespace NumpyLib
         }
 
 
-   
+        protected override object T_dot(System.Object otmp, System.Object[] op1, System.Object[] op2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            dynamic tmp = (dynamic)otmp;
+            if (tmp == null) tmp = 0;
+
+            dynamic[] ip1 = op1 as dynamic[];
+            dynamic[] ip2 = op2 as dynamic[];
+
+            tmp += (ip1[ip1_index] * ip2[ip2_index]);
+            return tmp;
+        }
+
     }
 
     class StringCopyHelper : CopyHelper<System.String>, ICopyHelper
@@ -3453,6 +3559,16 @@ namespace NumpyLib
         public override int GetTypeSize(VoidPtr vp)
         {
             return IntPtr.Size;
+        }
+
+        protected override System.String T_dot(System.String tmp, System.String[] ip1, System.String[] ip2, npy_intp ip1_index, npy_intp ip2_index)
+        {
+            if ((ip1[ip1_index] != null) && (ip2[ip2_index] != null))
+            {
+                tmp = (ip1[ip1_index] + ip2[ip2_index]);
+                return tmp;
+            }
+            return tmp;
         }
 
     }
@@ -3473,6 +3589,7 @@ namespace NumpyLib
         void SetMap(NpyArrayMapIterObject destIter, NpyArrayIterObject srcIter, bool swap);
         void FillWithScalar(VoidPtr destPtr, VoidPtr srcPtr, npy_intp size, bool swap);
         void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap);
+        void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
     }
 
     abstract class CopyHelper<T>
@@ -3948,6 +4065,57 @@ namespace NumpyLib
             }
         }
 
+        public void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
+        {
+            while (true)
+            {
+                while (it2.index < it2.size)
+                {
+                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
+                    op.data_offset += os;
+                    numpyinternal.NpyArray_ITER_NEXT(it2);
+                }
+                numpyinternal.NpyArray_ITER_NEXT(it1);
+                if (it1.index >= it1.size)
+                {
+                    break;
+                }
+                numpyinternal.NpyArray_ITER_RESET(it2);
+            }
+
+            return;
+        }
+
+        private void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ip1Size = GetTypeSize(_ip1);
+            int ip2Size = GetTypeSize(_ip2);
+            int opSize = GetTypeSize(_op);
+
+
+            T tmp = default(T);
+            npy_intp i;
+
+            T[] ip1 = _ip1.datap as T[];
+            T[] ip2 = _ip2.datap as T[];
+            T[] op = _op.datap as T[];
+
+            npy_intp ip1_index = _ip1.data_offset / ip1Size;
+            npy_intp ip2_index = _ip2.data_offset / ip2Size;
+            is1 /= ip1Size;
+            is2 /= ip2Size;
+
+
+            for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
+            {
+                tmp = T_dot(tmp, ip1, ip2, ip1_index, ip2_index);
+            }
+            op[_op.data_offset / opSize] = tmp;
+        }
+
+
+        protected abstract T T_dot(T otmp, T[] op1, T[] op2, npy_intp ip1_index, npy_intp ip2_index);
+   
         public void copyswap(VoidPtr _dst, VoidPtr _src, bool swap)
         {
 
