@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3253,6 +3253,30 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 ndarray m3 = np.matmul(m1, m2);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("matmul operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_inner_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+            var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = np.inner(m1, m2);
             }
 
 

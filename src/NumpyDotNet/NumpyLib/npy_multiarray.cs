@@ -724,29 +724,22 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_InnerProduct(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum)
         {
-            NpyArray ret = null;
-            NpyArrayIterObject it1, it2;
-            npy_intp i, j, l;
-            int nd, axis;
-            npy_intp is1, is2, os;
-            VoidPtr op;
             npy_intp []dimensions = new npy_intp[npy_defs.NPY_MAXDIMS];
-            NpyArray_DotFunc dot;
 
-            l = ap1.dimensions[ap1.nd - 1];
+            npy_intp l = ap1.dimensions[ap1.nd - 1];
             if (ap2.dimensions[ap2.nd - 1] != l)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "matrices are not aligned");
                 return null;
             }
 
-            nd = ap1.nd + ap2.nd - 2;
-            j = 0;
-            for (i = 0; i < ap1.nd - 1; i++)
+            int nd = ap1.nd + ap2.nd - 2;
+            int j = 0;
+            for (int i = 0; i < ap1.nd - 1; i++)
             {
                 dimensions[j++] = ap1.dimensions[i];
             }
-            for (i = 0; i < ap2.nd - 1; i++)
+            for (int i = 0; i < ap2.nd - 1; i++)
             {
                 dimensions[j++] = ap2.dimensions[i];
             }
@@ -755,40 +748,29 @@ namespace NumpyLib
              * Need to choose an output array that can hold a sum
              * -- use priority to determine which subtype.
              */
-            ret = new_array_for_sum(ap1, ap2, nd, dimensions, typenum);
+            NpyArray ret = new_array_for_sum(ap1, ap2, nd, dimensions, typenum);
             if (ret == null)
             {
                 return null;
             }
-            dot = ret.descr.f.dotfunc;
+            NpyArray_DotFunc dot = ret.descr.f.dotfunc;
             if (dot == null)
             {
                 NpyErr_SetString(npyexc_type.NpyExc_ValueError, "dot not available for this type");
                 goto fail;
             }
-            is1 = ap1.strides[ap1.nd - 1];
-            is2 = ap2.strides[ap2.nd - 1];
-            op = new VoidPtr(ret);
-            os = ret.descr.elsize;
-            axis = ap1.nd - 1;
-            it1 = NpyArray_IterAllButAxis(ap1, ref axis);
+            npy_intp is1 = ap1.strides[ap1.nd - 1];
+            npy_intp is2 = ap2.strides[ap2.nd - 1];
+            VoidPtr op = new VoidPtr(ret);
+            npy_intp os = ret.descr.elsize;
+            int axis = ap1.nd - 1;
+            NpyArrayIterObject it1 = NpyArray_IterAllButAxis(ap1, ref axis);
             axis = ap2.nd - 1;
-            it2 = NpyArray_IterAllButAxis(ap2, ref axis);
-            while (true)
-            {
-                while (it2.index < it2.size)
-                {
-                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l, ret);
-                    op.data_offset += os;
-                    NpyArray_ITER_NEXT(it2);
-                }
-                NpyArray_ITER_NEXT(it1);
-                if (it1.index >= it1.size)
-                {
-                    break;
-                }
-                NpyArray_ITER_RESET(it2);
-            }
+            NpyArrayIterObject it2 = NpyArray_IterAllButAxis(ap2, ref axis);
+
+            var helper = MemCopy.GetMemcopyHelper(it1.dataptr);
+            helper.InnerProduct(it1, it2, op, is1, is2, os, l);
+    
             Npy_DECREF(it1);
             Npy_DECREF(it2);
             if (NpyErr_Occurred())
@@ -801,7 +783,7 @@ namespace NumpyLib
             Npy_DECREF(ret);
             return null;
         }
-
+  
         internal static NpyArray NpyArray_MatrixProduct(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum)
         {
             NpyArray ret = null;
@@ -810,7 +792,6 @@ namespace NumpyLib
             npy_intp []dimensions = new  npy_intp[npy_defs.NPY_MAXDIMS];
             int nd, axis, matchDim;
             VoidPtr op;
-            NpyArray_DotFunc dot;
 
             if (ap2.nd > 1)
             {
@@ -864,12 +845,6 @@ namespace NumpyLib
                 memset(NpyArray_DATA(ret), 0, (int)NpyArray_ITEMSIZE(ret));
             }
 
-            dot = ret.descr.f.dotfunc;
-            if (dot == null)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "dot not available for this type");
-                goto fail;
-            }
 
             op = new VoidPtr(ret);
             os = NpyArray_ITEMSIZE(ret);

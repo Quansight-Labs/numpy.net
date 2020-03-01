@@ -3590,6 +3590,9 @@ namespace NumpyLib
         void FillWithScalar(VoidPtr destPtr, VoidPtr srcPtr, npy_intp size, bool swap);
         void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap);
         void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
+        void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
+
+
     }
 
     abstract class CopyHelper<T>
@@ -4084,6 +4087,25 @@ namespace NumpyLib
             }
 
             return;
+        }
+
+        public void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
+        {
+            while (true)
+            {
+                while (it2.index < it2.size)
+                {
+                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
+                    op.data_offset += os;
+                    numpyinternal.NpyArray_ITER_NEXT(it2);
+                }
+                numpyinternal.NpyArray_ITER_NEXT(it1);
+                if (it1.index >= it1.size)
+                {
+                    break;
+                }
+                numpyinternal.NpyArray_ITER_RESET(it2);
+            }
         }
 
         private void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
