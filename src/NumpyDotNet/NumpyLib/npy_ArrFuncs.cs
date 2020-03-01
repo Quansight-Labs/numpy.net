@@ -1067,42 +1067,7 @@ namespace NumpyLib
             }
             return;
         }
-        internal static void NpyArray_FastPutmaskFunc<T>(VoidPtr _in, VoidPtr mask, npy_intp ni, VoidPtr vals, npy_intp nv)
-        {
-            npy_intp i, j;
-
-            if (nv == 1)
-            {
-                T s_val = (T)GetIndex(vals, 0);
-                for (i = 0; i < ni; i++)
-                {
-                    if ((bool)GetIndex(mask, i))
-                    {
-                        SetIndex(_in, i, s_val);
-                    }
-                }
-            }
-            else
-            {
-                for (i = 0, j = 0; i < ni; i++, j++)
-                {
-                    if (j >= nv)
-                    {
-                        j = 0;
-                    }
-                    if ((bool)GetIndex(mask, i))
-                    {
-                        SetIndex(_in, i, (T)GetIndex(vals, j));
-                    }
-                }
-            }
-            return;
-        }
-
-        internal static int NpyArray_FastTakeFunc(VoidPtr dest, VoidPtr src, npy_intp[] indarray, npy_intp nindarray, npy_intp n_outer, npy_intp m_middle, npy_intp nelem, NPY_CLIPMODE clipmode)
-        {
-            return 1;
-        }
+   
 
 
 
