@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3283,6 +3283,32 @@ namespace NumpyDotNetTests
             sw.Stop();
 
             Console.WriteLine(string.Format("matmul operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_correlate_DOUBLE()
+        {
+            int LoopCount = 1;
+
+            var m1 = np.arange(16000, dtype: np.Int32);
+            var m2 = np.arange(16000, dtype: np.Float32);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = np.correlate(m1, m2, NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+                ndarray m4 = np.correlate(m1, m2, NPY_CONVOLE_MODE.NPY_CONVOLVE_SAME);
+                ndarray m5 = np.correlate(m1, m2, NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("correlate operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 

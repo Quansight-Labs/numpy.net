@@ -787,7 +787,6 @@ namespace NumpyLib
         public NpyArray_CopySwapNFunc OBJECT_copyswapn;
         public NpyArray_CompareFunc OBJECT_compare;
         public NpyArray_ArgFunc OBJECT_argmax;
-        public NpyArray_DotFunc OBJECT_dotfunc;
         public NpyArray_ScanFunc OBJECT_scanfunc;
         public NpyArray_FromStrFunc OBJECT_fromstr;
         public NpyArray_NonzeroFunc OBJECT_nonzero;

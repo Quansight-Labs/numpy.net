@@ -753,12 +753,7 @@ namespace NumpyLib
             {
                 return null;
             }
-            NpyArray_DotFunc dot = ret.descr.f.dotfunc;
-            if (dot == null)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError, "dot not available for this type");
-                goto fail;
-            }
+  
             npy_intp is1 = ap1.strides[ap1.nd - 1];
             npy_intp is2 = ap2.strides[ap2.nd - 1];
             VoidPtr op = new VoidPtr(ret);
@@ -946,25 +941,18 @@ namespace NumpyLib
 
         static NpyArray _npyarray_correlate(NpyArray ap1, NpyArray ap2, NPY_TYPES typenum, NPY_CONVOLE_MODE mode, ref int inverted)
         {
-            NpyArray ret;
-            npy_intp[] length = new npy_intp[1];
-            npy_intp i, n1, n2, n, n_left, n_right, is1, is2, os;
-            VoidPtr ip1;
-            VoidPtr ip2;
-            VoidPtr op;
-            NpyArray_DotFunc dot;
-
-            n1 = NpyArray_DIM(ap1, 0);
-            n2 = NpyArray_DIM(ap2, 0);
+    
+            npy_intp n1 = NpyArray_DIM(ap1, 0);
+            npy_intp n2 = NpyArray_DIM(ap2, 0);
             if (n1 < n2)
             {
-                ret = ap1;
+                var temp = ap1;
                 ap1 = ap2;
-                ap2 = ret;
-                ret = null;
-                i = n1;
+                ap2 = temp;
+                temp = null;
+                var t = n1;
                 n1 = n2;
-                n2 = i;
+                n2 = t;
                 inverted = 1;
             }
             else
@@ -972,8 +960,11 @@ namespace NumpyLib
                 inverted = 0;
             }
 
-            length[0] = n1;
-            n = n2;
+            npy_intp n_left, n_right;
+
+            npy_intp[] length = new npy_intp[] { n1 };
+
+            npy_intp n = n2;
             switch (mode)
             {
                 case NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID:
@@ -998,49 +989,24 @@ namespace NumpyLib
              * Need to choose an output array that can hold a sum
              * -- use priority to determine which subtype.
              */
-            ret = new_array_for_sum(ap1, ap2, 1, length, typenum);
+            NpyArray ret = new_array_for_sum(ap1, ap2, 1, length, typenum);
             if (ret == null)
             {
                 return null;
             }
-            dot = NpyArray_DESCR(ret).f.dotfunc;
-            if (dot == null)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_ValueError,
-                                 "function not available for this data type");
-                goto clean_ret;
-            }
-
-            is1 = NpyArray_STRIDE(ap1, 0);
-            is2 = NpyArray_STRIDE(ap2, 0);
-            op = new VoidPtr(ret);
-            os = NpyArray_ITEMSIZE(ret);
-            ip1 = new VoidPtr(ap1);
-            ip2 = new VoidPtr(ap2);
+  
+            npy_intp is1 = NpyArray_STRIDE(ap1, 0);
+            npy_intp is2 = NpyArray_STRIDE(ap2, 0);
+            VoidPtr op = new VoidPtr(ret);
+            npy_intp os = NpyArray_ITEMSIZE(ret);
+            VoidPtr ip1 = new VoidPtr(ap1);
+            VoidPtr ip2 = new VoidPtr(ap2);
             ip2.data_offset += n_left * is2;
             n -= n_left;
 
-            for (i = 0; i < n_left; i++)
-            {
-                dot(ip1, is1, ip2, is2, op, n, ret);
-                n++;
-                ip2.data_offset -= is2;
-                op.data_offset += os;
-            }
+            var helper = MemCopy.GetMemcopyHelper(ip1);
+            helper.correlate(ip1, ip2, op, is1, is2, os, n, n1, n2, n_left, n_right);
 
-            for (i = 0; i < (n1 - n2 + 1); i++)
-            {
-                dot(ip1, is1, ip2, is2, op, n, ret);
-                ip1.data_offset += is1;
-                op.data_offset += os;
-            }
-            for (i = 0; i < n_right; i++)
-            {
-                n--;
-                dot(ip1, is1, ip2, is2, op, n, ret);
-                ip1.data_offset += is1;
-                op.data_offset += os;
-            }
 
             if (NpyErr_Occurred())
             {
@@ -1054,7 +1020,7 @@ namespace NumpyLib
             return null;
         }
 
-   
+    
         internal static NpyArray new_array_for_sum(NpyArray ap1, NpyArray ap2,  int nd, npy_intp []dimensions, NPY_TYPES typenum)
         {
             int tmp;

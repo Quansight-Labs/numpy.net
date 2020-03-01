@@ -706,6 +706,28 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))  
 
+    def test_Performance_correlate_DOUBLE(self):
+
+        LoopCount = 1;
+
+        m1 = np.arange(16000, dtype=np.int64);
+        m2 = np.arange(16000, dtype=np.float32);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+             m3 = np.correlate(m1, m2, "full");
+             m4 = np.correlate(m1, m2, "same");
+             m5 = np.correlate(m1, m2, "valid");
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("correlate calculations took %f milliseconds" %(diff))  
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters

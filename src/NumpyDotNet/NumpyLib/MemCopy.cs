@@ -3591,8 +3591,7 @@ namespace NumpyLib
         void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap);
         void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
-
-
+        void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right);
     }
 
     abstract class CopyHelper<T>
@@ -4105,6 +4104,32 @@ namespace NumpyLib
                     break;
                 }
                 numpyinternal.NpyArray_ITER_RESET(it2);
+            }
+        }
+
+
+        public void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right)
+        {
+            for (int i = 0; i < n_left; i++)
+            {
+                dot(ip1, is1, ip2, is2, op, n);
+                n++;
+                ip2.data_offset -= is2;
+                op.data_offset += os;
+            }
+
+            for (int i = 0; i < (n1 - n2 + 1); i++)
+            {
+                dot(ip1, is1, ip2, is2, op, n);
+                ip1.data_offset += is1;
+                op.data_offset += os;
+            }
+            for (int i = 0; i < n_right; i++)
+            {
+                n--;
+                dot(ip1, is1, ip2, is2, op, n);
+                ip1.data_offset += is1;
+                op.data_offset += os;
             }
         }
 
