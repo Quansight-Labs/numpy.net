@@ -202,7 +202,7 @@ namespace NumpyDotNet
                 Int64[] randomData = new Int64[CountTotalElements(newdims)];
                 FillWithRandnInt64(randomData);
 
-                return np.array(randomData, dtype: np.Int32).reshape(newdims);
+                return np.array(randomData, dtype: np.Int64).reshape(newdims);
             }
 
             private static void FillWithRandnInt64(Int64[] randomData)
@@ -212,8 +212,8 @@ namespace NumpyDotNet
                 {
                     for (int i = 0; i < randomData.Length; i++)
                     {
-                        Int32 HighWord = r.Next();
-                        Int32 LowWord = r.Next();
+                        Int64 HighWord = r.Next();
+                        Int64 LowWord = r.Next();
                         randomData[i] = HighWord << 32 | LowWord;
                     }
                 }
@@ -266,7 +266,7 @@ namespace NumpyDotNet
             {
                 lock (r)
                 {
-                    byte[] b = new byte[0];
+                    byte[] b = new byte[1];
                     r.NextBytes(b);
                     return b[0];
                 }
