@@ -61,7 +61,6 @@ namespace NumpyLib
         int GetLength(VoidPtr vp);
         object AllocateNewArray(int size);
         object AllocateAndCopy(object datap, int startingOffset, int numElements);
-        void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n);
         void SortArray(VoidPtr data, int offset, int length);
         int CompareTo(object invalue, object comparevalue);
         npy_intp ArgMax(object ip, npy_intp startIndex, npy_intp endIndex);
