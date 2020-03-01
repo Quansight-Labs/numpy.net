@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet.SampleApps</id>
-    <version>0.9.30</version>
+    <version>0.9.35</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package provides the sample apps for the NumpyDotNet library. Multi-threaded, fast and accurate.</description>
-    <releaseNotes>Performance improvement release.  Depending on the operation, 2x-100x improvement.  Single threaded performance comparable to C based python version in most cases.  Faster than python in a few cases.</releaseNotes>
+    <releaseNotes>Another performance improvement release.  10X improvement in Numpy functions and indexing.  Also added np.matmul and started adding np.random functions per user request.</releaseNotes>
     <copyright>Copyright 2020, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>

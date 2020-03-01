@@ -109,16 +109,9 @@
     <PackageReference Include="MicrosoftVisualStudioQualityToolsUnitTestFramework">
       <Version>1.0.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NumpyDotNet\NumpyDotNet.csproj">
-      <Project>{9d8fa516-085c-40b2-93ca-f3a419b2fced}</Project>
-      <Name>NumpyDotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NumpyLib\NumpyLib.csproj">
-      <Project>{ba8706a0-3efb-4c81-bc2d-e6bf25283d03}</Project>
-      <Name>NumpyLib</Name>
-    </ProjectReference>
+    <PackageReference Include="NumpyDotNet">
+      <Version>0.9.35</Version>
+    </PackageReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
