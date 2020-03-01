@@ -67,7 +67,6 @@ namespace NumpyLib
         npy_intp ArgMin(object ip, npy_intp startIndex, npy_intp endIndex);
         bool IsNan(object o);
         bool IsInfinity(object o);
-        bool IsInRange(object o, double low, double high);
         object ConvertToUpgradedValue(object o);
         VoidPtr GetArrayCopy(VoidPtr vp);
         void ArrayFill(VoidPtr vp, object FillValue);

@@ -259,15 +259,6 @@ namespace NumpyLib
         {
             return false;
         }
-        public virtual bool IsInRange(object o, double low, double high)
-        {
-            var qd = Convert.ToDouble(o);
-            if (qd < low || qd > high)
-                return false;
-            return true;
-        }
-
-
 
         public virtual object ConvertToUpgradedValue(object o)
         {
@@ -2912,14 +2903,7 @@ namespace NumpyLib
             decimal[] bp = vp.datap as decimal[];
             return (bp[index] != 0);
         }
-        public override bool IsInRange(object o, double low, double high)
-        {
-            var qc = Convert.ToDecimal(o);
-            if (qc < Convert.ToDecimal(low) || qc > Convert.ToDecimal(high))
-                return false;
-            return true;
-        }
-
+ 
         protected override object Add(object bValue, object operand)
         {
             decimal dValue = (decimal)bValue;
@@ -3252,16 +3236,7 @@ namespace NumpyLib
             System.Numerics.Complex[] bp = vp.datap as System.Numerics.Complex[];
             return (bp[index] != System.Numerics.Complex.Zero);
         }
-        public override bool IsInRange(object o, double low, double high)
-        {
-            var cc = (System.Numerics.Complex)o;
-            var qd = cc.Real;
-            if (qd < low || qd > high)
-                return false;
-            return true;
-        }
-
-
+ 
         System.Numerics.Complex ConvertToComplex(object o)
         {
             if (o is System.Numerics.Complex)
@@ -4212,15 +4187,6 @@ namespace NumpyLib
             return string.Compare(invalue.ToString(), comparevalue.ToString());
         }
 
-
-        public override bool IsInRange(object o, double low, double high)
-        {
-            return false;
-            //var qd = Convert.ToDouble(o);
-            //if (qd < low || qd > high)
-            //    return false;
-            //return true;
-        }
 
         public override object ConvertToUpgradedValue(object o)
         {

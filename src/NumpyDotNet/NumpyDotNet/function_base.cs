@@ -3435,27 +3435,12 @@ namespace NumpyDotNet
 
         private static bool _quantile_is_valid(ndarray q)
         {
-            //# avoid expensive reductions, relevant for arrays with < O(1000) elements
-            if (q.ndim == 1 && q.size < 10)
+            int nz1 = np.count_nonzero_i(q < 0.0);
+            int nz2 = np.count_nonzero_i(q > 1.0);
+            if (nz1 > 0 || nz2 > 0)
             {
-                for (int i = 0; i < q.size; i++)
-                {
-                    bool bValue = DefaultArrayHandlers.GetArrayHandler(q.TypeNum).IsInRange(q[i], 0.0, 1.0);
-                    if (bValue == false)
-                        return false;
-                }
+                return false;
             }
-            else
-            {
-                // faster than any()
-                int nz1 = np.count_nonzero_i(q < 0.0);
-                int nz2 = np.count_nonzero_i(q > 1.0);
-                if (nz1 > 0 || nz2 > 0)
-                {
-                    return false;
-                }
-            }
-
 
             return true;
         }
