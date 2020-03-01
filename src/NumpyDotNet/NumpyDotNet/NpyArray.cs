@@ -888,11 +888,14 @@ namespace NumpyDotNet {
             a2 = np.FromAny(a2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
 
             if (a1.ndim == 1)
-                a1 = np.expand_dims(a1, 1);
+                a1 = np.expand_dims(a1, 0);
+
+            if (a2.ndim == 1)
+                a2 = np.expand_dims(a2, 1);
 
             if (a1.ndim == 2 || a2.ndim == 2)
             {
-                return MatrixProduct(a1, a2);
+                return np.squeeze(MatrixProduct(a1, a2));
             }
 
             var bcastArrays = np.broadcast_arrays(true, new ndarray[] { a1, a2 }).ToArray();
@@ -900,7 +903,6 @@ namespace NumpyDotNet {
 
             var ret = np.empty_like(a1);
 
-            List<ndarray> retList = new List<ndarray>();
             for (int i = 0; i < len; i++)
             {
                 npy_intp[] index = new npy_intp[] { i };
@@ -908,11 +910,10 @@ namespace NumpyDotNet {
                 ndarray x0 = bcastArrays[0][index] as ndarray;
                 ndarray x1 = bcastArrays[1][index] as ndarray;
 
-                retList.Add(MatrixProduct(x0, x1));
+                ret[index] = np.squeeze(MatrixProduct(x0, x1));
             }
 
-            
-            return np.squeeze(np.stack(retList.ToArray()));
+            return ret;
 
         }
 
