@@ -73,7 +73,7 @@
     <Compile Include="MathematicalFunctionsTests.cs" />
     <Compile Include="NotImplementedYet\PaddingTests.cs" />
     <Compile Include="NotImplementedYet\PolynomialTests.cs" />
-    <Compile Include="NotImplementedYet\RandomSamplingTests.cs" />
+    <Compile Include="RandomSamplingTests.cs" />
     <Compile Include="NANFunctionsTests.cs" />
     <Compile Include="DateTimeSupportTests.cs" />
     <Compile Include="StringOperationsTests.cs" />
