@@ -628,12 +628,6 @@ namespace NumpyLib
         public NpyArray_ArgFunc argmin;
 
         /*
-         * Function to compute dot product
-         * Can be null
-         */
-        public NpyArray_DotFunc dotfunc;
-
-        /*
          * Function to scan an ASCII file and
          * place a single value plus possible separator
          * Can be null

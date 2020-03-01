@@ -56,7 +56,6 @@ namespace NumpyLib
             f.setitem = null;
             f.compare = null;
             f.argmax = null;
-            f.dotfunc = null;
             f.scanfunc = null;
             f.fromstr = null;
             f.nonzero = null;

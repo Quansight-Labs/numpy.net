@@ -84,12 +84,7 @@ namespace NumpyLib
                 //  Can be null
                 // 
                 argmin = NpyArray_ArgMinFunc,
-
-                ///
-                //  Function to compute dot product
-                //  Can be null
-                // 
-                dotfunc = NpyArray_DotFunc,
+                     
 
                 //
                 // Function to scan an ASCII file and
@@ -979,14 +974,6 @@ namespace NumpyLib
         internal static npy_intp NpyArray_ArgMinFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex)
         {
             return DefaultArrayHandlers.GetArrayHandler(ip.type_num).ArgMin(ip.datap, startIndex, endIndex);
-        }
-        #endregion
-
-        #region DotFunc
-        internal static void NpyArray_DotFunc(VoidPtr ip1, npy_intp is1, VoidPtr ip2, npy_intp is2, VoidPtr op, npy_intp n, NpyArray NOT_USED)
-        {
-            DefaultArrayHandlers.GetArrayHandler(ip1.type_num).dot(ip1, is1, ip2, is2, op, n);
-            return;
         }
         #endregion
 
