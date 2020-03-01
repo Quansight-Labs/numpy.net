@@ -728,16 +728,10 @@ class PerformanceTests(unittest.TestCase):
     
         #reshape the result into an image and convert its pixels to uint8 numbers
 
+        kevin = results.shape[-1]
         results = (255.0*results.reshape(nrows, ncols, results.shape[-1])).astype(np.uint8)
         print(results.shape)
 
-    def test_matrixproduct_1(self):
-
-        a = np.arange(9).reshape(3, 3);
-        b = np.arange(9).reshape(3, 3);
-
-        ret = np.matmul(a, b);
-        print(ret)
 
 if __name__ == '__main__':
     unittest.main()
