@@ -869,7 +869,51 @@ namespace NumpyDotNet {
 
         public static ndarray matmul(object o1, object o2)
         {
-            return MatrixProduct(o1, o2);
+            ndarray a1 = asanyarray(o1);
+            ndarray a2 = asanyarray(o2);
+
+            if (a1.IsAScalar || a2.IsAScalar)
+            {
+                throw new Exception("Matmul can't handle scalar multiplication, use `np.dot(..)` instead");
+            }
+
+            //If the first argument is 1-D, it is promoted to a matrix by prepending a 1 to its dimensions. After matrix multiplication the prepended 1 is removed.
+            if (a1.ndim == 1 && a2.ndim == 2)
+                throw new Exception(string.Format("shapes {0} and {1} not aligned!", a1.shape.ToString(), a2.shape.ToString()));
+
+            dtype d = FindArrayType(a1, null);
+            d = FindArrayType(a2, d);
+
+            a1 = np.FromAny(a1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            a2 = np.FromAny(a2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+
+            if (a1.ndim == 1)
+                a1 = np.expand_dims(a1, 1);
+
+            if (a1.ndim == 2 || a2.ndim == 2)
+            {
+                return MatrixProduct(a1, a2);
+            }
+
+            var bcastArrays = np.broadcast_arrays(true, new ndarray[] { a1, a2 }).ToArray();
+            var len = bcastArrays[0].dims[0];
+
+            var ret = np.empty_like(a1);
+
+            List<ndarray> retList = new List<ndarray>();
+            for (int i = 0; i < len; i++)
+            {
+                npy_intp[] index = new npy_intp[] { i };
+
+                ndarray x0 = bcastArrays[0][index] as ndarray;
+                ndarray x1 = bcastArrays[1][index] as ndarray;
+
+                retList.Add(MatrixProduct(x0, x1));
+            }
+
+            
+            return np.squeeze(np.stack(retList.ToArray()));
+
         }
 
         public static ndarray MatrixProduct(object o1, object o2)
