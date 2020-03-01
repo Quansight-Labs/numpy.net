@@ -135,8 +135,6 @@ namespace NumpyLib
                 cancastscalarkindto = null,
                 cancastto = null,
 
-
-                fastputmask = NpyArray_FastPutmaskFunc,
             };
 
             
@@ -1035,41 +1033,6 @@ namespace NumpyLib
             return NPY_SCALARKIND.NPY_BOOL_SCALAR;
         }
 
-  
-        internal static void NpyArray_FastPutmaskFunc(VoidPtr _in, VoidPtr mask, npy_intp ni, VoidPtr vals, npy_intp nv)
-        {
-            npy_intp i, j;
-
-            if (nv == 1)
-            {
-                double s_val =  (double)GetIndex(vals,0);
-                for (i = 0; i < ni; i++)
-                {
-                    if ((bool)GetIndex(mask,i))
-                    {
-                        SetIndex(_in, i, s_val);
-                    }
-                }
-            }
-            else
-            {
-                for (i = 0, j = 0; i<ni; i++, j++)
-                {
-                    if (j >= nv)
-                    {
-                        j = 0;
-                    }
-                    if ((bool)GetIndex(mask, i))
-                    {
-                        SetIndex(_in, i, GetIndex(vals, j));
-                    }
-                }
-            }
-            return;
-        }
-   
-
-
-
+ 
     }
 }

@@ -550,7 +550,6 @@ namespace NumpyLib
     public delegate NPY_SCALARKIND NpyArray_ScalarKindFunc(NpyArray a);
 
     public delegate void NpyArray_FastClipFunc( VoidPtr _in, npy_intp n_in, VoidPtr min, VoidPtr max, VoidPtr _out);
-    public delegate void NpyArray_FastPutmaskFunc(VoidPtr _in, VoidPtr mask, npy_intp n_in, VoidPtr values, npy_intp nv);
     public delegate int  NpyArray_FastTakeFunc(VoidPtr dest, VoidPtr src, npy_intp[] indarray, npy_intp nindarray, npy_intp n_outer, npy_intp m_middle, npy_intp nelem, NPY_CLIPMODE clipmode);
 
 }

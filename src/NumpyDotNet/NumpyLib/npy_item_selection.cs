@@ -413,7 +413,6 @@ namespace NumpyLib
 
         internal static int NpyArray_PutMask(NpyArray self, NpyArray values0, NpyArray mask0)
         {
-            NpyArray_FastPutmaskFunc func;
             NpyArray mask;
             NpyArray values;
             npy_intp i, chunk, ni, max_item, nv;
@@ -468,21 +467,32 @@ namespace NumpyLib
 
             bool[] maskData = mask.data.datap as bool[];
 
-            func = self.descr.f.fastputmask;
-            if (func == null)
+            npy_intp j;
+
+            if (nv == 1)
             {
+                double s_val = (double)GetIndex(values.data, 0);
                 for (i = 0; i < ni; i++)
                 {
-                    if (maskData[i])
+                    if ((bool)GetIndex(mask.data, i))
                     {
-                        src = new VoidPtr(values, chunk * (i % nv));
-                        memmove(dest + i * chunk, src, chunk);
+                        SetIndex(dest, i, s_val);
                     }
                 }
             }
             else
             {
-                func(dest, mask.data, ni, values.data, nv);
+                for (i = 0, j = 0; i < ni; i++, j++)
+                {
+                    if (j >= nv)
+                    {
+                        j = 0;
+                    }
+                    if ((bool)GetIndex(mask.data, i))
+                    {
+                        SetIndex(dest, i, GetIndex(values.data, j));
+                    }
+                }
             }
 
             Npy_XDECREF(values);
