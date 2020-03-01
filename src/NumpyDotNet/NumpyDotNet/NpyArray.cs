@@ -898,21 +898,28 @@ namespace NumpyDotNet {
                 return np.squeeze(MatrixProduct(a1, a2));
             }
 
+            if (a1.ndim > 3 || a2.ndim > 3)
+            {
+                throw new Exception("Matmul can't handle dims greater than 3 at this time");
+            }
+
             var bcastArrays = np.broadcast_arrays(true, new ndarray[] { a1, a2 }).ToArray();
             var len = bcastArrays[0].dims[0];
 
-            var ret = np.empty_like(a1);
-
+            List<ndarray> retArrays = new List<ndarray>();
             for (int i = 0; i < len; i++)
             {
-                npy_intp[] index = new npy_intp[] { i };
+                npy_intp[] index = new npy_intp[1];
+                for (int j = 0; j < index.Length; j++) index[j] = i;
 
                 ndarray x0 = bcastArrays[0][index] as ndarray;
                 ndarray x1 = bcastArrays[1][index] as ndarray;
+                ndarray x3 = np.squeeze(MatrixProduct(x0, x1));
 
-                ret[index] = np.squeeze(MatrixProduct(x0, x1));
+                retArrays.Add(x3);
             }
 
+            var ret = np.stack(retArrays.ToArray());
             return ret;
 
         }
