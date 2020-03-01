@@ -35,11 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NumpyDotNet, Version=0.9.30.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NumpyDotNet.0.9.30\lib\netstandard2.0\NumpyDotNet.dll</HintPath>
+    <Reference Include="NumpyDotNet, Version=0.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.35\lib\netstandard2.0\NumpyDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="NumpyLib, Version=0.9.30.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NumpyDotNet.0.9.30\lib\netstandard2.0\NumpyLib.dll</HintPath>
+    <Reference Include="NumpyLib, Version=0.9.35.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.35\lib\netstandard2.0\NumpyLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
