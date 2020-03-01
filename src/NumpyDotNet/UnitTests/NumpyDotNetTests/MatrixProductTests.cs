@@ -77,6 +77,23 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_matmul_6()
+        {
+            var a = np.full((3, 1, 2, 2), 2, dtype: np.Int32);
+            var b = np.full((3, 2, 2), 3, dtype: np.Int32);
+
+            try
+            {
+                var ret = np.matmul(a, b);
+                Assert.Fail("Should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+   
+        }
 
 
         [TestMethod]

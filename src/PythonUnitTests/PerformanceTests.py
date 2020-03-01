@@ -686,6 +686,26 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("mask calculations took %f milliseconds" %(diff))  
 
+    def test_Performance_matmul_DOUBLE(self):
+
+        LoopCount = 1;
+
+        m1 = np.arange(16000000, dtype=np.int64).reshape(40, -1);
+        m2 = np.arange(16000000, dtype=np.int64).reshape(-1,40);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+             m3 = np.matmul(m1, m2);
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))  
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters
