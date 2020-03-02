@@ -887,15 +887,28 @@ namespace NumpyDotNet {
             a1 = np.FromAny(a1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
             a2 = np.FromAny(a2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
 
+            bool expanded_dims = false;
             if (a1.ndim == 1)
+            {
                 a1 = np.expand_dims(a1, 0);
+                expanded_dims = true;
+            }
 
             if (a2.ndim == 1)
+            {
+
                 a2 = np.expand_dims(a2, 1);
+                expanded_dims = true;
+            }
 
             if (a1.ndim == 2 || a2.ndim == 2)
             {
-                return np.squeeze(MatrixProduct(a1, a2));
+                var mp = MatrixProduct(a1, a2);
+                if (expanded_dims)
+                {
+                    mp = np.squeeze(mp);
+                }
+                return mp;
             }
 
             if (a1.ndim > 3 || a2.ndim > 3)
