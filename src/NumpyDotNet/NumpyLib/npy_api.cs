@@ -225,6 +225,27 @@ namespace NumpyLib
         public npy_intp[,] limits = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         public npy_intp[] limits_sizes = new npy_intp[npy_defs.NPY_MAXDIMS];
         public npy_iter_get_dataptr_t translate;
+
+        public NpyArrayIterObject copy()
+        {
+            NpyArrayIterObject _copy = new NpyArrayIterObject();
+            _copy.nd_m1 = this.nd_m1;
+            _copy.index = this.index;
+            _copy.size = this.size;
+            Array.Copy(this.coordinates, _copy.coordinates, this.coordinates.Length);
+            Array.Copy(this.dims_m1, _copy.dims_m1, this.dims_m1.Length);
+            Array.Copy(this.strides, _copy.strides, this.strides.Length);
+            Array.Copy(this.backstrides, _copy.backstrides, this.backstrides.Length);
+            Array.Copy(this.factors, _copy.factors, this.factors.Length);
+            _copy.ao = this.ao;
+            _copy.dataptr = new VoidPtr(this.dataptr);
+            _copy.contiguous = this.contiguous;
+            Array.Copy(this.bounds, _copy.bounds, this.bounds.Length);
+            Array.Copy(this.limits, _copy.limits, this.limits.Length);
+            Array.Copy(this.limits_sizes, _copy.limits_sizes, this.limits_sizes.Length);
+            _copy.translate = this.translate;
+            return _copy;
+        }
     }
 
     /*
