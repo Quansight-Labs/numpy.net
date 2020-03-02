@@ -51,6 +51,22 @@ class NANFunctionsTests(unittest.TestCase):
         print(ret.shape)
         print(ret)
 
+    def test_matmul_7(self):
+        
+        a = np.full((3,3), 2);
+        b = np.full((3,1), 3);
+        ret = np.matmul(a, b);
+        print(ret.shape)
+        print(ret)
+
+    def test_matmul_8(self):
+        
+        a = np.full((3,3), 2);
+        b = np.full((3), 3);
+        ret = np.matmul(a, b);
+        print(ret.shape)
+        print(ret)
+
     def test_matmul_bad1(self):
         
         a = np.full((3,2,2), 2);

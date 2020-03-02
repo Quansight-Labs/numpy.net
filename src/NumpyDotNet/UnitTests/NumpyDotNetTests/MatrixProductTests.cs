@@ -95,6 +95,34 @@ namespace NumpyDotNetTests
    
         }
 
+        [TestMethod]
+        public void test_matmul_7()
+        {
+            var a = np.full((3, 3), 2, dtype: np.Int32);
+            var b = np.full((3, 1), 3, dtype: np.Int32);
+            var ret = np.matmul(a, b);
+            print(ret.shape);
+            print(ret);
+
+            AssertArray(ret, new Int32[,] { { 18 }, { 18 }, { 18 } });
+
+        }
+
+
+        [TestMethod]
+        public void test_matmul_8()
+        {
+            var a = np.full((3, 3), 2, dtype: np.Int32);
+            var b = np.full((3), 3, dtype: np.Int32);
+            var ret = np.matmul(a, b);
+            print(ret.shape);
+            print(ret);
+
+            AssertArray(ret, new Int32[] { 18, 18, 18 });
+
+        }
+
+
 
         [TestMethod]
         public void test_matmul_bad1()
