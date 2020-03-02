@@ -133,7 +133,7 @@ namespace NumpyDotNet
                 {
                     for (int i = 0; i < randomData.Length; i++)
                     {
-                        randomData[i] = Convert.ToSingle(r.NextDouble() * r.Next());
+                        randomData[i] = Convert.ToSingle(r.NextDouble());
                     }
                 }
 
