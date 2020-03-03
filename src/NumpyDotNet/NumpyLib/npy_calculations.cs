@@ -619,6 +619,7 @@ namespace NumpyLib
 
             long taskSize = NUMERICOPS_TASKSIZE;
 
+
             for (long i = 0; i < destSize;)
             {
                 long offset_cnt = Math.Min(taskSize, destSize - i);
@@ -666,7 +667,6 @@ namespace NumpyLib
     
         }
 
-
         private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
         {
             List<Exception> caughtExceptions = new List<Exception>();
@@ -682,7 +682,7 @@ namespace NumpyLib
             }
             else
             {
-                var IterableArraySize = Math.Min(CalculateIterationArraySize(srcArray, destArray), taskSize);
+                var IterableArraySize = taskSize;
                 srcOffsets = new Int32[IterableArraySize];
                 NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
             }
@@ -692,7 +692,7 @@ namespace NumpyLib
             }
             else
             {
-                var IterableArraySize = Math.Min(CalculateIterationArraySize(operArray, destArray), taskSize);
+                var IterableArraySize = taskSize;
                 operOffsets = new Int32[IterableArraySize];
                 NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
             }
@@ -732,8 +732,7 @@ namespace NumpyLib
             }
             else
             {
-                for (int i = 0; i < taskSize; i++)
-                //Parallel.For(0, taskSize, i =>
+                Parallel.For(0, taskSize, i =>
                 {
                     try
                     {
@@ -760,7 +759,7 @@ namespace NumpyLib
                     {
                         caughtExceptions.Add(ex);
                     }
-                } //);
+                });
             }
 
 

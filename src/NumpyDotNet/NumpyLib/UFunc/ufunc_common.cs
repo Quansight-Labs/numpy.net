@@ -879,7 +879,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var IterableArraySize = Math.Min(CalculateIterationArraySize(srcArray, destArray), taskSize);
+                    var IterableArraySize = taskSize;
                     srcOffsets = new Int32[IterableArraySize];
                     NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
                 }
@@ -889,12 +889,12 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var IterableArraySize = Math.Min(CalculateIterationArraySize(operArray, destArray), taskSize);
+                    var IterableArraySize = taskSize;
                     operOffsets = new Int32[IterableArraySize];
                     NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
                 }
 
-                Parallel.For(0, taskSize, i =>
+                for (int i = 0; i < taskSize; i++) // Parallel.For(0, taskSize, i =>
                 {
                     try
                     {
@@ -944,7 +944,7 @@ namespace NumpyLib
                     {
                         caughtExceptions.Add(ex);
                     }
-                });
+                } //);
 
 
                 if (caughtExceptions.Count > 0)
