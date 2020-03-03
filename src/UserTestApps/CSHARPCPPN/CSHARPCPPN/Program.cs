@@ -8,7 +8,7 @@ namespace CSHARPCPPN
     {
         private static void Main(string[] args)
         {
-            GenerateImageNumpyDotNet();
+            //GenerateImageNumpyDotNet();
             GenerateImageNumSharp();
         }
 

@@ -342,6 +342,16 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region standard_normal
+
+
+            public static ndarray standard_normal(params Int32[] newshape)
+            {
+                return _uniform(-1, 1, ConvertToShape(newshape));
+            }
+
+            #endregion
+
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
