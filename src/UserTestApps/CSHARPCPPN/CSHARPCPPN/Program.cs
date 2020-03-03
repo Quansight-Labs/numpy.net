@@ -1,5 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System;
+using System.IO;
 
 namespace CSHARPCPPN
 
@@ -8,8 +10,22 @@ namespace CSHARPCPPN
     {
         private static void Main(string[] args)
         {
-            //GenerateImageNumpyDotNet();
-            GenerateImageNumSharp();
+
+            using (var writer = new StreamWriter(@"C:\temp\output.txt"))
+            {
+                // Redirect standard output from the console to the output file.
+                Console.SetOut(writer);
+
+
+                GenerateImageNumpyDotNet(256, 256);
+
+                System.Console.WriteLine("//////////////////////////////////////");
+
+                GenerateImageNumSharp(256, 256);
+
+            }
+
+            System.Console.ReadLine();
         }
 
         public static void GenerateImageNumpyDotNet(int xwidth = 256, int yheight = 256)
