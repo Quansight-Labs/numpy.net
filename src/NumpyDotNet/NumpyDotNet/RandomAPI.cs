@@ -300,6 +300,48 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region uniform
+
+            public static ndarray uniform(int low = 0, int high = 1, params Int32[] newshape)
+            {
+                return _uniform(low, high, ConvertToShape(newshape));
+            }
+
+            public static ndarray uniform(int low = 0, int high = 1, params Int64[] newshape)
+            {
+                return _uniform(low, high, ConvertToShape(newshape));
+            }
+
+            private static ndarray _uniform(int low, int high, npy_intp[] newdims)
+            {
+                double[] randomData = new double[CountTotalElements(newdims)];
+                FillWithUniform(low, high, randomData);
+
+                return np.array(randomData, dtype: np.Float64).reshape(newdims);
+            }
+
+
+            private static void FillWithUniform(int low, int high, double[] randomData)
+            {
+                int PRECISION = 100000000;
+
+                low *= PRECISION;
+                high *= PRECISION;
+
+                lock (r)
+                {
+                    for (int i = 0; i < randomData.Length; i++)
+                    {
+                        double random_value = r.Next(low, high + 1);
+
+                        randomData[i] = random_value / PRECISION;
+                    }
+                }
+
+            }
+
+            #endregion
+
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
