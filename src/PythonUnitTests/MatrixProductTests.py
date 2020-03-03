@@ -64,6 +64,17 @@ class NANFunctionsTests(unittest.TestCase):
         b = np.full((3,4), 3);
         ret = np.matmul(a, b);
         print(ret) 
+
+    def test_rand_1(self):
+        
+        a = np.random.randn(2,3,4);
+        print(a)
+
+    def test_rand_uniform_1(self):
+        
+        a = np.random.uniform(-1, 1,40);
+        print(a)
+    
  
 
 if __name__ == '__main__':
