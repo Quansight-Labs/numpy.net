@@ -3713,7 +3713,8 @@ namespace NumpyLib
                         d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
                     }
                     dptr_index += stride;
-                    numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
+                    //numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter);
                 }
             }
      
@@ -3774,7 +3775,8 @@ namespace NumpyLib
 
                     d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
 
-                    numpyinternal.NpyArray_ITER_NEXT(index_iter, index_iter2, ++index);
+                    //numpyinternal.NpyArray_ITER_NEXT(index_iter, index_iter2, ++index);
+                    numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
             }
 
@@ -3824,7 +3826,8 @@ namespace NumpyLib
                         numpyinternal.swapvalue(destIter.dataptr, elsize);
                     }
 
-                    numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
+                    //numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
                     {
                         numpyinternal.NpyArray_ITER_RESET(srcIter);
@@ -3864,7 +3867,8 @@ namespace NumpyLib
 
                     }
                     dptr_index += stride;
-                    numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
+                    //numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter);
                 }
             }
             else
@@ -3889,7 +3893,8 @@ namespace NumpyLib
                         }
                     }
                     dptr_index += stride;
-                    numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
+                    //numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter);
                 }
             }
 
