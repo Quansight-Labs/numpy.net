@@ -32,11 +32,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NumpyDotNet;
-using NumpyLib;
 using System;
-using System.Linq;
 #if NPY_INTP_64
-using npy_intp = System.Int64;
 #else
 using npy_intp = System.Int32;
 #endif
@@ -48,69 +45,107 @@ namespace NumpyDotNetTests
     {
 
         [TestMethod]
-        public void KEVIN_matmul_DOUBLE()
+        public void test_largearray_matmul_INT64_1()
         {
-            float scaling = 5.0f;
-            int width = 256;
-            int height = 256;
-            double ret_step = 0;
+            int width = 1024;
+            int height = 1024;
 
-            var x_range = np.linspace(-1 * scaling, scaling, ref ret_step, width, dtype: np.Float32);
+            var x_range = np.arange(0, width, 1, dtype : np.Int64);
+            var y_range = np.arange(0, height * 2, 2, dtype : np.Int64);
 
-            var x_mat = np.matmul(np.ones(new shape(height, 1)), x_range.reshape(1, width));
-            //print(x_mat);
+            var x_mat = np.matmul(x_range.reshape(width, 1), y_range.reshape(1, height));
+            var z = np.sum(x_mat);
+            print(z);
 
-            var sum = np.sum(x_mat);
+            Assert.AreEqual(548682596352, z.GetItem(0));
+
+            return;
+
+        }
+
+        [TestMethod]
+        public void test_largearray_matmul_INT64_2()
+        {
+            int width = 1024;
+            int height = 1024;
+
+            var x_range = np.arange(0, width, 1, dtype: np.Int64);
+            var y_range = np.arange(0, height * 2, 2, dtype: np.Int64);
+
+            var x_mat = np.matmul(x_range.reshape(width, 1), y_range.reshape(1, height));
+
+            var z = np.sum(x_mat, axis: 0);
+            var z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual(548682596352, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 1);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual(548682596352, z1.GetItem(0));
+
             return;
 
         }
 
 
-
         [TestMethod]
-        public void test_maxtrix_99_BROKEN()
+        public void test_largearray_add_INT64_1()
         {
-            double ret_step = 0;
+            int width = 1024;
+            int height = 1024;
 
-            var a = np.linspace(0.0, 1.0, ref ret_step, num: 32).reshape(1, 32);
-            print(a);
+            var x_range = np.arange(0, width, 1, dtype: np.Int64);
+            var y_range = np.arange(0, height * 2, 2, dtype: np.Int64);
 
-            var b = np.reshape(a, new shape(1, 1, 32)) * np.ones((65536, 1)); // * 1;
-            //print(b);
-            var c = np.sum(b);
-            print(c);
+            var x_mat = np.add(x_range.reshape(width, 1), y_range.reshape(1, height));
+
+            var z = np.sum(x_mat, axis: 0);
+            var z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1609039872, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 1);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1609039872, z1.GetItem(0));
+
+            return;
+
         }
 
 
         [TestMethod]
-        public void test_maxtrix_100_BROKEN()
+        public void test_largearray_add_INT64_2()
         {
-            var a = np.arange(00, 32).reshape(1, 32);
-            print(a);
+            int width = 1024;
+            int height = 1024;
 
-            var b = np.reshape(a, new shape(1, 1, 32)) * np.ones((65536, 1)); // * 1;
-            //print(b);
-            var c = np.sum(b);
-            print(c);
+            var x_range = np.arange(0, width, 1, dtype: np.Int64);
+            var y_range = np.arange(0, height * 2, 2, dtype: np.Int64);
+
+            var x_mat = np.add(x_range.reshape(1, width, 1), y_range.reshape(1, height, 1));
+
+            var z = np.sum(x_mat, axis: 0);
+            var z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 1);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 1);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+
+            return;
+
         }
 
 
-        [TestMethod]
-        public void test_maxtrix_101_BROKEN()
-        {
-            var a = np.arange(00, 32).reshape(1, 32);
-            print(a);
-
-            var b = np.full((1, 1, 32), 2) * np.full((65536, 1), 3); // * 1;
-            //print(b);
-
-            var d = np.where(b != 6);
-
-            var kevin = b.AsDoubleArray();
-
-            var c = np.sum(b);
-            print(c);
-        }
 
     }
 }
