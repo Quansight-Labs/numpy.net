@@ -1327,13 +1327,8 @@ namespace NumpyLib
             int elsize = descr.elsize;
             npy_intp nbytes = (npy_intp)(elsize * NpyArray_DIM(src, axis));
 
-            while (it.index < it.size)
-            {
-                _strided_byte_copy(dptr,(npy_intp)elsize, it.dataptr, NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
-                dptr.data_offset += nbytes;
-                NpyArray_ITER_NEXT(it);
-            }
-
+            flat_copyinto(it, dptr, NpyArray_DIM(src, axis), NpyArray_STRIDE(src, axis), elsize, nbytes);
+ 
             if (src != orig_src)
             {
                 Npy_DECREF(src);
@@ -1342,7 +1337,16 @@ namespace NumpyLib
             return 0;
         }
 
-    
+        internal static void flat_copyinto(NpyArrayIterObject it, VoidPtr dptr, npy_intp dim, npy_intp stride, int elsize, npy_intp nbytes)
+        {
+   
+            while (it.index < it.size)
+            {
+                _strided_byte_copy(dptr, (npy_intp)elsize, it.dataptr, stride, dim, elsize, null);
+                dptr.data_offset += nbytes;
+                NpyArray_ITER_NEXT(it);
+            }
+        }
 
         internal static void _strided_byte_swap(VoidPtr dest, npy_intp stride, npy_intp n, int size)
         {
