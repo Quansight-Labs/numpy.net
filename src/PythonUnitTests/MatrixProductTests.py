@@ -80,6 +80,45 @@ class NANFunctionsTests(unittest.TestCase):
         b = np.full((3,4), 3);
         ret = np.matmul(a, b);
         print(ret) 
+
+    def test_maxtrix_99_WORKS(self):
+        a = np.linspace(0.0, 1.0, num=16).reshape(1,16)
+
+        b = np.reshape(a, (1,1,16)) * np.ones((32, 1)) * 1
+        #print(b)
+        c = np.sum(b)
+        print(c)
+
+    def test_maxtrix_99_BROKEN(self):
+        a = np.linspace(0.0, 1.0, num=32).reshape(1,32)
+        print(a)
+
+        b = np.reshape(a, (1,1,32)) * np.ones((65536, 1)) # * 1
+        #print(b)
+        c = np.sum(b)
+        print(c)
+
+    def test_maxtrix_100_BROKEN(self):
+        a = np.arange(0, 32).reshape(1,32);
+        print(a)
+
+        b = np.reshape(a, (1,1,32)) * np.ones((65536, 1)) # * 1
+        #print(b)
+        c = np.sum(b)
+        print(c)
+
+
+    def test_maxtrix_101_BROKEN(self):
+        a = np.arange(0, 32).reshape(1,32);
+        print(a)
+
+        b = np.full((1, 1, 32), 2) * np.full((65536, 1), 3) # * 1
+        #print(b)
+
+        d = np.where(b != 6)
+        c = np.sum(b)
+        print(c)
+
  
 
 if __name__ == '__main__':
