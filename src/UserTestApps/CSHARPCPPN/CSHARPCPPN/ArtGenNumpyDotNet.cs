@@ -62,9 +62,9 @@ namespace CSHARPCPPN
             Num_Points = width * height;
 
             double ret_step = 0;
-            ndarray x_range = np.linspace(-1 * scaling, scaling, ref ret_step, width, dtype: np.Float32);
+            ndarray x_range = np.linspace(-1 * scaling, scaling, ref ret_step, width);
 
-            ndarray y_range = np.linspace(-1 * scaling, scaling, ref ret_step, height, dtype: np.Float32);
+            ndarray y_range = np.linspace(-1 * scaling, scaling, ref ret_step, height);
 
             ndarray x_mat = np.matmul(np.ones(new shape(height, 1)), x_range.reshape(1, width));
 
