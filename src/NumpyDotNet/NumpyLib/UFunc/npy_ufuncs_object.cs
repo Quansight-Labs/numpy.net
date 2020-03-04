@@ -1073,67 +1073,22 @@ namespace NumpyLib
                     break;
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-
-                    List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
-                    List<Exception> caughtExceptions = new List<Exception>();
-
-                    List<Task> tasks = new List<Task>();
-                    npy_intp taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
-
+                     
                     while (loop.index < loop.size)
                     {
+ 
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-
-                        var BufPtrs = new VoidPtr[3];
-                        BufPtrs[0] = loop.bufptr[0] != null ? new VoidPtr(loop.bufptr[0]) : null;
-                        BufPtrs[1] = loop.bufptr[1] != null ? new VoidPtr(loop.bufptr[1]) : null;
-                        BufPtrs[2] = loop.bufptr[2] != null ? new VoidPtr(loop.bufptr[2]) : null;
-
-                        arrayOfBufPtrs.Add(BufPtrs);
-
-                        if (arrayOfBufPtrs.Count == taskCount)
-                        {
-                            var workerThreadOpIterList = arrayOfBufPtrs;
-
-                            var task = Task.Run(() =>
-                            {
-                                NpyUFUNC_GenericReduction_worker_thread(operation, self, workerThreadOpIterList, loop, caughtExceptions);
-
-                                // free data ASAP
-                                workerThreadOpIterList.Clear();
-                                workerThreadOpIterList = null;
-                            });
-                            tasks.Add(task);
-
-                            arrayOfBufPtrs = new List<VoidPtr[]>();
-
-                            taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
-                        }
-                      
+                        loop.function(operation, loop.bufptr, loop.N,loop.steps, self.ops);
+                        if (!NPY_UFUNC_CHECK_ERROR(loop))
+                            goto fail;
 
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.bufptr[2] = loop.bufptr[0];
                         loop.index++;
                     }
-
-                    Task.WaitAll(tasks.ToArray());
-
-                    if (caughtExceptions.Count > 0)
-                    {
-                        Exception ex = caughtExceptions[0];
-                        if (ex is System.OverflowException)
-                        {
-                            NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
-                            goto fail;
-                        }
-
-                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
-                        goto fail;
-                    }
-
                     break;
 
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
@@ -1224,23 +1179,6 @@ namespace NumpyLib
             return null;
         }
 
-        private static void NpyUFUNC_GenericReduction_worker_thread(GenericReductionOp operation, NpyUFuncObject self, List<VoidPtr[]> arrayOfBufPtrs, NpyUFuncReduceObject loop, List<Exception> caughtExceptions)
-        {
-            Parallel.For(0, arrayOfBufPtrs.Count, ii =>
-            {
-                try
-                {
-                    loop.function(operation, arrayOfBufPtrs[ii], loop.N, loop.steps, self.ops);
-                }
-                catch (Exception ex)
-                {
-                    lock (caughtExceptions)
-                    {
-                        caughtExceptions.Add(ex);
-                    }
-                }
-            });
-        }
 
         private static NpyArray NpyUFunc_Accumulate(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray _out, int axis, NPY_TYPES otype)
         {
@@ -1292,57 +1230,17 @@ namespace NumpyLib
 
                     while (loop.index < loop.size)
                     {
-                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-
-                        var BufPtrs = new VoidPtr[3];
-                        BufPtrs[0] = loop.bufptr[0] != null ? new VoidPtr(loop.bufptr[0]) : null;
-                        BufPtrs[1] = loop.bufptr[1] != null ? new VoidPtr(loop.bufptr[1]) : null;
-                        BufPtrs[2] = loop.bufptr[2] != null ? new VoidPtr(loop.bufptr[2]) : null;
-
-                        arrayOfBufPtrs.Add(BufPtrs);
-
-                        if (arrayOfBufPtrs.Count == taskCount)
-                        {
-                            var workerThreadOpIterList = arrayOfBufPtrs;
-
-                            var task = Task.Run(() =>
-                            {
-                                NpyUFUNC_GenericReduction_worker_thread(operation, self, workerThreadOpIterList, loop, caughtExceptions);
-
-                                // free data ASAP
-                                workerThreadOpIterList.Clear();
-                                workerThreadOpIterList = null;
-                            });
-                            tasks.Add(task);
-
-                            arrayOfBufPtrs = new List<VoidPtr[]>();
-
-                            taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
-                        }
-
-
+                        loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                        if (!NPY_UFUNC_CHECK_ERROR(loop))
+                            goto fail;
                         NpyArray_ITER_NEXT(loop.it);
                         NpyArray_ITER_NEXT(loop.rit);
                         loop.bufptr[0] = loop.rit.dataptr;
                         loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
                         loop.index++;
-                    }
-
-                    Task.WaitAll(tasks.ToArray());
-
-                    if (caughtExceptions.Count > 0)
-                    {
-                        Exception ex = caughtExceptions[0];
-                        if (ex is System.OverflowException)
-                        {
-                            NpyErr_SetString(npyexc_type.NpyExc_OverflowError, ex.Message);
-                            goto fail;
-                        }
-           
-                        NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
-                        goto fail;
                     }
 
                     break;
