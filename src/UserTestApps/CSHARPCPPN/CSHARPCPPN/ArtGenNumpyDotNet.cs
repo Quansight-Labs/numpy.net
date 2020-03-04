@@ -138,13 +138,26 @@ namespace CSHARPCPPN
 
             ndarray r_dat_unwrapped = np.reshape(r_dat, new shape(BatchSize * Num_Points, 1));
 
-            ndarray h_vec_unwrapped = np.reshape(hid_vec_scaled, new shape(BatchSize * Num_Points, HSize)).astype(np.Float32);
+            ndarray h_vec_unwrapped = np.reshape(hid_vec_scaled, new shape(BatchSize * Num_Points, HSize));
 
             //Build the network
-            Art_Net = FullyConnected(h_vec_unwrapped, NetSize) +
-                FullyConnected(x_dat_unwrapped, NetSize, false) +
-                FullyConnected(y_dat_unwrapped, NetSize, true) +
-                FullyConnected(r_dat_unwrapped, NetSize, false);
+            var k1 = FullyConnected(h_vec_unwrapped, NetSize);
+            var k1Sum = np.sum(k1.flatten());
+            Console.WriteLine(string.Format("k1Sum = {0}", k1Sum.GetItem(0).ToString()));
+
+            var k2 = FullyConnected(x_dat_unwrapped, NetSize, false);
+            var k2Sum = np.sum(k2.flatten());
+            Console.WriteLine(string.Format("k2Sum = {0}", k2Sum.GetItem(0).ToString()));
+
+            var k3 = FullyConnected(y_dat_unwrapped, NetSize, true);
+            var k3Sum = np.sum(k3.flatten());
+            Console.WriteLine(string.Format("k3Sum = {0}", k3Sum.GetItem(0).ToString()));
+
+            var k4 = FullyConnected(r_dat_unwrapped, NetSize, false);
+            var k4Sum = np.sum(k4.flatten());
+            Console.WriteLine(string.Format("k4Sum = {0}", k4Sum.GetItem(0).ToString()));
+
+            Art_Net = k1 + k2 + k3 + k4;
 
             //Set Activation function
             var output = TanhSig();
@@ -190,14 +203,14 @@ namespace CSHARPCPPN
         public ndarray FullyConnected(ndarray input, int out_dim, bool with_bias = true)
         {
             var mat = np.random.standard_normal((int)input.shape.iDims[1], out_dim).astype(np.Float32);
-            var matRandomSum = np.sum(mat.flatten());
-            Console.WriteLine(string.Format("matRandomSum = {0}", matRandomSum.GetItem(0).ToString()));
+            //var matRandomSum = np.sum(mat.flatten());
+            //Console.WriteLine(string.Format("matRandomSum = {0}", matRandomSum.GetItem(0).ToString()));
 
 
             var result = np.matmul(input, mat);
 
-            var MatMulResultSum = np.sum(result.flatten());
-            Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
+            //var MatMulResultSum = np.sum(result.flatten());
+            //Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
 
 
             if (with_bias)
@@ -212,7 +225,9 @@ namespace CSHARPCPPN
 
         public ndarray Sigmoid(ndarray x)
         {
-            return 1.0 / (1.0 + np.exp(-1 * x));
+            var SigmoidSum = np.sum(x);
+            Console.WriteLine(string.Format("SigmoidSum = {0}", SigmoidSum.GetItem(0).ToString()));
+            return (np.array(1.0) / (1.0 + np.exp(-1 * x))) as ndarray;
         }
 
         public ndarray SoftPlus(ndarray x)
@@ -229,17 +244,17 @@ namespace CSHARPCPPN
                 vector = np.random.uniform(-1, 1, new int[] { BatchSize, HSize }).astype(np.Float32);
             }
 
-            var vectorSum = np.sum(vector);
-            Console.WriteLine(string.Format("vectorSum = {0}", vectorSum.GetItem(0).ToString()));
+            //var vectorSum = np.sum(vector);
+            //Console.WriteLine(string.Format("vectorSum = {0}", vectorSum.GetItem(0).ToString()));
 
             var data = CreateGrid(width, height, scaling);
 
-            var data0Sum = np.sum(data[0]);
-            Console.WriteLine(string.Format("data0Sum = {0}", data0Sum.GetItem(0).ToString()));
-            var data1Sum = np.sum(data[1]);
-            Console.WriteLine(string.Format("data1Sum = {0}", data1Sum.GetItem(0).ToString()));
-            var data2Sum = np.sum(data[2]);
-            Console.WriteLine(string.Format("data2Sum = {0}", data2Sum.GetItem(0).ToString()));
+            //var data0Sum = np.sum(data[0]);
+            //Console.WriteLine(string.Format("data0Sum = {0}", data0Sum.GetItem(0).ToString()));
+            //var data1Sum = np.sum(data[1]);
+            //Console.WriteLine(string.Format("data1Sum = {0}", data1Sum.GetItem(0).ToString()));
+            //var data2Sum = np.sum(data[2]);
+            //Console.WriteLine(string.Format("data2Sum = {0}", data2Sum.GetItem(0).ToString()));
 
             return BuildCPPN(width, height, data[0], data[1], data[2], vector);
         }

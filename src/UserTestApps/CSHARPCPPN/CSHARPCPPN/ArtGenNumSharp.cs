@@ -171,38 +171,53 @@ namespace CSHARPCPPN
             var h_vec_unwrapped = np.reshape(hid_vec_scaled, new Shape(Batch_Size * Num_Points, H_Size));
 
             //Build the network
-            Art_Net = FullyConnected(h_vec_unwrapped, Net_Size) +
-            FullyConnected(x_dat_unwrapped, Net_Size, false) +
-             FullyConnected(y_dat_unwrapped, Net_Size, true) +
-             FullyConnected(r_dat_unwrapped, Net_Size, false);
 
+            var k1 = FullyConnected(h_vec_unwrapped, Net_Size);
+            var k1Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(k1.ToArray<double>()));
+            Console.WriteLine(string.Format("k1Sum = {0}", k1Sum.GetItem(0).ToString()));
+
+            var k2 = FullyConnected(x_dat_unwrapped, Net_Size, false);
+            var k2Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(k2.ToArray<double>()));
+            Console.WriteLine(string.Format("k2Sum = {0}", k2Sum.GetItem(0).ToString()));
+
+            var k3 = FullyConnected(y_dat_unwrapped, Net_Size, true);
+            var k3Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(k3.ToArray<double>()));
+            Console.WriteLine(string.Format("k3Sum = {0}", k3Sum.GetItem(0).ToString()));
+
+            var k4 = FullyConnected(r_dat_unwrapped, Net_Size, false);
+            var k4Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(k4.ToArray<double>()));
+            Console.WriteLine(string.Format("k4Sum = {0}", k4Sum.GetItem(0).ToString()));
+
+            Art_Net = k1 + k2 + k3 + k4;
+
+  
             return np.reshape(TanhSig(), new Shape(Batch_Size, width, height, C_Dim));
         }
 
         public NDArray FullyConnected(NDArray input, int out_dim, bool with_bias = true)
         {
             var matx = (NumpyDotNet.np.random.standard_normal((int)input.shape[1], out_dim).astype(NumpyDotNet.np.Float32));
-            var matRandomSum = (NumpyDotNet.np.sum(matx.flatten()));
-            Console.WriteLine(string.Format("matRandomSum = {0}", matRandomSum.GetItem(0).ToString()));
+            //var matRandomSum = (NumpyDotNet.np.sum(matx.flatten()));
+            //Console.WriteLine(string.Format("matRandomSum = {0}", matRandomSum.GetItem(0).ToString()));
 
             var mat = np.array(NumpyDotNet.np.AsFloatArray(matx)).reshape(input.shape[1], out_dim);
             var result = np.matmul(input, mat);
 
             Int64[] newshape = new long[result.ndim];
-            for (int i = 0; i < result.ndim; i++)
-                newshape[i] = result.shape[i];
-            try
-            {
-                var MatMulResultSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(result.ToArray<float>()));
-                Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
+            //for (int i = 0; i < result.ndim; i++)
+            //    newshape[i] = result.shape[i];
+            //try
+            //{
+            //    var MatMulResultSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(result.ToArray<float>()));
+            //    Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
 
-            }
-            catch
-            {
-                var MatMulResultSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(result.ToArray<double>()));
-                Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
+            //}
+            //catch
+            //{
+            //    var MatMulResultSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(result.ToArray<double>()));
+            //    Console.WriteLine(string.Format("MatMulResultSum = {0}", MatMulResultSum.GetItem(0).ToString()));
 
-            }
+            //}
 
             if (with_bias)
             {
@@ -266,6 +281,9 @@ namespace CSHARPCPPN
 
         public NDArray Sigmoid(NDArray x)
         {
+            var SigmoidSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(x.ToArray<double>()));
+            Console.WriteLine(string.Format("SigmoidSum = {0}", SigmoidSum.GetItem(0).ToString()));
+
             return np.array(1.0) / (1.0 + np.exp(np.array(-1 * x)));
         }
 
@@ -283,17 +301,17 @@ namespace CSHARPCPPN
                 vector = np.array(NumpyDotNet.np.AsFloatArray(NumpyDotNet.np.random.uniform(-1, 1, new int[] { Batch_Size, H_Size })));
             }
 
-            var vectorSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(vector.ToArray<float>()));
-            Console.WriteLine(string.Format("vectorSum = {0}", vectorSum.GetItem(0).ToString()));
+            //var vectorSum = NumpyDotNet.np.sum(NumpyDotNet.np.array(vector.ToArray<float>()));
+            //Console.WriteLine(string.Format("vectorSum = {0}", vectorSum.GetItem(0).ToString()));
 
             var data = CreateGrid(width, height, scaling);
 
-            var data0Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[0].ToArray<double>()));
-            Console.WriteLine(string.Format("data0Sum = {0}", data0Sum.GetItem(0).ToString()));
-            var data1Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[1].ToArray<double>()));
-            Console.WriteLine(string.Format("data1Sum = {0}", data1Sum.GetItem(0).ToString()));
-            var data2Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[2].ToArray<double>()));
-            Console.WriteLine(string.Format("data2Sum = {0}", data2Sum.GetItem(0).ToString()));
+            //var data0Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[0].ToArray<double>()));
+            //Console.WriteLine(string.Format("data0Sum = {0}", data0Sum.GetItem(0).ToString()));
+            //var data1Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[1].ToArray<double>()));
+            //Console.WriteLine(string.Format("data1Sum = {0}", data1Sum.GetItem(0).ToString()));
+            //var data2Sum = NumpyDotNet.np.sum(NumpyDotNet.np.array(data[2].ToArray<double>()));
+            //Console.WriteLine(string.Format("data2Sum = {0}", data2Sum.GetItem(0).ToString()));
 
             return BuildCPPN(width, height, data[0], data[1], data[2], vector);
         }
