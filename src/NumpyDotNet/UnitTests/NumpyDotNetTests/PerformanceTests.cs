@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3312,7 +3312,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_flatcopy_INT32()
         {
