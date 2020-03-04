@@ -6,13 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NumpyDotNet" Version="0.9.40" />
     <PackageReference Include="NumSharp.Lite" Version="0.1.4" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\NumpyDotNet\NumpyDotNet\NumpyDotNet.csproj" />
-    <ProjectReference Include="..\..\..\NumpyDotNet\NumpyLib\NumpyLib.csproj" />
   </ItemGroup>
 
 </Project>
