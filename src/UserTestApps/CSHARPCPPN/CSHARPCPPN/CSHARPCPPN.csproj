@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\NumpyDotNet\NumpyDotNet\NumpyDotNet.csproj" />
-    <ProjectReference Include="..\..\..\NumpyDotNet\UnitTests\NumpyDotNetTests\NumpyDotNetTests.csproj" />
+    <ProjectReference Include="..\..\..\NumpyDotNet\NumpyLib\NumpyLib.csproj" />
   </ItemGroup>
 
 </Project>
