@@ -246,7 +246,6 @@ namespace NumpyLib
         internal static int _array_copy_into(NpyArray dest, NpyArray src, bool usecopy, bool alwaysstrided)
         {
             bool swap;
-            strided_copy_func_t myfunc;
             bool simple;
             bool same;
         
@@ -285,19 +284,17 @@ namespace NumpyLib
                 return _copy_from0d(dest, src, usecopy, swap);
             }
 
-            myfunc = strided_copy_func(dest, src, usecopy);
-
             /*
              * Could combine these because _broadcasted_copy would work as well.
              * But, same-shape copying is so common we want to speed it up.
              */
             if (same)
             {
-                return _copy_from_same_shape(dest, src, myfunc, swap);
+                return _copy_from_same_shape(dest, src, swap);
             }
             else
             {
-                return _broadcast_copy(dest, src, myfunc, swap);
+                return _broadcast_copy(dest, src,swap);
             }
         }
 
@@ -1067,7 +1064,6 @@ namespace NumpyLib
             int elsize; 
             bool simple;
             NpyArrayIterObject idest, isrc;
-            strided_copy_func_t myfunc;
         
             if (!NpyArray_EquivArrTypes(dest, src))
             {
@@ -1100,9 +1096,8 @@ namespace NumpyLib
             {
                 bool swap;
 
-                myfunc = strided_copy_func(dest, src, true);
                 swap = NpyArray_ISNOTSWAPPED(dest) != NpyArray_ISNOTSWAPPED(src);
-                return _copy_from_same_shape(dest, src, myfunc, swap);
+                return _copy_from_same_shape(dest, src, swap);
             }
 
             /* Otherwise we have to do an iterator-based copy */
@@ -1326,7 +1321,6 @@ namespace NumpyLib
                 return -1;
             }
 
-            strided_copy_func_t myfunc = strided_copy_func(src, null, true);
 
             VoidPtr dptr = new VoidPtr(dst);
             NpyArray_Descr descr = dst.descr;
@@ -1335,7 +1329,7 @@ namespace NumpyLib
 
             while (it.index < it.size)
             {
-                myfunc(dptr,(npy_intp)elsize, it.dataptr, NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
+                _strided_byte_copy(dptr,(npy_intp)elsize, it.dataptr, NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), elsize, descr);
                 dptr.data_offset += nbytes;
                 NpyArray_ITER_NEXT(it);
             }
@@ -1406,27 +1400,8 @@ namespace NumpyLib
             MemCopy.MemCpy(dest, 0, ConvertedByteVP, 0, (long)VoidPointer_BytesLength(ConvertedByteVP));
         }
 
-        /*
-         * Returns the copy func for the arrays.  The arrays must be the same type.
-         * If src is null then it is assumed to be the same type and aligned.
-         */
-        internal static strided_copy_func_t strided_copy_func(NpyArray dest, NpyArray src, bool usecopy)
-        {
-            if (NpyArray_SAFEALIGNEDCOPY(dest) && (src == null || NpyArray_SAFEALIGNEDCOPY(src)))
-            {
-                return _strided_byte_copy;
-            }
-            else if (usecopy)
-            {
-                return _strided_byte_copy;
-            }
-            else
-            {
-                return _strided_byte_copy;
-            }
-        }
 
-        internal static int _copy_from_same_shape(NpyArray dest, NpyArray src, strided_copy_func_t myfunc, bool swap)
+        internal static int _copy_from_same_shape(NpyArray dest, NpyArray src, bool swap)
         {
             int maxaxis = -1, elsize;
             npy_intp maxdim;
@@ -1451,7 +1426,7 @@ namespace NumpyLib
             while (dit.index < dit.size)
             {
                 /* strided copy of elsize bytes */
-                myfunc(dit.dataptr, dest.strides[maxaxis],
+                _strided_byte_copy(dit.dataptr, dest.strides[maxaxis],
                        sit.dataptr, src.strides[maxaxis],
                        maxdim, elsize, descr);
                 if (swap)
@@ -1470,7 +1445,7 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static int _broadcast_copy(NpyArray dest, NpyArray src, strided_copy_func_t myfunc, bool swap)
+        internal static int _broadcast_copy(NpyArray dest, NpyArray src, bool swap)
         {
             NpyArrayMultiIterObject multi;
             int maxaxis;
@@ -1513,7 +1488,7 @@ namespace NumpyLib
 
             while (multi.index < multi.size)
             {
-                myfunc(multi.iters[0].dataptr,
+                _strided_byte_copy(multi.iters[0].dataptr,
                        multi.iters[0].strides[maxaxis],
                        multi.iters[1].dataptr,
                        multi.iters[1].strides[maxaxis],
@@ -1537,7 +1512,6 @@ namespace NumpyLib
             byte[] aligned = null;
             VoidPtr sptr;
             npy_intp numcopies, nbytes;
-            strided_copy_func_t myfunc;
             int retval = -1;
             NpyArray_Descr descr;
 
@@ -1566,8 +1540,6 @@ namespace NumpyLib
                 sptr = new VoidPtr(src);
             }
 
-            myfunc = strided_copy_func(dest, null, usecopy);
-
             if ((dest.nd < 2) || NpyArray_ISONESEGMENT(dest))
             {
                 npy_intp dstride;
@@ -1580,8 +1552,8 @@ namespace NumpyLib
                 {
                     dstride = nbytes;
                 }
- 
-                myfunc(dest.data, dstride, sptr, 0, numcopies, (int)nbytes, descr);
+
+                _strided_byte_copy(dest.data, dstride, sptr, 0, numcopies, (int)nbytes, descr);
                 if (swap)
                 {
                     _strided_byte_swap(dest.data, dstride, numcopies, (int)nbytes);
@@ -1599,7 +1571,7 @@ namespace NumpyLib
                 }
                 while (dit.index < dit.size)
                 {
-                    myfunc(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, NpyArray_DIM(dest, axis), (int)nbytes, descr);
+                    _strided_byte_copy(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, NpyArray_DIM(dest, axis), (int)nbytes, descr);
                     if (swap)
                     {
                         _strided_byte_swap(dit.dataptr, NpyArray_STRIDE(dest, axis),
