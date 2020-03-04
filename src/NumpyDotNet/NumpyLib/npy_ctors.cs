@@ -1327,7 +1327,7 @@ namespace NumpyLib
             int elsize = descr.elsize;
             npy_intp nbytes = (npy_intp)(elsize * NpyArray_DIM(src, axis));
 
-            flat_copyinto(it, dptr, NpyArray_DIM(src, axis), NpyArray_STRIDE(src, axis), elsize, nbytes);
+            flat_copyinto(dptr, elsize, it,  NpyArray_STRIDE(src, axis), NpyArray_DIM(src, axis), nbytes);
  
             if (src != orig_src)
             {
@@ -1337,21 +1337,21 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static void flat_copyinto(NpyArrayIterObject it, VoidPtr dptr, npy_intp dim, npy_intp stride, int elsize, npy_intp nbytes)
+        internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N,  npy_intp destOffset)
         {
-            //if (dptr.type_num == it.dataptr.type_num)
-            //{
-            //    var helper = MemCopy.GetMemcopyHelper(dptr);
-            //    helper.flat_copyinto(it, dptr, dim, stride, elsize, nbytes);
-            //    return;
-            //}
-
-
-            while (it.index < it.size)
+            if (dest.type_num == srcIter.dataptr.type_num)
             {
-                _strided_byte_copy(dptr, (npy_intp)elsize, it.dataptr, stride, dim, elsize, null);
-                dptr.data_offset += nbytes;
-                NpyArray_ITER_NEXT(it);
+                var helper = MemCopy.GetMemcopyHelper(dest);
+                helper.flat_copyinto(dest, outstride, srcIter, instride, N, destOffset);
+                return;
+            }
+
+
+            while (srcIter.index < srcIter.size)
+            {
+                _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, null);
+                dest.data_offset += destOffset;
+                NpyArray_ITER_NEXT(srcIter);
             }
         }
 
