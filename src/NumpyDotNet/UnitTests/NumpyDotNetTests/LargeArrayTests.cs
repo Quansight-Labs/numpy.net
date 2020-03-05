@@ -483,6 +483,54 @@ namespace NumpyDotNetTests
         }
 
 
+        //[TestMethod]
+        //public void test_largearray_convolve_INT64()
+        //{
+        //    var a = np.arange(160000, dtype: np.Int64);
+        //    var b = np.arange(1, 160001, dtype: np.Int64);
+
+        //    var c = np.convolve(a, b);
+        //    Assert.AreEqual((Int64)(-2180696669785964544), np.sum(c).GetItem(0));
+
+        //}
+
+        [TestMethod]
+        public void test_largearray_clip_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(-1, 2);
+
+            var c = np.clip(a, 1, 1000);
+            Assert.AreEqual((Int64)(15999499501), np.sum(c).GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_largearray_take_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(-1, 2);
+            var indices = np.arange(0, a.size, 2, np.intp);
+
+            var c = np.take(a, indices);
+            Assert.AreEqual((Int64)(63999992000000), np.sum(c).GetItem(0));
+
+        }
+
+
+        [TestMethod]
+        public void test_largearray_choose_INT64()
+        {
+            var choice1 = np.arange(16000000, dtype : np.Int64);
+            var choice2 = np.arange(16000000, dtype : np.Int64);
+            var choice3 = np.arange(16000000, dtype : np.Int64);
+            var choice4 = np.arange(16000000, dtype: np.Int64);
+
+            var selection = np.repeat(new Int32[] { 0, 1, 2, 3 }, choice1.size / 4);
+            var c = np.choose(selection, new ndarray[] { choice1, choice2, choice3, choice4 });
+
+            Assert.AreEqual((Int64)(127999992000000), np.sum(c).GetItem(0));
+
+        }
+
 
     }
 }

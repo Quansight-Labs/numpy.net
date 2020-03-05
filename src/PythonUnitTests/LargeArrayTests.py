@@ -307,7 +307,42 @@ class LargeArrayTests(unittest.TestCase):
 
         c = np.cross(a, b)
         print(np.sum(c))
-  
+
+    def test_largearray_convolve_INT64(self):
+
+        a = np.arange(160000, dtype=np.int64);
+        b = np.arange(1, 160001, dtype=np.int64);
+
+        c = np.convolve(a, b)
+        print(np.sum(c))
+
+    def test_largearray_clip_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((-1, 2));
+
+        c = np.clip(a, 1, 1000);
+        print(np.sum(c))
+
+        
+    def test_largearray_take_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((-1, 2));
+        indices = np.arange(0,a.size, 2, np.intp)
+        c = np.take(a, indices);
+        print(np.sum(c))
+
+    def test_largearray_choose_INT64(self):
+
+        choice1 = np.arange(16000000, dtype=np.int64);
+        choice2 = np.arange(16000000, dtype=np.int64);
+        choice3 = np.arange(16000000, dtype=np.int64);
+        choice4 = np.arange(16000000, dtype=np.int64);
+
+        selection = np.repeat([0,1,2,3], choice1.size/4)
+
+        c = np.choose(selection, [choice1, choice2, choice3, choice4])
+        print(np.sum(c))
+
 
 
 if __name__ == '__main__':
