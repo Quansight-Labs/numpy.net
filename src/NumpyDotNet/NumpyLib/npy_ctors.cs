@@ -1339,12 +1339,12 @@ namespace NumpyLib
 
         internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N,  npy_intp destOffset)
         {
-            if (dest.type_num == srcIter.dataptr.type_num)
-            {
-                var helper = MemCopy.GetMemcopyHelper(dest);
-                helper.flat_copyinto(dest, outstride, srcIter, instride, N, destOffset);
-                return;
-            }
+            //if (dest.type_num == srcIter.dataptr.type_num)
+            //{
+            //    var helper = MemCopy.GetMemcopyHelper(dest);
+            //    helper.flat_copyinto(dest, outstride, srcIter, instride, N, destOffset);
+            //    return;
+            //}
 
 
             while (srcIter.index < srcIter.size)

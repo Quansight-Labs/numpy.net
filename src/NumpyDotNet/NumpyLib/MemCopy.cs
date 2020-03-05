@@ -3592,7 +3592,7 @@ namespace NumpyLib
         void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right);
-        void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset);
+        //void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset);
     }
 
     abstract class CopyHelper<T>
@@ -4254,17 +4254,17 @@ namespace NumpyLib
             }
         }
 
-        public void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
-        {
+        //public void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
+        //{
    
-            while (srcIter.index < srcIter.size)
-            {
-                strided_byte_copy(dest, outstride, srcIter.dataptr, instride, N, outstride);
+        //    while (srcIter.index < srcIter.size)
+        //    {
+        //        strided_byte_copy(dest, outstride, srcIter.dataptr, instride, N, outstride);
 
-                dest.data_offset += destOffset;
-                numpyinternal.NpyArray_ITER_NEXT(srcIter);
-            }
-        }
+        //        dest.data_offset += destOffset;
+        //        numpyinternal.NpyArray_ITER_NEXT(srcIter);
+        //    }
+        //}
 
 
         public void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
