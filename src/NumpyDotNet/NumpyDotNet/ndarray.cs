@@ -886,7 +886,7 @@ namespace NumpyDotNet
 
         public ndarray astype(dtype dtype = null, string order = "K", string casting = "unsafe", bool subok = true, bool copy = true)
         {
-            if (dtype == this.Dtype)
+            if (dtype == this.Dtype && this.@base == null)
             {
                 return this;
             }

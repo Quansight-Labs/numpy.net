@@ -122,6 +122,11 @@ namespace NumpyLib
             }
 
             same = NpyArray_SAMESHAPE(dest, src);
+            if (src.base_arr != null)
+            {
+                same = NpyArray_SAMESHAPE(dest, src.base_arr);
+            }
+
             simple = same && (NpyArray_ISWRITEABLE(src) && NpyArray_ISWRITEABLE(dest)) &&
                              ((NpyArray_ISCARRAY_RO(src) && NpyArray_ISCARRAY(dest)) ||
                               (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
@@ -168,7 +173,8 @@ namespace NumpyLib
                  ((mpd.type_num == at.type_num) &&
                   NpyArray_EquivByteorders(mpd, at) &&
                   ((mpd.elsize == at.elsize) || (at.elsize == 0)))) &&
-                NpyArray_ISBEHAVED_RO(mp))
+                NpyArray_ISBEHAVED_RO(mp) &&
+                  (mp.base_arr == null))
             {
                 Npy_DECREF(at);
                 Npy_INCREF(mp);
