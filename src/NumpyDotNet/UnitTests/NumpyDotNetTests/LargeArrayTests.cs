@@ -418,9 +418,70 @@ namespace NumpyDotNetTests
             np.copyto(a, b, where: b % 2 == 0);
 
             Assert.AreEqual((Int64)76800014400000, np.sum(a).GetItem(0));
+        }
 
+        [TestMethod]
+        public void test_largearray_sin_DOUBLE()
+        {
+            var a = np.ones(16000000, dtype: np.Float64).reshape(-1, 5);
+            var b = np.sin(a);
+
+            var c = np.sum(b);
+            print(c);
+
+            Assert.AreEqual(13463535.75598323, c.GetItem(0));
+        }
+
+        [TestMethod]
+        public void test_largearray_diff_INT64()
+        {
+            var a = np.arange(0, 16000000 * 3, 3, dtype: np.Int64).reshape(-1, 5);
+            var b = np.diff(a);
+
+            var c = np.sum(b);
+            print(c);
+
+            Assert.AreEqual((Int64)38400000, c.GetItem(0));
+        }
+
+        [TestMethod]
+        public void test_largearray_ediff1d_INT64()
+        {
+            var a = np.arange(0, 16000000 * 3, 3, dtype: np.Int64).reshape(-1, 5);
+            var b = np.ediff1d(a);
+
+            var c = np.sum(b);
+            print(c);
+
+            Assert.AreEqual((Int64)47999997, c.GetItem(0));
+        }
+
+        [TestMethod]
+        public void test_largearray_gradient_INT64()
+        {
+            var a = np.arange(0, 16000000 * 3, 3, dtype: np.Int64).reshape(-1, 5);
+            var b = np.gradient(a);
+
+            var c = np.sum(b[0]);
+            print(c);
+            Assert.AreEqual((double)240000000.0, c.GetItem(0));
+
+            c = np.sum(b[1]);
+            print(c);
+            Assert.AreEqual((double)48000000.0, c.GetItem(0));
+        }
+
+        [TestMethod]
+        public void test_largearray_cross_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(-1,2);
+            var b = np.arange(1, 16000001, dtype: np.Int64).reshape(-1,2);
+
+            var c = np.cross(a, b);
+            Assert.AreEqual((Int64)(-8000000), np.sum(c).GetItem(0));
 
         }
+
 
 
     }

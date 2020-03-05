@@ -275,6 +275,39 @@ class LargeArrayTests(unittest.TestCase):
         np.copyto(a, b, where = b % 2 == 0)
         print(np.sum(a))
  
+    def test_largearray_sin_DOUBLE(self):
+
+        a = np.ones(16000000, dtype=np.float64).reshape(-1, 5);
+        b = np.sin(a)
+        print(np.sum(b))
+
+    def test_largearray_diff_INT64(self):
+
+        a = np.arange(0, 16000000 * 3, 3, dtype=np.int64).reshape(-1, 5);
+        b = np.diff(a)
+        print(np.sum(b))
+
+    def test_largearray_ediff1d_INT64(self):
+
+        a = np.arange(0, 16000000 * 3, 3, dtype=np.int64).reshape(-1, 5);
+        b = np.ediff1d(a)
+        print(np.sum(b))
+
+    def test_largearray_gradient_INT64(self):
+
+        a = np.arange(0, 16000000 * 3, 3, dtype=np.int64).reshape(-1, 5);
+        b = np.gradient(a)
+        print(np.sum(b[0]))
+        print(np.sum(b[1]))
+
+    def test_largearray_cross_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((-1, 2));
+        b = np.arange(1, 16000001, dtype=np.int64).reshape((-1, 2));
+
+        c = np.cross(a, b)
+        print(np.sum(c))
+  
 
 
 if __name__ == '__main__':
