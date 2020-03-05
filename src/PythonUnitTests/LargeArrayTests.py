@@ -114,7 +114,73 @@ class LargeArrayTests(unittest.TestCase):
         z1 = np.sum(z)
         print(z1)
 
+    def test_largearray_copy_int64_1(self):
+
+        length = 268435435 # (Int32.MaxValue) / sizeof(double) - 20;
+        x = np.arange(0, length, 1, dtype = np.int64);
+        z = np.sum(x);
+        print(z)
+        y = x.copy()
+        z = np.sum(y)
+        print(z)
+
+    def test_largearray_copy_int64_2(self):
+
+        length = 268435434 # (Int32.MaxValue) / sizeof(double) - 21;
+        x = np.arange(0, length, 1, dtype = np.int64).reshape(2,-1);
+        z = np.sum(x, axis=0);
+        z = np.sum(z)
+        print(z)
+        y = x.copy()
+        z = np.sum(y, axis=1)
+        z = np.sum(z)
+        print(z)
+
+    def test_largearray_meshgrid_int64_2(self):
+        length = 100 * 100
+
+        x = np.arange(0,length, 1, dtype = np.int64)
+        x1, x2 = np.meshgrid(x,x)
+        print(x1.shape)
+        print(x2.shape)
+
+        z = np.sum(x1)
+        print(z)
+
+        z = np.sum(x2)
+        print(z)
+
+    def test_largearray_checkerboard_1(self):
  
+        x = np.zeros((2048,2048),dtype=int)
+        x[1::2,::2] = 1
+        x[::2,1::2] = 1
+
+
+        print(np.sum(x))
+
+    def test_largearray_byteswap_int64_2(self):
+
+        length = 1024 * 1024* 32 # (Int32.MaxValue) / sizeof(double) - 21;
+        x = np.arange(0, length, 1, dtype = np.int64).reshape(2,-1);
+        y = x.byteswap();
+
+        z = np.sum(y, axis=0);
+        z = np.sum(z)
+        print(z)
+
+        z = np.sum(y, axis=1)
+        z = np.sum(z)
+        print(z)
+
+    def test_largearray_ndarray_view(self):
+        length = 1024 * 1024* 32 # (Int32.MaxValue) / sizeof(double) - 21;
+        x = np.arange(0, length, 1, dtype = np.int64).reshape(2,-1);
+        print(np.sum(x))
+
+        y = x.view(np.uint8)
+        print(np.sum(y))
+
 
 if __name__ == '__main__':
     unittest.main()

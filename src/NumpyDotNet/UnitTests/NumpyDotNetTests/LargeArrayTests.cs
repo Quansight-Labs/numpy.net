@@ -204,6 +204,99 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_largearray_copy_int64_1()
+        {
+            int length = (Int32.MaxValue) / sizeof(double) - 20;
+            var x = np.arange(0, length, 1, dtype: np.Int64);
+            Assert.AreEqual(length, x.size);
+
+            var z = np.sum(x);
+            Assert.AreEqual(36028791247601895, z.GetItem(0));
+
+            var y = x.Copy();
+            z = np.sum(x);
+            Assert.AreEqual(36028791247601895, z.GetItem(0));
+
+            return;
+        }
+
+
+        [TestMethod]
+        public void test_largearray_copy_int64_2()
+        {
+            int length = (Int32.MaxValue) / sizeof(double) - 21;
+            var x = np.arange(0, length, 1, dtype: np.Int64).reshape(2,-1);
+            Assert.AreEqual(length, x.size);
+
+            var z = np.sum(x, axis: 0);
+            z = np.sum(z);
+            Assert.AreEqual(36028790979166461, z.GetItem(0));
+
+            var y = x.Copy();
+            z = np.sum(x, axis: 1);
+            z = np.sum(z);
+            Assert.AreEqual(36028790979166461, z.GetItem(0));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_largearray_meshgrid_int64_2()
+        {
+            int length = 100 * 100;
+
+            var x = np.arange(0, length, 1, dtype: np.Int64);
+
+            ndarray[] xv = np.meshgrid(new ndarray[] { x, x });
+
+            var s1 = np.sum(xv[0]);
+            Assert.AreEqual(499950000000, s1.GetItem(0));
+            var s2 = np.sum(xv[1]);
+            Assert.AreEqual(499950000000, s2.GetItem(0));
+
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_largearray_checkerboard_1()
+        {
+            var x = np.zeros((2048, 2048), dtype: np.Int32);
+            x["1::2", "::2"] = 1;
+            x["::2", "1::2"] = 1;
+
+     
+            AssertShape(x, 2048, 2048);
+            AssertStrides(x, sizeof(Int32) * 2048, sizeof(Int32));
+
+            Assert.AreEqual(2097152, np.sum(x).GetItem(0));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_largearray_byteswap_int64_2()
+        {
+            var length = 1024 * 1024 * 32; // (Int32.MaxValue) / sizeof(double) - 21;
+            var x = np.arange(0, length, 1, dtype : np.Int64).reshape(2, -1);
+            var y = x.byteswap();
+
+            var z = np.sum(y, axis : 0);
+            z = np.sum(z);
+            print(z);
+            Assert.AreEqual(72057594037927936, z.GetItem(0));
+
+            z = np.sum(y, axis: 1);
+            z = np.sum(z);
+            print(z);
+            Assert.AreEqual(72057594037927936, z.GetItem(0));
+
+            return;
+        }
+
+ 
+
 
 
     }
