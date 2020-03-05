@@ -173,13 +173,19 @@ class LargeArrayTests(unittest.TestCase):
         z = np.sum(z)
         print(z)
 
-    def test_largearray_ndarray_view(self):
-        length = 1024 * 1024* 32 # (Int32.MaxValue) / sizeof(double) - 21;
-        x = np.arange(0, length, 1, dtype = np.int64).reshape(2,-1);
-        print(np.sum(x))
+    def test_largearray_unique_INT32(self):
 
-        y = x.view(np.uint8)
-        print(np.sum(y))
+        matrix = np.arange(16000000, dtype=np.int32).reshape((40, -1));
+
+        matrix = matrix[1:40:2, 1:-2:1]
+
+        uvalues, indexes, inverse, counts = np.unique(matrix, return_counts = True, return_index=True, return_inverse=True);
+             
+        print(np.sum(uvalues))
+        print(np.sum(indexes))
+        print(np.sum(inverse))
+        print(np.sum(counts))
+
 
 
 if __name__ == '__main__':

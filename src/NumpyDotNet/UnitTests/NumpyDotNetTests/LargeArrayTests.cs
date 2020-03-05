@@ -295,7 +295,21 @@ namespace NumpyDotNetTests
             return;
         }
 
- 
+        [TestMethod]
+        public void test_largearray_unique_INT32()
+        {
+            var matrix = np.arange(16000000, dtype: np.Int32).reshape(40, -1);
+
+            matrix = matrix["1:40:2", "1:-2:1"] as ndarray;
+
+            var result = np.unique(matrix, return_counts: true, return_index: true, return_inverse: true);
+
+            Assert.AreEqual(-1830479044, np.sum(result.data).GetItem(0));
+            Assert.AreEqual(31999516001830, np.sum(result.indices).GetItem(0));
+            Assert.AreEqual(31999516001830, np.sum(result.inverse).GetItem(0));
+            Assert.AreEqual((Int64)7999940, np.sum(result.counts).GetItem(0));
+
+        }
 
 
 
