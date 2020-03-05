@@ -311,6 +311,40 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_largearray_where_INT32()
+        {
+            var matrix = np.arange(16000000, dtype: np.Int32).reshape(40, -1);
+            Assert.AreEqual(1376644608, np.sum(matrix).GetItem(0));
+
+            var indices = np.where(matrix % 2 == 0);
+
+            var m1 = matrix[indices] as ndarray;
+            Assert.AreEqual(684322304, np.sum(m1).GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_largearray_insert_BIGINT()
+        {
+            var matrix = np.arange(16000000, dtype: np.BigInt).reshape(40, -1);
+            Assert.AreEqual((System.Numerics.BigInteger)127999992000000, np.sum(matrix).GetItem(0));
+
+            ndarray m1 = np.insert(matrix, 0, new System.Numerics.BigInteger[] { 999, 100, 101 });
+            Assert.AreEqual((System.Numerics.BigInteger)127999992001200, np.sum(m1).GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_largearray_append_BIGINT()
+        {
+            var matrix = np.arange(16000000, dtype: np.BigInt).reshape(40, -1);
+            Assert.AreEqual((System.Numerics.BigInteger)127999992000000, np.sum(matrix).GetItem(0));
+
+            ndarray m1 = np.append(matrix, new System.Numerics.BigInteger[] { 999, 100, 101 });
+            Assert.AreEqual((System.Numerics.BigInteger)127999992001200, np.sum(m1).GetItem(0));
+
+        }
 
 
     }

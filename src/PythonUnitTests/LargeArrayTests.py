@@ -186,7 +186,30 @@ class LargeArrayTests(unittest.TestCase):
         print(np.sum(inverse))
         print(np.sum(counts))
 
+    def test_largearray_where_INT32(self):
 
+        matrix = np.arange(16000000, dtype=np.int32).reshape((40, -1));
+        print(np.sum(matrix))
+        indices = np.where(matrix % 2 == 0);
+
+        m1 = matrix[indices]
+        print(np.sum(m1))
+
+    def test_largearray_insert_INT64(self):
+
+        matrix = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+        print(np.sum(matrix))
+
+        m1 = np.insert(matrix, 0, [999,100,101])
+        print(np.sum(m1))
+
+    def test_largearray_append_INT64(self):
+
+        matrix = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+        print(np.sum(matrix))
+
+        m1 = np.append(matrix, [999,100,101])
+        print(np.sum(m1))
 
 if __name__ == '__main__':
     unittest.main()
