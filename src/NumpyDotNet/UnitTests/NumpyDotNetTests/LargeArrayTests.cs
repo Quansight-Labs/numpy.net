@@ -124,22 +124,81 @@ namespace NumpyDotNetTests
             var x_range = np.arange(0, width, 1, dtype: np.Int64);
             var y_range = np.arange(0, height * 2, 2, dtype: np.Int64);
 
-            var x_mat = np.add(x_range.reshape(1, width, 1), y_range.reshape(1, height, 1));
+            var x_mat = np.add(x_range.reshape(width, 1), y_range.reshape(1, height));
+            x_mat = np.expand_dims(x_mat, 0);
 
             var z = np.sum(x_mat, axis: 0);
             var z1 = np.sum(z);
             print(z1);
-            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+            Assert.AreEqual((Int64)1609039872, z1.GetItem(0));
 
             z = np.sum(x_mat, axis: 1);
             z1 = np.sum(z);
             print(z1);
-            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+            Assert.AreEqual((Int64)1609039872, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 2);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((Int64)1609039872, z1.GetItem(0));
+
+            return;
+
+        }
+
+
+        [TestMethod]
+        public void test_largearray_multiply_BigInt_1()
+        {
+            int width = 2048;
+            int height = 2048;
+
+            var x_range = np.arange(0, width, 1, dtype: np.Int64).astype(np.BigInt);
+            var y_range = np.arange(0, height * 2, 2, dtype: np.Int64).astype(np.BigInt);
+
+            var x_mat = np.multiply(x_range.reshape(width, 1), y_range.reshape(1, height));
+
+            var z = np.sum(x_mat, axis: 0);
+            var z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((System.Numerics.BigInteger)8787505184768, z1.GetItem(0));
 
             z = np.sum(x_mat, axis: 1);
             z1 = np.sum(z);
             print(z1);
-            Assert.AreEqual((Int64)1571328, z1.GetItem(0));
+            Assert.AreEqual((System.Numerics.BigInteger)8787505184768, z1.GetItem(0));
+
+            return;
+
+        }
+
+
+        [TestMethod]
+        public void test_largearray_add_BigInt_2()
+        {
+            int width = 4096;
+            int height = 4096;
+
+            var x_range = np.arange(0, width, 1, dtype: np.Int64).astype(np.BigInt);
+            var y_range = np.arange(0, height * 2, 2, dtype: np.Int64).astype(np.BigInt);
+
+            var x_mat = np.multiply(x_range.reshape(1, width), y_range.reshape(height, 1));
+            x_mat = np.expand_dims(x_mat, 0);
+
+            var z = np.sum(x_mat, axis: 0);
+            var z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((System.Numerics.BigInteger)140668777267200, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 1);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((System.Numerics.BigInteger)140668777267200, z1.GetItem(0));
+
+            z = np.sum(x_mat, axis: 2);
+            z1 = np.sum(z);
+            print(z1);
+            Assert.AreEqual((System.Numerics.BigInteger)140668777267200, z1.GetItem(0));
 
             return;
 
