@@ -343,6 +343,51 @@ namespace NumpyDotNetTests
 
             ndarray m1 = np.append(matrix, new System.Numerics.BigInteger[] { 999, 100, 101 });
             Assert.AreEqual((System.Numerics.BigInteger)127999992001200, np.sum(m1).GetItem(0));
+        }
+
+
+        [TestMethod]
+        public void test_largearray_concatenate_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(40, -1);
+            var b = np.arange(1,16000001, dtype: np.Int64).reshape(40, -1);
+
+            var c = np.concatenate((a, b), axis: 0);
+            Assert.AreEqual(256000000000000, np.sum(c).GetItem(0));
+
+            var e = np.concatenate((a, b), axis: null);
+            Assert.AreEqual(256000000000000, np.sum(e).GetItem(0));
+        }
+
+        [TestMethod]
+        public void test_largearray_min_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(40, -1);
+
+            var b = np.amin(a) as ndarray;
+            Assert.AreEqual((Int64)0, np.sum(b).GetItem(0));
+
+            b = np.amin(a, axis:0) as ndarray;
+            Assert.AreEqual((Int64)79999800000, np.sum(b).GetItem(0));
+
+            b = np.amin(a, axis: 1) as ndarray;
+            Assert.AreEqual((Int64)312000000, np.sum(b).GetItem(0));
+
+       }
+
+        [TestMethod]
+        public void test_largearray_max_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(40, -1);
+
+            var b = np.amax(a) as ndarray;
+            Assert.AreEqual((Int64)15999999, np.sum(b).GetItem(0));
+
+            b = np.amax(a, axis: 0) as ndarray;
+            Assert.AreEqual((Int64)6319999800000, np.sum(b).GetItem(0));
+
+            b = np.amax(a, axis: 1) as ndarray;
+            Assert.AreEqual((Int64)327999960, np.sum(b).GetItem(0));
 
         }
 

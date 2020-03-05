@@ -211,6 +211,47 @@ class LargeArrayTests(unittest.TestCase):
         m1 = np.append(matrix, [999,100,101])
         print(np.sum(m1))
 
+    def test_largearray_concatenate_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+        b = np.arange(1, 16000001, dtype=np.int64).reshape((40, -1));
+
+        c = np.concatenate((a, b), axis=0)
+        print(np.sum(c))
+
+        #d = np.concatenate((a.T, b), axis=1)
+        #print(np.sum(d))
+
+        e = np.concatenate((a, b), axis=None)
+        print(np.sum(e))
+
+    def test_largearray_min_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+
+        b = np.amin(a)
+        print(np.sum(b))
+
+        b = np.amin(a, axis=0)
+        print(np.sum(b))
+
+        b = np.amin(a, axis=1)
+        print(np.sum(b))
+
+    def test_largearray_max_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape((40, -1));
+
+        b = np.amax(a)
+        print(np.sum(b))
+
+        b = np.amax(a, axis=0)
+        print(np.sum(b))
+
+        b = np.amax(a, axis=1)
+        print(np.sum(b))
+
+
 if __name__ == '__main__':
     unittest.main()
 
