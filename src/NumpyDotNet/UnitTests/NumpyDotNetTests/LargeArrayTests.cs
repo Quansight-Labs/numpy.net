@@ -391,6 +391,37 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_largearray_setdiff1d_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64);
+            var b = np.array(new Int64[] { 3, 4, 5, 6 });
+            var c = np.setdiff1d(a, b);
+
+            Assert.AreEqual((Int64)127999992000000, np.sum(a).GetItem(0));
+            Assert.AreEqual((Int64)18, np.sum(b).GetItem(0));
+            Assert.AreEqual((Int64)127999991999982, np.sum(c).GetItem(0));
+
+        }
+
+        [TestMethod]
+        public void test_largearray_copyto_INT64()
+        {
+            var a = np.arange(16000000, dtype: np.Int64).reshape(-1, 5);
+            var b = np.array(new Int64[] { 1, 2, 3, 4, 5 });
+            np.copyto(a, b);
+
+            Assert.AreEqual((Int64)48000000, np.sum(a).GetItem(0));
+
+            a = np.arange(16000000, dtype: np.Int64).reshape(-1, 5);
+            b = np.array(new Int64[] { 1, 2, 3, 4, 5 });
+            np.copyto(a, b, where: b % 2 == 0);
+
+            Assert.AreEqual((Int64)76800014400000, np.sum(a).GetItem(0));
+
+
+        }
+
 
     }
 }

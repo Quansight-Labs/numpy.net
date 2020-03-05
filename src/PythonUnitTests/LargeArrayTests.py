@@ -251,6 +251,31 @@ class LargeArrayTests(unittest.TestCase):
         b = np.amax(a, axis=1)
         print(np.sum(b))
 
+    def test_largearray_setdiff1d_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64);
+
+        b = np.array([3, 4, 5, 6])
+        c = np.setdiff1d(a, b)
+        print(np.sum(a))
+        print(np.sum(b))
+        print(np.sum(c))
+
+    def test_largearray_copyto_INT64(self):
+
+        a = np.arange(16000000, dtype=np.int64).reshape(-1, 5);
+        print(np.sum(a))
+
+        b = np.array([1, 2, 3, 4, 5])
+        np.copyto(a, b)
+        print(np.sum(a))
+
+        a = np.arange(16000000, dtype=np.int64).reshape(-1, 5);
+        b = np.array([1, 2, 3, 4, 5])
+        np.copyto(a, b, where = b % 2 == 0)
+        print(np.sum(a))
+ 
+
 
 if __name__ == '__main__':
     unittest.main()
