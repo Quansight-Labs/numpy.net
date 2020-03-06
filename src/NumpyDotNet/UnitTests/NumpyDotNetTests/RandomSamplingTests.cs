@@ -185,13 +185,19 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_uniform_1()
         {
-
             ndarray arr = np.random.uniform(-1, 1, 40);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 40);
             print(arr);
+        }
 
 
+        [TestMethod]
+        public void test_standard_normal_1()
+        {
+            np.random.seed(1234);
+            ndarray arr = np.random.standard_normal(new int[] { 5, 10 });
+            print(arr);
         }
 
     }

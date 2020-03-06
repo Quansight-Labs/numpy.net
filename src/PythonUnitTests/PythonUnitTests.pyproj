@@ -74,6 +74,9 @@
     <Compile Include="LargeArrayTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RandomSamplingTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
