@@ -46,7 +46,7 @@ namespace NumpyDotNet
     internal class rk_state
     {
         public const int RK_STATE_LEN = 624;
-        public UInt64[]key = new ulong[RK_STATE_LEN];
+        public Int64[]key = new long[RK_STATE_LEN];
         public int pos;
         public bool has_gauss; /* !=0: gauss contains a gaussian deviate */
         public double gauss;
@@ -1018,7 +1018,7 @@ namespace NumpyDotNet
                 for (i = 0; i < N - M; i++)
                 {
                     y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    //state.key[i] = state.key[i + M] ^ (y >> 1) ^ (-((y & 1) & MATRIX_A);
+                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (-((y & 1) & MATRIX_A);
                 }
                 for (; i < N - 1; i++)
                 {
