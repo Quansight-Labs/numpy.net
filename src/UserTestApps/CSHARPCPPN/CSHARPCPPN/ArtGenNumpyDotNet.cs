@@ -211,7 +211,7 @@ namespace CSHARPCPPN
 
             var imageData = art.Generate(width, height, scaling);
 
-            var imgData = np.array(1 - imageData);
+            var imgData = np.array(np.array(1) - imageData);
             if (C_Dim > 1)
             {
                 imgData = np.array(imgData.reshape((height, width, C_Dim)) * 255.0);
