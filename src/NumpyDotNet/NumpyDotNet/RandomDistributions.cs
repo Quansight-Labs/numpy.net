@@ -1040,6 +1040,271 @@ namespace NumpyDotNet
 
             return y;
         }
+        static UInt64 rk_uint64(rk_state state)
+        {
+            UInt64 upper = (UInt64)rk_random(state) << 32;
+            UInt64 lower = (UInt64)rk_random(state);
+            return upper | lower;
+        }
+
+
+        /*
+         * Returns an unsigned 32 bit random integer.
+         */
+        static UInt32 rk_uint32(rk_state state)
+        {
+            return (UInt32)rk_random(state);
+        }
+
+
+        /*
+         * Fills an array with cnt random npy_uint64 between off and off + rng
+         * inclusive. The numbers wrap if rng is sufficiently large.
+         */
+        static void rk_random_uint64(UInt64 off, UInt64 rng, npy_intp cnt,
+                         UInt64 []_out, rk_state state)
+        {
+            UInt64 val, mask = rng;
+            npy_intp i;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= mask >> 1;
+            mask |= mask >> 2;
+            mask |= mask >> 4;
+            mask |= mask >> 8;
+            mask |= mask >> 16;
+            mask |= mask >> 32;
+
+            for (i = 0; i < cnt; i++)
+            {
+                if (rng <= 0xffffffffUL)
+                {
+                    while ((val = (rk_uint32(state) & mask)) > rng) ;
+                }
+                else
+                {
+                    while ((val = (rk_uint64(state) & mask)) > rng) ;
+                }
+                _out[i] = off + val;
+            }
+        }
+
+
+        /*
+         * Fills an array with cnt random npy_uint32 between off and off + rng
+         * inclusive. The numbers wrap if rng is sufficiently large.
+         */
+        static void rk_random_uint32(UInt32 off, UInt32 rng, npy_intp cnt,
+                         UInt32[] _out, rk_state state)
+        {
+            UInt32 val, mask = rng;
+            npy_intp i;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= mask >> 1;
+            mask |= mask >> 2;
+            mask |= mask >> 4;
+            mask |= mask >> 8;
+            mask |= mask >> 16;
+
+            for (i = 0; i < cnt; i++)
+            {
+                while ((val = (rk_uint32(state) & mask)) > rng) ;
+                _out[i] = off + val;
+            }
+        }
+
+
+        /*
+         * Fills an array with cnt random npy_uint16 between off and off + rng
+         * inclusive. The numbers wrap if rng is sufficiently large.
+         */
+        static void rk_random_uint16(UInt16 off, UInt16 rng, npy_intp cnt,
+                         UInt16[] _out, rk_state state)
+        {
+            UInt16 val, mask = rng;
+            npy_intp i;
+            UInt32 buf = 0;
+            int bcnt = 0;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= (UInt16)(mask >> 1);
+            mask |= (UInt16)(mask >> 2);
+            mask |= (UInt16)(mask >> 4);
+            mask |= (UInt16)(mask >> 8);
+
+            for (i = 0; i < cnt; i++)
+            {
+                do
+                {
+                    if (bcnt == 0)
+                    {
+                        buf = rk_uint32(state);
+                        bcnt = 1;
+                    }
+                    else
+                    {
+                        buf >>= 16;
+                        bcnt--;
+                    }
+                    val = (UInt16)(buf & mask);
+                } while (val > rng);
+                _out[i] = (UInt16)(off + val);
+            }
+        }
+
+        /*
+         * Fills an array with cnt random npy_uint8 between off and off + rng
+         * inclusive. The numbers wrap if rng is sufficiently large.
+         */
+        static void rk_random_uint8(byte off, byte rng, npy_intp cnt,
+                        byte[] _out, rk_state state)
+        {
+            byte val, mask = rng;
+            npy_intp i;
+            UInt32 buf = 0;
+            int bcnt = 0;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= (byte)(mask >> 1);
+            mask |= (byte)(mask >> 2);
+            mask |= (byte)(mask >> 4);
+
+            for (i = 0; i < cnt; i++)
+            {
+                do
+                {
+                    if (bcnt == 0)
+                    {
+                        buf = rk_uint32(state);
+                        bcnt = 3;
+                    }
+                    else
+                    {
+                        buf >>= 8;
+                        bcnt--;
+                    }
+                    val = (byte)(buf & mask);
+                } while (val > rng);
+                _out[i] = (byte)(off + val);
+            }
+        }
+
+
+        /*
+         * Fills an array with cnt random npy_bool between off and off + rng
+         * inclusive.
+         */
+        static void rk_random_bool(bool off, bool rng, npy_intp cnt,
+                        bool[] _out, rk_state state)
+        {
+            npy_intp i;
+            UInt32 buf = 0;
+            int bcnt = 0;
+
+            if (rng == false)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* If we reach here rng and mask are one and off is zero */
+            System.Diagnostics.Debug.Assert(rng == true && off == false);
+            for (i = 0; i < cnt; i++)
+            {
+                if (bcnt == 0)
+                {
+                    buf = rk_uint32(state);
+                    bcnt = 31;
+                }
+                else
+                {
+                    buf >>= 1;
+                    bcnt--;
+                }
+                _out[i] = (buf & 0x00000001) != 0;
+            }
+        }
+
+
+        static long rk_long(rk_state state)
+        {
+            return (long)rk_ulong(state) >> 1;
+        }
+
+        static ulong rk_ulong(rk_state state)
+        {
+            return (rk_random(state) << 32) | (rk_random(state));
+        }
+
+
+        static ulong rk_interval(ulong max, rk_state state)
+        {
+            ulong mask = max, value;
+
+            if (max == 0)
+            {
+                return 0;
+            }
+            /* Smallest bit mask >= max */
+            mask |= mask >> 1;
+            mask |= mask >> 2;
+            mask |= mask >> 4;
+            mask |= mask >> 8;
+            mask |= mask >> 16;
+            mask |= mask >> 32;
+
+            /* Search a random value in [0..mask] <= max */
+            if (max <= 0xffffffffUL)
+            {
+                while ((value = (rk_random(state) & mask)) > max) ;
+            }
+            else
+            {
+                while ((value = (rk_ulong(state) & mask)) > max) ;
+            }
+
+            return value;
+        }
 
 
         static double rk_double(rk_state state)
@@ -1050,7 +1315,33 @@ namespace NumpyDotNet
             return (a * 67108864.0 + b) / 9007199254740992.0;
         }
 
-        static double rk_gauss(rk_state state)
+
+    //    static void rk_fill(byte buffer, size_t size, rk_state* state)
+    //    {
+    //        unsigned long r;
+    //        unsigned char* buf = buffer;
+
+    //        for (; size >= 4; size -= 4)
+    //        {
+    //            r = rk_random(state);
+    //            *(buf++) = r & 0xFF;
+    //            *(buf++) = (r >> 8) & 0xFF;
+    //            *(buf++) = (r >> 16) & 0xFF;
+    //            *(buf++) = (r >> 24) & 0xFF;
+    //        }
+
+    //        if (!size)
+    //        {
+    //            return;
+    //        }
+    //        r = rk_random(state);
+    //        for (; size; r >>= 8, size--)
+    //        {
+    //            *(buf++) = (unsigned char)(r & 0xFF);
+    //    }
+    //}
+
+    static double rk_gauss(rk_state state)
         {
             if (state.has_gauss)
             {
