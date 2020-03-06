@@ -567,7 +567,7 @@ namespace NumpyDotNetTests
             ndarray C = 5 * F / 9 - 5 * 32 / 9;
             print(C);
 
-            AssertArray(C, new float[] { -17.0f, -10.3333339691162f, 8.116665f, 1.88888931274414f, 38.505558013916f });
+            AssertArray(C, new double[] { -17.0, -10.3333333333333, 8.11666615804036, 1.88888888888889, 38.5055575900608 });
 
         }
 

@@ -223,7 +223,7 @@ namespace NumpyDotNetTests
             print(F);
             print("Values in  Centigrade degrees:");
 
-            ndarray C = 5 * F / 9 - 5 * 32 / 9;
+            ndarray C = (decimal)5 * F / 9 - 5 * 32 / 9;
             print(C);
 
             AssertArray(C, new decimal[] { -17, -10.33333333333333333333333333300m, 08.11666666666666666666666666700m,

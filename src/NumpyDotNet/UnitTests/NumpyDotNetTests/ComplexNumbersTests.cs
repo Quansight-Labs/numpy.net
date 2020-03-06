@@ -249,7 +249,7 @@ namespace NumpyDotNetTests
             print(F);
             print("Values in  Centigrade degrees:");
 
-            ndarray C = 5 * F / 9 - 5 * 32 / 9;
+            ndarray C = (Complex)5 * F / 9 - 5 * 32 / 9;
             print(C);
 
             AssertArray(C, new Complex[] { new Complex(-17, -0.555555555555556), new Complex(-10.3333333333333, -0.611111111111111),

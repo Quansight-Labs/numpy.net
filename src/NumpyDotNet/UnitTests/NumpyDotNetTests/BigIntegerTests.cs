@@ -264,7 +264,7 @@ namespace NumpyDotNetTests
             print(F);
             print("Values in  Centigrade degrees:");
 
-            ndarray C = 5 * F / 9 - 5 * 32 / 9;
+            ndarray C = (BigInteger)5 * F / 9 - 5 * 32 / 9;
             print(C);
 
             AssertArray(C, new BigInteger[] { -17, -11, 08, 01, 38 });
@@ -1019,7 +1019,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_isin_1_BIGINT()
         {
-            ndarray element = 2 * np.arange(4, dtype: np.BigInt).reshape(new shape(2, 2));
+            ndarray element = (BigInteger)2 * np.arange(4, dtype: np.BigInt).reshape(new shape(2, 2));
             print(element);
 
             ndarray test_elements = np.array(new BigInteger[] { 1, 2, 4, 8 });
@@ -3384,7 +3384,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual((BigInteger)0, b.GetItem(0));  // note: python gets a np.inf value here
             print(b);
 
-            var c = 1 / np.copysign((BigInteger)0, (BigInteger)(-1));
+            var c = (BigInteger)1 / np.copysign((BigInteger)0, (BigInteger)(-1));
             Assert.AreEqual((BigInteger)0, c.GetItem(0));  // note: python gets a -np.inf value here
             print(c);
 

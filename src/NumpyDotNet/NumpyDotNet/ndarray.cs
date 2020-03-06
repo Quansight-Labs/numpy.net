@@ -170,9 +170,9 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.add, operand);
         }
 
-        public static ndarray operator +(object operand, ndarray a)
+        public static ndarray operator +(object a, ndarray operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.add, operand);
+            return NpyCoreApi.PerformNumericOp(np.asanyarray(a), UFuncOperation.add, operand);
         }
 
         public static ndarray operator +(ndarray a, ndarray b)
@@ -189,9 +189,9 @@ namespace NumpyDotNet
         public static ndarray operator -(ndarray a, object operand) {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.subtract, operand);
         }
-        public static ndarray operator -(object operand, ndarray a)
+        public static ndarray operator -(object a, ndarray operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.subtract, operand);
+            return NpyCoreApi.PerformNumericOp(np.asanyarray(a), UFuncOperation.subtract, operand);
         }
 
         public static ndarray operator -(ndarray a, ndarray b) {
@@ -214,9 +214,9 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.multiply, operand);
         }
 
-        public static ndarray operator *(object operand, ndarray a)
+        public static ndarray operator *(object a, ndarray operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.multiply, operand);
+            return NpyCoreApi.PerformNumericOp(np.asanyarray(a), UFuncOperation.multiply, operand);
         }
 
         public static ndarray operator *(ndarray a, ndarray b) {
@@ -234,9 +234,9 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.divide, operand);
         }
-        public static ndarray operator /(object operand, ndarray a)
+        public static ndarray operator /(object a, ndarray operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.divide, operand);
+            return NpyCoreApi.PerformNumericOp(np.asanyarray(a), UFuncOperation.divide, operand);
         }
 
 
@@ -266,9 +266,9 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.remainder, operand);
         }
-        public static ndarray operator %(object operand, ndarray a)
+        public static ndarray operator %(object a, ndarray operand)
         {
-            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.remainder, operand);
+            return NpyCoreApi.PerformNumericOp(np.asanyarray(a), UFuncOperation.remainder, operand);
         }
         public static ndarray operator %(ndarray a, ndarray b)
         {

@@ -550,7 +550,7 @@ namespace NumpyDotNetTests
             var a = np.arange(10, dtype: np.Int32);
             a = np.array(a.AsObjectArray());
 
-            var b = np.where(a < 5, a, 10 * a) as ndarray;
+            var b = np.where(a < 5, a, a * 10) as ndarray;
             AssertArray(b, new object[] { 0, 1, 2, 3, 4, 50, 60, 70, 80, 90 });
             print(b);
 
