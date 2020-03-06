@@ -1004,11 +1004,11 @@ namespace NumpyDotNet
             /* Magic Mersenne Twister constants */
             const int N = 624;
             const int M = 397;
-            const ulong MATRIX_A = 0x9908b0df;
-            const ulong UPPER_MASK = 0x80000000;
-            const ulong LOWER_MASK = 0x7fffffff;
+            const long MATRIX_A = 0x9908b0df;
+            const long UPPER_MASK = 0x80000000;
+            const long LOWER_MASK = 0x7fffffff;
 
-            ulong y;
+            long y;
 
             if (state.pos == rk_state.RK_STATE_LEN)
             {
@@ -1018,15 +1018,15 @@ namespace NumpyDotNet
                 for (i = 0; i < N - M; i++)
                 {
                     y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (-((y & 1) & MATRIX_A);
+                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (-((y & 1) & MATRIX_A));
                 }
                 for (; i < N - 1; i++)
                 {
                     y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    //state.key[i] = state.key[i + (M - N)] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
+                    state.key[i] = state.key[i + (M - N)] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
                 }
                 y = (state.key[N - 1] & UPPER_MASK) | (state.key[0] & LOWER_MASK);
-                //state.key[N - 1] = state.key[M - 1] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
+                state.key[N - 1] = state.key[M - 1] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
 
                 state.pos = 0;
             }
@@ -1034,11 +1034,11 @@ namespace NumpyDotNet
 
             /* Tempering */
             y ^= (y >> 11);
-            y ^= (y << 7) & 0x9d2c5680UL;
-            y ^= (y << 15) & 0xefc60000UL;
+            y ^= (y << 7) & 0x9d2c5680;
+            y ^= (y << 15) & 0xefc60000;
             y ^= (y >> 18);
 
-            return y;
+            return (ulong)y;
         }
         static UInt64 rk_uint64(rk_state state)
         {
