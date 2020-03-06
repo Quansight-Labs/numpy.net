@@ -48,15 +48,22 @@ namespace NumpyDotNet
         public static class random
         {
             static Random r = new Random();
+            static rk_state internal_state = new rk_state();
+            static object rk_lock = new object();
 
             public static void seed(Int32? seed)
             {
                 lock(r)
                 {
                     if (seed.HasValue)
+                    {
                         r = new Random(seed.Value);
+                        RandomDistributions.rk_seed((ulong)seed.Value, internal_state);
+                    }
                     else
+                    {
                         r = new Random();
+                    }
                 }
             }
 
@@ -347,7 +354,9 @@ namespace NumpyDotNet
 
             public static ndarray standard_normal(params Int32[] newshape)
             {
-                return _uniform(-1, 1, ConvertToShape(newshape));
+                npy_intp size = CountTotalElements(ConvertToShape(newshape));
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size, rk_lock);
+                return rndArray.reshape(ConvertToShape(newshape));
             }
 
             #endregion
@@ -384,6 +393,44 @@ namespace NumpyDotNet
 
                 return TotalElements;
             }
+
+            #region Python Version
+
+            internal delegate double rk_cont0(rk_state state);
+
+            private static ndarray cont0_array(rk_state state, rk_cont0 func, npy_intp size, object lck)
+            {
+                double[] array_data;
+                ndarray array;
+                npy_intp length;
+                npy_intp i;
+
+                if (size == 0)
+                {
+                    lock (lck)
+                    {
+                        double rv = func(state);
+                        return np.array(rv);
+                    }
+                }
+                else
+                {
+                    array_data = new double[size];
+                    lock (lck)
+                    {
+                        for (i = 0; i < size; i++)
+                        {
+                            array_data[i] = func(state);
+                        }
+                    }
+                    array = np.array(array_data);
+                    return array;
+
+                }
+
+            }
+
+            #endregion
         }
     }
 }

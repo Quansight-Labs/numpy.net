@@ -46,7 +46,7 @@ namespace NumpyDotNet
     internal class rk_state
     {
         public const int RK_STATE_LEN = 624;
-        public Int64[]key = new long[RK_STATE_LEN];
+        public UInt64[]key = new ulong[RK_STATE_LEN];
         public int pos;
         public bool has_gauss; /* !=0: gauss contains a gaussian deviate */
         public double gauss;
@@ -78,11 +78,30 @@ namespace NumpyDotNet
 
     internal static class RandomDistributions
     {
-      /*
-      * log-gamma function to support some of these distributions. The
-      * algorithm comes from SPECFUN by Shanjie Zhang and Jianming Jin and their
-      * book "Computation of Special Functions", 1996, John Wiley & Sons, Inc.
-      */
+
+        public static void rk_seed(ulong seed, rk_state state)
+        {
+            uint pos;
+            seed &= 0xffffffffUL;
+
+            /* Knuth's PRNG as used in the Mersenne Twister reference implementation */
+            for (pos = 0; pos < rk_state.RK_STATE_LEN; pos++)
+            {
+                state.key[pos] = seed;
+                seed = (1812433253UL * (seed ^ (seed >> 30)) + pos + 1) & 0xffffffffUL;
+            }
+            state.pos = rk_state.RK_STATE_LEN;
+            state.gauss = 0;
+            state.has_gauss = false;
+            state.has_binomial = false;
+        }
+
+
+        /*
+        * log-gamma function to support some of these distributions. The
+        * algorithm comes from SPECFUN by Shanjie Zhang and Jianming Jin and their
+        * book "Computation of Special Functions", 1996, John Wiley & Sons, Inc.
+        */
         static double loggam(double x)
         {
             double x0, x2, xp, gl, gl0;
@@ -1008,7 +1027,7 @@ namespace NumpyDotNet
             const long UPPER_MASK = 0x80000000;
             const long LOWER_MASK = 0x7fffffff;
 
-            long y;
+            ulong y;
 
             if (state.pos == rk_state.RK_STATE_LEN)
             {
@@ -1018,15 +1037,15 @@ namespace NumpyDotNet
                 for (i = 0; i < N - M; i++)
                 {
                     y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (-((y & 1) & MATRIX_A));
+                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
                 }
                 for (; i < N - 1; i++)
                 {
                     y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    state.key[i] = state.key[i + (M - N)] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
+                    state.key[i] = state.key[i + (M - N)] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
                 }
                 y = (state.key[N - 1] & UPPER_MASK) | (state.key[0] & LOWER_MASK);
-                state.key[N - 1] = state.key[M - 1] ^ (y >> 1) ^ (-(y & 1) & MATRIX_A);
+                state.key[N - 1] = state.key[M - 1] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
 
                 state.pos = 0;
             }
@@ -1316,32 +1335,32 @@ namespace NumpyDotNet
         }
 
 
-    //    static void rk_fill(byte buffer, size_t size, rk_state* state)
-    //    {
-    //        unsigned long r;
-    //        unsigned char* buf = buffer;
+        //    static void rk_fill(byte buffer, size_t size, rk_state* state)
+        //    {
+        //        unsigned long r;
+        //        unsigned char* buf = buffer;
 
-    //        for (; size >= 4; size -= 4)
-    //        {
-    //            r = rk_random(state);
-    //            *(buf++) = r & 0xFF;
-    //            *(buf++) = (r >> 8) & 0xFF;
-    //            *(buf++) = (r >> 16) & 0xFF;
-    //            *(buf++) = (r >> 24) & 0xFF;
-    //        }
+        //        for (; size >= 4; size -= 4)
+        //        {
+        //            r = rk_random(state);
+        //            *(buf++) = r & 0xFF;
+        //            *(buf++) = (r >> 8) & 0xFF;
+        //            *(buf++) = (r >> 16) & 0xFF;
+        //            *(buf++) = (r >> 24) & 0xFF;
+        //        }
 
-    //        if (!size)
-    //        {
-    //            return;
-    //        }
-    //        r = rk_random(state);
-    //        for (; size; r >>= 8, size--)
-    //        {
-    //            *(buf++) = (unsigned char)(r & 0xFF);
-    //    }
-    //}
+        //        if (!size)
+        //        {
+        //            return;
+        //        }
+        //        r = rk_random(state);
+        //        for (; size; r >>= 8, size--)
+        //        {
+        //            *(buf++) = (unsigned char)(r & 0xFF);
+        //    }
+        //}
 
-    static double rk_gauss(rk_state state)
+        internal static double rk_gauss(rk_state state)
         {
             if (state.has_gauss)
             {
