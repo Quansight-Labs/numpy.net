@@ -20,6 +20,7 @@ class PerformanceTests(unittest.TestCase):
         for i in range(LoopCount):
             matrix = matrix / 3;
             matrix = matrix + i;
+        print(np.sum(matrix))
             
 
         output = matrix[15:25:2, 15:25:2]
@@ -44,7 +45,8 @@ class PerformanceTests(unittest.TestCase):
         for i in range(LoopCount):
             matrix = matrix / 3;
             matrix = matrix + i;
-            
+        print(np.sum(matrix))
+
 
         output = matrix[15:25:2, 15:25:2]
 
@@ -64,6 +66,7 @@ class PerformanceTests(unittest.TestCase):
 
 
         b = np.sin(a)
+        print(np.sum(b))
 
         end = tm.time()
 
@@ -150,6 +153,7 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.accumulate(a)
+        print(np.sum(b))
 
         end = tm.time()
 
@@ -158,7 +162,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_AddAccumulate_Performance2(self):
 
-        LoopCount = 200;
+        LoopCount = 2;
 
         a = np.arange(4000 * 4000, dtype=np.float64).reshape(4000,4000);
 
@@ -166,6 +170,7 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.accumulate(a)
+        print(np.sum(b))
 
         end = tm.time()
 
@@ -183,7 +188,8 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.reduceat(a, [10, 20, 30, 39])
-            print(b.shape)
+            #print(b.shape)
+        print(np.sum(b))
 
         end = tm.time()
 
@@ -201,6 +207,7 @@ class PerformanceTests(unittest.TestCase):
         for i in range(LoopCount):
             b = np.add.outer(a,a)
             #print(b.shape)
+        print(np.sum(b))
 
         end = tm.time()
 
@@ -218,7 +225,8 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.outer(a2,a1)
-            print(b.shape)
+            #print(b.shape)
+        print(np.sum(b))
 
         end = tm.time()
 

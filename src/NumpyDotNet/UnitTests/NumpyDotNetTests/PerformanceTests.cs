@@ -20,7 +20,7 @@ namespace NumpyDotNetTests
     public class PerformanceTests : TestBaseClass
     {
     #region DOUBLE tests
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_DOUBLE()
         {
@@ -38,6 +38,8 @@ namespace NumpyDotNetTests
                 matrix = matrix / 3;
                 matrix = matrix + i;
             }
+
+            Assert.AreEqual(476400000.0, np.sum(matrix).GetItem(0));
 
             var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
 
@@ -68,6 +70,7 @@ namespace NumpyDotNetTests
                 matrix = matrix / 3;
                 matrix = matrix + i;
             }
+            Assert.AreEqual(793998015.0, np.sum(matrix).GetItem(0));
 
             var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
 
@@ -122,6 +125,7 @@ namespace NumpyDotNetTests
             sw.Start();
 
             var b = np.sin(a);
+            Assert.AreEqual(1.53534361535036, np.sum(b).GetItem(0));
 
             sw.Stop();
 
@@ -144,8 +148,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                //Assert.AreEqual(49999995000000.0, b.item(0));
-               // print(b);
+                Assert.AreEqual(49999995000000.0, b.item(0));
             }
 
             sw.Stop();
@@ -193,9 +196,12 @@ namespace NumpyDotNetTests
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
+            ndarray b = null;
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.accumulate(UFuncOperation.add, a);
+                b = np.ufunc.accumulate(UFuncOperation.add, a);
+                var c = np.sum(b);
+                Assert.AreEqual(1.6666666666666433E+20, c.item(0));
             }
 
             sw.Stop();
@@ -219,6 +225,9 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.accumulate(UFuncOperation.add, a);
+                var c = np.sum(b);
+                Assert.AreEqual(1.7073065599596742E+17, c.item(0));
+
             }
 
             sw.Stop();
@@ -287,7 +296,11 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduceat(UFuncOperation.add, a, new long[] { 10, 20, 30, 39 });
+
                 print(b.shape);
+
+                var c = np.sum(b);
+                Assert.AreEqual(46874996250000.0, c.item(0));
             }
 
             sw.Stop();
@@ -310,7 +323,11 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                var b = np.ufunc.outer(UFuncOperation.add, np.Float64, a, a);
-               // print(b.shape);
+                // print(b.shape);
+
+                var c = np.sum(b);
+                Assert.AreEqual(999000000.0, c.item(0));
+
             }
 
             sw.Stop();
@@ -336,6 +353,8 @@ namespace NumpyDotNetTests
             {
                 var b = np.ufunc.outer(UFuncOperation.add, np.Float64, a2, a1);
                 // print(b.shape);
+                var c = np.sum(b);
+                Assert.AreEqual(999000000.0, c.item(0));
             }
 
             sw.Stop();
