@@ -147,6 +147,16 @@ namespace NumpyDotNet
             return (NpyCoreApi.MultiIterDone(core));
         }
 
+        public void IterNext()
+        {
+            NpyCoreApi.MultiIterNext(core);
+        }
+
+        public VoidPtr IterData(int index)
+        {
+            return NpyCoreApi.MultiIterData(core, index);
+        }
+
         public void Reset()
         {
             current = null;
@@ -351,6 +361,14 @@ namespace NumpyDotNet
             return (core.MoveNext());
         }
 
+        public VoidPtr IterData(int index)
+        {
+            return core.IterData(index);
+        }
+        public void IterNext()
+        {
+            core.IterNext();
+        }
         public void Reset()
         {
             core.Reset();

@@ -456,7 +456,15 @@ namespace NumpyDotNet {
             }
         }
 
-
+        internal static VoidPtr MultiIterData(NpyArrayMultiIterObject multi, int index)
+        {
+#if ENABLELOCKING
+            lock (GlobalIterpLock)
+#endif
+            {
+                return numpyAPI.NpyArray_MultiIter_DATA(multi, index);
+            }
+        }
         internal static int MultiIterBroadcast(NpyArrayMultiIterObject multi)
         {
 #if ENABLELOCKING

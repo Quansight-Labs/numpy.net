@@ -941,6 +941,11 @@ namespace NumpyLib
             return numpyinternal.NpyArray_MultiIter_NOTDONE(multi);
         }
 
+        public static VoidPtr NpyArray_MultiIter_DATA(NpyArrayMultiIterObject multi, int index)
+        {
+            return numpyinternal.NpyArray_MultiIter_DATA(multi, index);
+        }
+
         public static int NpyArray_Broadcast(NpyArrayMultiIterObject mit)
         {
             return numpyinternal.NpyArray_Broadcast(mit);
