@@ -73,22 +73,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint_1()
         {
-            ndarray arr = np.random.randint(2, 3, 4);
+            ndarray arr = np.random.randint(2, 3, new shape(4));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, 4,5);
+            arr = np.random.randint(20, null, new shape(4,5));
             AssertShape(arr, 4, 5);
             print(arr);
 
-            arr = np.random.randint(20, 21, 2, 3);
+            arr = np.random.randint(20, 21, new shape(2, 3));
             AssertShape(arr, 2, 3);
             print(arr);
             AssertArray(arr, new Int32[,] { { 20, 20, 20 }, { 20, 20, 20 } });
 
-            arr = np.random.randint(-2, 3, 5000000);
+            arr = np.random.randint(-2, 3, new shape(5000000));
             print(np.amax(arr));
             print(np.amin(arr));
             print(np.average(arr));
@@ -98,22 +98,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint_1()
         {
-            ndarray arr = np.random.randuint(2, 3, 4);
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randuint(20, null, 4, 5);
+            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt32);
             AssertShape(arr, 4, 5);
             print(arr);
 
-            arr = np.random.randuint(20, 21, 2, 3);
+            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt32);
             AssertShape(arr, 2, 3);
             print(arr);
             AssertArray(arr, new UInt32[,] { { 20, 20, 20 }, { 20, 20, 20 } });
 
-            arr = np.random.randuint(2, 5, 5000000);
+            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt32);
             print(np.amax(arr));
             print(np.amin(arr));
             print(np.average(arr));
@@ -122,22 +122,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint64_1()
         {
-            ndarray arr = np.random.randint64(2, 3, 4);
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint64(20, null, 4, 5);
+            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Int64);
             AssertShape(arr, 4, 5);
             print(arr);
 
-            arr = np.random.randint64(20, 21, 2, 3);
+            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Int64);
             AssertShape(arr, 2, 3);
             print(arr);
             AssertArray(arr, new Int64[,] { { 20, 20, 20 }, { 20, 20, 20 } });
 
-            arr = np.random.randint64(-2, 3, 5000000);
+            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int64);
             print(np.amax(arr));
             print(np.amin(arr));
             print(np.average(arr));
@@ -148,22 +148,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint64_1()
         {
-            ndarray arr = np.random.randuint64(2, 3, 4);
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randuint64(20, null, 4, 5);
+            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt64);
             AssertShape(arr, 4, 5);
             print(arr);
 
-            arr = np.random.randuint64(20, 21, 2, 3);
+            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt64);
             AssertShape(arr, 2, 3);
             print(arr);
             AssertArray(arr, new UInt64[,] { { 20, 20, 20 }, { 20, 20, 20 } });
 
-            arr = np.random.randuint64(2, 5, 5000000);
+            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt64);
             print(np.amax(arr));
             print(np.amin(arr));
             print(np.average(arr));

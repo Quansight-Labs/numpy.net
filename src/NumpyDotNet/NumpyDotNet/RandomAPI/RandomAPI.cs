@@ -112,27 +112,51 @@ namespace NumpyDotNet
 
             #region randint
 
-            public static ndarray randint(int low, int? high = null, params Int32[] newshape)
+            public static ndarray randint(Int64 low, UInt64? high = null, shape newshape = null, dtype dtype = null)
             {
-                return _randint(low, high, ConvertToShape(newshape));
+                return _randint(low, high, newshape, dtype);
             }
 
-            public static ndarray randint(int low, int? high = null, params Int64[] newshape)
+            private static ndarray _randint(Int64 low, UInt64? high, shape newdims, dtype dtype = null)
             {
-                return _randint(low, high, ConvertToShape(newshape));
-            }
+                if (dtype == null)
+                    dtype = np.Int32;
 
-            private static ndarray _randint(int low, int? high, npy_intp[] newdims)
-            {
+                switch (dtype.TypeNum)
+                {
+                    case NPY_TYPES.NPY_INT32:
+                        break;
+                    case NPY_TYPES.NPY_UINT32:
+                        return _randuint(low, high, newdims);
+                    case NPY_TYPES.NPY_INT64:
+                        return _randint64(low, high, newdims);
+                    case NPY_TYPES.NPY_UINT64:
+                        return _randuint64(low, high, newdims);
+                    default:
+                        throw new TypeError(string.Format("Unsupported dtype {0} for randint", dtype.TypeNum.ToString()));
+                }
+
+                if (low < System.Int32.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for Int32"));
+                if (high > System.Int32.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for Int32"));
+
                 Int32[] randomData = new Int32[CountTotalElements(newdims)];
+
+                Int32 _low = Convert.ToInt32(low);
+                Int32? _high = null;
 
                 if (!high.HasValue)
                 {
-                    high = Math.Max(0, low - 1);
-                    low = 0;
+                    _high = Math.Max(0, _low - 1);
+                    _low = 0;
                 }
-                var rng = high.Value - low;
-                var off = low;
+                else
+                {
+                    _high = Convert.ToInt32(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
                 RandomDistributions.rk_random_int32(off, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int32).reshape(newdims);
@@ -141,28 +165,31 @@ namespace NumpyDotNet
             #endregion
 
             #region randuint
-
-            public static ndarray randuint(uint low, uint? high = null, params Int32[] newshape)
+  
+            private static ndarray _randuint(Int64 low, UInt64? high, shape newdims)
             {
-                return _randuint(low, high, ConvertToShape(newshape));
-            }
+                if (low < System.UInt32.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for UInt32"));
+                if (high > System.UInt32.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for UInt32"));
 
-            public static ndarray randuint(uint low, uint? high = null, params Int64[] newshape)
-            {
-                return _randuint(low, high, ConvertToShape(newshape));
-            }
-
-            private static ndarray _randuint(uint low, uint? high, npy_intp[] newdims)
-            {
                 UInt32[] randomData = new UInt32[CountTotalElements(newdims)];
+
+                UInt32 _low = Convert.ToUInt32(low);
+                UInt32? _high = null;
 
                 if (!high.HasValue)
                 {
-                    high = Math.Max(0, low - 1);
-                    low = 0;
+                    _high = Math.Max(0, _low - 1);
+                    _low = 0;
                 }
-                var rng = high.Value - low;
-                var off = low;
+                else
+                {
+                    _high = Convert.ToUInt32(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
+
                 RandomDistributions.rk_random_uint32(off, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt32).reshape(newdims);
@@ -172,29 +199,31 @@ namespace NumpyDotNet
 
             #region randint64
 
-            public static ndarray randint64(Int64 low, Int64? high = null, params Int32[] newshape)
+            private static ndarray _randint64(Int64 low, UInt64? high, shape newdims)
             {
-                return _randint64(low, high, ConvertToShape(newshape));
-            }
+                if (low < System.Int64.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for Int64"));
+                if (high > System.Int64.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for Int64"));
 
-            public static ndarray randint64(Int64 low, Int64? high = null, params Int64[] newshape)
-            {
-                return _randint64(low, high, ConvertToShape(newshape));
-            }
-
-            private static ndarray _randint64(Int64 low, Int64? high, npy_intp[] newdims)
-            {
                 Int64[] randomData = new Int64[CountTotalElements(newdims)];
+
+                Int64 _low = Convert.ToInt64(low);
+                Int64? _high = null;
 
                 if (!high.HasValue)
                 {
-                    high = Math.Max(0, low - 1);
-                    low = 0;
+                    _high = Math.Max(0, _low - 1);
+                    _low = 0;
                 }
-                var rng = high.Value - low;
-                var off = low;
+                else
+                {
+                    _high = Convert.ToInt64(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
 
-                RandomDistributions.rk_random_int64(low, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_int64(off, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int64).reshape(newdims);
             }
@@ -203,31 +232,33 @@ namespace NumpyDotNet
             #endregion
 
             #region randuint64
-
-            public static ndarray randuint64(UInt64 low, UInt64? high = null, params Int32[] newshape)
+   
+            private static ndarray _randuint64(Int64 low, UInt64? high, shape newdims)
             {
-                return _randuint64(low, high, ConvertToShape(newshape));
-            }
+                if (low < 0)
+                    throw new ValueError(string.Format("low is out of bounds for UInt64"));
+                if (high > System.UInt64.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for UInt64"));
 
-            public static ndarray randuint64(UInt64 low, UInt64? high = null, params Int64[] newshape)
-            {
-                return _randuint64(low, high, ConvertToShape(newshape));
-            }
 
-            private static ndarray _randuint64(UInt64 low, UInt64? high, npy_intp[] newdims)
-            {
                 UInt64[] randomData = new UInt64[CountTotalElements(newdims)];
+
+                UInt64 _low = Convert.ToUInt64(low);
+                UInt64? _high = null;
 
                 if (!high.HasValue)
                 {
-                    high = Math.Max(0, low - 1);
-                    low = 0;
+                    _high = Math.Max(0, _low - 1);
+                    _low = 0;
                 }
+                else
+                {
+                    _high = Convert.ToUInt64(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
 
-                var rng = high.Value - low;
-                var off = low;
-
-                RandomDistributions.rk_random_uint64(low, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_uint64(off, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt64).reshape(newdims);
             }
@@ -434,6 +465,18 @@ namespace NumpyDotNet
                 for (int i = 0; i < dims.Length; i++)
                 {
                     TotalElements *= dims[i];
+                }
+
+                return TotalElements;
+            }
+
+
+            private static npy_intp CountTotalElements(shape _shape)
+            {
+                npy_intp TotalElements = 1;
+                for (int i = 0; i < _shape.iDims.Length; i++)
+                {
+                    TotalElements *= _shape.iDims[i];
                 }
 
                 return TotalElements;
