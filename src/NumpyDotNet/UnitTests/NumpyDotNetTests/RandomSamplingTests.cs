@@ -195,9 +195,12 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_standard_normal_1()
         {
-            np.random.seed(1234);
-            ndarray arr = np.random.standard_normal(new int[] { 5, 10 });
-            print(arr);
+            //np.random.seed(1234);
+            ndarray arr = np.random.standard_normal(5000000);
+            print(np.max(arr));
+            print(np.min(arr));
+            print(np.average(arr));
+
         }
 
     }
