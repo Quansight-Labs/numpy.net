@@ -574,6 +574,43 @@ namespace NumpyDotNet
 
             #region shuffle/permutation
 
+            public static void shuffle(ndarray x)
+            {
+                int n = len(x);
+
+                if (x.ndim == 1 && x.size > 0)
+                {
+                    ndarray buf = np.empty(new shape(1), dtype: x.Dtype);
+
+                    for (ulong i = (ulong)n - 1; i >= 1; i--)
+                    {
+                        ulong j = RandomDistributions.rk_interval(i, internal_state);
+                        buf[0] = x[j];
+                        x[j] = x[i];
+                        x[i] = buf[0];
+                    }
+                    return;
+                }
+
+                if (x.ndim > 1 && x.size > 0)
+                {
+                    ndarray buf = np.empty_like(x[0], dtype: x.Dtype);
+                    for (ulong i = (ulong)n - 1; i >= 1; i--)
+                    {
+                        ulong j = RandomDistributions.rk_interval(i, internal_state);
+                        buf["..."] = x[j];
+                        x[j] = x[i];
+                        x[i] = buf;
+                    }
+
+
+                }
+
+                return;
+                
+      
+            }
+
             // todo:
 
             #endregion

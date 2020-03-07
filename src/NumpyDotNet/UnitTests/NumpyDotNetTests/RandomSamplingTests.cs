@@ -325,6 +325,23 @@ namespace NumpyDotNetTests
         }
         #endregion
 
+        #region shuffle/permutation
+        [TestMethod]
+        public void test_rand_shuffle_1()
+        {
+            var arr = np.arange(10);
+            np.random.shuffle(arr);
+            print(arr);
+
+            arr = np.arange(9).reshape((3,3));
+            print(arr);
+
+            np.random.shuffle(arr);
+            print(arr);
+
+        }
+        #endregion
+
         [TestMethod]
         public void test_rand_beta_1()
         {

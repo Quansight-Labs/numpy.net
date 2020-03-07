@@ -1448,7 +1448,7 @@ namespace NumpyDotNet
         }
 
 
-        static ulong rk_interval(ulong max, rk_state state)
+        internal static ulong rk_interval(ulong max, rk_state state)
         {
             ulong mask = max, value;
 
