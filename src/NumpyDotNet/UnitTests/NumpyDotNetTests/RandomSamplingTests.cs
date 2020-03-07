@@ -326,7 +326,7 @@ namespace NumpyDotNetTests
         #endregion
 
         [TestMethod]
-        public void test_beta_1()
+        public void test_rand_beta_1()
         {
             var a = np.arange(1,11, dtype: np.Float64);
             var b = np.arange(1,11, dtype: np.Float64);

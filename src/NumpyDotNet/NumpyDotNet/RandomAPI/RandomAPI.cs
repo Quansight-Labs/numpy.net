@@ -582,8 +582,6 @@ namespace NumpyDotNet
 
             public static ndarray beta(ndarray a, ndarray b, shape newshape)
             {
-                throw new NotImplementedException("this function is not ready yet");
-
                 ndarray ba = np.any(np.less_equal(a, 0));
                 if ((bool)ba.GetItem(0))
                     throw new ValueError("a <= 0");
@@ -701,17 +699,19 @@ namespace NumpyDotNet
 
                 array_data = array.AsDoubleArray();
 
-                //double[] oa_data = multi._core.core.iters[0].ao.data.datap as double[];
-                //double[] ob_data = multi._core.core.iters[1].ao.data.datap as double[];
+                VoidPtr vpoa = multi.IterData(0);
+                VoidPtr vpob = multi.IterData(1);
 
-                int index = 0;
-                foreach (var x in multi)
+
+                double[] oa_data = multi.IterData(0).datap as double[];
+                double[] ob_data = multi.IterData(1).datap as double[];
+
+                for (int i = 0; i < multi.size; i++)
                 {
-                    //VoidPtr vpoa = multi._core.core.iters[0].ao.data;
-                    //VoidPtr vpob = multi._core.core.iters[1].ao.data;
-
-                    //array_data[index++] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
-
+                    vpoa=  multi.IterData(0);
+                    vpob = multi.IterData(1);
+                    array_data[i] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
+                    multi.IterNext();
                 }
 
                 return np.array(array_data);
