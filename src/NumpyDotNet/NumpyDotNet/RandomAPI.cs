@@ -50,8 +50,9 @@ namespace NumpyDotNet
             static Random r = new Random();
             static rk_state internal_state = new rk_state();
             static object rk_lock = new object();
+            static bool IsInitialized = seed(null);
 
-            public static void seed(Int32? seed)
+            public static bool seed(Int32? seed)
             {
                 lock(r)
                 {
@@ -63,8 +64,11 @@ namespace NumpyDotNet
                     else
                     {
                         r = new Random();
+                        RandomDistributions.rk_seed((ulong)DateTime.Now.Ticks,internal_state);
                     }
                 }
+
+                return true;
             }
 
             #region rand
@@ -354,6 +358,7 @@ namespace NumpyDotNet
 
             public static ndarray standard_normal(params Int32[] newshape)
             {
+                //return _uniform(-1, 1, ConvertToShape(newshape));
                 npy_intp size = CountTotalElements(ConvertToShape(newshape));
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size, rk_lock);
                 return rndArray.reshape(ConvertToShape(newshape));
