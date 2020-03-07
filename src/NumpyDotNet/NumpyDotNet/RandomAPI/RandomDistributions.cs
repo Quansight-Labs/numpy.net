@@ -1478,32 +1478,32 @@ namespace NumpyDotNet
         }
 
 
- 
 
-        //    static void rk_fill(byte buffer, size_t size, rk_state* state)
-        //    {
-        //        unsigned long r;
-        //        unsigned char* buf = buffer;
 
-        //        for (; size >= 4; size -= 4)
-        //        {
-        //            r = rk_random(state);
-        //            *(buf++) = r & 0xFF;
-        //            *(buf++) = (r >> 8) & 0xFF;
-        //            *(buf++) = (r >> 16) & 0xFF;
-        //            *(buf++) = (r >> 24) & 0xFF;
-        //        }
+        internal static void rk_fill(byte[] buffer, Int32 size, rk_state state)
+        {
+            ulong r;
 
-        //        if (!size)
-        //        {
-        //            return;
-        //        }
-        //        r = rk_random(state);
-        //        for (; size; r >>= 8, size--)
-        //        {
-        //            *(buf++) = (unsigned char)(r & 0xFF);
-        //    }
-        //}
+            int index = 0;
+            for (; size >= 4; size -= 4)
+            {
+                r = rk_random(state);
+                buffer[index++] = (byte)(r & 0xFF);
+                buffer[index++] = (byte)((r >> 8) & 0xFF);
+                buffer[index++] = (byte)((r >> 16) & 0xFF);
+                buffer[index++] = (byte)((r >> 24) & 0xFF);
+            }
+
+            if (size <= 0)
+            {
+                return;
+            }
+            r = rk_random(state);
+            for (; size > 0; r >>= 8, size--)
+            {
+                buffer[index++] = (byte)(r & 0xFF);
+            }
+        }
 
         internal static double rk_gauss(rk_state state)
         {

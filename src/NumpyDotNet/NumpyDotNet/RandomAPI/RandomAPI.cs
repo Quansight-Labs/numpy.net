@@ -74,6 +74,8 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region Simple random data
+
             #region rand
             public static float rand()
             {
@@ -421,43 +423,61 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region random_integers
+            public static ndarray random_integers(Int64 low, UInt64? high = null, shape newshape = null, dtype dtype = null)
+            {
+                return randint(low, high + 1, newshape, dtype: np.Int32);
+            }
+
+            #endregion
+
+            #region random_sample
+            public static ndarray random_sample(Int32 size)
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, size);
+                return rndArray;
+            }
+            public static ndarray random_(Int32 size)
+            {
+                return random_sample(size);
+            }
+            public static ndarray ranf(Int32 size)
+            {
+                return random_sample(size);
+            }
+            public static ndarray sample(Int32 size)
+            {
+                return random_sample(size);
+            }
+            #endregion
+
+            #region choice
+
+            public static ndarray choice(object a, Int32 size, bool replace = true, object p = null)
+            {
+                throw new NotImplementedException("This function is not implemented in NumpyDotNet");
+            }
+
+            #endregion
+
             #region bytes
-            public static byte bytes()
+            public static byte getbyte()
             {
-                lock (r)
-                {
-                    byte[] b = new byte[1];
-                    r.NextBytes(b);
-                    return b[0];
-                }
+                var b = bytes(1);
+                return b[0];
             }
 
-            public static ndarray bytes(params Int32[] newshape)
+
+            public static byte[] bytes(Int32 size)
             {
-                return _bytes(ConvertToShape(newshape));
+                byte[] b = new byte[size];
+
+                RandomDistributions.rk_fill(b, size, internal_state);
+                return b;
             }
 
-            public static ndarray bytes(params Int64[] newshape)
-            {
-                return _bytes(ConvertToShape(newshape));
-            }
 
-            private static ndarray _bytes(npy_intp[] newdims)
-            {
-                byte[] randomData = new byte[CountTotalElements(newdims)];
-                FillWithRandbytes(randomData);
-
-                return np.array(randomData, dtype: np.UInt8).reshape(newdims);
-            }
-
-            private static void FillWithRandbytes(byte[] randomData)
-            {
-                lock (r)
-                {
-                    r.NextBytes(randomData);
-                }
-
-            }
+            #endregion
             #endregion
 
             #region uniform

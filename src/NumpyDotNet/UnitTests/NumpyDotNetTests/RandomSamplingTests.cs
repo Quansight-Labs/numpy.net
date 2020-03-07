@@ -12,6 +12,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class RandomSamplingTests : TestBaseClass
     {
+        #region Simple Random Data
         [TestMethod]
         public void test_rand_1()
         {
@@ -294,37 +295,35 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_bytes_1()
+        public void test_rand_bytes_1()
         {
 
-            byte br = np.random.bytes();
-            ndarray arr = np.random.bytes(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
-            AssertShape(arr, 2, 3, 4);
-
+            byte br = np.random.getbyte();
+            var bytes = np.random.bytes(24);
+            Assert.AreEqual(bytes.Length, 24);
 
             np.random.seed(6432);
-            br = np.random.bytes();
-            arr = np.random.bytes(2, 3, 4);
+            br = np.random.getbyte();
+            var arr = np.array(np.random.bytes(24)).reshape(2,3,4);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 2, 3, 4);
 
             print(br);
-            Assert.AreEqual(154, br);
+            Assert.AreEqual(236, br);
 
             print(arr);
 
             var ExpectedData = new byte[,,]
-                { { { 204, 182, 44, 21 },
-                    { 138, 6, 211, 169 },
-                    { 171, 7, 115, 155 } },
-                    { { 139, 82, 248, 91 },
-                    { 16, 98, 21, 14 },
-                    { 98, 197, 39, 195 } } };
+            { { { 134, 74, 135, 220 },
+                { 88, 52, 7, 2 },
+                { 46, 199, 221, 108 } },
+              { { 253, 137, 142, 205 },
+                { 213, 153, 46, 81 },
+                { 79, 95, 51, 55 } } };
 
             AssertArray(arr, ExpectedData);
         }
-
+        #endregion
 
         [TestMethod]
         public void test_uniform_1()
