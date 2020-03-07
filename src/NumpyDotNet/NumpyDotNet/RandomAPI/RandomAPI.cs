@@ -701,16 +701,16 @@ namespace NumpyDotNet
 
                 array_data = array.AsDoubleArray();
 
-                double[] oa_data = multi._core.core.iters[0].ao.data.datap as double[];
-                double[] ob_data = multi._core.core.iters[1].ao.data.datap as double[];
+                //double[] oa_data = multi._core.core.iters[0].ao.data.datap as double[];
+                //double[] ob_data = multi._core.core.iters[1].ao.data.datap as double[];
 
                 int index = 0;
                 foreach (var x in multi)
                 {
-                    VoidPtr vpoa = multi._core.core.iters[0].ao.data;
-                    VoidPtr vpob = multi._core.core.iters[1].ao.data;
+                    //VoidPtr vpoa = multi._core.core.iters[0].ao.data;
+                    //VoidPtr vpob = multi._core.core.iters[1].ao.data;
 
-                    array_data[index++] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
+                    //array_data[index++] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
 
                 }
 

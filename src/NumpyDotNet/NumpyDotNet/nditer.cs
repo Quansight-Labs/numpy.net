@@ -48,7 +48,7 @@ namespace NumpyDotNet
 {
     public class nditer : IEnumerable, IEnumerator, IEnumerator<object>
     {
-        public NpyArrayMultiIterObject core = null;
+        private NpyArrayMultiIterObject core = null;
         private NpyArrayMultiIterObject current;
         private int creationCount = 0;
 
@@ -314,11 +314,6 @@ namespace NumpyDotNet
         public npy_intp size
         {
             get { return core.size; }
-        }
-
-        public nditer _core
-        {
-            get { return core; }
         }
         
         private nditer core = null;
