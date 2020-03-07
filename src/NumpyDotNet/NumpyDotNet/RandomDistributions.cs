@@ -78,24 +78,7 @@ namespace NumpyDotNet
 
     internal static class RandomDistributions
     {
-
-        public static void rk_seed(ulong seed, rk_state state)
-        {
-            uint pos;
-            seed &= 0xffffffffUL;
-
-            /* Knuth's PRNG as used in the Mersenne Twister reference implementation */
-            for (pos = 0; pos < rk_state.RK_STATE_LEN; pos++)
-            {
-                state.key[pos] = seed;
-                seed = (1812433253UL * (seed ^ (seed >> 30)) + pos + 1) & 0xffffffffUL;
-            }
-            state.pos = rk_state.RK_STATE_LEN;
-            state.gauss = 0;
-            state.has_gauss = false;
-            state.has_binomial = false;
-        }
-
+ 
 
         /*
         * log-gamma function to support some of these distributions. The
@@ -1010,6 +993,22 @@ namespace NumpyDotNet
 
         #region randomkit
 
+        public static void rk_seed(ulong seed, rk_state state)
+        {
+            uint pos;
+            seed &= 0xffffffffUL;
+
+            /* Knuth's PRNG as used in the Mersenne Twister reference implementation */
+            for (pos = 0; pos < rk_state.RK_STATE_LEN; pos++)
+            {
+                state.key[pos] = seed;
+                seed = (1812433253UL * (seed ^ (seed >> 30)) + pos + 1) & 0xffffffffUL;
+            }
+            state.pos = rk_state.RK_STATE_LEN;
+            state.gauss = 0;
+            state.has_gauss = false;
+            state.has_binomial = false;
+        }
 
 
 
