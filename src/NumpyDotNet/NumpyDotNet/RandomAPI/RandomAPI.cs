@@ -110,6 +110,86 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region randbool
+
+            private static ndarray _randbool(Int64 low, UInt64? high, shape newdims)
+            {
+                bool[] randomData = new bool[CountTotalElements(newdims)];
+
+     
+                RandomDistributions.rk_random_bool(false, true, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.Bool).reshape(newdims);
+            }
+
+            #endregion
+
+            #region randint8
+
+            private static ndarray _randint8(Int64 low, UInt64? high, shape newdims)
+            {
+                if (low < System.SByte.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for Int8"));
+                if (high != null && high.Value > (UInt64)System.SByte.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for Int8"));
+
+                SByte[] randomData = new SByte[CountTotalElements(newdims)];
+
+                SByte _low = Convert.ToSByte(low);
+                SByte? _high = null;
+
+                if (!high.HasValue)
+                {
+                    _high = (SByte)Math.Max(0, _low - 1);
+                    _low = 0;
+                }
+                else
+                {
+                    _high = Convert.ToSByte(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
+
+                RandomDistributions.rk_random_int8(off, (SByte)rng, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.Int8).reshape(newdims);
+            }
+
+            #endregion
+
+            #region randuint8
+
+            private static ndarray _randuint8(Int64 low, UInt64? high, shape newdims)
+            {
+                if (low < System.Byte.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for UInt8"));
+                if (high != null && high.Value > (UInt64)System.Byte.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for UInt8"));
+
+                Byte[] randomData = new Byte[CountTotalElements(newdims)];
+
+                Byte _low = Convert.ToByte(low);
+                Byte? _high = null;
+
+                if (!high.HasValue)
+                {
+                    _high = (Byte)Math.Max(0, _low - 1);
+                    _low = 0;
+                }
+                else
+                {
+                    _high = Convert.ToByte(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
+
+                RandomDistributions.rk_random_uint8(off, (Byte)rng, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.UInt8).reshape(newdims);
+            }
+
+            #endregion
+
             #region randint16
 
             private static ndarray _randint16(Int64 low, UInt64? high, shape newdims)
@@ -180,32 +260,37 @@ namespace NumpyDotNet
 
             public static ndarray randint(Int64 low, UInt64? high = null, shape newshape = null, dtype dtype = null)
             {
-                return _randint(low, high, newshape, dtype);
-            }
-
-            private static ndarray _randint(Int64 low, UInt64? high, shape newdims, dtype dtype = null)
-            {
                 if (dtype == null)
                     dtype = np.Int32;
 
                 switch (dtype.TypeNum)
                 {
+                    case NPY_TYPES.NPY_BOOL:
+                        return _randbool(low, high, newshape);
+                    case NPY_TYPES.NPY_BYTE:
+                        return _randint8(low, high, newshape);
+                    case NPY_TYPES.NPY_UBYTE:
+                        return _randuint8(low, high, newshape);
                     case NPY_TYPES.NPY_INT16:
-                        return _randint16(low, high, newdims);
+                        return _randint16(low, high, newshape);
                     case NPY_TYPES.NPY_UINT16:
-                        return _randuint16(low, high, newdims);
+                        return _randuint16(low, high, newshape);
                     case NPY_TYPES.NPY_INT32:
-                        break;
+                        return _randint32(low, high, newshape, dtype);
                     case NPY_TYPES.NPY_UINT32:
-                        return _randuint(low, high, newdims);
+                        return _randuint32(low, high, newshape);
                     case NPY_TYPES.NPY_INT64:
-                        return _randint64(low, high, newdims);
+                        return _randint64(low, high, newshape);
                     case NPY_TYPES.NPY_UINT64:
-                        return _randuint64(low, high, newdims);
+                        return _randuint64(low, high, newshape);
                     default:
                         throw new TypeError(string.Format("Unsupported dtype {0} for randint", dtype.TypeNum.ToString()));
                 }
 
+            }
+
+            private static ndarray _randint32(Int64 low, UInt64? high, shape newdims, dtype dtype = null)
+            {
                 if (low < System.Int32.MinValue)
                     throw new ValueError(string.Format("low is out of bounds for Int32"));
                 if (high > System.Int32.MaxValue)
@@ -236,7 +321,7 @@ namespace NumpyDotNet
 
             #region randuint
   
-            private static ndarray _randuint(Int64 low, UInt64? high, shape newdims)
+            private static ndarray _randuint32(Int64 low, UInt64? high, shape newdims)
             {
                 if (low < System.UInt32.MinValue)
                     throw new ValueError(string.Format("low is out of bounds for UInt32"));

@@ -1140,7 +1140,7 @@ namespace NumpyDotNet
          * Fills an array with cnt random npy_uint32 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        public static void rk_random_int32(Int32 off, Int32 rng, npy_intp cnt,
+        internal static void rk_random_int32(Int32 off, Int32 rng, npy_intp cnt,
                          Int32[] _out, rk_state state)
         {
             Int32 val; 
@@ -1178,7 +1178,7 @@ namespace NumpyDotNet
      * Fills an array with cnt random npy_uint32 between off and off + rng
      * inclusive. The numbers wrap if rng is sufficiently large.
      */
-        public static void rk_random_uint32(UInt32 off, UInt32 rng, npy_intp cnt,
+        internal static void rk_random_uint32(UInt32 off, UInt32 rng, npy_intp cnt,
                          UInt32[] _out, rk_state state)
         {
             UInt32 val, mask = rng;
@@ -1216,7 +1216,7 @@ namespace NumpyDotNet
          * Fills an array with cnt random npy_uint16 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        public static void rk_random_int16(Int16 off, Int16 rng, npy_intp cnt,
+        internal static void rk_random_int16(Int16 off, Int16 rng, npy_intp cnt,
                          Int16[] _out, rk_state state)
         {
             Int16 val, mask = rng;
@@ -1263,7 +1263,7 @@ namespace NumpyDotNet
       * Fills an array with cnt random npy_uint16 between off and off + rng
       * inclusive. The numbers wrap if rng is sufficiently large.
       */
-        public static void rk_random_uint16(UInt16 off, UInt16 rng, npy_intp cnt,
+        internal static void rk_random_uint16(UInt16 off, UInt16 rng, npy_intp cnt,
                          UInt16[] _out, rk_state state)
         {
             UInt16 val, mask = rng;
@@ -1310,7 +1310,53 @@ namespace NumpyDotNet
          * Fills an array with cnt random npy_uint8 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        static void rk_random_uint8(byte off, byte rng, npy_intp cnt,
+        internal static void rk_random_int8(sbyte off, sbyte rng, npy_intp cnt,
+                        sbyte[] _out, rk_state state)
+        {
+            sbyte val, mask = rng;
+            npy_intp i;
+            UInt32 buf = 0;
+            int bcnt = 0;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= (sbyte)(mask >> 1);
+            mask |= (sbyte)(mask >> 2);
+            mask |= (sbyte)(mask >> 4);
+
+            for (i = 0; i < cnt; i++)
+            {
+                do
+                {
+                    if (bcnt == 0)
+                    {
+                        buf = rk_uint32(state);
+                        bcnt = 3;
+                    }
+                    else
+                    {
+                        buf >>= 8;
+                        bcnt--;
+                    }
+                    val = (sbyte)(buf & mask);
+                } while (val >= rng);
+                _out[i] = (sbyte)(off + val);
+            }
+        }
+
+        /*
+     * Fills an array with cnt random npy_uint8 between off and off + rng
+     * inclusive. The numbers wrap if rng is sufficiently large.
+     */
+        internal static void rk_random_uint8(byte off, byte rng, npy_intp cnt,
                         byte[] _out, rk_state state)
         {
             byte val, mask = rng;
@@ -1347,17 +1393,16 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (byte)(buf & mask);
-                } while (val > rng);
+                } while (val >= rng);
                 _out[i] = (byte)(off + val);
             }
         }
-
 
         /*
          * Fills an array with cnt random npy_bool between off and off + rng
          * inclusive.
          */
-        static void rk_random_bool(bool off, bool rng, npy_intp cnt,
+        internal static void rk_random_bool(bool off, bool rng, npy_intp cnt,
                         bool[] _out, rk_state state)
         {
             npy_intp i;
