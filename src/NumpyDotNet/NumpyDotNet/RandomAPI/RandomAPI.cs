@@ -110,6 +110,72 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region randint16
+
+            private static ndarray _randint16(Int64 low, UInt64? high, shape newdims)
+            {
+                if (low < System.Int16.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for Int16"));
+                if (high != null && high.Value > (UInt64)System.Int16.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for Int16"));
+
+                Int16[] randomData = new Int16[CountTotalElements(newdims)];
+
+                Int16 _low = Convert.ToInt16(low);
+                Int16? _high = null;
+
+                if (!high.HasValue)
+                {
+                    _high = (Int16)Math.Max(0, _low - 1);
+                    _low = 0;
+                }
+                else
+                {
+                    _high = Convert.ToInt16(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
+
+                RandomDistributions.rk_random_int16(off, (Int16)rng, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.Int16).reshape(newdims);
+            }
+
+            #endregion
+
+            #region randuint16
+
+            private static ndarray _randuint16(Int64 low, UInt64? high, shape newdims)
+            {
+                if (low < System.UInt16.MinValue)
+                    throw new ValueError(string.Format("low is out of bounds for UInt16"));
+                if (high != null && high.Value > System.UInt16.MaxValue)
+                    throw new ValueError(string.Format("high is out of bounds for UInt16"));
+
+                UInt16[] randomData = new UInt16[CountTotalElements(newdims)];
+
+                UInt16 _low = Convert.ToUInt16(low);
+                UInt16? _high = null;
+
+                if (!high.HasValue)
+                {
+                    _high = (UInt16)Math.Max(0, _low - 1);
+                    _low = 0;
+                }
+                else
+                {
+                    _high = Convert.ToUInt16(high.Value);
+                }
+                var rng = _high.Value - _low;
+                var off = _low;
+
+                RandomDistributions.rk_random_uint16(off, (UInt16)rng, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.UInt16).reshape(newdims);
+            }
+
+            #endregion
+
             #region randint
 
             public static ndarray randint(Int64 low, UInt64? high = null, shape newshape = null, dtype dtype = null)
@@ -124,6 +190,10 @@ namespace NumpyDotNet
 
                 switch (dtype.TypeNum)
                 {
+                    case NPY_TYPES.NPY_INT16:
+                        return _randint16(low, high, newdims);
+                    case NPY_TYPES.NPY_UINT16:
+                        return _randuint16(low, high, newdims);
                     case NPY_TYPES.NPY_INT32:
                         break;
                     case NPY_TYPES.NPY_UINT32:

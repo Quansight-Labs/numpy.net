@@ -1216,7 +1216,54 @@ namespace NumpyDotNet
          * Fills an array with cnt random npy_uint16 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        static void rk_random_uint16(UInt16 off, UInt16 rng, npy_intp cnt,
+        public static void rk_random_int16(Int16 off, Int16 rng, npy_intp cnt,
+                         Int16[] _out, rk_state state)
+        {
+            Int16 val, mask = rng;
+            npy_intp i;
+            UInt32 buf = 0;
+            int bcnt = 0;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= (Int16)(mask >> 1);
+            mask |= (Int16)(mask >> 2);
+            mask |= (Int16)(mask >> 4);
+            mask |= (Int16)(mask >> 8);
+
+            for (i = 0; i < cnt; i++)
+            {
+                do
+                {
+                    if (bcnt == 0)
+                    {
+                        buf = rk_uint32(state);
+                        bcnt = 1;
+                    }
+                    else
+                    {
+                        buf >>= 16;
+                        bcnt--;
+                    }
+                    val = (Int16)(buf & mask);
+                } while (val >= rng);
+                _out[i] = (Int16)(off + val);
+            }
+        }
+
+        /*
+      * Fills an array with cnt random npy_uint16 between off and off + rng
+      * inclusive. The numbers wrap if rng is sufficiently large.
+      */
+        public static void rk_random_uint16(UInt16 off, UInt16 rng, npy_intp cnt,
                          UInt16[] _out, rk_state state)
         {
             UInt16 val, mask = rng;
@@ -1254,7 +1301,7 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (UInt16)(buf & mask);
-                } while (val > rng);
+                } while (val >= rng);
                 _out[i] = (UInt16)(off + val);
             }
         }

@@ -71,6 +71,55 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_randint16_1()
+        {
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int16);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
+            AssertShape(arr, 4);
+            print(arr);
+            AssertArray(arr, new Int16[] { 2, 2, 2, 2 });
+
+            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Int16);
+            AssertShape(arr, 4, 5);
+            print(arr);
+
+            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Int16);
+            AssertShape(arr, 2, 3);
+            print(arr);
+            AssertArray(arr, new Int16[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+
+            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int16);
+            print(np.amax(arr));
+            print(np.amin(arr));
+            print(np.average(arr));
+        }
+
+
+        [TestMethod]
+        public void test_randuint16_1()
+        {
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt16);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT16);
+            AssertShape(arr, 4);
+            print(arr);
+            AssertArray(arr, new UInt16[] { 2, 2, 2, 2 });
+
+            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt16);
+            AssertShape(arr, 4, 5);
+            print(arr);
+
+            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt16);
+            AssertShape(arr, 2, 3);
+            print(arr);
+            AssertArray(arr, new UInt16[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+
+            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt16);
+            print(np.amax(arr));
+            print(np.amin(arr));
+            print(np.average(arr));
+        }
+
+        [TestMethod]
         public void test_randint_1()
         {
             ndarray arr = np.random.randint(2, 3, new shape(4));
