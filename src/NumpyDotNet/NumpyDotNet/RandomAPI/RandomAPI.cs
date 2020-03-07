@@ -53,6 +53,7 @@ namespace NumpyDotNet
             static object rk_lock = new object();
             static bool IsInitialized = seed(null);
 
+            #region seed
             public static bool seed(UInt64? seed)
             {
                 _seed(seed);
@@ -71,85 +72,42 @@ namespace NumpyDotNet
                 internal_state.rndGenerator.Seed(seed, internal_state);
                 return true;
             }
+            #endregion
 
             #region rand
             public static float rand()
             {
-                lock (r)
-                {
-                    return Convert.ToSingle(r.NextDouble());
-                }
+                return random_sample();
             }
 
             public static ndarray rand(params Int32[] newshape)
             {
-                return _rand(ConvertToShape(newshape));
+                return random_sample(newshape);
             }
 
             public static ndarray rand(params Int64[] newshape)
             {
-                 return _rand(ConvertToShape(newshape));
+                return random_sample(newshape);
             }
-
-            private static ndarray _rand(npy_intp[] newdims)
-            {
-                float[] randomData = new float[CountTotalElements(newdims)];
-                FillWithRand(randomData);
-       
-                return np.array(randomData, dtype: np.Float32).reshape(newdims);
-            }
-
-            private static void FillWithRand(float[] randomData)
-            {
-                lock (r)
-                {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        randomData[i] = Convert.ToSingle(r.NextDouble());
-                    }
-                }
    
-            }
             #endregion
 
             #region randn
             public static float randn()
             {
-                lock (r)
-                {
-                    return Convert.ToSingle(r.NextDouble() * r.Next());
-                }
+                return Convert.ToSingle(standard_normal());
             }
 
             public static ndarray randn(params Int32[] newshape)
             {
-                 return _randn(ConvertToShape(newshape));
+                return standard_normal(newshape);
             }
 
             public static ndarray randn(params Int64[] newshape)
             {
-                return _randn(ConvertToShape(newshape));
+                return standard_normal(newshape);
             }
 
-            private static ndarray _randn(npy_intp[] newdims)
-            {
-                float[] randomData = new float[CountTotalElements(newdims)];
-                FillWithRandn(randomData);
-
-                return np.array(randomData, dtype: np.Float32).reshape(newdims);
-            }
-
-            private static void FillWithRandn(float[] randomData)
-            {
-                lock (r)
-                {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        randomData[i] = Convert.ToSingle(r.NextDouble());
-                    }
-                }
-
-            }
             #endregion
 
             #region randint
@@ -356,12 +314,49 @@ namespace NumpyDotNet
 
             #region standard_normal
 
-
+            public static float standard_normal()
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, 0);
+                return Convert.ToSingle(rndArray.GetItem(0));
+            }
             public static ndarray standard_normal(params Int32[] newshape)
             {
-                //return _uniform(-1, 1, ConvertToShape(newshape));
+                return _standard_normal(ConvertToShape(newshape));
+            }
+            public static ndarray standard_normal(params Int64[] newshape)
+            {
+                return _standard_normal(ConvertToShape(newshape));
+            }
+            private static ndarray _standard_normal(params npy_intp[] newshape)
+            {
                 npy_intp size = CountTotalElements(ConvertToShape(newshape));
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size, rk_lock);
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size);
+                return rndArray.reshape(ConvertToShape(newshape));
+            }
+
+            #endregion
+
+            #region random_sample
+
+            public static float random_sample()
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, 0);
+                return Convert.ToSingle(rndArray.GetItem(0));
+            }
+
+            public static ndarray random_sample(params Int32[] newshape)
+            {
+                return _random_sample(ConvertToShape(newshape));
+            }
+
+            public static ndarray random_sample(params Int64[] newshape)
+            {
+                return _random_sample(ConvertToShape(newshape));
+            }
+            private static ndarray _random_sample(params npy_intp[] newshape)
+            {
+                npy_intp size = CountTotalElements(ConvertToShape(newshape));
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, size);
                 return rndArray.reshape(ConvertToShape(newshape));
             }
 
@@ -404,7 +399,7 @@ namespace NumpyDotNet
 
             internal delegate double rk_cont0(rk_state state);
 
-            private static ndarray cont0_array(rk_state state, rk_cont0 func, npy_intp size, object lck)
+            private static ndarray cont0_array(rk_state state, rk_cont0 func, npy_intp size)
             {
                 double[] array_data;
                 ndarray array;
@@ -413,7 +408,7 @@ namespace NumpyDotNet
 
                 if (size == 0)
                 {
-                    lock (lck)
+                    lock (rk_lock)
                     {
                         double rv = func(state);
                         return np.array(rv);
@@ -422,7 +417,7 @@ namespace NumpyDotNet
                 else
                 {
                     array_data = new double[size];
-                    lock (lck)
+                    lock (rk_lock)
                     {
                         for (i = 0; i < size; i++)
                         {

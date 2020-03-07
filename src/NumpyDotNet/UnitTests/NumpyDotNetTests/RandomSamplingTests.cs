@@ -15,35 +15,29 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_1()
         {
-
             float fr = np.random.rand();
             ndarray arr = np.random.rand(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_FLOAT);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
 
             np.random.seed(8765);
             fr = np.random.rand();
             arr = np.random.rand(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_FLOAT);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
             print(fr);
-            Assert.AreEqual(0.7841221f, fr);
+            Assert.AreEqual(0.03278543f, fr);
 
             print(arr);
 
-            var ExpectedData = new float[,,]
-                { { { 0.6315085f, 0.3977592f, 0.3854478f, 0.4785422f },
-                    { 0.2731604f, 0.1229814f, 0.7059686f, 0.3544289f },
-                    { 0.3770753f, 0.7349837f, 0.4294267f, 0.1411899f } },
-                  { { 0.5069469f, 0.2355543f, 0.956023f, 0.30962f },
-                    { 0.2894487f, 0.9491175f, 0.1653861f, 0.4271754f },
-                    { 0.2242058f, 0.3208179f, 0.04925749f, 0.7200206f } } };
+            np.random.seed(null);
+            arr = np.random.rand(500000);
+            print(np.amax(arr));
+            print(np.amin(arr));
+            print(np.average(arr));
 
-            //AssertArray(arr, ExpectedData);
-
-            
         }
 
         [TestMethod]
@@ -52,30 +46,28 @@ namespace NumpyDotNetTests
 
             float fr = np.random.randn();
             ndarray arr = np.random.randn(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_FLOAT);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
 
             np.random.seed(6432);
             fr = np.random.randn();
             arr = np.random.randn(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_FLOAT);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
             print(fr);
-            Assert.AreEqual(1.781173E+08f, fr);
+            Assert.AreEqual(0.749749541f, fr);
 
             print(arr);
 
-            var ExpectedData = new float[,,]
-                { { { 5.985523E+08f, 1.636763E+08f, 4.785839E+08f, 1.25461E+08f },
-                    { 4.580316E+07f, 5.129231E+08f, 4.099223E+08f, 1.092013E+09f },
-                    { 1.391873E+09f, 8.070305E+08f, 1747050.0f, 7.483687E+07f } },
-                  { { 1.217551E+07f, 4.921107E+07f, 1.087742E+09f, 3.954918E+08f },
-                    { 6.165971E+08f, 1.632961E+09f, 1.199443E+08f, 4.744811E+08f },
-                    { 5.160406E+07f, 1.35242E+07f, 3.030721E+08f, 3.685652E+08f } } };
+            np.random.seed(null);
+            arr = np.random.randn(500000);
+            print(np.amax(arr));
+            print(np.amin(arr));
+            print(np.average(arr));
 
-            //AssertArray(arr, ExpectedData);
+
         }
 
         [TestMethod]
@@ -195,10 +187,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_standard_normal_1()
         {
-            //np.random.seed(1234);
+            np.random.seed(1234);
             ndarray arr = np.random.standard_normal(5000000);
-            print(np.max(arr));
-            print(np.min(arr));
+            print(np.amax(arr));
+            print(np.amin(arr));
             print(np.average(arr));
 
         }

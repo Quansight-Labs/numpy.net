@@ -1018,7 +1018,7 @@ namespace NumpyDotNet
             return state.rndGenerator.getNextUInt64(state);
         }
 
-        static double rk_double(rk_state state)
+        internal static double rk_double(rk_state state)
         {
             return state.rndGenerator.getNextDouble(state);
         }
