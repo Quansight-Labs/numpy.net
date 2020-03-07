@@ -326,6 +326,7 @@ namespace NumpyDotNetTests
         #endregion
 
         #region shuffle/permutation
+
         [TestMethod]
         public void test_rand_shuffle_1()
         {
@@ -340,6 +341,20 @@ namespace NumpyDotNetTests
             print(arr);
 
         }
+
+        [TestMethod]
+        public void test_rand_permutation_1()
+        {
+            var arr = np.random.permutation(10);
+            print(arr);
+            AssertShape(arr, 10);
+
+            arr = np.random.permutation(np.arange(5));
+            print(arr);
+            AssertShape(arr, 5);
+
+        }
+
         #endregion
 
         [TestMethod]

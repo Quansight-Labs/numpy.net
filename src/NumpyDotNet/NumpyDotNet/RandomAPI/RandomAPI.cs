@@ -607,11 +607,29 @@ namespace NumpyDotNet
                 }
 
                 return;
-                
-      
             }
 
-            // todo:
+            public static ndarray permutation(object x)
+            {
+                ndarray arr;
+
+                if (x is ndarray)
+                {
+                    arr = x as ndarray;
+                }
+                else
+                {
+                    arr = asanyarray(x);
+                }
+
+                if (arr.IsAScalar && arr.IsInteger)
+                {
+                    arr = np.arange(Convert.ToInt32(arr.GetItem(0)), dtype: arr.Dtype);
+                }
+
+                shuffle(arr);
+                return arr;
+            }
 
             #endregion
 
