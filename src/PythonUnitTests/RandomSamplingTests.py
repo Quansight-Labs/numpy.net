@@ -29,6 +29,66 @@ class Test_test1(unittest.TestCase):
         print(np.amin(arr));
         print(np.average(arr));
 
+    def test_randint_1(self):
+
+        #np.random.seed(1234);
+
+        f = np.random.randint(2,3,4)
+        print(f)
+
+        arr = np.random.randint(2,3,5000000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+
+        arr = np.random.randint(-2,3,5000000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+    def test_randuint_1(self):
+
+        #np.random.seed(1234);
+
+        f = np.random.randint(2,3,4, dtype=np.uint32)
+        print(f)
+
+        arr = np.random.randint(2,5,5000000, dtype=np.uint32);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+    def test_randint64_1(self):
+
+        #np.random.seed(1234);
+
+        f = np.random.randint(2,3,4, dtype=np.int64)
+        print(f)
+
+        arr = np.random.randint(2,3,5000000, dtype=np.int64);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+
+        arr = np.random.randint(-2,3,5000000, dtype=np.int64);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+    def test_randuint64_1(self):
+
+        #np.random.seed(1234);
+
+        f = np.random.randint(2,3,4, dtype=np.uint64)
+        print(f)
+
+        arr = np.random.randint(2,5,5000000, dtype=np.uint64);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
     def test_standard_normal_1(self):
 
         #np.random.seed(1234);

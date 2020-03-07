@@ -1029,6 +1029,12 @@ namespace NumpyDotNet
             UInt64 lower = (UInt64)rk_random(state);
             return upper | lower;
         }
+        static Int64 rk_int64(rk_state state)
+        {
+            Int64 upper = (Int64)rk_random(state) << 32;
+            Int64 lower = (Int64)rk_random(state);
+            return upper | lower;
+        }
 
 
         /*
@@ -1039,13 +1045,62 @@ namespace NumpyDotNet
             return (UInt32)rk_random(state);
         }
 
+        /*
+        * Returns an unsigned 32 bit random integer.
+        */
+        static Int32 rk_int32(rk_state state)
+        {
+            return (Int32)rk_random(state);
+        }
+
+
 
         /*
-         * Fills an array with cnt random npy_uint64 between off and off + rng
+         * Fills an array with cnt random npy_int64 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        static void rk_random_uint64(UInt64 off, UInt64 rng, npy_intp cnt,
-                         UInt64 []_out, rk_state state)
+        internal static void rk_random_int64(Int64 off, Int64 rng, npy_intp cnt,
+                         Int64 []_out, rk_state state)
+        {
+            Int64 val, mask = rng;
+            npy_intp i;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= mask >> 1;
+            mask |= mask >> 2;
+            mask |= mask >> 4;
+            mask |= mask >> 8;
+            mask |= mask >> 16;
+            mask |= mask >> 32;
+
+            for (i = 0; i < cnt;)
+            {
+                val = rk_int64(state) & mask;
+                if (val < rng)
+                {
+                    _out[i] = off + val;
+                    i++;
+                }
+            }
+
+        }
+
+
+        /*
+    * Fills an array with cnt random npy_uint64 between off and off + rng
+    * inclusive. The numbers wrap if rng is sufficiently large.
+    */
+        internal static void rk_random_uint64(UInt64 off, UInt64 rng, npy_intp cnt,
+                         UInt64[] _out, rk_state state)
         {
             UInt64 val, mask = rng;
             npy_intp i;
@@ -1067,18 +1122,17 @@ namespace NumpyDotNet
             mask |= mask >> 16;
             mask |= mask >> 32;
 
-            for (i = 0; i < cnt; i++)
+
+            for (i = 0; i < cnt;)
             {
-                if (rng <= 0xffffffffUL)
+                val = rk_uint64(state) & mask;
+                if (val < rng)
                 {
-                    while ((val = (rk_uint32(state) & mask)) > rng) ;
+                    _out[i] = off + val;
+                    i++;
                 }
-                else
-                {
-                    while ((val = (rk_uint64(state) & mask)) > rng) ;
-                }
-                _out[i] = off + val;
             }
+
         }
 
 
@@ -1086,7 +1140,45 @@ namespace NumpyDotNet
          * Fills an array with cnt random npy_uint32 between off and off + rng
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
-        static void rk_random_uint32(UInt32 off, UInt32 rng, npy_intp cnt,
+        public static void rk_random_int32(Int32 off, Int32 rng, npy_intp cnt,
+                         Int32[] _out, rk_state state)
+        {
+            Int32 val; 
+            Int32 mask = rng;
+            npy_intp i;
+
+            if (rng == 0)
+            {
+                for (i = 0; i < cnt; i++)
+                {
+                    _out[i] = off;
+                }
+                return;
+            }
+
+            /* Smallest bit mask >= max */
+            mask |= mask >> 1;
+            mask |= mask >> 2;
+            mask |= mask >> 4;
+            mask |= mask >> 8;
+            mask |= mask >> 16;
+
+            for (i = 0; i < cnt;)
+            {
+                val = rk_int32(state) & mask;
+                if (val < rng)
+                {
+                    _out[i] = off + val;
+                    i++;
+                }
+            }
+        }
+
+        /*
+     * Fills an array with cnt random npy_uint32 between off and off + rng
+     * inclusive. The numbers wrap if rng is sufficiently large.
+     */
+        public static void rk_random_uint32(UInt32 off, UInt32 rng, npy_intp cnt,
                          UInt32[] _out, rk_state state)
         {
             UInt32 val, mask = rng;
@@ -1108,10 +1200,14 @@ namespace NumpyDotNet
             mask |= mask >> 8;
             mask |= mask >> 16;
 
-            for (i = 0; i < cnt; i++)
+            for (i = 0; i < cnt;)
             {
-                while ((val = (rk_uint32(state) & mask)) > rng) ;
-                _out[i] = off + val;
+                val = rk_uint32(state) & mask;
+                if (val < rng)
+                {
+                    _out[i] = off + val;
+                    i++;
+                }
             }
         }
 

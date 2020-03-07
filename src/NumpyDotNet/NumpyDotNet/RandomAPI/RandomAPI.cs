@@ -125,70 +125,114 @@ namespace NumpyDotNet
             private static ndarray _randint(int low, int? high, npy_intp[] newdims)
             {
                 Int32[] randomData = new Int32[CountTotalElements(newdims)];
-                FillWithRandnInt32(low, high, randomData);
+
+                if (!high.HasValue)
+                {
+                    high = Math.Max(0, low - 1);
+                    low = 0;
+                }
+                var rng = high.Value - low;
+                var off = low;
+                RandomDistributions.rk_random_int32(off, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int32).reshape(newdims);
             }
 
-            private static void FillWithRandnInt32(int low, int? high, Int32[] randomData)
+            #endregion
+
+            #region randuint
+
+            public static ndarray randuint(uint low, uint? high = null, params Int32[] newshape)
             {
-                int _low = low;
-                int _high = low;
+                return _randuint(low, high, ConvertToShape(newshape));
+            }
+
+            public static ndarray randuint(uint low, uint? high = null, params Int64[] newshape)
+            {
+                return _randuint(low, high, ConvertToShape(newshape));
+            }
+
+            private static ndarray _randuint(uint low, uint? high, npy_intp[] newdims)
+            {
+                UInt32[] randomData = new UInt32[CountTotalElements(newdims)];
+
                 if (!high.HasValue)
                 {
-                    _high = Math.Max(0, low - 1);
-                    _low = 0;
+                    high = Math.Max(0, low - 1);
+                    low = 0;
                 }
-                else
-                {
-                    _high = high.Value - 1;
-                }
+                var rng = high.Value - low;
+                var off = low;
+                RandomDistributions.rk_random_uint32(off, rng, randomData.Length, randomData, internal_state);
 
-                lock (r)
-                {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        randomData[i] = r.Next(_low, _high);
-                    }
-                }
-
+                return np.array(randomData, dtype: np.UInt32).reshape(newdims);
             }
+
             #endregion
 
             #region randint64
 
-            public static ndarray randint64(params Int32[] newshape)
+            public static ndarray randint64(Int64 low, Int64? high = null, params Int32[] newshape)
             {
-                return _randint64(ConvertToShape(newshape));
+                return _randint64(low, high, ConvertToShape(newshape));
             }
 
-            public static ndarray randint64(params Int64[] newshape)
+            public static ndarray randint64(Int64 low, Int64? high = null, params Int64[] newshape)
             {
-                return _randint64(ConvertToShape(newshape));
+                return _randint64(low, high, ConvertToShape(newshape));
             }
 
-            private static ndarray _randint64(npy_intp[] newdims)
+            private static ndarray _randint64(Int64 low, Int64? high, npy_intp[] newdims)
             {
                 Int64[] randomData = new Int64[CountTotalElements(newdims)];
-                FillWithRandnInt64(randomData);
+
+                if (!high.HasValue)
+                {
+                    high = Math.Max(0, low - 1);
+                    low = 0;
+                }
+                var rng = high.Value - low;
+                var off = low;
+
+                RandomDistributions.rk_random_int64(low, rng, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int64).reshape(newdims);
             }
 
-            private static void FillWithRandnInt64(Int64[] randomData)
+
+            #endregion
+
+            #region randuint64
+
+            public static ndarray randuint64(UInt64 low, UInt64? high = null, params Int32[] newshape)
             {
-    
-                lock (r)
+                return _randuint64(low, high, ConvertToShape(newshape));
+            }
+
+            public static ndarray randuint64(UInt64 low, UInt64? high = null, params Int64[] newshape)
+            {
+                return _randuint64(low, high, ConvertToShape(newshape));
+            }
+
+            private static ndarray _randuint64(UInt64 low, UInt64? high, npy_intp[] newdims)
+            {
+                UInt64[] randomData = new UInt64[CountTotalElements(newdims)];
+
+                if (!high.HasValue)
                 {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        Int64 HighWord = r.Next();
-                        Int64 LowWord = r.Next();
-                        randomData[i] = HighWord << 32 | LowWord;
-                    }
+                    high = Math.Max(0, low - 1);
+                    low = 0;
                 }
 
+                var rng = high.Value - low;
+                var off = low;
+
+                RandomDistributions.rk_random_uint64(low, rng, randomData.Length, randomData, internal_state);
+
+                return np.array(randomData, dtype: np.UInt64).reshape(newdims);
             }
+
+
             #endregion
 
             #region randd
