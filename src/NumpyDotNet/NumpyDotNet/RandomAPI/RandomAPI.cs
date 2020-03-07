@@ -421,46 +421,6 @@ namespace NumpyDotNet
 
             #endregion
 
-            #region randd
-            public static double randd()
-            {
-                lock (r)
-                {
-                    return r.NextDouble() * r.Next();
-                }
-            }
-
-            public static ndarray randd(params Int32[] newshape)
-            {
-                return _randd(ConvertToShape(newshape));
-            }
-
-            public static ndarray randd(params Int64[] newshape)
-            {
-                return _randd(ConvertToShape(newshape));
-            }
-
-            private static ndarray _randd(npy_intp[] newdims)
-            {
-                double[] randomData = new double[CountTotalElements(newdims)];
-                FillWithRandd(randomData);
-
-                return np.array(randomData, dtype: np.Float64).reshape(newdims);
-            }
-
-            private static void FillWithRandd(double[] randomData)
-            {
-                lock (r)
-                {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        randomData[i] = r.NextDouble() * r.Next();
-                    }
-                }
-
-            }
-            #endregion
-
             #region bytes
             public static byte bytes()
             {

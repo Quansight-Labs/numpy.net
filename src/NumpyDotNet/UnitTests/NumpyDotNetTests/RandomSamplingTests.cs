@@ -293,39 +293,6 @@ namespace NumpyDotNetTests
         }
 
 
-
-        [TestMethod]
-        public void test_randd_1()
-        {
-
-            double dr = np.random.randd();
-            ndarray arr = np.random.randd(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 2, 3, 4);
-
-
-            np.random.seed(6432);
-            dr = np.random.randd();
-            arr = np.random.randd(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 2, 3, 4);
-
-            print(dr);
-            Assert.AreEqual(178117288.340587.ToString(), dr.ToString());
-
-            print(arr);
-
-            var ExpectedData = new double[,,]
-         { { { 598552268.405803, 163676321.111939, 478583886.092547, 125461049.513929 },
-             { 45803165.3247941, 512923082.843819, 409922266.507972, 1092012782.24225 },
-             { 1391872905.49059, 807030483.924994, 1747050.3741545, 74836869.4357915 } },
-           { { 12175507.5988969, 49211069.4265853, 1087741937.25169, 395491778.646227 },
-             { 616597143.760458, 1632960594.76456, 119944335.963269, 474481135.729486 },
-             { 51604064.7015829, 13524202.6515921, 303072113.281086, 368565244.525343 } } };
-
-            //AssertArray(arr, ExpectedData);
-        }
-
         [TestMethod]
         public void test_bytes_1()
         {
