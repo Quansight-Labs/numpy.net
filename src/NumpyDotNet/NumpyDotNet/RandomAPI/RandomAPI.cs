@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using NumpyDotNet.RandomAPI;
 using NumpyLib;
 using System;
 using System.Collections.Generic;
@@ -48,26 +49,26 @@ namespace NumpyDotNet
         public static class random
         {
             static Random r = new Random();
-            static rk_state internal_state = new rk_state();
+            static rk_state internal_state = new rk_state(new RandomGeneratorPython());
             static object rk_lock = new object();
             static bool IsInitialized = seed(null);
 
+            public static bool seed(UInt64? seed)
+            {
+                _seed(seed);
+                return true;
+            }
             public static bool seed(Int32? seed)
             {
-                lock(r)
-                {
-                    if (seed.HasValue)
-                    {
-                        r = new Random(seed.Value);
-                        RandomDistributions.rk_seed((ulong)seed.Value, internal_state);
-                    }
-                    else
-                    {
-                        r = new Random();
-                        RandomDistributions.rk_seed((ulong)DateTime.Now.Ticks,internal_state);
-                    }
-                }
+                if (seed.HasValue)
+                    return _seed(Convert.ToUInt64(seed.Value));
+                else
+                    return _seed(null);
 
+            }
+            private static bool _seed(UInt64? seed)
+            {
+                internal_state.rndGenerator.Seed(seed, internal_state);
                 return true;
             }
 

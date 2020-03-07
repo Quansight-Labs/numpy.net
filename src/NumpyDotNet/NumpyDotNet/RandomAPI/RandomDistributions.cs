@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using NumpyDotNet.RandomAPI;
 using NumpyLib;
 using System;
 using System.Collections.Generic;
@@ -43,18 +44,23 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet
 {
-    internal class rk_state
+    public class rk_state
     {
-        public const int RK_STATE_LEN = 624;
-        public UInt64[]key = new ulong[RK_STATE_LEN];
+        public rk_state(IRandomGenerator rndGenerator)
+        {
+            this.rndGenerator = rndGenerator;
+        }
+
+        public IRandomGenerator rndGenerator { get; }
+
         public int pos;
         public bool has_gauss; /* !=0: gauss contains a gaussian deviate */
         public double gauss;
 
-        /* The rk_state structure has been extended to store the following
-         * information for the binomial generator. If the input values of n or p
-         * are different than nsave and psave, then the other parameters will be
-         * recomputed. RTK 2005-09-02 */
+        ///* The rk_state structure has been extended to store the following
+        // * information for the binomial generator. If the input values of n or p
+        // * are different than nsave and psave, then the other parameters will be
+        // * recomputed. RTK 2005-09-02 */
 
         public bool has_binomial; /* !=0: following parameters initialized for binomial */
         public double psave;
@@ -995,22 +1001,12 @@ namespace NumpyDotNet
 
         public static void rk_seed(ulong seed, rk_state state)
         {
-            uint pos;
-            seed &= 0xffffffffUL;
-
-            /* Knuth's PRNG as used in the Mersenne Twister reference implementation */
-            for (pos = 0; pos < rk_state.RK_STATE_LEN; pos++)
-            {
-                state.key[pos] = seed;
-                seed = (1812433253UL * (seed ^ (seed >> 30)) + pos + 1) & 0xffffffffUL;
-            }
-            state.pos = rk_state.RK_STATE_LEN;
             state.gauss = 0;
             state.has_gauss = false;
             state.has_binomial = false;
+
+            state.rndGenerator.Seed(seed, state);
         }
-
-
 
         /*
          * Slightly optimised reference implementation of the Mersenne Twister
@@ -1019,45 +1015,14 @@ namespace NumpyDotNet
          */
         static ulong rk_random(rk_state state)
         {
-            /* Magic Mersenne Twister constants */
-            const int N = 624;
-            const int M = 397;
-            const long MATRIX_A = 0x9908b0df;
-            const long UPPER_MASK = 0x80000000;
-            const long LOWER_MASK = 0x7fffffff;
-
-            ulong y;
-
-            if (state.pos == rk_state.RK_STATE_LEN)
-            {
-                int i;
-
-                
-                for (i = 0; i < N - M; i++)
-                {
-                    y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    state.key[i] = state.key[i + M] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
-                }
-                for (; i < N - 1; i++)
-                {
-                    y = (state.key[i] & UPPER_MASK) | (state.key[i + 1] & LOWER_MASK);
-                    state.key[i] = state.key[i + (M - N)] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
-                }
-                y = (state.key[N - 1] & UPPER_MASK) | (state.key[0] & LOWER_MASK);
-                state.key[N - 1] = state.key[M - 1] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
-
-                state.pos = 0;
-            }
-            y = state.key[state.pos++];
-
-            /* Tempering */
-            y ^= (y >> 11);
-            y ^= (y << 7) & 0x9d2c5680;
-            y ^= (y << 15) & 0xefc60000;
-            y ^= (y >> 18);
-
-            return (ulong)y;
+            return state.rndGenerator.getNextUInt64(state);
         }
+
+        static double rk_double(rk_state state)
+        {
+            return state.rndGenerator.getNextDouble(state);
+        }
+
         static UInt64 rk_uint64(rk_state state)
         {
             UInt64 upper = (UInt64)rk_random(state) << 32;
@@ -1325,14 +1290,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_double(rk_state state)
-        {
-            /* shifts : 67108864 = 0x4000000, 9007199254740992 = 0x20000000000000 */
-            long a = (long)rk_random(state) >> 5;
-            long b = (long)rk_random(state) >> 6;
-            return (a * 67108864.0 + b) / 9007199254740992.0;
-        }
-
+ 
 
         //    static void rk_fill(byte buffer, size_t size, rk_state* state)
         //    {
