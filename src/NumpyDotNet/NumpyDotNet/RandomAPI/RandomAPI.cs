@@ -572,6 +572,31 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region shuffle/permutation
+
+            // todo:
+
+            #endregion
+
+            #region beta
+
+            public static ndarray beta(ndarray a, ndarray b, shape newshape)
+            {
+                throw new NotImplementedException("this function is not ready yet");
+
+                ndarray ba = np.any(np.less_equal(a, 0));
+                if ((bool)ba.GetItem(0))
+                    throw new ValueError("a <= 0");
+                ndarray bb = np.any(np.less_equal(b, 0));
+                if ((bool)bb.GetItem(0))
+                    throw new ValueError("b <= 0");
+
+                return cont2_array(internal_state, RandomDistributions.rk_beta, CountTotalElements(newshape), a, b);
+
+            }
+
+            #endregion
+
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -620,12 +645,12 @@ namespace NumpyDotNet
             #region Python Version
 
             internal delegate double rk_cont0(rk_state state);
+            internal delegate double rk_cont2(rk_state state, double a, double b);
 
             private static ndarray cont0_array(rk_state state, rk_cont0 func, npy_intp size)
             {
                 double[] array_data;
                 ndarray array;
-                npy_intp length;
                 npy_intp i;
 
                 if (size == 0)
@@ -650,6 +675,46 @@ namespace NumpyDotNet
                     return array;
 
                 }
+
+            }
+
+            private static ndarray cont2_array(rk_state state, rk_cont2 func, npy_intp size, ndarray oa, ndarray ob)
+            {
+                broadcast multi;
+                ndarray array;
+                double[] array_data;
+
+                if (size == 0)
+                {
+                    multi = np.broadcast(oa, ob);
+                    array = np.empty(multi.shape, dtype: np.Float64);
+                }
+                else
+                {
+                    array = np.empty(size, dtype: np.Float64);
+                    multi = np.broadcast(oa, ob, array);
+                    if (multi.shape != array.shape)
+                    {
+
+                    }
+                }
+
+                array_data = array.AsDoubleArray();
+
+                double[] oa_data = multi._core.core.iters[0].ao.data.datap as double[];
+                double[] ob_data = multi._core.core.iters[1].ao.data.datap as double[];
+
+                int index = 0;
+                foreach (var x in multi)
+                {
+                    VoidPtr vpoa = multi._core.core.iters[0].ao.data;
+                    VoidPtr vpob = multi._core.core.iters[1].ao.data;
+
+                    array_data[index++] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
+
+                }
+
+                return np.array(array_data);
 
             }
 

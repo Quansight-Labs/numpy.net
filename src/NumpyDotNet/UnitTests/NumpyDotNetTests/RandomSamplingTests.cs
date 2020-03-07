@@ -326,6 +326,19 @@ namespace NumpyDotNetTests
         #endregion
 
         [TestMethod]
+        public void test_beta_1()
+        {
+            var a = np.arange(1,11, dtype: np.Float64);
+            var b = np.arange(1,11, dtype: np.Float64);
+
+            ndarray arr = np.random.beta(b, b, new shape(10));
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
+            AssertShape(arr, 10);
+            print(arr);
+        }
+
+
+        [TestMethod]
         public void test_uniform_1()
         {
             ndarray arr = np.random.uniform(-1, 1, 40);

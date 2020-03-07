@@ -97,6 +97,15 @@ class Test_test1(unittest.TestCase):
         print(np.min(arr));
         print(np.average(arr));
 
+        
+    def test_beta_1(self):
+
+        a = np.arange(1,11, dtype=np.float64);
+        b = np.arange(1,11, dtype= np.float64);
+
+        arr = np.random.beta(b, b, 10);
+        print(arr);
+
 
 if __name__ == '__main__':
     unittest.main()
