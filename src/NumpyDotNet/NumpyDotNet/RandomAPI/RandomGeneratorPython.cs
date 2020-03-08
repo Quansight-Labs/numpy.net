@@ -86,19 +86,28 @@ namespace NumpyDotNet.RandomAPI
             if (state.pos == RK_STATE_LEN)
             {
                 int i;
+                long ly;
+                ulong uy;
 
                 for (i = 0; i < N - M; i++)
                 {
                     y = (key[i] & UPPER_MASK) | (key[i + 1] & LOWER_MASK);
-                    key[i] = key[i + M] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
+                    ly = (long)(y & 1);
+                    uy = (ulong)-ly;
+                    key[i] = key[i + M] ^ (y >> 1) ^ (uy & MATRIX_A);
                 }
                 for (; i < N - 1; i++)
                 {
                     y = (key[i] & UPPER_MASK) | (key[i + 1] & LOWER_MASK);
-                    key[i] = key[i + (M - N)] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
+                    ly = (long)(y & 1);
+                    uy = (ulong)-ly;
+                    key[i] = key[i + (M - N)] ^ (y >> 1) ^ (uy & MATRIX_A);
                 }
                 y = (key[N - 1] & UPPER_MASK) | (key[0] & LOWER_MASK);
-                key[N - 1] = key[M - 1] ^ (y >> 1) ^ (ulong)(-(long)((y & 1) & MATRIX_A));
+                ly = (long)(y & 1);
+                uy = (ulong)-ly;
+                key[N - 1] = key[M - 1] ^ (y >> 1) ^ (uy & MATRIX_A);
+
 
                 state.pos = 0;
             }
