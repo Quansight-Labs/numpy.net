@@ -650,6 +650,51 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region binomial
+
+            public static ndarray binomial(object n, object p, shape newdims)
+            {
+                ndarray on, op;
+                long ln;
+                double fp;
+
+                var size = CalculateNewShapeSize(newdims);
+
+                on = asanyarray(n).astype(np.Int64);
+                op = asanyarray(p).astype(np.Float64);
+
+                if (on.size == 1 && op.size == 1)
+                {
+                    ln = (long)on.GetItem(0);
+                    fp = (double)op.GetItem(0);
+                    if (ln < 0)
+                        throw new ValueError("n < 0");
+                    if (fp < 0)
+                        throw new ValueError("p < 0");
+                    else if (fp > 1)
+                        throw new ValueError("p > 1");
+                    else if ((bool)np.isnan(op).GetItem(0))
+                        throw new ValueError("p is nan");
+
+                    return discnp_array_sc(internal_state, RandomDistributions.rk_binomial, size, ln, fp);
+                }
+
+                if ((bool)np.any(np.less(n, 0).GetItem(0)))
+                    throw new ValueError("n < 0");
+
+                if ((bool)np.any(np.less(p, 0)))
+                    throw new ValueError("p < 0");
+
+                if ((bool)np.any(np.greater(p, 1)))
+                    throw new ValueError("p > 1");
+
+                return discnp_array(internal_state, RandomDistributions.rk_binomial, size, on, op);
+
+            }
+
+
+            #endregion
+
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -771,6 +816,66 @@ namespace NumpyDotNet
 
                 return np.array(array_data);
 
+            }
+
+
+            private static ndarray discnp_array(rk_state state, Func<rk_state, long, double, long> func, long size, ndarray on, ndarray op)
+            {
+                broadcast multi;
+                ndarray array;
+                long[] array_data;
+
+                if (size == 0)
+                {
+                    multi = np.broadcast(on, op);
+                    array = np.empty(multi.shape, dtype: np.Int32);
+                }
+                else
+                {
+                    array = np.empty(size, dtype: np.Int32);
+                    multi = np.broadcast(on, op, array);
+                    if (multi.shape != array.shape)
+                    {
+
+                    }
+                }
+
+                array_data = array.AsInt64Array();
+
+                VoidPtr vpon = multi.IterData(0);
+                VoidPtr vpop = multi.IterData(1);
+
+
+                long[] on_data = multi.IterData(0).datap as long[];
+                double[] op_data = multi.IterData(1).datap as double[];
+
+                for (int i = 0; i < multi.size; i++)
+                {
+                    vpon = multi.IterData(0);
+                    vpop = multi.IterData(1);
+                    array_data[i] = func(state, on_data[vpon.data_offset / sizeof(long)], op_data[vpop.data_offset / sizeof(double)]);
+                    multi.IterNext();
+                }
+
+                return np.array(array_data);
+            }
+
+            private static ndarray discnp_array_sc(rk_state state, Func<rk_state, long, double, long> func, long size, long n, double p)
+            {
+                if (size == 0)
+                {
+                    long rv = func(state, n, p);
+                    return asanyarray(rv);
+                }
+
+                long[] array_data = new long[size];
+
+                for (int i = 0; i < array_data.Length; i++)
+                {
+                    array_data[i] = func(state, n, p);
+                }
+
+                return asanyarray(array_data);
             }
 
             #endregion

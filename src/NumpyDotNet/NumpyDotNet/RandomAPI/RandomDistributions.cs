@@ -482,7 +482,7 @@ namespace NumpyDotNet
         }
 
 
-        static long rk_binomial(rk_state state, long n, double p)
+        internal static long rk_binomial(rk_state state, long n, double p)
         {
             double q;
 

@@ -106,6 +106,14 @@ class Test_test1(unittest.TestCase):
         arr = np.random.beta(b, b, 10);
         print(arr);
 
+       
+    def test_rand_binomial_1(self):
+
+        arr = np.random.binomial(9, 0.1, 200);
+        s = np.sum(arr== 0);
+        print(s);
+        print(arr);
+
 
 if __name__ == '__main__':
     unittest.main()

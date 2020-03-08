@@ -369,6 +369,18 @@ namespace NumpyDotNetTests
             print(arr);
         }
 
+        [TestMethod]
+        public void test_rand_binomial_1()
+        {
+            ndarray arr = np.random.binomial(9, 0.1, new shape(200));
+            var s = np.sum(arr == 0);
+
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
+            //AssertShape(arr, 20000);
+            print(arr);
+            print(s);
+        }
+
 
         [TestMethod]
         public void test_uniform_1()
