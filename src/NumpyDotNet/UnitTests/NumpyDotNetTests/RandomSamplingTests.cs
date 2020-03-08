@@ -536,6 +536,19 @@ namespace NumpyDotNetTests
             print(s);
         }
 
+        [TestMethod]
+        public void test_rand_chisquare_1()
+        {
+            np.random.seed(123);
+
+            ndarray arr = np.random.chisquare(2, new shape(4));
+            print(arr);
+
+            arr = np.random.chisquare(np.arange(5, 10), new shape(5));
+            print(arr);
+
+        }
+
 
         [TestMethod]
         public void test_rand_uniform_1()

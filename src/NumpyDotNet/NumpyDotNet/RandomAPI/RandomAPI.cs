@@ -633,6 +633,33 @@ namespace NumpyDotNet
 
             #region chisquare
 
+            public static ndarray chisquare(object df, shape newdims)
+            {
+                int size = (int)CalculateNewShapeSize(newdims);
+
+                ndarray odf;
+                double fdf;
+
+                odf = asanyarray(df).astype(np.Float64);
+
+                if (odf.size == 1)
+                {
+                    fdf = (double)odf.GetItem(0);
+                    if (fdf <= 0)
+                        throw new ValueError("df <= 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_chisquare, size, fdf);
+                }
+
+
+                if (np.anyb(np.less_equal(odf, 0.0)))
+                {
+                    throw new ValueError("df <= 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_chisquare, size, odf);
+            }
+
+  
             #endregion
 
             #region standard_normal
@@ -773,6 +800,67 @@ namespace NumpyDotNet
 
                 }
 
+            }
+
+            private static ndarray cont1_array(rk_state state, Func<rk_state, double, double> func, int size, ndarray oa)
+            {
+                broadcast multi;
+                ndarray array;
+                double[] array_data = new double[1];
+
+                //if (size == 0)
+                //{
+                //    multi = np.broadcast(oa, ob);
+                //    array = np.empty(multi.shape, dtype: np.Float64);
+                //}
+                //else
+                //{
+                //    array = np.empty(size, dtype: np.Float64);
+                //    multi = np.broadcast(oa, ob, array);
+                //    if (multi.shape != array.shape)
+                //    {
+
+                //    }
+                //}
+
+                //array_data = array.AsDoubleArray();
+
+                //VoidPtr vpoa = multi.IterData(0);
+                //VoidPtr vpob = multi.IterData(1);
+
+
+                //double[] oa_data = multi.IterData(0).datap as double[];
+                //double[] ob_data = multi.IterData(1).datap as double[];
+
+                //for (int i = 0; i < multi.size; i++)
+                //{
+                //    vpoa = multi.IterData(0);
+                //    array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)]);
+                //    multi.IterNext();
+                //}
+
+                return np.array(array_data);
+            }
+
+            private static ndarray cont1_array_sc(rk_state state, Func<rk_state, double, double> func, int size, double a)
+            {
+                if (size == 0)
+                {
+                    double rv = func(state, a);
+                    return np.asanyarray(rv);
+                }
+                else
+                {
+                    var array_data = new double[size];
+                    lock (rk_lock)
+                    {
+                        for (int i = 0; i < size; i++)
+                        {
+                            array_data[i] = func(state, a);
+                        }
+                    }
+                    return np.array(array_data);
+                }
             }
 
 

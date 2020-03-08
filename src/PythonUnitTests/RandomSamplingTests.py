@@ -234,6 +234,21 @@ class Test_test1(unittest.TestCase):
         s = np.sum(arr== 0);
         print(s)
 
+    def test_rand_chisquare_1(self):
+
+        np.random.seed(123)
+
+        arr = np.random.chisquare(2, 4);
+        s = np.sum(arr== 0);
+        print(s);
+        print(arr);
+
+        arr = np.random.chisquare(np.arange(5,10), 5);
+        s = np.sum(arr== 0);
+        print(s);
+        print(arr);
+
+
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);
