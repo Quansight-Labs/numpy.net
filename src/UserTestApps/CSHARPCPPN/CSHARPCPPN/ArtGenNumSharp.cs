@@ -249,6 +249,7 @@ namespace CSHARPCPPN
 
     class random
     {
+#if true
         public static NDArray standard_normal(params Int32[] newshape)
         {
             var rnddata = NumpyDotNet.np.random.standard_normal(newshape);
@@ -267,6 +268,23 @@ namespace CSHARPCPPN
         {
             NumpyDotNet.np.random.seed(seed);
         }
+#else
+       public static NDArray standard_normal(params Int32[] newshape)
+        {
+            return np.random.stardard_normal(newshape);
+        }
+
+        public static NDArray uniform(int low = 0, int high = 1, params Int32[] newshape)
+        {
+            return np.random.uniform(low, high, new Shape(newshape));
+        }
+
+        public static void seed(Int32? seed)
+        {
+            if (seed.HasValue)
+                np.random.seed(seed.Value);
+        }
+#endif
     }
 
     class npx
