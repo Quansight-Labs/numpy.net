@@ -29,6 +29,56 @@ class Test_test1(unittest.TestCase):
         print(np.amin(arr));
         print(np.average(arr));
 
+    def test_randbool_1(self):
+
+        np.random.seed(8188);
+
+        f = np.random.randint(False,True+1,4, dtype=np.bool)
+        print(f)
+
+        arr = np.random.randint(False,True+1,5000000, dtype=np.bool);
+        cnt = arr == True
+        print(cnt.size);
+
+    def test_randint8_1(self):
+
+        f = np.random.randint(2,3,4, dtype=np.int8)
+        print(f)
+
+        np.random.seed(9292);
+
+
+        arr = np.random.randint(2,8,5000000, dtype=np.int8);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.randint(-2,3,5000000, dtype=np.int8);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+    def test_randuint8_1(self):
+
+        f = np.random.randint(2,3,4, dtype=np.uint8)
+        print(f)
+
+        np.random.seed(1313);
+
+        arr = np.random.randint(2,128,5000000, dtype=np.uint8);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+        first10 = arr[0:10:1]
+        print(first10)
+
+
+
     def test_randint_1(self):
 
         #np.random.seed(1234);

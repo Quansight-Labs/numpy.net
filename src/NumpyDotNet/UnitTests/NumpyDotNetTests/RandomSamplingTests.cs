@@ -103,19 +103,47 @@ namespace NumpyDotNetTests
             print(arr);
             AssertArray(arr, new SByte[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Int8);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            np.random.seed(9292);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Int8);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new SByte[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            arr = np.random.randint(2, 8, new shape(5000000), dtype: np.Int8);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((sbyte)7, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((sbyte)2, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(4.4994078, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new byte[] { 3, 6, 7, 5, 5, 5, 7, 7, 4, 2 });
+
 
             arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int8);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((sbyte)2, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((sbyte)(-2), amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-0.0003146, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new sbyte[] { 0, 1, -1, -2, -2, -1, 2, -1, -2, -2 });
+
         }
 
 
@@ -123,25 +151,34 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint8_1()
         {
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Byte[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt8);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            np.random.seed(1313);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt8);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new Byte[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            arr = np.random.randint(2, 128, new shape(5000000), dtype: np.UInt8);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
 
-            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt8);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((byte)127, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((byte)2, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(64.5080776, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new byte[] { 114, 37, 22, 53, 90, 27, 34, 98, 123, 114 });
+
         }
 
         [TestMethod]
