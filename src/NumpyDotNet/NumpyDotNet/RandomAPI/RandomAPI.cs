@@ -481,69 +481,6 @@ namespace NumpyDotNet
             #endregion
             #endregion
 
-            #region uniform
-
-            public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
-            {
-                return _uniform(low, high, newdims);
-            }
-
-            private static ndarray _uniform(int low, int high, shape newdims)
-            {
-                int size = (int)CalculateNewShapeSize(newdims);
-
-                ndarray olow = np.asanyarray(low);
-                ndarray ohigh = np.asanyarray(high);
-
-                if (olow.size == 1 && ohigh.size == 1)
-                {
-                    double flow = Convert.ToDouble(low);
-                    double fhigh = Convert.ToDouble(high);
-                    double fscale = fhigh - flow;
-
-                    if (double.IsInfinity(fscale))
-                    {
-                        throw new Exception("Range exceeds valid bounds");
-                    }
-
-
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_uniform, size, flow, fscale);
-                }
-
-                ndarray odiff = np.subtract(ohigh, olow);
-                if (!np.allb(np.isfinite(odiff)))
-                    throw new Exception("Range exceeds valid bounds");
-
-
-                return cont2_array(internal_state, RandomDistributions.rk_uniform, size, olow, odiff);
-            }
-
-            #endregion
-
-            #region standard_normal
-
-            public static float standard_normal()
-            {
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, 0);
-                return Convert.ToSingle(rndArray.GetItem(0));
-            }
-            public static ndarray standard_normal(params Int32[] newshape)
-            {
-                return _standard_normal(ConvertToShape(newshape));
-            }
-            public static ndarray standard_normal(params Int64[] newshape)
-            {
-                return _standard_normal(ConvertToShape(newshape));
-            }
-            private static ndarray _standard_normal(params npy_intp[] newshape)
-            {
-                npy_intp size = CountTotalElements(ConvertToShape(newshape));
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size);
-                return rndArray.reshape(ConvertToShape(newshape));
-            }
-
-            #endregion
-
             #region random_sample
 
             public static float random_sample()
@@ -694,6 +631,72 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region chisquare
+
+            #endregion
+
+            #region standard_normal
+
+            public static float standard_normal()
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, 0);
+                return Convert.ToSingle(rndArray.GetItem(0));
+            }
+            public static ndarray standard_normal(params Int32[] newshape)
+            {
+                return _standard_normal(ConvertToShape(newshape));
+            }
+            public static ndarray standard_normal(params Int64[] newshape)
+            {
+                return _standard_normal(ConvertToShape(newshape));
+            }
+            private static ndarray _standard_normal(params npy_intp[] newshape)
+            {
+                npy_intp size = CountTotalElements(ConvertToShape(newshape));
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, size);
+                return rndArray.reshape(ConvertToShape(newshape));
+            }
+
+            #region uniform
+
+            public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
+            {
+                return _uniform(low, high, newdims);
+            }
+
+            private static ndarray _uniform(int low, int high, shape newdims)
+            {
+                int size = (int)CalculateNewShapeSize(newdims);
+
+                ndarray olow = np.asanyarray(low);
+                ndarray ohigh = np.asanyarray(high);
+
+                if (olow.size == 1 && ohigh.size == 1)
+                {
+                    double flow = Convert.ToDouble(low);
+                    double fhigh = Convert.ToDouble(high);
+                    double fscale = fhigh - flow;
+
+                    if (double.IsInfinity(fscale))
+                    {
+                        throw new Exception("Range exceeds valid bounds");
+                    }
+
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_uniform, size, flow, fscale);
+                }
+
+                ndarray odiff = np.subtract(ohigh, olow);
+                if (!np.allb(np.isfinite(odiff)))
+                    throw new Exception("Range exceeds valid bounds");
+
+
+                return cont2_array(internal_state, RandomDistributions.rk_uniform, size, olow, odiff);
+            }
+
+            #endregion
+
+            #endregion
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
