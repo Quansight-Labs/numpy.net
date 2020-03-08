@@ -183,50 +183,84 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint16_1()
         {
+            np.random.seed(8381);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int16[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Int16);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(2, 2478, new shape(5000000), dtype: np.Int16);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Int16);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new Int16[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int16)2477, amax.GetItem(0));
 
-            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int16);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int16)2, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1239.6188784, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int16[] { 1854, 1641, 1219, 1190, 1714, 644, 441, 484, 579, 393 });
+
+
+            arr = np.random.randint(-2067, 3000, new shape(5000000), dtype: np.Int16);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int16)2999, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int16)(-2067), amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(466.3735356, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int16[] {-1761, -1165, 2645, -1210, 1741, -1692, -1042, -354, 2637, -706 });
         }
 
 
         [TestMethod]
         public void test_randuint16_1()
         {
+            np.random.seed(5555);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT16);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt16[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt16);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(23, 12801, new shape(5000000), dtype: np.UInt16);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT16);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt16);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new UInt16[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((UInt16)12800, amax.GetItem(0));
 
-            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt16);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((UInt16)23, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(6411.5873838, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new UInt16[] { 3781, 11097, 4916, 2759, 12505, 827, 12017, 3982, 7669, 11128 });
         }
 
         [TestMethod]

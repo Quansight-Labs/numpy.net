@@ -76,7 +76,41 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_randint16_1(self):
 
+        np.random.seed(8381);
+
+        f = np.random.randint(2,3,4, dtype=np.int8)
+        print(f)
+
+        arr = np.random.randint(2,2478,5000000, dtype=np.int16);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.randint(-2067,3000,5000000, dtype=np.int16);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+    def test_randuint16_1(self):
+
+        np.random.seed(5555);
+
+        f = np.random.randint(2,3,4, dtype=np.uint16)
+        print(f)
+
+        arr = np.random.randint(23,12801,5000000, dtype=np.uint16);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+        first10 = arr[0:10:1]
+        print(first10)
 
     def test_randint_1(self):
 
