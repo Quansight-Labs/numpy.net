@@ -209,14 +209,6 @@ class Test_test1(unittest.TestCase):
         print(arr);
 
 
-    def test_standard_normal_1(self):
-
-        #np.random.seed(1234);
-        arr = np.random.standard_normal(5000000);
-        print(np.max(arr));
-        print(np.min(arr));
-        print(np.average(arr));
-
         
     def test_beta_1(self):
 
@@ -245,11 +237,25 @@ class Test_test1(unittest.TestCase):
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);
-        arr = np.random.uniform(-1, 1, 10);
-        print(arr)
-        print(np.sum(arr));
- 
+        arr = np.random.uniform(-1, 1, 5000000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
 
+        first10 = arr[0:10:1]
+        print(first10)
+
+
+    def test_rand_standard_normal_1(self):
+
+        np.random.seed(8877);
+        arr = np.random.standard_normal(5000000);
+        print(np.max(arr));
+        print(np.min(arr));
+        print(np.average(arr));
+
+        first10 = arr[0:10:1]
+        print(first10)
 
 if __name__ == '__main__':
     unittest.main()
