@@ -349,51 +349,84 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint64_1()
         {
+            np.random.seed(10987);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Int64);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(20, 9999999, new shape(5000000), dtype: np.Int64);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Int64);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new Int64[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int64)9999995, amax.GetItem(0));
 
-            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int64);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int64)24, amin.GetItem(0));
 
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(5000256.718873, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int64[] { 680213, 6755395, 2873894, 6180772, 6542022, 4878058, 9894982, 6332894, 1846901, 8550855 });
+
+
+            arr = np.random.randint(-9999999, 9999999, new shape(5000000), dtype: np.Int64);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int64)9999994, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int64)(-9999994), amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-3134.7668014, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int64[] { 8539427, -3969151, -3294108, 7156061, 6272194, 9698115, 1323314, -4364865, -124057, -6816292 });
         }
 
 
         [TestMethod]
         public void test_randuint64_1()
         {
+            np.random.seed(1990);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt64);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(64, 64000, new shape(5000000), dtype: np.UInt64);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT64);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt64);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new UInt64[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((UInt64)63999, amax.GetItem(0));
 
-            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt64);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((UInt64)64, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(32014.4591844, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new UInt64[] { 32948, 9226, 21086, 58281, 51816, 58826, 18566, 13253, 28502, 39394 });
         }
 
 
