@@ -42,11 +42,10 @@ class Test_test1(unittest.TestCase):
 
     def test_randint8_1(self):
 
-        f = np.random.randint(2,3,4, dtype=np.int8)
-        print(f)
-
         np.random.seed(9292);
 
+        f = np.random.randint(2,3,4, dtype=np.int8)
+        print(f)
 
         arr = np.random.randint(2,8,5000000, dtype=np.int8);
         print(np.amax(arr));
@@ -64,10 +63,10 @@ class Test_test1(unittest.TestCase):
 
     def test_randuint8_1(self):
 
+        np.random.seed(1313);
+
         f = np.random.randint(2,3,4, dtype=np.uint8)
         print(f)
-
-        np.random.seed(1313);
 
         arr = np.random.randint(2,128,5000000, dtype=np.uint8);
         print(np.amax(arr));

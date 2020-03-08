@@ -97,13 +97,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint8_1()
         {
+            np.random.seed(9292);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new SByte[] { 2, 2, 2, 2 });
-
-            np.random.seed(9292);
 
             arr = np.random.randint(2, 8, new shape(5000000), dtype: np.Int8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
@@ -122,7 +122,7 @@ namespace NumpyDotNetTests
 
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
-            AssertArray(first10, new byte[] { 3, 6, 7, 5, 5, 5, 7, 7, 4, 2 });
+            AssertArray(first10, new sbyte[] { 3, 6, 7, 5, 5, 5, 7, 7, 4, 2 });
 
 
             arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int8);
@@ -151,14 +151,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint8_1()
         {
+            np.random.seed(1313);
 
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Byte[] { 2, 2, 2, 2 });
-
-            np.random.seed(1313);
 
             arr = np.random.randint(2, 128, new shape(5000000), dtype: np.UInt8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
