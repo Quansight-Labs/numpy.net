@@ -1082,14 +1082,10 @@ namespace NumpyDotNet
             mask |= mask >> 16;
             mask |= mask >> 32;
 
-            for (i = 0; i < cnt;)
+            for (i = 0; i < cnt; i++)
             {
-                val = rk_int64(state) & mask;
-                if (val < rng)
-                {
-                    _out[i] = off + val;
-                    i++;
-                }
+                while ((val = (rk_int64(state) & mask)) > rng) ;
+                _out[i] = off + val;
             }
 
         }
@@ -1122,15 +1118,10 @@ namespace NumpyDotNet
             mask |= mask >> 16;
             mask |= mask >> 32;
 
-
-            for (i = 0; i < cnt;)
+            for (i = 0; i < cnt; i++)
             {
-                val = rk_uint64(state) & mask;
-                if (val < rng)
-                {
-                    _out[i] = off + val;
-                    i++;
-                }
+                while ((val = (rk_uint64(state) & mask)) > rng) ;
+                _out[i] = off + val;
             }
 
         }
@@ -1163,14 +1154,10 @@ namespace NumpyDotNet
             mask |= mask >> 8;
             mask |= mask >> 16;
 
-            for (i = 0; i < cnt;)
+            for (i = 0; i < cnt; i++)
             {
-                val = rk_int32(state) & mask;
-                if (val < rng)
-                {
-                    _out[i] = off + val;
-                    i++;
-                }
+                while ((val = (rk_int32(state) & mask)) > rng);
+                _out[i] = off + val;
             }
         }
 
@@ -1200,17 +1187,12 @@ namespace NumpyDotNet
             mask |= mask >> 8;
             mask |= mask >> 16;
 
-            for (i = 0; i < cnt;)
+            for (i = 0; i < cnt; i++)
             {
-                val = rk_uint32(state) & mask;
-                if (val < rng)
-                {
-                    _out[i] = off + val;
-                    i++;
-                }
+                while ((val = (rk_uint32(state) & mask)) > rng);
+                _out[i] = off + val;
             }
         }
-
 
         /*
          * Fills an array with cnt random npy_uint16 between off and off + rng
@@ -1254,7 +1236,7 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (Int16)(buf & mask);
-                } while (val >= rng);
+                } while (val > rng);
                 _out[i] = (Int16)(off + val);
             }
         }
@@ -1301,7 +1283,7 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (UInt16)(buf & mask);
-                } while (val >= rng);
+                } while (val > rng);
                 _out[i] = (UInt16)(off + val);
             }
         }
@@ -1347,7 +1329,7 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (sbyte)(buf & mask);
-                } while (val >= rng);
+                } while (val > rng);
                 _out[i] = (sbyte)(off + val);
             }
         }
@@ -1393,7 +1375,7 @@ namespace NumpyDotNet
                         bcnt--;
                     }
                     val = (byte)(buf & mask);
-                } while (val >= rng);
+                } while (val > rng);
                 _out[i] = (byte)(off + val);
             }
         }

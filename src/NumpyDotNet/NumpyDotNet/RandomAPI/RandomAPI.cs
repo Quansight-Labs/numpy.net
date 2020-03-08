@@ -152,7 +152,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int8(off, (SByte)rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_int8(off, (SByte)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int8).reshape(newdims);
             }
@@ -185,7 +185,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint8(off, (Byte)rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_uint8(off, (Byte)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt8).reshape(newdims);
             }
@@ -218,7 +218,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int16(off, (Int16)rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_int16(off, (Int16)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int16).reshape(newdims);
             }
@@ -251,7 +251,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint16(off, (UInt16)rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_uint16(off, (UInt16)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt16).reshape(newdims);
             }
@@ -314,7 +314,7 @@ namespace NumpyDotNet
                 }
                 var rng = _high.Value - _low;
                 var off = _low;
-                RandomDistributions.rk_random_int32(off, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_int32(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int32).reshape(newdims);
             }
@@ -347,7 +347,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint32(off, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_uint32(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt32).reshape(newdims);
             }
@@ -380,7 +380,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int64(off, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_int64(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int64).reshape(newdims);
             }
@@ -415,7 +415,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint64(off, rng, randomData.Length, randomData, internal_state);
+                RandomDistributions.rk_random_uint64(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt64).reshape(newdims);
             }
