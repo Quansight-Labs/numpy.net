@@ -372,6 +372,8 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_binomial_1()
         {
+            np.random.seed(123);
+
             ndarray arr = np.random.binomial(9, 0.1, new shape(200));
             var s = np.sum(arr == 0);
 

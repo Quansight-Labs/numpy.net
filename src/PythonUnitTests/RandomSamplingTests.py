@@ -109,6 +109,8 @@ class Test_test1(unittest.TestCase):
        
     def test_rand_binomial_1(self):
 
+        np.random.seed(123)
+
         arr = np.random.binomial(9, 0.1, 200);
         s = np.sum(arr== 0);
         print(s);

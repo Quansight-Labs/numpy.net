@@ -77,9 +77,9 @@ namespace NumpyDotNet.RandomAPI
             /* Magic Mersenne Twister constants */
             const int N = 624;
             const int M = 397;
-            const long MATRIX_A = 0x9908b0df;
-            const long UPPER_MASK = 0x80000000;
-            const long LOWER_MASK = 0x7fffffff;
+            const ulong MATRIX_A = 0x9908b0dfUL;
+            const ulong UPPER_MASK = 0x80000000UL;
+            const ulong LOWER_MASK = 0x7fffffffUL;
 
             ulong y;
 
@@ -106,18 +106,18 @@ namespace NumpyDotNet.RandomAPI
 
             /* Tempering */
             y ^= (y >> 11);
-            y ^= (y << 7) & 0x9d2c5680;
-            y ^= (y << 15) & 0xefc60000;
+            y ^= (y << 7) & 0x9d2c5680UL;
+            y ^= (y << 15) & 0xefc60000UL;
             y ^= (y >> 18);
 
-            return (ulong)y;
+            return y;
         }
 
         public double getNextDouble(rk_state state)
         {
             /* shifts : 67108864 = 0x4000000, 9007199254740992 = 0x20000000000000 */
-            long a = (long)getNextUInt64(state) >> 5;
-            long b = (long)getNextUInt64(state) >> 6;
+            ulong a = getNextUInt64(state) >> 5;
+            ulong b = getNextUInt64(state) >> 6;
             return (a * 67108864.0 + b) / 9007199254740992.0;
         }
     }
