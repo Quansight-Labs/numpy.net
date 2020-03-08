@@ -1060,7 +1060,7 @@ namespace NumpyDotNet
          * inclusive. The numbers wrap if rng is sufficiently large.
          */
         internal static void rk_random_int64(Int64 off, Int64 rng, npy_intp cnt,
-                         Int64 []_out, rk_state state)
+                         Int64[] _out, rk_state state)
         {
             Int64 val, mask = rng;
             npy_intp i;
@@ -1082,9 +1082,17 @@ namespace NumpyDotNet
             mask |= mask >> 16;
             mask |= mask >> 32;
 
+
             for (i = 0; i < cnt; i++)
             {
-                while ((val = (rk_int64(state) & mask)) > rng) ;
+                if (rng <= 0xffffffffL)
+                {
+                    while ((val = (rk_int32(state) & mask)) > rng) ;
+                }
+                else
+                {
+                    while ((val = (rk_int64(state) & mask)) > rng) ;
+                }
                 _out[i] = off + val;
             }
 
@@ -1118,12 +1126,19 @@ namespace NumpyDotNet
             mask |= mask >> 16;
             mask |= mask >> 32;
 
+
             for (i = 0; i < cnt; i++)
             {
-                while ((val = (rk_uint64(state) & mask)) > rng) ;
+                if (rng <= 0xffffffffUL)
+                {
+                    while ((val = (rk_uint32(state) & mask)) > rng) ;
+                }
+                else
+                {
+                    while ((val = (rk_uint64(state) & mask)) > rng) ;
+                }
                 _out[i] = off + val;
             }
-
         }
 
 
