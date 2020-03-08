@@ -266,50 +266,84 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint_1()
         {
-            ndarray arr = np.random.randint(2, 3, new shape(4));
+            np.random.seed(701);
+
+            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4,5));
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(9, 128000, new shape(5000000), dtype: np.Int32);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
 
-            arr = np.random.randint(20, 21, new shape(2, 3));
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new Int32[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int32)127999, amax.GetItem(0));
 
-            arr = np.random.randint(-2, 3, new shape(5000000));
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int32)9, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(64017.8102496, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int32[] { 116207, 47965, 90333, 86510, 49239, 115311, 100417, 99653, 14878, 92386 });
+
+
+            arr = np.random.randint(-20000, 300000, new shape(5000000), dtype: np.Int32);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((Int32)299999, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((Int32)(-20000), amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(139952.5096864, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new Int32[] { 211742, 98578, 96618, 50714, 285136, 270233, 186899, 278442, 215280, 268431 });
         }
 
 
         [TestMethod]
         public void test_randuint_1()
         {
+            np.random.seed(8357);
+
             ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.UInt32);
-            AssertShape(arr, 4, 5);
-            print(arr);
+            arr = np.random.randint(29, 13000, new shape(5000000), dtype: np.UInt32);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT32);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.UInt32);
-            AssertShape(arr, 2, 3);
-            print(arr);
-            AssertArray(arr, new UInt32[,] { { 20, 20, 20 }, { 20, 20, 20 } });
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((UInt32)12999, amax.GetItem(0));
 
-            arr = np.random.randint(2, 5, new shape(5000000), dtype: np.UInt32);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((UInt32)29, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(6512.7336774, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new UInt32[] { 6511, 10414, 12909, 5962, 353, 8634, 8330, 1452, 5009, 5444 });
         }
 
         [TestMethod]
