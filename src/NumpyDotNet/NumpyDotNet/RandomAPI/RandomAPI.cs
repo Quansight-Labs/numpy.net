@@ -437,6 +437,8 @@ namespace NumpyDotNet
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, size);
                 return rndArray;
             }
+            
+
             public static ndarray random_(Int32 size)
             {
                 return random_sample(size);
@@ -647,6 +649,7 @@ namespace NumpyDotNet
                 return cont2_array(internal_state, RandomDistributions.rk_beta, CountTotalElements(newshape), a, b);
 
             }
+                
 
             #endregion
 
@@ -742,10 +745,7 @@ namespace NumpyDotNet
 
             #region Python Version
 
-            internal delegate double rk_cont0(rk_state state);
-            internal delegate double rk_cont2(rk_state state, double a, double b);
-
-            private static ndarray cont0_array(rk_state state, rk_cont0 func, npy_intp size)
+            private static ndarray cont0_array(rk_state state, Func<rk_state, double> func, npy_intp size)
             {
                 double[] array_data;
                 ndarray array;
@@ -775,8 +775,8 @@ namespace NumpyDotNet
                 }
 
             }
-
-            private static ndarray cont2_array(rk_state state, rk_cont2 func, npy_intp size, ndarray oa, ndarray ob)
+  
+            private static ndarray cont2_array(rk_state state, Func<rk_state, double, double, double> func, npy_intp size, ndarray oa, ndarray ob)
             {
                 broadcast multi;
                 ndarray array;
