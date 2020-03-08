@@ -175,7 +175,7 @@ namespace CSHARPCPPN
             var vector = z;
             if (vector == null)
             {
-                vector = np.random.uniform(-1, 1, new int[] { BatchSize, HSize }).astype(np.Float32);
+                vector = np.random.uniform(-1, 1, new shape( BatchSize, HSize )).astype(np.Float32);
             }
 
             var data = CreateGrid(width, height, scaling);

@@ -245,7 +245,7 @@ class Test_test1(unittest.TestCase):
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);
-        arr = np.random.uniform(-1, 1, 40);
+        arr = np.random.uniform(-1, 1, 10);
         print(arr)
         print(np.sum(arr));
  

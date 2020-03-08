@@ -192,8 +192,7 @@ namespace CSHARPCPPN
             var vector = z;
             if (vector == null)
             {
-                var vectorx = NumpyDotNet.np.random.uniform(-1, 1, new int[] { Batch_Size, H_Size });
-                vector = np.array(NumpyDotNet.np.AsFloatArray(vectorx)).reshape(new int[] { Batch_Size, H_Size });
+                vector = np.random.uniform(-1, 1, new Shape(Batch_Size, H_Size));
             }
             var data = CreateGrid(width, height, scaling);
             return BuildCPPN(width, height, data[0], data[1], data[2], vector);

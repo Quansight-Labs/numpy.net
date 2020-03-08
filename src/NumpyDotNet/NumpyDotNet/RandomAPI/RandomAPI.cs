@@ -484,22 +484,39 @@ namespace NumpyDotNet
 
             #region uniform
 
-            public static ndarray uniform(int low = 0, int high = 1, params Int32[] newshape)
+            public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
             {
-                return _uniform(low, high, ConvertToShape(newshape));
+                return _uniform(low, high, newdims);
             }
 
-            public static ndarray uniform(int low = 0, int high = 1, params Int64[] newshape)
+            private static ndarray _uniform(int low, int high, shape newdims)
             {
-                return _uniform(low, high, ConvertToShape(newshape));
-            }
+                int size = (int)CalculateNewShapeSize(newdims);
 
-            private static ndarray _uniform(int low, int high, npy_intp[] newdims)
-            {
-                double[] randomData = new double[CountTotalElements(newdims)];
-                FillWithUniform(low, high, randomData);
+                ndarray olow = np.asanyarray(low);
+                ndarray ohigh = np.asanyarray(high);
 
-                return np.array(randomData, dtype: np.Float64).reshape(newdims);
+                if (olow.size == 1 && ohigh.size == 1)
+                {
+                    double flow = Convert.ToDouble(low);
+                    double fhigh = Convert.ToDouble(high);
+                    double fscale = fhigh - flow;
+
+                    if (double.IsInfinity(fscale))
+                    {
+                        throw new Exception("Range exceeds valid bounds");
+                    }
+
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_uniform, size, flow, fscale);
+                }
+
+                ndarray odiff = np.subtract(ohigh, olow);
+                if (!np.allb(np.isfinite(odiff)))
+                    throw new Exception("Range exceeds valid bounds");
+
+
+                return cont2_array(internal_state, RandomDistributions.rk_uniform, size, olow, odiff);
             }
 
 
@@ -775,7 +792,31 @@ namespace NumpyDotNet
                 }
 
             }
-  
+
+
+            private static ndarray cont2_array_sc(rk_state state, Func<rk_state, double, double, double> func, int size, double a, double b)
+            {
+                if (size == 0)
+                {
+                    double rv = func(state, a, b);
+                    return np.asanyarray(rv);
+                }
+                else
+                {
+                    var array_data = new double[size];
+                    lock (rk_lock)
+                    {
+                        for (int i = 0; i < size; i++)
+                        {
+                            array_data[i] = func(state, a, b);
+                        }
+                    }
+                    return np.array(array_data);
+                }
+
+            }
+
+
             private static ndarray cont2_array(rk_state state, Func<rk_state, double, double, double> func, npy_intp size, ndarray oa, ndarray ob)
             {
                 broadcast multi;

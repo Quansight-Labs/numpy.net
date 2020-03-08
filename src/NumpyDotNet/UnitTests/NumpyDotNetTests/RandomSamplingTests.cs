@@ -542,9 +542,10 @@ namespace NumpyDotNetTests
         {
             np.random.seed(5461);
 
-            ndarray arr = np.random.uniform(-1, 1, 40);
+            ndarray arr = np.random.uniform(-1, 1, new shape(10));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 40);
+            AssertArray(arr, new double[] { -0.0861951950449646, -0.916354322633752, 0.979020117468637, -0.196568936650096,
+                -0.875996989224622, 0.106127858765562, 0.143469747306076, 0.375363669127145, -0.590520508804662, -0.18455495968856 });
             print(arr);
         }
 
