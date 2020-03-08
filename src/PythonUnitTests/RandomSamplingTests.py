@@ -183,6 +183,31 @@ class Test_test1(unittest.TestCase):
 
         first10 = arr[0:10:1]
         print(first10)
+    
+    def test_rand_shuffle_1(self):
+
+        np.random.seed(1964);
+
+        arr = np.arange(10);
+        np.random.shuffle(arr);
+        print(arr);
+
+        arr = np.arange(10).reshape((-1,1));
+        print(arr);
+
+        np.random.shuffle(arr);
+        print(arr);
+
+    def test_rand_permutation_1(self):
+
+        np.random.seed(1963);
+
+        arr = np.random.permutation(10);
+        print(arr);
+
+        arr = arr = np.random.permutation(np.arange(5));
+        print(arr);
+
 
     def test_standard_normal_1(self):
 
@@ -194,6 +219,8 @@ class Test_test1(unittest.TestCase):
 
         
     def test_beta_1(self):
+
+        np.random.seed(5566);
 
         a = np.arange(1,11, dtype=np.float64);
         b = np.arange(1,11, dtype= np.float64);
@@ -214,6 +241,14 @@ class Test_test1(unittest.TestCase):
         arr = np.random.binomial(9, 0.1, 20000);
         s = np.sum(arr== 0);
         print(s)
+
+    def test_rand_uniform_1(self):
+
+        np.random.seed(5461);
+        arr = np.random.uniform(-1, 1, 40);
+        print(arr)
+        print(np.sum(arr));
+ 
 
 
 if __name__ == '__main__':

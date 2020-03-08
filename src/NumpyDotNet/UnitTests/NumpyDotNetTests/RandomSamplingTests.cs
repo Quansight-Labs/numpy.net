@@ -467,28 +467,32 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_shuffle_1()
         {
+            np.random.seed(1964);
             var arr = np.arange(10);
             np.random.shuffle(arr);
             print(arr);
+            AssertArray(arr, new Int32[] { 2, 9, 3, 6, 1, 7, 5, 0, 4, 8 });
 
-            arr = np.arange(9).reshape((3,3));
+            arr = np.arange(10).reshape((-1,1));
             print(arr);
 
             np.random.shuffle(arr);
             print(arr);
-
+            AssertArray(arr, new Int32[,] { { 0 }, { 3 }, { 7 }, { 8 }, { 5 }, { 9 }, { 4 }, { 6 }, { 1 }, { 2 } });
         }
 
         [TestMethod]
         public void test_rand_permutation_1()
         {
+            np.random.seed(1963);
+
             var arr = np.random.permutation(10);
             print(arr);
-            AssertShape(arr, 10);
+            AssertArray(arr, new Int32[] { 6, 7, 4, 5, 1, 2, 9, 0, 8, 3 });
 
             arr = np.random.permutation(np.arange(5));
             print(arr);
-            AssertShape(arr, 5);
+            AssertArray(arr, new Int32[] { 2, 3, 1, 0, 4 });
 
         }
 
@@ -497,13 +501,20 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_beta_1()
         {
+            np.random.seed(5566);
+
             var a = np.arange(1,11, dtype: np.Float64);
             var b = np.arange(1,11, dtype: np.Float64);
 
             ndarray arr = np.random.beta(b, b, new shape(10));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 10);
             print(arr);
+
+            var ExpectedData = new double[]
+                { 0.890517356256563, 0.532484155787344, 0.511396509650771, 0.862418837558698, 0.492458004172681,
+                  0.504662615187708, 0.621477223753938, 0.41702032419038, 0.492984829781569, 0.47847289036676 };
+
+            AssertArray(arr, ExpectedData);
         }
 
         [TestMethod]
@@ -527,8 +538,10 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
-        public void test_uniform_1()
+        public void test_rand_uniform_1()
         {
+            np.random.seed(5461);
+
             ndarray arr = np.random.uniform(-1, 1, 40);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 40);
@@ -539,7 +552,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_standard_normal_1()
         {
-            np.random.seed(1234);
+            np.random.seed(5461);
             ndarray arr = np.random.standard_normal(5000000);
             print(np.amax(arr));
             print(np.amin(arr));
