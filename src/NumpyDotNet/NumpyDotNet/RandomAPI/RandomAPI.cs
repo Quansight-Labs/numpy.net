@@ -48,7 +48,6 @@ namespace NumpyDotNet
     {
         public static class random
         {
-            static Random r = new Random();
             static rk_state internal_state = new rk_state(new RandomGeneratorPython());
             static object rk_lock = new object();
             static bool IsInitialized = seed(null);
@@ -517,26 +516,6 @@ namespace NumpyDotNet
 
 
                 return cont2_array(internal_state, RandomDistributions.rk_uniform, size, olow, odiff);
-            }
-
-
-            private static void FillWithUniform(int low, int high, double[] randomData)
-            {
-                int PRECISION = 100000000;
-
-                low *= PRECISION;
-                high *= PRECISION;
-
-                lock (r)
-                {
-                    for (int i = 0; i < randomData.Length; i++)
-                    {
-                        double random_value = r.Next(low, high + 1);
-
-                        randomData[i] = random_value / PRECISION;
-                    }
-                }
-
             }
 
             #endregion
