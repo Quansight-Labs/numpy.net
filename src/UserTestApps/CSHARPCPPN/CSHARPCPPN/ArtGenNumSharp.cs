@@ -50,21 +50,18 @@ namespace CSHARPCPPN
             Num_Points = width * height;
 
             //Configuring Network
-            var Img_Batchx = NumpyDotNet.np.random.standard_normal(new int[] { Batch_Size, width, height, C_Dim });
-            Img_Batch = np.array(NumpyDotNet.np.AsDoubleArray(Img_Batchx)).reshape(new int[] { Batch_Size, width, height, C_Dim });
+            Img_Batch = random.standard_normal(new int[] { Batch_Size, width, height, C_Dim });
 
-            var Hid_VecX = NumpyDotNet.np.random.standard_normal(new int[] { Batch_Size, H_Size });
-            Hid_Vec = np.array(NumpyDotNet.np.AsDoubleArray(Hid_VecX)).reshape(new int[] { Batch_Size, H_Size });
+            Hid_Vec = random.standard_normal(new int[] { Batch_Size, H_Size });
 
-            var X_DatX = NumpyDotNet.np.random.standard_normal(batch_size, width * height, 1);
-            X_Dat = np.array(NumpyDotNet.np.AsDoubleArray(X_DatX)).reshape(batch_size, width * height, 1);
+            X_Dat = random.standard_normal(batch_size, width * height, 1);
 
-            var Y_DatX = NumpyDotNet.np.random.standard_normal(batch_size, width * height, 1);
-            Y_Dat = np.array(NumpyDotNet.np.AsDoubleArray(Y_DatX)).reshape(batch_size, width * height, 1);
+            Y_Dat = random.standard_normal(batch_size, width * height, 1);
 
-            var R_DatX = NumpyDotNet.np.random.standard_normal(batch_size, width * height, 1);
-            R_Dat = np.array(NumpyDotNet.np.AsDoubleArray(R_DatX)).reshape(batch_size, width * height, 1);
+            R_Dat = random.standard_normal(batch_size, width * height, 1);
         }
+
+
 
         public NDArray[] CreateGrid(int width = 32, int height = 32, float scaling = 1.0f)
         {
@@ -80,23 +77,11 @@ namespace CSHARPCPPN
 
             var r_mat = np.sqrt((x_mat * x_mat) + (y_mat * y_mat));
 
-            var x_MatFlatArray = x_mat.flatten().ToArray<double>();
-            var x_Mat_NumpyDotNetArray = NumpyDotNet.np.array(x_MatFlatArray);
-            var x_MatTiled = NumpyDotNet.np.tile(x_Mat_NumpyDotNetArray, Batch_Size);
-            var XTilledArray = np.array(NumpyDotNet.np.AsDoubleArray(x_MatTiled));
-            x_mat = np.reshape(XTilledArray, new int[] { Batch_Size, Num_Points, 1 });
+            x_mat = npx.tile(x_mat, Batch_Size).reshape(Batch_Size, Num_Points, 1);
 
-            var y_MatFlatArray = y_mat.flatten().ToArray<double>();
-            var y_Mat_NumpyDotNetArray = NumpyDotNet.np.array(y_MatFlatArray);
-            var y_MatTiled = NumpyDotNet.np.tile(y_Mat_NumpyDotNetArray, Batch_Size);
-            var yTilledArray = np.array(NumpyDotNet.np.AsDoubleArray(y_MatTiled));
-            y_mat = np.reshape(yTilledArray, new int[] { Batch_Size, Num_Points, 1 });
+            y_mat = npx.tile(y_mat, Batch_Size).reshape(Batch_Size, Num_Points, 1);
 
-            var r_MatFlatArray = r_mat.flatten().ToArray<double>();
-            var r_Mat_NumpyDotNetArray = NumpyDotNet.np.array(r_MatFlatArray);
-            var r_MatTiled = NumpyDotNet.np.tile(r_Mat_NumpyDotNetArray, Batch_Size);
-            var rTilledArray = np.array(NumpyDotNet.np.AsDoubleArray(r_MatTiled));
-            r_mat = np.reshape(rTilledArray, new int[] { Batch_Size, Num_Points, 1 });
+            r_mat = npx.tile(r_mat, Batch_Size).reshape(Batch_Size, Num_Points, 1);
 
             return new NDArray[] { x_mat, y_mat, r_mat };
         }
@@ -129,16 +114,12 @@ namespace CSHARPCPPN
 
         public NDArray FullyConnected(NDArray input, int out_dim, bool with_bias = true)
         {
-            var matx = (NumpyDotNet.np.random.standard_normal((int)input.shape[1], out_dim).astype(NumpyDotNet.np.Float32));
-
-            var mat = np.array(NumpyDotNet.np.AsFloatArray(matx)).reshape(input.shape[1], out_dim);
+            var mat = random.standard_normal((int)input.shape[1], out_dim).astype(np.float32);
             var result = np.matmul(input, mat);
 
             if (with_bias)
             {
-                var xx = NumpyDotNet.np.random.standard_normal(1, out_dim);
-                var bias = np.array(NumpyDotNet.np.AsDoubleArray(xx)).astype(np.float32).reshape(1, out_dim);
-
+                var bias = random.standard_normal(1, out_dim).astype(np.float32);
                 result += bias * np.ones(new Shape(input.shape[0], 1), np.float32);
             }
 
@@ -192,8 +173,7 @@ namespace CSHARPCPPN
             var vector = z;
             if (vector == null)
             {
-                var vectorx = NumpyDotNet.np.random.uniform(-1, 1, new NumpyDotNet.shape( Batch_Size, H_Size ));
-                vector = np.array(NumpyDotNet.np.AsFloatArray(vectorx)).reshape(new int[] { Batch_Size, H_Size });
+                vector = random.uniform(-1, 1, new int[] { Batch_Size, H_Size });
             }
             var data = CreateGrid(width, height, scaling);
             return BuildCPPN(width, height, data[0], data[1], data[2], vector);
@@ -205,12 +185,12 @@ namespace CSHARPCPPN
             if (seed != null)
             {
                 KeyId = seed;
-                NumpyDotNet.np.random.seed(KeyId.GetValueOrDefault());
+                random.seed(KeyId.GetValueOrDefault());
             }
             else
             {
                 KeyId = Math.Abs(DateTime.Now.GetHashCode());
-                NumpyDotNet.np.random.seed(KeyId.GetValueOrDefault());
+                random.seed(KeyId.GetValueOrDefault());
             }
 
             var art = new ArtGenNumSharp();
@@ -264,6 +244,41 @@ namespace CSHARPCPPN
             //var rgbData = np.multiply(art.flatten(), np.array(255)).ToArray<double>().ToList().ConvertAll(x => (byte)x);
 
             //return rgbData;
+        }
+    }
+
+    class random
+    {
+        public static NDArray standard_normal(params Int32[] newshape)
+        {
+            var rnddata = NumpyDotNet.np.random.standard_normal(newshape);
+            var myarray = np.array(NumpyDotNet.np.AsDoubleArray(rnddata)).reshape(newshape);
+            return myarray;
+        }
+
+        public static NDArray uniform(int low = 0, int high = 1, params Int32[] newshape)
+        {
+            var rnddata = NumpyDotNet.np.random.uniform(-1, 1, new NumpyDotNet.shape(newshape));
+            var myarray = np.array(NumpyDotNet.np.AsFloatArray(rnddata)).reshape(newshape);
+            return myarray;
+        }
+
+        public static void seed(Int32? seed)
+        {
+            NumpyDotNet.np.random.seed(seed);
+        }
+    }
+
+    class npx
+    {
+        public static NDArray tile(NDArray array, object reps)
+        {
+            var flattenedArray = array.flatten().ToArray<double>();
+            var NDNArray = NumpyDotNet.np.array(flattenedArray);
+
+            var NDBTileArray = NumpyDotNet.np.tile(NDNArray, reps);
+            var tiledArray = np.array(NumpyDotNet.np.AsDoubleArray(NDBTileArray));
+            return tiledArray;
         }
     }
 }
