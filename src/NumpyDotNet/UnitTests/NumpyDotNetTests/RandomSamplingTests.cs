@@ -16,59 +16,58 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_1()
         {
-            float fr = np.random.rand();
             ndarray arr = np.random.rand(2, 3, 4);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
-
             np.random.seed(8765);
-            fr = np.random.rand();
-            arr = np.random.rand(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 2, 3, 4);
+            float f = np.random.rand();
+            print(f);
+            Assert.AreEqual(0.03278543f, f);
 
-            print(fr);
-            Assert.AreEqual(0.03278543f, fr);
+            arr = np.random.rand(5000000);
 
-            print(arr);
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(0.99999999331246381, amax.GetItem(0));
 
-            np.random.seed(null);
-            arr = np.random.rand(500000);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(7.223258213784334e-08, amin.GetItem(0));
 
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(0.49987999522694609, avg.GetItem(0));
         }
 
         [TestMethod]
         public void test_randn_1()
         {
-
             float fr = np.random.randn();
             ndarray arr = np.random.randn(2, 3, 4);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
+            np.random.seed(1234);
 
-            np.random.seed(6432);
             fr = np.random.randn();
-            arr = np.random.randn(2, 3, 4);
-            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
-            AssertShape(arr, 2, 3, 4);
-
             print(fr);
-            Assert.AreEqual(0.749749541f, fr);
+            Assert.AreEqual(0.471435163732f, fr);
 
-            print(arr);
+            arr = np.random.randn(5000000);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
 
-            np.random.seed(null);
-            arr = np.random.randn(500000);
-            print(np.amax(arr));
-            print(np.amin(arr));
-            print(np.average(arr));
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(5.19094054905629, amax.GetItem(0));
 
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(-5.387212036872835, amin.GetItem(0));
 
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-0.00028345468151361842, avg.GetItem(0));
         }
 
         [TestMethod]
@@ -374,12 +373,17 @@ namespace NumpyDotNetTests
         {
             np.random.seed(123);
 
-            ndarray arr = np.random.binomial(9, 0.1, new shape(200));
-            var s = np.sum(arr == 0);
-
+            ndarray arr = np.random.binomial(9, 0.1, new shape(20));
+            AssertArray(arr, new Int64[] { 1, 0, 0, 1, 1, 1, 3, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1 });
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
-            //AssertShape(arr, 20000);
-            print(arr);
+
+            var s = np.sum(arr == 0);
+            Assert.AreEqual(6, s.GetItem(0));
+
+
+            arr = np.random.binomial(9, 0.1, new shape(20000));
+            s = np.sum(arr == 0);
+            Assert.AreEqual(7711, s.GetItem(0));
             print(s);
         }
 

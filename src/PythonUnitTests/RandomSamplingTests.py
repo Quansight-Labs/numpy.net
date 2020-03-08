@@ -7,7 +7,7 @@ class Test_test1(unittest.TestCase):
 
     def test_rand_1(self):
 
-        #np.random.seed(1234);
+        np.random.seed(8765);
 
         f = np.random.rand()
         print(f)
@@ -19,7 +19,7 @@ class Test_test1(unittest.TestCase):
 
     def test_randn_1(self):
 
-        #np.random.seed(1234);
+        np.random.seed(1234);
 
         f = np.random.randn()
         print(f)
@@ -111,10 +111,14 @@ class Test_test1(unittest.TestCase):
 
         np.random.seed(123)
 
-        arr = np.random.binomial(9, 0.1, 200);
+        arr = np.random.binomial(9, 0.1, 20);
         s = np.sum(arr== 0);
         print(s);
         print(arr);
+
+        arr = np.random.binomial(9, 0.1, 20000);
+        s = np.sum(arr== 0);
+        print(s)
 
 
 if __name__ == '__main__':
