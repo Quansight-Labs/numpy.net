@@ -584,6 +584,77 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_rand_dirichlet_1()
+        {
+            np.random.seed(904);
+
+            var arr = np.random.dirichlet(new int[] { 2, 20 }, 40);
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(0.9840840815128786, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.01591591848712132, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(0.5, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new double[,]
+                { { 0.139631231507379, 0.860368768492621 },
+                  { 0.164792458731906, 0.835207541268094 },
+                  { 0.171803553905849, 0.828196446094151 },
+                  { 0.0644690936340902, 0.93553090636591 },
+                  { 0.0159159184871213, 0.984084081512879 },
+                  { 0.0560190209751487, 0.943980979024851 },
+                  { 0.042863749816706, 0.957136250183294 },
+                  { 0.0629065979497427, 0.937093402050257 },
+                  { 0.176381677869148, 0.823618322130852 },
+                  { 0.173933715950931, 0.826066284049069 } };
+
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+            
+            arr = np.random.dirichlet(new int[] { 25,1,25 }, 25*25);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(0.7045960873403417, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(2.6249646396377578e-05, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(0.33333333333333354, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new double[,]
+                { { 0.610930043484893, 0.0193144481201467, 0.369755508394961 },
+                  { 0.442089362038658, 0.0346318991277543, 0.523278738833588 },
+                  { 0.614302268039855, 0.00320374569291326, 0.382493986267232 },
+                  { 0.321145218655756, 0.0299626236169947, 0.648892157727249 },
+                  { 0.39914499391642, 0.0791711737227786, 0.521683832360802 },
+                  { 0.527685226612033, 0.00514173575597135, 0.467173037631995 },
+                  { 0.454743888761555, 0.0548186350528715, 0.490437476185573 },
+                  { 0.449442317277421, 0.0101774794978973, 0.540380203224682 },
+                  { 0.464374656943362, 0.0130023049255488, 0.522623038131089 },
+                  { 0.45310574844845, 0.00503512489512577, 0.541859126656425 } };
+
+           AssertArray(first10, ExpectedData);
+
+        }
 
         [TestMethod]
         public void test_rand_uniform_1()

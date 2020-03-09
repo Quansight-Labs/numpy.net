@@ -252,6 +252,23 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_dirichlet_1(self):
+
+        np.random.seed(904)
+
+        arr = np.random.dirichlet((2,20), 40);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.dirichlet((25,1,25), 25*25);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
 
     def test_rand_uniform_1(self):
 

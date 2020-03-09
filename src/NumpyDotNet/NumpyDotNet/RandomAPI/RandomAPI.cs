@@ -659,7 +659,57 @@ namespace NumpyDotNet
                 return cont1_array(internal_state, RandomDistributions.rk_chisquare, size, odf);
             }
 
-  
+
+            #endregion
+
+            #region dirichlet
+            public static ndarray dirichlet(Int32 []alpha, Int32 size)
+            {
+                npy_intp k;
+                npy_intp totsize;
+                ndarray alpha_arr, val_arr;
+                double[] alpha_data;
+                double[] val_data;
+                npy_intp i;
+                double acc, invacc;
+
+                k = len(alpha);
+                alpha_arr = np.array(alpha).astype(np.Float64);
+                if (np.anyb(np.less_equal(alpha_arr, 0)))
+                {
+                    throw new ValueError("alpha <= 0");
+                }
+                alpha_data = alpha_arr.Array.data.datap as double[];
+
+                shape shape = new shape(size, k);
+
+                ndarray diric = np.zeros(shape, np.Float64);
+                val_arr = diric;
+                val_data = val_arr.Array.data.datap as double[];
+
+                i = 0;
+                totsize = val_arr.size;
+
+                while (i < totsize)
+                {
+                    acc = 0.0;
+                    for (int j = 0; j < k; j++)
+                    {
+                        val_data[i + j] = RandomDistributions.rk_standard_gamma(internal_state, alpha_data[j]);
+                        acc = acc + val_data[i + j];
+                    }
+                    invacc = 1 / acc;
+                    for (int j = 0; j < k; j++)
+                    {
+                        val_data[i + j] = val_data[i + j] * invacc;
+                    }
+                    i = i + k;
+                }
+
+                return diric;
+
+            }
+
             #endregion
 
             #region standard_normal
