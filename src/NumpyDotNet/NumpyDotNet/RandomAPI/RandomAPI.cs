@@ -738,6 +738,42 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region f distribution
+
+            public static ndarray f(object dfnum, object dfden, int size)
+            {
+                ndarray odfnum, odfden;
+                double fdfnum, fdfden;
+
+                odfnum = asanyarray(dfnum).astype(np.Float64);
+                odfden = asanyarray(dfden).astype(np.Float64);
+
+                if (odfnum.size == 1 && odfden.size == 1)
+                {
+                    fdfnum = (double)odfnum.GetItem(0);
+                    fdfden = (double)odfden.GetItem(0);
+
+                    if (fdfnum <= 0)
+                        throw new ValueError("dfnum <= 0");
+                    if (fdfden <= 0)
+                        throw new ValueError("dfden <= 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_f, size, fdfnum, fdfden);
+                }
+
+                if (np.anyb(np.less_equal(odfnum, 0.0)))
+                {
+                    throw new ValueError("dfnum <= 0");
+                }
+                if (np.anyb(np.less_equal(odfden, 0.0)))
+                {
+                    throw new ValueError("dfden <= 0");
+                }
+                return cont2_array(internal_state, RandomDistributions.rk_f, size, odfnum, odfden);
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -983,7 +1019,7 @@ namespace NumpyDotNet
                     }
                 }
 
-                array_data = array.AsDoubleArray();
+                array_data = array.Array.data.datap as double[];
 
                 VoidPtr vpoa = multi.IterData(0);
                 VoidPtr vpob = multi.IterData(1);
