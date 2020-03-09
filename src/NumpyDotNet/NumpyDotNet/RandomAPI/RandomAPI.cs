@@ -774,6 +774,53 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region gamma
+
+            public static ndarray gamma(object shape, object scale, int? size = null)
+            {
+                ndarray oshape, oscale;
+                double fshape, fscale;
+                int _size;
+
+                if (size == null)
+                    _size = 0;
+                else
+                    _size = size.Value;
+
+                oshape = asanyarray(shape).astype(np.Float64);
+                oscale = asanyarray(scale).astype(np.Float64);
+
+                if (oshape.size == 1 && oscale.size == 1)
+                {
+                    fshape = (double)oshape.GetItem(0);
+                    fscale = (double)oscale.GetItem(0);
+                    if ((bool)np.signbit(fshape).GetItem(0))
+                    {
+                        throw new ValueError("shape < 0");
+                    }
+                    if ((bool)np.signbit(fscale).GetItem(0))
+                    {
+                        throw new ValueError("scale < 0");
+                    }
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_gamma, _size, fshape, fscale);
+                }
+  
+
+                if (np.anyb(np.signbit(oshape)))
+                {
+                    throw new ValueError("shape < 0");
+                }
+                if (np.anyb(np.signbit(oscale)))
+                {
+                    throw new ValueError("scale < 0");
+                }
+
+                return cont2_array(internal_state, RandomDistributions.rk_gamma, _size, oshape, oscale);
+            }
+                
+                #endregion
+
             #region standard_normal
 
             public static float standard_normal()

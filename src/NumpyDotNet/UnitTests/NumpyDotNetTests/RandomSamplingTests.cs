@@ -815,6 +815,81 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_rand_gamma_1()
+        {
+            np.random.seed(99);
+
+            var arr = np.random.gamma(new Int32[] { 4, 4 }, 2);
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(18.370134973057713, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(6.801539561549457, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(12.585837267303585, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new double[] { 6.80153956154946, 18.3701349730577 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.gamma(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, 4);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(269.13817401122844, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(85.50090380856885, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(198.09580609835598, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new double[] { 85.5009038085689, 211.684158840965, 226.059987732662, 269.138174011228 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.gamma(1.75, 53, 200000);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(845.754380588075, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.04372693615388623, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(92.505472695434207, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new double[]
+            {  65.0307272217409, 127.150322850433, 93.4719711853725, 16.0658132351959, 47.6795500662279,
+              118.872229264334, 33.0026431406179, 63.8640974905758, 34.4577922345043, 72.2726570834378 };
+
+            AssertArray(first10, ExpectedData);
+        }
+
+        [TestMethod]
         public void test_rand_uniform_1()
         {
             np.random.seed(5461);
