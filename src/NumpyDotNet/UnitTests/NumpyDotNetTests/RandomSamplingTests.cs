@@ -539,13 +539,48 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_chisquare_1()
         {
-            np.random.seed(123);
+            np.random.seed(904);
 
-            ndarray arr = np.random.chisquare(2, new shape(4));
-            print(arr);
+            ndarray arr = np.random.chisquare(2, new shape(40));
 
-            arr = np.random.chisquare(np.arange(5, 10), new shape(5));
-            print(arr);
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(5.375544801685989, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.08589992390559097, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1.7501237764369322, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[] 
+            { 0.449839203939145, 1.92402228590093, 3.34447894813104, 5.34660224752626, 1.15307500835178,
+              3.7142340997291, 0.137140658434128, 1.69505253573874, 1.5675310912308, 3.1550000636764 });
+
+
+            arr = np.random.chisquare(np.arange(1, (25 * 25) + 1), new shape(25 * 25));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(686.8423283498724, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.5907891154976891, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(313.32691732965679, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[]
+            { 0.590789115497689, 6.66144890165653, 4.3036608098316, 3.81142549081703, 3.43184119361682,
+              7.72738961829532, 8.62984666080682, 7.93816304470877, 4.58662123588299, 10.139304988442 });
 
         }
 

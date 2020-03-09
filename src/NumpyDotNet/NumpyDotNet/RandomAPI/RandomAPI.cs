@@ -804,40 +804,39 @@ namespace NumpyDotNet
 
             private static ndarray cont1_array(rk_state state, Func<rk_state, double, double> func, int size, ndarray oa)
             {
-                broadcast multi;
-                ndarray array;
-                double[] array_data = new double[1];
+                double[] array_data;
+                double[] oa_data;
 
-                //if (size == 0)
-                //{
-                //    multi = np.broadcast(oa, ob);
-                //    array = np.empty(multi.shape, dtype: np.Float64);
-                //}
-                //else
-                //{
-                //    array = np.empty(size, dtype: np.Float64);
-                //    multi = np.broadcast(oa, ob, array);
-                //    if (multi.shape != array.shape)
-                //    {
+                if (size == 0)
+                {
+                    npy_intp length = CountTotalElements(oa.dims);
+                    array_data = new double[length];
 
-                //    }
-                //}
+                    oa_data = oa.AsDoubleArray();
+                    for (npy_intp i = 0; i < length; i++)
+                    {
+                        array_data[i] = func(state, oa_data[i]);
+                    }
+                }
 
-                //array_data = array.AsDoubleArray();
+                else
+                {
+                    array_data = new double[size];
 
-                //VoidPtr vpoa = multi.IterData(0);
-                //VoidPtr vpob = multi.IterData(1);
+                    var iter = NpyCoreApi.IterNew(oa);
 
+                    oa_data = iter.Iter.ao.data.datap as double[];
+                    if (iter.Iter.size != size)
+                    {
+                        throw new ValueError("size is not compatible with inputs");
+                    }
 
-                //double[] oa_data = multi.IterData(0).datap as double[];
-                //double[] ob_data = multi.IterData(1).datap as double[];
-
-                //for (int i = 0; i < multi.size; i++)
-                //{
-                //    vpoa = multi.IterData(0);
-                //    array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)]);
-                //    multi.IterNext();
-                //}
+                    int index = 0;
+                    foreach (var dd in iter)
+                    {
+                        array_data[index++] = func(state, oa_data[iter.Iter.dataptr.data_offset / sizeof(double)]);
+                    }
+                }
 
                 return np.array(array_data);
             }

@@ -236,17 +236,21 @@ class Test_test1(unittest.TestCase):
 
     def test_rand_chisquare_1(self):
 
-        np.random.seed(123)
+        np.random.seed(904)
 
-        arr = np.random.chisquare(2, 4);
-        s = np.sum(arr== 0);
-        print(s);
-        print(arr);
+        arr = np.random.chisquare(2, 40);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
 
-        arr = np.random.chisquare(np.arange(5,10), 5);
-        s = np.sum(arr== 0);
-        print(s);
-        print(arr);
+        arr = np.random.chisquare(np.arange(1,(25*25)+1), 25*25);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
 
 
     def test_rand_uniform_1(self):
