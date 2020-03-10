@@ -667,7 +667,7 @@ namespace NumpyDotNetTests
         {
             np.random.seed(914);
 
-            var arr = np.random.exponential(2.0, 40);
+            var arr = np.random.exponential(2.0, new shape(40));
 
             var amax = np.amax(arr);
             print(amax);
@@ -692,7 +692,7 @@ namespace NumpyDotNetTests
 
              //////////////
 
-            arr = np.random.exponential(new double[] { 1.75, 2.25, 3.5, 4.1 }, 4);
+            arr = np.random.exponential(new double[] { 1.75, 2.25, 3.5, 4.1 }, new shape(4));
 
             amax = np.amax(arr);
             print(amax);
@@ -715,7 +715,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.exponential(1.75, 200000);
+            arr = np.random.exponential(1.75, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -746,7 +746,7 @@ namespace NumpyDotNetTests
         {
             np.random.seed(94);
 
-            var arr = np.random.f(1, 48, 1000);
+            var arr = np.random.f(1, 48, new shape(1000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -771,7 +771,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.f(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, 4);
+            arr = np.random.f(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, new shape(4));
 
             amax = np.amax(arr);
             print(amax);
@@ -794,7 +794,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.f(1.75, 53, 200000);
+            arr = np.random.f(1.75, 53, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -847,7 +847,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.gamma(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, 4);
+            arr = np.random.gamma(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, new shape(4));
 
             amax = np.amax(arr);
             print(amax);
@@ -870,7 +870,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.gamma(1.75, 53, 200000);
+            arr = np.random.gamma(1.75, 53, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
