@@ -1091,6 +1091,52 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region multinomial 
+
+            public static ndarray multinomial(int n, object pvals, shape size = null)
+            {
+                ndarray parr = asanyarray(pvals).astype(np.Float64);
+                double[] pix = parr.Array.data.datap as double[];
+                npy_intp d = pix.Length;
+
+                if (kahan_sum(pix, d - 1) > (1.0 + 1e-12))
+                {
+                    throw new ValueError("sum(pvals[:-1]) > 1.0");
+                }
+
+                shape newshape = _shape_from_size(size, d);
+
+                var multin = np.zeros(newshape, np.Int64);
+                ndarray mnarr = multin;
+                long[] mnix = mnarr.Array.data.datap as Int64[];
+                npy_intp sz = mnarr.size;
+
+                npy_intp i = 0;
+                while (i < sz)
+                {
+                    double Sum = 1.0;
+                    npy_intp dn = n;
+                    for (npy_intp j = 0; j < d - 1; j++)
+                    {
+                        mnix[i + j] = RandomDistributions.rk_binomial(internal_state, dn, pix[j] / Sum);
+                        dn = dn - mnix[i + j];
+                        if (dn <= 0)
+                            break;
+                        Sum = Sum - pix[j];
+                    }
+
+                    if (dn > 0)
+                        mnix[i + d - 1] = dn;
+
+                    i = i + d;
+
+                }
+
+                return multin;
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -1538,6 +1584,39 @@ namespace NumpyDotNet
 
                 return asanyarray(array_data);
             }
+
+            private static double kahan_sum(double[] darr, npy_intp n)
+            {
+                double c, y, t, sum;
+                npy_intp i;
+                sum = darr[0];
+                c = 0.0;
+                for (i = 0; i < n; i++)
+                {
+                    y = darr[i] - c;
+                    t = sum + y;
+                    c = (t - sum) - y;
+                    sum = t;
+                }
+
+                return sum;
+            }
+
+            private static shape _shape_from_size(shape size, long d)
+            {
+                if (size == null)
+                {
+                    return new shape(d);
+                }
+
+                npy_intp[] newdims = new npy_intp[size.iDims.Length + 1];
+                Array.Copy(size.iDims, 0, newdims, 0, size.iDims.Length);
+                newdims[size.iDims.Length] = d;
+
+                return new shape(newdims);
+
+            }
+
 
 
             #endregion
