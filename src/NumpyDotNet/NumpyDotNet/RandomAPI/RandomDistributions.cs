@@ -724,7 +724,7 @@ namespace NumpyDotNet
             return U;
         }
 
-        static double rk_gumbel(rk_state state, double loc, double scale)
+        internal static double rk_gumbel(rk_state state, double loc, double scale)
         {
             double U;
 
