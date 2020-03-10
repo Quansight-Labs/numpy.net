@@ -1056,6 +1056,41 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region logseries
+
+            public static ndarray logseries(object p, shape newdims = null)
+            {
+                ndarray op;
+                double fp;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                op = asanyarray(p).astype(np.Float64);
+
+                if (op.size == 1)
+                {
+                    fp = (double)op.GetItem(0);
+
+                    if (fp <= 0.0)
+                        throw new ValueError("p <= 0.0");
+                    if (fp >= 1.0)
+                        throw new ValueError("p >= 1.0");
+
+                    return discd_array_sc(internal_state, RandomDistributions.rk_logseries, size, fp);
+                }
+
+
+                if (np.anyb(np.less_equal(op, 0.0)))
+                    throw new ValueError("p <= 0.0");
+                if (np.anyb(np.greater_equal(op, 1.0)))
+                    throw new ValueError("p >= 1.0");
+
+                return discd_array(internal_state, RandomDistributions.rk_logseries, size, op);
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()

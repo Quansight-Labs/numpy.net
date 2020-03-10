@@ -961,7 +961,7 @@ namespace NumpyDotNet
         }
 
 
-        static long rk_logseries(rk_state state, double p)
+        internal static long rk_logseries(rk_state state, double p)
         {
             double q, r, U, V;
             long result;
