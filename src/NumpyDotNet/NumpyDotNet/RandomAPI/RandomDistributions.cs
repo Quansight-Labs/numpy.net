@@ -925,7 +925,7 @@ namespace NumpyDotNet
         }
 
 
-        static long rk_hypergeometric(rk_state state, long good, long bad, long sample)
+        internal static long rk_hypergeometric(rk_state state, long good, long bad, long sample)
         {
             if (sample > 10)
             {

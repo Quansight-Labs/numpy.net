@@ -900,6 +900,51 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region hypergeometric
+
+            public static ndarray hypergeometric(object ngood, object nbad, object nsample, shape shape = null)
+            {
+                ndarray ongood, onbad, onsample;
+                long lngood, lnbad, lnsample;
+                npy_intp[] size = null;
+                if (shape != null)
+                    size = shape.iDims;
+
+                ongood = asanyarray(ngood).astype(np.Int64);
+                onbad = asanyarray(nbad).astype(np.Int64);
+                onsample = asanyarray(nsample).astype(Int64);
+
+                if (ongood.size ==1 && onbad.size == 1 && onsample.size == 1)
+                {
+                    lngood = (long)ongood.GetItem(0);
+                    lnbad = (long)onbad.GetItem(0);
+                    lnsample = (long)onsample.GetItem(0);
+
+                    if (lngood < 0)
+                        throw new ValueError("ngood < 0");
+                    if (lnbad < 0)
+                        throw new ValueError("nbad < 0");
+                    if (lnsample < 1)
+                        throw new ValueError("nsample < 1");
+                    if (lngood + lnbad < lnsample)
+                        throw new ValueError("ngood + nbad < nsample");
+                    return discnmN_array_sc(internal_state, RandomDistributions.rk_hypergeometric, size, lngood, lnbad, lnsample);
+                }
+
+
+                if (np.anyb(np.less(ongood, 0)))
+                    throw new ValueError("ngood < 0");
+                if (np.anyb(np.less(onbad, 0)))
+                    throw new ValueError("nbad < 0");
+                if (np.anyb(np.less(onsample, 1)))
+                    throw new ValueError("nsample < 1");
+                if (np.anyb(np.less(np.add(ongood, onbad), onsample)))
+                    throw new ValueError("ngood + nbad < nsample");
+                return discnmN_array(internal_state, RandomDistributions.rk_hypergeometric, size, ongood, onbad, onsample);
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -1138,7 +1183,7 @@ namespace NumpyDotNet
                     multi = np.broadcast(oa, ob, array);
                     if (multi.shape != array.shape)
                     {
-
+                        throw new ValueError("size is not compatible with inputs");
                     }
                 }
 
@@ -1245,7 +1290,7 @@ namespace NumpyDotNet
                     multi = np.broadcast(on, op, array);
                     if (multi.shape != array.shape)
                     {
-
+                        throw new ValueError("size is not compatible with inputs");
                     }
                 }
 
@@ -1286,6 +1331,73 @@ namespace NumpyDotNet
 
                 return asanyarray(array_data);
             }
+
+
+            private static ndarray discnmN_array(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, ndarray on, ndarray om, ndarray oN)
+            {
+                broadcast multi;
+                ndarray array;
+                long[] array_data;
+
+                if (size == null)
+                {
+                    multi = np.broadcast(on, om, oN);
+                    array = np.empty(multi.shape, dtype: np.Int32);
+                }
+                else
+                {
+                    array = np.empty(new shape(size), dtype: np.Int32);
+                    multi = np.broadcast(on, om, oN, array);
+                    if (multi.shape != array.shape)
+                    {
+                        throw new ValueError("size is not compatible with inputs");
+                    }
+                }
+
+                array_data = array.AsInt64Array();
+
+                VoidPtr vpon = multi.IterData(0);
+                VoidPtr vpom = multi.IterData(1);
+                VoidPtr vpoN = multi.IterData(2);
+
+
+                long[] on_data = multi.IterData(0).datap as long[];
+                long[] om_data = multi.IterData(1).datap as long[];
+                long[] oN_data = multi.IterData(2).datap as long[];
+
+                for (int i = 0; i < multi.size; i++)
+                {
+                    vpon = multi.IterData(0);
+                    vpom = multi.IterData(1);
+                    vpoN = multi.IterData(2);
+
+                    array_data[i] = func(state, on_data[vpon.data_offset / sizeof(long)], 
+                                                om_data[vpom.data_offset / sizeof(long)],
+                                                oN_data[vpoN.data_offset / sizeof(long)]);
+                    multi.IterNext();
+                }
+
+                return np.array(array_data);
+            }
+
+            private static ndarray discnmN_array_sc(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, long n, long m, long N)
+            {
+                if (size == null)
+                {
+                    long rv = func(state, n, m, N);
+                    return asanyarray(rv);
+                }
+
+                long[] array_data = new long[CountTotalElements(size)];
+
+                for (int i = 0; i < array_data.Length; i++)
+                {
+                    array_data[i] = func(state, n, m, N);
+                }
+
+                return asanyarray(array_data);
+            }
+
 
             #endregion
         }

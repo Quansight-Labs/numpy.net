@@ -1044,6 +1044,78 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_rand_hypergeometric_1()
+        {
+            np.random.seed(1631);
+
+            var arr = np.random.hypergeometric(100, 2, 10, new shape(1000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)10, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)8, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(9.827, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new long[] { 10, 10, 10, 8, 9, 10, 10, 10, 10, 9 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.hypergeometric(new long[] {75, 25, 5, 1 }, new long[] { 5 }, new long[] { 80, 30, 10, 6});
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)75, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)1, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(26.5, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData2 = new long[] { 75, 25,  5,  1 };
+
+            AssertArray(first10, ExpectedData2);
+
+            //////////////
+
+            arr = np.random.hypergeometric(15, 15, 15, new shape(200000));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)13, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)2, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(7.500615, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new long[] { 7, 10,  7,  7,  6,  9,  9,  8,  7,  8 };
+            AssertArray(first10, ExpectedData);
+        }
+
+        [TestMethod]
         public void test_rand_uniform_1()
         {
             np.random.seed(5461);
