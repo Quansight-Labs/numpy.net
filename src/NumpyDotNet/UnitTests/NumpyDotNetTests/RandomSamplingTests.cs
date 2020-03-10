@@ -1411,7 +1411,7 @@ namespace NumpyDotNetTests
 
             var ExpectedData2 = new long[] {  1, 2, 1, 1, 1, 1, 2, 1, 1, 1 };
 
-            AssertArray(first10, ExpectedData);
+            AssertArray(first10, ExpectedData2);
         }
 
         [TestMethod]
