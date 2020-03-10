@@ -741,7 +741,7 @@ namespace NumpyDotNet
             return loc + scale * Math.Log(U / (1.0 - U));
         }
 
-        static double rk_lognormal(rk_state state, double mean, double sigma)
+        internal static double rk_lognormal(rk_state state, double mean, double sigma)
         {
             return Math.Exp(rk_normal(state, mean, sigma));
         }

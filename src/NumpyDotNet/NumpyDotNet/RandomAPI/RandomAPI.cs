@@ -1017,6 +1017,45 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region lognormal
+
+            public static ndarray lognormal(object mean, object sigma, shape newdims = null)
+            {
+                ndarray omean, osigma;
+                double fmean, fsigma;
+                npy_intp[] size = null;
+
+                if (newdims != null)
+                    size = newdims.iDims;
+
+
+                omean = asanyarray(mean).astype(np.Float64);
+                osigma = asanyarray(sigma).astype(np.Float64);
+
+                if (omean.size == 1 && osigma.size == 1)
+                {
+                    fmean = (double)omean.GetItem(0);
+                    fsigma = (double)osigma.GetItem(0);
+  
+                    if ((bool)np.signbit(fsigma).GetItem(0))
+                    {
+                        throw new ValueError("sigma < 0");
+                    }
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_lognormal, size, fmean, fsigma);
+                }
+
+
+                if (np.anyb(np.signbit(osigma)))
+                {
+                    throw new ValueError("sigma < 0");
+                }
+
+                return cont2_array(internal_state, RandomDistributions.rk_lognormal, size, omean, osigma);
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -1039,13 +1078,8 @@ namespace NumpyDotNet
             }
 
             #region uniform
-
+ 
             public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
-            {
-                return _uniform(low, high, newdims);
-            }
-
-            private static ndarray _uniform(int low, int high, shape newdims)
             {
                 ndarray olow = np.asanyarray(low);
                 ndarray ohigh = np.asanyarray(high);
