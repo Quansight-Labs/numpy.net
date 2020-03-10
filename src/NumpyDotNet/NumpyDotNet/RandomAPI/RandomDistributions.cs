@@ -733,7 +733,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_logistic(rk_state state, double loc, double scale)
+        internal static double rk_logistic(rk_state state, double loc, double scale)
         {
             double U;
 

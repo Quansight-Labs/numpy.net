@@ -947,7 +947,6 @@ namespace NumpyDotNet
 
             #region laplace
 
-
             public static ndarray laplace(object loc, object scale = null, shape newdims = null)
             {
                 ndarray oloc, oscale;
@@ -978,6 +977,42 @@ namespace NumpyDotNet
                     throw new ValueError("scale < 0");
                 }
                 return cont2_array(internal_state, RandomDistributions.rk_laplace, size, oloc, oscale);
+            }
+
+            #endregion
+
+            #region logistic
+
+            public static ndarray logistic(object loc, object scale = null, shape newdims = null)
+            {
+                ndarray oloc, oscale;
+                double floc, fscale;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                if (scale == null)
+                    scale = 1.0;
+
+                oloc = asanyarray(loc).astype(np.Float64);
+                oscale = asanyarray(scale).astype(np.Float64);
+
+                if (oloc.size == 1 && oscale.size == 1)
+                {
+                    floc = (double)oloc.GetItem(0);
+                    fscale = (double)oscale.GetItem(0);
+
+                    if ((bool)np.signbit(fscale).GetItem(0))
+                        throw new ValueError("scale < 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_logistic, size, floc, fscale);
+                }
+
+                if (np.anyb(np.signbit(oscale)))
+                {
+                    throw new ValueError("scale < 0");
+                }
+                return cont2_array(internal_state, RandomDistributions.rk_logistic, size, oloc, oscale);
             }
 
             #endregion
