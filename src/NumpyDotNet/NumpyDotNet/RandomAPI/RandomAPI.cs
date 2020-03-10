@@ -818,8 +818,50 @@ namespace NumpyDotNet
 
                 return cont2_array(internal_state, RandomDistributions.rk_gamma, _size, oshape, oscale);
             }
-                
-                #endregion
+
+            #endregion
+
+            #region geometric
+
+            public static ndarray geometric(object p, npy_intp[] size = null)
+            {
+                ndarray op;
+                double fp;
+
+                op = asanyarray(p).astype(np.Float64);
+
+                if (op.size == 1)
+                {
+                    fp = (double)op.GetItem(0);
+
+                    if (fp < 0.0)
+                    {
+                        throw new ValueError("p < 0.0");
+                    }
+                    if (fp > 1.0)
+                    {
+                        throw new ValueError("p > 1.0");
+                    }
+                    return discd_array_sc(internal_state, RandomDistributions.rk_geometric, size, fp);
+                }
+
+
+                if (np.anyb(np.less(op, 0.0)))
+                {
+                    throw new ValueError("p < 0.0");
+                }
+
+                if (np.anyb(np.greater(op, 1.0)))
+                {
+                    throw new ValueError("p > 1.0");
+                }
+
+                return discd_array(internal_state, RandomDistributions.rk_geometric, size, op);
+            }
+
+  
+
+            #endregion
 
             #region standard_normal
 
@@ -1087,6 +1129,70 @@ namespace NumpyDotNet
 
             }
 
+            private static ndarray discd_array(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, ndarray oa)
+            {
+                long[] array_data;
+                ndarray array;
+                npy_intp length;
+                npy_intp i;
+                broadcast multi;
+                flatiter itera;
+
+                if (size == null)
+                {
+                    array_data = new long[CountTotalElements(oa.dims)];
+                    length = array_data.Length;
+                    double[] oa_data = oa.Array.data.datap as double[];
+
+                    itera = NpyCoreApi.IterNew(oa);
+                    foreach (var dd in itera)
+                    {
+                        array_data[itera.Iter.index] = func(state, oa_data[itera.CurrentPtr.data_offset / sizeof(double)]);
+                    }
+
+                    return np.array(array_data);
+                }
+                else
+                {
+                    array = np.empty(new shape(size), np.Int64);
+                    array_data = array.Array.data.datap as long[];
+
+                    multi = np.broadcast(array, oa);
+                    if (multi.size != array.size)
+                    {
+                        throw new ValueError("size is not compatible with inputs");
+                    }
+
+                    double[] oa_data = multi.IterData(1).datap as double[];
+                    for (i = 0; i < multi.size; i++)
+                    {
+                        var vpoa = multi.IterData(1);
+                        array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)]);
+                        multi.IterNext();
+                    }
+
+                    return array;
+                }
+
+            }
+
+            private static ndarray discd_array_sc(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, double a)
+            {
+                if (size == null)
+                {
+                    var rv = func(state, a);
+                    return asanyarray(rv);
+                }
+
+                var array_data = new long[CountTotalElements(size)];
+                var length = array_data.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    array_data[i] = func(state, a);
+                }
+
+                return asanyarray(array_data);
+            }
 
             private static ndarray discnp_array(rk_state state, Func<rk_state, long, double, long> func, long size, ndarray on, ndarray op)
             {

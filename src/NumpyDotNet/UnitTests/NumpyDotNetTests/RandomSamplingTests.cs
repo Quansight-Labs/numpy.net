@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+#if NPY_INTP_64
+using npy_intp = System.Int64;
+#else
+using npy_intp = System.Int32;
+#endif
 
 namespace NumpyDotNetTests
 {
@@ -886,6 +891,80 @@ namespace NumpyDotNetTests
             {  65.0307272217409, 127.150322850433, 93.4719711853725, 16.0658132351959, 47.6795500662279,
               118.872229264334, 33.0026431406179, 63.8640974905758, 34.4577922345043, 72.2726570834378 };
 
+            AssertArray(first10, ExpectedData);
+        }
+
+        [TestMethod]
+        public void test_rand_geometric_1()
+        {
+            np.random.seed(101);
+
+            var arr = np.random.geometric(0.35);
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)2, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)2, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(2.0, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new long[] { 2 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.geometric(new double[] { .75, .25, .5, .1 }, new npy_intp[] { 100, 4 });
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)47, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)1, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(4.42, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData2 = new long[,]
+                { { 1, 1, 1, 11 }, { 2, 2, 4, 13 }, { 1, 3, 1, 2 }, { 2, 12, 1, 1 }, { 1, 5, 1, 11 },
+                  { 1, 1, 1, 2 },  { 4, 3, 2, 13 }, { 1, 9, 3, 5 }, { 1, 11, 1, 20 }, { 2, 3, 4, 1 } };
+
+            AssertArray(first10, ExpectedData2);
+
+                //////////////
+
+            arr = np.random.geometric(.75, new npy_intp[] { 200000 });
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)10, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)1, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1.332595, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 };
             AssertArray(first10, ExpectedData);
         }
 

@@ -345,6 +345,31 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_geometric_1(self):
+
+        np.random.seed(101)
+
+        arr = np.random.geometric(0.35);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        #first10 = arr[0:10:1]
+        #print(first10)
+
+        arr = np.random.geometric([.75, .25, .5, .1], [100, 4]);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.geometric(.75, 200000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);

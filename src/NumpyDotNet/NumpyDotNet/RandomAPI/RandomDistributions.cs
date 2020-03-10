@@ -829,7 +829,7 @@ namespace NumpyDotNet
             return (long)Math.Ceiling(Math.Log(1.0 - rk_double(state)) / Math.Log(1.0 - p));
         }
 
-        static long rk_geometric(rk_state state, double p)
+        internal static long rk_geometric(rk_state state, double p)
         {
             if (p >= 0.333333333333333333333333)
             {
