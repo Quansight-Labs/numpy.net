@@ -708,7 +708,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_laplace(rk_state state, double loc, double scale)
+        internal static double rk_laplace(rk_state state, double loc, double scale)
         {
             double U;
 
