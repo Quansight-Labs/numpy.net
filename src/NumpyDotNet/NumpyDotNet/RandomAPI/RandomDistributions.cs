@@ -613,7 +613,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_standard_t(rk_state state, double df)
+        internal static double rk_standard_t(rk_state state, double df)
         {
             double N, G, X;
 

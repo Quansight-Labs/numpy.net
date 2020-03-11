@@ -804,6 +804,44 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_standard_normal_1(self):
+
+        np.random.seed(8877);
+        arr = np.random.standard_normal(5000000);
+        print(np.max(arr));
+        print(np.min(arr));
+        print(np.average(arr));
+
+        first10 = arr[0:10:1]
+        print(first10)
+
+
+    def test_rand_standard_t_1(self):
+
+        np.random.seed(344)
+
+        arr = np.random.standard_t(10, 1000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.standard_t(40, (40, 40, 40));
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        #print(first10)
+
+        arr = np.random.standard_t(20000, 200000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);
@@ -816,16 +854,6 @@ class Test_test1(unittest.TestCase):
         print(first10)
 
 
-    def test_rand_standard_normal_1(self):
-
-        np.random.seed(8877);
-        arr = np.random.standard_normal(5000000);
-        print(np.max(arr));
-        print(np.min(arr));
-        print(np.average(arr));
-
-        first10 = arr[0:10:1]
-        print(first10)
 
 if __name__ == '__main__':
     unittest.main()

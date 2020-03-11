@@ -1490,6 +1490,35 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region standard_t
+
+            public static ndarray standard_t(object df, shape newdims)
+            {
+
+                ndarray odf;
+                double fdf;
+
+                odf = asanyarray(df).astype(np.Float64);
+
+                if (odf.size == 1)
+                {
+                    fdf = (double)odf.GetItem(0);
+                    if (fdf <= 0)
+                        throw new ValueError("df <= 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_standard_t, newdims.iDims, fdf);
+                }
+
+
+                if (np.anyb(np.less_equal(odf, 0.0)))
+                {
+                    throw new ValueError("df <= 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_standard_t, newdims.iDims, odf);
+            }
+
+            #endregion
+
             #region uniform
 
             public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
