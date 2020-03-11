@@ -541,6 +541,26 @@ namespace NumpyDotNetTests
             print(s);
         }
 
+
+        [TestMethod]
+        public void test_rand_negative_binomial_1()
+        {
+            np.random.seed(123);
+
+            ndarray arr = np.random.negative_binomial(1, 0.1, new shape(20));
+            AssertArray(arr, new Int64[] { 8, 9, 4, 10, 8, 5, 11, 7, 21, 0, 8, 1, 7, 3, 1, 17, 4, 5, 6, 8, });
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
+
+            var s = np.sum(arr == 0);
+            Assert.AreEqual(1, s.GetItem(0));
+
+
+            arr = np.random.negative_binomial(1, 0.1, new shape(20000));
+            s = np.sum(arr == 0);
+            Assert.AreEqual(1992, s.GetItem(0));
+            print(s);
+        }
+
         [TestMethod]
         public void test_rand_chisquare_1()
         {
@@ -1490,7 +1510,14 @@ namespace NumpyDotNetTests
                 { { 4, 3, 4, 0, 1, 8 }, { 5, 1, 1, 4, 5, 4 }, { 2, 5, 4, 3, 5, 1 }, { 3, 4, 2, 5, 4, 2 }, { 3, 1, 5, 3, 3, 5 },
                   { 8, 0, 3, 2, 6, 1 }, { 1, 3, 3, 4, 2, 7 }, { 4, 3, 3, 4, 2, 4 }, { 4, 2, 7, 2, 0, 5 }, { 5, 3, 1, 1, 7, 3 } };
                 
-                AssertArray(first10, ExpectedData2);
+                AssertArray(first10, ExpectedData);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_rand_multivariate_normal_1()
+        {
+
         }
 
         [TestMethod]

@@ -234,6 +234,19 @@ class Test_test1(unittest.TestCase):
         s = np.sum(arr== 0);
         print(s)
 
+    def test_rand_negative_binomial_1(self):
+
+        np.random.seed(123)
+
+        arr = np.random.negative_binomial(1, 0.1, 20);
+        s = np.sum(arr== 0);
+        print(s);
+        print(arr);
+
+        arr = np.random.negative_binomial(1, 0.1, 20000);
+        s = np.sum(arr== 0);
+        print(s)
+
     def test_rand_chisquare_1(self):
 
         np.random.seed(904)
