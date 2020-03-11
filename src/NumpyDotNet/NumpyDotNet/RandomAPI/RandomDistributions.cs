@@ -746,7 +746,7 @@ namespace NumpyDotNet
             return Math.Exp(rk_normal(state, mean, sigma));
         }
 
-        static double rk_rayleigh(rk_state state, double mode)
+        internal static double rk_rayleigh(rk_state state, double mode)
         {
             return mode * Math.Sqrt(-2.0 * Math.Log(1.0 - rk_double(state)));
         }

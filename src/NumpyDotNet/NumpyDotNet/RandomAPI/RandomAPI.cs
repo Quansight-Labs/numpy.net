@@ -1389,6 +1389,34 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region rayleigh
+
+            public static ndarray rayleigh(object scale, shape newdims)
+            {
+
+                ndarray oscale;
+                double fscale;
+
+                oscale = asanyarray(scale).astype(np.Float64);
+
+                if (oscale.size == 1)
+                {
+                    fscale = (double)oscale.GetItem(0);
+                    if ((bool)np.signbit(fscale).GetItem(0))
+                        throw new ValueError("scale < 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_rayleigh, newdims.iDims, fscale);
+                }
+
+
+                if (np.anyb(np.signbit(oscale)))
+                {
+                    throw new ValueError("scale < 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_rayleigh, newdims.iDims, oscale);
+            }
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
