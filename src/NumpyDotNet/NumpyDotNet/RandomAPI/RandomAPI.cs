@@ -694,7 +694,40 @@ namespace NumpyDotNet
                 return cont1_array(internal_state, RandomDistributions.rk_chisquare, newdims.iDims, odf);
             }
 
+            public static ndarray noncentral_chisquare(object df, object nonc, shape newdims = null)
+            {
+                ndarray odf, ononc;
+                double fdf, fnonc;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
 
+                odf = asanyarray(df).astype(np.Float64);
+                ononc = asanyarray(nonc).astype(np.Float64);
+
+                if (odf.size == 1 && ononc.size == 1)
+                {
+                    fdf = (double)odf.GetItem(0);
+                    fnonc = (double)ononc.GetItem(0);
+
+                    if (fdf <= 0)
+                        throw new ValueError("df <= 0");
+                    if (fnonc <= 0)
+                        throw new ValueError("nonc <= 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_noncentral_chisquare, size, fdf, fnonc);
+                }
+
+                if (np.anyb(np.less_equal(odf, 0.0)))
+                {
+                    throw new ValueError("df <= 0");
+                }
+                if (np.anyb(np.less_equal(ononc, 0.0)))
+                {
+                    throw new ValueError("nonc <= 0");
+                }
+                return cont2_array(internal_state, RandomDistributions.rk_noncentral_chisquare, size, odf, ononc);
+            }
             #endregion
 
             #region dirichlet
