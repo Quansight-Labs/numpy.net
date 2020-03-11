@@ -779,6 +779,31 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_standard_gamma_1(self):
+
+        np.random.seed(343)
+
+        arr = np.random.standard_gamma(2, 1000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.standard_gamma(4, (40, 40, 40));
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        #print(first10)
+
+        arr = np.random.standard_gamma(.25, 200000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);

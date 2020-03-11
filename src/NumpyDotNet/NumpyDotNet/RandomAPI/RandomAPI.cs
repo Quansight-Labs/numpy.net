@@ -1427,6 +1427,8 @@ namespace NumpyDotNet
                 return rndArray.reshape(newshape);
             }
 
+            #endregion
+
             #region standard_exponential
 
             public static double standard_exponential()
@@ -1440,6 +1442,34 @@ namespace NumpyDotNet
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, newshape.iDims);
                 return rndArray.reshape(newshape);
+            }
+
+            #endregion
+
+            #region standard_gamma
+
+            public static ndarray standard_gamma(object shape, shape newdims)
+            {
+                ndarray oshape;
+                double fshape;
+
+                oshape = asanyarray(shape).astype(np.Float64);
+
+                if (oshape.size == 1)
+                {
+                    fshape = (double)oshape.GetItem(0);
+                    if ((bool)np.signbit(fshape).GetItem(0))
+                        throw new ValueError("shape < 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_standard_gamma, newdims.iDims, fshape);
+                }
+
+
+                if (np.anyb(np.signbit(oshape)))
+                {
+                    throw new ValueError("shape < 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_standard_gamma, newdims.iDims, oshape);
             }
 
             #endregion
@@ -1491,8 +1521,8 @@ namespace NumpyDotNet
             }
 
             #endregion
+                
 
-            #endregion
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -1565,7 +1595,7 @@ namespace NumpyDotNet
                         }
                     }
                     array = np.array(array_data);
-                    return array;
+                    return array.reshape(size);
 
                 }
 
@@ -1607,7 +1637,7 @@ namespace NumpyDotNet
                     }
                 }
 
-                return np.array(array_data);
+                return np.array(array_data).reshape(size);
             }
 
             private static ndarray cont1_array_sc(rk_state state, Func<rk_state, double, double> func, npy_intp[] size, double a)
@@ -1627,7 +1657,7 @@ namespace NumpyDotNet
                             array_data[i] = func(state, a);
                         }
                     }
-                    return np.array(array_data);
+                    return np.array(array_data).reshape(size);
                 }
             }
 
@@ -1649,7 +1679,7 @@ namespace NumpyDotNet
                             array_data[i] = func(state, a, b);
                         }
                     }
-                    return np.array(array_data);
+                    return np.array(array_data).reshape(size);
                 }
 
             }
@@ -1714,7 +1744,7 @@ namespace NumpyDotNet
                             array_data[i] = func(state, a, b, c);
                         }
                     }
-                    return np.array(array_data);
+                    return np.array(array_data).reshape(size);
                 }
             }
 
@@ -1808,7 +1838,7 @@ namespace NumpyDotNet
                         multi.IterNext();
                     }
 
-                    return array;
+                    return array.reshape(size);
                 }
 
             }
@@ -1828,7 +1858,7 @@ namespace NumpyDotNet
                     array_data[i] = func(state, a);
                 }
 
-                return asanyarray(array_data);
+                return asanyarray(array_data).reshape(size);
             }
 
             private static ndarray discnp_array(rk_state state, Func<rk_state, long, double, long> func, npy_intp[] size, ndarray on, ndarray op)
@@ -1887,7 +1917,7 @@ namespace NumpyDotNet
                     array_data[i] = func(state, n, p);
                 }
 
-                return asanyarray(array_data);
+                return asanyarray(array_data).reshape(size);
             }
 
             private static ndarray discdd_array(rk_state state, Func<rk_state, double, double, long> func, long[] size, ndarray on, ndarray op)
@@ -1946,7 +1976,7 @@ namespace NumpyDotNet
                     array_data[i] = func(state, n, p);
                 }
 
-                return asanyarray(array_data);
+                return asanyarray(array_data).reshape(size);
             }
 
 
@@ -2014,7 +2044,7 @@ namespace NumpyDotNet
                     array_data[i] = func(state, n, m, N);
                 }
 
-                return asanyarray(array_data);
+                return asanyarray(array_data).reshape(size);
             }
 
             private static double kahan_sum(double[] darr, npy_intp n)
