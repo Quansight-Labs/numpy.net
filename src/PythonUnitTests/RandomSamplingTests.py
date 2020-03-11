@@ -265,24 +265,6 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
-    def test_rand_noncentral_chisquare_1(self):
-
-        np.random.seed(904)
-
-        arr = np.random.noncentral_chisquare(3, 20, 100000);
-        print(np.amax(arr));
-        print(np.amin(arr));
-        print(np.average(arr));
-        first10 = arr[0:10:1]
-        print(first10)
-
-        arr = np.random.noncentral_chisquare(np.arange(1,(25*25)+1), 25*25);
-        print(np.amax(arr));
-        print(np.amin(arr));
-        print(np.average(arr));
-        first10 = arr[0:10:1]
-        print(first10)
-
     def test_rand_dirichlet_1(self):
 
         np.random.seed(904)
@@ -571,6 +553,49 @@ class Test_test1(unittest.TestCase):
         print(first10)
 
         arr = np.random.multinomial(20, [1/6.]*6, size=20000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+    def test_rand_noncentral_chisquare_1(self):
+
+        np.random.seed(904)
+
+        arr = np.random.noncentral_chisquare(3, 20, 100000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.noncentral_chisquare(np.arange(1,(25*25)+1), 25*25);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+    def test_rand_noncentral_f_1(self):
+
+        np.random.seed(95)
+
+        arr = np.random.noncentral_f(1, 20, 48, 1000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.noncentral_f([1.75, 2.25, 3.5, 4.1], 20, 48, 4);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.noncentral_f(1.75, 3, 53, 200000);
         print(np.amax(arr));
         print(np.amin(arr));
         print(np.average(arr));

@@ -1208,6 +1208,53 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region noncentral_f
+            public static ndarray noncentral_f(object dfnum, object dfden, object nonc, shape newdims = null)
+            {
+                ndarray odfnum, odfden, ononc;
+                double fdfnum, fdfden, fnonc;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                odfnum = asanyarray(dfnum).astype(np.Float64);
+                odfden = asanyarray(dfden).astype(np.Float64);
+                ononc = asanyarray(nonc).astype(np.Float64);
+
+                if (odfnum.size == 1 && odfden.size == 1 && ononc.size == 1)
+                {
+                    fdfnum = (double)odfnum.GetItem(0);
+                    fdfden = (double)odfden.GetItem(0);
+                    fnonc = (double)ononc.GetItem(0);
+
+                    if (fdfnum <= 0)
+                        throw new ValueError("dfnum <= 0");
+                    if (fdfden <= 0)
+                        throw new ValueError("dfden <= 0");
+                    if (fnonc <= 0)
+                        throw new ValueError("nonc <= 0");
+
+                    return cont3_array_sc(internal_state, RandomDistributions.rk_noncentral_f, size, fdfnum, fdfden, fnonc);
+                }
+
+                if (np.anyb(np.less_equal(odfnum, 0.0)))
+                {
+                    throw new ValueError("dfnum <= 0");
+                }
+                if (np.anyb(np.less_equal(odfden, 0.0)))
+                {
+                    throw new ValueError("dfden <= 0");
+                }
+                if (np.anyb(np.less_equal(ononc, 0.0)))
+                {
+                    throw new ValueError("nonc <= 0");
+                }
+                return cont3_array(internal_state, RandomDistributions.rk_noncentral_f, size, odfnum, odfden, ononc);
+            }
+
+  
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -1466,6 +1513,75 @@ namespace NumpyDotNet
 
             }
 
+            private static ndarray cont3_array_sc(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, double a, double b, double c)
+            {
+                if (size == null)
+                {
+                    double rv = func(state, a, b, c);
+                    return np.asanyarray(rv);
+                }
+                else
+                {
+                    var array_data = new double[CountTotalElements(size)];
+                    lock (rk_lock)
+                    {
+                        for (int i = 0; i < array_data.Length; i++)
+                        {
+                            array_data[i] = func(state, a, b, c);
+                        }
+                    }
+                    return np.array(array_data);
+                }
+            }
+
+            private static ndarray cont3_array(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, ndarray oa, ndarray ob, ndarray oc)
+            {
+                broadcast multi;
+                ndarray array;
+                double[] array_data;
+
+                if (size == null)
+                {
+                    multi = np.broadcast(oa, ob, oc);
+                    array = np.empty(multi.shape, dtype: np.Float64);
+                }
+                else
+                {
+                    array = np.empty(new shape(size), dtype: np.Float64);
+                    multi = np.broadcast(oa, ob, oc, array);
+                    if (multi.shape != array.shape)
+                    {
+                        throw new ValueError("size is not compatible with inputs");
+                    }
+                }
+
+                array_data = array.Array.data.datap as double[];
+
+                VoidPtr vpoa = multi.IterData(0);
+                VoidPtr vpob = multi.IterData(1);
+                VoidPtr vpoc = multi.IterData(2);
+
+
+                double[] oa_data = multi.IterData(0).datap as double[];
+                double[] ob_data = multi.IterData(1).datap as double[];
+                double[] oc_data = multi.IterData(2).datap as double[];
+
+                for (int i = 0; i < multi.size; i++)
+                {
+                    vpoa = multi.IterData(0);
+                    vpob = multi.IterData(1);
+                    vpoc = multi.IterData(2);
+
+                    array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)], 
+                                                ob_data[vpob.data_offset / sizeof(double)],
+                                                oc_data[vpoc.data_offset / sizeof(double)]);
+                    multi.IterNext();
+                }
+
+                return np.array(array_data);
+            }
+
+  
             private static ndarray discd_array(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, ndarray oa)
             {
                 long[] array_data;
