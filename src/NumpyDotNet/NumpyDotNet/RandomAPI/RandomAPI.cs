@@ -76,7 +76,7 @@ namespace NumpyDotNet
             #region Simple random data
 
             #region rand
-            public static float rand()
+            public static double rand()
             {
                 return random_sample();
             }
@@ -94,9 +94,9 @@ namespace NumpyDotNet
             #endregion
 
             #region randn
-            public static float randn()
+            public static double randn()
             {
-                return Convert.ToSingle(standard_normal());
+                return Convert.ToDouble(standard_normal());
             }
 
             public static ndarray randn(shape newshape)
@@ -482,10 +482,10 @@ namespace NumpyDotNet
 
             #region random_sample
 
-            public static float random_sample()
+            public static double random_sample()
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, null);
-                return Convert.ToSingle(rndArray.GetItem(0));
+                return Convert.ToDouble(rndArray.GetItem(0));
             }
 
             public static ndarray random_sample(params Int32[] newshape)
@@ -1414,10 +1414,10 @@ namespace NumpyDotNet
 
             #region standard_cauchy
 
-            public static float standard_cauchy()
+            public static double standard_cauchy()
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_cauchy, null);
-                return Convert.ToSingle(rndArray.GetItem(0));
+                return Convert.ToDouble(rndArray.GetItem(0));
             }
 
 
@@ -1427,14 +1427,29 @@ namespace NumpyDotNet
                 return rndArray.reshape(newshape);
             }
 
+            #region standard_exponential
+
+            public static double standard_exponential()
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, null);
+                return Convert.ToDouble(rndArray.GetItem(0));
+            }
+
+
+            public static ndarray standard_exponential(shape newshape)
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, newshape.iDims);
+                return rndArray.reshape(newshape);
+            }
+
             #endregion
 
             #region standard_normal
 
-            public static float standard_normal()
+            public static double standard_normal()
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, null);
-                return Convert.ToSingle(rndArray.GetItem(0));
+                return Convert.ToDouble(rndArray.GetItem(0));
             }
 
             public static ndarray standard_normal(shape newshape)
@@ -1443,8 +1458,10 @@ namespace NumpyDotNet
                 return rndArray.reshape(newshape);
             }
 
+            #endregion
+
             #region uniform
- 
+
             public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
             {
                 ndarray olow = np.asanyarray(low);

@@ -26,9 +26,9 @@ namespace NumpyDotNetTests
             AssertShape(arr, 2, 3, 4);
 
             np.random.seed(8765);
-            float f = np.random.rand();
+            double f = np.random.rand();
             print(f);
-            Assert.AreEqual(0.03278543f, f);
+            Assert.AreEqual(0.032785430047761466, f);
 
             arr = np.random.rand(5000000);
 
@@ -48,7 +48,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randn_1()
         {
-            float fr = np.random.randn();
+            double fr = np.random.randn();
             ndarray arr = np.random.randn(new shape(2, 3, 4));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
@@ -57,7 +57,7 @@ namespace NumpyDotNetTests
 
             fr = np.random.randn();
             print(fr);
-            Assert.AreEqual(0.471435163732f, fr);
+            Assert.AreEqual(0.47143516373249306, fr);
 
             arr = np.random.randn(new shape(5000000));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
