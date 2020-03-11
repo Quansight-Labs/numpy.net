@@ -602,6 +602,31 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_normal_1(self):
+
+        np.random.seed(96)
+
+        arr = np.random.normal(1, 48, 1000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.normal([1.75, 2.25, 3.5, 4.1], 48, 4);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.normal(1.75, 53, 200000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
     def test_rand_uniform_1(self):
 
         np.random.seed(5461);

@@ -1252,7 +1252,40 @@ namespace NumpyDotNet
                 return cont3_array(internal_state, RandomDistributions.rk_noncentral_f, size, odfnum, odfden, ononc);
             }
 
-  
+
+            #endregion
+
+            #region normal
+
+            public static ndarray normal(object loc, object scale, shape newdims = null)
+            {
+                ndarray oloc, oscale;
+                double floc, fscale;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                oloc = asanyarray(loc).astype(np.Float64);
+                oscale = asanyarray(scale).astype(np.Float64);
+
+                if (oloc.size == 1 && oscale.size == 1)
+                {
+                    floc = (double)oloc.GetItem(0);
+                    fscale = (double)oscale.GetItem(0);
+
+                    if ((bool)np.signbit(fscale).GetItem(0))
+                        throw new ValueError("scale <= 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_normal, size, floc, fscale);
+                }
+
+                if (np.anyb(np.signbit(oscale)))
+                {
+                    throw new ValueError("scale <= 0");
+                }
+                return cont2_array(internal_state, RandomDistributions.rk_normal, size, oloc, oscale);
+            }
+
             #endregion
 
             #region standard_normal
