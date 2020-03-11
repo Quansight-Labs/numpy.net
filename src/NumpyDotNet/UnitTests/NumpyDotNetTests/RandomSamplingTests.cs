@@ -1804,6 +1804,79 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_rand_poisson_1()
+        {
+            np.random.seed(993);
+
+            var arr = np.random.poisson(3.0, new shape(1000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)10, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)0, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(2.971, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new long[] { 1, 2, 5, 2, 3, 2, 1, 3, 1, 1 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.poisson(new double[] { 1.75, 2.25, 3.5, 4.1 }, new shape(4));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)8, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)2, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(4.0, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new long[] { 3, 2, 3, 8 };
+
+            //AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.poisson(1.75, new shape(200000));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)10, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)0, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1.750835, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new long[] { 1, 2, 1, 2, 1, 1, 3, 1, 0, 1 };
+            AssertArray(first10, ExpectedData);
+
+        }
+
+        [TestMethod]
         public void test_rand_uniform_1()
         {
             np.random.seed(5461);

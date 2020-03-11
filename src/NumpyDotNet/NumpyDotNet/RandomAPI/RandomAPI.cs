@@ -1316,6 +1316,52 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region Poisson
+
+            public static ndarray poisson(object lam, shape shape = null)
+            {
+                ndarray olam;
+                double flam;
+                npy_intp[] size = null;
+                if (shape != null)
+                    size = shape.iDims;
+
+                const double poisson_lam_max = 9.223372006484771e+18;
+
+                olam = asanyarray(lam).astype(np.Float64);
+
+                if (olam.size == 1)
+                {
+                    flam = (double)olam.GetItem(0);
+
+                    if (flam < 0.0)
+                    {
+                        throw new ValueError("lam < 0.0");
+                    }
+                    if (flam > poisson_lam_max)
+                    {
+                        throw new ValueError("lam value too large.");
+                    }
+                    return discd_array_sc(internal_state, RandomDistributions.rk_poisson, size, flam);
+                }
+
+
+                if (np.anyb(np.less(olam, 0.0)))
+                {
+                    throw new ValueError("lam < 0.0");
+                }
+
+                if (np.anyb(np.greater(olam, poisson_lam_max)))
+                {
+                    throw new ValueError("lam value too large.");
+                }
+
+                return discd_array(internal_state, RandomDistributions.rk_poisson, size, olam);
+            }
+
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()

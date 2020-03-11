@@ -591,7 +591,7 @@ namespace NumpyDotNet
         }
 
 
-        static long rk_poisson(rk_state state, double lam)
+        internal static long rk_poisson(rk_state state, double lam)
         {
             if (lam >= 10)
             {
