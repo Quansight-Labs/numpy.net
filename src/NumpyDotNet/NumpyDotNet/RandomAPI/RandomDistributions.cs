@@ -692,7 +692,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_pareto(rk_state state, double a)
+        internal static double rk_pareto(rk_state state, double a)
         {
             return Math.Exp(rk_standard_exponential(state) / a) - 1;
         }

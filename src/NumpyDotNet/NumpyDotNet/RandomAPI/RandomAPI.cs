@@ -1288,6 +1288,34 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region pareto
+
+            public static ndarray pareto(object a, shape newdims)
+            {
+
+                ndarray oa;
+                double fa;
+
+                oa = asanyarray(a).astype(np.Float64);
+
+                if (oa.size == 1)
+                {
+                    fa = (double)oa.GetItem(0);
+                    if (fa <= 0)
+                        throw new ValueError("a <= 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_pareto, newdims.iDims, fa);
+                }
+
+
+                if (np.anyb(np.less_equal(oa, 0.0)))
+                {
+                    throw new ValueError("a <= 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_pareto, newdims.iDims, oa);
+            }
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
