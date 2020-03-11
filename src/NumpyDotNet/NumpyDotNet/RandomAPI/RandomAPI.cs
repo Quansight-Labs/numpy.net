@@ -1519,6 +1519,52 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region triangular
+
+            public static ndarray triangular(object left, object mode, object right, shape newdims = null)
+            {
+                ndarray oleft, omode, oright;
+                double fleft, fmode, fright;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                oleft = asanyarray(left).astype(np.Float64);
+                omode = asanyarray(mode).astype(np.Float64);
+                oright = asanyarray(right).astype(np.Float64);
+
+                if (oleft.size == 1 && omode.size == 1 && oright.size == 1)
+                {
+                    fleft = (double)oleft.GetItem(0);
+                    fmode = (double)omode.GetItem(0);
+                    fright = (double)oright.GetItem(0);
+
+                    if (fleft > fmode)
+                        throw new ValueError("left > mode");
+                    if (fmode > fright)
+                        throw new ValueError("mode > right");
+                    if (fleft == fright)
+                        throw new ValueError("left == right");
+
+                    return cont3_array_sc(internal_state, RandomDistributions.rk_triangular, size, fleft, fmode, fright);
+                }
+
+                if (np.anyb(np.greater(oleft, omode)))
+                {
+                    throw new ValueError("left > mode");
+                }
+                if (np.anyb(np.greater(omode, oright)))
+                {
+                    throw new ValueError("mode > right");
+                }
+                if (np.anyb(np.equal(oleft, oright)))
+                {
+                    throw new ValueError("left == right");
+                }
+                return cont3_array(internal_state, RandomDistributions.rk_triangular, size, oleft, omode, oright);
+            }
+            #endregion
+
             #region uniform
 
             public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)

@@ -938,7 +938,7 @@ namespace NumpyDotNet
         }
 
 
-        static double rk_triangular(rk_state state, double left, double mode, double right)
+        internal static double rk_triangular(rk_state state, double left, double mode, double right)
         {
             double _base, leftbase, ratio, leftprod, rightprod;
             double U;
