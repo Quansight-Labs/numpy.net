@@ -1362,6 +1362,33 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region Power
+            public static ndarray power(object a, shape newdims)
+            {
+
+                ndarray oa;
+                double fa;
+
+                oa = asanyarray(a).astype(np.Float64);
+
+                if (oa.size == 1)
+                {
+                    fa = (double)oa.GetItem(0);
+                    if ((bool)np.signbit(fa).GetItem(0))
+                        throw new ValueError("a < 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_power, newdims.iDims, fa);
+                }
+
+
+                if (np.anyb(np.signbit(oa)))
+                {
+                    throw new ValueError("a < 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_power, newdims.iDims, oa);
+            }
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()

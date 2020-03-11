@@ -702,7 +702,7 @@ namespace NumpyDotNet
             return Math.Pow(rk_standard_exponential(state), 1.0/ a);
         }
 
-        static double rk_power(rk_state state, double a)
+        internal static double rk_power(rk_state state, double a)
         {
             return Math.Pow(1 - Math.Exp(-rk_standard_exponential(state)), 1.0/ a);
         }
