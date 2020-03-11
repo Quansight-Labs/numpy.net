@@ -607,7 +607,7 @@ namespace NumpyDotNet
             }
         }
 
-        static double rk_standard_cauchy(rk_state state)
+        internal static double rk_standard_cauchy(rk_state state)
         {
             return rk_gauss(state) / rk_gauss(state);
         }

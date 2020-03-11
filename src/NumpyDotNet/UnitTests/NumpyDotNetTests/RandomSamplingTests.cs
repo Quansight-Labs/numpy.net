@@ -49,7 +49,7 @@ namespace NumpyDotNetTests
         public void test_randn_1()
         {
             float fr = np.random.randn();
-            ndarray arr = np.random.randn(2, 3, 4);
+            ndarray arr = np.random.randn(new shape(2, 3, 4));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
@@ -59,7 +59,7 @@ namespace NumpyDotNetTests
             print(fr);
             Assert.AreEqual(0.471435163732f, fr);
 
-            arr = np.random.randn(5000000);
+            arr = np.random.randn(new shape(5000000));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
 
             var amax = np.amax(arr);
@@ -2031,6 +2031,84 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_rand_standard_cauchy_1()
+        {
+            np.random.seed(341);
+
+            var arr = np.random.standard_cauchy(new shape(1000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(119.96347941712416, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(-1762.3426492479496, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-2.3636040352933994, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            var ExpectedData = new double[]
+                { -1.81609229068342, 1.91173957116114, 0.975089553177401, -1.04547287084333, 0.683693504006227,
+                   0.291855386511429, 0.293944262698167, -0.516960388849179, -0.555803130754829, 0.450452949336812 };
+
+            AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.standard_cauchy(new shape(40, 40, 40));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(6790.0984049732115, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(-7960.846314730899, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-0.082440258910342012, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            //print(first10);
+            AssertShape(first10, 10, 40, 40);
+
+            //ExpectedData = new double[] { 2.18222682432408, 6.16749665086441, 4.02795272869782, 2.29528895942752 };
+
+            //AssertArray(first10, ExpectedData);
+
+            //////////////
+
+            arr = np.random.standard_cauchy(new shape(200000));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(339868.595567882931, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(-531632.9516028948, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(-1.1522703389124869, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            ExpectedData = new double[]
+            {  -606.705600585211, 1.00099219805413, 3.84125038943826, 3.29242690381019, 0.762390596914478,
+                 -0.693882237673906, -1.58555557371248, 0.0288085451238071, 0.223559949952255, -0.491252720933577};
+            AssertArray(first10, ExpectedData);
+
+        }
+
+        [TestMethod]
         public void test_rand_uniform_1()
         {
             np.random.seed(5461);
@@ -2063,7 +2141,7 @@ namespace NumpyDotNetTests
         public void test_rand_standard_normal_1()
         {
             np.random.seed(8877);
-            ndarray arr = np.random.standard_normal(5000000);
+            ndarray arr = np.random.standard_normal(new shape(5000000));
 
             var amax = np.amax(arr);
             print(amax);

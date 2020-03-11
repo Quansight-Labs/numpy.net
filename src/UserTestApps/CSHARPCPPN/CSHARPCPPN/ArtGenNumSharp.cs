@@ -252,7 +252,7 @@ namespace CSHARPCPPN
 #if true
         public static NDArray standard_normal(params Int32[] newshape)
         {
-            var rnddata = NumpyDotNet.np.random.standard_normal(newshape);
+            var rnddata = NumpyDotNet.np.random.standard_normal(new NumpyDotNet.shape(newshape));
             var myarray = np.array(NumpyDotNet.np.AsDoubleArray(rnddata)).reshape(newshape);
             return myarray;
         }

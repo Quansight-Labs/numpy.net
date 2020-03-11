@@ -48,13 +48,13 @@ namespace CSHARPCPPN
 
             // Configuring Network
 
-            Img_Batch = np.random.standard_normal(new int[] { batchSize, width, height, C_Dim });
+            Img_Batch = np.random.standard_normal(new shape( batchSize, width, height, C_Dim ));
 
-            Hid_Vec = np.random.standard_normal(new int[] { batchSize, hSize });
+            Hid_Vec = np.random.standard_normal(new shape( batchSize, hSize ));
 
-            X_Dat = np.random.standard_normal(batchSize, width * height, 1);
-            Y_Dat = np.random.standard_normal(batchSize, width * height, 1);
-            R_Dat = np.random.standard_normal(batchSize, width * height, 1);
+            X_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
+            Y_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
+            R_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
         }
 
         public List<ndarray> CreateGrid(int width = 32, int height = 32, float scaling = 1.0f)
@@ -146,13 +146,13 @@ namespace CSHARPCPPN
 
         public ndarray FullyConnected(ndarray input, int out_dim, bool with_bias = true)
         {
-            var mat = np.random.standard_normal((int)input.shape.iDims[1], out_dim).astype(np.Float32);
+            var mat = np.random.standard_normal(new shape(input.shape.iDims[1], out_dim)).astype(np.Float32);
 
             var result = np.matmul(input, mat);
 
             if (with_bias)
             {
-                var bias = np.random.standard_normal(1, out_dim).astype(np.Float32);
+                var bias = np.random.standard_normal(new shape(1, out_dim)).astype(np.Float32);
                 result += bias * np.ones(new shape(input.shape.iDims[0], 1), np.Float32);
             }
 

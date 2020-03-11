@@ -99,12 +99,7 @@ namespace NumpyDotNet
                 return Convert.ToSingle(standard_normal());
             }
 
-            public static ndarray randn(params Int32[] newshape)
-            {
-                return standard_normal(newshape);
-            }
-
-            public static ndarray randn(params Int64[] newshape)
+            public static ndarray randn(shape newshape)
             {
                 return standard_normal(newshape);
             }
@@ -1417,6 +1412,23 @@ namespace NumpyDotNet
             }
             #endregion
 
+            #region standard_cauchy
+
+            public static float standard_cauchy()
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_cauchy, null);
+                return Convert.ToSingle(rndArray.GetItem(0));
+            }
+
+
+            public static ndarray standard_cauchy(shape newshape)
+            {
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_cauchy, newshape.iDims);
+                return rndArray.reshape(newshape);
+            }
+
+            #endregion
+
             #region standard_normal
 
             public static float standard_normal()
@@ -1424,18 +1436,11 @@ namespace NumpyDotNet
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, null);
                 return Convert.ToSingle(rndArray.GetItem(0));
             }
-            public static ndarray standard_normal(params Int32[] newshape)
+
+            public static ndarray standard_normal(shape newshape)
             {
-                return _standard_normal(ConvertToShape(newshape));
-            }
-            public static ndarray standard_normal(params Int64[] newshape)
-            {
-                return _standard_normal(ConvertToShape(newshape));
-            }
-            private static ndarray _standard_normal(params npy_intp[] newshape)
-            {
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, newshape);
-                return rndArray.reshape(ConvertToShape(newshape));
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, newshape.iDims);
+                return rndArray.reshape(newshape);
             }
 
             #region uniform
