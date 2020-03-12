@@ -48,45 +48,25 @@ namespace NumpyDotNet
     {
         public class random
         {
-            private rk_state _internal_state = null;
+            private rk_state internal_state = null;
 
-            static rk_state internal_state = new rk_state(new RandomState());
-            static object rk_lock = new object();
-            static bool IsInitialized = seed(null);
+            private object rk_lock = new object();
 
             #region seed
-            public static bool seed(UInt64? seed)
-            {
-                _seed(seed);
-                return true;
-            }
-            public static bool seed(Int32? seed)
+     
+
+            public bool seed(Int32? seed)
             {
                 if (seed.HasValue)
-                    return _seed(Convert.ToUInt64(seed.Value));
+                    return this.seed(Convert.ToUInt64(seed.Value));
                 else
-                    return _seed(null);
+                    return this.seed((ulong?)null);
 
             }
 
-            public bool xseed(Int32? seed)
-            {
-                if (seed.HasValue)
-                    return _xseed(Convert.ToUInt64(seed.Value));
-                else
-                    return _xseed(null);
-
-            }
-
-            private static bool _seed(UInt64? seed)
+            public bool seed(UInt64? seed)
             {
                 internal_state.rndGenerator.Seed(seed, internal_state);
-                return true;
-            }
-
-            private bool _xseed(UInt64? seed)
-            {
-                _internal_state.rndGenerator.Seed(seed, _internal_state);
                 return true;
             }
 
@@ -96,8 +76,8 @@ namespace NumpyDotNet
                 {
                     rndGenerator = new RandomState();
                 }
-                _internal_state = new rk_state(rndGenerator);
-                xseed(null);
+                internal_state = new rk_state(rndGenerator);
+                seed(null);
             }
 
             #endregion
@@ -138,7 +118,7 @@ namespace NumpyDotNet
                 bool[] randomData = new bool[CountTotalElements(newdims)];
 
      
-                RandomDistributions.rk_random_bool(false, true, randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_bool(false, true, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Bool).reshape(newdims);
             }
@@ -171,7 +151,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int8(off, (SByte)(rng-1), randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_int8(off, (SByte)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int8).reshape(newdims);
             }
@@ -204,7 +184,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint8(off, (Byte)(rng-1), randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_uint8(off, (Byte)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt8).reshape(newdims);
             }
@@ -237,7 +217,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int16(off, (Int16)(rng-1), randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_int16(off, (Int16)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int16).reshape(newdims);
             }
@@ -270,7 +250,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint16(off, (UInt16)(rng-1), randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_uint16(off, (UInt16)(rng-1), randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt16).reshape(newdims);
             }
@@ -333,7 +313,7 @@ namespace NumpyDotNet
                 }
                 var rng = _high.Value - _low;
                 var off = _low;
-                RandomDistributions.rk_random_int32(off, rng-1, randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_int32(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int32).reshape(newdims);
             }
@@ -366,7 +346,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint32(off, rng-1, randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_uint32(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt32).reshape(newdims);
             }
@@ -399,7 +379,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_int64(off, rng-1, randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_int64(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.Int64).reshape(newdims);
             }
@@ -434,7 +414,7 @@ namespace NumpyDotNet
                 var rng = _high.Value - _low;
                 var off = _low;
 
-                RandomDistributions.rk_random_uint64(off, rng-1, randomData.Length, randomData, _internal_state);
+                RandomDistributions.rk_random_uint64(off, rng-1, randomData.Length, randomData, internal_state);
 
                 return np.array(randomData, dtype: np.UInt64).reshape(newdims);
             }
@@ -454,7 +434,7 @@ namespace NumpyDotNet
 
             public double random_sample()
             {
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, null);
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, null);
                 return Convert.ToDouble(rndArray.GetItem(0));
             }
 
@@ -464,7 +444,7 @@ namespace NumpyDotNet
                 if (newdims != null)
                     size = newdims.iDims;
 
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, size);
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, size);
                 return rndArray;
             }
 
@@ -491,7 +471,7 @@ namespace NumpyDotNet
             {
                 byte[] b = new byte[size];
 
-                RandomDistributions.rk_fill(b, size, _internal_state);
+                RandomDistributions.rk_fill(b, size, internal_state);
                 return b;
             }
 
@@ -511,7 +491,7 @@ namespace NumpyDotNet
 
                     for (ulong i = (ulong)n - 1; i >= 1; i--)
                     {
-                        ulong j = RandomDistributions.rk_interval(i, _internal_state);
+                        ulong j = RandomDistributions.rk_interval(i, internal_state);
                         buf[0] = x[j];
                         x[j] = x[i];
                         x[i] = buf[0];
@@ -524,7 +504,7 @@ namespace NumpyDotNet
                     ndarray buf = np.empty_like(x[0], dtype: x.Dtype);
                     for (ulong i = (ulong)n - 1; i >= 1; i--)
                     {
-                        ulong j = RandomDistributions.rk_interval(i, _internal_state);
+                        ulong j = RandomDistributions.rk_interval(i, internal_state);
                         buf["..."] = x[j];
                         x[j] = x[i];
                         x[i] = buf;
@@ -575,7 +555,7 @@ namespace NumpyDotNet
                 if ((bool)bb.GetItem(0))
                     throw new ValueError("b <= 0");
 
-                return cont2_array(_internal_state, RandomDistributions.rk_beta, size, a, b);
+                return cont2_array(internal_state, RandomDistributions.rk_beta, size, a, b);
 
             }
 
@@ -609,7 +589,7 @@ namespace NumpyDotNet
                     else if ((bool)np.isnan(op).GetItem(0))
                         throw new ValueError("p is nan");
 
-                    return discnp_array_sc(_internal_state, RandomDistributions.rk_binomial, size, ln, fp);
+                    return discnp_array_sc(internal_state, RandomDistributions.rk_binomial, size, ln, fp);
                 }
 
                 if ((bool)np.any(np.less(n, 0).GetItem(0)))
@@ -621,7 +601,7 @@ namespace NumpyDotNet
                 if ((bool)np.any(np.greater(p, 1)))
                     throw new ValueError("p > 1");
 
-                return discnp_array(_internal_state, RandomDistributions.rk_binomial, size, on, op);
+                return discnp_array(internal_state, RandomDistributions.rk_binomial, size, on, op);
 
             }
 
@@ -651,7 +631,7 @@ namespace NumpyDotNet
                     else if ((bool)np.isnan(op).GetItem(0))
                         throw new ValueError("p is nan");
 
-                    return discdd_array_sc(_internal_state, RandomDistributions.rk_negative_binomial, size, ln, fp);
+                    return discdd_array_sc(internal_state, RandomDistributions.rk_negative_binomial, size, ln, fp);
                 }
 
                 if ((bool)np.any(np.less(n, 0).GetItem(0)))
@@ -663,7 +643,7 @@ namespace NumpyDotNet
                 if ((bool)np.any(np.greater(p, 1)))
                     throw new ValueError("p > 1");
 
-                return discdd_array(_internal_state, RandomDistributions.rk_negative_binomial, size, on, op);
+                return discdd_array(internal_state, RandomDistributions.rk_negative_binomial, size, on, op);
 
             }
 
@@ -686,7 +666,7 @@ namespace NumpyDotNet
                     if (fdf <= 0)
                         throw new ValueError("df <= 0");
 
-                    return cont1_array_sc(_internal_state, RandomDistributions.rk_chisquare, newdims.iDims, fdf);
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_chisquare, newdims.iDims, fdf);
                 }
 
 
@@ -694,7 +674,7 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("df <= 0");
                 }
-                return cont1_array(_internal_state, RandomDistributions.rk_chisquare, newdims.iDims, odf);
+                return cont1_array(internal_state, RandomDistributions.rk_chisquare, newdims.iDims, odf);
             }
 
             public ndarray noncentral_chisquare(object df, object nonc, shape newdims = null)
@@ -718,7 +698,7 @@ namespace NumpyDotNet
                     if (fnonc <= 0)
                         throw new ValueError("nonc <= 0");
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_noncentral_chisquare, size, fdf, fnonc);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_noncentral_chisquare, size, fdf, fnonc);
                 }
 
                 if (np.anyb(np.less_equal(odf, 0.0)))
@@ -729,7 +709,7 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("nonc <= 0");
                 }
-                return cont2_array(_internal_state, RandomDistributions.rk_noncentral_chisquare, size, odf, ononc);
+                return cont2_array(internal_state, RandomDistributions.rk_noncentral_chisquare, size, odf, ononc);
             }
             #endregion
 
@@ -766,7 +746,7 @@ namespace NumpyDotNet
                     acc = 0.0;
                     for (int j = 0; j < k; j++)
                     {
-                        val_data[i + j] = RandomDistributions.rk_standard_gamma(_internal_state, alpha_data[j]);
+                        val_data[i + j] = RandomDistributions.rk_standard_gamma(internal_state, alpha_data[j]);
                         acc = acc + val_data[i + j];
                     }
                     invacc = 1 / acc;
@@ -797,14 +777,14 @@ namespace NumpyDotNet
                         throw new ValueError("scale < 0");
                     }
 
-                    return cont1_array_sc(_internal_state, RandomDistributions.rk_exponential, shape.iDims, fscale);
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_exponential, shape.iDims, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont1_array(_internal_state, RandomDistributions.rk_exponential, shape.iDims, oscale);
+                return cont1_array(internal_state, RandomDistributions.rk_exponential, shape.iDims, oscale);
 
             }
             #endregion
@@ -829,7 +809,7 @@ namespace NumpyDotNet
                     if (fdfden <= 0)
                         throw new ValueError("dfden <= 0");
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_f, newdims.iDims, fdfnum, fdfden);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_f, newdims.iDims, fdfnum, fdfden);
                 }
 
                 if (np.anyb(np.less_equal(odfnum, 0.0)))
@@ -840,7 +820,7 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("dfden <= 0");
                 }
-                return cont2_array(_internal_state, RandomDistributions.rk_f, newdims.iDims, odfnum, odfden);
+                return cont2_array(internal_state, RandomDistributions.rk_f, newdims.iDims, odfnum, odfden);
             }
 
             #endregion
@@ -873,7 +853,7 @@ namespace NumpyDotNet
                         throw new ValueError("scale < 0");
                     }
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_gamma, size, fshape, fscale);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_gamma, size, fshape, fscale);
                 }
   
 
@@ -886,7 +866,7 @@ namespace NumpyDotNet
                     throw new ValueError("scale < 0");
                 }
 
-                return cont2_array(_internal_state, RandomDistributions.rk_gamma, size, oshape, oscale);
+                return cont2_array(internal_state, RandomDistributions.rk_gamma, size, oshape, oscale);
             }
 
             #endregion
@@ -915,7 +895,7 @@ namespace NumpyDotNet
                     {
                         throw new ValueError("p > 1.0");
                     }
-                    return discd_array_sc(_internal_state, RandomDistributions.rk_geometric, size, fp);
+                    return discd_array_sc(internal_state, RandomDistributions.rk_geometric, size, fp);
                 }
 
 
@@ -929,7 +909,7 @@ namespace NumpyDotNet
                     throw new ValueError("p > 1.0");
                 }
 
-                return discd_array(_internal_state, RandomDistributions.rk_geometric, size, op);
+                return discd_array(internal_state, RandomDistributions.rk_geometric, size, op);
             }
 
 
@@ -960,14 +940,14 @@ namespace NumpyDotNet
                      if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_gumbel, size, floc, fscale);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_gumbel, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(_internal_state, RandomDistributions.rk_gumbel, size, oloc, oscale);
+                return cont2_array(internal_state, RandomDistributions.rk_gumbel, size, oloc, oscale);
             }
 
             #endregion
@@ -1000,7 +980,7 @@ namespace NumpyDotNet
                         throw new ValueError("nsample < 1");
                     if (lngood + lnbad < lnsample)
                         throw new ValueError("ngood + nbad < nsample");
-                    return discnmN_array_sc(_internal_state, RandomDistributions.rk_hypergeometric, size, lngood, lnbad, lnsample);
+                    return discnmN_array_sc(internal_state, RandomDistributions.rk_hypergeometric, size, lngood, lnbad, lnsample);
                 }
 
 
@@ -1012,7 +992,7 @@ namespace NumpyDotNet
                     throw new ValueError("nsample < 1");
                 if (np.anyb(np.less(np.add(ongood, onbad), onsample)))
                     throw new ValueError("ngood + nbad < nsample");
-                return discnmN_array(_internal_state, RandomDistributions.rk_hypergeometric, size, ongood, onbad, onsample);
+                return discnmN_array(internal_state, RandomDistributions.rk_hypergeometric, size, ongood, onbad, onsample);
             }
 
             #endregion
@@ -1041,14 +1021,14 @@ namespace NumpyDotNet
                     if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_laplace, size, floc, fscale);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_laplace, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(_internal_state, RandomDistributions.rk_laplace, size, oloc, oscale);
+                return cont2_array(internal_state, RandomDistributions.rk_laplace, size, oloc, oscale);
             }
 
             #endregion
@@ -1077,14 +1057,14 @@ namespace NumpyDotNet
                     if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_logistic, size, floc, fscale);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_logistic, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(_internal_state, RandomDistributions.rk_logistic, size, oloc, oscale);
+                return cont2_array(internal_state, RandomDistributions.rk_logistic, size, oloc, oscale);
             }
 
             #endregion
@@ -1114,7 +1094,7 @@ namespace NumpyDotNet
                         throw new ValueError("sigma < 0");
                     }
 
-                    return cont2_array_sc(_internal_state, RandomDistributions.rk_lognormal, size, fmean, fsigma);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_lognormal, size, fmean, fsigma);
                 }
 
 
@@ -1123,7 +1103,7 @@ namespace NumpyDotNet
                     throw new ValueError("sigma < 0");
                 }
 
-                return cont2_array(_internal_state, RandomDistributions.rk_lognormal, size, omean, osigma);
+                return cont2_array(internal_state, RandomDistributions.rk_lognormal, size, omean, osigma);
             }
 
             #endregion
@@ -1149,7 +1129,7 @@ namespace NumpyDotNet
                     if (fp >= 1.0)
                         throw new ValueError("p >= 1.0");
 
-                    return discd_array_sc(_internal_state, RandomDistributions.rk_logseries, size, fp);
+                    return discd_array_sc(internal_state, RandomDistributions.rk_logseries, size, fp);
                 }
 
 
@@ -1158,7 +1138,7 @@ namespace NumpyDotNet
                 if (np.anyb(np.greater_equal(op, 1.0)))
                     throw new ValueError("p >= 1.0");
 
-                return discd_array(_internal_state, RandomDistributions.rk_logseries, size, op);
+                return discd_array(internal_state, RandomDistributions.rk_logseries, size, op);
             }
 
             #endregion
@@ -1190,7 +1170,7 @@ namespace NumpyDotNet
                     npy_intp dn = n;
                     for (npy_intp j = 0; j < d - 1; j++)
                     {
-                        mnix[i + j] = RandomDistributions.rk_binomial(_internal_state, dn, pix[j] / Sum);
+                        mnix[i + j] = RandomDistributions.rk_binomial(internal_state, dn, pix[j] / Sum);
                         dn = dn - mnix[i + j];
                         if (dn <= 0)
                             break;
@@ -1210,7 +1190,7 @@ namespace NumpyDotNet
             #endregion
 
             #region noncentral_f
-            public static ndarray noncentral_f(object dfnum, object dfden, object nonc, shape newdims = null)
+            public ndarray noncentral_f(object dfnum, object dfden, object nonc, shape newdims = null)
             {
                 ndarray odfnum, odfden, ononc;
                 double fdfnum, fdfden, fnonc;
@@ -1258,7 +1238,7 @@ namespace NumpyDotNet
 
             #region normal
 
-            public static ndarray normal(object loc, object scale, shape newdims = null)
+            public ndarray normal(object loc, object scale, shape newdims = null)
             {
                 ndarray oloc, oscale;
                 double floc, fscale;
@@ -1291,7 +1271,7 @@ namespace NumpyDotNet
 
             #region pareto
 
-            public static ndarray pareto(object a, shape newdims)
+            public ndarray pareto(object a, shape newdims)
             {
 
                 ndarray oa;
@@ -1319,7 +1299,7 @@ namespace NumpyDotNet
 
             #region Poisson
 
-            public static ndarray poisson(object lam, shape shape = null)
+            public ndarray poisson(object lam, shape shape = null)
             {
                 ndarray olam;
                 double flam;
@@ -1364,7 +1344,7 @@ namespace NumpyDotNet
             #endregion
 
             #region Power
-            public static ndarray power(object a, shape newdims)
+            public ndarray power(object a, shape newdims)
             {
 
                 ndarray oa;
@@ -1392,7 +1372,7 @@ namespace NumpyDotNet
 
             #region rayleigh
 
-            public static ndarray rayleigh(object scale, shape newdims)
+            public ndarray rayleigh(object scale, shape newdims)
             {
 
                 ndarray oscale;
@@ -1420,14 +1400,14 @@ namespace NumpyDotNet
 
             #region standard_cauchy
 
-            public static double standard_cauchy()
+            public double standard_cauchy()
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_cauchy, null);
                 return Convert.ToDouble(rndArray.GetItem(0));
             }
 
 
-            public static ndarray standard_cauchy(shape newshape)
+            public ndarray standard_cauchy(shape newshape)
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_cauchy, newshape.iDims);
                 return rndArray.reshape(newshape);
@@ -1437,27 +1417,35 @@ namespace NumpyDotNet
 
             #region standard_exponential
 
-            public static double standard_exponential()
+            public double standard_exponential()
             {
                 ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, null);
                 return Convert.ToDouble(rndArray.GetItem(0));
             }
 
 
-            public static ndarray standard_exponential(shape newshape)
+            public ndarray standard_exponential(shape newdims)
             {
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, newshape.iDims);
-                return rndArray.reshape(newshape);
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_standard_exponential, size);
+                return rndArray;
             }
 
             #endregion
 
             #region standard_gamma
 
-            public static ndarray standard_gamma(object shape, shape newdims)
+            public ndarray standard_gamma(object shape, shape newdims = null)
             {
                 ndarray oshape;
                 double fshape;
+
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
 
                 oshape = asanyarray(shape).astype(np.Float64);
 
@@ -1467,7 +1455,7 @@ namespace NumpyDotNet
                     if ((bool)np.signbit(fshape).GetItem(0))
                         throw new ValueError("shape < 0");
 
-                    return cont1_array_sc(internal_state, RandomDistributions.rk_standard_gamma, newdims.iDims, fshape);
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_standard_gamma, size, fshape);
                 }
 
 
@@ -1475,7 +1463,7 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("shape < 0");
                 }
-                return cont1_array(internal_state, RandomDistributions.rk_standard_gamma, newdims.iDims, oshape);
+                return cont1_array(internal_state, RandomDistributions.rk_standard_gamma, size, oshape);
             }
 
             #endregion
@@ -1484,13 +1472,13 @@ namespace NumpyDotNet
 
             public double standard_normal()
             {
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_gauss, null);
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, null);
                 return Convert.ToDouble(rndArray.GetItem(0));
             }
 
             public ndarray standard_normal(shape newshape)
             {
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_gauss, newshape.iDims);
+                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, newshape.iDims);
                 return rndArray.reshape(newshape);
             }
 
@@ -1498,7 +1486,7 @@ namespace NumpyDotNet
 
             #region standard_t
 
-            public static ndarray standard_t(object df, shape newdims)
+            public ndarray standard_t(object df, shape newdims)
             {
 
                 ndarray odf;
@@ -1527,7 +1515,7 @@ namespace NumpyDotNet
 
             #region triangular
 
-            public static ndarray triangular(object left, object mode, object right, shape newdims = null)
+            public ndarray triangular(object left, object mode, object right, shape newdims = null)
             {
                 ndarray oleft, omode, oright;
                 double fleft, fmode, fright;
@@ -1573,7 +1561,7 @@ namespace NumpyDotNet
 
             #region uniform
 
-            public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
+            public ndarray uniform(int low = 0, int high = 1, shape newdims = null)
             {
                 ndarray olow = np.asanyarray(low).astype(np.Float64);
                 ndarray ohigh = np.asanyarray(high).astype(np.Float64);
@@ -1608,7 +1596,7 @@ namespace NumpyDotNet
 
             #region vonmises
 
-            public static ndarray vonmises(object mu, object kappa, shape newdims = null)
+            public ndarray vonmises(object mu, object kappa, shape newdims = null)
             {
                 ndarray omu, okappa;
                 double fmu, fkappa;
@@ -1641,7 +1629,7 @@ namespace NumpyDotNet
 
             #region wald
 
-            public static ndarray wald(object mean, object scale, shape newdims = null)
+            public ndarray wald(object mean, object scale, shape newdims = null)
             {
                 ndarray omean = np.asanyarray(mean).astype(np.Float64);
                 ndarray oscale = np.asanyarray(scale).astype(np.Float64);
@@ -1674,7 +1662,7 @@ namespace NumpyDotNet
 
             #region weibull
 
-            public static ndarray weibull(object a, shape newdims = null)
+            public ndarray weibull(object a, shape newdims = null)
             {
                 ndarray oa;
                 double fa;
@@ -1706,7 +1694,7 @@ namespace NumpyDotNet
 
             #region zipf
 
-            public static ndarray zipf(object a, shape shape = null)
+            public ndarray zipf(object a, shape shape = null)
             {
                 ndarray oa;
                 double fa;
@@ -1741,29 +1729,8 @@ namespace NumpyDotNet
 
 
             #region helper functions
-            private static npy_intp[] ConvertToShape(Int32[] newshape)
-            {
-                npy_intp[] newdims = new npy_intp[newshape.Length];
-                for (int i = 0; i < newshape.Length; i++)
-                {
-                    newdims[i] = newshape[i];
-                }
-
-                return newdims;
-            }
-
-            private static npy_intp[] ConvertToShape(Int64[] newshape)
-            {
-                npy_intp[] newdims = new npy_intp[newshape.Length];
-                for (int i = 0; i < newshape.Length; i++)
-                {
-                    newdims[i] = newshape[i];
-                }
-
-                return newdims;
-            }
-
-            private static npy_intp CountTotalElements(npy_intp[] dims)
+    
+            private npy_intp CountTotalElements(npy_intp[] dims)
             {
                 npy_intp TotalElements = 1;
                 for (int i = 0; i < dims.Length; i++)
@@ -1775,7 +1742,7 @@ namespace NumpyDotNet
             }
 
 
-            private static npy_intp CountTotalElements(shape _shape)
+            private npy_intp CountTotalElements(shape _shape)
             {
                 npy_intp TotalElements = 1;
                 for (int i = 0; i < _shape.iDims.Length; i++)
@@ -1789,7 +1756,7 @@ namespace NumpyDotNet
 
             #region Python Version
 
-            private static ndarray cont0_array(rk_state state, Func<rk_state, double> func, npy_intp []size)
+            private ndarray cont0_array(rk_state state, Func<rk_state, double> func, npy_intp []size)
             {
                 double[] array_data;
                 ndarray array;
@@ -1820,7 +1787,7 @@ namespace NumpyDotNet
 
             }
 
-            private static ndarray cont1_array(rk_state state, Func<rk_state, double, double> func, npy_intp [] size, ndarray oa)
+            private ndarray cont1_array(rk_state state, Func<rk_state, double, double> func, npy_intp [] size, ndarray oa)
             {
                 double[] array_data;
                 double[] oa_data;
@@ -1859,7 +1826,7 @@ namespace NumpyDotNet
                 return np.array(array_data).reshape(size);
             }
 
-            private static ndarray cont1_array_sc(rk_state state, Func<rk_state, double, double> func, npy_intp[] size, double a)
+            private ndarray cont1_array_sc(rk_state state, Func<rk_state, double, double> func, npy_intp[] size, double a)
             {
                 if (size == null)
                 {
@@ -1881,7 +1848,7 @@ namespace NumpyDotNet
             }
 
 
-            private static ndarray cont2_array_sc(rk_state state, Func<rk_state, double, double, double> func, npy_intp []size, double a, double b)
+            private ndarray cont2_array_sc(rk_state state, Func<rk_state, double, double, double> func, npy_intp []size, double a, double b)
             {
                 if (size == null)
                 {
@@ -1904,7 +1871,7 @@ namespace NumpyDotNet
             }
 
 
-            private static ndarray cont2_array(rk_state state, Func<rk_state, double, double, double> func, npy_intp []size, ndarray oa, ndarray ob)
+            private ndarray cont2_array(rk_state state, Func<rk_state, double, double, double> func, npy_intp []size, ndarray oa, ndarray ob)
             {
                 broadcast multi;
                 ndarray array;
@@ -1946,7 +1913,7 @@ namespace NumpyDotNet
 
             }
 
-            private static ndarray cont3_array_sc(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, double a, double b, double c)
+            private ndarray cont3_array_sc(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, double a, double b, double c)
             {
                 if (size == null)
                 {
@@ -1967,7 +1934,7 @@ namespace NumpyDotNet
                 }
             }
 
-            private static ndarray cont3_array(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, ndarray oa, ndarray ob, ndarray oc)
+            private ndarray cont3_array(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, ndarray oa, ndarray ob, ndarray oc)
             {
                 broadcast multi;
                 ndarray array;
@@ -2015,7 +1982,7 @@ namespace NumpyDotNet
             }
 
   
-            private static ndarray discd_array(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, ndarray oa)
+            private ndarray discd_array(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, ndarray oa)
             {
                 long[] array_data;
                 ndarray array;
@@ -2062,7 +2029,7 @@ namespace NumpyDotNet
 
             }
 
-            private static ndarray discd_array_sc(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, double a)
+            private ndarray discd_array_sc(rk_state state, Func<rk_state, double, long> func, npy_intp[] size, double a)
             {
                 if (size == null)
                 {
@@ -2080,7 +2047,7 @@ namespace NumpyDotNet
                 return asanyarray(array_data).reshape(size);
             }
 
-            private static ndarray discnp_array(rk_state state, Func<rk_state, long, double, long> func, npy_intp[] size, ndarray on, ndarray op)
+            private ndarray discnp_array(rk_state state, Func<rk_state, long, double, long> func, npy_intp[] size, ndarray on, ndarray op)
             {
                 broadcast multi;
                 ndarray array;
@@ -2121,7 +2088,7 @@ namespace NumpyDotNet
                 return np.array(array_data);
             }
 
-            private static ndarray discnp_array_sc(rk_state state, Func<rk_state, long, double, long> func, npy_intp[] size, long n, double p)
+            private ndarray discnp_array_sc(rk_state state, Func<rk_state, long, double, long> func, npy_intp[] size, long n, double p)
             {
                 if (size == null)
                 {
@@ -2139,7 +2106,7 @@ namespace NumpyDotNet
                 return asanyarray(array_data).reshape(size);
             }
 
-            private static ndarray discdd_array(rk_state state, Func<rk_state, double, double, long> func, long[] size, ndarray on, ndarray op)
+            private ndarray discdd_array(rk_state state, Func<rk_state, double, double, long> func, long[] size, ndarray on, ndarray op)
             {
                 broadcast multi;
                 ndarray array;
@@ -2180,7 +2147,7 @@ namespace NumpyDotNet
                 return np.array(array_data);
             }
 
-            private static ndarray discdd_array_sc(rk_state state, Func<rk_state, double, double, long> func, long[] size, long n, double p)
+            private ndarray discdd_array_sc(rk_state state, Func<rk_state, double, double, long> func, long[] size, long n, double p)
             {
                 if (size == null)
                 {
@@ -2201,7 +2168,7 @@ namespace NumpyDotNet
 
 
 
-            private static ndarray discnmN_array(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, ndarray on, ndarray om, ndarray oN)
+            private ndarray discnmN_array(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, ndarray on, ndarray om, ndarray oN)
             {
                 broadcast multi;
                 ndarray array;
@@ -2248,7 +2215,7 @@ namespace NumpyDotNet
                 return np.array(array_data);
             }
 
-            private static ndarray discnmN_array_sc(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, long n, long m, long N)
+            private ndarray discnmN_array_sc(rk_state state, Func<rk_state, long, long, long, long> func, npy_intp[] size, long n, long m, long N)
             {
                 if (size == null)
                 {
@@ -2266,7 +2233,7 @@ namespace NumpyDotNet
                 return asanyarray(array_data).reshape(size);
             }
 
-            private static double kahan_sum(double[] darr, npy_intp n)
+            private double kahan_sum(double[] darr, npy_intp n)
             {
                 double c, y, t, sum;
                 npy_intp i;
@@ -2283,7 +2250,7 @@ namespace NumpyDotNet
                 return sum;
             }
 
-            private static shape _shape_from_size(shape size, long d)
+            private shape _shape_from_size(shape size, long d)
             {
                 if (size == null)
                 {
