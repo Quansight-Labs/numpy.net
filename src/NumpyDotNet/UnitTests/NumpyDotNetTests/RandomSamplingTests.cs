@@ -1573,6 +1573,13 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
+        [TestMethod]
+        public void test_rand_choice_1()
+        {
+
+        }
+
         [TestMethod]
         public void test_rand_noncentral_chisquare_1()
         {
