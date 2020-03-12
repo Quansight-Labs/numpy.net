@@ -97,6 +97,7 @@ namespace NumpyDotNet
                     rndGenerator = new RandomState();
                 }
                 _internal_state = new rk_state(rndGenerator);
+                xseed(null);
             }
 
             #endregion
@@ -120,12 +121,12 @@ namespace NumpyDotNet
             #region randn
             public double randn()
             {
-                return random.standard_normal();
+                return standard_normal();
             }
 
             public ndarray randn(shape newshape)
             {
-                return random.standard_normal(newshape);
+                return standard_normal(newshape);
             }
 
             #endregion
@@ -451,13 +452,13 @@ namespace NumpyDotNet
 
             #region random_sample
   
-            public static ndarray random_sample(shape newdims)
+            public ndarray random_sample(shape newdims)
             {
                 npy_intp[] size = null;
                 if (newdims != null)
                     size = newdims.iDims;
 
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_double, size);
+                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, size);
                 return rndArray;
             }
 
@@ -465,7 +466,7 @@ namespace NumpyDotNet
 
             #region choice
 
-            public static ndarray choice(object a, Int32 size, bool replace = true, object p = null)
+            public ndarray choice(object a, Int32 size, bool replace = true, object p = null)
             {
                 throw new NotImplementedException("This function is not implemented in NumpyDotNet");
             }
@@ -473,18 +474,18 @@ namespace NumpyDotNet
             #endregion
 
             #region bytes
-            public static byte getbyte()
+            public byte getbyte()
             {
                 var b = bytes(1);
                 return b[0];
             }
 
 
-            public static byte[] bytes(Int32 size)
+            public byte[] bytes(Int32 size)
             {
                 byte[] b = new byte[size];
 
-                RandomDistributions.rk_fill(b, size, internal_state);
+                RandomDistributions.rk_fill(b, size, _internal_state);
                 return b;
             }
 
@@ -516,7 +517,7 @@ namespace NumpyDotNet
 
             #region shuffle/permutation
 
-            public static void shuffle(ndarray x)
+            public void shuffle(ndarray x)
             {
                 int n = len(x);
 
@@ -526,7 +527,7 @@ namespace NumpyDotNet
 
                     for (ulong i = (ulong)n - 1; i >= 1; i--)
                     {
-                        ulong j = RandomDistributions.rk_interval(i, internal_state);
+                        ulong j = RandomDistributions.rk_interval(i, _internal_state);
                         buf[0] = x[j];
                         x[j] = x[i];
                         x[i] = buf[0];
@@ -539,7 +540,7 @@ namespace NumpyDotNet
                     ndarray buf = np.empty_like(x[0], dtype: x.Dtype);
                     for (ulong i = (ulong)n - 1; i >= 1; i--)
                     {
-                        ulong j = RandomDistributions.rk_interval(i, internal_state);
+                        ulong j = RandomDistributions.rk_interval(i, _internal_state);
                         buf["..."] = x[j];
                         x[j] = x[i];
                         x[i] = buf;
@@ -551,7 +552,7 @@ namespace NumpyDotNet
                 return;
             }
 
-            public static ndarray permutation(object x)
+            public ndarray permutation(object x)
             {
                 ndarray arr;
 
@@ -1488,15 +1489,15 @@ namespace NumpyDotNet
 
             #region standard_normal
 
-            public static double standard_normal()
+            public double standard_normal()
             {
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, null);
+                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_gauss, null);
                 return Convert.ToDouble(rndArray.GetItem(0));
             }
 
-            public static ndarray standard_normal(shape newshape)
+            public ndarray standard_normal(shape newshape)
             {
-                ndarray rndArray = cont0_array(internal_state, RandomDistributions.rk_gauss, newshape.iDims);
+                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_gauss, newshape.iDims);
                 return rndArray.reshape(newshape);
             }
 

@@ -56,7 +56,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
-            np.random.seed(1234);
+            random.xseed(1234);
 
             fr = random.randn();
             print(fr);
@@ -459,15 +459,16 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_bytes_1()
         {
-            np.random.seed(6432);
+            var random = new np.random();
+            random.xseed(6432);
 
-            byte br = np.random.getbyte();
+            byte br = random.getbyte();
 
-            var bytes = np.random.bytes(24);
+            var bytes = random.bytes(24);
             Assert.AreEqual(bytes.Length, 24);
 
-            br = np.random.getbyte();
-            var arr = np.array(np.random.bytes(24)).reshape(2,3,4);
+            br = random.getbyte();
+            var arr = np.array(random.bytes(24)).reshape(2,3,4);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 2, 3, 4);
 
@@ -493,16 +494,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_shuffle_1()
         {
-            np.random.seed(1964);
+            var random = new np.random();
+            random.xseed(1964);
             var arr = np.arange(10);
-            np.random.shuffle(arr);
+            random.shuffle(arr);
             print(arr);
             AssertArray(arr, new Int32[] { 2, 9, 3, 6, 1, 7, 5, 0, 4, 8 });
 
             arr = np.arange(10).reshape((-1,1));
             print(arr);
 
-            np.random.shuffle(arr);
+            random.shuffle(arr);
             print(arr);
             AssertArray(arr, new Int32[,] { { 0 }, { 3 }, { 7 }, { 8 }, { 5 }, { 9 }, { 4 }, { 6 }, { 1 }, { 2 } });
         }
@@ -510,13 +512,14 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_permutation_1()
         {
-            np.random.seed(1963);
+            var random = new np.random();
+            random.xseed(1963);
 
-            var arr = np.random.permutation(10);
+            var arr = random.permutation(10);
             print(arr);
             AssertArray(arr, new Int32[] { 6, 7, 4, 5, 1, 2, 9, 0, 8, 3 });
 
-            arr = np.random.permutation(np.arange(5));
+            arr = random.permutation(np.arange(5));
             print(arr);
             AssertArray(arr, new Int32[] { 2, 3, 1, 0, 4 });
 
@@ -2289,8 +2292,9 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_standard_normal_1()
         {
-            np.random.seed(8877);
-            ndarray arr = np.random.standard_normal(new shape(5000000));
+            var random = new np.random();
+            random.xseed(8877);
+            ndarray arr = random.standard_normal(new shape(5000000));
 
             var amax = np.amax(arr);
             print(amax);
