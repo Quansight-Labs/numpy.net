@@ -46,9 +46,11 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-        public static class random
+        public class random
         {
-            static rk_state internal_state = new rk_state(new RandomGeneratorPython());
+            private rk_state _internal_state = null;
+
+            static rk_state internal_state = new rk_state(new RandomState());
             static object rk_lock = new object();
             static bool IsInitialized = seed(null);
 
@@ -71,6 +73,16 @@ namespace NumpyDotNet
                 internal_state.rndGenerator.Seed(seed, internal_state);
                 return true;
             }
+
+            public random(IRandomGenerator rndGenerator = null)
+            {
+                if (rndGenerator == null)
+                {
+                    rndGenerator = new RandomState();
+                }
+                _internal_state = new rk_state(rndGenerator);
+            }
+
             #endregion
 
             #region Simple random data
