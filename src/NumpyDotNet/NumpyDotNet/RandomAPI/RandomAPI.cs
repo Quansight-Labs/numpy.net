@@ -785,7 +785,7 @@ namespace NumpyDotNet
 
             #region exponential
 
-            public static ndarray exponential(object scale, shape shape)
+            public ndarray exponential(object scale, shape shape)
             {
                 ndarray oscale = asanyarray(scale).astype(np.Float64);
 
@@ -797,21 +797,21 @@ namespace NumpyDotNet
                         throw new ValueError("scale < 0");
                     }
 
-                    return cont1_array_sc(internal_state, RandomDistributions.rk_exponential, shape.iDims, fscale);
+                    return cont1_array_sc(_internal_state, RandomDistributions.rk_exponential, shape.iDims, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont1_array(internal_state, RandomDistributions.rk_exponential, shape.iDims, oscale);
+                return cont1_array(_internal_state, RandomDistributions.rk_exponential, shape.iDims, oscale);
 
             }
             #endregion
 
             #region f distribution
 
-            public static ndarray f(object dfnum, object dfden, shape newdims)
+            public ndarray f(object dfnum, object dfden, shape newdims)
             {
                 ndarray odfnum, odfden;
                 double fdfnum, fdfden;
@@ -829,7 +829,7 @@ namespace NumpyDotNet
                     if (fdfden <= 0)
                         throw new ValueError("dfden <= 0");
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_f, newdims.iDims, fdfnum, fdfden);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_f, newdims.iDims, fdfnum, fdfden);
                 }
 
                 if (np.anyb(np.less_equal(odfnum, 0.0)))
@@ -840,14 +840,14 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("dfden <= 0");
                 }
-                return cont2_array(internal_state, RandomDistributions.rk_f, newdims.iDims, odfnum, odfden);
+                return cont2_array(_internal_state, RandomDistributions.rk_f, newdims.iDims, odfnum, odfden);
             }
 
             #endregion
 
             #region gamma
 
-            public static ndarray gamma(object shape, object scale, shape newdims = null)
+            public ndarray gamma(object shape, object scale, shape newdims = null)
             {
                 ndarray oshape, oscale;
                 double fshape, fscale;
@@ -873,7 +873,7 @@ namespace NumpyDotNet
                         throw new ValueError("scale < 0");
                     }
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_gamma, size, fshape, fscale);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_gamma, size, fshape, fscale);
                 }
   
 
@@ -886,14 +886,14 @@ namespace NumpyDotNet
                     throw new ValueError("scale < 0");
                 }
 
-                return cont2_array(internal_state, RandomDistributions.rk_gamma, size, oshape, oscale);
+                return cont2_array(_internal_state, RandomDistributions.rk_gamma, size, oshape, oscale);
             }
 
             #endregion
 
             #region geometric
 
-            public static ndarray geometric(object p, shape shape = null)
+            public ndarray geometric(object p, shape shape = null)
             {
                 ndarray op;
                 double fp;
@@ -915,7 +915,7 @@ namespace NumpyDotNet
                     {
                         throw new ValueError("p > 1.0");
                     }
-                    return discd_array_sc(internal_state, RandomDistributions.rk_geometric, size, fp);
+                    return discd_array_sc(_internal_state, RandomDistributions.rk_geometric, size, fp);
                 }
 
 
@@ -929,7 +929,7 @@ namespace NumpyDotNet
                     throw new ValueError("p > 1.0");
                 }
 
-                return discd_array(internal_state, RandomDistributions.rk_geometric, size, op);
+                return discd_array(_internal_state, RandomDistributions.rk_geometric, size, op);
             }
 
 
@@ -938,7 +938,7 @@ namespace NumpyDotNet
 
             #region gumbel
 
-            public static ndarray gumbel(object loc, object scale = null, shape newdims = null)
+            public ndarray gumbel(object loc, object scale = null, shape newdims = null)
             {
                 ndarray oloc, oscale;
                 double floc, fscale;
@@ -960,14 +960,14 @@ namespace NumpyDotNet
                      if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_gumbel, size, floc, fscale);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_gumbel, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(internal_state, RandomDistributions.rk_gumbel, size, oloc, oscale);
+                return cont2_array(_internal_state, RandomDistributions.rk_gumbel, size, oloc, oscale);
             }
 
 
