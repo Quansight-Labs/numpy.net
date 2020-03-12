@@ -2573,5 +2573,53 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_rand_weibull_1()
+        {
+            np.random.seed(974);
+
+            ndarray arr = np.random.weibull(5, new shape(100000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(1.6435302608550746, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.07812030376364504, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(0.91828955683190416, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[]
+            { 0.802382756919613, 0.846126922902903, 0.849922504835084, 1.00496226793646, 1.24355344592726,
+              0.936599096578893, 0.798344330459658, 0.870912076415209, 1.05590855634161, 1.08944476675504 });
+
+
+            arr = np.random.weibull(np.arange(1, (25 * 25) + 1), new shape(25 * 25));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(1.13239084970226, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.3435024689351767, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(0.99456850758012483, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[]
+            { 0.343502468935177, 1.07141491719323, 1.11355099054115, 0.599151817962907, 0.745122210078631,
+              1.13239084970226, 0.897388933089434, 0.945279231187368, 0.915902530093467, 1.13094361305955 });
+
+        }
+
     }
 }

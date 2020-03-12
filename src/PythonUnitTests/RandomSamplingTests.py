@@ -913,6 +913,25 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+        
+    def test_rand_weibull_1(self):
+
+        np.random.seed(974)
+
+        arr = np.random.weibull(5, 100000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.weibull(np.arange(1,(25*25)+1), 25*25);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
 
 if __name__ == '__main__':
     unittest.main()

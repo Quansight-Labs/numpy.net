@@ -697,7 +697,7 @@ namespace NumpyDotNet
             return Math.Exp(rk_standard_exponential(state) / a) - 1;
         }
 
-        static double rk_weibull(rk_state state, double a)
+        internal static double rk_weibull(rk_state state, double a)
         {
             return Math.Pow(rk_standard_exponential(state), 1.0/ a);
         }

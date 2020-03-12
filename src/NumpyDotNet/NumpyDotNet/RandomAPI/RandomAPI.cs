@@ -1666,6 +1666,38 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region weibull
+
+            public static ndarray weibull(object a, shape newdims = null)
+            {
+                ndarray oa;
+                double fa;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                oa = asanyarray(a).astype(np.Float64);
+
+                if (oa.size == 1)
+                {
+                    fa = (double)oa.GetItem(0);
+                    if ((bool)np.signbit(fa).GetItem(0))
+                        throw new ValueError("a < 0");
+
+                    return cont1_array_sc(internal_state, RandomDistributions.rk_weibull, size, fa);
+                }
+
+
+                if (np.anyb(np.signbit(oa)))
+                {
+                    throw new ValueError("a < 0");
+                }
+                return cont1_array(internal_state, RandomDistributions.rk_weibull, size, oa);
+            }
+
+
+            #endregion
+
             #region helper functions
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
