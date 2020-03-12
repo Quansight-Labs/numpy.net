@@ -41,7 +41,9 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet.RandomAPI
 {
-    public class RandomGeneratorPython : IRandomGenerator
+    // this is the implementation of the original python random number generator.
+    // AKA the Mersenne Twister pseudo-random number generator
+    public class RandomState : IRandomGenerator
     {
         private const int RK_STATE_LEN = 624;
         private UInt64[] key = new ulong[RK_STATE_LEN];
