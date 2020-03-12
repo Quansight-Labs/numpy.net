@@ -22,8 +22,9 @@ namespace CSHARPCPPN
         public ndarray Y_Dat { get; set; }
         public ndarray R_Dat { get; set; }
         public ndarray Art_Net { get; private set; }
+        public static np.random random { get; set; }
 
-        public void InitialiseCPPN(int batchSize = 1, int netSize = 32, int hSize = 32, int width = 256, int height = 256, float scaling = 1.0f, bool RGB = false)
+    public void InitialiseCPPN(int batchSize = 1, int netSize = 32, int hSize = 32, int width = 256, int height = 256, float scaling = 1.0f, bool RGB = false)
         {
             //Setting Parameters
 
@@ -48,13 +49,13 @@ namespace CSHARPCPPN
 
             // Configuring Network
 
-            Img_Batch = np.random.standard_normal(new shape( batchSize, width, height, C_Dim ));
+            Img_Batch = random.standard_normal(new shape( batchSize, width, height, C_Dim ));
 
-            Hid_Vec = np.random.standard_normal(new shape( batchSize, hSize ));
+            Hid_Vec = random.standard_normal(new shape( batchSize, hSize ));
 
-            X_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
-            Y_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
-            R_Dat = np.random.standard_normal(new shape(batchSize, width * height, 1));
+            X_Dat = random.standard_normal(new shape(batchSize, width * height, 1));
+            Y_Dat = random.standard_normal(new shape(batchSize, width * height, 1));
+            R_Dat = random.standard_normal(new shape(batchSize, width * height, 1));
         }
 
         public List<ndarray> CreateGrid(int width = 32, int height = 32, float scaling = 1.0f)
@@ -146,13 +147,13 @@ namespace CSHARPCPPN
 
         public ndarray FullyConnected(ndarray input, int out_dim, bool with_bias = true)
         {
-            var mat = np.random.standard_normal(new shape(input.shape.iDims[1], out_dim)).astype(np.Float32);
+            var mat = random.standard_normal(new shape(input.shape.iDims[1], out_dim)).astype(np.Float32);
 
             var result = np.matmul(input, mat);
 
             if (with_bias)
             {
-                var bias = np.random.standard_normal(new shape(1, out_dim)).astype(np.Float32);
+                var bias = random.standard_normal(new shape(1, out_dim)).astype(np.Float32);
                 result += bias * np.ones(new shape(input.shape.iDims[0], 1), np.Float32);
             }
 
@@ -175,7 +176,7 @@ namespace CSHARPCPPN
             var vector = z;
             if (vector == null)
             {
-                vector = np.random.uniform(-1, 1, new shape( BatchSize, HSize )).astype(np.Float32);
+                vector = random.uniform(-1, 1, new shape( BatchSize, HSize )).astype(np.Float32);
             }
 
             var data = CreateGrid(width, height, scaling);
@@ -188,12 +189,14 @@ namespace CSHARPCPPN
             if (seed != null)
             {
                 KeyId = seed;
-                np.random.seed(KeyId);
+                random = new np.random();
+                random.seed(KeyId);
             }
             else
             {
                 KeyId = Math.Abs(DateTime.Now.GetHashCode());
-                np.random.seed(KeyId);
+                random = new np.random();
+                random.seed(KeyId);
             }
 
             var art = new ArtGenNumpyDotNet();

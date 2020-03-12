@@ -50,15 +50,15 @@ namespace CSHARPCPPN
             Num_Points = width * height;
 
             //Configuring Network
-            Img_Batch = random.standard_normal(new int[] { Batch_Size, width, height, C_Dim });
+            Img_Batch = npx.random.standard_normal(new int[] { Batch_Size, width, height, C_Dim });
 
-            Hid_Vec = random.standard_normal(new int[] { Batch_Size, H_Size });
+            Hid_Vec = npx.random.standard_normal(new int[] { Batch_Size, H_Size });
 
-            X_Dat = random.standard_normal(batch_size, width * height, 1);
+            X_Dat = npx.random.standard_normal(batch_size, width * height, 1);
 
-            Y_Dat = random.standard_normal(batch_size, width * height, 1);
+            Y_Dat = npx.random.standard_normal(batch_size, width * height, 1);
 
-            R_Dat = random.standard_normal(batch_size, width * height, 1);
+            R_Dat = npx.random.standard_normal(batch_size, width * height, 1);
         }
 
 
@@ -114,12 +114,12 @@ namespace CSHARPCPPN
 
         public NDArray FullyConnected(NDArray input, int out_dim, bool with_bias = true)
         {
-            var mat = random.standard_normal((int)input.shape[1], out_dim).astype(np.float32);
+            var mat = npx.random.standard_normal((int)input.shape[1], out_dim).astype(np.float32);
             var result = np.matmul(input, mat);
 
             if (with_bias)
             {
-                var bias = random.standard_normal(1, out_dim).astype(np.float32);
+                var bias = npx.random.standard_normal(1, out_dim).astype(np.float32);
                 result += bias * np.ones(new Shape(input.shape[0], 1), np.float32);
             }
 
@@ -173,7 +173,7 @@ namespace CSHARPCPPN
             var vector = z;
             if (vector == null)
             {
-                vector = random.uniform(-1, 1, new int[] { Batch_Size, H_Size });
+                vector = npx.random.uniform(-1, 1, new int[] { Batch_Size, H_Size });
             }
             var data = CreateGrid(width, height, scaling);
             return BuildCPPN(width, height, data[0], data[1], data[2], vector);
@@ -185,12 +185,12 @@ namespace CSHARPCPPN
             if (seed != null)
             {
                 KeyId = seed;
-                random.seed(KeyId.GetValueOrDefault());
+                npx.random.seed(KeyId.GetValueOrDefault());
             }
             else
             {
                 KeyId = Math.Abs(DateTime.Now.GetHashCode());
-                random.seed(KeyId.GetValueOrDefault());
+                npx.random.seed(KeyId.GetValueOrDefault());
             }
 
             var art = new ArtGenNumSharp();
@@ -247,27 +247,34 @@ namespace CSHARPCPPN
         }
     }
 
-    class random
+  
+
+    class npx
     {
+        public class random
+        {
+            private static NumpyDotNet.np.random NumpyDotNetRandom { get; set; }
+
 #if true
-        public static NDArray standard_normal(params Int32[] newshape)
-        {
-            var rnddata = NumpyDotNet.np.random.standard_normal(new NumpyDotNet.shape(newshape));
-            var myarray = np.array(NumpyDotNet.np.AsDoubleArray(rnddata)).reshape(newshape);
-            return myarray;
-        }
+            public static NDArray standard_normal(params Int32[] newshape)
+            {
+                var rnddata = NumpyDotNetRandom.standard_normal(new NumpyDotNet.shape(newshape));
+                var myarray = np.array(NumpyDotNet.np.AsDoubleArray(rnddata)).reshape(newshape);
+                return myarray;
+            }
 
-        public static NDArray uniform(int low = 0, int high = 1, params Int32[] newshape)
-        {
-            var rnddata = NumpyDotNet.np.random.uniform(-1, 1, new NumpyDotNet.shape(newshape));
-            var myarray = np.array(NumpyDotNet.np.AsFloatArray(rnddata)).reshape(newshape);
-            return myarray;
-        }
+            public static NDArray uniform(int low = 0, int high = 1, params Int32[] newshape)
+            {
+                var rnddata = NumpyDotNetRandom.uniform(-1, 1, new NumpyDotNet.shape(newshape));
+                var myarray = np.array(NumpyDotNet.np.AsFloatArray(rnddata)).reshape(newshape);
+                return myarray;
+            }
 
-        public static void seed(Int32? seed)
-        {
-            NumpyDotNet.np.random.seed(seed);
-        }
+            public static void seed(Int32? seed)
+            {
+                NumpyDotNetRandom = new NumpyDotNet.np.random();
+                NumpyDotNetRandom.seed(seed);
+            }
 #else
        public static NDArray standard_normal(params Int32[] newshape)
         {
@@ -285,10 +292,8 @@ namespace CSHARPCPPN
                 np.random.seed(seed.Value);
         }
 #endif
-    }
+        }
 
-    class npx
-    {
         public static NDArray tile(NDArray array, object reps)
         {
             var flattenedArray = array.flatten().ToArray<double>();
