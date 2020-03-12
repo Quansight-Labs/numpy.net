@@ -629,7 +629,7 @@ namespace NumpyDotNet
            http://cg.scs.carleton.ca/~luc/rnbookindex.html
            (but corrected to match the algorithm in R and Python)
         */
-        static double rk_vonmises(rk_state state, double mu, double kappa)
+        internal static double rk_vonmises(rk_state state, double mu, double kappa)
         {
             double s;
             double U, V, W, Y, Z;

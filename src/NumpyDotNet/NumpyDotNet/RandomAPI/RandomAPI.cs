@@ -1596,8 +1596,41 @@ namespace NumpyDotNet
             }
 
             #endregion
-                
 
+            #region vonmises
+
+            public static ndarray vonmises(object mu, object kappa, shape newdims = null)
+            {
+                ndarray omu, okappa;
+                double fmu, fkappa;
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                omu = asanyarray(mu).astype(np.Float64);
+                okappa = asanyarray(kappa).astype(np.Float64);
+
+                if (omu.size == 1 && okappa.size == 1)
+                {
+                    fmu = (double)omu.GetItem(0);
+                    fkappa = (double)okappa.GetItem(0);
+
+                    if (fkappa < 0)
+                        throw new ValueError("kappa < 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_vonmises, size, fmu, fkappa);
+                }
+
+                if (np.anyb(np.less(okappa, 0.0)))
+                {
+                    throw new ValueError("kappa < 0");
+                }
+                return cont2_array(internal_state, RandomDistributions.rk_vonmises, size, omu, okappa);
+            }
+
+            #endregion
+
+            #region helper functions
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {
                 npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -1642,6 +1675,7 @@ namespace NumpyDotNet
 
                 return TotalElements;
             }
+            #endregion
 
             #region Python Version
 

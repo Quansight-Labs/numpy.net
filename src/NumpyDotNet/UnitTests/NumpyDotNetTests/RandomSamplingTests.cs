@@ -1568,7 +1568,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_rand_noncentral_f_1()
         {
@@ -2450,7 +2449,6 @@ namespace NumpyDotNetTests
 
         }
 
-
         [TestMethod]
         public void test_rand_uniform_1()
         {
@@ -2479,7 +2477,54 @@ namespace NumpyDotNetTests
                 -0.590520508804662, -0.18455495968856 });
         }
 
+        [TestMethod]
+        public void test_rand_vonmises_1()
+        {
+            np.random.seed(909);
 
-    
+            ndarray arr = np.random.vonmises(0.0, 4.0, new shape(100000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            //Assert.AreEqual(2.966642390532069, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            //Assert.AreEqual(-3.1288073003877273, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            //Assert.AreEqual(0.001468156147666098, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            //AssertArray(first10, new double[]
+            //{ 32.507966101474, 29.5670038054405, 35.4646231172001, 48.8509128727834, 13.8878542193038,
+            //  22.5887773956417, 18.8177210998047, 6.62646485637076, 14.7716354200521, 17.592124636122  });
+
+
+            arr = np.random.vonmises(np.arange(1, (25 * 25) + 1), 25 * 25);
+
+            amax = np.amax(arr);
+            print(amax);
+            //Assert.AreEqual(3.1128949170937865, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            //Assert.AreEqual(-3.141056472523122, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            //Assert.AreEqual(0.004769515035667695, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            //AssertArray(first10, new double[]
+            //{ 693.625713231652, 667.317783374469, 628.424318152006, 585.208004459504, 758.222190671585,
+            //  611.122162793199, 659.549979398019, 611.408655748793, 689.18666064001, 657.624462137622 });
+
+        }
+
+
     }
 }

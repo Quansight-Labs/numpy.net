@@ -877,6 +877,23 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_vonmises_1(self):
+
+        np.random.seed(909)
+
+        arr = np.random.vonmises(0.0, 4.0, 100000);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
+
+        arr = np.random.vonmises(np.arange(1,(25*25)+1), 25*25);
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+        first10 = arr[0:10:1]
+        print(first10)
 
 
 if __name__ == '__main__':
