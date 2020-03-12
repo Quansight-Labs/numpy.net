@@ -1698,6 +1698,42 @@ namespace NumpyDotNet
 
             #endregion
 
+            #region zipf
+
+            public static ndarray zipf(object a, shape shape = null)
+            {
+                ndarray oa;
+                double fa;
+                npy_intp[] size = null;
+                if (shape != null)
+                    size = shape.iDims;
+
+                oa = asanyarray(a).astype(np.Float64);
+
+                if (oa.size == 1)
+                {
+                    fa = (double)oa.GetItem(0);
+
+                    // use logic that ensures NaN is rejected.
+                    if (!(fa > 1.0))
+                    {
+                        throw new ValueError("'a' must be a valid float > 1.0");
+                    }
+                    return discd_array_sc(internal_state, RandomDistributions.rk_zipf, size, fa);
+                }
+
+                // use logic that ensures NaN is rejected.
+                if (!np.allb(np.greater(oa, 1.0)))
+                    throw new ValueError("'a' must contain valid floats > 1.0");
+
+                return discd_array(internal_state, RandomDistributions.rk_zipf, size, oa);
+            }
+
+
+
+            #endregion
+
+
             #region helper functions
             private static npy_intp[] ConvertToShape(Int32[] newshape)
             {

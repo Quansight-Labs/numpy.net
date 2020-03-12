@@ -2621,5 +2621,50 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_rand_zipf_1()
+        {
+            np.random.seed(979);
+
+            ndarray arr = np.random.zipf(5.2, new shape(100000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)9, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)1, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1.03708, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  });
+
+
+            arr = np.random.zipf(np.arange(2, (25 * 25) + 2), new shape(25 * 25));
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual((long)2, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual((long)1, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(1.0016, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new long[] { 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+
+
+        }
+
     }
 }

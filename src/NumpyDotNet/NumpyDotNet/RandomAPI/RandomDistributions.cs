@@ -772,7 +772,7 @@ namespace NumpyDotNet
         }
 
 
-        static long rk_zipf(rk_state state, double a)
+        internal static long rk_zipf(rk_state state, double a)
         {
             double am1, b;
 
