@@ -530,12 +530,13 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_beta_1()
         {
-            np.random.seed(5566);
+            var random = new np.random();
+            random.xseed(5566);
 
             var a = np.arange(1,11, dtype: np.Float64);
             var b = np.arange(1,11, dtype: np.Float64);
 
-            ndarray arr = np.random.beta(b, b, new shape(10));
+            ndarray arr = random.beta(b, b, new shape(10));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             print(arr);
 
@@ -549,9 +550,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_binomial_1()
         {
-            np.random.seed(123);
+            var random = new np.random();
+            random.xseed(123);
 
-            ndarray arr = np.random.binomial(9, 0.1, new shape(20));
+            ndarray arr = random.binomial(9, 0.1, new shape(20));
             AssertArray(arr, new Int64[] { 1, 0, 0, 1, 1, 1, 3, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1 });
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
 
@@ -559,7 +561,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual(6, s.GetItem(0));
 
 
-            arr = np.random.binomial(9, 0.1, new shape(20000));
+            arr = random.binomial(9, 0.1, new shape(20000));
             s = np.sum(arr == 0);
             Assert.AreEqual(7711, s.GetItem(0));
             print(s);
@@ -569,9 +571,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_negative_binomial_1()
         {
-            np.random.seed(123);
+            var random = new np.random();
+            random.xseed(123);
 
-            ndarray arr = np.random.negative_binomial(1, 0.1, new shape(20));
+            ndarray arr = random.negative_binomial(1, 0.1, new shape(20));
             AssertArray(arr, new Int64[] { 8, 9, 4, 10, 8, 5, 11, 7, 21, 0, 8, 1, 7, 3, 1, 17, 4, 5, 6, 8, });
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
 
@@ -579,7 +582,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual(1, s.GetItem(0));
 
 
-            arr = np.random.negative_binomial(1, 0.1, new shape(20000));
+            arr = random.negative_binomial(1, 0.1, new shape(20000));
             s = np.sum(arr == 0);
             Assert.AreEqual(1992, s.GetItem(0));
             print(s);
@@ -588,9 +591,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_chisquare_1()
         {
-            np.random.seed(904);
+            var random = new np.random();
 
-            ndarray arr = np.random.chisquare(2, new shape(40));
+            random.xseed(904);
+
+            ndarray arr = random.chisquare(2, new shape(40));
 
             var amax = np.amax(arr);
             print(amax);
@@ -611,7 +616,7 @@ namespace NumpyDotNetTests
               3.7142340997291, 0.137140658434128, 1.69505253573874, 1.5675310912308, 3.1550000636764 });
 
 
-            arr = np.random.chisquare(np.arange(1, (25 * 25) + 1), new shape(25 * 25));
+            arr = random.chisquare(np.arange(1, (25 * 25) + 1), new shape(25 * 25));
 
             amax = np.amax(arr);
             print(amax);
@@ -636,9 +641,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_dirichlet_1()
         {
-            np.random.seed(904);
+            var random = new np.random();
 
-            var arr = np.random.dirichlet(new int[] { 2, 20 }, 40);
+            random.xseed(904);
+
+            var arr = random.dirichlet(new int[] { 2, 20 }, 40);
 
             var amax = np.amax(arr);
             print(amax);
@@ -672,7 +679,7 @@ namespace NumpyDotNetTests
 
             //////////////
             
-            arr = np.random.dirichlet(new int[] { 25,1,25 }, 25*25);
+            arr = random.dirichlet(new int[] { 25,1,25 }, 25*25);
 
             amax = np.amax(arr);
             print(amax);
@@ -1547,9 +1554,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_noncentral_chisquare_1()
         {
-            np.random.seed(904);
+            var random = new np.random();
+            random.xseed(904);
 
-            ndarray arr = np.random.noncentral_chisquare(3, 20, new shape(100000));
+            ndarray arr = random.noncentral_chisquare(3, 20, new shape(100000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1570,7 +1578,7 @@ namespace NumpyDotNetTests
               22.5887773956417, 18.8177210998047, 6.62646485637076, 14.7716354200521, 17.592124636122  });
 
 
-            arr = np.random.noncentral_chisquare(np.arange(1, (25 * 25) + 1), 25 * 25);
+            arr = random.noncentral_chisquare(np.arange(1, (25 * 25) + 1), 25 * 25);
 
             amax = np.amax(arr);
             print(amax);

@@ -451,7 +451,13 @@ namespace NumpyDotNet
             #endregion
 
             #region random_sample
-  
+
+            public double random_sample()
+            {
+                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, null);
+                return Convert.ToDouble(rndArray.GetItem(0));
+            }
+
             public ndarray random_sample(shape newdims)
             {
                 npy_intp[] size = null;
@@ -491,28 +497,6 @@ namespace NumpyDotNet
 
 
             #endregion
-            #endregion
-
-            #region random_sample
-
-            public double random_sample()
-            {
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, null);
-                return Convert.ToDouble(rndArray.GetItem(0));
-            }
-
-            public ndarray random_sample(params Int32[] newshape)
-            {
-                return _random_sample(ConvertToShape(newshape));
-            }
-
-      
-            private ndarray _random_sample(params npy_intp[] size)
-            {
-                ndarray rndArray = cont0_array(_internal_state, RandomDistributions.rk_double, size);
-                return rndArray.reshape(ConvertToShape(size));
-            }
-
             #endregion
 
             #region shuffle/permutation
@@ -578,8 +562,12 @@ namespace NumpyDotNet
 
             #region beta
 
-            public static ndarray beta(ndarray a, ndarray b, shape newshape)
+            public ndarray beta(ndarray a, ndarray b, shape newdims = null)
             {
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
                 ndarray ba = np.any(np.less_equal(a, 0));
                 if ((bool)ba.GetItem(0))
                     throw new ValueError("a <= 0");
@@ -587,20 +575,23 @@ namespace NumpyDotNet
                 if ((bool)bb.GetItem(0))
                     throw new ValueError("b <= 0");
 
-                return cont2_array(internal_state, RandomDistributions.rk_beta, newshape.iDims, a, b);
+                return cont2_array(_internal_state, RandomDistributions.rk_beta, size, a, b);
 
             }
-                
 
             #endregion
 
             #region binomial
 
-            public static ndarray binomial(object n, object p, shape newdims)
+            public ndarray binomial(object n, object p, shape newdims = null)
             {
                 ndarray on, op;
                 long ln;
                 double fp;
+
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
 
                 on = asanyarray(n).astype(np.Int64);
                 op = asanyarray(p).astype(np.Float64);
@@ -618,7 +609,7 @@ namespace NumpyDotNet
                     else if ((bool)np.isnan(op).GetItem(0))
                         throw new ValueError("p is nan");
 
-                    return discnp_array_sc(internal_state, RandomDistributions.rk_binomial, newdims.iDims, ln, fp);
+                    return discnp_array_sc(_internal_state, RandomDistributions.rk_binomial, size, ln, fp);
                 }
 
                 if ((bool)np.any(np.less(n, 0).GetItem(0)))
@@ -630,15 +621,19 @@ namespace NumpyDotNet
                 if ((bool)np.any(np.greater(p, 1)))
                     throw new ValueError("p > 1");
 
-                return discnp_array(internal_state, RandomDistributions.rk_binomial, newdims.iDims, on, op);
+                return discnp_array(_internal_state, RandomDistributions.rk_binomial, size, on, op);
 
             }
 
-            public static ndarray negative_binomial(object n, object p, shape newdims)
+            public ndarray negative_binomial(object n, object p, shape newdims = null)
             {
                 ndarray on, op;
                 long ln;
                 double fp;
+
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
 
                 on = asanyarray(n).astype(np.Int64);
                 op = asanyarray(p).astype(np.Float64);
@@ -656,7 +651,7 @@ namespace NumpyDotNet
                     else if ((bool)np.isnan(op).GetItem(0))
                         throw new ValueError("p is nan");
 
-                    return discdd_array_sc(internal_state, RandomDistributions.rk_negative_binomial, newdims.iDims, ln, fp);
+                    return discdd_array_sc(_internal_state, RandomDistributions.rk_negative_binomial, size, ln, fp);
                 }
 
                 if ((bool)np.any(np.less(n, 0).GetItem(0)))
@@ -668,7 +663,7 @@ namespace NumpyDotNet
                 if ((bool)np.any(np.greater(p, 1)))
                     throw new ValueError("p > 1");
 
-                return discdd_array(internal_state, RandomDistributions.rk_negative_binomial, newdims.iDims, on, op);
+                return discdd_array(_internal_state, RandomDistributions.rk_negative_binomial, size, on, op);
 
             }
 
@@ -677,7 +672,7 @@ namespace NumpyDotNet
 
             #region chisquare
 
-            public static ndarray chisquare(object df, shape newdims)
+            public ndarray chisquare(object df, shape newdims)
             {
 
                 ndarray odf;
@@ -691,7 +686,7 @@ namespace NumpyDotNet
                     if (fdf <= 0)
                         throw new ValueError("df <= 0");
 
-                    return cont1_array_sc(internal_state, RandomDistributions.rk_chisquare, newdims.iDims, fdf);
+                    return cont1_array_sc(_internal_state, RandomDistributions.rk_chisquare, newdims.iDims, fdf);
                 }
 
 
@@ -699,10 +694,10 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("df <= 0");
                 }
-                return cont1_array(internal_state, RandomDistributions.rk_chisquare, newdims.iDims, odf);
+                return cont1_array(_internal_state, RandomDistributions.rk_chisquare, newdims.iDims, odf);
             }
 
-            public static ndarray noncentral_chisquare(object df, object nonc, shape newdims = null)
+            public ndarray noncentral_chisquare(object df, object nonc, shape newdims = null)
             {
                 ndarray odf, ononc;
                 double fdf, fnonc;
@@ -723,7 +718,7 @@ namespace NumpyDotNet
                     if (fnonc <= 0)
                         throw new ValueError("nonc <= 0");
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_noncentral_chisquare, size, fdf, fnonc);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_noncentral_chisquare, size, fdf, fnonc);
                 }
 
                 if (np.anyb(np.less_equal(odf, 0.0)))
@@ -734,12 +729,12 @@ namespace NumpyDotNet
                 {
                     throw new ValueError("nonc <= 0");
                 }
-                return cont2_array(internal_state, RandomDistributions.rk_noncentral_chisquare, size, odf, ononc);
+                return cont2_array(_internal_state, RandomDistributions.rk_noncentral_chisquare, size, odf, ononc);
             }
             #endregion
 
             #region dirichlet
-            public static ndarray dirichlet(Int32 []alpha, Int32 size)
+            public ndarray dirichlet(Int32 []alpha, Int32 size)
             {
                 npy_intp k;
                 npy_intp totsize;
@@ -771,7 +766,7 @@ namespace NumpyDotNet
                     acc = 0.0;
                     for (int j = 0; j < k; j++)
                     {
-                        val_data[i + j] = RandomDistributions.rk_standard_gamma(internal_state, alpha_data[j]);
+                        val_data[i + j] = RandomDistributions.rk_standard_gamma(_internal_state, alpha_data[j]);
                         acc = acc + val_data[i + j];
                     }
                     invacc = 1 / acc;
