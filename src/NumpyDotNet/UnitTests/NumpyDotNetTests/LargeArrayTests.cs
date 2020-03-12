@@ -43,7 +43,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class LargeArrayTests : TestBaseClass
     {
-
+#if false
         [TestMethod]
         public void test_largearray_matmul_INT64_1()
         {
@@ -530,7 +530,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual((Int64)(127999992000000), np.sum(c).GetItem(0));
 
         }
-
+#endif
 
     }
 }
