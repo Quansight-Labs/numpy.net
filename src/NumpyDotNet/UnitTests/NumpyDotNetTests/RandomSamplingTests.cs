@@ -1107,9 +1107,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_hypergeometric_1()
         {
-            np.random.seed(1631);
+            var random = new np.random();
 
-            var arr = np.random.hypergeometric(100, 2, 10, new shape(1000));
+            random.xseed(1631);
+
+            var arr = random.hypergeometric(100, 2, 10, new shape(1000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1132,7 +1134,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.hypergeometric(new long[] {75, 25, 5, 1 }, new long[] { 5 }, new long[] { 80, 30, 10, 6});
+            arr = random.hypergeometric(new long[] {75, 25, 5, 1 }, new long[] { 5 }, new long[] { 80, 30, 10, 6});
 
             amax = np.amax(arr);
             print(amax);
@@ -1155,7 +1157,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.hypergeometric(15, 15, 15, new shape(200000));
+            arr = random.hypergeometric(15, 15, 15, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -1179,9 +1181,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_laplace_1()
         {
-            np.random.seed(1400);
+            var random = new np.random();
 
-            var arr = np.random.laplace(0.32);
+            random.xseed(1400);
+
+            var arr = random.laplace(0.32);
 
             var amax = np.amax(arr);
             print(amax);
@@ -1204,7 +1208,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.laplace(new double[] { .75, .25, .5, .1 }, 4);
+            arr = random.laplace(new double[] { .75, .25, .5, .1 }, 4);
 
             amax = np.amax(arr);
             print(amax);
@@ -1227,7 +1231,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.laplace(.75, 0.5, new shape(200000));
+            arr = random.laplace(.75, 0.5, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -1253,9 +1257,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_logistic_1()
         {
-            np.random.seed(1400);
+            var random = new np.random();
 
-            var arr = np.random.logistic(0.32);
+            random.xseed(1400);
+
+            var arr = random.logistic(0.32);
 
             var amax = np.amax(arr);
             print(amax);
@@ -1278,7 +1284,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.logistic(new double[] { .75, .25, .5, .1 }, 4);
+            arr = random.logistic(new double[] { .75, .25, .5, .1 }, 4);
 
             amax = np.amax(arr);
             print(amax);
@@ -1301,7 +1307,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.logistic(.75, 0.5, new shape(200000));
+            arr = random.logistic(.75, 0.5, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -1327,9 +1333,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_lognormal_1()
         {
-            np.random.seed(990);
+            var random = new np.random();
 
-            var arr = np.random.lognormal(new Int32[] { 4, 4 }, 2);
+            random.xseed(990);
+
+            var arr = random.lognormal(new Int32[] { 4, 4 }, 2);
 
             var amax = np.amax(arr);
             print(amax);
@@ -1352,7 +1360,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.lognormal(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, new shape(4));
+            arr = random.lognormal(new double[] { 1.75, 2.25, 3.5, 4.1 }, 48, new shape(4));
 
             amax = np.amax(arr);
             print(amax);
@@ -1375,7 +1383,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.lognormal(1.75, 53, new shape(200000));
+            arr = random.lognormal(1.75, 53, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -1402,9 +1410,11 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_logseries_1()
         {
-            np.random.seed(9909);
+            var random = new np.random();
 
-            var arr = np.random.logseries(new double[] { 0.1, 0.99 }, new shape(20, 2));
+            random.xseed(9909);
+
+            var arr = random.logseries(new double[] { 0.1, 0.99 }, new shape(20, 2));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1428,7 +1438,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.logseries(new double[] { .75, .25, .5, .1 }, new shape(400, 4));
+            arr = random.logseries(new double[] { .75, .25, .5, .1 }, new shape(400, 4));
 
             amax = np.amax(arr);
             print(amax);
@@ -1453,7 +1463,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = np.random.logseries(.334455, new shape(200000));
+            arr = random.logseries(.334455, new shape(200000));
 
             amax = np.amax(arr);
             print(amax);
@@ -1478,10 +1488,12 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_multinomial_1()
         {
-            np.random.seed(9909);
+            var random = new np.random();
+
+            random.xseed(9909);
 
             double dv = 1.0 / 6.0;
-            var arr = np.random.multinomial(20, new double[] { dv,dv,dv,dv,dv,dv }, size : new shape(1000));
+            var arr = random.multinomial(20, new double[] { dv,dv,dv,dv,dv,dv }, size : new shape(1000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1506,7 +1518,7 @@ namespace NumpyDotNetTests
 
             //////////////
             dv = 1.0 / 7.0;
-            arr = np.random.multinomial(100, new double[] { dv, dv, dv, dv, dv, 2/7 });
+            arr = random.multinomial(100, new double[] { dv, dv, dv, dv, dv, 2/7 });
 
             amax = np.amax(arr);
             print(amax);
@@ -1530,7 +1542,7 @@ namespace NumpyDotNetTests
 
             //////////////
             dv = 1.0 / 6.0;
-            arr = np.random.multinomial(20, new double[] { dv, dv, dv, dv, dv, dv }, new shape(20000));
+            arr = random.multinomial(20, new double[] { dv, dv, dv, dv, dv, dv }, new shape(20000));
 
             amax = np.amax(arr);
             print(amax);

@@ -970,13 +970,11 @@ namespace NumpyDotNet
                 return cont2_array(_internal_state, RandomDistributions.rk_gumbel, size, oloc, oscale);
             }
 
-
-
             #endregion
 
             #region hypergeometric
 
-            public static ndarray hypergeometric(object ngood, object nbad, object nsample, shape shape = null)
+            public ndarray hypergeometric(object ngood, object nbad, object nsample, shape shape = null)
             {
                 ndarray ongood, onbad, onsample;
                 long lngood, lnbad, lnsample;
@@ -1002,7 +1000,7 @@ namespace NumpyDotNet
                         throw new ValueError("nsample < 1");
                     if (lngood + lnbad < lnsample)
                         throw new ValueError("ngood + nbad < nsample");
-                    return discnmN_array_sc(internal_state, RandomDistributions.rk_hypergeometric, size, lngood, lnbad, lnsample);
+                    return discnmN_array_sc(_internal_state, RandomDistributions.rk_hypergeometric, size, lngood, lnbad, lnsample);
                 }
 
 
@@ -1014,14 +1012,14 @@ namespace NumpyDotNet
                     throw new ValueError("nsample < 1");
                 if (np.anyb(np.less(np.add(ongood, onbad), onsample)))
                     throw new ValueError("ngood + nbad < nsample");
-                return discnmN_array(internal_state, RandomDistributions.rk_hypergeometric, size, ongood, onbad, onsample);
+                return discnmN_array(_internal_state, RandomDistributions.rk_hypergeometric, size, ongood, onbad, onsample);
             }
 
             #endregion
 
             #region laplace
 
-            public static ndarray laplace(object loc, object scale = null, shape newdims = null)
+            public ndarray laplace(object loc, object scale = null, shape newdims = null)
             {
                 ndarray oloc, oscale;
                 double floc, fscale;
@@ -1043,21 +1041,21 @@ namespace NumpyDotNet
                     if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_laplace, size, floc, fscale);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_laplace, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(internal_state, RandomDistributions.rk_laplace, size, oloc, oscale);
+                return cont2_array(_internal_state, RandomDistributions.rk_laplace, size, oloc, oscale);
             }
 
             #endregion
 
             #region logistic
 
-            public static ndarray logistic(object loc, object scale = null, shape newdims = null)
+            public ndarray logistic(object loc, object scale = null, shape newdims = null)
             {
                 ndarray oloc, oscale;
                 double floc, fscale;
@@ -1079,21 +1077,21 @@ namespace NumpyDotNet
                     if ((bool)np.signbit(fscale).GetItem(0))
                         throw new ValueError("scale < 0");
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_logistic, size, floc, fscale);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_logistic, size, floc, fscale);
                 }
 
                 if (np.anyb(np.signbit(oscale)))
                 {
                     throw new ValueError("scale < 0");
                 }
-                return cont2_array(internal_state, RandomDistributions.rk_logistic, size, oloc, oscale);
+                return cont2_array(_internal_state, RandomDistributions.rk_logistic, size, oloc, oscale);
             }
 
             #endregion
 
             #region lognormal
 
-            public static ndarray lognormal(object mean, object sigma, shape newdims = null)
+            public ndarray lognormal(object mean, object sigma, shape newdims = null)
             {
                 ndarray omean, osigma;
                 double fmean, fsigma;
@@ -1116,7 +1114,7 @@ namespace NumpyDotNet
                         throw new ValueError("sigma < 0");
                     }
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_lognormal, size, fmean, fsigma);
+                    return cont2_array_sc(_internal_state, RandomDistributions.rk_lognormal, size, fmean, fsigma);
                 }
 
 
@@ -1125,14 +1123,14 @@ namespace NumpyDotNet
                     throw new ValueError("sigma < 0");
                 }
 
-                return cont2_array(internal_state, RandomDistributions.rk_lognormal, size, omean, osigma);
+                return cont2_array(_internal_state, RandomDistributions.rk_lognormal, size, omean, osigma);
             }
 
             #endregion
 
             #region logseries
 
-            public static ndarray logseries(object p, shape newdims = null)
+            public ndarray logseries(object p, shape newdims = null)
             {
                 ndarray op;
                 double fp;
@@ -1151,7 +1149,7 @@ namespace NumpyDotNet
                     if (fp >= 1.0)
                         throw new ValueError("p >= 1.0");
 
-                    return discd_array_sc(internal_state, RandomDistributions.rk_logseries, size, fp);
+                    return discd_array_sc(_internal_state, RandomDistributions.rk_logseries, size, fp);
                 }
 
 
@@ -1160,14 +1158,14 @@ namespace NumpyDotNet
                 if (np.anyb(np.greater_equal(op, 1.0)))
                     throw new ValueError("p >= 1.0");
 
-                return discd_array(internal_state, RandomDistributions.rk_logseries, size, op);
+                return discd_array(_internal_state, RandomDistributions.rk_logseries, size, op);
             }
 
             #endregion
 
             #region multinomial 
 
-            public static ndarray multinomial(int n, object pvals, shape size = null)
+            public ndarray multinomial(int n, object pvals, shape size = null)
             {
                 ndarray parr = asanyarray(pvals).astype(np.Float64);
                 double[] pix = parr.Array.data.datap as double[];
@@ -1192,7 +1190,7 @@ namespace NumpyDotNet
                     npy_intp dn = n;
                     for (npy_intp j = 0; j < d - 1; j++)
                     {
-                        mnix[i + j] = RandomDistributions.rk_binomial(internal_state, dn, pix[j] / Sum);
+                        mnix[i + j] = RandomDistributions.rk_binomial(_internal_state, dn, pix[j] / Sum);
                         dn = dn - mnix[i + j];
                         if (dn <= 0)
                             break;
