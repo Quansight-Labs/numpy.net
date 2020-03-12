@@ -21,16 +21,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rand_1()
         {
-            ndarray arr = np.random.rand(2, 3, 4);
+            var random = new np.random();
+            ndarray arr = random.rand(new shape(2, 3, 4));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
-            np.random.seed(8765);
-            double f = np.random.rand();
+            random.xseed(8765);
+            double f = random.rand();
             print(f);
             Assert.AreEqual(0.032785430047761466, f);
 
-            arr = np.random.rand(5000000);
+            arr = random.rand(new shape(5000000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -48,18 +49,20 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randn_1()
         {
-            double fr = np.random.randn();
-            ndarray arr = np.random.randn(new shape(2, 3, 4));
+            var random = new np.random();
+
+            double fr = random.randn();
+            ndarray arr = random.randn(new shape(2, 3, 4));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
             AssertShape(arr, 2, 3, 4);
 
             np.random.seed(1234);
 
-            fr = np.random.randn();
+            fr = random.randn();
             print(fr);
             Assert.AreEqual(0.47143516373249306, fr);
 
-            arr = np.random.randn(new shape(5000000));
+            arr = random.randn(new shape(5000000));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
 
             var amax = np.amax(arr);
@@ -78,22 +81,24 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randbool_1()
         {
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Bool);
+            var random = new np.random();
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.Bool);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BOOL);
             AssertShape(arr, 4);
             print(arr);
             //AssertArray(arr, new bool[] { false, false, false, false });
 
-            arr = np.random.randint(20, null, new shape(4, 5), dtype: np.Bool);
+            arr = random.randint(20, null, new shape(4, 5), dtype: np.Bool);
             AssertShape(arr, 4, 5);
             print(arr);
 
-            arr = np.random.randint(20, 21, new shape(2, 3), dtype: np.Bool);
+            arr = random.randint(20, 21, new shape(2, 3), dtype: np.Bool);
             AssertShape(arr, 2, 3);
             print(arr);
             //AssertArray(arr, new SByte[,] { { 20, 20, 20 }, { 20, 20, 20 } });
 
-            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Bool);
+            arr = random.randint(-2, 3, new shape(5000000), dtype: np.Bool);
             print(np.amax(arr));
             print(np.amin(arr));
             print(np.average(arr));
@@ -102,15 +107,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint8_1()
         {
-            np.random.seed(9292);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int8);
+            random.xseed(9292);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.Int8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new SByte[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(2, 8, new shape(5000000), dtype: np.Int8);
+            arr = random.randint(2, 8, new shape(5000000), dtype: np.Int8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
 
             var amax = np.amax(arr);
@@ -130,7 +137,7 @@ namespace NumpyDotNetTests
             AssertArray(first10, new sbyte[] { 3, 6, 7, 5, 5, 5, 7, 7, 4, 2 });
 
 
-            arr = np.random.randint(-2, 3, new shape(5000000), dtype: np.Int8);
+            arr = random.randint(-2, 3, new shape(5000000), dtype: np.Int8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_BYTE);
 
             amax = np.amax(arr);
@@ -156,15 +163,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint8_1()
         {
-            np.random.seed(1313);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt8);
+            random.xseed(1313);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.UInt8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Byte[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(2, 128, new shape(5000000), dtype: np.UInt8);
+            arr = random.randint(2, 128, new shape(5000000), dtype: np.UInt8);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
 
             var amax = np.amax(arr);
@@ -188,15 +197,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint16_1()
         {
-            np.random.seed(8381);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int16);
+            random.xseed(8381);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.Int16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int16[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(2, 2478, new shape(5000000), dtype: np.Int16);
+            arr = random.randint(2, 2478, new shape(5000000), dtype: np.Int16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
 
             var amax = np.amax(arr);
@@ -216,7 +227,7 @@ namespace NumpyDotNetTests
             AssertArray(first10, new Int16[] { 1854, 1641, 1219, 1190, 1714, 644, 441, 484, 579, 393 });
 
 
-            arr = np.random.randint(-2067, 3000, new shape(5000000), dtype: np.Int16);
+            arr = random.randint(-2067, 3000, new shape(5000000), dtype: np.Int16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT16);
 
             amax = np.amax(arr);
@@ -240,15 +251,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint16_1()
         {
-            np.random.seed(5555);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt16);
+            random.xseed(5555);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.UInt16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT16);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt16[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(23, 12801, new shape(5000000), dtype: np.UInt16);
+            arr = random.randint(23, 12801, new shape(5000000), dtype: np.UInt16);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT16);
 
             var amax = np.amax(arr);
@@ -271,15 +284,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint_1()
         {
-            np.random.seed(701);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int32);
+            random.xseed(701);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.Int32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(9, 128000, new shape(5000000), dtype: np.Int32);
+            arr = random.randint(9, 128000, new shape(5000000), dtype: np.Int32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
 
             var amax = np.amax(arr);
@@ -299,7 +314,7 @@ namespace NumpyDotNetTests
             AssertArray(first10, new Int32[] { 116207, 47965, 90333, 86510, 49239, 115311, 100417, 99653, 14878, 92386 });
 
 
-            arr = np.random.randint(-20000, 300000, new shape(5000000), dtype: np.Int32);
+            arr = random.randint(-20000, 300000, new shape(5000000), dtype: np.Int32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
 
             amax = np.amax(arr);
@@ -323,15 +338,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint_1()
         {
-            np.random.seed(8357);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt32);
+            random.xseed(8357);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.UInt32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT32);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt32[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(29, 13000, new shape(5000000), dtype: np.UInt32);
+            arr = random.randint(29, 13000, new shape(5000000), dtype: np.UInt32);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT32);
 
             var amax = np.amax(arr);
@@ -354,15 +371,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randint64_1()
         {
-            np.random.seed(10987);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.Int64);
+            random.xseed(10987);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.Int64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new Int64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(20, 9999999, new shape(5000000), dtype: np.Int64);
+            arr = random.randint(20, 9999999, new shape(5000000), dtype: np.Int64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
 
             var amax = np.amax(arr);
@@ -382,7 +401,7 @@ namespace NumpyDotNetTests
             AssertArray(first10, new Int64[] { 680213, 6755395, 2873894, 6180772, 6542022, 4878058, 9894982, 6332894, 1846901, 8550855 });
 
 
-            arr = np.random.randint(-9999999, 9999999, new shape(5000000), dtype: np.Int64);
+            arr = random.randint(-9999999, 9999999, new shape(5000000), dtype: np.Int64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT64);
 
             amax = np.amax(arr);
@@ -406,15 +425,17 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_randuint64_1()
         {
-            np.random.seed(1990);
+            var random = new np.random();
 
-            ndarray arr = np.random.randint(2, 3, new shape(4), dtype: np.UInt64);
+            random.xseed(1990);
+
+            ndarray arr = random.randint(2, 3, new shape(4), dtype: np.UInt64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT64);
             AssertShape(arr, 4);
             print(arr);
             AssertArray(arr, new UInt64[] { 2, 2, 2, 2 });
 
-            arr = np.random.randint(64, 64000, new shape(5000000), dtype: np.UInt64);
+            arr = random.randint(64, 64000, new shape(5000000), dtype: np.UInt64);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UINT64);
 
             var amax = np.amax(arr);
