@@ -2525,6 +2525,53 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_rand_wald_1()
+        {
+            np.random.seed(964);
+
+            ndarray arr = np.random.wald(3, 20, new shape(100000));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(12.349279351617012, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.6001989474303744, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(3.0025012751386755, avg.GetItem(0));
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[]
+            { 5.03038470107277, 2.90812891815563, 1.80122277240371, 2.88227044267389, 2.36018483421244,
+              5.25349661810997, 4.0632949031683, 3.43307360806721, 5.10604488857464, 2.87984364192777  });
+
+
+            arr = np.random.wald(np.arange(1, (25 * 25) + 1), 25 * 25);
+
+            amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(2928.8874732379727, amax.GetItem(0));
+
+            amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(0.9848685492507449, amin.GetItem(0));
+
+            avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(309.35420489337906, avg.GetItem(0));
+
+            first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+            AssertArray(first10, new double[]
+            { 0.984868549250745, 1.96127772419652, 2.99050918468426, 4.17290733434684, 5.07438725183429,
+              6.01195019448229, 7.48340958133606, 8.07272756076527, 11.1740022984504, 11.024796322117});
+
+        }
 
     }
 }

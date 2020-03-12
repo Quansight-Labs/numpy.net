@@ -1569,8 +1569,11 @@ namespace NumpyDotNet
 
             public static ndarray uniform(int low = 0, int high = 1, shape newdims = null)
             {
-                ndarray olow = np.asanyarray(low);
-                ndarray ohigh = np.asanyarray(high);
+                ndarray olow = np.asanyarray(low).astype(np.Float64);
+                ndarray ohigh = np.asanyarray(high).astype(np.Float64);
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
 
                 if (olow.size == 1 && ohigh.size == 1)
                 {
@@ -1584,7 +1587,7 @@ namespace NumpyDotNet
                     }
 
 
-                    return cont2_array_sc(internal_state, RandomDistributions.rk_uniform, newdims.iDims, flow, fscale);
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_uniform, size, flow, fscale);
                 }
 
                 ndarray odiff = np.subtract(ohigh, olow);
@@ -1592,7 +1595,7 @@ namespace NumpyDotNet
                     throw new Exception("Range exceeds valid bounds");
 
 
-                return cont2_array(internal_state, RandomDistributions.rk_uniform, newdims.iDims, olow, odiff);
+                return cont2_array(internal_state, RandomDistributions.rk_uniform, size, olow, odiff);
             }
 
             #endregion
@@ -1626,6 +1629,39 @@ namespace NumpyDotNet
                     throw new ValueError("kappa < 0");
                 }
                 return cont2_array(internal_state, RandomDistributions.rk_vonmises, size, omu, okappa);
+            }
+
+            #endregion
+
+            #region wald
+
+            public static ndarray wald(object mean, object scale, shape newdims = null)
+            {
+                ndarray omean = np.asanyarray(mean).astype(np.Float64);
+                ndarray oscale = np.asanyarray(scale).astype(np.Float64);
+                npy_intp[] size = null;
+                if (newdims != null)
+                    size = newdims.iDims;
+
+                if (omean.size == 1 && oscale.size == 1)
+                {
+                    double fmean = Convert.ToDouble(mean);
+                    double fscale = Convert.ToDouble(scale);
+
+                    if (fmean <= 0)
+                        throw new ValueError("mean <= 0");
+                    if (fscale <= 0)
+                        throw new ValueError("scale <= 0");
+
+                    return cont2_array_sc(internal_state, RandomDistributions.rk_wald, size, fmean, fscale);
+                }
+
+                if (np.anyb(np.less_equal(omean, 0.0)))
+                    throw new ValueError("mean <= 0.0");
+                if (np.anyb(np.less_equal(oscale, 0.0)))
+                    throw new ValueError("scale <= 0.0");
+
+                return cont2_array(internal_state, RandomDistributions.rk_wald, size, omean, oscale);
             }
 
             #endregion

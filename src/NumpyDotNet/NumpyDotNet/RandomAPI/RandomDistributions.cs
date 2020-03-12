@@ -751,7 +751,7 @@ namespace NumpyDotNet
             return mode * Math.Sqrt(-2.0 * Math.Log(1.0 - rk_double(state)));
         }
 
-        static double rk_wald(rk_state state, double mean, double scale)
+        internal static double rk_wald(rk_state state, double mean, double scale)
         {
             double U, X, Y;
             double mu_2l;
