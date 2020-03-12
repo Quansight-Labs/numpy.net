@@ -65,10 +65,16 @@ Take note that if multiple threads are manipulating the same ndarray object, you
 * System.String (exclusive feature!)
 * System.DateTime/System.Timespan (implemented via System.Object data type)
 
+##### np.random API:
+
+We have ported the original "RandomState" random number generator and most of the distributions associated with that. Seed values produce the same exact output as python which should make porting applications easier.
+
+Our version is implemented as an instantiable class, each with independent random engines so it can be used in multi-threaded applications.
+
 ##### Future plans include support for:
 
 * additional performance tunings.  (we think we can improve performance of selected functions and some minor overall improvements.)
-* random number functionality (np.random API)
+* np.random API:  additional random generators, including user defined if you want to test your own random generator.
 * np.pad ??
 * masked arrays??
 * 
