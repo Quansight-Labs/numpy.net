@@ -751,8 +751,8 @@ class PerformanceTests(unittest.TestCase):
              m3 = m1.flatten();
              m4 = m2.flatten();
 
-             print(np.sum(m3))
-             print(np.sum(m4))
+             #print(np.sum(m3))
+             #print(np.sum(m4))
 
 
         end = tm.time()

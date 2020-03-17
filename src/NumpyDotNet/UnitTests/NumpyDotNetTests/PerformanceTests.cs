@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3331,7 +3331,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_flatcopy_INT32()
         {
@@ -3346,15 +3346,15 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 ndarray m3 = m1.flatten();
-                Assert.AreEqual(1376644608, np.sum(m3).GetItem(0));
+               // Assert.AreEqual(1376644608, np.sum(m3).GetItem(0));
                 ndarray m4 = m2.flatten();
-                Assert.AreEqual(1376644608, np.sum(m4).GetItem(0));
+                //Assert.AreEqual(1376644608, np.sum(m4).GetItem(0));
             }
 
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("correlate operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("flatcopy operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 

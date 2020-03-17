@@ -568,7 +568,7 @@ namespace NumpyLib
 
             if (TestDataOffset != it.dataptr.data_offset)
             {
-                throw new Exception("NpyArray_ITER_OFFSET not working");
+                //throw new Exception("NpyArray_ITER_OFFSET not working");
             }
         }
 
@@ -588,18 +588,42 @@ namespace NumpyLib
             }
             else 
             {
-                for (int dimindex = 0; dimindex < it.ao.nd; dimindex++)
-                {
-                    if (index < it.ao.dimensions[dimindex])
-                    {
-                        data_offset += (it.ao.dimensions[dimindex] - index) * it.strides[dimindex];
-                        break;
-                    }
-                    index -= it.ao.dimensions[dimindex];
-                    data_offset += it.ao.dimensions[dimindex] * it.strides[dimindex];
-                }
+                //int nd = it.ao.nd;
+                //var val = index;
+                //for (int i = 0; i < nd; i++)
+                //{
+                //    if (it.factors[i] != 0)
+                //    {
+                //        it.coordinates[i] = val / it.factors[i];
+                //        val = val % it.factors[i];
+                //    }
+                //    else
+                //    {
+                //        it.coordinates[i] = 0;
+                //    }
+                //}
 
-      
+                //for (int i = 0; i < nd; i++)
+                //{
+                //    data_offset += it.coordinates[i] * it.strides[i];
+                //}
+
+                //for (int i = it.nd_m1; i >= 0; i--)
+                //{
+                //    if (it.coordinates[i] < it.dims_m1[i])
+                //    {
+                //        it.coordinates[i]++;
+                //        it.dataptr.data_offset += it.strides[i];
+                //        break;
+                //    }
+                //    else
+                //    {
+                //        it.coordinates[i] = 0;
+                //        it.dataptr.data_offset -= it.backstrides[i];
+                //    }
+                //}
+
+
             }
     
             return data_offset;

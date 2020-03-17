@@ -1347,11 +1347,31 @@ namespace NumpyLib
             //}
 
 
+            npy_intp startIndex = srcIter.index;
+            var endIndex = srcIter.size - srcIter.index;
+            var totalArraySize = N * endIndex;
+
+            // if it is a big array, use parallel library to speed it up
+            if (totalArraySize > 100000 && endIndex > 1)
+            {
+                Parallel.For(startIndex, endIndex, i =>
+                {
+                    var srcOffset = NpyArray_ITER_OFFSET(srcIter, i);
+                    VoidPtr pDest = new VoidPtr(dest, destOffset * i);
+                    VoidPtr pSrc = new VoidPtr(srcIter.dataptr, srcOffset);
+                    _strided_byte_copy(pDest, (npy_intp)outstride, pSrc, instride, N, outstride, null);
+                });
+                return;
+            }
+
+            var srcIter2 = srcIter.copy();
+
+            int index = 0;
             while (srcIter.index < srcIter.size)
             {
                 _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, null);
                 dest.data_offset += destOffset;
-                NpyArray_ITER_NEXT(srcIter);
+                NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
             }
         }
 
