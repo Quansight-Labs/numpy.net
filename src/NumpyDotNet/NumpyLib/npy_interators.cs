@@ -586,46 +586,48 @@ namespace NumpyLib
             {
                 data_offset +=  index * it.ao.descr.elsize;
             }
+            else if (it.nd_m1 == 1)
+            {
+                if (index <= it.dims_m1[1])
+                {
+                    data_offset += index * it.strides[1];
+                }
+                else
+                {
+                    data_offset += it.dims_m1[1] * it.strides[1];
+
+                    index -= it.dims_m1[1];
+
+                    data_offset += (index * it.strides[0]) - it.backstrides[1];
+                }
+            }
             else 
             {
-                //int nd = it.ao.nd;
-                //var val = index;
-                //for (int i = 0; i < nd; i++)
-                //{
-                //    if (it.factors[i] != 0)
-                //    {
-                //        it.coordinates[i] = val / it.factors[i];
-                //        val = val % it.factors[i];
-                //    }
-                //    else
-                //    {
-                //        it.coordinates[i] = 0;
-                //    }
-                //}
-
-                //for (int i = 0; i < nd; i++)
-                //{
-                //    data_offset += it.coordinates[i] * it.strides[i];
-                //}
-
-                //for (int i = it.nd_m1; i >= 0; i--)
-                //{
-                //    if (it.coordinates[i] < it.dims_m1[i])
-                //    {
-                //        it.coordinates[i]++;
-                //        it.dataptr.data_offset += it.strides[i];
-                //        break;
-                //    }
-                //    else
-                //    {
-                //        it.coordinates[i] = 0;
-                //        it.dataptr.data_offset -= it.backstrides[i];
-                //    }
-                //}
-
+                for (int i = it.nd_m1; i >= 0; i--)
+                {
+                    if (index <= it.dims_m1[i])
+                    {
+                        data_offset += index * it.strides[i];
+                        index = 0;
+                        break;
+                    }
+                    else
+                    {
+                        data_offset += it.dims_m1[i] * it.strides[i];
+                        index -= it.dims_m1[i];
+                        //if (index == 0)
+                        //{
+                        //    data_offset -= it.backstrides[i + 1];
+                        //    break;
+                        //}
+    
+                        data_offset -= it.backstrides[i];
+                    }
+                }
+                data_offset += index * it.strides[0];
 
             }
-    
+
             return data_offset;
         }
 
