@@ -576,6 +576,10 @@ namespace NumpyLib
         internal static npy_intp NpyArray_ITER_OFFSET(NpyArrayIterObject it, npy_intp index)
         {
             npy_intp data_offset = it.dataptr.data_offset;
+            if (index == 0)
+            {
+                return data_offset;
+            }
 
 
             if (it.nd_m1 == 0)
@@ -588,47 +592,83 @@ namespace NumpyLib
             }
             else if (it.nd_m1 == 1)
             {
-                if (index <= it.dims_m1[1])
+                npy_intp[] coordinates = ConvertIndexToCoordinates(it, index-1);
+                data_offset += UpdateDataOffset(it, coordinates);
+                if (coordinates[1] < it.dims_m1[1])
                 {
-                    data_offset += index * it.strides[1];
+                    coordinates[1]++;
+                    data_offset += it.strides[1];
                 }
                 else
                 {
-                    data_offset += it.dims_m1[1] * it.strides[1];
-
-                    index -= it.dims_m1[1];
-
-                    data_offset += (index * it.strides[0]) - it.backstrides[1];
+                    coordinates[1] = 0;
+                    coordinates[0]++;
+                    data_offset += it.strides[0] - it.backstrides[1];
                 }
             }
             else 
             {
+                npy_intp[] coordinates = ConvertIndexToCoordinates(it, index-1);
+                data_offset += UpdateDataOffset(it, coordinates);
+
                 for (int i = it.nd_m1; i >= 0; i--)
                 {
-                    if (index <= it.dims_m1[i])
+                    if (coordinates[i] < it.dims_m1[i])
                     {
-                        data_offset += index * it.strides[i];
-                        index = 0;
+                        coordinates[i]++;
+                        data_offset += it.strides[i];
                         break;
                     }
                     else
                     {
-                        data_offset += it.dims_m1[i] * it.strides[i];
-                        index -= it.dims_m1[i];
-                        //if (index == 0)
-                        //{
-                        //    data_offset -= it.backstrides[i + 1];
-                        //    break;
-                        //}
-    
+                        coordinates[i] = 0;
                         data_offset -= it.backstrides[i];
                     }
                 }
-                data_offset += index * it.strides[0];
 
             }
 
             return data_offset;
+        }
+
+        private static npy_intp UpdateDataOffset(NpyArrayIterObject it, npy_intp[] coordinates)
+        {
+            npy_intp data_offset = it.ao.data.data_offset;
+            for (int i = it.nd_m1; i >= 0; i--)
+            {
+                if (coordinates[i] < 0)
+                {
+                    coordinates[i] += it.dims_m1[i] + 1;
+                }
+                data_offset += coordinates[i] * it.strides[i];
+            }
+
+            return data_offset;
+
+        }
+
+        private static npy_intp[] ConvertIndexToCoordinates(NpyArrayIterObject it, npy_intp index)
+        {
+            npy_intp val;
+            int nd = it.ao.nd;
+
+            npy_intp[] coordinates = new npy_intp[nd];
+
+            val = index;
+            for (int i = 0; i < nd; i++)
+            {
+                if (it.factors[i] != 0)
+                {
+                    coordinates[i] = val / it.factors[i];
+                    val = val % it.factors[i];
+                }
+                else
+                {
+                    coordinates[i] = 0;
+                }
+            }
+
+            return coordinates;
         }
 
 
