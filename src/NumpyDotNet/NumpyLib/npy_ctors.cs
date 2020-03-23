@@ -1352,17 +1352,17 @@ namespace NumpyLib
             var totalArraySize = N * endIndex;
 
             // if it is a big array, use parallel library to speed it up
-            if (totalArraySize > 100000 && endIndex > 1)
-            {
-                Parallel.For(startIndex, endIndex, i =>
-                {
-                    var srcOffset = NpyArray_ITER_OFFSET(srcIter, i);
-                    VoidPtr pDest = new VoidPtr(dest, destOffset * i);
-                    VoidPtr pSrc = new VoidPtr(srcIter.dataptr, srcOffset);
-                    _strided_byte_copy(pDest, (npy_intp)outstride, pSrc, instride, N, outstride, null);
-                });
-                return;
-            }
+            //if (totalArraySize > 100000 && endIndex > 1)
+            //{
+            //    Parallel.For(startIndex, endIndex, i =>
+            //    {
+            //        var srcOffset = NpyArray_ITER_OFFSET(srcIter, i);
+            //        VoidPtr pDest = new VoidPtr(dest, destOffset * i);
+            //        VoidPtr pSrc = new VoidPtr(srcIter.dataptr, srcOffset);
+            //        _strided_byte_copy(pDest, (npy_intp)outstride, pSrc, instride, N, outstride, null);
+            //    });
+            //    return;
+            //}
 
             var srcIter2 = srcIter.copy();
 
