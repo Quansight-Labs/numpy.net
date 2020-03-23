@@ -568,7 +568,7 @@ namespace NumpyLib
 
             if (TestDataOffset != it.dataptr.data_offset)
             {
-                //throw new Exception("NpyArray_ITER_OFFSET not working");
+                throw new Exception("NpyArray_ITER_OFFSET not working");
             }
         }
 
@@ -641,6 +641,39 @@ namespace NumpyLib
                     coordinates[i] += it.dims_m1[i] + 1;
                 }
                 data_offset += coordinates[i] * it.strides[i];
+            }
+
+            if (it.nd_m1 == 1)
+            {
+                if (coordinates[1] < it.dims_m1[1])
+                {
+                    coordinates[1]++;
+                    data_offset += it.strides[1];
+                }
+                else
+                {
+                    coordinates[1] = 0;
+                    coordinates[0]++;
+                    data_offset += it.strides[0] - it.backstrides[1];
+                }
+            }
+            else
+            {
+                for (int i = it.nd_m1; i >= 0; i--)
+                {
+                    if (coordinates[i] < it.dims_m1[i])
+                    {
+                        coordinates[i]++;
+                        data_offset += it.strides[i];
+                        break;
+                    }
+                    else
+                    {
+                        coordinates[i] = 0;
+                        data_offset -= it.backstrides[i];
+                    }
+                }
+
             }
 
             return data_offset;
