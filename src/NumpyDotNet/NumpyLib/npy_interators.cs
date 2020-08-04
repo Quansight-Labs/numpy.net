@@ -542,9 +542,15 @@ namespace NumpyLib
                 Mask = 0x03;
             }
             else
+            if (TotalSize < 16)
             {
                 ParallelIters = new NpyArrayIterObject[8];
                 Mask = 0x07;
+            }
+            else
+            {
+                ParallelIters = new NpyArrayIterObject[16];
+                Mask = 0x0F;
             }
 
             for (int Index = 0; Index < ParallelIters.Length; Index++)
