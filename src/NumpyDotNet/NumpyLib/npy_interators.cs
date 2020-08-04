@@ -518,6 +518,62 @@ namespace NumpyLib
             }
         }
 
+        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it)
+        {
+            npy_intp TotalSize = it.size - it.index;
+            NpyArrayIterObject[] ParallelIters = null;
+            npy_intp Mask;
+
+            if (TotalSize < 2)
+            {
+                ParallelIters = new NpyArrayIterObject[1];
+                Mask = 0x00;
+            }
+            else
+            if (TotalSize < 4)
+            {
+                ParallelIters = new NpyArrayIterObject[2];
+                Mask = 0x01;
+            }
+            else
+            if (TotalSize < 8)
+            {
+                ParallelIters = new NpyArrayIterObject[4];
+                Mask = 0x03;
+            }
+            else
+            {
+                ParallelIters = new NpyArrayIterObject[8];
+                Mask = 0x07;
+            }
+
+            for (int Index = 0; Index < ParallelIters.Length; Index++)
+            {
+                ParallelIters[Index] = it.copy();
+                for (int i = 0; i < Index; i++)
+                {
+                    NpyArray_ITER_NEXT(ParallelIters[Index]);
+                }
+                ParallelIters[Index].ParallelMask = Mask;
+                ParallelIters[Index].ParallelIndex = Index;
+            }
+
+            return ParallelIters;
+        }
+
+        internal static void NpyArray_ITER_PARALLEL_NEXT(NpyArrayIterObject ParallelIter)
+        {
+            while (true)
+            {
+                NpyArray_ITER_NEXT(ParallelIter);
+                if ((ParallelIter.index & ParallelIter.ParallelMask) == ParallelIter.ParallelIndex)
+                {
+                    return;
+                }
+            }
+        }
+
+
         internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it, NpyArrayIterObject it2, npy_intp index)
         {
             //Debug.Assert(Validate(it));

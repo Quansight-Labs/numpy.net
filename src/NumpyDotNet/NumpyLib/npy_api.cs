@@ -226,6 +226,9 @@ namespace NumpyLib
         public npy_intp[] limits_sizes = new npy_intp[npy_defs.NPY_MAXDIMS];
         public npy_iter_get_dataptr_t translate;
 
+        public npy_intp ParallelMask;
+        public npy_intp ParallelIndex;
+
         public NpyArrayIterObject copy()
         {
             NpyArrayIterObject _copy = new NpyArrayIterObject();
