@@ -132,7 +132,7 @@ namespace NumpyDotNet
 
             CheckElementCount(nd);
 
-            return (UInt32)nd.GetItem(0);
+            return (UInt64)nd.GetItem(0);
         }
         public static explicit operator Int64(ndarray nd)
         {
