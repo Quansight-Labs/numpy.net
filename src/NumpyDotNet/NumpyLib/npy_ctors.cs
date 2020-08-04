@@ -1337,23 +1337,40 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N,  npy_intp destOffset)
+        internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
         {
-            //if (dest.type_num == srcIter.dataptr.type_num)
-            //{
-            //    var helper = MemCopy.GetMemcopyHelper(dest);
-            //    helper.flat_copyinto(dest, outstride, srcIter, instride, N, destOffset);
-            //    return;
-            //}
-
-
-            while (srcIter.index < srcIter.size)
+  
+            npy_intp TotalLoops = srcIter.size - srcIter.index;
+            npy_intp TotalCopies = TotalLoops * N;
+            if (TotalLoops < 2 || TotalCopies < flatCopyParallelSize)
             {
-                _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, null);
-                dest.data_offset += destOffset;
-                NpyArray_ITER_NEXT(srcIter);
+                while (srcIter.index < srcIter.size)
+                {
+                    _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, null);
+                    dest.data_offset += destOffset;
+                    NpyArray_ITER_NEXT(srcIter);
+                }
             }
-        }
+            else
+            {
+                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+
+                Parallel.For(0, ParallelIters.Count(), index =>
+                {
+                    var ParallelDest = new VoidPtr(dest);
+                    var ParallelIter = ParallelIters.ElementAt(index);
+                    ParallelDest.data_offset += destOffset * index;
+
+                    while (ParallelIter.index < ParallelIter.size)
+                    {
+                        _strided_byte_copy(ParallelDest, (npy_intp)outstride, ParallelIter.dataptr, instride, N, outstride, null);
+                        ParallelDest.data_offset += destOffset * ParallelIters.Count();
+                        NpyArray_ITER_PARALLEL_NEXT(ParallelIter);
+                    }
+                });
+            }
+
+    }
 
         internal static void _strided_byte_swap(VoidPtr dest, npy_intp stride, npy_intp n, int size)
         {
