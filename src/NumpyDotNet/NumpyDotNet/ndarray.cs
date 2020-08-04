@@ -56,6 +56,168 @@ namespace NumpyDotNet
     /// </summary>
     public partial class ndarray : IEnumerable<object>, NumpyDotNet.IArray
     {
+        #region Explicit conversion to single element data types
+        /// special case for bools. Tries to convert all data types to true/false value
+        public static explicit operator bool(ndarray arr)
+        {
+            int val = NpyCoreApi.ArrayBool(arr);
+            if (val < 0)
+            {
+                NpyCoreApi.CheckError();
+                return false;
+            }
+            else
+            {
+                return val != 0;
+            }
+        }
+        public static explicit operator byte(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_UBYTE)
+                throw new Exception("ndarray does not contain bytes");
+
+            CheckElementCount(nd);
+
+            return (byte)nd.GetItem(0);
+        }
+        public static explicit operator sbyte(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_BYTE)
+                throw new Exception("ndarray does not contain sbytes");
+
+            CheckElementCount(nd);
+
+            return (sbyte)nd.GetItem(0);
+        }
+        public static explicit operator UInt16(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_UINT16)
+                throw new Exception("ndarray does not contain UInt16s");
+
+            CheckElementCount(nd);
+
+            return (UInt16)nd.GetItem(0);
+        }
+        public static explicit operator Int16(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_INT16)
+                throw new Exception("ndarray does not contain Int16s");
+
+            CheckElementCount(nd);
+
+            return (Int16)nd.GetItem(0);
+        }
+        public static explicit operator UInt32(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_UINT32)
+                throw new Exception("ndarray does not contain UInt32s");
+
+            CheckElementCount(nd);
+
+            return (UInt32)nd.GetItem(0);
+        }
+        public static explicit operator Int32(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_INT32)
+                throw new Exception("ndarray does not contain Int32s");
+
+            CheckElementCount(nd);
+
+            return (Int32)nd.GetItem(0);
+        }
+        public static explicit operator UInt64(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_UINT64)
+                throw new Exception("ndarray does not contain UInt64s");
+
+            CheckElementCount(nd);
+
+            return (UInt32)nd.GetItem(0);
+        }
+        public static explicit operator Int64(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_INT64)
+                throw new Exception("ndarray does not contain Int64s");
+
+            CheckElementCount(nd);
+
+            return (Int64)nd.GetItem(0);
+        }
+        public static explicit operator float(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_FLOAT)
+                throw new Exception("ndarray does not contain floats");
+
+            CheckElementCount(nd);
+
+            return (float)nd.GetItem(0);
+        }
+        public static explicit operator double(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_DOUBLE)
+                throw new Exception("ndarray does not contain doubles");
+
+            CheckElementCount(nd);
+
+            return (double)nd.GetItem(0);
+        }
+        public static explicit operator decimal(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_DECIMAL)
+                throw new Exception("ndarray does not contain decimals");
+
+            CheckElementCount(nd);
+
+            return (decimal)nd.GetItem(0);
+        }
+        public static explicit operator System.Numerics.Complex(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_COMPLEX)
+                throw new Exception("ndarray does not contain complex numbers");
+
+            CheckElementCount(nd);
+
+            return (System.Numerics.Complex)nd.GetItem(0);
+        }
+        public static explicit operator System.Numerics.BigInteger(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_BIGINT)
+                throw new Exception("ndarray does not contain BigIntegers");
+
+            CheckElementCount(nd);
+
+            return (System.Numerics.BigInteger)nd.GetItem(0);
+        }
+
+        //public static explicit operator System.Object(ndarray nd)
+        //{
+        //    if (nd.TypeNum != NPY_TYPES.NPY_OBJECT)
+        //        throw new Exception("ndarray does not contain Objects");
+
+        //    CheckElementCount(nd);
+
+        //    return (System.Object)nd.GetItem(0);
+        //}
+
+        public static explicit operator System.String(ndarray nd)
+        {
+            if (nd.TypeNum != NPY_TYPES.NPY_STRING)
+                throw new Exception("ndarray does not contain Strings");
+
+            CheckElementCount(nd);
+
+            return (System.String)nd.GetItem(0);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void CheckElementCount(ndarray nd)
+        {
+            //if (nd.Array.data.datap.GetElementCount() != 1)
+            //    throw new Exception("ndarray is not a single element array");
+        }
+
+        #endregion
+
         public NpyArray core;
         public ndarray() {
         }
@@ -448,27 +610,9 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.invert, 0);
         }
 
-        public static implicit operator String(ndarray a) {
-            return StrFunction(a);
-        }
-
-
-
-        public static explicit operator bool(ndarray arr)
-        {
-            int val = NpyCoreApi.ArrayBool(arr);
-            if (val < 0)
-            {
-                NpyCoreApi.CheckError();
-                return false;
-            }
-            else
-            {
-                return val != 0;
-            }
-        }
-
-
+        //public static implicit operator String(ndarray a) {
+        //    return StrFunction(a);
+        //}
 
         #endregion
 
