@@ -3614,20 +3614,21 @@ namespace NumpyLib
             instrides /= elsize;
             outstrides /= elsize;
 
-            for (int i = 0; i < N; i++)
+            if (instrides == 1 && outstrides == 1)
             {
-                da[tout_index] = sa[tin_index];
-                tin_index += (int)instrides;
-                tout_index += (int)outstrides;
+                Array.Copy(sa, tin_index, da, tout_index, N);
+            }
+            else
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    da[tout_index] = sa[tin_index];
+                    tin_index += (int)instrides;
+                    tout_index += (int)outstrides;
+                }
             }
 
-            //Parallel.For(0, N, i =>
-            //{
-            //    da[tout_index + (i * instrides)] = sa[tin_index + (i * instrides)];
-            //    //tin_index += (int)instrides;
-            //    //tout_index += (int)outstrides;
-            //});
-
+  
         }
 
         public void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
