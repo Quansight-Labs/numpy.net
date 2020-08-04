@@ -46,6 +46,7 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
         private static npy_intp iterationTaskCountMax = 10000;
+        private static npy_intp maxParallelIterators = 8;
         private static npy_intp flatCopyParallelSize = 10000;
 
     }

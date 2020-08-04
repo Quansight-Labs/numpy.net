@@ -524,25 +524,25 @@ namespace NumpyLib
             NpyArrayIterObject[] ParallelIters = null;
             npy_intp Mask;
 
-            if (TotalSize < 2)
+            if (TotalSize < 2 || maxParallelIterators == 1)
             {
                 ParallelIters = new NpyArrayIterObject[1];
                 Mask = 0x00;
             }
             else
-            if (TotalSize < 4)
+            if (TotalSize < 4 || maxParallelIterators == 2)
             {
                 ParallelIters = new NpyArrayIterObject[2];
                 Mask = 0x01;
             }
             else
-            if (TotalSize < 8)
+            if (TotalSize < 8 || maxParallelIterators == 4)
             {
                 ParallelIters = new NpyArrayIterObject[4];
                 Mask = 0x03;
             }
             else
-            if (TotalSize < 16)
+            if (TotalSize < 16 || maxParallelIterators == 8)
             {
                 ParallelIters = new NpyArrayIterObject[8];
                 Mask = 0x07;
