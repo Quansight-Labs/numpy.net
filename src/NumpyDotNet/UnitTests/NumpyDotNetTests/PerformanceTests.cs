@@ -3202,7 +3202,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("fill operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -3227,7 +3227,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("less_equal operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -3253,7 +3253,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("mask operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("in1d operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -3301,7 +3301,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("matmul operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("inner operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -3354,7 +3354,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("correlate operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("flatcopy operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
