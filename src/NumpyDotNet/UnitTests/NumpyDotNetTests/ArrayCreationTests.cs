@@ -2694,5 +2694,58 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_explicit_cast_1()
+        {
+            var boolData = np.array(new bool[] { true });
+            Assert.AreEqual(true, (bool)boolData);
+
+            var byteData = np.array(new byte[] { 24 });
+            Assert.AreEqual((byte)24, (byte)byteData);
+
+            var sbyteData = np.array(new sbyte[] { -24 });
+            Assert.AreEqual((sbyte)-24, (sbyte)sbyteData);
+
+            var uint16Data = np.array(new UInt16[] { 689 });
+            Assert.AreEqual((UInt16)689, (UInt16)uint16Data);
+
+            var int16Data = np.array(new Int16[] { -689 });
+            Assert.AreEqual((Int16)(-689), (Int16)int16Data);
+
+            var uint32Data = np.array(new UInt32[] { 6899 });
+            Assert.AreEqual((UInt32)6899, (UInt32)uint32Data);
+
+            var int32Data = np.array(new Int32[] { -6899 });
+            Assert.AreEqual((Int32)(-6899), (Int32)int32Data);
+
+            var uint64Data = np.array(new UInt64[] { 68999 });
+            Assert.AreEqual((UInt64)68999, (UInt64)uint64Data);
+
+            var int64Data = np.array(new Int64[] { -68999 });
+            Assert.AreEqual((Int64)(-68999), (Int64)int64Data);
+
+            var floatData = np.array(new float[] { 68999 });
+            Assert.AreEqual((float)68999, (float)floatData);
+
+            var doubleData = np.array(new double[] { -68999 });
+            Assert.AreEqual((double)(-68999), (double)doubleData);
+
+            var decimalData = np.array(new decimal[] { -68999 });
+            Assert.AreEqual((decimal)(-68999), (decimal)decimalData);
+
+            var complexData = np.array(new System.Numerics.Complex[] { -68999 });
+            Assert.AreEqual((System.Numerics.Complex)(-68999), (System.Numerics.Complex)complexData);
+
+            var bigintData = np.array(new System.Numerics.BigInteger[] { -68999 });
+            Assert.AreEqual((System.Numerics.BigInteger)(-68999), (System.Numerics.BigInteger)bigintData);
+
+            var stringData = np.array(new string[] {"Numpy.NET" });
+            Assert.AreEqual("Numpy.NET", (string)stringData);
+
+
+            return;
+
+        }
+
     }
 }
