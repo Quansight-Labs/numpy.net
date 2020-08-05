@@ -1,1 +1,11 @@
 modify iterators to process only even or odds.  This would quickly and safely double the processing speed.
+
+
+
+NpyArray_ITER_TOARRAY - try to rework one as parallel interator and check performance
+
+_broadcast_copy - rework with parallel iterators for performance
+
+copy_from_same_shape_
+
+V0.9.40 has the code that was backed out.
