@@ -1,0 +1,1 @@
+modify iterators to process only even or odds.  This would quickly and safely double the processing speed.
