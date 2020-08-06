@@ -90,6 +90,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_AddReduce_Performance_UINT32(self):
+
+        LoopCount = 200;
+
+        a = np.arange(10000000, dtype=np.uint32);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduce(a)
+            print(b)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
+
     def test_AddReduce_Performance_FLOAT(self):
 
         LoopCount = 200;

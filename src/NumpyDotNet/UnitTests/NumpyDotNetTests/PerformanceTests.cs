@@ -2131,7 +2131,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var b = np.ufunc.reduce(UFuncOperation.add, a);
-                Assert.AreEqual((UInt64)49999995000000, b.item(0));
+                Assert.AreEqual((UInt32)2280707264, b.item(0));
                 // print(b);
             }
 
@@ -2408,7 +2408,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Complex).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.Array.data.datap as Complex[];
 
             for (int i = 0; i < LoopCount; i++)
             {
