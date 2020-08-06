@@ -842,22 +842,9 @@ namespace NumpyLib
                     return;
                 }
 
-                long taskSize = NUMERICOPS_TASKSIZE * 10;
-
-                for (long i = 0; i < destSize;)
-                {
-                    long offset_cnt = Math.Min(taskSize, destSize - i);
-
-                    PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, offset_cnt);
-
-                    i += offset_cnt;
-
-                    NpyArray_ITER_NEXT(SrcIter);
-                    NpyArray_ITER_NEXT(DestIter);
-                    NpyArray_ITER_NEXT(OperIter);
-                }
-
+                PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, destSize);
                 return;
+
             }
 
             protected void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
@@ -868,83 +855,77 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
-                Int32[] destOffsets = new Int32[taskSize];
-                Int32[] srcOffsets;
-                Int32[] operOffsets;
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
-                NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
-                if (NpyArray_SAMESHAPEANDSTRIDES(destArray, srcArray))
+                Parallel.For(0, destParallelIters.Count(), index =>
+                //for (int index = 0; index < destParallelIters.Count(); index++) // 
                 {
-                    srcOffsets = destOffsets;
-                }
-                else
-                {
-                    var IterableArraySize = taskSize;
-                    srcOffsets = new Int32[IterableArraySize];
-                    NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
-                }
-                if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
-                {
-                    operOffsets = destOffsets;
-                }
-                else
-                {
-                    var IterableArraySize = taskSize;
-                    operOffsets = new Int32[IterableArraySize];
-                    NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
-                }
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var lsrcIter = srcParallelIters.ElementAt(index);
+                    var loperIter = operParallelIters.ElementAt(index);
 
-                for (int i = 0; i < taskSize; i++) // Parallel.For(0, taskSize, i =>
-                {
-                    try
+                    npy_intp srcDataOffset = srcArray.data.data_offset;
+                    npy_intp operDataOffset = operArray.data.data_offset;
+
+                    while (ldestIter.index < ldestIter.size)
                     {
-                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = src[AdjustedIndex_GetItemFunction(srcOffsets[srcIndex], srcArray, src.Length)];
-
-                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operand = oper[AdjustedIndex_GetItemFunction(operOffsets[operandIndex], operArray, oper.Length)];
-
-                        T retValue;
-
                         try
                         {
-                            // for the common operations, do inline for speed.
-                            switch (op)
+                            var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.dataptr.data_offset - srcDataOffset, srcArray, src.Length)];
+                            var operand = oper[AdjustedIndex_GetItemFunction(loperIter.dataptr.data_offset - operDataOffset, operArray, oper.Length)];
+
+                            T retValue;
+
+                            try
                             {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
+                                // for the common operations, do inline for speed.
+                                switch (op)
+                                {
+                                    case UFuncOperation.add:
+                                        retValue = Add(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.subtract:
+                                        retValue = Subtract(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.multiply:
+                                        retValue = Multiply(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.divide:
+                                        retValue = Divide(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.power:
+                                        retValue = Power(srcValue, operand);
+                                        break;
 
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
+                                    default:
+                                        retValue = PerformUFuncOperation(op, srcValue, operand);
+                                        break;
 
+                                }
+
+                                dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset-destArray.data.data_offset, destArray, dest.Length)] = retValue;
+                            }
+                            catch
+                            {
+                                dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dest.Length)] = default(T);
                             }
 
-                            dest[AdjustedIndex_GetItemFunction(destOffsets[i], destArray, dest.Length)] = retValue;
+                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                            NpyArray_ITER_PARALLEL_NEXT(loperIter);
+
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            dest[AdjustedIndex_GetItemFunction(destOffsets[i], destArray, dest.Length)] = default(T);
+                            caughtExceptions.Add(ex);
                         }
+
                     }
-                    catch (Exception ex)
-                    {
-                        caughtExceptions.Add(ex);
-                    }
-                } //);
+                } );
+
+
 
 
                 if (caughtExceptions.Count > 0)
