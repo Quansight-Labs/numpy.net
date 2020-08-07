@@ -1137,71 +1137,82 @@ namespace NumpyLib
 
             var exceptions = new ConcurrentQueue<Exception>();
 
+
             var loopCount = NpyArray_Size(destArray);
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
 
-                var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
-                var srcOffsets = new Int32[IterableSrcArraySize];
-                NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
-
-                object operand = operations.ConvertOperand(src[0], oper[0]);
-
-                Parallel.For(0, loopCount, index =>
+                Parallel.For(0, destParallelIters.Count(), index =>
                 {
-                    try
-                    {
-                        int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
-                        srcIndex = (srcOffsets[srcIndex] / srcItemSize);
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var lsrcIter = srcParallelIters.ElementAt(index);
 
-                        D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
-                        dest[index - destAdjustment] = dValue;
-                    }
-                    catch (System.OverflowException of)
+                    object operand = operations.ConvertOperand(src[0], oper[0]);
+
+                    while (ldestIter.index < ldestIter.size)
                     {
-                        dest[index - destAdjustment] = default(D);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
+
+                        try
+                        {
+                            var srcIndex = (lsrcIter.dataptr.data_offset) / srcItemSize;
+                            D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
+                            dest[ldestIter.index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[ldestIter.index - destAdjustment] = default(D);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+
+                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                        NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
                     }
                 });
             }
             else
             {
-                var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
-                var srcOffsets = new Int32[IterableSrcArraySize];
-                NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
-                var IterableOperArraySize = CalculateIterationArraySize(operArray, destArray);
-                var operOffsets = new Int32[IterableOperArraySize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
-
-                Parallel.For(0, loopCount, index =>
+                Parallel.For(0, destParallelIters.Count(), index =>
                 {
-                    try
-                    {
-                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var lsrcIter = srcParallelIters.ElementAt(index);
+                    var loperIter = operParallelIters.ElementAt(index);
 
-                        int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
-                        srcIndex = (srcOffsets[srcIndex] / srcItemSize);
 
-                        D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
-                        dest[index - destAdjustment] = dValue;
-                    }
-                    catch (System.OverflowException of)
+                    while (ldestIter.index < ldestIter.size)
                     {
-                        dest[index - destAdjustment] = default(D);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
+
+                        try
+                        {
+                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
+
+                            var srcIndex = (lsrcIter.dataptr.data_offset) / srcItemSize;
+                            D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
+                            dest[ldestIter.index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[ldestIter.index - destAdjustment] = default(D);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+
+                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                        NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                        NpyArray_ITER_PARALLEL_NEXT(loperIter);
                     }
                 });
-
 
             }
 
