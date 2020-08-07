@@ -1129,9 +1129,7 @@ namespace NumpyLib
             D[] dest = destArray.data.datap as D[];
             O[] oper = operArray.data.datap as O[];
 
-            var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
-            var srcOffsets = new Int32[IterableSrcArraySize];
-            NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
+   
             var srcItemSize = srcArray.ItemSize;
 
             int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
@@ -1143,6 +1141,10 @@ namespace NumpyLib
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
+                var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
+                var srcOffsets = new Int32[IterableSrcArraySize];
+                NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
+
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
                 Parallel.For(0, loopCount, index =>
@@ -1170,6 +1172,10 @@ namespace NumpyLib
             }
             else
             {
+                var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
+                var srcOffsets = new Int32[IterableSrcArraySize];
+                NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
+
                 var IterableOperArraySize = CalculateIterationArraySize(operArray, destArray);
                 var operOffsets = new Int32[IterableOperArraySize];
                 NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
