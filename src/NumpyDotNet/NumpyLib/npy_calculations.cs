@@ -1141,6 +1141,8 @@ namespace NumpyLib
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+
                 var IterableSrcArraySize = CalculateIterationArraySize(srcArray, destArray);
                 var srcOffsets = new Int32[IterableSrcArraySize];
                 NpyArray_ITER_TOARRAY(srcIter, operArray, srcOffsets, srcOffsets.Length);
@@ -1151,18 +1153,15 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
-                        {
-                            int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
-                            srcIndex = (srcOffsets[srcIndex] / srcItemSize);
+                        int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
+                        srcIndex = (srcOffsets[srcIndex] / srcItemSize);
 
-                            D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
-                            dest[index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(D);
-                        }
+                        D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
+                        dest[index - destAdjustment] = dValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = default(D);
                     }
                     catch (Exception ex)
                     {
@@ -1184,21 +1183,18 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
-                        {
-                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
 
-                            int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
-                            srcIndex = (srcOffsets[srcIndex] / srcItemSize);
+                        int srcIndex = (int)(index < srcOffsets.Length ? index : (index % srcOffsets.Length));
+                        srcIndex = (srcOffsets[srcIndex] / srcItemSize);
 
-                            D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
-                            dest[index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(D);
-                        }
+                        D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
+                        dest[index - destAdjustment] = dValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = default(D);
                     }
                     catch (Exception ex)
                     {
