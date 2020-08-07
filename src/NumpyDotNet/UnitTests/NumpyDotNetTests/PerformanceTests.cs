@@ -3358,6 +3358,31 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_var_INT32()
+        {
+            int LoopCount = 20;
+
+            var m1 = np.arange(0, 16000000, dtype: np.Int32).reshape((400, -1));
+            var m2 = np.arange(0, 16000000, dtype: np.Int32).reshape((-1, 400));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray m3 = np.var(m1);
+                Assert.AreEqual(21333333333333.762, m3.GetItem(0));
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("np.var operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
     }
 
 #endif

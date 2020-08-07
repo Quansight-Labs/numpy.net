@@ -777,6 +777,26 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("correlate calculations took %f milliseconds" %(diff))  
 
+    def test_Performance_var_INT32(self):
+
+        LoopCount = 20;
+
+        m1 = np.arange(0, 16000000, dtype= np.int32).reshape((400, -1));
+        m2 = np.arange(0, 16000000, dtype= np.int32).reshape((-1, 400));
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+             m3 = np.var(m1);
+             print(m3)
+
+        end = tm.time()
+
+        diff = end-start
+        print("correlate calculations took %f milliseconds" %(diff))  
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters
