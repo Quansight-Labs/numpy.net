@@ -1068,20 +1068,18 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
-                        {
-                            var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
-                            dest[index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(D);
-                        }
+                        var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                        dest[index - destAdjustment] = dValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = default(D);
                     }
                     catch (Exception ex)
                     {
                         exceptions.Enqueue(ex);
                     }
+
                 });
             }
             else
@@ -1094,24 +1092,22 @@ namespace NumpyLib
                 {
                     try
                     {
-                        try
-                        {
-                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
+                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
 
-                            D dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                        D dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
 
-                            dest[index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(D);
-                        }
+                        dest[index - destAdjustment] = dValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[index - destAdjustment] = default(D);
                     }
                     catch (Exception ex)
                     {
                         exceptions.Enqueue(ex);
                     }
+
                 });
 
             }
