@@ -617,22 +617,7 @@ namespace NumpyLib
                 return;
             }
 
-            long taskSize = NUMERICOPS_TASKSIZE;
-
-
-            for (long i = 0; i < destSize;)
-            {
-                long offset_cnt = Math.Min(taskSize, destSize - i);
-
-                PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, offset_cnt);
-
-                i += offset_cnt;
-
-                NpyArray_ITER_NEXT(SrcIter);
-                NpyArray_ITER_NEXT(DestIter);
-                NpyArray_ITER_NEXT(OperIter);
-            }
-
+            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, destSize);
             return;
         }
 
@@ -671,76 +656,28 @@ namespace NumpyLib
         {
             List<Exception> caughtExceptions = new List<Exception>();
 
-            Int32[] destOffsets = new Int32[taskSize];
-            Int32[] srcOffsets;
-            Int32[] operOffsets;
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+            var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
-            NpyArray_ITER_TOARRAY(destIter, destArray, destOffsets, taskSize);
-            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, srcArray))
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
-                srcOffsets = destOffsets;
-            }
-            else
-            {
-                var IterableArraySize = taskSize;
-                srcOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(srcIter, srcArray, srcOffsets, IterableArraySize);
-            }
-            if (NpyArray_SAMESHAPEANDSTRIDES(destArray, operArray))
-            {
-                operOffsets = destOffsets;
-            }
-            else
-            {
-                var IterableArraySize = taskSize;
-                operOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, IterableArraySize);
-            }
+                var ldestIter = destParallelIters.ElementAt(index);
+                var lsrcIter = srcParallelIters.ElementAt(index);
+                var loperIter = operParallelIters.ElementAt(index);
 
-            if (taskSize < NUMERICOPS_SMALL_TASKSIZE)
-            {
+                npy_intp srcDataOffset = srcArray.data.data_offset;
+                npy_intp operDataOffset = operArray.data.data_offset;
+                npy_intp destDataOffset = destArray.data.data_offset;
 
-
-                try
-                {
-                    for (int i = 0; i < taskSize; i++)
-                    {
-                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = operations.srcGetItem(srcOffsets[srcIndex], srcArray);
-
-                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operValue = operations.operandGetItem(operOffsets[operandIndex], operArray);
-
-                        object destValue = null;
-
-                        destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
-
-                        try
-                        {
-                            operations.destSetItem(destOffsets[i], destValue, destArray);
-                        }
-                        catch
-                        {
-                            operations.destSetItem(destOffsets[i], 0, destArray);
-                        }
-                    };
-                }
-                catch (Exception ex)
-                {
-                    caughtExceptions.Add(ex);
-                }
-            }
-            else
-            {
-                Parallel.For(0, taskSize, i =>
+                //Parallel.For(0, taskSize, i =>
+                while (ldestIter.index < ldestIter.size)
                 {
                     try
                     {
-                        int srcIndex = (int)(i < srcOffsets.Length ? i : (i % srcOffsets.Length));
-                        var srcValue = operations.srcGetItem(srcOffsets[srcIndex], srcArray);
-
-                        int operandIndex = (int)(i < operOffsets.Length ? i : (i % operOffsets.Length));
-                        var operValue = operations.operandGetItem(operOffsets[operandIndex], operArray);
+                        var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset - srcDataOffset, srcArray);
+                        var operValue = operations.operandGetItem(loperIter.dataptr.data_offset - operDataOffset, operArray);
 
                         object destValue = null;
 
@@ -748,25 +685,30 @@ namespace NumpyLib
 
                         try
                         {
-                            operations.destSetItem(destOffsets[i], destValue, destArray);
+                            operations.destSetItem(ldestIter.dataptr.data_offset - destDataOffset, destValue, destArray);
                         }
                         catch
                         {
-                            operations.destSetItem(destOffsets[i], 0, destArray);
+                            operations.destSetItem(ldestIter.dataptr.data_offset - destDataOffset, 0, destArray);
                         }
                     }
                     catch (Exception ex)
                     {
                         caughtExceptions.Add(ex);
                     }
-                });
-            }
+
+                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                } //);
+            });
 
 
             if (caughtExceptions.Count > 0)
             {
                 throw caughtExceptions[0];
             }
+
         }
 
         private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
