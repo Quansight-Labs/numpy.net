@@ -1145,34 +1145,34 @@ namespace NumpyLib
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
 
+                object operand = operations.ConvertOperand(src[0], oper[0]);
+
                 Parallel.For(0, destParallelIters.Count(), index =>
                 {
                     var ldestIter = destParallelIters.ElementAt(index);
                     var lsrcIter = srcParallelIters.ElementAt(index);
 
-                    object operand = operations.ConvertOperand(src[0], oper[0]);
-
-                    while (ldestIter.index < ldestIter.size)
+                    try
                     {
-
-                        try
+                        while (ldestIter.index < ldestIter.size)
                         {
-                            var srcIndex = (lsrcIter.dataptr.data_offset) / srcItemSize;
+                            var srcIndex = lsrcIter.dataptr.data_offset / srcItemSize;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[ldestIter.index - destAdjustment] = default(D);
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptions.Enqueue(ex);
-                        }
 
-                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                        NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                        }
                     }
+                    catch (System.OverflowException of)
+                    {
+                        dest[ldestIter.index - destAdjustment] = default(D);
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Enqueue(ex);
+                    }
+
                 });
             }
             else
@@ -1187,31 +1187,30 @@ namespace NumpyLib
                     var lsrcIter = srcParallelIters.ElementAt(index);
                     var loperIter = operParallelIters.ElementAt(index);
 
-
-                    while (ldestIter.index < ldestIter.size)
+                    try
                     {
-
-                        try
+                        while (ldestIter.index < ldestIter.size)
                         {
                             object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
 
-                            var srcIndex = (lsrcIter.dataptr.data_offset) / srcItemSize;
+                            var srcIndex = lsrcIter.dataptr.data_offset / srcItemSize;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[ldestIter.index - destAdjustment] = default(D);
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptions.Enqueue(ex);
-                        }
 
-                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                        NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                        NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                            NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                        }
                     }
+                    catch (System.OverflowException of)
+                    {
+                        dest[ldestIter.index - destAdjustment] = default(D);
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Enqueue(ex);
+                    }
+
                 });
 
             }
