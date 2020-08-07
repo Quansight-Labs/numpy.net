@@ -999,57 +999,60 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
-                    var operOffsets = new Int32[IterableArraySize];
-                    NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
+                    var ParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
-                    Parallel.For(0, loopCount, index =>
+                    Parallel.For(0, ParallelIters.Count(), index =>
                     {
-                        try
+                        var Iter = ParallelIters.ElementAt(index);
+
+                        while (Iter.index < Iter.size)
                         {
-                            int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                            T operand = oper[operOffsets[operandIndex] / SizeOfItem];
-                            T srcValue = src[index - srcAdjustment];
-                            T retValue;
-
-                            // for the common operations, do inline for speed.
-                            switch (op)
+                            try
                             {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
+                                T operand = oper[Iter.dataptr.data_offset / SizeOfItem];
+                                T srcValue = src[Iter.index - srcAdjustment];
+                                T retValue;
 
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
+                                // for the common operations, do inline for speed.
+                                switch (op)
+                                {
+                                    case UFuncOperation.add:
+                                        retValue = Add(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.subtract:
+                                        retValue = Subtract(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.multiply:
+                                        retValue = Multiply(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.divide:
+                                        retValue = Divide(srcValue, operand);
+                                        break;
+                                    case UFuncOperation.power:
+                                        retValue = Power(srcValue, operand);
+                                        break;
 
+                                    default:
+                                        retValue = PerformUFuncOperation(op, srcValue, operand);
+                                        break;
+
+                                }
+
+                                dest[Iter.index - destAdjustment] = retValue;
+                            }
+                            catch (System.OverflowException of)
+                            {
+                                dest[Iter.index - destAdjustment] = default(T);
+                            }
+                            catch (Exception ex)
+                            {
+                                exceptions.Enqueue(ex);
                             }
 
-                            dest[index - destAdjustment] = retValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(T);
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptions.Enqueue(ex);
+                            NpyArray_ITER_PARALLEL_NEXT(Iter);
                         }
 
-                    });
-
+                    } );
                 }
 
                 if (exceptions.Count > 0)
