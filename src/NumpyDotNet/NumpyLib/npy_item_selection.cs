@@ -2161,33 +2161,46 @@ namespace NumpyLib
 
             if (needcopy)
             {
-                VoidPtr buffer = NpyDataMem_NEW(op.descr.type_num, (ulong)(N * elsize));
+                var parallelIters = NpyArray_ITER_ParallelSplit(it);
 
-                while (size-- > 0)
+                Parallel.For(0, parallelIters.Count(), index =>
+                //for (int index = 0; index < parallelIters.Count(); index++) // 
                 {
-                    _strided_byte_copy(buffer, (npy_intp)elsize, it.dataptr,
-                                                 astride, N, elsize, null);
-                    if (swap)
+                    var paraIter = parallelIters.ElementAt(index);
+
+                    VoidPtr buffer = NpyDataMem_NEW(op.descr.type_num, (ulong)(N * elsize));
+
+                    while (paraIter.index < paraIter.size)
                     {
-                        _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
+                        _strided_byte_copy(buffer, (npy_intp)elsize, paraIter.dataptr,
+                                                     astride, N, elsize, null);
+                        if (swap)
+                        {
+                            _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
+                        }
+                        if (sort(buffer, N, op, kind) < 0)
+                        {
+                            NpyDataMem_FREE(buffer);
+                            break;
+                        }
+                        if (swap)
+                        {
+                            _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
+                        }
+                        _strided_byte_copy(paraIter.dataptr, astride, buffer,
+                                                     (npy_intp)elsize, N, elsize, null);
+
+                        NpyArray_ITER_PARALLEL_NEXT(paraIter);
                     }
-                    if (sort(buffer, N, op, kind) < 0)
-                    {
-                        NpyDataMem_FREE(buffer);
-                        goto fail;
-                    }
-                    if (swap)
-                    {
-                        _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
-                    }
-                    _strided_byte_copy(it.dataptr, astride, buffer,
-                                                 (npy_intp)elsize, N, elsize, null);
-                    NpyArray_ITER_NEXT(it);
-                }
-                NpyDataMem_FREE(buffer);
+                    NpyDataMem_FREE(buffer);
+                });
+
+    
             }
             else
             {
+
+                // NpyArray_ITER_ParallelSplit does not work if run in parallel
                 while (size-- > 0)
                 {
                     if (sort(it.dataptr, N, op, kind) < 0)
