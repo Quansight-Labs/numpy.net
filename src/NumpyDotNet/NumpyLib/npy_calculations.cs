@@ -1084,37 +1084,42 @@ namespace NumpyLib
             }
             else
             {
-                var IterableArraySize = CalculateIterationArraySize(operArray, destArray);
-                var operOffsets = new Int32[IterableArraySize];
-                NpyArray_ITER_TOARRAY(operIter, operArray, operOffsets, operOffsets.Length);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
-                Parallel.For(0, loopCount, index =>
+                Parallel.For(0, destParallelIters.Count(), index =>
+                //for (int index = 0; index < destParallelIters.Count(); index++) // 
                 {
-                    try
-                    {
-                        int operandIndex = (int)(index < operOffsets.Length ? index : (index % operOffsets.Length));
-                        object operand = operations.ConvertOperand(src[0], operations.operandGetItem(operOffsets[operandIndex], operArray));
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var loperIter = operParallelIters.ElementAt(index);
 
-                        D dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                    npy_intp srcDataOffset = srcArray.data.data_offset;
+                    npy_intp operDataOffset = operArray.data.data_offset;
 
-                        dest[index - destAdjustment] = dValue;
-                    }
-                    catch (System.OverflowException of)
+                    while (ldestIter.index < ldestIter.size)
                     {
-                        dest[index - destAdjustment] = default(D);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
+                        try
+                        {
+                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
 
+                            D dValue = (D)(dynamic)operations.operation(src[ldestIter.index - srcAdjustment], operand);
+
+                            dest[ldestIter.index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[ldestIter.index - destAdjustment] = default(D);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+
+
+                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                        NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                    }
                 });
-
-            }
-
-            if (exceptions.Count > 0)
-            {
-                throw exceptions.ElementAt(0);
             }
 
         }
