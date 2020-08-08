@@ -1120,27 +1120,47 @@ namespace NumpyLib
 
             bool whereValue = true;
 
-            for (long i = 0; i < destSize; i++)
+            IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit(SrcIter);
+            IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit(DestIter);
+            IEnumerable<NpyArrayIterObject> whereParalleIters = null;
+            if (WhereIter != null)
             {
-                var srcValue = operations.srcGetItem(SrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
-
-                if (WhereIter != null)
-                {
-                    whereValue = (bool)operations.operandGetItem(WhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
-                }
-
-                if (whereValue)
-                {
-                    operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
-                }
-
-                NpyArray_ITER_NEXT(SrcIter);
-                NpyArray_ITER_NEXT(DestIter);
-                if (WhereIter != null)
-                {
-                    NpyArray_ITER_NEXT(WhereIter);
-                }
+                whereParalleIters = NpyArray_ITER_ParallelSplit(WhereIter);
             }
+
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) // 
+            {
+                NpyArrayIterObject ldestIter = destParallelIters.ElementAt(index);
+                NpyArrayIterObject lsrcIter = srcParallelIters.ElementAt(index);
+                NpyArrayIterObject lwhereIter = null;
+                if (whereParalleIters != null)
+                {
+                    lwhereIter = whereParalleIters.ElementAt(index);
+                }
+
+                while (ldestIter.index < ldestIter.size)
+                {
+                    var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+
+                    if (WhereIter != null)
+                    {
+                        whereValue = (bool)operations.operandGetItem(lwhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
+                    }
+
+                    if (whereValue)
+                    {
+                        operations.destSetItem(ldestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
+                    }
+
+                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    if (lwhereIter != null)
+                    {
+                        NpyArray_ITER_PARALLEL_NEXT(lwhereIter);
+                    }
+                }
+            });
 
             return;
         }
