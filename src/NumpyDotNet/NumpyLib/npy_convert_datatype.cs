@@ -482,7 +482,9 @@ namespace NumpyLib
                 NpyErr_MEMORY();
                 return -1;
             }
-  
+
+            // NpyArray_ITER_ParallelSplit system will not work here.  Processing must be done in sequential order.
+
             while (multi.index < multi.size)
             {
                 _strided_buffered_cast(multi.iters[0].dataptr,
