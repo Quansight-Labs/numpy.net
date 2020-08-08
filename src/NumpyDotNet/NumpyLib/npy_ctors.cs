@@ -1451,22 +1451,34 @@ namespace NumpyLib
             elsize = NpyArray_ITEMSIZE(dest);
             descr = dest.descr;
 
-            while (dit.index < dit.size)
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(sit);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(dit);
+
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
-                /* strided copy of elsize bytes */
-                _strided_byte_copy(dit.dataptr, dest.strides[maxaxis],
-                       sit.dataptr, src.strides[maxaxis],
-                       maxdim, elsize, descr);
-                if (swap)
+                var ldestIter = destParallelIters.ElementAt(index);
+                var lsrcIter = srcParallelIters.ElementAt(index);
+
+                //Parallel.For(0, taskSize, i =>
+                while (ldestIter.index < ldestIter.size)
                 {
-                    _strided_byte_swap(dit.dataptr,
-                                       dest.strides[maxaxis],
-                                       dest.dimensions[maxaxis],
-                                       elsize);
+                    _strided_byte_copy(ldestIter.dataptr,
+                                 ldestIter.strides[maxaxis],
+                                 lsrcIter.dataptr,
+                                 lsrcIter.strides[maxaxis],
+                                 maxdim, elsize, descr);
+                    if (swap)
+                    {
+                        _strided_byte_swap(ldestIter.dataptr,
+                                           ldestIter.strides[maxaxis],
+                                           dest.dimensions[maxaxis], elsize);
+                    }
+                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
                 }
-                NpyArray_ITER_NEXT(dit);
-                NpyArray_ITER_NEXT(sit);
-            }
+            });
+  
 
             Npy_DECREF(sit);
             Npy_DECREF(dit);
@@ -1514,21 +1526,33 @@ namespace NumpyLib
              * Refcount note: src and dest may have different sizes
              */
 
-            while (multi.index < multi.size)
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(multi.iters[1]);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(multi.iters[0]);
+
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
-                _strided_byte_copy(multi.iters[0].dataptr,
-                       multi.iters[0].strides[maxaxis],
-                       multi.iters[1].dataptr,
-                       multi.iters[1].strides[maxaxis],
-                       maxdim, elsize, descr);
-                if (swap)
+                var ldestIter = destParallelIters.ElementAt(index);
+                var lsrcIter = srcParallelIters.ElementAt(index);
+
+                //Parallel.For(0, taskSize, i =>
+                while (ldestIter.index < ldestIter.size)
                 {
-                    _strided_byte_swap(multi.iters[0].dataptr,
-                                       multi.iters[0].strides[maxaxis],
-                                       maxdim, elsize);
+                    _strided_byte_copy(ldestIter.dataptr,
+                                 ldestIter.strides[maxaxis],
+                                 lsrcIter.dataptr,
+                                 lsrcIter.strides[maxaxis],
+                                 maxdim, elsize, descr);
+                    if (swap)
+                    {
+                        _strided_byte_swap(ldestIter.dataptr,
+                                           ldestIter.strides[maxaxis],
+                                           maxdim, elsize);
+                    }
+                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
+                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
                 }
-                NpyArray_MultiIter_NEXT(multi);
-            }
+            });
 
             Npy_DECREF(multi);
             return 0;
