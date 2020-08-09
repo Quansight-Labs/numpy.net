@@ -4160,27 +4160,90 @@ namespace NumpyLib
 
         public void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right)
         {
-            for (int i = 0; i < n_left; i++)
+            if (true)
             {
-                dot(ip1, is1, ip2, is2, op, n);
-                n++;
-                ip2.data_offset -= is2;
-                op.data_offset += os;
+                Parallel.For(0, n_left, i =>
+                //for (int i = 0; i < n_left; i++)
+                {
+                    npy_intp nn = n + i;
+
+                    VoidPtr nip2 = new VoidPtr(ip2);
+                    nip2.data_offset -= is2 * i;
+
+                    VoidPtr nop = new VoidPtr(op);
+                    nop.data_offset += os * i;
+
+                    dot(ip1, is1, nip2, is2, nop, nn);
+
+                });
+
+                n += n_left;
+                ip2.data_offset -= is2 * n_left;
+                op.data_offset += os * n_left;
+
+
+                npy_intp loop_cnt = n1 - n2 + 1;
+                Parallel.For(0, loop_cnt, i =>
+                //for (int i = 0; i < loop_cnt; i++)
+                {
+                    VoidPtr nip1 = new VoidPtr(ip1);
+                    nip1.data_offset += is1 * i;
+
+                    VoidPtr nop = new VoidPtr(op);
+                    nop.data_offset += os * i;
+
+                    dot(nip1, is1, ip2, is2, nop, n);
+                });
+
+                ip1.data_offset += is1 * loop_cnt;
+                op.data_offset += os * loop_cnt;
+
+
+                Parallel.For(0, n_right, i =>
+                //for (int i = 0; i < n_right; i++)
+                {
+                    npy_intp nn = n;
+                    nn -= i+1;
+
+                    VoidPtr nip1 = new VoidPtr(ip1);
+                    nip1.data_offset += is1 * i;
+
+                    VoidPtr nop = new VoidPtr(op);
+                    nop.data_offset += os * i;
+
+                    dot(nip1, is1, ip2, is2, nop, nn);
+                });
+
+                n -= n_right;
+                ip1.data_offset += is1 * n_right;
+                op.data_offset += os * n_right;
+            }
+            else
+            {
+                for (int i = 0; i < n_left; i++)
+                {
+                    dot(ip1, is1, ip2, is2, op, n);
+                    n++;
+                    ip2.data_offset -= is2;
+                    op.data_offset += os;
+                }
+
+                for (int i = 0; i < (n1 - n2 + 1); i++)
+                {
+                    dot(ip1, is1, ip2, is2, op, n);
+                    ip1.data_offset += is1;
+                    op.data_offset += os;
+                }
+                for (int i = 0; i < n_right; i++)
+                {
+                    n--;
+                    dot(ip1, is1, ip2, is2, op, n);
+                    ip1.data_offset += is1;
+                    op.data_offset += os;
+                }
             }
 
-            for (int i = 0; i < (n1 - n2 + 1); i++)
-            {
-                dot(ip1, is1, ip2, is2, op, n);
-                ip1.data_offset += is1;
-                op.data_offset += os;
-            }
-            for (int i = 0; i < n_right; i++)
-            {
-                n--;
-                dot(ip1, is1, ip2, is2, op, n);
-                ip1.data_offset += is1;
-                op.data_offset += os;
-            }
+ 
         }
 
         private void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
