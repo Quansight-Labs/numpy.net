@@ -15,7 +15,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -118,16 +118,22 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_MathOperation_Sin_DOUBLE()
         {
+            int LoopCount = 20;
 
             var a = np.arange(0, 10000000, dtype: np.Float64);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            var b = np.sin(a);
-            Assert.AreEqual(1.53534361535036, np.sum(b).GetItem(0));
-
+            ndarray b = null;
+            for (int i = 0; i < LoopCount; i++)
+            {
+                b = np.sin(a);
+                Assert.AreEqual(1.53534361535036, np.sum(b).GetItem(0));
+            }
             sw.Stop();
+
+
 
             Console.WriteLine(string.Format("np.sin calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
@@ -163,7 +169,7 @@ namespace NumpyDotNetTests
         public void Performance_AddReduce2_DOUBLE()
         {
 
-            int LoopCount = 200;
+            int LoopCount = 20;
             var a = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();

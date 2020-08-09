@@ -28,7 +28,7 @@ class PerformanceTests(unittest.TestCase):
         end = tm.time()
 
         diff = end-start
-        print("Int64 calculations took %f milliseconds" %(diff))
+        print("DOUBLE calculations took %f milliseconds" %(diff))
         print(output)
 
         
@@ -58,14 +58,14 @@ class PerformanceTests(unittest.TestCase):
 
     def test_MathOperation_Sin(self):
 
-        LoopCount = 200;
+        LoopCount = 20;
 
         a = np.arange(10000000, dtype=np.float64);
 
         start = tm.time()
 
-
-        b = np.sin(a)
+        for i in range(LoopCount):
+            b = np.sin(a)
         print(np.sum(b))
 
         end = tm.time()
@@ -126,7 +126,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_AddReduce_Performance2(self):
 
-        LoopCount = 200;
+        LoopCount = 20;
 
         a = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
 
@@ -134,8 +134,8 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.reduce(a)
-            c = np.sum(b)
-            print(c)
+            #c = np.sum(b)
+            #print(c)
 
         end = tm.time()
 
