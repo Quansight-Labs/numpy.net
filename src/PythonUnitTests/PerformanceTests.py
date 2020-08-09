@@ -179,7 +179,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_AddAccumulate_Performance2(self):
 
-        LoopCount = 2;
+        LoopCount = 20;
 
         a = np.arange(4000 * 4000, dtype=np.float64).reshape(4000,4000);
 
@@ -197,7 +197,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_AddReduceAt_Performance(self):
 
-        LoopCount = 200;
+        LoopCount = 20;
 
         a = np.arange(10000000, dtype=np.float64).reshape((40, -1));
 
@@ -328,7 +328,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_copy_DOUBLE(self):
 
-        LoopCount = 2000;
+        LoopCount = 200;
 
         matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
 

@@ -222,19 +222,20 @@ namespace NumpyDotNetTests
         public void Performance_AddAccumulate2_DOUBLE()
         {
 
-            int LoopCount = 200;
+            int LoopCount = 20;
             var a = np.arange(0, 4000 * 4000, dtype: np.Float64).reshape(4000,4000);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
+            ndarray b = null;
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.accumulate(UFuncOperation.add, a);
-                var c = np.sum(b);
-                Assert.AreEqual(1.7073065599596742E+17, c.item(0));
-
+                b = np.ufunc.accumulate(UFuncOperation.add, a);
             }
+            var c = np.sum(b);
+            Assert.AreEqual(1.7073065599596742E+17, c.item(0));
+
 
             sw.Stop();
 
@@ -293,7 +294,7 @@ namespace NumpyDotNetTests
         public void Performance_AddReduceAt_DOUBLE()
         {
 
-            int LoopCount = 200;
+            int LoopCount = 20;
             var a = np.arange(0, 10000000, dtype: np.Float64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -2673,9 +2674,9 @@ namespace NumpyDotNetTests
         {
             int LoopCount = 20;
 
-            var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
-            var x1comp = np.arange(0, 1600000, 5, dtype: np.Float64).reshape((40, -1));
-            var x2comp = np.arange(0, 1600000, 10, dtype: np.Float64).reshape((40, -1));
+            var matrix = np.arange(16000000, dtype: np.Float64).reshape((40, -1));
+            var x1comp = np.arange(0, 16000000, 5, dtype: np.Float64).reshape((40, -1));
+            var x2comp = np.arange(0, 16000000, 10, dtype: np.Float64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -2708,9 +2709,9 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_copy_DOUBLE()
         {
-            int LoopCount = 2000;
+            int LoopCount = 200;
 
-            var matrix = np.arange(1600000, dtype: np.Float64).reshape((40, -1));
+            var matrix = np.arange(16000000, dtype: np.Float64).reshape((40, -1));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
