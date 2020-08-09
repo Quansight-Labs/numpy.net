@@ -1257,8 +1257,8 @@ namespace NumpyLib
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
-                    // kevin - here
 
+                    // kevin - loop count never gets above 2.  Not worth fixing.
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
