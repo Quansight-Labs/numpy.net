@@ -3707,7 +3707,6 @@ namespace NumpyLib
             {
                 _dst.data_offset /= elsize;
 
-                npy_intp index = 0;
                 while (bool_array_size-- > 0)
                 {
                     if (bool_array[dptr_index])
@@ -3715,7 +3714,6 @@ namespace NumpyLib
                         d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
                     }
                     dptr_index += stride;
-                    //numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
                 }
             }
@@ -3761,7 +3759,6 @@ namespace NumpyLib
             {
                 _dst.data_offset /= elsize;
 
-                npy_intp index = 0;
                 while (iterCount-- > 0)
                 {
                     npy_intp num = dataptr[index_iter.dataptr.data_offset / sizeof(npy_intp)];
@@ -3777,7 +3774,6 @@ namespace NumpyLib
 
                     d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
 
-                    //numpyinternal.NpyArray_ITER_NEXT(index_iter, index_iter2, ++index);
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
             }
@@ -3815,8 +3811,6 @@ namespace NumpyLib
             }
             else
             {
-                npy_intp index = 0;
-
                 while (steps-- > 0)
                 {
                     numpyinternal.NpyArray_ITER_GOTO1D(destIter, start);
@@ -3828,7 +3822,6 @@ namespace NumpyLib
                         numpyinternal.swapvalue(destIter.dataptr, elsize);
                     }
 
-                    //numpyinternal.NpyArray_ITER_NEXT(srcIter, srcIter2, ++index);
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
                     {
@@ -3855,7 +3848,6 @@ namespace NumpyLib
 
             if (srcIter.size == 1)
             {
-                npy_intp index = 0;
                 while (bool_size-- > 0)
                 {
                     if (bool_mask[dptr_index])
@@ -3869,14 +3861,11 @@ namespace NumpyLib
 
                     }
                     dptr_index += stride;
-                    //numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
                     numpyinternal.NpyArray_ITER_NEXT(destIter);
                 }
             }
             else
             {
-                npy_intp index = 0;
-
                 while (bool_size-- > 0)
                 {
                     if (bool_mask[dptr_index])
@@ -3895,7 +3884,6 @@ namespace NumpyLib
                         }
                     }
                     dptr_index += stride;
-                    //numpyinternal.NpyArray_ITER_NEXT(destIter, destIter2, ++index);
                     numpyinternal.NpyArray_ITER_NEXT(destIter);
                 }
             }
