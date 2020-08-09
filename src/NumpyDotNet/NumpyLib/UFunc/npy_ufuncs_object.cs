@@ -1063,6 +1063,9 @@ namespace NumpyLib
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /*fprintf(stderr, "ONEDIM..%d\n", loop.size); */
 
+  
+                    // kevin - here
+
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
@@ -1073,22 +1076,59 @@ namespace NumpyLib
                     break;
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-                     
+
+                    List<VoidPtr[]> loopFunctionBuffer = new List<VoidPtr[]>();
+
+                    bool HasError = false;
+                    // kevin - here
                     while (loop.index < loop.size)
                     {
  
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(operation, loop.bufptr, loop.N,loop.steps, self.ops);
-                        if (!NPY_UFUNC_CHECK_ERROR(loop))
-                            goto fail;
+
+                        loopFunctionBuffer.Add(new VoidPtr[3] { loop.bufptr[0], loop.bufptr[1], loop.bufptr[2] });
+
+                        if (loopFunctionBuffer.Count >= 1000)
+                        {
+                            HasError = false;
+                            Parallel.For(0, loopFunctionBuffer.Count, buffIndex =>
+                            {
+                                var bufPtr = loopFunctionBuffer[buffIndex];
+                                loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
+                                if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                {
+                                    HasError = true;
+                                }
+                            });
+
+                            if (HasError)
+                                goto fail;
+
+                            loopFunctionBuffer.Clear();
+                        }
 
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.bufptr[2] = loop.bufptr[0];
                         loop.index++;
                     }
+
+                    HasError = false;
+                    Parallel.For(0, loopFunctionBuffer.Count, buffIndex =>
+                    {
+                        var bufPtr = loopFunctionBuffer[buffIndex];
+                        loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
+                        if (!NPY_UFUNC_CHECK_ERROR(loop))
+                        {
+                            HasError = true;
+                        }
+                    });
+
+                    if (HasError)
+                        goto fail;
+
                     break;
 
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
@@ -1212,6 +1252,8 @@ namespace NumpyLib
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
+                    // kevin - here
+
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
@@ -1223,11 +1265,9 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-                    List<VoidPtr[]> arrayOfBufPtrs = new List<VoidPtr[]>();
-                    List<Task> tasks = new List<Task>();
-                    npy_intp taskCount = Math.Min(iterationTaskCountMax, loop.size - loop.index);
-                    List<Exception> caughtExceptions = new List<Exception>();
-
+     
+                    //throw new Exception();
+                    // kevin - here
                     while (loop.index < loop.size)
                     {
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
@@ -1380,6 +1420,7 @@ namespace NumpyLib
                      * NOBUFFER -- behaved array and same type
                      */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
+                    // kevin - here
                     while (loop.index < loop.size)
                     {
                         ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
