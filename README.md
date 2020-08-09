@@ -75,11 +75,9 @@ NEW FEATURE!  We now support user defined random number generators.  Implement a
 
 ##### Future plans include support for:
 
-* additional performance tunings.  (we think we can improve performance of selected functions and some minor overall improvements.)
-* np.random API:  additional random generators, including user defined if you want to test your own random generator.
 * np.pad ??
 * masked arrays??
-* 
+
 
 ## System.Objects - A really cool feature.
 
