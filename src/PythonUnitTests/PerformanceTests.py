@@ -735,8 +735,8 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 1;
 
-        m1 = np.arange(16000, dtype=np.int64);
-        m2 = np.arange(16000, dtype=np.float32);
+        m1 = np.arange(160000, dtype=np.int64);
+        m2 = np.arange(160000, dtype=np.float32);
 
         start = tm.time()
 

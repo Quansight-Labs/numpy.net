@@ -3311,8 +3311,8 @@ namespace NumpyDotNetTests
         {
             int LoopCount = 1;
 
-            var m1 = np.arange(16000, dtype: np.Int32);
-            var m2 = np.arange(16000, dtype: np.Float32);
+            var m1 = np.arange(160000, dtype: np.Int64);
+            var m2 = np.arange(160000, dtype: np.Float32);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
