@@ -1064,9 +1064,7 @@ namespace NumpyLib
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /*fprintf(stderr, "ONEDIM..%d\n", loop.size); */
 
-  
-                    // kevin - here
-
+                    // kevin - the loop count is not ever more than 2 or 3.  Probably not worth speeding up.
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
@@ -1273,8 +1271,8 @@ namespace NumpyLib
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
      
-                    //throw new Exception();
-                    // kevin - here
+                    //
+                    // kevin - accumulate operation does not like parallel ops
                     while (loop.index < loop.size)
                     {
                         memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
