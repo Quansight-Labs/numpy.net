@@ -71,6 +71,8 @@ We have ported the original "RandomState" random number generator and most of th
 
 Our version is implemented as an instantiable class, each with independent random engines so it can be used in multi-threaded applications.
 
+NEW FEATURE!  We now support user defined random number generators.  Implement a interface class with your generator and pass that to the random constructor and use that to generate randon numbers in all of the supported distributions.
+
 ##### Future plans include support for:
 
 * additional performance tunings.  (we think we can improve performance of selected functions and some minor overall improvements.)
@@ -116,6 +118,14 @@ Many Numpy operations can return an ndarray full of data, or a single scalar obj
     int I1 = (int)A.GetItem(1);  // I1 = 2;  
     A.SetItem(99, 1);  
     int I2 = (int)A.GetItem(1);  // I2 = 99;  
+
+NEW FEATURE!  We now support explicit casting of numpy arrays 0 index element to specific data types.  For example:
+
+
+    ndarray A = np.array(new int[] {1,2,3});  
+    
+    int I1 = (int)A;        // I1 = 1  
+    int I2 = (double)A;     // throws an exception because the data is not a double  
 
 
 ## Array Slicing
