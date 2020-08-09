@@ -4129,12 +4129,25 @@ namespace NumpyLib
         {
             while (true)
             {
-                while (it2.index < it2.size)
+                var ParallelIters = numpyinternal.NpyArray_ITER_ParallelSplit(it2);
+                Parallel.For(0, ParallelIters.Count(), index =>
+                //for (int index = 0; index < ParallelIters.Count(); index++)
                 {
-                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
-                    op.data_offset += os;
-                    numpyinternal.NpyArray_ITER_NEXT(it2);
-                }
+                    var lsrcIter = ParallelIters.ElementAt(index);
+
+                    var lop = new VoidPtr(op);
+                    lop.data_offset += os * index;
+                    lop.data_offset += os * it2.size * it1.index;
+
+                    while (lsrcIter.index < lsrcIter.size)
+                    {
+                        dot(it1.dataptr, is1, lsrcIter.dataptr, is2, lop, l);
+                        lop.data_offset += os * ParallelIters.Count();
+                        numpyinternal.NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    }
+                });
+
+
                 numpyinternal.NpyArray_ITER_NEXT(it1);
                 if (it1.index >= it1.size)
                 {
