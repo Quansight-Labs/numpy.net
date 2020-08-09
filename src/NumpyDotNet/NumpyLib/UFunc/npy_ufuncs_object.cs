@@ -31,6 +31,7 @@
  */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -1077,37 +1078,50 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
-                    List<VoidPtr[]> loopFunctionBuffer = new List<VoidPtr[]>();
+                   ConcurrentQueue<VoidPtr[]> loopFunctionBuffer = new ConcurrentQueue<VoidPtr[]>();
 
                     bool HasError = false;
-                    // kevin - here
+                    Task workerThread = null;
+                    bool IsCompleted = false;
+
                     while (loop.index < loop.size)
                     {
- 
                         helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                         /* Adjust input pointer */
                         loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
-                        loopFunctionBuffer.Add(new VoidPtr[3] { loop.bufptr[0], loop.bufptr[1], loop.bufptr[2] });
+                        // put on queue for worker task to process
+                        loopFunctionBuffer.Enqueue(new VoidPtr[3] { loop.bufptr[0], loop.bufptr[1], loop.bufptr[2] });
 
-                        if (loopFunctionBuffer.Count >= 1000)
+                        if (workerThread == null)
                         {
-                            HasError = false;
-                            Parallel.For(0, loopFunctionBuffer.Count, buffIndex =>
+                            // start worker thread to process the queued up work
+                            workerThread = Task.Factory.StartNew(() =>
                             {
-                                var bufPtr = loopFunctionBuffer[buffIndex];
-                                loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
-                                if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                while (true)
                                 {
-                                    HasError = true;
+                                    Parallel.For(0, loopFunctionBuffer.Count(), xxx=>
+                                    //for (int xxx = 0; xxx < loopFunctionBuffer.Count(); xxx++)
+                                    {
+                                        VoidPtr[] bufPtr = null;
+                                        if (loopFunctionBuffer.TryDequeue(out bufPtr))
+                                        {
+                                            loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
+                                            if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                            {
+                                                HasError = true;
+                                            }
+                                        }
+                      
+                                    } );
+
+                                    if (loopFunctionBuffer.Count() == 0 && IsCompleted)
+                                        break;
                                 }
+      
                             });
-
-                            if (HasError)
-                                goto fail;
-
-                            loopFunctionBuffer.Clear();
                         }
+       
 
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
@@ -1115,16 +1129,9 @@ namespace NumpyLib
                         loop.index++;
                     }
 
-                    HasError = false;
-                    Parallel.For(0, loopFunctionBuffer.Count, buffIndex =>
-                    {
-                        var bufPtr = loopFunctionBuffer[buffIndex];
-                        loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
-                        if (!NPY_UFUNC_CHECK_ERROR(loop))
-                        {
-                            HasError = true;
-                        }
-                    });
+                    IsCompleted = true;
+
+                    workerThread.Wait();
 
                     if (HasError)
                         goto fail;
