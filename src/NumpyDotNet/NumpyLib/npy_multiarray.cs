@@ -1118,7 +1118,7 @@ namespace NumpyLib
                 WhereIter = NpyArray_BroadcastToShape(whereArray, destArray.dimensions, destArray.nd);
             }
 
-            bool whereValue = true;
+     
 
             IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit(SrcIter);
             IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit(DestIter);
@@ -1134,6 +1134,8 @@ namespace NumpyLib
                 NpyArrayIterObject ldestIter = destParallelIters.ElementAt(index);
                 NpyArrayIterObject lsrcIter = srcParallelIters.ElementAt(index);
                 NpyArrayIterObject lwhereIter = null;
+                bool whereValue = true;
+
                 if (whereParalleIters != null)
                 {
                     lwhereIter = whereParalleIters.ElementAt(index);
