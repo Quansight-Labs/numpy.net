@@ -113,7 +113,7 @@ namespace NumpyDotNetTests
             MethodInfo.AddRange(GetArrayOfUnitTests<WindowFunctions>());
             MethodInfo.AddRange(GetArrayOfUnitTests<LargeArrayTests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<RandomSamplingTests>());
-
+            MethodInfo.AddRange(GetArrayOfUnitTests<RandomUserDefinedTests>());
 
             return MethodInfo.ToArray();
         }
