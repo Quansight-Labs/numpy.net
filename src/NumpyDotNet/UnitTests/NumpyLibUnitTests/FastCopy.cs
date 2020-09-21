@@ -49,41 +49,41 @@ namespace Tests
         protected static ModuleBuilder _modBuilder;
         protected static AssemblyBuilder _asmBuilder;
 
-        static FastCopy()
-        {
-            _asmBuilder = Thread.GetDomain().DefineDynamicAssembly(_asmName, AssemblyBuilderAccess.RunAndSave);
-            _modBuilder = _asmBuilder.DefineDynamicModule(_asmName.Name, _asmName.Name + ".dll", true);
+        // static FastCopy()
+        // {
+        //     _asmBuilder = Thread.GetDomain().DefineDynamicAssembly(_asmName, AssemblyBuilderAccess.RunAndCollect);
+        //     _modBuilder = _asmBuilder.DefineDynamicModule(_asmName.Name, _asmName.Name + ".dll", true);
 
-            var typeBuilder = _modBuilder.DefineType("FastCopier",
-                       TypeAttributes.Public
-                       | TypeAttributes.AutoClass
-                       | TypeAttributes.AnsiClass
-                       | TypeAttributes.Class
-                       | TypeAttributes.Serializable
-                       | TypeAttributes.BeforeFieldInit);
-            typeBuilder.AddInterfaceImplementation(typeof(ICopier));
-            var copyMethod = typeBuilder.DefineMethod("Copy",
-                MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual,
-                typeof(void),
-                new Type[] { typeof(byte[]), typeof(byte[]), typeof(int), typeof(uint) });
-            var code = copyMethod.GetILGenerator();
+        //     var typeBuilder = _modBuilder.DefineType("FastCopier",
+        //                TypeAttributes.Public
+        //                | TypeAttributes.AutoClass
+        //                | TypeAttributes.AnsiClass
+        //                | TypeAttributes.Class
+        //                | TypeAttributes.Serializable
+        //                | TypeAttributes.BeforeFieldInit);
+        //     typeBuilder.AddInterfaceImplementation(typeof(ICopier));
+        //     var copyMethod = typeBuilder.DefineMethod("Copy",
+        //         MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual,
+        //         typeof(void),
+        //         new Type[] { typeof(byte[]), typeof(byte[]), typeof(int), typeof(uint) });
+        //     var code = copyMethod.GetILGenerator();
 
-            code.Emit(OpCodes.Ldarg_2);
-            code.Emit(OpCodes.Ldc_I4_0);
-            code.Emit(OpCodes.Ldelema, typeof(byte));
-            code.Emit(OpCodes.Ldarg_1);
-            code.Emit(OpCodes.Ldarg_3);
-            code.Emit(OpCodes.Ldelema, typeof(byte));
-            code.Emit(OpCodes.Ldarg, 4);
-            code.Emit(OpCodes.Cpblk);
-            code.Emit(OpCodes.Ret);
+        //     code.Emit(OpCodes.Ldarg_2);
+        //     code.Emit(OpCodes.Ldc_I4_0);
+        //     code.Emit(OpCodes.Ldelema, typeof(byte));
+        //     code.Emit(OpCodes.Ldarg_1);
+        //     code.Emit(OpCodes.Ldarg_3);
+        //     code.Emit(OpCodes.Ldelema, typeof(byte));
+        //     code.Emit(OpCodes.Ldarg, 4);
+        //     code.Emit(OpCodes.Cpblk);
+        //     code.Emit(OpCodes.Ret);
 
-            typeBuilder.DefineMethodOverride(copyMethod, typeof(ICopier).GetMethod("Copy"));
+        //     typeBuilder.DefineMethodOverride(copyMethod, typeof(ICopier).GetMethod("Copy"));
 
-            var copierType = typeBuilder.CreateType();
-            _copier = (ICopier)Activator.CreateInstance(copierType);
+        //     var copierType = typeBuilder.CreateType();
+        //     _copier = (ICopier)Activator.CreateInstance(copierType);
 
-        }
+        // }
 
         public static void Copy(byte[] source, byte[] dest, int offset, uint count)
         {

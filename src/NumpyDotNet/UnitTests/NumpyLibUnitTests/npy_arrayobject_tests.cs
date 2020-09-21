@@ -82,32 +82,32 @@ namespace NumpyLibTests
         }
 
 
-        [TestMethod]
-        //[ExpectedException(typeof(Exception))]
-        public void NpyArray_CompareString_Test()
-        {
-            string a1 = "Numpy.net rocks";
-            string b1 = "Numpy.net rocks";
+        // [TestMethod]
+        // //[ExpectedException(typeof(Exception))]
+        // public void NpyArray_CompareString_Test()
+        // {
+        //     string a1 = "Numpy.net rocks";
+        //     string b1 = "Numpy.net rocks";
 
-            Assert.AreEqual(0, numpyAPI.NpyArray_CompareString(a1, b1, a1.Length));
+        //     Assert.AreEqual(0, numpyAPI.NpyArray_CompareString(a1, b1, a1.Length));
 
-            string a2 = "Numpy.net rocks";
-            string b2 = "Numpy.net socks";
+        //     string a2 = "Numpy.net rocks";
+        //     string b2 = "Numpy.net socks";
 
-            Assert.AreEqual(-1, numpyAPI.NpyArray_CompareString(a2, b2, a1.Length-1));
+        //     Assert.AreEqual(-1, numpyAPI.NpyArray_CompareString(a2, b2, a1.Length-1));
 
-            string a3 = "Numpy.net socks";
-            string b3 = "Numpy.net rocks";
+        //     string a3 = "Numpy.net socks";
+        //     string b3 = "Numpy.net rocks";
 
-            Assert.AreEqual(1, numpyAPI.NpyArray_CompareString(a3, b3, a1.Length));
+        //     Assert.AreEqual(1, numpyAPI.NpyArray_CompareString(a3, b3, a1.Length));
 
-            string a4 = "Numpy.net rocks";
-            string b4 = "Numpy.net rocks";
+        //     string a4 = "Numpy.net rocks";
+        //     string b4 = "Numpy.net rocks";
 
-            int ret = numpyAPI.NpyArray_CompareString(a4, b4, a1.Length + 1);
-            Assert.AreEqual(-2, ret);
-            Assert.IsTrue(Common.MatchError(npyexc_type.NpyExc_IndexError, "NpyArray_CompareString:"));
-        }
+        //     int ret = numpyAPI.NpyArray_CompareString(a4, b4, a1.Length + 1);
+        //     Assert.AreEqual(-2, ret);
+        //     Assert.IsTrue(Common.MatchError(npyexc_type.NpyExc_IndexError, "NpyArray_CompareString:"));
+        // }
 
         [TestMethod]
         public void NpyArray_ElementStrides_2DTest()
