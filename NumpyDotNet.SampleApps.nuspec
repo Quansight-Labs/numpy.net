@@ -22,7 +22,7 @@
   </metadata>
   
    <files>
-    <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\SampleApps\NumpyDotNet.SampleApps.zip" target="NumpyDotNet.SampleApps" />
+    <file src="src\NumpyDotNet\SampleApps\NumpyDotNet.SampleApps.zip" target="NumpyDotNet.SampleApps" />
    </files>
 </package>
 	
