@@ -17,33 +17,18 @@
     <PackageReleaseNotes>HUGE performance increase!  User defined random number generators.  Explicit casting.</PackageReleaseNotes>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <DefineConstants>TRACE;NPY_INTP_64</DefineConstants>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="npy_nditer_impl.cs" />
-    <Compile Remove="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp">
-      <HintPath>C:\Windows\WinSxS\msil_microsoft.csharp_b03f5f7f11d50a3a_4.0.15671.0_none_de66ef8cba8ebe5a\Microsoft.CSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
