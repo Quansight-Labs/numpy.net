@@ -47,13 +47,13 @@ using npy_intp = System.Int32;
 
 namespace NumpyLib
 {
-  
+
     public class NpyArray_Dims
     {
         public npy_intp[] ptr;
         public int len;
     };
- 
+
     public enum NPY_TYPECHAR
     {
         NPY_BOOLLTR = '?',
@@ -98,6 +98,8 @@ namespace NumpyLib
 
         NPY_NTYPES,
         NPY_NOTYPE,
+        NPY_DATETIME = 257,
+        NPY_TIMEDELTA = 258,
         NPY_USERDEF = 256,      /* leave room for characters */
 
 #if NPY_INTP_64
@@ -105,7 +107,7 @@ namespace NumpyLib
 #else
         NPY_INTP = NPY_INT,
 #endif
- 
+
     };
 
     /* How many floating point types are there */
@@ -318,7 +320,7 @@ namespace NumpyLib
 
             return false;
         }
-  
+
 
         internal static bool NpyTypeNum_ISFLEXIBLE(NPY_TYPES type)
         {
@@ -358,7 +360,7 @@ namespace NumpyLib
             }
         }
 
-   
+
     }
 
 
@@ -549,7 +551,7 @@ namespace NumpyLib
 
     public delegate NPY_SCALARKIND NpyArray_ScalarKindFunc(NpyArray a);
 
-    public delegate void NpyArray_FastClipFunc( VoidPtr _in, npy_intp n_in, VoidPtr min, VoidPtr max, VoidPtr _out);
-    public delegate int  NpyArray_FastTakeFunc(VoidPtr dest, VoidPtr src, npy_intp[] indarray, npy_intp nindarray, npy_intp n_outer, npy_intp m_middle, npy_intp nelem, NPY_CLIPMODE clipmode);
+    public delegate void NpyArray_FastClipFunc(VoidPtr _in, npy_intp n_in, VoidPtr min, VoidPtr max, VoidPtr _out);
+    public delegate int NpyArray_FastTakeFunc(VoidPtr dest, VoidPtr src, npy_intp[] indarray, npy_intp nindarray, npy_intp n_outer, npy_intp m_middle, npy_intp nelem, NPY_CLIPMODE clipmode);
 
 }

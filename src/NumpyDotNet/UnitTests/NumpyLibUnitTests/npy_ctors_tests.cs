@@ -68,7 +68,7 @@ namespace NumpyLibTests
             byte[] data = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 
             dimensions[0] = data.Length;
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, NPY_TYPES.NPY_USHORT, null, new VoidPtr(data), 2, NPYARRAYFLAGS.NPY_DEFAULT, null);
+            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, NPY_TYPES.NPY_UINT16, null, new VoidPtr(data), 2, NPYARRAYFLAGS.NPY_DEFAULT, null);
 
             NpyArray_Dims newDims = new NpyArray_Dims();
             newDims.ptr = new npy_intp[] { 4, 4 };
