@@ -44,6 +44,7 @@ namespace NumpyDotNetTests
     public class LargeArrayTests : TestBaseClass
     {
 #if false
+
         [TestMethod]
         public void test_largearray_matmul_INT64_1()
         {
@@ -534,18 +535,28 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_largearray_dot_Float64()
         {
-            var a = np.arange(0, 2000 * 1, 1, dtype: np.Float64).reshape((2000, -1));
-            var b = np.arange(0, 2000 * 1, 1, dtype: np.Float64).reshape((-1, 2000));
+            var a = np.arange(0, 2000 * 100, 1, dtype: np.Float64).reshape((2000, -1));
+            var b = np.arange(0, 2000 * 100, 1, dtype: np.Float64).reshape((-1, 2000));
 
+            //var a = np.arange(0, 2000 * 1, 1, dtype: np.Float64);
+            //var b = np.arange(0, 2000 * 1, 1, dtype: np.Float64);
+
+            ndarray c = null;
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
+
+
             for (int i = 0; i < 10; i++)
             {
-                var c = np.dot(a, b);
+                c = np.dot(a, b);
             }
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds.ToString());
+
+            var sum = np.sum(c);
+            Assert.AreEqual((double)(4.0006266001036175E+18), (double)sum);
+
 
         }
 
