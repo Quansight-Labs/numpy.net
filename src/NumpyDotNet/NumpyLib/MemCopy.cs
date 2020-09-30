@@ -4087,8 +4087,6 @@ namespace NumpyLib
             {
                 while (it2.index < it2.size)
                 {
-                    MemCopy.npdot_calls++;
-
                     dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
                     op.data_offset += os;
                     numpyinternal.NpyArray_ITER_NEXT(it2);
