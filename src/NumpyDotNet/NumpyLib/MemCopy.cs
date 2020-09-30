@@ -4086,21 +4086,7 @@ namespace NumpyLib
             var spread2 = it2.size - it2.index;
             if (spread < 4 || spread2 < 100)
             {
-                while (true)
-                {
-                    while (it2.index < it2.size)
-                    {
-                        dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
-                        op.data_offset += os;
-                        numpyinternal.NpyArray_ITER_NEXT(it2);
-                    }
-                    numpyinternal.NpyArray_ITER_NEXT(it1);
-                    if (it1.index >= it1.size)
-                    {
-                        break;
-                    }
-                    numpyinternal.NpyArray_ITER_RESET(it2);
-                }
+                MatrixProductExecute(it1, it2, op, is1, is2, os, l);
             }
             else
             {
@@ -4148,84 +4134,45 @@ namespace NumpyLib
 
                 var t1 = Task.Run(() =>
                 {
-
-                    while (true)
-                    {
-                        while (it2a.index < it2a.size)
-                        {
-                            dot(it1a.dataptr, is1, it2a.dataptr, is2, opa, l);
-                            opa.data_offset += os;
-                            numpyinternal.NpyArray_ITER_NEXT(it2a);
-                        }
-                        numpyinternal.NpyArray_ITER_NEXT(it1a);
-                        if (it1a.index >= it1a.size)
-                        {
-                            break;
-                        }
-                        numpyinternal.NpyArray_ITER_RESET(it2a);
-                    }
+                    MatrixProductExecute(it1a, it2a, opa, is1, is2, os, l);
                 });
 
                 var t2 = Task.Run(() =>
                 {
-                    while (true)
-                    {
-                        while (it2b.index < it2b.size)
-                        {
-                            dot(it1b.dataptr, is1, it2b.dataptr, is2, opb, l);
-                            opb.data_offset += os;
-                            numpyinternal.NpyArray_ITER_NEXT(it2b);
-                        }
-                        numpyinternal.NpyArray_ITER_NEXT(it1b);
-                        if (it1b.index >= it1b.size)
-                        {
-                            break;
-                        }
-                        numpyinternal.NpyArray_ITER_RESET(it2b);
-                    }
+                    MatrixProductExecute(it1b, it2b, opb, is1, is2, os, l);
                 });
 
                 var t3 = Task.Run(() =>
                 {
-                    while (true)
-                    {
-                        while (it2c.index < it2c.size)
-                        {
-                            dot(it1c.dataptr, is1, it2c.dataptr, is2, opc, l);
-                            opc.data_offset += os;
-                            numpyinternal.NpyArray_ITER_NEXT(it2c);
-                        }
-                        numpyinternal.NpyArray_ITER_NEXT(it1c);
-                        if (it1c.index >= it1c.size)
-                        {
-                            break;
-                        }
-                        numpyinternal.NpyArray_ITER_RESET(it2c);
-                    }
+                    MatrixProductExecute(it1c, it2c, opc, is1, is2, os, l);
                 });
 
                 // run the last task in the current thread.
-                while (true)
-                {
-                    while (it2d.index < it2d.size)
-                    {
-                        dot(it1d.dataptr, is1, it2d.dataptr, is2, opd, l);
-                        opd.data_offset += os;
-                        numpyinternal.NpyArray_ITER_NEXT(it2d);
-                    }
-                    numpyinternal.NpyArray_ITER_NEXT(it1d);
-                    if (it1d.index >= it1d.size)
-                    {
-                        break;
-                    }
-                    numpyinternal.NpyArray_ITER_RESET(it2d);
-                }
-
+                MatrixProductExecute(it1d, it2d, opd, is1, is2, os, l);
 
                 Task.WaitAll(t1, t2, t3);
             }
 
             return;
+        }
+
+        private void MatrixProductExecute(NpyArrayIterObject it1d, NpyArrayIterObject it2d, VoidPtr opd, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
+        {
+            while (true)
+            {
+                while (it2d.index < it2d.size)
+                {
+                    dot(it1d.dataptr, is1, it2d.dataptr, is2, opd, l);
+                    opd.data_offset += os;
+                    numpyinternal.NpyArray_ITER_NEXT(it2d);
+                }
+                numpyinternal.NpyArray_ITER_NEXT(it1d);
+                if (it1d.index >= it1d.size)
+                {
+                    break;
+                }
+                numpyinternal.NpyArray_ITER_RESET(it2d);
+            }
         }
 
 
