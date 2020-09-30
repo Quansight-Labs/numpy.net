@@ -343,6 +343,12 @@ class LargeArrayTests(unittest.TestCase):
         c = np.choose(selection, [choice1, choice2, choice3, choice4])
         print(np.sum(c))
 
+    def test_largearray_dot_Float64(self):
+
+        a = np.arange(0, 2000 * 20, dtype=np.float64).reshape((2000, -1));
+        b = np.arange(0, 2000 * 20, dtype=np.float64).reshape((-1, 2000));
+        c = np.dot(a, b);
+
 
 
 if __name__ == '__main__':

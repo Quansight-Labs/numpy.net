@@ -530,6 +530,25 @@ namespace NumpyDotNetTests
             Assert.AreEqual((Int64)(127999992000000), np.sum(c).GetItem(0));
 
         }
+
+        [TestMethod]
+        public void test_largearray_dot_Float64()
+        {
+            var a = np.arange(0, 2000 * 1, 1, dtype: np.Float64).reshape((2000, -1));
+            var b = np.arange(0, 2000 * 1, 1, dtype: np.Float64).reshape((-1, 2000));
+
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            for (int i = 0; i < 10; i++)
+            {
+                var c = np.dot(a, b);
+            }
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds.ToString());
+
+        }
+
 #endif
 
     }
