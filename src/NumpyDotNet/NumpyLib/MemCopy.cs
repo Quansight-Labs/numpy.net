@@ -4083,7 +4083,8 @@ namespace NumpyLib
         public void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
         {
             var spread = it1.size - it1.index;
-            if (spread <= 2)
+            var spread2 = it2.size - it2.index;
+            if (spread < 4 || spread2 < 100)
             {
                 while (true)
                 {
@@ -4105,19 +4106,45 @@ namespace NumpyLib
             {
                 var it1a = it1.copy();
                 var it1b = it1.copy();
+
                 var it2a = it2.copy();
                 var it2b = it2.copy();
+                var it2c = it2.copy();
+                var it2d = it2.copy();
 
                 VoidPtr opa = new VoidPtr(op);
                 VoidPtr opb = new VoidPtr(op);
 
-                it1a.size = spread / 2;
+                var taskSize = spread / 4;
+
+                it1a.size = taskSize;
 
                 while (it1b.index < it1a.size)
                 {
                     numpyinternal.NpyArray_ITER_NEXT(it1b);
                     opb.data_offset += os * (it2.size - it2.index);
                 }
+
+                it1b.size = taskSize * 2;
+                VoidPtr opc = new VoidPtr(opb);
+                var it1c = it1b.copy();
+
+                while (it1c.index < it1b.size)
+                {
+                    numpyinternal.NpyArray_ITER_NEXT(it1c);
+                    opc.data_offset += os * (it2.size - it2.index);
+                }
+
+                it1c.size = taskSize * 3;
+                VoidPtr opd = new VoidPtr(opc);
+                var it1d = it1c.copy();
+
+                while (it1d.index < it1c.size)
+                {
+                    numpyinternal.NpyArray_ITER_NEXT(it1d);
+                    opd.data_offset += os * (it2.size - it2.index);
+                }
+                it1d.size = it1.size;
 
                 var t1 = Task.Run(() =>
                 {
@@ -4158,7 +4185,44 @@ namespace NumpyLib
                     }
                 });
 
-                Task.WaitAll(t1, t2);
+                var t3 = Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        while (it2c.index < it2c.size)
+                        {
+                            dot(it1c.dataptr, is1, it2c.dataptr, is2, opc, l);
+                            opc.data_offset += os;
+                            numpyinternal.NpyArray_ITER_NEXT(it2c);
+                        }
+                        numpyinternal.NpyArray_ITER_NEXT(it1c);
+                        if (it1c.index >= it1c.size)
+                        {
+                            break;
+                        }
+                        numpyinternal.NpyArray_ITER_RESET(it2c);
+                    }
+                });
+
+                // run the last task in the current thread.
+                while (true)
+                {
+                    while (it2d.index < it2d.size)
+                    {
+                        dot(it1d.dataptr, is1, it2d.dataptr, is2, opd, l);
+                        opd.data_offset += os;
+                        numpyinternal.NpyArray_ITER_NEXT(it2d);
+                    }
+                    numpyinternal.NpyArray_ITER_NEXT(it1d);
+                    if (it1d.index >= it1d.size)
+                    {
+                        break;
+                    }
+                    numpyinternal.NpyArray_ITER_RESET(it2d);
+                }
+
+
+                Task.WaitAll(t1, t2, t3);
             }
 
             return;
