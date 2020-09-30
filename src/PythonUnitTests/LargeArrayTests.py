@@ -345,9 +345,16 @@ class LargeArrayTests(unittest.TestCase):
 
     def test_largearray_dot_Float64(self):
 
-        a = np.arange(0, 2000 * 20, dtype=np.float64).reshape((2000, -1));
-        b = np.arange(0, 2000 * 20, dtype=np.float64).reshape((-1, 2000));
-        c = np.dot(a, b);
+        a = np.arange(0, 2000 * 100, dtype=np.float64).reshape((2000, -1));
+        b = np.arange(0, 2000 * 100, dtype=np.float64).reshape((-1, 2000));
+
+
+        for x in range(0,10, 1):
+            c = np.dot(a, b);
+
+        sum = np.sum(c)
+        print(sum)
+
 
 
 
