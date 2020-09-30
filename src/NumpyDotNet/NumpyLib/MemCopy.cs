@@ -45,7 +45,7 @@ namespace NumpyLib
 {
     public class MemCopy
     {
-  
+
         // todo: take these out when performance improvements complete
         public static long MemCpy_TotalCount = 0;
         public static long MemCpy_ShortBufferCount = 0;
@@ -3573,6 +3573,7 @@ namespace NumpyLib
 
     }
 
+
     public interface ICopyHelper
     {
         void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
@@ -4079,29 +4080,19 @@ namespace NumpyLib
             }
         }
 
+
         public void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
         {
             while (true)
             {
-                var ParallelIters = numpyinternal.NpyArray_ITER_ParallelSplit(it2);
-                Parallel.For(0, ParallelIters.Count(), index =>
-                //for (int index = 0; index < ParallelIters.Count(); index++)
+                while (it2.index < it2.size)
                 {
-                    var lsrcIter = ParallelIters.ElementAt(index);
+                    MemCopy.npdot_calls++;
 
-                    var lop = new VoidPtr(op);
-                    lop.data_offset += os * index;
-                    lop.data_offset += os * it2.size * it1.index;
-
-                    while (lsrcIter.index < lsrcIter.size)
-                    {
-                        dot(it1.dataptr, is1, lsrcIter.dataptr, is2, lop, l);
-                        lop.data_offset += os * ParallelIters.Count();
-                        numpyinternal.NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                    }
-                });
-
-        
+                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
+                    op.data_offset += os;
+                    numpyinternal.NpyArray_ITER_NEXT(it2);
+                }
                 numpyinternal.NpyArray_ITER_NEXT(it1);
                 if (it1.index >= it1.size)
                 {
@@ -4117,25 +4108,12 @@ namespace NumpyLib
         {
             while (true)
             {
-                var ParallelIters = numpyinternal.NpyArray_ITER_ParallelSplit(it2);
-                Parallel.For(0, ParallelIters.Count(), index =>
-                //for (int index = 0; index < ParallelIters.Count(); index++)
+                while (it2.index < it2.size)
                 {
-                    var lsrcIter = ParallelIters.ElementAt(index);
-
-                    var lop = new VoidPtr(op);
-                    lop.data_offset += os * index;
-                    lop.data_offset += os * it2.size * it1.index;
-
-                    while (lsrcIter.index < lsrcIter.size)
-                    {
-                        dot(it1.dataptr, is1, lsrcIter.dataptr, is2, lop, l);
-                        lop.data_offset += os * ParallelIters.Count();
-                        numpyinternal.NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                    }
-                });
-
-
+                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
+                    op.data_offset += os;
+                    numpyinternal.NpyArray_ITER_NEXT(it2);
+                }
                 numpyinternal.NpyArray_ITER_NEXT(it1);
                 if (it1.index >= it1.size)
                 {
