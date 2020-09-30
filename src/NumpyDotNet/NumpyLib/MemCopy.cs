@@ -4080,27 +4080,90 @@ namespace NumpyLib
             }
         }
 
-
         public void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
         {
-            while (true)
+            var spread = it1.size - it1.index;
+            if (spread <= 2)
             {
-                while (it2.index < it2.size)
+                while (true)
                 {
-                    dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
-                    op.data_offset += os;
-                    numpyinternal.NpyArray_ITER_NEXT(it2);
+                    while (it2.index < it2.size)
+                    {
+                        dot(it1.dataptr, is1, it2.dataptr, is2, op, l);
+                        op.data_offset += os;
+                        numpyinternal.NpyArray_ITER_NEXT(it2);
+                    }
+                    numpyinternal.NpyArray_ITER_NEXT(it1);
+                    if (it1.index >= it1.size)
+                    {
+                        break;
+                    }
+                    numpyinternal.NpyArray_ITER_RESET(it2);
                 }
-                numpyinternal.NpyArray_ITER_NEXT(it1);
-                if (it1.index >= it1.size)
+            }
+            else
+            {
+                var it1a = it1.copy();
+                var it1b = it1.copy();
+                var it2a = it2.copy();
+                var it2b = it2.copy();
+
+                VoidPtr opa = new VoidPtr(op);
+                VoidPtr opb = new VoidPtr(op);
+
+                it1a.size = spread / 2;
+
+                while (it1b.index < it1a.size)
                 {
-                    break;
+                    numpyinternal.NpyArray_ITER_NEXT(it1b);
+                    opb.data_offset += os * (it2.size - it2.index);
                 }
-                numpyinternal.NpyArray_ITER_RESET(it2);
+
+                var t1 = Task.Run(() =>
+                {
+
+                    while (true)
+                    {
+                        while (it2a.index < it2a.size)
+                        {
+                            dot(it1a.dataptr, is1, it2a.dataptr, is2, opa, l);
+                            opa.data_offset += os;
+                            numpyinternal.NpyArray_ITER_NEXT(it2a);
+                        }
+                        numpyinternal.NpyArray_ITER_NEXT(it1a);
+                        if (it1a.index >= it1a.size)
+                        {
+                            break;
+                        }
+                        numpyinternal.NpyArray_ITER_RESET(it2a);
+                    }
+                });
+
+                var t2 = Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        while (it2b.index < it2b.size)
+                        {
+                            dot(it1b.dataptr, is1, it2b.dataptr, is2, opb, l);
+                            opb.data_offset += os;
+                            numpyinternal.NpyArray_ITER_NEXT(it2b);
+                        }
+                        numpyinternal.NpyArray_ITER_NEXT(it1b);
+                        if (it1b.index >= it1b.size)
+                        {
+                            break;
+                        }
+                        numpyinternal.NpyArray_ITER_RESET(it2b);
+                    }
+                });
+
+                Task.WaitAll(t1, t2);
             }
 
             return;
         }
+
 
         public void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l)
         {
