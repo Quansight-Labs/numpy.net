@@ -1536,62 +1536,14 @@ namespace NumpyLib
             }
             else
             {
-                var taskSize = destIter.size / 4;
+                var parallelIters = NpyArray_ITER_ParallelSplit(destIter, srcIter);
 
-                var srcIter1 = srcIter.copy();
-
-                var destIter1 = destIter.copy();
-
-                destIter1.size = taskSize;
-                var srcIter2 = srcIter1.copy();
-                var destIter2 = destIter1.copy();
-
-                while (destIter2.index < destIter1.size)
+                Parallel.For(0, parallelIters.Item1.Count(), i =>
                 {
-                    numpyinternal.NpyArray_ITER_NEXT(srcIter2);
-                    numpyinternal.NpyArray_ITER_NEXT(destIter2);
-                }
-
-                destIter2.size += taskSize;
-                var srcIter3 = srcIter2.copy();
-                var destIter3 = destIter2.copy();
-
-                while (destIter3.index < destIter2.size)
-                {
-                    numpyinternal.NpyArray_ITER_NEXT(srcIter3);
-                    numpyinternal.NpyArray_ITER_NEXT(destIter3);
-                }
-
-                destIter3.size += taskSize;
-                var srcIter4 = srcIter3.copy();
-                var destIter4 = destIter3.copy();
-
-                while (destIter4.index < destIter3.size)
-                {
-                    numpyinternal.NpyArray_ITER_NEXT(srcIter4);
-                    numpyinternal.NpyArray_ITER_NEXT(destIter4);
-                }
-                destIter4.size = destIter.size;
-
-                var t1 = Task.Run(() =>
-                {
-                    _broadcast_copy(destIter1, srcIter1, maxaxis, maxdim, elsize, descr, swap);
+                    var _destIter = parallelIters.Item1.ElementAt(i);
+                    var _srcIter = parallelIters.Item2.ElementAt(i);
+                    _broadcast_copy(_destIter, _srcIter, maxaxis, maxdim, elsize, descr, swap);
                 });
-
-                var t2 = Task.Run(() =>
-                {
-                    _broadcast_copy(destIter2, srcIter2, maxaxis, maxdim, elsize, descr, swap);
-                });
-
-                var t3 = Task.Run(() =>
-                {
-                    _broadcast_copy(destIter3, srcIter3, maxaxis, maxdim, elsize, descr, swap);
-                });
-
-                // run the last task in the current thread.
-                _broadcast_copy(destIter4, srcIter4, maxaxis, maxdim, elsize, descr, swap);
-
-                Task.WaitAll(t1, t2, t3);
             }
     
 
