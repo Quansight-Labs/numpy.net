@@ -1353,24 +1353,26 @@ namespace NumpyLib
             }
             else
             {
-                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var ParallelIters = NpyArray_ITER_ParallelSplit2(srcIter);
 
                 Parallel.For(0, ParallelIters.Count(), index =>
+                //for (int index = 0; index < ParallelIters.Count(); index++)
                 {
                     var ParallelDest = new VoidPtr(dest);
                     var ParallelIter = ParallelIters.ElementAt(index);
-                    ParallelDest.data_offset += destOffset * index;
+                    ParallelDest.data_offset += destOffset * index * ParallelIters.ElementAt(0).size;
 
                     while (ParallelIter.index < ParallelIter.size)
                     {
                         _strided_byte_copy(ParallelDest, (npy_intp)outstride, ParallelIter.dataptr, instride, N, outstride, null);
-                        ParallelDest.data_offset += destOffset * ParallelIters.Count();
-                        NpyArray_ITER_PARALLEL_NEXT(ParallelIter);
+                        ParallelDest.data_offset += destOffset; /// * ParallelIters.Count();
+                        NpyArray_ITER_NEXT(ParallelIter);
                     }
                 });
+
             }
 
-    }
+        }
 
         internal static void _strided_byte_swap(VoidPtr dest, npy_intp stride, npy_intp n, int size)
         {

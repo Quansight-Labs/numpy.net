@@ -577,6 +577,55 @@ namespace NumpyLib
             return (DestIters, SrcIters);
         }
 
+        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit2(NpyArrayIterObject it)
+        {
+            npy_intp TotalSize = it.size - it.index;
+            NpyArrayIterObject[] DestIters = null;
+
+            if (TotalSize < 2 || maxParallelIterators == 1)
+            {
+                DestIters = new NpyArrayIterObject[1];
+            }
+            else
+            if (TotalSize < 4 || maxParallelIterators == 2)
+            {
+                DestIters = new NpyArrayIterObject[2];
+            }
+            else
+            if (TotalSize < 8 || maxParallelIterators == 4)
+            {
+                DestIters = new NpyArrayIterObject[4];
+            }
+            else
+            if (TotalSize < 16 || maxParallelIterators == 8)
+            {
+                DestIters = new NpyArrayIterObject[8];
+            }
+            else
+            {
+                DestIters = new NpyArrayIterObject[16];
+            }
+
+
+            var taskSize = it.size / DestIters.Length;
+            DestIters[0] = it.copy();
+            DestIters[0].size = taskSize;
+
+            for (int Index = 1; Index < DestIters.Length; Index++)
+            {
+                DestIters[Index] = DestIters[Index - 1].copy();
+                DestIters[Index].size += taskSize;
+
+                while (DestIters[Index].index < DestIters[Index - 1].size)
+                {
+                    numpyinternal.NpyArray_ITER_NEXT(DestIters[Index]);
+                }
+
+            }
+            DestIters[DestIters.Length - 1].size = it.size;
+
+            return DestIters;
+        }
 
         internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it)
         {
