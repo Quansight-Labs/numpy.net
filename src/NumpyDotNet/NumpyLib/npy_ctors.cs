@@ -1526,36 +1526,97 @@ namespace NumpyLib
              * Refcount note: src and dest may have different sizes
              */
 
-            var srcParallelIters = NpyArray_ITER_ParallelSplit(multi.iters[1]);
-            var destParallelIters = NpyArray_ITER_ParallelSplit(multi.iters[0]);
+            var srcIter = multi.iters[1];
+            var destIter = multi.iters[0];
 
-            Parallel.For(0, destParallelIters.Count(), index =>
-            //for (int index = 0; index < destParallelIters.Count(); index++) // 
+            npy_intp TotalSize = multi.size - multi.index;
+            if (TotalSize < 4)
             {
-                var ldestIter = destParallelIters.ElementAt(index);
-                var lsrcIter = srcParallelIters.ElementAt(index);
+                _broadcast_copy(destIter, srcIter, maxaxis, maxdim, elsize, descr, swap);
+            }
+            else
+            {
+                var taskSize = destIter.size / 4;
 
-                //Parallel.For(0, taskSize, i =>
-                while (ldestIter.index < ldestIter.size)
+                var srcIter1 = srcIter.copy();
+                var srcIter2 = srcIter.copy();
+
+                var destIter1 = destIter.copy();
+                var destIter2 = destIter.copy();
+
+                srcIter1.size = taskSize;
+
+                while (srcIter2.index < srcIter1.size)
                 {
-                    _strided_byte_copy(ldestIter.dataptr,
-                                 ldestIter.strides[maxaxis],
-                                 lsrcIter.dataptr,
-                                 lsrcIter.strides[maxaxis],
-                                 maxdim, elsize, descr);
-                    if (swap)
-                    {
-                        _strided_byte_swap(ldestIter.dataptr,
-                                           ldestIter.strides[maxaxis],
-                                           maxdim, elsize);
-                    }
-                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter2);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter2);
                 }
-            });
+
+                srcIter2.size = taskSize * 2;
+                var srcIter3 = srcIter2.copy();
+                var destIter3 = destIter2.copy();
+
+                while (srcIter3.index < srcIter2.size)
+                {
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter3);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter3);
+                }
+
+                srcIter3.size = taskSize * 3;
+                var srcIter4 = srcIter3.copy();
+                var destIter4 = destIter3.copy();
+
+                while (srcIter4.index < srcIter3.size)
+                {
+                    numpyinternal.NpyArray_ITER_NEXT(srcIter4);
+                    numpyinternal.NpyArray_ITER_NEXT(destIter4);
+                }
+                srcIter4.size = destIter.size;
+
+                var t1 = Task.Run(() =>
+                {
+                    _broadcast_copy(destIter1, srcIter1, maxaxis, maxdim, elsize, descr, swap);
+                });
+
+                var t2 = Task.Run(() =>
+                {
+                    _broadcast_copy(destIter2, srcIter2, maxaxis, maxdim, elsize, descr, swap);
+                });
+
+                var t3 = Task.Run(() =>
+                {
+                    _broadcast_copy(destIter3, srcIter3, maxaxis, maxdim, elsize, descr, swap);
+                });
+
+                // run the last task in the current thread.
+                _broadcast_copy(destIter4, srcIter4, maxaxis, maxdim, elsize, descr, swap);
+
+                Task.WaitAll(t1, t2, t3);
+            }
+    
 
             Npy_DECREF(multi);
             return 0;
+        }
+
+        private static void _broadcast_copy(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, int maxaxis, npy_intp maxdim, int elsize, NpyArray_Descr descr, bool swap)
+        {
+            while (destIter.index < destIter.size)
+            {
+                _strided_byte_copy(destIter.dataptr,
+                             destIter.strides[maxaxis],
+                             srcIter.dataptr,
+                             srcIter.strides[maxaxis],
+                             maxdim, elsize, descr);
+                if (swap)
+                {
+                    _strided_byte_swap(destIter.dataptr,
+                                       destIter.strides[maxaxis],
+                                       maxdim, elsize);
+                }
+                NpyArray_ITER_NEXT(destIter);
+                NpyArray_ITER_NEXT(srcIter);
+            }
         }
 
 
