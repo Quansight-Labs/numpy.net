@@ -1539,39 +1539,39 @@ namespace NumpyLib
                 var taskSize = destIter.size / 4;
 
                 var srcIter1 = srcIter.copy();
-                var srcIter2 = srcIter.copy();
 
                 var destIter1 = destIter.copy();
-                var destIter2 = destIter.copy();
 
-                srcIter1.size = taskSize;
+                destIter1.size = taskSize;
+                var srcIter2 = srcIter1.copy();
+                var destIter2 = destIter1.copy();
 
-                while (srcIter2.index < srcIter1.size)
+                while (destIter2.index < destIter1.size)
                 {
                     numpyinternal.NpyArray_ITER_NEXT(srcIter2);
                     numpyinternal.NpyArray_ITER_NEXT(destIter2);
                 }
 
-                srcIter2.size = taskSize * 2;
+                destIter2.size += taskSize;
                 var srcIter3 = srcIter2.copy();
                 var destIter3 = destIter2.copy();
 
-                while (srcIter3.index < srcIter2.size)
+                while (destIter3.index < destIter2.size)
                 {
                     numpyinternal.NpyArray_ITER_NEXT(srcIter3);
                     numpyinternal.NpyArray_ITER_NEXT(destIter3);
                 }
 
-                srcIter3.size = taskSize * 3;
+                destIter3.size += taskSize;
                 var srcIter4 = srcIter3.copy();
                 var destIter4 = destIter3.copy();
 
-                while (srcIter4.index < srcIter3.size)
+                while (destIter4.index < destIter3.size)
                 {
                     numpyinternal.NpyArray_ITER_NEXT(srcIter4);
                     numpyinternal.NpyArray_ITER_NEXT(destIter4);
                 }
-                srcIter4.size = destIter.size;
+                destIter4.size = destIter.size;
 
                 var t1 = Task.Run(() =>
                 {
