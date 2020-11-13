@@ -1453,8 +1453,8 @@ namespace NumpyLib
             elsize = NpyArray_ITEMSIZE(dest);
             descr = dest.descr;
 
-            var srcParallelIters = NpyArray_ITER_ParallelSplit(sit);
-            var destParallelIters = NpyArray_ITER_ParallelSplit(dit);
+            var srcParallelIters = NpyArray_ITER_ParallelSplit2(sit);
+            var destParallelIters = NpyArray_ITER_ParallelSplit2(dit);
 
             Parallel.For(0, destParallelIters.Count(), index =>
             //for (int index = 0; index < destParallelIters.Count(); index++) // 
@@ -1476,8 +1476,8 @@ namespace NumpyLib
                                            ldestIter.strides[maxaxis],
                                            dest.dimensions[maxaxis], elsize);
                     }
-                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    NpyArray_ITER_NEXT(ldestIter);
+                    NpyArray_ITER_NEXT(lsrcIter);
                 }
             });
   
