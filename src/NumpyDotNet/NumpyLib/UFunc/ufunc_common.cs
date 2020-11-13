@@ -855,9 +855,9 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
-                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
-                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit2(srcIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit2(destIter);
+                var operParallelIters = NpyArray_ITER_ParallelSplit2(operIter);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
@@ -912,9 +912,9 @@ namespace NumpyLib
                                 dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dest.Length)] = default(T);
                             }
 
-                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                            NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                            NpyArray_ITER_NEXT(ldestIter);
+                            NpyArray_ITER_NEXT(lsrcIter);
+                            NpyArray_ITER_NEXT(loperIter);
 
                         }
                         catch (Exception ex)
@@ -999,7 +999,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var ParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                    var ParallelIters = NpyArray_ITER_ParallelSplit2(operIter);
 
                     Parallel.For(0, ParallelIters.Count(), index =>
                     {
@@ -1049,7 +1049,7 @@ namespace NumpyLib
                                 exceptions.Enqueue(ex);
                             }
 
-                            NpyArray_ITER_PARALLEL_NEXT(Iter);
+                            NpyArray_ITER_NEXT(Iter);
                         }
 
                     } );
