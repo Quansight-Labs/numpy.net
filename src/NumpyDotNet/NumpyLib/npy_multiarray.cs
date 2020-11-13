@@ -1120,12 +1120,12 @@ namespace NumpyLib
 
      
 
-            IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit(SrcIter);
-            IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit(DestIter);
+            IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit2(SrcIter);
+            IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit2(DestIter);
             IEnumerable<NpyArrayIterObject> whereParalleIters = null;
             if (WhereIter != null)
             {
-                whereParalleIters = NpyArray_ITER_ParallelSplit(WhereIter);
+                whereParalleIters = NpyArray_ITER_ParallelSplit2(WhereIter);
             }
 
             Parallel.For(0, destParallelIters.Count(), index =>
@@ -1155,11 +1155,11 @@ namespace NumpyLib
                         operations.destSetItem(ldestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
                     }
 
-                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                    NpyArray_ITER_NEXT(ldestIter);
+                    NpyArray_ITER_NEXT(lsrcIter);
                     if (lwhereIter != null)
                     {
-                        NpyArray_ITER_PARALLEL_NEXT(lwhereIter);
+                        NpyArray_ITER_NEXT(lwhereIter);
                     }
                 }
             });
