@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyLib</AssemblyName>
     <RootNamespace>NumpyLib</RootNamespace>
-    <Version>0.9.50</Version>
+    <Version>0.9.53</Version>
     <Authors>Kevin McKenna</Authors>
     <Company>Baseline Software Solutions, Inc.</Company>
     <Description>This library contains the lower level 'engine' of the NumpyDotNet system.   This library is typically accessed via the higher  level NumpyDotNet.dll</Description>
