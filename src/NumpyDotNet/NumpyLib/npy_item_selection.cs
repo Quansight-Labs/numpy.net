@@ -2190,7 +2190,7 @@ namespace NumpyLib
                         _strided_byte_copy(paraIter.dataptr, astride, buffer,
                                                      (npy_intp)elsize, N, elsize, null);
 
-                        NpyArray_ITER_PARALLEL_NEXT(paraIter);
+                        NpyArray_ITER_NEXT(paraIter);
                     }
                     NpyDataMem_FREE(buffer);
                 });

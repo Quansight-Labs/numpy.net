@@ -1120,12 +1120,12 @@ namespace NumpyLib
 
      
 
-            IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit2(SrcIter);
-            IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit2(DestIter);
+            IEnumerable<NpyArrayIterObject> srcParallelIters = NpyArray_ITER_ParallelSplit(SrcIter);
+            IEnumerable<NpyArrayIterObject> destParallelIters = NpyArray_ITER_ParallelSplit(DestIter);
             IEnumerable<NpyArrayIterObject> whereParalleIters = null;
             if (WhereIter != null)
             {
-                whereParalleIters = NpyArray_ITER_ParallelSplit2(WhereIter);
+                whereParalleIters = NpyArray_ITER_ParallelSplit(WhereIter);
             }
 
             Parallel.For(0, destParallelIters.Count(), index =>

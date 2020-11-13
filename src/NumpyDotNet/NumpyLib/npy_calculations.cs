@@ -697,9 +697,9 @@ namespace NumpyLib
                         caughtExceptions.Add(ex);
                     }
 
-                    NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                    NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                    NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                    NpyArray_ITER_NEXT(ldestIter);
+                    NpyArray_ITER_NEXT(lsrcIter);
+                    NpyArray_ITER_NEXT(loperIter);
                 } //);
             });
 
@@ -1116,8 +1116,8 @@ namespace NumpyLib
                         }
 
 
-                        NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                        NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                        NpyArray_ITER_NEXT(ldestIter);
+                        NpyArray_ITER_NEXT(loperIter);
                     }
                 });
             }
@@ -1161,8 +1161,8 @@ namespace NumpyLib
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 
-                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
+                            NpyArray_ITER_NEXT(ldestIter);
+                            NpyArray_ITER_NEXT(lsrcIter);
                         }
                     }
                     catch (System.OverflowException of)
@@ -1198,9 +1198,9 @@ namespace NumpyLib
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 
-                            NpyArray_ITER_PARALLEL_NEXT(ldestIter);
-                            NpyArray_ITER_PARALLEL_NEXT(lsrcIter);
-                            NpyArray_ITER_PARALLEL_NEXT(loperIter);
+                            NpyArray_ITER_NEXT(ldestIter);
+                            NpyArray_ITER_NEXT(lsrcIter);
+                            NpyArray_ITER_NEXT(loperIter);
                         }
                     }
                     catch (System.OverflowException of)

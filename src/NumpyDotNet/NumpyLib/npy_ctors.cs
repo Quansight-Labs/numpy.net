@@ -1353,7 +1353,7 @@ namespace NumpyLib
             }
             else
             {
-                var ParallelIters = NpyArray_ITER_ParallelSplit2(srcIter);
+                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
 
                 Parallel.For(0, ParallelIters.Count(), index =>
                 //for (int index = 0; index < ParallelIters.Count(); index++)
@@ -1453,8 +1453,8 @@ namespace NumpyLib
             elsize = NpyArray_ITEMSIZE(dest);
             descr = dest.descr;
 
-            var srcParallelIters = NpyArray_ITER_ParallelSplit2(sit);
-            var destParallelIters = NpyArray_ITER_ParallelSplit2(dit);
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(sit);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(dit);
 
             Parallel.For(0, destParallelIters.Count(), index =>
             //for (int index = 0; index < destParallelIters.Count(); index++) // 

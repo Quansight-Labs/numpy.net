@@ -855,9 +855,9 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
-                var srcParallelIters = NpyArray_ITER_ParallelSplit2(srcIter);
-                var destParallelIters = NpyArray_ITER_ParallelSplit2(destIter);
-                var operParallelIters = NpyArray_ITER_ParallelSplit2(operIter);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
@@ -999,7 +999,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var ParallelIters = NpyArray_ITER_ParallelSplit2(operIter);
+                    var ParallelIters = NpyArray_ITER_ParallelSplit(operIter);
 
                     Parallel.For(0, ParallelIters.Count(), index =>
                     {

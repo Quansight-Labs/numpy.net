@@ -577,7 +577,7 @@ namespace NumpyLib
             return (DestIters, SrcIters);
         }
 
-        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit2(NpyArrayIterObject it)
+        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it)
         {
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] DestIters = null;
@@ -627,7 +627,8 @@ namespace NumpyLib
             return DestIters;
         }
 
-        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it)
+        [Obsolete]
+        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit_SPLITBYTMASK(NpyArrayIterObject it)
         {
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] ParallelIters = null;
@@ -676,6 +677,7 @@ namespace NumpyLib
             return ParallelIters;
         }
 
+        [Obsolete]
         internal static void NpyArray_ITER_PARALLEL_NEXT(NpyArrayIterObject ParallelIter)
         {
             while (true)
