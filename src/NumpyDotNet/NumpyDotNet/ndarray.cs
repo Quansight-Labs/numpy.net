@@ -1713,21 +1713,21 @@ namespace NumpyDotNet
 
     internal class ndarray_Enumerator : IEnumerator<object>
     {
- 
-
         public ndarray_Enumerator(ndarray a) {
             arr = a;
             index = -1;
 
-         
-
+            if (arr.ndim <= 1)
+            {
+                UseLocalCache = true;
+            }
         }
 
         public object Current
         {
             get
             {
-                if (LocalCache != null)
+                if (UseLocalCache && LocalCache != null)
                 {
                     if (LocalCacheIndex >= LocalCacheLength)
                     {
@@ -1749,7 +1749,7 @@ namespace NumpyDotNet
         public bool MoveNext() {
             index += 1;
 
-            if (LocalCache == null)
+            if (UseLocalCache && LocalCache == null)
             {
                 ReLoadLocalCache();
             }
@@ -1770,7 +1770,7 @@ namespace NumpyDotNet
                 LocalCache = new object[LocalCacheLength];
             }
 
-            NpyCoreApi.GetItems(arr, LocalCache, index, LocalCacheLength);     
+            NpyCoreApi.GetItems(arr, LocalCache, index, LocalCacheLength);
 
             LocalCacheIndex = 0;
         }
@@ -1778,6 +1778,7 @@ namespace NumpyDotNet
         private ndarray arr;
         private long index;
 
+        bool UseLocalCache = false;
         npy_intp MaxCacheSize = 10000;
         npy_intp LocalCacheLength = 0;
         object[] LocalCache = null;
