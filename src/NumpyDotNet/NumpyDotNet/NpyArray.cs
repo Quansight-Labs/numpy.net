@@ -754,12 +754,21 @@ namespace NumpyDotNet {
             if (dim < result.ndim - 1)
             {
                 // Sequence elements should be additional sequences
-                seq.Iteri((o, i) =>
-                    AssignFromSeq((IEnumerable<Object>)o, result, dim + 1, offset + stride * i));
+                int i = 0;
+                foreach (var o in seq)
+                {
+                    AssignFromSeq((IEnumerable<Object>)o, result, dim + 1, offset + stride * i);
+                    i++;
+                }
             }
             else
             {
-                seq.Iteri((o, i) => result.Dtype.f.setitem(offset + i * stride, o, result.Array));
+                int i = 0;
+                foreach (var o in seq)
+                {
+                    result.Dtype.f.setitem(offset + i * stride, o, result.Array);
+                    i++;
+                }
             }
         }
 
