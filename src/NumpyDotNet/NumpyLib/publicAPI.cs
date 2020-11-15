@@ -498,6 +498,20 @@ namespace NumpyLib
             return arr.descr.f.getitem(CalculatedOffset * arr.ItemSize, arr);
         }
 
+        public static void GetItems(NpyArray arr, object[] buffer, npy_intp index, npy_intp length)
+        {
+            var offsetHelper = new NpyArrayOffsetHelper(arr);
+
+            int i = 0;
+            for (; index < length; index++)
+            {
+                npy_intp CalculatedOffset = offsetHelper.CalculateOffset(index);
+
+                buffer[i++] = arr.descr.f.getitem(CalculatedOffset * arr.ItemSize, arr);
+            }
+  
+        }
+
         public static npy_intp SetItem(NpyArray arr, npy_intp index, object value)
         {
             var offsetHelper = new NpyArrayOffsetHelper(arr);

@@ -389,6 +389,17 @@ namespace NumpyDotNet {
             }
         }
 
+        internal static void GetItems(ndarray a, object [] buffer, npy_intp index, npy_intp length)
+        {
+#if ENABLELOCKING
+            lock (GlobalIterpLock)
+#endif
+            {
+                numpyAPI.GetItems(a.Array, buffer, index, length);
+            }
+ 
+        }
+
         internal static ndarray FlatView(ndarray a)
         {
 #if ENABLELOCKING

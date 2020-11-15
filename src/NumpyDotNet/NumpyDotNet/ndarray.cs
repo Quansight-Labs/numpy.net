@@ -1713,42 +1713,75 @@ namespace NumpyDotNet
 
     internal class ndarray_Enumerator : IEnumerator<object>
     {
+ 
+
         public ndarray_Enumerator(ndarray a) {
             arr = a;
             index = -1;
+
+         
+
         }
 
         public object Current
         {
             get
             {
-                //if (arr.BaseArray != null)
-                //{
-                //    return arr[index * arr.Strides[0]];
-                //}
-                //else
+                if (LocalCache != null)
                 {
-                    return arr[index];
+                    if (LocalCacheIndex >= LocalCacheLength)
+                    {
+                        ReLoadLocalCache();
+                    }
+                    return LocalCache[LocalCacheIndex++];
                 }
+
+                return arr[index];
             }
         }
 
         public void Dispose() {
             arr = null;
+            LocalCache = null;
         }
 
 
         public bool MoveNext() {
             index += 1;
+
+            if (LocalCache == null)
+            {
+                ReLoadLocalCache();
+            }
+
             return (index < arr.dims[0]);
         }
 
         public void Reset() {
             index = -1;
+            LocalCache = null;
+        }
+
+        private void ReLoadLocalCache()
+        {
+            LocalCacheLength = Math.Min(arr.size - index, MaxCacheSize);
+            if (LocalCache == null)
+            {
+                LocalCache = new object[LocalCacheLength];
+            }
+
+            NpyCoreApi.GetItems(arr, LocalCache, index, LocalCacheLength);     
+
+            LocalCacheIndex = 0;
         }
 
         private ndarray arr;
         private long index;
+
+        npy_intp MaxCacheSize = 10000;
+        npy_intp LocalCacheLength = 0;
+        object[] LocalCache = null;
+        int LocalCacheIndex = 0;
     }
 
     public class CSharpTuple
