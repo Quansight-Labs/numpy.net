@@ -432,6 +432,40 @@ namespace NumpyLib
             return;
         }
 
+
+        internal static void NpyArray_MapIterNext(NpyArrayMapIterObject mit, npy_intp[] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
+        {
+            NpyArrayIterObject it;
+            npy_intp i, j;
+            npy_intp[] coord = new npy_intp[npy_defs.NPY_MAXDIMS];
+
+            while (offsetsIndex < offsetsLength)
+            {
+                mit.index += 1;
+                if (mit.index >= mit.size)
+                {
+                    return;
+                }
+
+                for (i = 0; i < mit.numiter; i++)
+                {
+                    it = mit.iters[i];
+                    NpyArray_ITER_NEXT(it);
+
+                    npy_intp[] s = it.dataptr.datap as npy_intp[];
+                    coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                    //{
+                    //    // not sure I need to do anything here.
+                    //}
+                }
+                NpyArray_ITER_GOTO(mit.ait, coord);
+                offsets[offsetsIndex++] = mit.ait.dataptr.data_offset;
+            }
+  
+            return;
+        }
+
         internal static NpyArray NpyArray_GetMap(NpyArrayMapIterObject mit)
         {
             NpyArrayIterObject it;
