@@ -1727,7 +1727,7 @@ namespace NumpyDotNet
         {
             get
             {
-                if (UseLocalCache && LocalCache != null)
+                if (UseLocalCache)
                 {
                     if (LocalCacheIndex >= LocalCacheLength)
                     {
@@ -1748,11 +1748,6 @@ namespace NumpyDotNet
 
         public bool MoveNext() {
             index += 1;
-
-            if (UseLocalCache && LocalCache == null)
-            {
-                ReLoadLocalCache();
-            }
 
             return (index < arr.dims[0]);
         }
