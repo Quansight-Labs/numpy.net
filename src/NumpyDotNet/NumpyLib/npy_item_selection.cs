@@ -1537,7 +1537,8 @@ namespace NumpyLib
             }
             else
             {
-                Array.Sort(argSortDouble);
+                //Array.Sort(argSortDouble);
+                argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
             }
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
@@ -1597,7 +1598,8 @@ namespace NumpyLib
                 argSortDouble[i] = new ArgSortData_COMPLEX(i, data[i + adjustedIndex]);
             }
 
-            Array.Sort(argSortDouble);
+            //Array.Sort(argSortDouble);
+            argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
             for (int i = 0; i < m; i++)
@@ -1619,7 +1621,8 @@ namespace NumpyLib
                 argSortDouble[i] = new ArgSortData_OBJECT(i, data[i + adjustedIndex]);
             }
 
-            Array.Sort(argSortDouble);
+            //Array.Sort(argSortDouble);
+            argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
             for (int i = 0; i < m; i++)
