@@ -1471,17 +1471,35 @@ namespace NumpyLib
 
         private static void ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right) where T : IComparable
         {
+            int depthRemaining = (int)Math.Log(Environment.ProcessorCount, 2) + 4;
+            //depthRemaining = Environment.ProcessorCount;
+            _ArgMergeSort(input, left, right, depthRemaining);
+        }
+
+        private static void _ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right, int depthRemaining) where T : IComparable
+        {
             if (left < right)
             {
                 npy_intp middle = (left + right) / 2;
 
-                ArgMergeSort(input, left, middle);
-                ArgMergeSort(input, middle + 1, right);
+                if (depthRemaining > 0)
+                {
+                    Parallel.Invoke
+                    (
+                        () => _ArgMergeSort(input, left, middle, depthRemaining - 1),
+                        () => _ArgMergeSort(input, middle + 1, right, depthRemaining - 1)
+                    );
+                }
+                else
+                {
+                    _ArgMergeSort(input, left, middle, depthRemaining - 1);
+                    _ArgMergeSort(input, middle + 1, right, depthRemaining - 1);
+                }
 
-                ArgMerge(input, left, middle, right);
+                _ArgMerge(input, left, middle, right);
             }
         }
-        private static void ArgMerge<T>(ArgSortData<T>[] input, npy_intp left, npy_intp middle, npy_intp right) where T : IComparable
+        private static void _ArgMerge<T>(ArgSortData<T>[] input, npy_intp left, npy_intp middle, npy_intp right) where T : IComparable
         {
             var leftArray = new ArgSortData<T>[middle - left + 1];
             var rightArray = new ArgSortData<T>[right - middle];
