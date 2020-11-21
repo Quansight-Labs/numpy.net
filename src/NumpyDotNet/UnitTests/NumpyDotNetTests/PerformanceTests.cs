@@ -3390,6 +3390,29 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_slice_COMPLEX()
+        {
+            int LoopCount = 1;
+
+            var a = np.arange(0, 32000, dtype: np.Complex).reshape(new shape(2, 4, -1));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var b = (ndarray)a[":", ":", np.where(a > 20)];
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("np.var operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+         
     }
 
 #endif
