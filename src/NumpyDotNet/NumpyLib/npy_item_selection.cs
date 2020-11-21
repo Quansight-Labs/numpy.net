@@ -1472,7 +1472,7 @@ namespace NumpyLib
         private static void ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right) where T : IComparable
         {
             int depthRemaining = (int)Math.Log(Environment.ProcessorCount, 2) + 4;
-            //depthRemaining = Environment.ProcessorCount;
+
             _ArgMergeSort(input, left, right, depthRemaining);
         }
 
@@ -1484,11 +1484,12 @@ namespace NumpyLib
 
                 if (depthRemaining > 0)
                 {
-                    Parallel.Invoke
-                    (
-                        () => _ArgMergeSort(input, left, middle, depthRemaining - 1),
-                        () => _ArgMergeSort(input, middle + 1, right, depthRemaining - 1)
-                    );
+                    var t1 = Task.Run(() =>
+                    {
+                        _ArgMergeSort(input, left, middle, depthRemaining - 1);
+                    });
+                    _ArgMergeSort(input, middle + 1, right, depthRemaining - 1);
+                    Task.WaitAll(t1);
                 }
                 else
                 {
