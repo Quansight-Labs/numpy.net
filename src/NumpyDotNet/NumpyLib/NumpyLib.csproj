@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NumpyLib</AssemblyName>
     <RootNamespace>NumpyLib</RootNamespace>
-    <Version>0.9.53</Version>
+    <Version>0.9.54</Version>
     <Authors>Kevin McKenna</Authors>
     <Company>Baseline Software Solutions, Inc.</Company>
     <Description>This library contains the lower level 'engine' of the NumpyDotNet system.   This library is typically accessed via the higher  level NumpyDotNet.dll</Description>
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>HUGE performance increase!  User defined random number generators.  Explicit casting.</PackageReleaseNotes>
+    <PackageReleaseNotes>Another nice performance boost for select operations</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
