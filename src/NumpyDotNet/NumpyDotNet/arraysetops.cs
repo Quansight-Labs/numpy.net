@@ -527,58 +527,58 @@ namespace NumpyDotNet
             // b) the second condition is true (i.e. `ar1` or `ar2` may contain
             // arbitrary objects), since then sorting is not guaranteed to work
 
-            if (len(ar2) < 10 * Math.Pow(len(ar1), 0.145))
-            {
-                ndarray mask;
-                if (invert)
-                {
-                    mask = np.ones(new shape(len(ar1)), dtype: np.Bool);
-                    foreach (dynamic a in ar2)
-                    {
-                        if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
-                        {
-                            string aa = a.ToString();
-                            ndarray temp = ar1.NotEquals(aa);
-                            mask &= temp;
-                        }
-                        else
-                        {
-                            ndarray temp = ar1 != a;
-                            mask &= temp;
-                        }
-                    }
-                }
-                else
-                {
-                    mask = np.zeros(new shape(len(ar1)), dtype: np.Bool);
-                    foreach (dynamic a in ar2)
-                    {
-                        if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
-                        {
-                            string aa = a.ToString();
-                            ndarray temp = ar1.Equals(aa);
-                            mask |= temp;
-                        }
-                        else
-                        {
-                            ndarray temp = ar1 == a;
-                            mask |= temp;
-                        }
+            //if (len(ar2) < 10 * Math.Pow(len(ar1), 0.145))
+            //{
+            //    ndarray mask;
+            //    if (invert)
+            //    {
+            //        mask = np.ones(new shape(len(ar1)), dtype: np.Bool);
+            //        foreach (dynamic a in ar2)
+            //        {
+            //            if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
+            //            {
+            //                string aa = a.ToString();
+            //                ndarray temp = ar1.NotEquals(aa);
+            //                mask &= temp;
+            //            }
+            //            else
+            //            {
+            //                ndarray temp = ar1 != a;
+            //                mask &= temp;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        mask = np.zeros(new shape(len(ar1)), dtype: np.Bool);
+            //        foreach (dynamic a in ar2)
+            //        {
+            //            if (ar1.TypeNum == NPY_TYPES.NPY_STRING)
+            //            {
+            //                string aa = a.ToString();
+            //                ndarray temp = ar1.Equals(aa);
+            //                mask |= temp;
+            //            }
+            //            else
+            //            {
+            //                ndarray temp = ar1 == a;
+            //                mask |= temp;
+            //            }
 
-                    }
+            //        }
 
-                }
-                return mask;
-            }
+            //    }
+            //    return mask;
+            //}
 
             // Otherwise use sorting
 
             ndarray rev_idx = null;
             if (!assume_unique)
             {
-                var temp = np.unique(ar1, return_inverse: true, return_index: true);
+                var temp = np.unique(ar1, return_inverse: true);
                 ar1 = temp.data;
-                rev_idx = temp.indices;
+                rev_idx = temp.inverse;
 
                 ar2 = np.unique(ar2).data;
             }
