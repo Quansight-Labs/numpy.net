@@ -1130,6 +1130,7 @@ namespace NumpyLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_RESET(NpyArrayIterObject it)
         {
             Debug.Assert(Validate(it));
@@ -1260,7 +1261,7 @@ namespace NumpyLib
             return result;
         }
 
-      
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_GOTO1D(NpyArrayIterObject it, npy_intp indices)
         {
             Debug.Assert(Validate(it));
@@ -1288,6 +1289,7 @@ namespace NumpyLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_GOTO(NpyArrayIterObject it, npy_intp[] destination)
         {
             Debug.Assert(Validate(it));
