@@ -2293,54 +2293,64 @@ namespace NumpyLib
             }
             else
             {
-                List<VoidPtr> dataList = new List<VoidPtr>();
-                List<VoidPtr> argList = new List<VoidPtr>();
-
-                List<Task> tasks = new List<Task>();
-                npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
-
-                int errorsDetected = 0;
-
-                while (size-- > 0)
+                if (size <= 1)
                 {
-                    iptr = rit.dataptr;
-
-                    BuildINTPArray(iptr, N);
-                    dataList.Add(new VoidPtr(it.dataptr));
-                    argList.Add(new VoidPtr(iptr));
-
-                    if (dataList.Count == taskCount)
+                    if (argsort(it.dataptr, rit.dataptr, N, op, kind) < 0)
                     {
-                        var workerThreadDataList = dataList;
-                        var workerThreadArgList = argList;
+                        goto fail;
+                    }
+                }
+                else
+                {
+                    List<VoidPtr> dataList = new List<VoidPtr>();
+                    List<VoidPtr> argList = new List<VoidPtr>();
 
-                        var task = Task.Run(() =>
+                    List<Task> tasks = new List<Task>();
+                    npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
+
+                    int errorsDetected = 0;
+
+                    while (size-- > 0)
+                    {
+                        iptr = rit.dataptr;
+
+                        BuildINTPArray(iptr, N);
+                        dataList.Add(new VoidPtr(it.dataptr));
+                        argList.Add(new VoidPtr(iptr));
+
+                        if (dataList.Count == taskCount)
                         {
-                            _new_argsort_nocopy_worker_thread(workerThreadDataList, workerThreadArgList, ref errorsDetected,
-                                   op, argsort, N,kind);
+                            var workerThreadDataList = dataList;
+                            var workerThreadArgList = argList;
 
-                            // free data ASAP
-                            workerThreadDataList.Clear();
-                            workerThreadDataList = null;
-                            workerThreadArgList.Clear();
-                            workerThreadArgList = null;
-                        });
-                        tasks.Add(task);
+                            var task = Task.Run(() =>
+                            {
+                                _new_argsort_nocopy_worker_thread(workerThreadDataList, workerThreadArgList, ref errorsDetected,
+                                       op, argsort, N, kind);
 
-                        dataList = new List<VoidPtr>();
-                        argList = new List<VoidPtr>();
+                                // free data ASAP
+                                workerThreadDataList.Clear();
+                                workerThreadDataList = null;
+                                workerThreadArgList.Clear();
+                                workerThreadArgList = null;
+                            });
+                            tasks.Add(task);
 
-                        taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+                            dataList = new List<VoidPtr>();
+                            argList = new List<VoidPtr>();
+
+                            taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+                        }
+
+                        NpyArray_ITER_NEXT(it);
+                        NpyArray_ITER_NEXT(rit);
                     }
 
-                    NpyArray_ITER_NEXT(it);
-                    NpyArray_ITER_NEXT(rit);
-                }
+                    Task.WaitAll(tasks.ToArray());
 
-                Task.WaitAll(tasks.ToArray());
-                                
-                if (errorsDetected > 0)
-                    goto fail;
+                    if (errorsDetected > 0)
+                        goto fail;
+                }
 
             }
 
