@@ -4012,6 +4012,7 @@ namespace NumpyLib
                         {
                             d[destIter.dataptr.data_offset / elsize] = s[offsets[offsetsIndex].data_offset / elsize];
                             offsetsIndex++;
+                            numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
                         numIndexes -= offsetsIndex;
                         if (numIndexes > 0)
@@ -4021,7 +4022,6 @@ namespace NumpyLib
                             offsetsIndex = 0;
                         }
 
-                        numpyinternal.NpyArray_ITER_NEXT(destIter);
                     }
                 }
             }
@@ -4061,6 +4061,7 @@ namespace NumpyLib
                         while (offsetsIndex < offsetsLength)
                         {
                             d[destIter.dataptr.data_offset / elsize] = s[offsets[offsetsIndex++] / elsize];
+                            numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
 
                         numIndexes -= offsetsIndex;
@@ -4070,7 +4071,6 @@ namespace NumpyLib
                             numpyinternal.NpyArray_MapIterNext(srcIter, offsets, offsetsLength, 0);
                             offsetsIndex = 0;
                         }
-                        numpyinternal.NpyArray_ITER_NEXT(destIter);
                     }
                 }
             }
