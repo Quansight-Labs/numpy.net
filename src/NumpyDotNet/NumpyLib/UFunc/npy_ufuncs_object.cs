@@ -1493,10 +1493,10 @@ namespace NumpyLib
                                         {
                                             Parallel.For(0, workToDo.Count(), xxx =>
                                             {
-                                                UFUNCLoopWorkerParams x = null;
-                                                if (workToDo.TryDequeue(out x))
+                                                UFUNCLoopWorkerParams work = null;
+                                                if (workToDo.TryDequeue(out work))
                                                 {
-                                                    loop.function(x.op, x.bufptr, x.mm, x.steps, x.ops);
+                                                    loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
                                                     if (!NPY_UFUNC_CHECK_ERROR(loop))
                                                     {
                                                         HasError = true;
