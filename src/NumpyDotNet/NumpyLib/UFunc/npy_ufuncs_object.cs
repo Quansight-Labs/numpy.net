@@ -1111,63 +1111,86 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
-                   ConcurrentQueue<VoidPtr[]> loopFunctionBuffer = new ConcurrentQueue<VoidPtr[]>();
-
-                    bool HasError = false;
-                    Task workerThread = null;
-                    bool IsCompleted = false;
-
-                    while (loop.index < loop.size)
+                    var loopcnt = loop.size - loop.index;
+                    if (loopcnt <= 1)
                     {
-                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
-                        /* Adjust input pointer */
-                        loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-
-                        // put on queue for worker task to process
-                        loopFunctionBuffer.Enqueue(new VoidPtr[3] { loop.bufptr[0], loop.bufptr[1], loop.bufptr[2] });
-
-                        if (workerThread == null)
+                        while (loop.index < loop.size)
                         {
-                            // start worker thread to process the queued up work
-                            workerThread = Task.Factory.StartNew(() =>
-                            {
-                                while (true)
-                                {
-                                    Parallel.For(0, loopFunctionBuffer.Count(), xxx=>
-                                    //for (int xxx = 0; xxx < loopFunctionBuffer.Count(); xxx++)
-                                    {
-                                        VoidPtr[] bufPtr = null;
-                                        if (loopFunctionBuffer.TryDequeue(out bufPtr))
-                                        {
-                                            loop.function(operation, bufPtr, loop.N, loop.steps, self.ops);
-                                            if (!NPY_UFUNC_CHECK_ERROR(loop))
-                                            {
-                                                HasError = true;
-                                            }
-                                        }
-                      
-                                    } );
+                            helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                            /* Adjust input pointer */
+                            loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
-                                    if (loopFunctionBuffer.Count() == 0 && IsCompleted)
-                                        break;
-                                }
-      
-                            });
+                            loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                            if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                goto fail;
+
+                            NpyArray_ITER_NEXT(loop.it);
+                            loop.bufptr[0] += loop.outsize;
+                            loop.bufptr[2] = loop.bufptr[0];
+                            loop.index++;
                         }
-       
+                    }
+                    else
+                    {
+                        ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
 
-                        NpyArray_ITER_NEXT(loop.it);
-                        loop.bufptr[0] += loop.outsize;
-                        loop.bufptr[2] = loop.bufptr[0];
-                        loop.index++;
+                        bool HasError = false;
+                        Task workerThread = null;
+                        bool IsCompleted = false;
+
+                        while (loop.index < loop.size)
+                        {
+                            helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                            /* Adjust input pointer */
+                            loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
+
+                            // put on queue for worker task to process
+                            workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, loop.N, loop.steps, self.ops));
+
+                            if (workerThread == null)
+                            {
+                                // start worker thread to process the queued up work
+                                workerThread = Task.Factory.StartNew(() =>
+                                {
+                                    while (true)
+                                    {
+                                        Parallel.For(0, workToDo.Count(), xxx =>
+                                        {
+                                            UFUNCLoopWorkerParams work = null;
+                                            if (workToDo.TryDequeue(out work))
+                                            {
+                                                loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
+                                                if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                                {
+                                                    HasError = true;
+                                                }
+                                            }
+
+                                        });
+
+                                        if (workToDo.Count() == 0 && IsCompleted)
+                                            break;
+                                    }
+
+                                });
+                            }
+
+
+                            NpyArray_ITER_NEXT(loop.it);
+                            loop.bufptr[0] += loop.outsize;
+                            loop.bufptr[2] = loop.bufptr[0];
+                            loop.index++;
+                        }
+
+                        IsCompleted = true;
+
+                        workerThread.Wait();
+
+                        if (HasError)
+                            goto fail;
                     }
 
-                    IsCompleted = true;
-
-                    workerThread.Wait();
-
-                    if (HasError)
-                        goto fail;
+    
 
                     break;
 
