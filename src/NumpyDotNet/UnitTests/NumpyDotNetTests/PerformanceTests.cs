@@ -295,22 +295,23 @@ namespace NumpyDotNetTests
         {
 
             int LoopCount = 20;
-            var a = np.arange(0, 10000000, dtype: np.Float64).reshape((40, -1));
+            var a = np.arange(0, 20000000, dtype: np.Float64).reshape((-1, 40));
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
+            ndarray b = null;
+
             for (int i = 0; i < LoopCount; i++)
             {
-                var b = np.ufunc.reduceat(UFuncOperation.add, a, new long[] { 10, 20, 30, 39 });
-
-                print(b.shape);
-
-                var c = np.sum(b);
-                Assert.AreEqual(46874996250000.0, c.item(0));
+                b = np.ufunc.reduceat(UFuncOperation.add, a, new long[] { 10, 20, 30, 40, 50, 60 });
+                //print(b.shape);
             }
-
             sw.Stop();
+
+            var c = np.sum(b);
+            Assert.AreEqual(199999989920200.0, c.item(0));
+
 
             Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");

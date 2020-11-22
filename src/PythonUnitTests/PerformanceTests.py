@@ -90,6 +90,8 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+
+
     def test_AddReduce_Performance_UINT32(self):
 
         LoopCount = 200;
@@ -199,16 +201,17 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 20;
 
-        a = np.arange(10000000, dtype=np.float64).reshape((40, -1));
+        a = np.arange(20000000, dtype=np.float64).reshape((-1, 40));
 
         start = tm.time()
         
         for i in range(LoopCount):
-            b = np.add.reduceat(a, [10, 20, 30, 39])
+            b = np.add.reduceat(a, [10, 20, 30, 40, 50, 60])
             #print(b.shape)
-        print(np.sum(b))
 
         end = tm.time()
+
+        print(np.sum(b))
 
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
