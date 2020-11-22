@@ -224,7 +224,7 @@ namespace NumpyLib
                 i++;
             }
 
-            this.mm = mm;
+            this.N = mm;
 
             this.steps = new npy_intp[steps.Length];
             Array.Copy(steps, this.steps, steps.Length);
@@ -234,7 +234,7 @@ namespace NumpyLib
 
         public GenericReductionOp op;
         public VoidPtr[] bufptr;
-        public npy_intp mm;
+        public npy_intp N;
         public npy_intp[] steps;
         public UFuncOperation ops;
     }
@@ -1159,7 +1159,7 @@ namespace NumpyLib
                                             UFUNCLoopWorkerParams work = null;
                                             if (workToDo.TryDequeue(out work))
                                             {
-                                                loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
+                                                loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
                                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                                 {
                                                     HasError = true;
@@ -1376,7 +1376,7 @@ namespace NumpyLib
                                             UFUNCLoopWorkerParams work = null;
                                             if (workToDo.TryDequeue(out work))
                                             {
-                                                loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
+                                                loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
                                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                                 {
                                                     HasError = true;
@@ -1553,81 +1553,115 @@ namespace NumpyLib
                     /* Reduceat
                      * NOBUFFER -- behaved array and same type
                      */
-  
-                    ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
 
-                    bool HasError = false;
-                    Task workerThread = null;
-                    bool IsCompleted = false;
-
-                    while (loop.index < loop.size)
+                    var loopcnt = loop.size - loop.index;
+                    if (loopcnt <= 1)
                     {
-                        ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
-                        for (i = 0; i < nn; i++)
+                        while (loop.index < loop.size)
                         {
-                            loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
-                            memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
-
-                            mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
-                            if (mm > 0)
+                            ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
+                            for (i = 0; i < nn; i++)
                             {
-                                loop.bufptr[1] += loop.steps[1];
-                                loop.bufptr[2] = loop.bufptr[0];
+                                loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
+                                memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
 
-                                workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, mm, loop.steps, self.ops));
-
-                                if (workerThread == null)
+                                mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
+                                if (mm > 0)
                                 {
-                                    // start worker thread to process the queued up work
-                                    workerThread = Task.Factory.StartNew(() =>
+                                    loop.bufptr[1] += loop.steps[1];
+                                    loop.bufptr[2] = loop.bufptr[0];
+
+                                    loop.function(operation, loop.bufptr, mm, loop.steps, self.ops);
+                                    if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     {
-                                        while (true)
+                                        goto fail;
+                                    }
+                                }
+                                loop.bufptr[0] += NpyArray_STRIDE(loop.ret, axis);
+                            }
+                            NpyArray_ITER_NEXT(loop.it);
+                            NpyArray_ITER_NEXT(loop.rit);
+                            loop.bufptr[0] = loop.rit.dataptr;
+                            loop.index++;
+                        }
+                    }
+                    else
+                    {
+                        ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
+
+                        bool HasError = false;
+                        Task workerThread = null;
+                        bool IsCompleted = false;
+
+                        while (loop.index < loop.size)
+                        {
+                            ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
+                            for (i = 0; i < nn; i++)
+                            {
+                                loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
+                                memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
+
+                                mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
+                                if (mm > 0)
+                                {
+                                    loop.bufptr[1] += loop.steps[1];
+                                    loop.bufptr[2] = loop.bufptr[0];
+
+                                    workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, mm, loop.steps, self.ops));
+
+                                    if (workerThread == null)
+                                    {
+                                        // start worker thread to process the queued up work
+                                        workerThread = Task.Factory.StartNew(() =>
                                         {
-                                            Parallel.For(0, workToDo.Count(), xxx =>
+                                            while (true)
                                             {
-                                                UFUNCLoopWorkerParams work = null;
-                                                if (workToDo.TryDequeue(out work))
+                                                Parallel.For(0, workToDo.Count(), xxx =>
                                                 {
-                                                    loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
-                                                    if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                                    UFUNCLoopWorkerParams work = null;
+                                                    if (workToDo.TryDequeue(out work))
                                                     {
-                                                        HasError = true;
+                                                        loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
+                                                        if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                                        {
+                                                            HasError = true;
+                                                        }
                                                     }
+
+                                                });
+
+                                                if (workToDo.Count() == 0)
+                                                {
+                                                    if (IsCompleted)
+                                                        break;
+
+                                                    //System.Threading.Thread.Sleep(10);
                                                 }
 
-                                            });
+                                            }
 
-                                            if (workToDo.Count() == 0)
-                                            {
-                                                  if (IsCompleted)
-                                                    break;
+                                        });
+                                    }
 
-                                                //System.Threading.Thread.Sleep(10);
-                                            }           
-                                          
-                                        }
-
-                                    });
                                 }
-
+                                loop.bufptr[0] += NpyArray_STRIDE(loop.ret, axis);
                             }
-                            loop.bufptr[0] += NpyArray_STRIDE(loop.ret, axis);
+                            NpyArray_ITER_NEXT(loop.it);
+                            NpyArray_ITER_NEXT(loop.rit);
+                            loop.bufptr[0] = loop.rit.dataptr;
+                            loop.index++;
                         }
-                        NpyArray_ITER_NEXT(loop.it);
-                        NpyArray_ITER_NEXT(loop.rit);
-                        loop.bufptr[0] = loop.rit.dataptr;
-                        loop.index++;
+
+                        IsCompleted = true;
+
+                        if (workerThread != null)
+                        {
+                            workerThread.Wait();
+                        }
+
+                        if (HasError)
+                            goto fail;
                     }
-
-                    IsCompleted = true;
-
-                    if (workerThread != null)
-                    {
-                        workerThread.Wait();
-                    }
-
-                    if (HasError)
-                        goto fail;
 
                     break;
 
