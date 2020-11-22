@@ -1306,23 +1306,92 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-     
-                    //
-                    // kevin - accumulate operation does not like parallel ops
-                    while (loop.index < loop.size)
+
+                    var loopcnt = loop.size - loop.index;
+                    if (loopcnt <= 1  || false)
                     {
-                        memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
-                        /* Adjust input pointer */
-                        loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-                        loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
-                        if (!NPY_UFUNC_CHECK_ERROR(loop))
-                            goto fail;
-                        NpyArray_ITER_NEXT(loop.it);
-                        NpyArray_ITER_NEXT(loop.rit);
-                        loop.bufptr[0] = loop.rit.dataptr;
-                        loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
-                        loop.index++;
+                        while (loop.index < loop.size)
+                        {
+                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                            /* Adjust input pointer */
+                            loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
+                            loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                            if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                goto fail;
+                            NpyArray_ITER_NEXT(loop.it);
+                            NpyArray_ITER_NEXT(loop.rit);
+                            loop.bufptr[0] = loop.rit.dataptr;
+                            loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
+                            loop.index++;
+                        }
                     }
+                    else
+                    {
+                        ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
+
+                        bool HasError = false;
+                        Task workerThread = null;
+                        bool IsCompleted = false;
+
+                        while (loop.index < loop.size)
+                        {
+                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                            /* Adjust input pointer */
+                            loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
+
+                            workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, loop.N, loop.steps, self.ops));
+
+                            if (workerThread == null)
+                            {
+                                // start worker thread to process the queued up work
+                                workerThread = Task.Factory.StartNew(() =>
+                                {
+                                    while (true)
+                                    {
+                                        Parallel.For(0, workToDo.Count(), xxx =>
+                                        {
+                                            UFUNCLoopWorkerParams work = null;
+                                            if (workToDo.TryDequeue(out work))
+                                            {
+                                                loop.function(work.op, work.bufptr, work.mm, work.steps, work.ops);
+                                                if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                                {
+                                                    HasError = true;
+                                                }
+                                            }
+
+                                        });
+
+                                        if (workToDo.Count() == 0)
+                                        {
+                                            if (IsCompleted)
+                                                break;
+
+                                            //System.Threading.Thread.Sleep(100);
+                                        }
+                                    
+                                    }
+
+                                });
+                            }
+
+                            NpyArray_ITER_NEXT(loop.it);
+                            NpyArray_ITER_NEXT(loop.rit);
+                            loop.bufptr[0] = loop.rit.dataptr;
+                            loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
+                            loop.index++;
+                        }
+
+                        IsCompleted = true;
+
+                        workerThread.Wait();
+
+                        if (HasError)
+                            goto fail;
+
+                    }
+
+
 
                     break;
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
