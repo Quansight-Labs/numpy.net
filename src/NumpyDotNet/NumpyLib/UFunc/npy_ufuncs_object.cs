@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//#define BUFFER_UFUNCLOOP // doesn't seem to be used.  May only be useful if we have unaligned data which is not possible in .NET I think
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -42,6 +44,8 @@ using npy_intp = System.Int64;
 #else
 using npy_intp = System.Int32;
 #endif
+
+
 
 namespace NumpyLib
 {
@@ -508,7 +512,9 @@ namespace NumpyLib
                     }
                     break;
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
+#if BUFFER_UFUNCLOOP
                     {
+
                         /* This should be a function */
                         NpyArray_CopySwapNFunc[] copyswapn = new NumpyLib.NpyArray_CopySwapNFunc[npy_defs.NPY_MAXARGS];
                         NpyArrayIterObject[] iters = loop.iter.iters;
@@ -789,6 +795,7 @@ namespace NumpyLib
                             index++;
                         }
                     } /* end of last case statement */
+#endif
                     break;
             }
 
@@ -1165,6 +1172,7 @@ namespace NumpyLib
                     break;
 
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
+#if BUFFER_UFUNCLOOP
                     /*
                      * use buffer for arr
                      *
@@ -1226,7 +1234,7 @@ namespace NumpyLib
                         loop.bufptr[2] = loop.bufptr[0];
                         loop.index++;
                     }
-
+#endif
                     break;
             }
 
@@ -1318,6 +1326,7 @@ namespace NumpyLib
 
                     break;
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
+#if BUFFER_UFUNCLOOP
                     /* Accumulate
                      *
                      * use buffer for arr
@@ -1368,7 +1377,6 @@ namespace NumpyLib
                             {
                                 loop.cast(loop.buffer, loop.castbuf, i, null, null);
                             }
-
                             loop.function(operation, loop.bufptr, i, loop.steps, self.ops);
                             loop.bufptr[0] += loop.steps[0] * i;
                             loop.bufptr[2] += loop.steps[2] * i;
@@ -1381,7 +1389,7 @@ namespace NumpyLib
                         loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
                         loop.index++;
                     }
-
+#endif
                     break;
 
             }
@@ -1532,6 +1540,7 @@ namespace NumpyLib
                     break;
 
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
+#if BUFFER_UFUNCLOOP
                     /* Reduceat
                      * BUFFER -- misbehaved array or different types
                      */
@@ -1584,7 +1593,7 @@ namespace NumpyLib
                         loop.bufptr[0] = loop.rit.dataptr;
                         loop.index++;
                     }
-
+#endif
                     break;
             }
 
