@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//#define BUFFER_UFUNCLOOP // doesn't seem to be used.  May only be useful if we have unaligned data which is not possible in .NET I think
+#define BUFFER_UFUNCLOOP // doesn't seem to be used.  May only be useful if we have unaligned data which is not possible in .NET I think
 
 using System;
 using System.Collections.Concurrent;
@@ -1308,7 +1308,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
                     var loopcnt = loop.size - loop.index;
-                    if (loopcnt <= 1  || false)
+                    if (loopcnt <= 1)
                     {
                         while (loop.index < loop.size)
                         {
