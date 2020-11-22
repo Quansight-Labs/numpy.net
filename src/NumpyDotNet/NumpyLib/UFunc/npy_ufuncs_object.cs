@@ -96,7 +96,7 @@ namespace NumpyLib
 
     };
 
-    public class NpyUFuncLoopObject : NpyObject_HEAD
+    internal class NpyUFuncLoopObject : NpyObject_HEAD
     {
  
         /* The iterators. */
@@ -160,7 +160,7 @@ namespace NumpyLib
         public npy_intp[] core_strides;     /* strides of loop and core dimensions */
     }
 
-    public class NpyUFuncReduceObject : NpyObject_HEAD
+    internal class NpyUFuncReduceObject : NpyObject_HEAD
     {
 
         public NpyArrayIterObject it;
@@ -205,12 +205,40 @@ namespace NumpyLib
 
     }
 
+    internal class UFUNCLoopWorkerParams
+    {
+        public UFUNCLoopWorkerParams(GenericReductionOp op, VoidPtr[] bufptr, npy_intp mm, npy_intp[] steps, UFuncOperation ops)
+        {
+            npy_intp i = 0;
 
+            this.op = op;
+
+            this.bufptr = new VoidPtr[bufptr.Length];
+            foreach (var vp in bufptr)
+            {
+                this.bufptr[i] = new VoidPtr(vp);
+                i++;
+            }
+
+            this.mm = mm;
+
+            this.steps = new npy_intp[steps.Length];
+            Array.Copy(steps, this.steps, steps.Length);
+
+            this.ops = ops;
+        }
+
+        public GenericReductionOp op;
+        public VoidPtr[] bufptr;
+        public npy_intp mm;
+        public npy_intp[] steps;
+        public UFuncOperation ops;
+    }
 
     /* A linked-list of function information for
      user-defined 1-d loops.
      */
-    public class NpyUFunc_Loop1d
+    internal class NpyUFunc_Loop1d
     {
         public NpyUFuncGenericFunction func;
         public NPY_TYPES[] arg_types;
@@ -1379,6 +1407,7 @@ namespace NumpyLib
             }
             return null;
         }
+         
 
         private static NpyArray NpyUFunc_Reduceat(GenericReductionOp operation, NpyUFuncObject self, NpyArray arr, NpyArray ind, NpyArray _out, int axis, NPY_TYPES otype)
         {
@@ -1424,8 +1453,13 @@ namespace NumpyLib
                     /* Reduceat
                      * NOBUFFER -- behaved array and same type
                      */
-                    /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-                    // kevin - here
+  
+                    ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
+
+                    bool HasError = false;
+                    Task workerThread = null;
+                    bool IsCompleted = false;
+
                     while (loop.index < loop.size)
                     {
                         ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
@@ -1434,16 +1468,48 @@ namespace NumpyLib
                             loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
                             memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
 
-                            mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] :
-                                  ptr[i + 1] - ptr[i]) - 1;
+                            mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
                             if (mm > 0)
                             {
                                 loop.bufptr[1] += loop.steps[1];
                                 loop.bufptr[2] = loop.bufptr[0];
-                                loop.function(operation, loop.bufptr, mm, loop.steps, self.ops);
 
-                                if (!NPY_UFUNC_CHECK_ERROR(loop))
-                                    goto fail;
+                                workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, mm, loop.steps, self.ops));
+
+                                if (workerThread == null)
+                                {
+                                    // start worker thread to process the queued up work
+                                    workerThread = Task.Factory.StartNew(() =>
+                                    {
+                                        while (true)
+                                        {
+                                            Parallel.For(0, workToDo.Count(), xxx =>
+                                            {
+                                                UFUNCLoopWorkerParams x = null;
+                                                if (workToDo.TryDequeue(out x))
+                                                {
+                                                    loop.function(x.op, x.bufptr, x.mm, x.steps, x.ops);
+                                                    if (!NPY_UFUNC_CHECK_ERROR(loop))
+                                                    {
+                                                        HasError = true;
+                                                    }
+                                                }
+
+                                            });
+
+                                            if (workToDo.Count() == 0)
+                                            {
+                                                  if (IsCompleted)
+                                                    break;
+
+                                                //System.Threading.Thread.Sleep(10);
+                                            }           
+                                          
+                                        }
+
+                                    });
+                                }
+
                             }
                             loop.bufptr[0] += NpyArray_STRIDE(loop.ret, axis);
                         }
@@ -1452,6 +1518,17 @@ namespace NumpyLib
                         loop.bufptr[0] = loop.rit.dataptr;
                         loop.index++;
                     }
+
+                    IsCompleted = true;
+
+                    if (workerThread != null)
+                    {
+                        workerThread.Wait();
+                    }
+
+                    if (HasError)
+                        goto fail;
+
                     break;
 
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
