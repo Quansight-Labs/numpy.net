@@ -469,6 +469,95 @@ namespace NumpyLib
             return ret;
         }
 
+        internal static void NpyArray_ITER_CACHE(NpyArrayIterObject it, npy_intp cacheSize)
+        {
+            if (cacheSize == 0)
+                return;
+
+            it.internalCacheLength = Math.Min(cacheSize, numpyinternal.maxIterOffsetCacheSize);
+            if (it.internalCache == null || it.internalCache.Length < it.internalCacheLength)
+            {
+                it.internalCache = new npy_intp[it.internalCacheLength];
+            }
+            it.internalCacheIndex = 0;
+
+            if (it.nd_m1 == 0)
+            {
+                for (int i = 0; i < it.internalCacheLength; i++)
+                {
+                    it.internalCache[i] = it.dataptr.data_offset;
+
+                    it.index++;
+
+                    it.dataptr.data_offset += it.strides[0];
+                    it.coordinates[0]++;
+                }
+                return;
+            }
+
+            if (it.contiguous)
+            {
+                for (int i = 0; i < it.internalCacheLength; i++)
+                {
+                    it.internalCache[i] = it.dataptr.data_offset;
+
+                    it.index++;
+
+                    it.dataptr.data_offset += (npy_intp)it.ao.descr.elsize;
+                }
+                return;
+            }
+
+            if (it.nd_m1 == 1)
+            {
+                for (int j = 0; j < it.internalCacheLength; j++)
+                {
+                    it.internalCache[j] = it.dataptr.data_offset;
+
+                    it.index++;
+
+                    if (it.coordinates[1] < it.dims_m1[1])
+                    {
+                        it.coordinates[1]++;
+                        it.dataptr.data_offset += it.strides[1];
+                    }
+                    else
+                    {
+                        it.coordinates[1] = 0;
+                        it.coordinates[0]++;
+                        it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                    }
+                }
+                return;
+            }
+            else
+            {
+                for (int j = 0; j < it.internalCacheLength; j++)
+                {
+                    it.internalCache[j] = it.dataptr.data_offset;
+
+                    it.index++;
+
+                    for (int i = it.nd_m1; i >= 0; i--)
+                    {
+                        if (it.coordinates[i] < it.dims_m1[i])
+                        {
+                            it.coordinates[i]++;
+                            it.dataptr.data_offset += it.strides[i];
+                            break;
+                        }
+                        else
+                        {
+                            it.coordinates[i] = 0;
+                            it.dataptr.data_offset -= it.backstrides[i];
+                        }
+                    }
+                }
+                return;
+     
+            }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it)
         {
@@ -640,11 +729,16 @@ namespace NumpyLib
             return (DestIters, SrcIters);
         }
 
-        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it)
+        internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit(NpyArrayIterObject it, npy_intp SingleIterSize = -1)
         {
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] DestIters = null;
 
+            if (SingleIterSize > 0 && SingleIterSize < TotalSize)
+            {
+                DestIters = new NpyArrayIterObject[1];
+            }
+            else
             if (TotalSize < 2 || maxParallelIterators == 1)
             {
                 DestIters = new NpyArrayIterObject[1];

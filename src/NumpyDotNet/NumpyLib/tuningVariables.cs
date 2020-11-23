@@ -49,6 +49,7 @@ namespace NumpyLib
         private static npy_intp maxParallelIterators = 8;
         private static npy_intp flatCopyParallelSize = 10000;
         internal static npy_intp maxIterOffsetCacheSize = 10000;
+        private static npy_intp maxNumericOpParallelSize = 1000;
 
     }
 }

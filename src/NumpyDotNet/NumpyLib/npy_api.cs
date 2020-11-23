@@ -33,6 +33,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 #if NPY_INTP_64
@@ -228,6 +229,26 @@ namespace NumpyLib
 
         public npy_intp ParallelMask;
         public npy_intp ParallelIndex;
+
+
+        public npy_intp[] internalCache = null;
+        public npy_intp internalCacheLength = 0;
+        public npy_intp internalCacheIndex = 0;
+
+        public bool IsCacheEmpty
+        {
+            get
+            {
+                return internalCacheIndex >= internalCacheLength;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public npy_intp GetNextCache()
+        {
+            return internalCache[internalCacheIndex++];
+        }
+
 
         public NpyArrayIterObject copy()
         {
