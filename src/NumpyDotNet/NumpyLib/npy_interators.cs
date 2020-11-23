@@ -518,6 +518,69 @@ namespace NumpyLib
             }
         }
 
+        internal static void NpyArray_ITER_WALK(NpyArrayIterObject it, npy_intp walkCount)
+        {
+            //Debug.Assert(Validate(it));
+
+            it.index += walkCount;
+
+            if (it.nd_m1 == 0)
+            {
+                it.dataptr.data_offset += walkCount * it.strides[0];
+                it.coordinates[0]+=walkCount;
+        
+                return;
+            }
+
+            if (it.contiguous)
+            {
+                it.dataptr.data_offset += walkCount * (npy_intp)it.ao.descr.elsize;
+                return;
+            }
+    
+            if (it.nd_m1 == 1)
+            {
+                while (walkCount-- > 0)
+                {
+                    if (it.coordinates[1] < it.dims_m1[1])
+                    {
+                        it.coordinates[1]++;
+                        it.dataptr.data_offset += it.strides[1];
+                    }
+                    else
+                    {
+                        it.coordinates[1] = 0;
+                        it.coordinates[0]++;
+                        it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                    }
+                }
+  
+            }
+            else
+            {
+                while (walkCount-- > 0)
+                {
+                    for (int i = it.nd_m1; i >= 0; i--)
+                    {
+                        if (it.coordinates[i] < it.dims_m1[i])
+                        {
+                            it.coordinates[i]++;
+                            it.dataptr.data_offset += it.strides[i];
+                            break;
+                        }
+                        else
+                        {
+                            it.coordinates[i] = 0;
+                            it.dataptr.data_offset -= it.backstrides[i];
+                        }
+                    }
+                }
+            }
+
+            return;
+        }
+
+
         internal static (IEnumerable<NpyArrayIterObject>, IEnumerable<NpyArrayIterObject>) NpyArray_ITER_ParallelSplit(NpyArrayIterObject destIter, NpyArrayIterObject srcIter)
         {
             npy_intp TotalSize = destIter.size - destIter.index;
@@ -616,11 +679,7 @@ namespace NumpyLib
                 DestIters[Index] = DestIters[Index - 1].copy();
                 DestIters[Index].size += taskSize;
 
-                while (DestIters[Index].index < DestIters[Index - 1].size)
-                {
-                    numpyinternal.NpyArray_ITER_NEXT(DestIters[Index]);
-                }
-
+                numpyinternal.NpyArray_ITER_WALK(DestIters[Index], DestIters[Index - 1].size - DestIters[Index].index);
             }
             DestIters[DestIters.Length - 1].size = it.size;
 
