@@ -882,6 +882,7 @@ namespace NumpyLib
                             {
                                 var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.GetNextCache() - srcDataOffset, srcArray, src.Length)];
                                 var operand = oper[AdjustedIndex_GetItemFunction(loperIter.GetNextCache() - operDataOffset, operArray, oper.Length)];
+                                var destIndex = AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length);
 
                                 T retValue;
 
@@ -912,11 +913,11 @@ namespace NumpyLib
 
                                     }
 
-                                    dest[AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length)] = retValue;
+                                    dest[destIndex] = retValue;
                                 }
                                 catch
                                 {
-                                    dest[AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length)] = default(T);
+                                    dest[destIndex] = default(T);
                                 }
 
                             }
