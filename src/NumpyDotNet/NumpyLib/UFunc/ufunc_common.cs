@@ -1376,6 +1376,31 @@ namespace NumpyLib
                 return index;
             }
 
+            protected opFunction GetOpFunction(UFuncOperation ops)
+            {
+                switch (ops)
+                {
+                    case UFuncOperation.add:
+                        return Add;
+
+                    case UFuncOperation.subtract:
+                        return Subtract;
+
+                    case UFuncOperation.multiply:
+                        return Multiply;
+
+                    case UFuncOperation.divide:
+                        return Divide;
+
+                    case UFuncOperation.power:
+                        return Power;
+
+                }
+
+                return null;
+            }
+
+            protected delegate T opFunction(T o1, T o2);
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);
