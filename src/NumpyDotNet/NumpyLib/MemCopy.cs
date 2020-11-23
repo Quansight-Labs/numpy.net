@@ -3975,7 +3975,7 @@ namespace NumpyLib
 
             if (srcIter.subspace != null)
             {
-                VoidPtr[] offsets = new VoidPtr[10000];
+                VoidPtr[] offsets = new VoidPtr[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
                 offsets[0] = srcIter.dataptr;
@@ -4027,7 +4027,7 @@ namespace NumpyLib
             }
             else
             {
-                npy_intp[] offsets = new npy_intp[10000];
+                npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
                 offsets[0] = srcIter.dataptr.data_offset;
@@ -4086,7 +4086,7 @@ namespace NumpyLib
 
             if (destIter.dataptr.type_num != srcIter.dataptr.type_num)
             {
-                VoidPtr[] offsets = new VoidPtr[10000];
+                VoidPtr[] offsets = new VoidPtr[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
                 offsets[0] = destIter.dataptr;
@@ -4126,7 +4126,7 @@ namespace NumpyLib
 
             if (destIter.subspace != null)
             {
-                VoidPtr[] offsets = new VoidPtr[10000];
+                VoidPtr[] offsets = new VoidPtr[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
                 offsets[0] = destIter.dataptr;
@@ -4157,7 +4157,7 @@ namespace NumpyLib
             }
             else
             {
-                npy_intp[] offsets = new npy_intp[10000];
+                npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
                 offsets[0] = destIter.dataptr.data_offset;
