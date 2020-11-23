@@ -734,27 +734,22 @@ namespace NumpyLib
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] DestIters = null;
 
-            if (SingleIterSize > TotalSize)
+            if (TotalSize <= SingleIterSize || maxParallelIterators == 1)
             {
                 DestIters = new NpyArrayIterObject[1];
             }
             else
-            if (TotalSize < 2 || maxParallelIterators == 1)
-            {
-                DestIters = new NpyArrayIterObject[1];
-            }
-            else
-            if (TotalSize < 4 || maxParallelIterators == 2)
+            if (TotalSize <= (SingleIterSize * 2) || maxParallelIterators == 2)
             {
                 DestIters = new NpyArrayIterObject[2];
             }
             else
-            if (TotalSize < 8 || maxParallelIterators == 4)
+            if (TotalSize <= (SingleIterSize * 4) || maxParallelIterators == 4)
             {
                 DestIters = new NpyArrayIterObject[4];
             }
             else
-            if (TotalSize < 16 || maxParallelIterators == 8)
+            if (TotalSize <= (SingleIterSize * 8) || maxParallelIterators == 8)
             {
                 DestIters = new NpyArrayIterObject[8];
             }
