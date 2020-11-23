@@ -2183,7 +2183,7 @@ namespace NumpyLib
 
             if (needcopy)
             {
-                var parallelIters = NpyArray_ITER_ParallelSplit(it);
+                var parallelIters = NpyArray_ITER_ParallelSplit(it, numpyinternal.maxSortOperationParallelSize);
 
                 Parallel.For(0, parallelIters.Count(), index =>
                 //for (int index = 0; index < parallelIters.Count(); index++) // 

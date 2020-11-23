@@ -1091,7 +1091,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var ParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                    var ParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
                     Parallel.For(0, ParallelIters.Count(), index =>
                     {

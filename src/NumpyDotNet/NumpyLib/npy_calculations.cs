@@ -656,9 +656,9 @@ namespace NumpyLib
         {
             List<Exception> caughtExceptions = new List<Exception>();
 
-            var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
-            var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
-            var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+            var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
             Parallel.For(0, destParallelIters.Count(), index =>
             //for (int index = 0; index < destParallelIters.Count(); index++) // 
@@ -1084,8 +1084,8 @@ namespace NumpyLib
             }
             else
             {
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
-                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
@@ -1143,8 +1143,8 @@ namespace NumpyLib
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
-                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
 
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
@@ -1178,9 +1178,9 @@ namespace NumpyLib
             }
             else
             {
-                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
-                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 {

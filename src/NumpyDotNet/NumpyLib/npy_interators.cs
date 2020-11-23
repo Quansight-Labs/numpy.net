@@ -734,7 +734,7 @@ namespace NumpyLib
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] DestIters = null;
 
-            if (SingleIterSize > 0 && SingleIterSize < TotalSize)
+            if (SingleIterSize > TotalSize)
             {
                 DestIters = new NpyArrayIterObject[1];
             }

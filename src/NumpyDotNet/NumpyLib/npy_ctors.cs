@@ -1353,7 +1353,7 @@ namespace NumpyLib
             }
             else
             {
-                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
+                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxCopyFieldParallelSize);
 
                 Parallel.For(0, ParallelIters.Count(), index =>
                 //for (int index = 0; index < ParallelIters.Count(); index++)
@@ -1453,8 +1453,8 @@ namespace NumpyLib
             elsize = NpyArray_ITEMSIZE(dest);
             descr = dest.descr;
 
-            var srcParallelIters = NpyArray_ITER_ParallelSplit(sit);
-            var destParallelIters = NpyArray_ITER_ParallelSplit(dit);
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(sit, numpyinternal.maxCopyFieldParallelSize);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(dit, numpyinternal.maxCopyFieldParallelSize);
 
             Parallel.For(0, destParallelIters.Count(), index =>
             //for (int index = 0; index < destParallelIters.Count(); index++) // 
