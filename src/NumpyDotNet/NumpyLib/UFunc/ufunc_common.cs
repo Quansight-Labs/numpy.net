@@ -847,6 +847,98 @@ namespace NumpyLib
 
             }
 
+            protected void PerformNumericOpScalarSmallIterNEW(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+            {
+                T[] src = srcArray.data.datap as T[];
+                T[] dest = destArray.data.datap as T[];
+                T[] oper = operArray.data.datap as T[];
+
+                List<Exception> caughtExceptions = new List<Exception>();
+
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
+
+                Parallel.For(0, destParallelIters.Count(), index =>
+                //for (int index = 0; index < destParallelIters.Count(); index++) // 
+                {
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var lsrcIter = srcParallelIters.ElementAt(index);
+                    var loperIter = operParallelIters.ElementAt(index);
+
+                    npy_intp srcDataOffset = srcArray.data.data_offset;
+                    npy_intp operDataOffset = operArray.data.data_offset;
+
+                    while (ldestIter.index < ldestIter.size)
+                    {
+                        npy_intp cacheSize = ldestIter.size - ldestIter.index;
+                        NpyArray_ITER_CACHE(ldestIter, cacheSize);
+                        NpyArray_ITER_CACHE(lsrcIter, cacheSize);
+                        NpyArray_ITER_CACHE(loperIter, cacheSize);
+
+                        while (ldestIter.IsCacheEmpty == false)
+                        {
+                            try
+                            {
+                                var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.GetNextCache() - srcDataOffset, srcArray, src.Length)];
+                                var operand = oper[AdjustedIndex_GetItemFunction(loperIter.GetNextCache() - operDataOffset, operArray, oper.Length)];
+
+                                T retValue;
+
+                                try
+                                {
+                                    // for the common operations, do inline for speed.
+                                    switch (op)
+                                    {
+                                        case UFuncOperation.add:
+                                            retValue = Add(srcValue, operand);
+                                            break;
+                                        case UFuncOperation.subtract:
+                                            retValue = Subtract(srcValue, operand);
+                                            break;
+                                        case UFuncOperation.multiply:
+                                            retValue = Multiply(srcValue, operand);
+                                            break;
+                                        case UFuncOperation.divide:
+                                            retValue = Divide(srcValue, operand);
+                                            break;
+                                        case UFuncOperation.power:
+                                            retValue = Power(srcValue, operand);
+                                            break;
+
+                                        default:
+                                            retValue = PerformUFuncOperation(op, srcValue, operand);
+                                            break;
+
+                                    }
+
+                                    dest[AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length)] = retValue;
+                                }
+                                catch
+                                {
+                                    dest[AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length)] = default(T);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                caughtExceptions.Add(ex);
+                            }
+                        }
+
+                    }
+                });
+
+
+
+
+                if (caughtExceptions.Count > 0)
+                {
+                    throw caughtExceptions[0];
+                }
+            }
+
+
             protected void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
             {
                 T[] src = srcArray.data.datap as T[];
@@ -855,9 +947,9 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
-                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter);
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter);
-                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter);
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
