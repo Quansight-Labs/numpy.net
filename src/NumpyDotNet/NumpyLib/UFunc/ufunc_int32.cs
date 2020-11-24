@@ -239,7 +239,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private Int32 FMod(Int32 aValue, Int32 bValue)
+        protected override Int32 FMod(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
                 return 0;

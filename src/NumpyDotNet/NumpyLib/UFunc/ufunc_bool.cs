@@ -215,7 +215,7 @@ namespace NumpyLib
         {
             return aValue ^ bValue;
         }
-        private bool FMod(bool aValue, bool bValue)
+        protected override bool FMod(bool aValue, bool bValue)
         {
             return aValue ^ bValue;
         }

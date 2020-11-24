@@ -238,7 +238,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private double FMod(double aValue, double bValue)
+        protected override double FMod(double aValue, double bValue)
         {
             if (bValue == 0)
                 return 0;

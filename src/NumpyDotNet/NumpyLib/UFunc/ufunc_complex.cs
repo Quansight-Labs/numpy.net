@@ -249,7 +249,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private System.Numerics.Complex FMod(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
+        protected override System.Numerics.Complex FMod(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             if (bValue == 0)
             {

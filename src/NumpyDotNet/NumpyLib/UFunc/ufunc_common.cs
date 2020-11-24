@@ -1430,7 +1430,10 @@ namespace NumpyLib
 
                     case UFuncOperation.remainder:
                         return Remainder;
-                         
+
+                    case UFuncOperation.fmod:
+                        return FMod;
+
                     case UFuncOperation.power:
                         return Power;
 
@@ -1447,6 +1450,7 @@ namespace NumpyLib
             protected abstract T Divide(T o1, T o2);
             protected abstract T Power(T o1, T o2);
             protected abstract T Remainder(T o1, T o2);
+            protected abstract T FMod(T o1, T o2);
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
             protected abstract T ConvertToTemplate(object v);

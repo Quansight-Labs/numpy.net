@@ -229,7 +229,7 @@ namespace NumpyLib
             return aValue % bValue;
 
         }
-        private System.Object FMod(dynamic aValue, dynamic bValue)
+        protected override System.Object FMod(dynamic aValue, dynamic bValue)
         {
             if (bValue == 0)
                 return 0;

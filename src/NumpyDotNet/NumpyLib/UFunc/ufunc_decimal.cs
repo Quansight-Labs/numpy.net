@@ -238,7 +238,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private decimal FMod(decimal aValue, decimal bValue)
+        protected override decimal FMod(decimal aValue, decimal bValue)
         {
             if (bValue == 0)
                 return 0;

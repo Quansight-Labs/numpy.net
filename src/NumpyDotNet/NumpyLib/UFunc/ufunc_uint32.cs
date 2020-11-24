@@ -238,7 +238,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private UInt32 FMod(UInt32 aValue, UInt32 bValue)
+        protected override UInt32 FMod(UInt32 aValue, UInt32 bValue)
         {
             if (bValue == 0)
                 return 0;

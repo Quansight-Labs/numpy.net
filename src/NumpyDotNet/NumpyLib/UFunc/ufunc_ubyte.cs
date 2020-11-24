@@ -239,7 +239,7 @@ namespace NumpyLib
                 return (Byte)(rem + bValue);
             }
         }
-        private Byte FMod(Byte aValue, Byte bValue)
+        protected override Byte FMod(Byte aValue, Byte bValue)
         {
             if (bValue == 0)
                 return 0;

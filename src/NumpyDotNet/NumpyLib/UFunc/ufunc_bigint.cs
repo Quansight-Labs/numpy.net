@@ -249,7 +249,7 @@ namespace NumpyLib
                 return rem + bValue;
             }
         }
-        private System.Numerics.BigInteger FMod(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
+        protected override System.Numerics.BigInteger FMod(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             if (bValue == 0)
             {

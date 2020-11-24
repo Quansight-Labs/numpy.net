@@ -238,7 +238,7 @@ namespace NumpyLib
                 return (UInt16)(rem + bValue);
             }
         }
-        private UInt16 FMod(UInt16 aValue, UInt16 bValue)
+        protected override UInt16 FMod(UInt16 aValue, UInt16 bValue)
         {
             if (bValue == 0)
                 return 0;

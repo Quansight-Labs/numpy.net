@@ -239,7 +239,7 @@ namespace NumpyLib
                 return (Int16)(rem + bValue);
             }
         }
-        private Int16 FMod(Int16 aValue, Int16 bValue)
+        protected override Int16 FMod(Int16 aValue, Int16 bValue)
         {
             if (bValue == 0)
                 return 0;
