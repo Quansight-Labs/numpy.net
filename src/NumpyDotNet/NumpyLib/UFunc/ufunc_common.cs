@@ -1503,6 +1503,24 @@ namespace NumpyLib
                     case UFuncOperation.logical_and:
                         return LogicalAnd;
 
+                    case UFuncOperation.floor:
+                        return Floor;
+
+                    case UFuncOperation.ceil:
+                        return Ceiling;
+
+                    case UFuncOperation.maximum:
+                        return Maximum;
+
+                    case UFuncOperation.minimum:
+                        return Minimum;
+
+                    case UFuncOperation.rint:
+                        return Rint;
+
+                    case UFuncOperation.conjugate:
+                        return Conjugate;
+
                 }
 
                 return null;
@@ -1539,6 +1557,12 @@ namespace NumpyLib
             protected abstract T TrueDivide(T o1, T o2);
             protected abstract T LogicalOr(T o1, T o2);
             protected abstract T LogicalAnd(T o1, T o2);
+            protected abstract T Floor(T o1, T o2);
+            protected abstract T Ceiling(T o1, T o2);
+            protected abstract T Maximum(T o1, T o2);
+            protected abstract T Minimum(T o1, T o2);
+            protected abstract T Rint(T o1, T o2);
+            protected abstract T Conjugate(T o1, T o2);
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 

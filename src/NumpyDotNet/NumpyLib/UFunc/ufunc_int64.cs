@@ -347,27 +347,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private Int64 Floor(Int64 bValue, Int64 operand)
+        protected override Int64 Floor(Int64 bValue, Int64 operand)
         {
             return Convert.ToInt64(Math.Floor(Convert.ToDouble(bValue)));
         }
-        private Int64 Ceiling(Int64 bValue, Int64 operand)
+        protected override Int64 Ceiling(Int64 bValue, Int64 operand)
         {
             return Convert.ToInt64(Math.Ceiling(Convert.ToDouble(bValue)));
         }
-        private Int64 Maximum(Int64 bValue, Int64 operand)
+        protected override Int64 Maximum(Int64 bValue, Int64 operand)
         {
             return Math.Max(bValue, operand);
         }
-        private Int64 Minimum(Int64 bValue, Int64 operand)
+        protected override Int64 Minimum(Int64 bValue, Int64 operand)
         {
             return Math.Min(bValue, operand);
         }
-        private Int64 Rint(Int64 bValue, Int64 operand)
+        protected override Int64 Rint(Int64 bValue, Int64 operand)
         {
             return Convert.ToInt64(Math.Round(Convert.ToDouble(bValue)));
         }
-        private Int64 Conjugate(Int64 bValue, Int64 operand)
+        protected override Int64 Conjugate(Int64 bValue, Int64 operand)
         {
             return bValue;
         }

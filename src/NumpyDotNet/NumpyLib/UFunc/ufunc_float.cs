@@ -352,27 +352,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private float Floor(float bValue, float operand)
+        protected override float Floor(float bValue, float operand)
         {
             return Convert.ToSingle(Math.Floor(bValue));
         }
-        private float Ceiling(float bValue, float operand)
+        protected override float Ceiling(float bValue, float operand)
         {
             return Convert.ToSingle(Math.Ceiling(bValue));
         }
-        private float Maximum(float bValue, float operand)
+        protected override float Maximum(float bValue, float operand)
         {
             return Math.Max(bValue, operand);
         }
-        private float Minimum(float bValue, float operand)
+        protected override float Minimum(float bValue, float operand)
         {
             return Math.Min(bValue, operand);
         }
-        private float Rint(float bValue, float operand)
+        protected override float Rint(float bValue, float operand)
         {
             return Convert.ToSingle(Math.Round(bValue));
         }
-        private float Conjugate(float bValue, float operand)
+        protected override float Conjugate(float bValue, float operand)
         {
             return bValue;
         }

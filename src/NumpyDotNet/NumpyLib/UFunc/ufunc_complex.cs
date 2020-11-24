@@ -418,27 +418,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private System.Numerics.Complex Floor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Floor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return new System.Numerics.Complex(Math.Floor(bValue.Real), Math.Floor(bValue.Imaginary));
         }
-        private System.Numerics.Complex Ceiling(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Ceiling(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return new System.Numerics.Complex(Math.Ceiling(bValue.Real), Math.Ceiling(bValue.Imaginary));
         }
-        private System.Numerics.Complex Maximum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Maximum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Max(bValue.Real, operand.Real);
         }
-        private System.Numerics.Complex Minimum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Minimum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Min(bValue.Real, operand.Real);
         }
-        private System.Numerics.Complex Rint(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Rint(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return new System.Numerics.Complex(Math.Round(bValue.Real), Math.Round(bValue.Imaginary));
         }
-        private System.Numerics.Complex Conjugate(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Conjugate(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             var cc = new System.Numerics.Complex(bValue.Real, -bValue.Imaginary);
             return cc;

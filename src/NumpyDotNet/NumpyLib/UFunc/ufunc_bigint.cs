@@ -376,27 +376,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private System.Numerics.BigInteger Floor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Floor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;
         }
-        private System.Numerics.BigInteger Ceiling(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Ceiling(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;
         }
-        private System.Numerics.BigInteger Maximum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Maximum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Max(bValue, operand);
         }
-        private System.Numerics.BigInteger Minimum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Minimum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Min(bValue, operand);
         }
-        private System.Numerics.BigInteger Rint(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Rint(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;
         }
-        private System.Numerics.BigInteger Conjugate(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Conjugate(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;
         }

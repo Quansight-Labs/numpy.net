@@ -311,31 +311,31 @@ namespace NumpyLib
         {
             return bValue && operand;
         }
-        private bool Floor(bool bValue, bool operand)
+        protected override bool Floor(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool Ceiling(bool bValue, bool operand)
+        protected override bool Ceiling(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool Maximum(bool bValue, bool operand)
+        protected override bool Maximum(bool bValue, bool operand)
         {
             if (bValue)
                 return true;
             return operand;
         }
-        private bool Minimum(bool bValue, bool operand)
+        protected override bool Minimum(bool bValue, bool operand)
         {
             if (!bValue)
                 return false;
             return operand;
         }
-        private bool Rint(bool bValue, bool operand)
+        protected override bool Rint(bool bValue, bool operand)
         {
             return false;
         }
-        private bool Conjugate(bool bValue, bool operand)
+        protected override bool Conjugate(bool bValue, bool operand)
         {
             return bValue;
         }

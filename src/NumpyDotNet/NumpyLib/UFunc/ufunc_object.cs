@@ -343,7 +343,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private System.Object Floor(dynamic bValue, dynamic operand)
+        protected override System.Object Floor(dynamic bValue, dynamic operand)
         {
             if (bValue is decimal)
             {
@@ -351,7 +351,7 @@ namespace NumpyLib
             }
             return Math.Floor(Convert.ToDouble(bValue));
         }
-        private System.Object Ceiling(dynamic bValue, dynamic operand)
+        protected override System.Object Ceiling(dynamic bValue, dynamic operand)
         {
             if (bValue is decimal)
             {
@@ -359,19 +359,19 @@ namespace NumpyLib
             }
             return Math.Ceiling(Convert.ToDouble(bValue));
         }
-        private System.Object Maximum(dynamic bValue, dynamic operand)
+        protected override System.Object Maximum(dynamic bValue, dynamic operand)
         {
             if (bValue >= operand)
                 return bValue;
             return operand;
         }
-        private System.Object Minimum(dynamic bValue, dynamic operand)
+        protected override System.Object Minimum(dynamic bValue, dynamic operand)
         {
             if (bValue <= operand)
                 return bValue;
             return operand;
         }
-        private System.Object Rint(dynamic bValue, dynamic operand)
+        protected override System.Object Rint(dynamic bValue, dynamic operand)
         {
             if (bValue is decimal)
             {
@@ -379,7 +379,7 @@ namespace NumpyLib
             }
             return Math.Round(Convert.ToDouble(bValue));
         }
-        private System.Object Conjugate(dynamic bValue, dynamic operand)
+        protected override System.Object Conjugate(dynamic bValue, dynamic operand)
         {
             return bValue;
         }

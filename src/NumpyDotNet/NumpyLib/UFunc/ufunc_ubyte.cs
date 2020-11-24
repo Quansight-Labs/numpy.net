@@ -348,27 +348,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return (Byte)(boolValue ? 1 : 0);
         }
-        private Byte Floor(Byte bValue, Byte operand)
+        protected override Byte Floor(Byte bValue, Byte operand)
         {
             return Convert.ToByte(Math.Floor(Convert.ToDouble(bValue)));
         }
-        private Byte Ceiling(Byte bValue, Byte operand)
+        protected override Byte Ceiling(Byte bValue, Byte operand)
         {
             return Convert.ToByte(Math.Ceiling(Convert.ToDouble(bValue)));
         }
-        private Byte Maximum(Byte bValue, Byte operand)
+        protected override Byte Maximum(Byte bValue, Byte operand)
         {
             return Math.Max(bValue, operand);
         }
-        private Byte Minimum(Byte bValue, Byte operand)
+        protected override Byte Minimum(Byte bValue, Byte operand)
         {
             return Math.Min(bValue, operand);
         }
-        private Byte Rint(Byte bValue, Byte operand)
+        protected override Byte Rint(Byte bValue, Byte operand)
         {
             return Convert.ToByte(Math.Round(Convert.ToDouble(bValue)));
         }
-        private Byte Conjugate(Byte bValue, Byte operand)
+        protected override Byte Conjugate(Byte bValue, Byte operand)
         {
             return bValue;
         }

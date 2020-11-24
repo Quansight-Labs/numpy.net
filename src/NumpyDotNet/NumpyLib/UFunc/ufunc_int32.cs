@@ -348,27 +348,27 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        private Int32 Floor(Int32 bValue, Int32 operand)
+        protected override Int32 Floor(Int32 bValue, Int32 operand)
         {
             return Convert.ToInt32(Math.Floor(Convert.ToDouble(bValue)));
         }
-        private Int32 Ceiling(Int32 bValue, Int32 operand)
+        protected override Int32 Ceiling(Int32 bValue, Int32 operand)
         {
             return Convert.ToInt32(Math.Ceiling(Convert.ToDouble(bValue)));
         }
-        private Int32 Maximum(Int32 bValue, Int32 operand)
+        protected override Int32 Maximum(Int32 bValue, Int32 operand)
         {
             return Math.Max(bValue, operand);
         }
-        private Int32 Minimum(Int32 bValue, Int32 operand)
+        protected override Int32 Minimum(Int32 bValue, Int32 operand)
         {
             return Math.Min(bValue, operand);
         }
-        private Int32 Rint(Int32 bValue, Int32 operand)
+        protected override Int32 Rint(Int32 bValue, Int32 operand)
         {
             return Convert.ToInt32(Math.Round(Convert.ToDouble(bValue)));
         }
-        private Int32 Conjugate(Int32 bValue, Int32 operand)
+        protected override Int32 Conjugate(Int32 bValue, Int32 operand)
         {
             return bValue;
         }
