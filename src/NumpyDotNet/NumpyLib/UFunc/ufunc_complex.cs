@@ -146,8 +146,7 @@ namespace NumpyLib
                     destValue = NotEqual(aValue, bValue);
                     break;
                 case UFuncOperation.greater:
-                    boolValue = Greater(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Greater(aValue, bValue);
                     break;
                 case UFuncOperation.greater_equal:
                     boolValue = GreaterEqual(aValue, bValue);
@@ -369,13 +368,14 @@ namespace NumpyLib
             bool boolValue = bValue != operand;
             return boolValue ? 1 : 0;
         }
-        private bool Greater(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Greater(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
+            bool boolValue = false;
             if (operand.Imaginary == 0)
             {
-                return bValue.Real > operand.Real;
+                boolValue = bValue.Real > operand.Real;
             }
-            return false;
+            return boolValue ? 1 : 0;
         }
         private bool GreaterEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
