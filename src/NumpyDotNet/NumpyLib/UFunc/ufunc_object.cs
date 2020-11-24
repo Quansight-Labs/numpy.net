@@ -266,17 +266,17 @@ namespace NumpyLib
         {
             return Math.Abs(bValue);
         }
-        private System.Object Invert(dynamic bValue, dynamic operand)
+        protected override System.Object Invert(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return ~dValue;
         }
-        private System.Object LeftShift(dynamic bValue, dynamic operand)
+        protected override System.Object LeftShift(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue << Convert.ToInt32(operand);
         }
-        private System.Object RightShift(dynamic bValue, dynamic operand)
+        protected override System.Object RightShift(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
             return dValue >> Convert.ToInt32(operand);

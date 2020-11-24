@@ -276,15 +276,15 @@ namespace NumpyLib
         {
             return Convert.ToSByte(Math.Abs(bValue));
         }
-        private sbyte Invert(sbyte bValue, sbyte operand)
+        protected override sbyte Invert(sbyte bValue, sbyte operand)
         {
             return (sbyte)(~bValue);
         }
-        private sbyte LeftShift(sbyte bValue, sbyte operand)
+        protected override sbyte LeftShift(sbyte bValue, sbyte operand)
         {
             return (sbyte)(bValue << Convert.ToInt32(operand));
         }
-        private sbyte RightShift(sbyte bValue, sbyte operand)
+        protected override sbyte RightShift(sbyte bValue, sbyte operand)
         {
             return (sbyte)(bValue >> Convert.ToInt32(operand));
         }

@@ -1455,6 +1455,14 @@ namespace NumpyLib
                     case UFuncOperation.absolute:
                         return Absolute;
 
+                    case UFuncOperation.invert:
+                        return Invert;
+
+                    case UFuncOperation.left_shift:
+                        return LeftShift;
+
+                    case UFuncOperation.right_shift:
+                        return RightShift;
                 }
 
                 return null;
@@ -1475,6 +1483,11 @@ namespace NumpyLib
             protected abstract T Sqrt(T o1, T o2);
             protected abstract T Negative(T o1, T o2);
             protected abstract T Absolute(T o1, T o2);
+            protected abstract T Invert(T o1, T o2);
+            protected abstract T LeftShift(T o1, T o2);
+            protected abstract T RightShift(T o1, T o2);
+
+            
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 

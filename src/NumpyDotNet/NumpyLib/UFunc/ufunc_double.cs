@@ -275,16 +275,16 @@ namespace NumpyLib
         {
             return Math.Abs(bValue);
         }
-        private double Invert(double bValue, double operand)
+        protected override double Invert(double bValue, double operand)
         {
             return bValue;
         }
-        private double LeftShift(double bValue, double operand)
+        protected override double LeftShift(double bValue, double operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue << Convert.ToInt32(operand);
         }
-        private double RightShift(double bValue, double operand)
+        protected override double RightShift(double bValue, double operand)
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue >> Convert.ToInt32(operand);

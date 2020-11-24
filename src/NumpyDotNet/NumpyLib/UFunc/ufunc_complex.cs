@@ -289,11 +289,11 @@ namespace NumpyLib
         {
             return System.Numerics.Complex.Abs(bValue);
         }
-        private System.Numerics.Complex Invert(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Invert(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return bValue;
         }
-        private System.Numerics.Complex LeftShift(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex LeftShift(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             UInt64 rValue = (UInt64)bValue.Real;
             rValue = rValue << Convert.ToInt32(operand.Real);
@@ -303,7 +303,7 @@ namespace NumpyLib
 
             return new System.Numerics.Complex((double)rValue, (double)iValue);
         }
-        private System.Numerics.Complex RightShift(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex RightShift(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             UInt64 rValue = (UInt64)bValue.Real;
             rValue = rValue >> Convert.ToInt32(operand.Real);

@@ -276,15 +276,15 @@ namespace NumpyLib
         {
             return Math.Abs(bValue);
         }
-        private Int16 Invert(Int16 bValue, Int16 operand)
+        protected override Int16 Invert(Int16 bValue, Int16 operand)
         {
             return (Int16)(~bValue);
         }
-        private Int16 LeftShift(Int16 bValue, Int16 operand)
+        protected override Int16 LeftShift(Int16 bValue, Int16 operand)
         {
             return (Int16)(bValue << Convert.ToInt32(operand));
         }
-        private Int16 RightShift(Int16 bValue, Int16 operand)
+        protected override Int16 RightShift(Int16 bValue, Int16 operand)
         {
             return (Int16)(bValue >> Convert.ToInt32(operand));
         }

@@ -247,15 +247,15 @@ namespace NumpyLib
         {
             return false;
         }
-        private bool Invert(bool bValue, bool operand)
+        protected override bool Invert(bool bValue, bool operand)
         {
             return !bValue;
         }
-        private bool LeftShift(bool bValue, bool operand)
+        protected override bool LeftShift(bool bValue, bool operand)
         {
             return bValue;
         }
-        private bool RightShift(bool bValue, bool operand)
+        protected override bool RightShift(bool bValue, bool operand)
         {
             return bValue;
         }

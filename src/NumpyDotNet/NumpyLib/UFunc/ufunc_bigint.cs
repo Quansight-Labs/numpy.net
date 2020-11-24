@@ -290,17 +290,17 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Abs(bValue);
         }
-        private System.Numerics.BigInteger Invert(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Invert(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;
         }
-        private System.Numerics.BigInteger LeftShift(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger LeftShift(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             UInt64 rValue = (UInt64)bValue;
             rValue = rValue << Convert.ToInt32((Int64)operand);
             return new System.Numerics.BigInteger(rValue);
         }
-        private System.Numerics.BigInteger RightShift(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger RightShift(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             UInt64 rValue = (UInt64)bValue;
             rValue = rValue >> Convert.ToInt32((Int64)operand);
