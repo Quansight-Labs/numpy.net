@@ -339,23 +339,23 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(bool bValue, bool operand)
+        protected override bool IsNAN(bool bValue, bool operand)
         {
             return false;
         }
-        private bool FMax(bool bValue, bool operand)
+        protected override bool FMax(bool bValue, bool operand)
         {
             if (bValue)
                 return true;
             return operand;
         }
-        private bool FMin(bool bValue, bool operand)
+        protected override bool FMin(bool bValue, bool operand)
         {
             if (!bValue)
                 return false;
             return operand;
         }
-        private bool Heaviside(bool bValue, bool operand)
+        protected override bool Heaviside(bool bValue, bool operand)
         {
             if (bValue == false)
                 return operand;

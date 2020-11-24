@@ -63,7 +63,6 @@ namespace NumpyLib
         protected override Byte PerformUFuncOperation(UFuncOperation op, Byte aValue, Byte bValue)
         {
             Byte destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -173,8 +172,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = (Byte)(boolValue ? 1 : 0);
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -372,19 +370,19 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(Byte bValue, Byte operand)
+        protected override Byte IsNAN(Byte bValue, Byte operand)
         {
-            return false;
+            return 0;
         }
-        private Byte FMax(Byte bValue, Byte operand)
+        protected override Byte FMax(Byte bValue, Byte operand)
         {
             return Math.Max(bValue, operand);
         }
-        private Byte FMin(Byte bValue, Byte operand)
+        protected override Byte FMin(Byte bValue, Byte operand)
         {
             return Math.Min(bValue, operand);
         }
-        private Byte Heaviside(Byte bValue, Byte operand)
+        protected override Byte Heaviside(Byte bValue, Byte operand)
         {
             if (bValue == 0)
                 return operand;

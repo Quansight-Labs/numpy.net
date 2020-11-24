@@ -1521,6 +1521,18 @@ namespace NumpyLib
                     case UFuncOperation.conjugate:
                         return Conjugate;
 
+                    case UFuncOperation.isnan:
+                        return IsNAN;
+
+                    case UFuncOperation.fmax:
+                        return FMax;
+
+                    case UFuncOperation.fmin:
+                        return FMin;
+
+                    case UFuncOperation.heaviside:
+                        return Heaviside;
+
                 }
 
                 return null;
@@ -1563,6 +1575,10 @@ namespace NumpyLib
             protected abstract T Minimum(T o1, T o2);
             protected abstract T Rint(T o1, T o2);
             protected abstract T Conjugate(T o1, T o2);
+            protected abstract T IsNAN(T o1, T o2);
+            protected abstract T FMax(T o1, T o2);
+            protected abstract T FMin(T o1, T o2);
+            protected abstract T Heaviside(T o1, T o2);
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 

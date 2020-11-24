@@ -72,7 +72,6 @@ namespace NumpyLib
         protected override System.Numerics.Complex PerformUFuncOperation(UFuncOperation op, System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             System.Numerics.Complex destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -182,8 +181,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -443,19 +441,19 @@ namespace NumpyLib
             var cc = new System.Numerics.Complex(bValue.Real, -bValue.Imaginary);
             return cc;
         }
-        private bool IsNAN(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex IsNAN(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
-            return false;
+            return 0;
         }
-        private System.Numerics.Complex FMax(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex FMax(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Max(bValue.Real, operand.Real);
         }
-        private System.Numerics.Complex FMin(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex FMin(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Min(bValue.Real, operand.Real);
         }
-        private System.Numerics.Complex Heaviside(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Heaviside(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             if (bValue == 0.0)
                 return operand;

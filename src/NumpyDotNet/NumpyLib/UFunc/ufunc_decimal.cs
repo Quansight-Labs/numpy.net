@@ -62,7 +62,6 @@ namespace NumpyLib
         protected override decimal PerformUFuncOperation(UFuncOperation op, decimal aValue, decimal bValue)
         {
             decimal destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -172,8 +171,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -392,19 +390,19 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(decimal bValue, decimal operand)
+        protected override decimal IsNAN(decimal bValue, decimal operand)
         {
-            return false;
+            return 0;
         }
-        private decimal FMax(decimal bValue, decimal operand)
+        protected override decimal FMax(decimal bValue, decimal operand)
         {
             return Math.Max(bValue, operand);
         }
-        private decimal FMin(decimal bValue, decimal operand)
+        protected override decimal FMin(decimal bValue, decimal operand)
         {
             return Math.Min(bValue, operand);
         }
-        private decimal Heaviside(decimal bValue, decimal operand)
+        protected override decimal Heaviside(decimal bValue, decimal operand)
         {
             if (bValue == 0.0m)
                 return operand;

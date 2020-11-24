@@ -62,7 +62,6 @@ namespace NumpyLib
         protected override float PerformUFuncOperation(UFuncOperation op, float aValue, float bValue)
         {
             float destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -172,8 +171,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -376,11 +374,12 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(float bValue, float operand)
+        protected override float IsNAN(float bValue, float operand)
         {
-            return float.IsNaN(bValue);
+            bool boolValue = float.IsNaN(bValue);
+            return boolValue ? 1 : 0;
         }
-        private float FMax(float bValue, float operand)
+        protected override float FMax(float bValue, float operand)
         {
             if (float.IsNaN(operand))
                 return bValue;
@@ -389,7 +388,7 @@ namespace NumpyLib
 
             return Math.Max(bValue, operand);
         }
-        private float FMin(float bValue, float operand)
+        protected override float FMin(float bValue, float operand)
         {
             if (float.IsNaN(operand))
                 return bValue;
@@ -398,7 +397,7 @@ namespace NumpyLib
 
             return Math.Min(bValue, operand);
         }
-        private float Heaviside(float bValue, float operand)
+        protected override float Heaviside(float bValue, float operand)
         {
             if (float.IsNaN(bValue))
                 return float.NaN;

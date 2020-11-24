@@ -62,7 +62,6 @@ namespace NumpyLib
         protected override System.Object PerformUFuncOperation(UFuncOperation op, System.Object aValue, System.Object bValue)
         {
             System.Object destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -172,8 +171,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -383,23 +381,23 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(dynamic bValue, dynamic operand)
+        protected override System.Object IsNAN(dynamic bValue, dynamic operand)
         {
-            return false;
+            return 0;
         }
-        private System.Object FMax(dynamic bValue, dynamic operand)
+        protected override System.Object FMax(dynamic bValue, dynamic operand)
         {
             if (bValue >= operand)
                 return bValue;
             return operand;
         }
-        private System.Object FMin(dynamic bValue, dynamic operand)
+        protected override System.Object FMin(dynamic bValue, dynamic operand)
         {
             if (bValue <= operand)
                 return bValue;
             return operand;
         }
-        private System.Object Heaviside(dynamic bValue, dynamic operand)
+        protected override System.Object Heaviside(dynamic bValue, dynamic operand)
         {
             double x = Convert.ToDouble(bValue);
 

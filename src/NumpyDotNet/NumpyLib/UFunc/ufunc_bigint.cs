@@ -72,7 +72,6 @@ namespace NumpyLib
         protected override System.Numerics.BigInteger PerformUFuncOperation(UFuncOperation op, System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             System.Numerics.BigInteger destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -182,8 +181,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -400,19 +398,19 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger IsNAN(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
-            return false;
+            return 0;
         }
-        private System.Numerics.BigInteger FMax(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger FMax(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Max(bValue, operand);
         }
-        private System.Numerics.BigInteger FMin(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger FMin(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Min(bValue, operand);
         }
-        private System.Numerics.BigInteger Heaviside(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Heaviside(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             if (bValue == 0)
                 return operand;

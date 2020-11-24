@@ -62,7 +62,6 @@ namespace NumpyLib
         protected override UInt16 PerformUFuncOperation(UFuncOperation op, UInt16 aValue, UInt16 bValue)
         {
             UInt16 destValue = 0;
-            bool boolValue = false;
 
             switch (op)
             {
@@ -172,8 +171,7 @@ namespace NumpyLib
                     destValue = Conjugate(aValue, bValue);
                     break;
                 case UFuncOperation.isnan:
-                    boolValue = IsNAN(aValue, bValue);
-                    destValue = (UInt16)(boolValue ? 1 : 0);
+                    destValue = IsNAN(aValue, bValue);
                     break;
                 case UFuncOperation.fmax:
                     destValue = FMax(aValue, bValue);
@@ -371,19 +369,19 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool IsNAN(UInt16 bValue, UInt16 operand)
+        protected override UInt16 IsNAN(UInt16 bValue, UInt16 operand)
         {
-            return false;
+            return 0;
         }
-        private UInt16 FMax(UInt16 bValue, UInt16 operand)
+        protected override UInt16 FMax(UInt16 bValue, UInt16 operand)
         {
             return Math.Max(bValue, operand);
         }
-        private UInt16 FMin(UInt16 bValue, UInt16 operand)
+        protected override UInt16 FMin(UInt16 bValue, UInt16 operand)
         {
             return Math.Min(bValue, operand);
         }
-        private UInt16 Heaviside(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Heaviside(UInt16 bValue, UInt16 operand)
         {
             if (bValue == 0)
                 return operand;
