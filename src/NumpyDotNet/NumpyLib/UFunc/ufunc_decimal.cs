@@ -344,7 +344,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return boolValue ? 1 : 0;
         }
-        private decimal FloorDivide(decimal bValue, decimal operand)
+        protected override decimal FloorDivide(decimal bValue, decimal operand)
         {
             if (operand == 0)
             {
@@ -353,7 +353,7 @@ namespace NumpyLib
             }
             return Math.Floor(bValue / operand);
         }
-        private decimal TrueDivide(decimal bValue, decimal operand)
+        protected override decimal TrueDivide(decimal bValue, decimal operand)
         {
             if (operand == 0)
                 return 0;

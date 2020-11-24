@@ -352,7 +352,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return boolValue ? 1 : 0;
         }
-        private System.Numerics.BigInteger FloorDivide(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger FloorDivide(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             if (operand == 0)
             {
@@ -361,7 +361,7 @@ namespace NumpyLib
             }
             return bValue / operand;
         }
-        private System.Numerics.BigInteger TrueDivide(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger TrueDivide(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             if (operand == 0)
                 return 0;

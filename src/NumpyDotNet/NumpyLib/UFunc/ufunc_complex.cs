@@ -385,7 +385,7 @@ namespace NumpyLib
             }
             return boolValue ? 1 : 0;
         }
-        private System.Numerics.Complex FloorDivide(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex FloorDivide(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             if (operand == 0)
             {
@@ -403,7 +403,7 @@ namespace NumpyLib
 
             return new System.Numerics.Complex(Real, Imaginary);
         }
-        private System.Numerics.Complex TrueDivide(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex TrueDivide(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             if (operand == 0)
                 return 0;

@@ -319,7 +319,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return boolValue ? 1 : 0;
         }
-        private System.Object FloorDivide(dynamic bValue, dynamic operand)
+        protected override System.Object FloorDivide(dynamic bValue, dynamic operand)
         {
             if (operand == 0)
             {
@@ -328,7 +328,7 @@ namespace NumpyLib
             }
             return Math.Floor(bValue / operand);
         }
-        private System.Object TrueDivide(dynamic bValue, dynamic operand)
+        protected override System.Object TrueDivide(dynamic bValue, dynamic operand)
         {
             if (operand == 0)
                 return 0;

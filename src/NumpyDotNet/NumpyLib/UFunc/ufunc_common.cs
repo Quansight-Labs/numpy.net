@@ -1490,6 +1490,13 @@ namespace NumpyLib
 
                     case UFuncOperation.greater_equal:
                         return GreaterEqual;
+
+                    case UFuncOperation.floor_divide:
+                        return FloorDivide;
+
+                    case UFuncOperation.true_divide:
+                        return TrueDivide;
+
                 }
 
                 return null;
@@ -1522,7 +1529,8 @@ namespace NumpyLib
             protected abstract T NotEqual(T o1, T o2);
             protected abstract T Greater(T o1, T o2);
             protected abstract T GreaterEqual(T o1, T o2);
-
+            protected abstract T FloorDivide(T o1, T o2);
+            protected abstract T TrueDivide(T o1, T o2);
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 

@@ -295,11 +295,11 @@ namespace NumpyLib
         {
             return true;
         }
-        private bool FloorDivide(bool bValue, bool operand)
+        protected override bool FloorDivide(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool TrueDivide(bool bValue, bool operand)
+        protected override bool TrueDivide(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }

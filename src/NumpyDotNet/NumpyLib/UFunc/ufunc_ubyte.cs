@@ -324,7 +324,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return (Byte)(boolValue ? 1 : 0);
         }
-        private Byte FloorDivide(Byte bValue, Byte operand)
+        protected override Byte FloorDivide(Byte bValue, Byte operand)
         {
             if (operand == 0)
             {
@@ -333,7 +333,7 @@ namespace NumpyLib
             }
             return Convert.ToByte(Math.Floor(Convert.ToDouble(bValue) / Convert.ToDouble(operand)));
         }
-        private Byte TrueDivide(Byte bValue, Byte operand)
+        protected override Byte TrueDivide(Byte bValue, Byte operand)
         {
             if (operand == 0)
                 return 0;

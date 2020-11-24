@@ -328,7 +328,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return boolValue ? 1 : 0;
         }
-        private float FloorDivide(float bValue, float operand)
+        protected override float FloorDivide(float bValue, float operand)
         {
             if (operand == 0)
             {
@@ -337,7 +337,7 @@ namespace NumpyLib
             }
             return Convert.ToSingle(Math.Floor(bValue / operand));
         }
-        private float TrueDivide(float bValue, float operand)
+        protected override float TrueDivide(float bValue, float operand)
         {
             if (operand == 0)
                 return 0;

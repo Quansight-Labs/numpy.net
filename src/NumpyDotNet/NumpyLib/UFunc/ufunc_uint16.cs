@@ -323,7 +323,7 @@ namespace NumpyLib
             bool boolValue = bValue >= operand;
             return (UInt16)(boolValue ? 1 : 0);
         }
-        private UInt16 FloorDivide(UInt16 bValue, UInt16 operand)
+        protected override UInt16 FloorDivide(UInt16 bValue, UInt16 operand)
         {
             if (operand == 0)
             {
@@ -332,7 +332,7 @@ namespace NumpyLib
             }
             return Convert.ToUInt16(Math.Floor(Convert.ToDouble(bValue) / Convert.ToDouble(operand)));
         }
-        private UInt16 TrueDivide(UInt16 bValue, UInt16 operand)
+        protected override UInt16 TrueDivide(UInt16 bValue, UInt16 operand)
         {
             if (operand == 0)
                 return 0;
