@@ -854,7 +854,10 @@ namespace NumpyLib
                 T[] oper = operArray.data.datap as T[];
 
                 var UFuncOperation = GetUFuncOperation(op);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                }
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
@@ -887,20 +890,9 @@ namespace NumpyLib
                                 var operand = oper[AdjustedIndex_GetItemFunction(loperIter.GetNextCache() - operDataOffset, operArray, oper.Length)];
                                 var destIndex = AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length);
 
-                                T retValue;
-
                                 try
                                 {
-                                    if (UseDelegate)
-                                    {
-                                        retValue = UFuncOperation(srcValue, operand);
-                                    }
-                                    else
-                                    {
-                                        retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    }
-
-                                    dest[destIndex] = retValue;
+                                    dest[destIndex] = UFuncOperation(srcValue, operand);
                                 }
                                 catch
                                 {
@@ -934,7 +926,10 @@ namespace NumpyLib
                 T[] oper = operArray.data.datap as T[];
 
                 var UFuncOperation = GetUFuncOperation(op);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                }
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
@@ -958,25 +953,15 @@ namespace NumpyLib
                         {
                             var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.dataptr.data_offset - srcDataOffset, srcArray, src.Length)];
                             var operand = oper[AdjustedIndex_GetItemFunction(loperIter.dataptr.data_offset - operDataOffset, operArray, oper.Length)];
-
-                            T retValue;
+                            npy_intp destIndex = AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dest.Length);
 
                             try
                             {
-                                if (UseDelegate)
-                                {
-                                    retValue = UFuncOperation(srcValue, operand);
-                                }
-                                else
-                                {
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                }
-
-                                dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset-destArray.data.data_offset, destArray, dest.Length)] = retValue;
+                                 dest[destIndex] = UFuncOperation(srcValue, operand);
                             }
                             catch
                             {
-                                dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dest.Length)] = default(T);
+                                dest[destIndex] = default(T);
                             }
 
                             NpyArray_ITER_NEXT(ldestIter);
@@ -1016,7 +1001,10 @@ namespace NumpyLib
                 var loopCount = NpyArray_Size(destArray);
 
                 var UFuncOperation = GetUFuncOperation(op);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                }
 
                 if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
                 {
@@ -1027,19 +1015,8 @@ namespace NumpyLib
                     {
                         try
                         {
-                            T retValue;
                             T srcValue = src[index - srcAdjustment];
-
-                            if (UseDelegate)
-                            {
-                                retValue = UFuncOperation(srcValue, operand);
-                            }
-                            else
-                            {
-                                retValue = PerformUFuncOperation(op, srcValue, operand);
-                            }
-
-                            dest[index - destAdjustment] = retValue;
+                            dest[index - destAdjustment] = UFuncOperation(srcValue, operand);
                         }
                         catch (System.OverflowException of)
                         {
@@ -1066,17 +1043,8 @@ namespace NumpyLib
                             {
                                 T operand = oper[Iter.dataptr.data_offset / SizeOfItem];
                                 T srcValue = src[Iter.index - srcAdjustment];
-                                T retValue;
 
-                                if (UseDelegate)
-                                {
-                                    retValue = UFuncOperation(srcValue, operand);
-                                }
-                                else
-                                {
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                }
-
+                                T retValue = retValue = UFuncOperation(srcValue, operand);
                                 dest[Iter.index - destAdjustment] = retValue;
                             }
                             catch (System.OverflowException of)
@@ -1138,7 +1106,10 @@ namespace NumpyLib
                 T[] dp = destArray.data.datap as T[];
 
                 var UFuncOperation = GetUFuncOperation(op);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                }
                 
                 if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
                 {
@@ -1155,21 +1126,10 @@ namespace NumpyLib
                             for (long j = 0; j < bSize; j++)
                             {
                                 var bValue = bValues[j];
-
-                                T destValue;
-
-                                if (UseDelegate)
-                                {
-                                    destValue = UFuncOperation(aValue, bValue);
-                                }
-                                else
-                                {
-                                    destValue = PerformUFuncOperation(op, aValue, bValue);
-                                }
-
+  
                                 try
                                 {
-                                    dp[destIndex] = destValue;
+                                    dp[destIndex] = UFuncOperation(aValue, bValue);
                                 }
                                 catch
                                 {
@@ -1211,17 +1171,8 @@ namespace NumpyLib
                             {
                                 var bValue = bValues[j];
 
-                                T destValue;
-
-                                if (UseDelegate)
-                                {
-                                    destValue = UFuncOperation(aValue, bValue);
-                                }
-                                else
-                                {
-                                    destValue = PerformUFuncOperation(op, aValue, bValue);
-                                }
-
+                                T destValue = UFuncOperation(aValue, bValue);
+   
                                 try
                                 {
                                     long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
@@ -1286,7 +1237,10 @@ namespace NumpyLib
                 T retValue = retArray[R_Index];
 
                 var UFuncOperation = GetUFuncOperation(ops);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", ops.ToString()));
+                }
 
                 // note: these can't be parrallized.
                 for (int i = 0; i < N; i++)
@@ -1296,16 +1250,7 @@ namespace NumpyLib
                     var Op1Value = retValue;
                     var Op2Value = Op2Array[O2_Index];
 
-
-                    if (UseDelegate)
-                    {
-                        retValue = UFuncOperation(Op1Value, Op2Value);
-                    }
-                    else
-                    {
-                        retValue = PerformUFuncOperation(ops, Op1Value, Op2Value);
-                    }
-   
+                    retValue = UFuncOperation(Op1Value, Op2Value);
                 }
 
                 retArray[R_Index] = retValue;
@@ -1357,7 +1302,10 @@ namespace NumpyLib
                 npy_intp R_CalculatedOffset = (R_Offset / SizeOfItem);
 
                 var UFuncOperation = GetUFuncOperation(ops);
-                bool UseDelegate = UFuncOperation != null;
+                if (UFuncOperation == null)
+                {
+                    throw new Exception(string.Format("UFunc op:{0} is not implemented", ops.ToString()));
+                }
 
                 for (int i = 0; i < N; i++)
                 {
@@ -1367,19 +1315,8 @@ namespace NumpyLib
 
                     var O1Value = Op1Array[O1_Index];                                            // get operand 1
                     var O2Value = Op2Array[O2_Index];                                            // get operand 2
-                    T retValue;
-
-                    if (UseDelegate)
-                    {
-                        retValue = UFuncOperation(O1Value, O2Value);
-                    }
-                    else
-                    {
-                        retValue = PerformUFuncOperation(ops, O1Value, O2Value);
-                    }
-      
-                    retArray[R_Index] = retValue;
-
+         
+                    retArray[R_Index] = UFuncOperation(O1Value, O2Value);
                 }
 
 
