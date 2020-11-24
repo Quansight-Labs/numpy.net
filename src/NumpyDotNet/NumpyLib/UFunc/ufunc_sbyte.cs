@@ -149,12 +149,10 @@ namespace NumpyLib
                     destValue = TrueDivide(aValue, bValue);
                     break;
                 case UFuncOperation.logical_or:
-                    boolValue = LogicalOr(aValue, bValue);
-                    destValue = (sbyte)(boolValue ? 1 : 0);
+                    destValue = LogicalOr(aValue, bValue);
                     break;
                 case UFuncOperation.logical_and:
-                    boolValue = LogicalAnd(aValue, bValue);
-                    destValue = (sbyte)(boolValue ? 1 : 0);
+                    destValue = LogicalAnd(aValue, bValue);
                     break;
                 case UFuncOperation.floor:
                     destValue = Floor(aValue, bValue);
@@ -340,13 +338,15 @@ namespace NumpyLib
 
             return (sbyte)(bValue / operand);
         }
-        private bool LogicalOr(sbyte bValue, sbyte operand)
+        protected override sbyte LogicalOr(sbyte bValue, sbyte operand)
         {
-            return bValue != 0 || operand != 0;
+            bool boolValue = bValue != 0 || operand != 0;
+            return (sbyte)(boolValue ? 1 : 0);
         }
-        private bool LogicalAnd(sbyte bValue, sbyte operand)
+        protected override sbyte LogicalAnd(sbyte bValue, sbyte operand)
         {
-            return bValue != 0 && operand != 0;
+            bool boolValue = bValue != 0 && operand != 0;
+            return (sbyte)(boolValue ? 1 : 0);
         }
         private sbyte Floor(sbyte bValue, sbyte operand)
         {

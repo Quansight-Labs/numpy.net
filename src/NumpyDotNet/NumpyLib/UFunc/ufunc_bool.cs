@@ -303,11 +303,11 @@ namespace NumpyLib
         {
             return bValue ^ operand;
         }
-        private bool LogicalOr(bool bValue, bool operand)
+        protected override bool LogicalOr(bool bValue, bool operand)
         {
             return bValue || operand;
         }
-        private bool LogicalAnd(bool bValue, bool operand)
+        protected override bool LogicalAnd(bool bValue, bool operand)
         {
             return bValue && operand;
         }

@@ -1497,6 +1497,12 @@ namespace NumpyLib
                     case UFuncOperation.true_divide:
                         return TrueDivide;
 
+                    case UFuncOperation.logical_or:
+                        return LogicalOr;
+
+                    case UFuncOperation.logical_and:
+                        return LogicalAnd;
+
                 }
 
                 return null;
@@ -1531,6 +1537,8 @@ namespace NumpyLib
             protected abstract T GreaterEqual(T o1, T o2);
             protected abstract T FloorDivide(T o1, T o2);
             protected abstract T TrueDivide(T o1, T o2);
+            protected abstract T LogicalOr(T o1, T o2);
+            protected abstract T LogicalAnd(T o1, T o2);
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
