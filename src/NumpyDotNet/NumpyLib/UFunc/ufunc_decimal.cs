@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Convert.ToDecimal(Math.Pow(Convert.ToDouble(aValue), Convert.ToDouble(bValue)));
         }
-        private decimal Square(decimal bValue, decimal operand)
+        protected override decimal Square(decimal bValue, decimal operand)
         {
             return bValue * bValue;
         }
-        private decimal Reciprocal(decimal bValue, decimal operand)
+        protected override decimal Reciprocal(decimal bValue, decimal operand)
         {
             if (bValue == 0)
                 return 0;

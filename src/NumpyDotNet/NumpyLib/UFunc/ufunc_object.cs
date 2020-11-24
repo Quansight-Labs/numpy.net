@@ -239,11 +239,11 @@ namespace NumpyLib
         {
             return Math.Pow(aValue, bValue);
         }
-        private System.Object Square(dynamic bValue, dynamic operand)
+        protected override System.Object Square(dynamic bValue, dynamic operand)
         {
             return bValue * bValue;
         }
-        private System.Object Reciprocal(dynamic bValue, dynamic operand)
+        protected override System.Object Reciprocal(dynamic bValue, dynamic operand)
         {
             if (bValue == 0)
                 return 0;

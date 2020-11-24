@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Convert.ToInt64(Math.Pow(aValue, bValue));
         }
-        private Int64 Square(Int64 bValue, Int64 operand)
+        protected override Int64 Square(Int64 bValue, Int64 operand)
         {
             return bValue * bValue;
         }
-        private Int64 Reciprocal(Int64 bValue, Int64 operand)
+        protected override Int64 Reciprocal(Int64 bValue, Int64 operand)
         {
             if (bValue == 0)
                 return 0;

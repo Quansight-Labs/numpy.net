@@ -249,11 +249,11 @@ namespace NumpyLib
         {
             return Convert.ToByte(Math.Pow(aValue, bValue));
         }
-        private Byte Square(Byte bValue, Byte operand)
+        protected override Byte Square(Byte bValue, Byte operand)
         {
             return (Byte)(bValue * bValue);
         }
-        private Byte Reciprocal(Byte bValue, Byte operand)
+        protected override Byte Reciprocal(Byte bValue, Byte operand)
         {
             if (bValue == 0)
                 return 0;

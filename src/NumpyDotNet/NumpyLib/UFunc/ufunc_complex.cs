@@ -262,11 +262,11 @@ namespace NumpyLib
         {
             return System.Numerics.Complex.Pow(aValue, bValue);
         }
-        private System.Numerics.Complex Square(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Square(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return bValue * bValue;
         }
-        private System.Numerics.Complex Reciprocal(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Reciprocal(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             if (bValue == 0)
                 return 0;

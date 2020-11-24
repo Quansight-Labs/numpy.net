@@ -249,11 +249,11 @@ namespace NumpyLib
         {
             return Convert.ToInt32(Math.Pow(aValue, bValue));
         }
-        private Int32 Square(Int32 bValue, Int32 operand)
+        protected override Int32 Square(Int32 bValue, Int32 operand)
         {
             return bValue * bValue;
         }
-        private Int32 Reciprocal(Int32 bValue, Int32 operand)
+        protected override Int32 Reciprocal(Int32 bValue, Int32 operand)
         {
             if (bValue == 0)
                 return 0;

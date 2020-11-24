@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Math.Pow(aValue, bValue);
         }
-        private double Square(double bValue, double operand)
+        protected override double Square(double bValue, double operand)
         {
             return bValue * bValue;
         }
-        private double Reciprocal(double bValue, double operand)
+        protected override double Reciprocal(double bValue, double operand)
         {
             if (bValue == 0)
                 return 0;

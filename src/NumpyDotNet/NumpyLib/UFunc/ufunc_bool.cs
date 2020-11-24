@@ -223,11 +223,11 @@ namespace NumpyLib
         {
             return aValue ^ bValue;
         }
-        private bool Square(bool bValue, bool operand)
+        protected override bool Square(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool Reciprocal(bool bValue, bool operand)
+        protected override bool Reciprocal(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }

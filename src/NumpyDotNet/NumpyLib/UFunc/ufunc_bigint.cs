@@ -262,11 +262,11 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Pow(aValue, (int)bValue);
         }
-        private System.Numerics.BigInteger Square(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Square(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue * bValue;
         }
-        private System.Numerics.BigInteger Reciprocal(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Reciprocal(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             if (bValue == 0)
                 return 0;

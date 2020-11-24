@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Convert.ToUInt16(Math.Pow(aValue, bValue));
         }
-        private UInt16 Square(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Square(UInt16 bValue, UInt16 operand)
         {
             return (UInt16)(bValue * bValue);
         }
-        private UInt16 Reciprocal(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Reciprocal(UInt16 bValue, UInt16 operand)
         {
             if (bValue == 0)
                 return 0;

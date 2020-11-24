@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Convert.ToSingle(Math.Pow(aValue, bValue));
         }
-        private float Square(float bValue, float operand)
+        protected override float Square(float bValue, float operand)
         {
             return bValue * bValue;
         }
-        private float Reciprocal(float bValue, float operand)
+        protected override float Reciprocal(float bValue, float operand)
         {
             if (bValue == 0)
                 return 0;

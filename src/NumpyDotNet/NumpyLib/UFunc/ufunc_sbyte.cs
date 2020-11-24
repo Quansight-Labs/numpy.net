@@ -249,11 +249,11 @@ namespace NumpyLib
         {
             return Convert.ToSByte(Math.Pow(aValue, bValue));
         }
-        private sbyte Square(sbyte bValue, sbyte operand)
+        protected override sbyte Square(sbyte bValue, sbyte operand)
         {
             return (sbyte)(bValue * bValue);
         }
-        private sbyte Reciprocal(sbyte bValue, sbyte operand)
+        protected override sbyte Reciprocal(sbyte bValue, sbyte operand)
         {
             if (bValue == 0)
                 return 0;

@@ -1437,6 +1437,12 @@ namespace NumpyLib
                     case UFuncOperation.power:
                         return Power;
 
+                    case UFuncOperation.square:
+                        return Square;
+
+                    case UFuncOperation.reciprocal:
+                        return Reciprocal;
+
                 }
 
                 return null;
@@ -1451,6 +1457,8 @@ namespace NumpyLib
             protected abstract T Power(T o1, T o2);
             protected abstract T Remainder(T o1, T o2);
             protected abstract T FMod(T o1, T o2);
+            protected abstract T Reciprocal(T o1, T o2);
+            protected abstract T Square(T o1, T o2);
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
             protected abstract T ConvertToTemplate(object v);

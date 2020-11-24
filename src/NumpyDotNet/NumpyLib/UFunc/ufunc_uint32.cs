@@ -248,11 +248,11 @@ namespace NumpyLib
         {
             return Convert.ToUInt32(Math.Pow(aValue, bValue));
         }
-        private UInt32 Square(UInt32 bValue, UInt32 operand)
+        protected override UInt32 Square(UInt32 bValue, UInt32 operand)
         {
             return bValue * bValue;
         }
-        private UInt32 Reciprocal(UInt32 bValue, UInt32 operand)
+        protected override UInt32 Reciprocal(UInt32 bValue, UInt32 operand)
         {
             if (bValue == 0)
                 return 0;
