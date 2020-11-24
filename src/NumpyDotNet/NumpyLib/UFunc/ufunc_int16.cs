@@ -260,19 +260,19 @@ namespace NumpyLib
 
             return (Int16)(1 / bValue);
         }
-        private Int16 OnesLike(Int16 bValue, Int16 operand)
+        protected override Int16 OnesLike(Int16 bValue, Int16 operand)
         {
             return 1;
         }
-        private Int16 Sqrt(Int16 bValue, Int16 operand)
+        protected override Int16 Sqrt(Int16 bValue, Int16 operand)
         {
             return Convert.ToInt16(Math.Sqrt(bValue));
         }
-        private Int16 Negative(Int16 bValue, Int16 operand)
+        protected override Int16 Negative(Int16 bValue, Int16 operand)
         {
             return (Int16)(-bValue);
         }
-        private Int16 Absolute(Int16 bValue, Int16 operand)
+        protected override Int16 Absolute(Int16 bValue, Int16 operand)
         {
             return Math.Abs(bValue);
         }

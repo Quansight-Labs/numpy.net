@@ -260,19 +260,19 @@ namespace NumpyLib
 
             return (sbyte)(1 / bValue);
         }
-        private sbyte OnesLike(sbyte bValue, sbyte operand)
+        protected override sbyte OnesLike(sbyte bValue, sbyte operand)
         {
             return 1;
         }
-        private sbyte Sqrt(sbyte bValue, sbyte operand)
+        protected override sbyte Sqrt(sbyte bValue, sbyte operand)
         {
             return Convert.ToSByte(Math.Sqrt(bValue));
         }
-        private sbyte Negative(sbyte bValue, sbyte operand)
+        protected override sbyte Negative(sbyte bValue, sbyte operand)
         {
             return (sbyte)(-bValue);
         }
-        private sbyte Absolute(sbyte bValue, sbyte operand)
+        protected override sbyte Absolute(sbyte bValue, sbyte operand)
         {
             return Convert.ToSByte(Math.Abs(bValue));
         }

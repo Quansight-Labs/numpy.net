@@ -250,19 +250,19 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private System.Object OnesLike(dynamic bValue, dynamic operand)
+        protected override System.Object OnesLike(dynamic bValue, dynamic operand)
         {
             return 1;
         }
-        private System.Object Sqrt(dynamic bValue, dynamic operand)
+        protected override System.Object Sqrt(dynamic bValue, dynamic operand)
         {
             return Math.Sqrt(bValue);
         }
-        private System.Object Negative(dynamic bValue, dynamic operand)
+        protected override System.Object Negative(dynamic bValue, dynamic operand)
         {
             return -bValue;
         }
-        private System.Object Absolute(dynamic bValue, dynamic operand)
+        protected override System.Object Absolute(dynamic bValue, dynamic operand)
         {
             return Math.Abs(bValue);
         }

@@ -1443,6 +1443,18 @@ namespace NumpyLib
                     case UFuncOperation.reciprocal:
                         return Reciprocal;
 
+                    case UFuncOperation.ones_like:
+                        return OnesLike;
+
+                    case UFuncOperation.sqrt:
+                        return Sqrt;
+
+                    case UFuncOperation.negative:
+                        return Negative;
+
+                    case UFuncOperation.absolute:
+                        return Absolute;
+
                 }
 
                 return null;
@@ -1457,8 +1469,13 @@ namespace NumpyLib
             protected abstract T Power(T o1, T o2);
             protected abstract T Remainder(T o1, T o2);
             protected abstract T FMod(T o1, T o2);
-            protected abstract T Reciprocal(T o1, T o2);
             protected abstract T Square(T o1, T o2);
+            protected abstract T Reciprocal(T o1, T o2);
+            protected abstract T OnesLike(T o1, T o2);
+            protected abstract T Sqrt(T o1, T o2);
+            protected abstract T Negative(T o1, T o2);
+            protected abstract T Absolute(T o1, T o2);
+
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
             protected abstract T ConvertToTemplate(object v);

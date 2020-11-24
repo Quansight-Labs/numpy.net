@@ -231,19 +231,19 @@ namespace NumpyLib
         {
             return bValue ^ operand;
         }
-        private bool OnesLike(bool bValue, bool operand)
+        protected override bool OnesLike(bool bValue, bool operand)
         {
             return true;
         }
-        private bool Sqrt(bool bValue, bool operand)
+        protected override bool Sqrt(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool Negative(bool bValue, bool operand)
+        protected override bool Negative(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool Absolute(bool bValue, bool operand)
+        protected override bool Absolute(bool bValue, bool operand)
         {
             return false;
         }

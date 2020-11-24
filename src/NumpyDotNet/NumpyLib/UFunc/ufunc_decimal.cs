@@ -259,11 +259,11 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private decimal OnesLike(decimal bValue, decimal operand)
+        protected override decimal OnesLike(decimal bValue, decimal operand)
         {
             return 1;
         }
-        private decimal Sqrt(decimal bValue, decimal operand)
+        protected override decimal Sqrt(decimal bValue, decimal operand)
         {
             decimal dValue = (decimal)bValue;
             decimal epsilon = 0.0M;
@@ -283,11 +283,11 @@ namespace NumpyLib
             while (Math.Abs(previous - current) > epsilon);
             return current;
         }
-        private decimal Negative(decimal bValue, decimal operand)
+        protected override decimal Negative(decimal bValue, decimal operand)
         {
             return -bValue;
         }
-        private decimal Absolute(decimal bValue, decimal operand)
+        protected override decimal Absolute(decimal bValue, decimal operand)
         {
             return Math.Abs(bValue);
         }

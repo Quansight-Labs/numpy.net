@@ -273,20 +273,20 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private System.Numerics.BigInteger OnesLike(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger OnesLike(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return 1;
         }
-        private System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             var dd = Math.Round(Math.Pow(Math.E, System.Numerics.BigInteger.Log((System.Numerics.BigInteger)bValue) / 2));
             return new System.Numerics.BigInteger(dd);
         }
-        private System.Numerics.BigInteger Negative(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Negative(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return -bValue;
         }
-        private System.Numerics.BigInteger Absolute(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger Absolute(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Abs(bValue);
         }

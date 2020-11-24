@@ -259,19 +259,19 @@ namespace NumpyLib
 
             return (UInt16)(1 / bValue);
         }
-        private UInt16 OnesLike(UInt16 bValue, UInt16 operand)
+        protected override UInt16 OnesLike(UInt16 bValue, UInt16 operand)
         {
             return 1;
         }
-        private UInt16 Sqrt(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Sqrt(UInt16 bValue, UInt16 operand)
         {
             return Convert.ToUInt16(Math.Sqrt(bValue));
         }
-        private UInt16 Negative(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Negative(UInt16 bValue, UInt16 operand)
         {
             return bValue;
         }
-        private UInt16 Absolute(UInt16 bValue, UInt16 operand)
+        protected override UInt16 Absolute(UInt16 bValue, UInt16 operand)
         {
             return bValue;
         }

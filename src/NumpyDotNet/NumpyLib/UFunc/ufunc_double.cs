@@ -259,19 +259,19 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private double OnesLike(double bValue, double operand)
+        protected override double OnesLike(double bValue, double operand)
         {
             return 1;
         }
-        private double Sqrt(double bValue, double operand)
+        protected override double Sqrt(double bValue, double operand)
         {
             return Math.Sqrt(bValue);
         }
-        private double Negative(double bValue, double operand)
+        protected override double Negative(double bValue, double operand)
         {
             return -bValue;
         }
-        private double Absolute(double bValue, double operand)
+        protected override double Absolute(double bValue, double operand)
         {
             return Math.Abs(bValue);
         }

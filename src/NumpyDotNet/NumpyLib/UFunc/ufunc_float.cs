@@ -259,19 +259,19 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private float OnesLike(float bValue, float operand)
+        protected override float OnesLike(float bValue, float operand)
         {
             return 1;
         }
-        private float Sqrt(float bValue, float operand)
+        protected override float Sqrt(float bValue, float operand)
         {
             return Convert.ToSingle(Math.Sqrt(bValue));
         }
-        private float Negative(float bValue, float operand)
+        protected override float Negative(float bValue, float operand)
         {
             return -bValue;
         }
-        private float Absolute(float bValue, float operand)
+        protected override float Absolute(float bValue, float operand)
         {
             return Math.Abs(bValue);
         }

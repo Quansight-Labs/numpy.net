@@ -273,19 +273,19 @@ namespace NumpyLib
 
             return 1 / bValue;
         }
-        private System.Numerics.Complex OnesLike(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex OnesLike(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return 1;
         }
-        private System.Numerics.Complex Sqrt(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Sqrt(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return System.Numerics.Complex.Sqrt(bValue);
         }
-        private System.Numerics.Complex Negative(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Negative(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return -bValue;
         }
-        private System.Numerics.Complex Absolute(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Absolute(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return System.Numerics.Complex.Abs(bValue);
         }
