@@ -853,6 +853,9 @@ namespace NumpyLib
                 T[] dest = destArray.data.datap as T[];
                 T[] oper = operArray.data.datap as T[];
 
+                var UFuncOperation = GetUFuncOperation(op);
+                bool UseDelegate = UFuncOperation != null;
+
                 List<Exception> caughtExceptions = new List<Exception>();
 
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
@@ -888,29 +891,13 @@ namespace NumpyLib
 
                                 try
                                 {
-                                    // for the common operations, do inline for speed.
-                                    switch (op)
+                                    if (UseDelegate)
                                     {
-                                        case UFuncOperation.add:
-                                            retValue = Add(srcValue, operand);
-                                            break;
-                                        case UFuncOperation.subtract:
-                                            retValue = Subtract(srcValue, operand);
-                                            break;
-                                        case UFuncOperation.multiply:
-                                            retValue = Multiply(srcValue, operand);
-                                            break;
-                                        case UFuncOperation.divide:
-                                            retValue = Divide(srcValue, operand);
-                                            break;
-                                        case UFuncOperation.power:
-                                            retValue = Power(srcValue, operand);
-                                            break;
-
-                                        default:
-                                            retValue = PerformUFuncOperation(op, srcValue, operand);
-                                            break;
-
+                                        retValue = UFuncOperation(srcValue, operand);
+                                    }
+                                    else
+                                    {
+                                        retValue = PerformUFuncOperation(op, srcValue, operand);
                                     }
 
                                     dest[destIndex] = retValue;
@@ -946,6 +933,9 @@ namespace NumpyLib
                 T[] dest = destArray.data.datap as T[];
                 T[] oper = operArray.data.datap as T[];
 
+                var UFuncOperation = GetUFuncOperation(op);
+                bool UseDelegate = UFuncOperation != null;
+
                 List<Exception> caughtExceptions = new List<Exception>();
 
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
@@ -973,29 +963,13 @@ namespace NumpyLib
 
                             try
                             {
-                                // for the common operations, do inline for speed.
-                                switch (op)
+                                if (UseDelegate)
                                 {
-                                    case UFuncOperation.add:
-                                        retValue = Add(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.subtract:
-                                        retValue = Subtract(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.multiply:
-                                        retValue = Multiply(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.divide:
-                                        retValue = Divide(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.power:
-                                        retValue = Power(srcValue, operand);
-                                        break;
-
-                                    default:
-                                        retValue = PerformUFuncOperation(op, srcValue, operand);
-                                        break;
-
+                                    retValue = UFuncOperation(srcValue, operand);
+                                }
+                                else
+                                {
+                                    retValue = PerformUFuncOperation(op, srcValue, operand);
                                 }
 
                                 dest[AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset-destArray.data.data_offset, destArray, dest.Length)] = retValue;
@@ -1041,40 +1015,28 @@ namespace NumpyLib
 
                 var loopCount = NpyArray_Size(destArray);
 
+                var UFuncOperation = GetUFuncOperation(op);
+                bool UseDelegate = UFuncOperation != null;
+
                 if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
                 {
                     T operand = oper[0];
 
                     Parallel.For(0, loopCount, index =>
+                    //for (npy_intp index = 0; index < loopCount; index++)
                     {
                         try
                         {
                             T retValue;
                             T srcValue = src[index - srcAdjustment];
 
-                            // for the common operations, do inline for speed.
-                            switch (op)
+                            if (UseDelegate)
                             {
-                                case UFuncOperation.add:
-                                    retValue = Add(srcValue, operand);
-                                    break;
-                                case UFuncOperation.subtract:
-                                    retValue = Subtract(srcValue, operand);
-                                    break;
-                                case UFuncOperation.multiply:
-                                    retValue = Multiply(srcValue, operand);
-                                    break;
-                                case UFuncOperation.divide:
-                                    retValue = Divide(srcValue, operand);
-                                    break;
-                                case UFuncOperation.power:
-                                    retValue = Power(srcValue, operand);
-                                    break;
-
-                                default:
-                                    retValue = PerformUFuncOperation(op, srcValue, operand);
-                                    break;
-
+                                retValue = UFuncOperation(srcValue, operand);
+                            }
+                            else
+                            {
+                                retValue = PerformUFuncOperation(op, srcValue, operand);
                             }
 
                             dest[index - destAdjustment] = retValue;
@@ -1088,7 +1050,7 @@ namespace NumpyLib
                             exceptions.Enqueue(ex);
                         }
 
-                    });
+                    } );
                 }
                 else
                 {
@@ -1106,29 +1068,13 @@ namespace NumpyLib
                                 T srcValue = src[Iter.index - srcAdjustment];
                                 T retValue;
 
-                                // for the common operations, do inline for speed.
-                                switch (op)
+                                if (UseDelegate)
                                 {
-                                    case UFuncOperation.add:
-                                        retValue = Add(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.subtract:
-                                        retValue = Subtract(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.multiply:
-                                        retValue = Multiply(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.divide:
-                                        retValue = Divide(srcValue, operand);
-                                        break;
-                                    case UFuncOperation.power:
-                                        retValue = Power(srcValue, operand);
-                                        break;
-
-                                    default:
-                                        retValue = PerformUFuncOperation(op, srcValue, operand);
-                                        break;
-
+                                    retValue = UFuncOperation(srcValue, operand);
+                                }
+                                else
+                                {
+                                    retValue = PerformUFuncOperation(op, srcValue, operand);
                                 }
 
                                 dest[Iter.index - destAdjustment] = retValue;
@@ -1191,7 +1137,9 @@ namespace NumpyLib
 
                 T[] dp = destArray.data.datap as T[];
 
-
+                var UFuncOperation = GetUFuncOperation(op);
+                bool UseDelegate = UFuncOperation != null;
+                
                 if (DestIter.contiguous && destSize > UFUNC_PARALLEL_DEST_MINSIZE && aSize > UFUNC_PARALLEL_DEST_ASIZE)
                 {
                     List<Exception> caughtExceptions = new List<Exception>();
@@ -1208,7 +1156,16 @@ namespace NumpyLib
                             {
                                 var bValue = bValues[j];
 
-                                T destValue = PerformUFuncOperation(op, aValue, bValue);
+                                T destValue;
+
+                                if (UseDelegate)
+                                {
+                                    destValue = UFuncOperation(aValue, bValue);
+                                }
+                                else
+                                {
+                                    destValue = PerformUFuncOperation(op, aValue, bValue);
+                                }
 
                                 try
                                 {
@@ -1254,7 +1211,16 @@ namespace NumpyLib
                             {
                                 var bValue = bValues[j];
 
-                                T destValue = PerformUFuncOperation(op, aValue, bValue);
+                                T destValue;
+
+                                if (UseDelegate)
+                                {
+                                    destValue = UFuncOperation(aValue, bValue);
+                                }
+                                else
+                                {
+                                    destValue = PerformUFuncOperation(op, aValue, bValue);
+                                }
 
                                 try
                                 {
@@ -1319,6 +1285,9 @@ namespace NumpyLib
 
                 T retValue = retArray[R_Index];
 
+                var UFuncOperation = GetUFuncOperation(ops);
+                bool UseDelegate = UFuncOperation != null;
+
                 // note: these can't be parrallized.
                 for (int i = 0; i < N; i++)
                 {
@@ -1327,30 +1296,16 @@ namespace NumpyLib
                     var Op1Value = retValue;
                     var Op2Value = Op2Array[O2_Index];
 
-                    // for the common operations, do inline for speed.
-                    switch (ops)
+
+                    if (UseDelegate)
                     {
-                        case UFuncOperation.add:
-                            retValue = Add(Op1Value, Op2Value);
-                            break;
-                        case UFuncOperation.subtract:
-                            retValue = Subtract(Op1Value, Op2Value);
-                            break;
-                        case UFuncOperation.multiply:
-                            retValue = Multiply(Op1Value, Op2Value);
-                            break;
-                        case UFuncOperation.divide:
-                            retValue = Divide(Op1Value, Op2Value);
-                            break;
-                        case UFuncOperation.power:
-                            retValue = Power(Op1Value, Op2Value);
-                            break;
-
-                        default:
-                            retValue = PerformUFuncOperation(ops, Op1Value, Op2Value);
-                            break;
-
+                        retValue = UFuncOperation(Op1Value, Op2Value);
                     }
+                    else
+                    {
+                        retValue = PerformUFuncOperation(ops, Op1Value, Op2Value);
+                    }
+   
                 }
 
                 retArray[R_Index] = retValue;
@@ -1401,6 +1356,9 @@ namespace NumpyLib
                 npy_intp R_CalculatedStep = (R_Step / SizeOfItem);
                 npy_intp R_CalculatedOffset = (R_Offset / SizeOfItem);
 
+                var UFuncOperation = GetUFuncOperation(ops);
+                bool UseDelegate = UFuncOperation != null;
+
                 for (int i = 0; i < N; i++)
                 {
                     npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
@@ -1411,30 +1369,15 @@ namespace NumpyLib
                     var O2Value = Op2Array[O2_Index];                                            // get operand 2
                     T retValue;
 
-                    // for the common operations, do inline for speed.
-                    switch (ops)
+                    if (UseDelegate)
                     {
-                        case UFuncOperation.add:
-                            retValue = Add(O1Value, O2Value);
-                            break;
-                        case UFuncOperation.subtract:
-                            retValue = Subtract(O1Value, O2Value);
-                            break;
-                        case UFuncOperation.multiply:
-                            retValue = Multiply(O1Value, O2Value);
-                            break;
-                        case UFuncOperation.divide:
-                            retValue = Divide(O1Value, O2Value);
-                            break;
-                        case UFuncOperation.power:
-                            retValue = Power(O1Value, O2Value);
-                            break;
-
-                        default:
-                            retValue = PerformUFuncOperation(ops, O1Value, O2Value);
-                            break;
-
+                        retValue = UFuncOperation(O1Value, O2Value);
                     }
+                    else
+                    {
+                        retValue = PerformUFuncOperation(ops, O1Value, O2Value);
+                    }
+      
                     retArray[R_Index] = retValue;
 
                 }
@@ -1469,7 +1412,7 @@ namespace NumpyLib
                 return index;
             }
 
-            protected opFunction GetOpFunction(UFuncOperation ops)
+            protected opFunction GetUFuncOperation(UFuncOperation ops)
             {
                 switch (ops)
                 {
@@ -1485,6 +1428,9 @@ namespace NumpyLib
                     case UFuncOperation.divide:
                         return Divide;
 
+                    case UFuncOperation.remainder:
+                        return Remainder;
+                         
                     case UFuncOperation.power:
                         return Power;
 
@@ -1500,6 +1446,7 @@ namespace NumpyLib
             protected abstract T Multiply(T o1, T o2);
             protected abstract T Divide(T o1, T o2);
             protected abstract T Power(T o1, T o2);
+            protected abstract T Remainder(T o1, T o2);
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 
             protected abstract T ConvertToTemplate(object v);
