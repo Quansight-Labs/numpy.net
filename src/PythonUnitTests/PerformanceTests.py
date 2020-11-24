@@ -34,15 +34,14 @@ class PerformanceTests(unittest.TestCase):
         
     def test_ScalarOperationPerformance_NotContiguous(self):
 
-        LoopCount = 200;
+        LoopCount = 500;
 
-        matrix = np.arange(16000000, dtype=np.float64).reshape((40, -1));
+        matrixOrig = np.arange(16000000, dtype=np.float64).reshape((40, -1));
 
         start = tm.time()
 
-        matrix = matrix[1:40:2, 1:-2:3]
-
         for i in range(LoopCount):
+            matrix = matrixOrig[1:40:2, 1:-2:3]
             matrix = matrix / 3;
             matrix = matrix + i;
         print(np.sum(matrix))

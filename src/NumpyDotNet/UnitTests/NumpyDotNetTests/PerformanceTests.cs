@@ -54,23 +54,23 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_ScalarOperation_NotContiguous_DOUBLE()
         {
-            int LoopCount = 200;
+            int LoopCount = 500;
 
-            var kk = new bool[Int32.MaxValue / 2];
-
-            var matrix = np.arange(16000000, dtype: np.Float64).reshape((40, -1));
+            ndarray matrixOrig = np.arange(16000000, dtype: np.Float64).reshape((40, -1));
+            ndarray matrix = null;
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
-
             for (int i = 0; i < LoopCount; i++)
             {
+                matrix = matrixOrig["1:40:2", "1:-2:3"] as ndarray;
+
                 matrix = matrix / 3;
                 matrix = matrix + i;
             }
-            Assert.AreEqual(793998015.0, np.sum(matrix).GetItem(0));
+
+            Assert.AreEqual(7290200441084.1943, np.sum(matrix).GetItem(0));
 
             var output = matrix[new Slice(15, 25, 2), new Slice(15, 25, 2)];
 
