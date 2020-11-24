@@ -882,9 +882,9 @@ namespace NumpyLib
                         NpyArray_ITER_CACHE(lsrcIter, cacheSize);
                         NpyArray_ITER_CACHE(loperIter, cacheSize);
 
-                        while (ldestIter.IsCacheEmpty == false)
+                        try
                         {
-                            try
+                            while (ldestIter.IsCacheEmpty == false)
                             {
                                 var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.GetNextCache() - srcDataOffset, srcArray, src.Length)];
                                 var operand = oper[AdjustedIndex_GetItemFunction(loperIter.GetNextCache() - operDataOffset, operArray, oper.Length)];
@@ -898,12 +898,12 @@ namespace NumpyLib
                                 {
                                     dest[destIndex] = default(T);
                                 }
+                            }
 
-                            }
-                            catch (Exception ex)
-                            {
-                                caughtExceptions.Add(ex);
-                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
                         }
 
                     }
