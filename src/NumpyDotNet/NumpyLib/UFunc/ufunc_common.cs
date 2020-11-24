@@ -1463,6 +1463,15 @@ namespace NumpyLib
 
                     case UFuncOperation.right_shift:
                         return RightShift;
+
+                    case UFuncOperation.bitwise_and:
+                        return BitWiseAnd;
+
+                    case UFuncOperation.bitwise_xor:
+                        return BitWiseXor;
+
+                    case UFuncOperation.bitwise_or:
+                        return BitWiseOr;
                 }
 
                 return null;
@@ -1486,8 +1495,10 @@ namespace NumpyLib
             protected abstract T Invert(T o1, T o2);
             protected abstract T LeftShift(T o1, T o2);
             protected abstract T RightShift(T o1, T o2);
+            protected abstract T BitWiseAnd(T o1, T o2);
+            protected abstract T BitWiseXor(T o1, T o2);
+            protected abstract T BitWiseOr(T o1, T o2);
 
-            
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
 

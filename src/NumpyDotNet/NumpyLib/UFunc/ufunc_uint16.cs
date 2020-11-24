@@ -287,15 +287,15 @@ namespace NumpyLib
         {
             return (UInt16)(bValue >> Convert.ToInt32(operand));
         }
-        private UInt16 BitWiseAnd(UInt16 bValue, UInt16 operand)
+        protected override UInt16 BitWiseAnd(UInt16 bValue, UInt16 operand)
         {
             return (UInt16)(bValue & operand);
         }
-        private UInt16 BitWiseXor(UInt16 bValue, UInt16 operand)
+        protected override UInt16 BitWiseXor(UInt16 bValue, UInt16 operand)
         {
             return (UInt16)(bValue ^ operand);
         }
-        private UInt16 BitWiseOr(UInt16 bValue, UInt16 operand)
+        protected override UInt16 BitWiseOr(UInt16 bValue, UInt16 operand)
         {
             return (UInt16)(bValue | operand);
         }

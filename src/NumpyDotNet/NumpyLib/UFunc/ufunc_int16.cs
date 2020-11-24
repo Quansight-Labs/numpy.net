@@ -288,15 +288,15 @@ namespace NumpyLib
         {
             return (Int16)(bValue >> Convert.ToInt32(operand));
         }
-        private Int16 BitWiseAnd(Int16 bValue, Int16 operand)
+        protected override Int16 BitWiseAnd(Int16 bValue, Int16 operand)
         {
             return (Int16)(bValue & operand);
         }
-        private Int16 BitWiseXor(Int16 bValue, Int16 operand)
+        protected override Int16 BitWiseXor(Int16 bValue, Int16 operand)
         {
             return (Int16)(bValue ^ operand);
         }
-        private Int16 BitWiseOr(Int16 bValue, Int16 operand)
+        protected override Int16 BitWiseOr(Int16 bValue, Int16 operand)
         {
             return (Int16)(bValue | operand);
         }

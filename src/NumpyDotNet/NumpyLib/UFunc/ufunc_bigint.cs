@@ -307,21 +307,21 @@ namespace NumpyLib
             return new System.Numerics.BigInteger(rValue);
 
         }
-        private System.Numerics.BigInteger BitWiseAnd(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger BitWiseAnd(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             UInt64 rValue = (UInt64)bValue;
             rValue = rValue & Convert.ToUInt64((UInt64)operand);
 
             return new System.Numerics.BigInteger(rValue);
         }
-        private System.Numerics.BigInteger BitWiseXor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger BitWiseXor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             UInt64 rValue = (UInt64)bValue;
             rValue = rValue ^ Convert.ToUInt64((UInt64)operand);
 
             return new System.Numerics.BigInteger(rValue);
         }
-        private System.Numerics.BigInteger BitWiseOr(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
+        protected override System.Numerics.BigInteger BitWiseOr(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             UInt64 rValue = (UInt64)bValue;
             rValue = rValue | Convert.ToUInt64((UInt64)operand);

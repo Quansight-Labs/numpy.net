@@ -313,7 +313,7 @@ namespace NumpyLib
 
             return new System.Numerics.Complex((double)rValue, (double)iValue);
         }
-        private System.Numerics.Complex BitWiseAnd(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex BitWiseAnd(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             UInt64 rValue = (UInt64)bValue.Real;
             rValue = rValue & Convert.ToUInt64(operand.Real);
@@ -323,7 +323,7 @@ namespace NumpyLib
 
             return new System.Numerics.Complex((double)rValue, (double)iValue);
         }
-        private System.Numerics.Complex BitWiseXor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex BitWiseXor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             UInt64 rValue = (UInt64)bValue.Real;
             rValue = rValue ^ Convert.ToUInt64(operand.Real);
@@ -333,7 +333,7 @@ namespace NumpyLib
 
             return new System.Numerics.Complex((double)rValue, (double)iValue);
         }
-        private System.Numerics.Complex BitWiseOr(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex BitWiseOr(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             UInt64 rValue = (UInt64)bValue.Real;
             rValue = rValue | Convert.ToUInt64(operand.Real);

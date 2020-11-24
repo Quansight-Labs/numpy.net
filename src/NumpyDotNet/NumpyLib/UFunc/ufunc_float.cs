@@ -289,17 +289,17 @@ namespace NumpyLib
             UInt64 dValue = (UInt64)bValue;
             return dValue >> Convert.ToInt32(operand);
         }
-        private float BitWiseAnd(float bValue, float operand)
+        protected override float BitWiseAnd(float bValue, float operand)
         {
             UInt64 dValue = Convert.ToUInt64(bValue);
             return dValue & Convert.ToUInt64(operand);
         }
-        private float BitWiseXor(float bValue, float operand)
+        protected override float BitWiseXor(float bValue, float operand)
         {
             UInt64 dValue = Convert.ToUInt64(bValue);
             return dValue ^ Convert.ToUInt64(operand);
         }
-        private float BitWiseOr(float bValue, float operand)
+        protected override float BitWiseOr(float bValue, float operand)
         {
             UInt64 dValue = Convert.ToUInt64(bValue);
             return dValue | Convert.ToUInt64(operand);

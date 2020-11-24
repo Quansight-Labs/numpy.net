@@ -288,15 +288,15 @@ namespace NumpyLib
         {
             return (Byte)(bValue >> Convert.ToInt32(operand));
         }
-        private Byte BitWiseAnd(Byte bValue, Byte operand)
+        protected override Byte BitWiseAnd(Byte bValue, Byte operand)
         {
             return (Byte)(bValue & operand);
         }
-        private Byte BitWiseXor(Byte bValue, Byte operand)
+        protected override Byte BitWiseXor(Byte bValue, Byte operand)
         {
             return (Byte)(bValue ^ operand);
         }
-        private Byte BitWiseOr(Byte bValue, Byte operand)
+        protected override Byte BitWiseOr(Byte bValue, Byte operand)
         {
             return (Byte)(bValue | operand);
         }

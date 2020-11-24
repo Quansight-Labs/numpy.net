@@ -287,15 +287,15 @@ namespace NumpyLib
         {
             return bValue >> Convert.ToInt32(operand);
         }
-        private Int64 BitWiseAnd(Int64 bValue, Int64 operand)
+        protected override Int64 BitWiseAnd(Int64 bValue, Int64 operand)
         {
             return bValue & operand;
         }
-        private Int64 BitWiseXor(Int64 bValue, Int64 operand)
+        protected override Int64 BitWiseXor(Int64 bValue, Int64 operand)
         {
             return bValue ^ operand;
         }
-        private Int64 BitWiseOr(Int64 bValue, Int64 operand)
+        protected override Int64 BitWiseOr(Int64 bValue, Int64 operand)
         {
             return bValue | operand;
         }

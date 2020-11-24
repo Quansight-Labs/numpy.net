@@ -259,15 +259,15 @@ namespace NumpyLib
         {
             return bValue;
         }
-        private bool BitWiseAnd(bool bValue, bool operand)
+        protected override bool BitWiseAnd(bool bValue, bool operand)
         {
             return bValue & operand;
         }
-        private bool BitWiseXor(bool bValue, bool operand)
+        protected override bool BitWiseXor(bool bValue, bool operand)
         {
             return bValue ^ operand;
         }
-        private bool BitWiseOr(bool bValue, bool operand)
+        protected override bool BitWiseOr(bool bValue, bool operand)
         {
             return bValue | operand;
         }

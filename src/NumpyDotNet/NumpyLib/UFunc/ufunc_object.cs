@@ -281,16 +281,16 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue >> Convert.ToInt32(operand);
         }
-        private System.Object BitWiseAnd(dynamic bValue, dynamic operand)
+        protected override System.Object BitWiseAnd(dynamic bValue, dynamic operand)
         {
             return bValue & operand;
         }
-        private System.Object BitWiseXor(dynamic bValue, dynamic operand)
+        protected override System.Object BitWiseXor(dynamic bValue, dynamic operand)
         {
             return bValue ^ operand;
 
         }
-        private System.Object BitWiseOr(dynamic bValue, dynamic operand)
+        protected override System.Object BitWiseOr(dynamic bValue, dynamic operand)
         {
             return bValue | operand;
 
