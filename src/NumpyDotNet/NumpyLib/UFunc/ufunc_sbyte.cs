@@ -223,7 +223,7 @@ namespace NumpyLib
                 return 0;
             return (sbyte)(aValue / bValue);
         }
-        private sbyte Remainder(sbyte aValue, sbyte bValue)
+        protected override sbyte Remainder(sbyte aValue, sbyte bValue)
         {
             if (bValue == 0)
             {

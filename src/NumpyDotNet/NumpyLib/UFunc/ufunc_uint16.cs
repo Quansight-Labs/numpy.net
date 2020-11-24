@@ -222,7 +222,7 @@ namespace NumpyLib
                 return 0;
             return (UInt16)(aValue / bValue);
         }
-        private UInt16 Remainder(UInt16 aValue, UInt16 bValue)
+        protected override UInt16 Remainder(UInt16 aValue, UInt16 bValue)
         {
             if (bValue == 0)
             {

@@ -223,7 +223,7 @@ namespace NumpyLib
                 return 0;
             return (Byte)(aValue / bValue);
         }
-        private Byte Remainder(Byte aValue, Byte bValue)
+        protected override Byte Remainder(Byte aValue, Byte bValue)
         {
             if (bValue == 0)
             {

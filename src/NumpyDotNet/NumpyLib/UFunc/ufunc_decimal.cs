@@ -222,7 +222,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private decimal Remainder(decimal aValue, decimal bValue)
+        protected override decimal Remainder(decimal aValue, decimal bValue)
         {
             if (bValue == 0)
             {

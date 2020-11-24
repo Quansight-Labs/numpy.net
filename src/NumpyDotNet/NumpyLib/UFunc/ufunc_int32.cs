@@ -223,7 +223,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private Int32 Remainder(Int32 aValue, Int32 bValue)
+        protected override Int32 Remainder(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
             {

@@ -222,7 +222,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private UInt64 Remainder(UInt64 aValue, UInt64 bValue)
+        protected override UInt64 Remainder(UInt64 aValue, UInt64 bValue)
         {
             if (bValue == 0)
             {

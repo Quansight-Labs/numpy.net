@@ -232,7 +232,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private System.Numerics.BigInteger Remainder(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
+        protected override System.Numerics.BigInteger Remainder(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             if (bValue == 0)
             {

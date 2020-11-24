@@ -232,7 +232,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private System.Numerics.Complex Remainder(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
+        protected override System.Numerics.Complex Remainder(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             if (bValue == 0)
             {

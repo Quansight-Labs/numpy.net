@@ -222,7 +222,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        private float Remainder(float aValue, float bValue)
+        protected override float Remainder(float aValue, float bValue)
         {
             if (bValue == 0)
             {

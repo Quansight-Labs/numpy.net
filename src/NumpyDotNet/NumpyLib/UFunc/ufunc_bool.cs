@@ -211,7 +211,7 @@ namespace NumpyLib
         {
             return aValue ^ bValue;
         }
-        private bool Remainder(bool aValue, bool bValue)
+        protected override bool Remainder(bool aValue, bool bValue)
         {
             return aValue ^ bValue;
         }

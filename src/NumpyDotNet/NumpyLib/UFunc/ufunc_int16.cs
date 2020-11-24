@@ -223,7 +223,7 @@ namespace NumpyLib
                 return 0;
             return (Int16)(aValue / bValue);
         }
-        private Int16 Remainder(Int16 aValue, Int16 bValue)
+        protected override Int16 Remainder(Int16 aValue, Int16 bValue)
         {
             if (bValue == 0)
             {

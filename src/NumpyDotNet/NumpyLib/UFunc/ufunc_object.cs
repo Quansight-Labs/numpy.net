@@ -220,7 +220,7 @@ namespace NumpyLib
         {
             return aValue / bValue;
         }
-        private System.Object Remainder(dynamic aValue, dynamic bValue)
+        protected override System.Object Remainder(dynamic aValue, dynamic bValue)
         {
             if (bValue == 0)
             {
