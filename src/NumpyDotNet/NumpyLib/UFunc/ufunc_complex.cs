@@ -149,8 +149,7 @@ namespace NumpyLib
                     destValue = Greater(aValue, bValue);
                     break;
                 case UFuncOperation.greater_equal:
-                    boolValue = GreaterEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = GreaterEqual(aValue, bValue);
                     break;
                 case UFuncOperation.floor_divide:
                     destValue = FloorDivide(aValue, bValue);
@@ -377,13 +376,14 @@ namespace NumpyLib
             }
             return boolValue ? 1 : 0;
         }
-        private bool GreaterEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex GreaterEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
+            bool boolValue = false;
             if (operand.Imaginary == 0)
             {
-                return bValue.Real >= operand.Real;
+                boolValue = bValue.Real >= operand.Real;
             }
-            return false;
+            return boolValue ? 1 : 0;
         }
         private System.Numerics.Complex FloorDivide(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {

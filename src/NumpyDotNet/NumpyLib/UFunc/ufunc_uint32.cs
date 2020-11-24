@@ -139,8 +139,7 @@ namespace NumpyLib
                     destValue = Greater(aValue, bValue);
                     break;
                 case UFuncOperation.greater_equal:
-                    boolValue = GreaterEqual(aValue, bValue);
-                    destValue = (UInt32)(boolValue ? 1 : 0);
+                    destValue = GreaterEqual(aValue, bValue);
                     break;
                 case UFuncOperation.floor_divide:
                     destValue = FloorDivide(aValue, bValue);
@@ -319,9 +318,10 @@ namespace NumpyLib
             bool boolValue = bValue > operand;
             return (UInt32)(boolValue ? 1 : 0);
         }
-        private bool GreaterEqual(UInt32 bValue, UInt32 operand)
+        protected override UInt32 GreaterEqual(UInt32 bValue, UInt32 operand)
         {
-            return bValue >= (dynamic)operand;
+            bool boolValue = bValue >= operand;
+            return (UInt32)(boolValue ? 1 : 0);
         }
         private UInt32 FloorDivide(UInt32 bValue, UInt32 operand)
         {

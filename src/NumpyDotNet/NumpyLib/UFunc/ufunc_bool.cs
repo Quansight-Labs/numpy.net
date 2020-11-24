@@ -291,7 +291,7 @@ namespace NumpyLib
         {
             return true;
         }
-        private bool GreaterEqual(bool bValue, bool operand)
+        protected override bool GreaterEqual(bool bValue, bool operand)
         {
             return true;
         }

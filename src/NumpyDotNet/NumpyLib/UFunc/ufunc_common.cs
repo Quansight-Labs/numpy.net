@@ -1487,6 +1487,9 @@ namespace NumpyLib
 
                     case UFuncOperation.greater:
                         return Greater;
+
+                    case UFuncOperation.greater_equal:
+                        return GreaterEqual;
                 }
 
                 return null;
@@ -1518,6 +1521,7 @@ namespace NumpyLib
             protected abstract T Equal(T o1, T o2);
             protected abstract T NotEqual(T o1, T o2);
             protected abstract T Greater(T o1, T o2);
+            protected abstract T GreaterEqual(T o1, T o2);
 
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
