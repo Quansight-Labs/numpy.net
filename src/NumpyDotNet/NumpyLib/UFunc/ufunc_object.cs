@@ -133,8 +133,7 @@ namespace NumpyLib
                     destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
-                    boolValue = NotEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = NotEqual(aValue, bValue);
                     break;
                 case UFuncOperation.greater:
                     boolValue = Greater(aValue, bValue);
@@ -307,9 +306,10 @@ namespace NumpyLib
             bool boolValue = bValue == operand;
             return boolValue ? 1 : 0;
         }
-        private bool NotEqual(dynamic bValue, dynamic operand)
+        protected override System.Object NotEqual(dynamic bValue, dynamic operand)
         {
-            return bValue != operand;
+            bool boolValue = bValue != operand;
+            return boolValue ? 1 : 0;
         }
         private bool Greater(dynamic bValue, dynamic operand)
         {

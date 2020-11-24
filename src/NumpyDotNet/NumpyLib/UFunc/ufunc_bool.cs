@@ -283,7 +283,7 @@ namespace NumpyLib
         {
             return bValue == operand;
         }
-        private bool NotEqual(bool bValue, bool operand)
+        protected override bool NotEqual(bool bValue, bool operand)
         {
             return bValue != operand;
         }

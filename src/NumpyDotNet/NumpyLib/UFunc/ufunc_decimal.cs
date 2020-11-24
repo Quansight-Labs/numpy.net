@@ -133,8 +133,7 @@ namespace NumpyLib
                     destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
-                    boolValue = NotEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = NotEqual(aValue, bValue);
                     break;
                 case UFuncOperation.greater:
                     boolValue = Greater(aValue, bValue);
@@ -332,9 +331,10 @@ namespace NumpyLib
             bool boolValue = bValue == operand;
             return boolValue ? 1 : 0;
         }
-        private bool NotEqual(decimal bValue, decimal operand)
+        protected override decimal NotEqual(decimal bValue, decimal operand)
         {
-            return bValue != operand;
+            bool boolValue = bValue != operand;
+            return boolValue ? 1 : 0;
         }
         private bool Greater(decimal bValue, decimal operand)
         {

@@ -1481,6 +1481,9 @@ namespace NumpyLib
 
                     case UFuncOperation.equal:
                         return Equal;
+
+                    case UFuncOperation.not_equal:
+                        return NotEqual;
                 }
 
                 return null;
@@ -1510,6 +1513,7 @@ namespace NumpyLib
             protected abstract T Less(T o1, T o2);
             protected abstract T LessEqual(T o1, T o2);
             protected abstract T Equal(T o1, T o2);
+            protected abstract T NotEqual(T o1, T o2);
 
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
