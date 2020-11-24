@@ -125,16 +125,13 @@ namespace NumpyLib
                     destValue = BitWiseOr(aValue, bValue);
                     break;
                 case UFuncOperation.less:
-                    boolValue = Less(aValue, bValue);
-                    destValue = (Int16)(boolValue ? 1 : 0);
+                    destValue = Less(aValue, bValue);
                     break;
                 case UFuncOperation.less_equal:
-                    boolValue = LessEqual(aValue, bValue);
-                    destValue = (Int16)(boolValue ? 1 : 0);
+                    destValue = LessEqual(aValue, bValue);
                     break;
                 case UFuncOperation.equal:
-                    boolValue = Equal(aValue, bValue);
-                    destValue = (Int16)(boolValue ? 1 : 0);
+                    destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
@@ -300,17 +297,20 @@ namespace NumpyLib
         {
             return (Int16)(bValue | operand);
         }
-        private bool Less(Int16 bValue, Int16 operand)
+        protected override Int16 Less(Int16 bValue, Int16 operand)
         {
-            return bValue < operand;
+            bool boolValue = bValue < operand;
+            return (Int16)(boolValue ? 1 : 0);
         }
-        private bool LessEqual(Int16 bValue, Int16 operand)
+        protected override Int16 LessEqual(Int16 bValue, Int16 operand)
         {
-            return bValue <= operand;
+            bool boolValue = bValue <= operand;
+            return (Int16)(boolValue ? 1 : 0);
         }
-        private bool Equal(Int16 bValue, Int16 operand)
+        protected override Int16 Equal(Int16 bValue, Int16 operand)
         {
-            return bValue == operand;
+            bool boolValue = bValue == operand;
+            return (Int16)(boolValue ? 1 : 0);
         }
         private bool NotEqual(Int16 bValue, Int16 operand)
         {

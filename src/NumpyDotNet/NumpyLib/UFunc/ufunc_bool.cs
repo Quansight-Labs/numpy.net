@@ -271,15 +271,15 @@ namespace NumpyLib
         {
             return bValue | operand;
         }
-        private bool Less(bool bValue, bool operand)
+        protected override bool Less(bool bValue, bool operand)
         {
             return false;
         }
-        private bool LessEqual(bool bValue, bool operand)
+        protected override bool LessEqual(bool bValue, bool operand)
         {
             return false;
         }
-        private bool Equal(bool bValue, bool operand)
+        protected override bool Equal(bool bValue, bool operand)
         {
             return bValue == operand;
         }

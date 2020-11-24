@@ -124,16 +124,13 @@ namespace NumpyLib
                     destValue = BitWiseOr(aValue, bValue);
                     break;
                 case UFuncOperation.less:
-                    boolValue = Less(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Less(aValue, bValue);
                     break;
                 case UFuncOperation.less_equal:
-                    boolValue = LessEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = LessEqual(aValue, bValue);
                     break;
                 case UFuncOperation.equal:
-                    boolValue = Equal(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
@@ -295,17 +292,20 @@ namespace NumpyLib
             return bValue | operand;
 
         }
-        private bool Less(dynamic bValue, dynamic operand)
+        protected override System.Object Less(dynamic bValue, dynamic operand)
         {
-            return bValue < operand;
+            bool boolValue = bValue < operand;
+            return boolValue ? 1 : 0;
         }
-        private bool LessEqual(dynamic bValue, dynamic operand)
+        protected override System.Object LessEqual(dynamic bValue, dynamic operand)
         {
-            return bValue <= operand;
+            bool boolValue = bValue <= operand;
+            return boolValue ? 1 : 0;
         }
-        private bool Equal(dynamic bValue, dynamic operand)
+        protected override System.Object Equal(dynamic bValue, dynamic operand)
         {
-            return bValue == operand;
+            bool boolValue = bValue == operand;
+            return boolValue ? 1 : 0;
         }
         private bool NotEqual(dynamic bValue, dynamic operand)
         {

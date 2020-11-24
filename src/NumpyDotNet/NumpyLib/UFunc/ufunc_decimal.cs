@@ -124,16 +124,13 @@ namespace NumpyLib
                     destValue = BitWiseOr(aValue, bValue);
                     break;
                 case UFuncOperation.less:
-                    boolValue = Less(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Less(aValue, bValue);
                     break;
                 case UFuncOperation.less_equal:
-                    boolValue = LessEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = LessEqual(aValue, bValue);
                     break;
                 case UFuncOperation.equal:
-                    boolValue = Equal(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
@@ -320,17 +317,20 @@ namespace NumpyLib
             UInt64 dValue = Convert.ToUInt64(bValue);
             return dValue | Convert.ToUInt64(operand);
         }
-        private bool Less(decimal bValue, decimal operand)
+        protected override decimal Less(decimal bValue, decimal operand)
         {
-            return bValue < operand;
+            bool boolValue = bValue < operand;
+            return boolValue ? 1 : 0;
         }
-        private bool LessEqual(decimal bValue, decimal operand)
+        protected override decimal LessEqual(decimal bValue, decimal operand)
         {
-            return bValue <= operand;
+            bool boolValue = bValue <= operand;
+            return boolValue ? 1 : 0;
         }
-        private bool Equal(decimal bValue, decimal operand)
+        protected override decimal Equal(decimal bValue, decimal operand)
         {
-            return bValue == operand;
+            bool boolValue = bValue == operand;
+            return boolValue ? 1 : 0;
         }
         private bool NotEqual(decimal bValue, decimal operand)
         {

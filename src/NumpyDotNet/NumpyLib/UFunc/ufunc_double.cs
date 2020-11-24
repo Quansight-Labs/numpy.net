@@ -124,16 +124,13 @@ namespace NumpyLib
                     destValue = BitWiseOr(aValue, bValue);
                     break;
                 case UFuncOperation.less:
-                    boolValue = Less(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Less(aValue, bValue);
                     break;
                 case UFuncOperation.less_equal:
-                    boolValue = LessEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = LessEqual(aValue, bValue);
                     break;
                 case UFuncOperation.equal:
-                    boolValue = Equal(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
@@ -304,17 +301,20 @@ namespace NumpyLib
             UInt64 dValue = Convert.ToUInt64(bValue);
             return dValue | Convert.ToUInt64(operand);
         }
-        private bool Less(double bValue, double operand)
+        protected override double Less(double bValue, double operand)
         {
-            return bValue < operand;
+            bool boolValue = bValue < operand;
+            return boolValue ? 1 : 0;
         }
-        private bool LessEqual(double bValue, double operand)
+        protected override double LessEqual(double bValue, double operand)
         {
-            return bValue <= operand;
+            bool boolValue = bValue <= operand;
+            return boolValue ? 1 : 0;
         }
-        private bool Equal(double bValue, double operand)
+        protected override double Equal(double bValue, double operand)
         {
-            return bValue == operand;
+            bool boolValue = bValue == operand;
+            return boolValue ? 1 : 0;
         }
         private bool NotEqual(double bValue, double operand)
         {

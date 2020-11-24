@@ -134,16 +134,13 @@ namespace NumpyLib
                     destValue = BitWiseOr(aValue, bValue);
                     break;
                 case UFuncOperation.less:
-                    boolValue = Less(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Less(aValue, bValue);
                     break;
                 case UFuncOperation.less_equal:
-                    boolValue = LessEqual(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = LessEqual(aValue, bValue);
                     break;
                 case UFuncOperation.equal:
-                    boolValue = Equal(aValue, bValue);
-                    destValue = boolValue ? 1 : 0;
+                    destValue = Equal(aValue, bValue);
                     break;
                 case UFuncOperation.not_equal:
                     boolValue = NotEqual(aValue, bValue);
@@ -343,25 +340,30 @@ namespace NumpyLib
 
             return new System.Numerics.Complex((double)rValue, (double)iValue);
         }
-        private bool Less(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Less(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
+            bool boolValue = false;
             if (operand.Imaginary == 0)
             {
-                return bValue.Real < operand.Real;
+                boolValue =  bValue.Real < operand.Real;
             }
-            return false;
+
+            return boolValue ? 1 : 0;
         }
-        private bool LessEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex LessEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
+            bool boolValue = false;
             if (operand.Imaginary == 0)
             {
-                return bValue.Real <= operand.Real;
+                boolValue = bValue.Real <= operand.Real;
             }
-            return false;
+
+            return boolValue ? 1 : 0;
         }
-        private bool Equal(System.Numerics.Complex bValue, System.Numerics.Complex operand)
+        protected override System.Numerics.Complex Equal(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
-            return bValue == operand;
+            bool boolValue = bValue == operand;
+            return boolValue ? 1 : 0;
         }
         private bool NotEqual(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {

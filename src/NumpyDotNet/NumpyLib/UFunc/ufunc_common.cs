@@ -1472,6 +1472,15 @@ namespace NumpyLib
 
                     case UFuncOperation.bitwise_or:
                         return BitWiseOr;
+
+                    case UFuncOperation.less:
+                        return Less;
+
+                    case UFuncOperation.less_equal:
+                        return LessEqual;
+
+                    case UFuncOperation.equal:
+                        return Equal;
                 }
 
                 return null;
@@ -1498,6 +1507,9 @@ namespace NumpyLib
             protected abstract T BitWiseAnd(T o1, T o2);
             protected abstract T BitWiseXor(T o1, T o2);
             protected abstract T BitWiseOr(T o1, T o2);
+            protected abstract T Less(T o1, T o2);
+            protected abstract T LessEqual(T o1, T o2);
+            protected abstract T Equal(T o1, T o2);
 
 
             protected abstract T PerformUFuncOperation(UFuncOperation op, T o1, T o2);
