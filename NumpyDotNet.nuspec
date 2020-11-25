@@ -22,7 +22,7 @@
   </metadata>
   
    <files>
-    <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyDotNet.dll" target="lib\netstandard2.0" />
-    <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyLib.dll" target="lib\netstandard2.0" />
+    <file src="src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyDotNet.dll" target="lib\netstandard2.0" />
+    <file src="src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyLib.dll" target="lib\netstandard2.0" />
   </files>
 </package>

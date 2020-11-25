@@ -87,94 +87,94 @@ namespace NumpyLibTests
 
         }
 
-        [TestMethod]
-        public unsafe void npy_memcpy_Test1()
-        {
+        // [TestMethod]
+        // public unsafe void npy_memcpy_Test1()
+        // {
 
-            byte[] TestData = new byte[500000];
-            byte[] TestData2 = new byte[500000];
+        //     byte[] TestData = new byte[500000];
+        //     byte[] TestData2 = new byte[500000];
 
-            int copySize = 4;
-            int loopCnt = 50000000;
+        //     int copySize = 4;
+        //     int loopCnt = 50000000;
 
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
+        //     System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        //     sw.Start();
 
-            for (int i = 0; i < loopCnt; i++)
-            {
-                Tests.FastCopy.Copy(TestData, TestData2, 0, (uint)copySize);
-            }
-            sw.Stop();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         Tests.FastCopy.Copy(TestData, TestData2, 0, (uint)copySize);
+        //     }
+        //     sw.Stop();
 
-            long Test1MS = sw.ElapsedMilliseconds;
-
-
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < loopCnt; i++)
-            {
-                Array.Copy(TestData, TestData2, copySize);
-            }
-            sw.Stop();
-            long Test2MS = sw.ElapsedMilliseconds;
+        //     long Test1MS = sw.ElapsedMilliseconds;
 
 
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < loopCnt; i++)
-            {
-                Buffer.BlockCopy(TestData, 0, TestData2, 0, copySize);
-            }
-            sw.Stop();
-            long Test3MS = sw.ElapsedMilliseconds;
-
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < loopCnt; i++)
-            {
-                //GCHandle handle1 = GCHandle.Alloc(TestData2);
-                //IntPtr parameter = (IntPtr)handle1;
-                //// call WinAPi and pass the parameter here
-                //// then free the handle when not needed:
-                //Marshal.Copy(TestData, 0, parameter, copySize);
-
-                //handle1.Free();
-            }
-            sw.Stop();
-            long Test4MS = 0;
+        //     sw.Reset();
+        //     sw.Start();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         Array.Copy(TestData, TestData2, copySize);
+        //     }
+        //     sw.Stop();
+        //     long Test2MS = sw.ElapsedMilliseconds;
 
 
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < loopCnt; i++)
-            {
-                for (int j = 0; j < copySize; j++)
-                {
-                    TestData2[j] = TestData[j];
-                }
-            }
-            sw.Stop();
-            long Test5MS = sw.ElapsedMilliseconds;
+        //     sw.Reset();
+        //     sw.Start();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         Buffer.BlockCopy(TestData, 0, TestData2, 0, copySize);
+        //     }
+        //     sw.Stop();
+        //     long Test3MS = sw.ElapsedMilliseconds;
+
+        //     sw.Reset();
+        //     sw.Start();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         //GCHandle handle1 = GCHandle.Alloc(TestData2);
+        //         //IntPtr parameter = (IntPtr)handle1;
+        //         //// call WinAPi and pass the parameter here
+        //         //// then free the handle when not needed:
+        //         //Marshal.Copy(TestData, 0, parameter, copySize);
+
+        //         //handle1.Free();
+        //     }
+        //     sw.Stop();
+        //     long Test4MS = 0;
 
 
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < loopCnt; i++)
-            {
-                fixed (void* pSrc = TestData2, pDst = TestData)
-                {
-                        CustomCopy(pSrc, pDst, copySize);
-                }
-            }
-            sw.Stop();
-            long Test6MS = sw.ElapsedMilliseconds;
+        //     sw.Reset();
+        //     sw.Start();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         for (int j = 0; j < copySize; j++)
+        //         {
+        //             TestData2[j] = TestData[j];
+        //         }
+        //     }
+        //     sw.Stop();
+        //     long Test5MS = sw.ElapsedMilliseconds;
+
+
+        //     sw.Reset();
+        //     sw.Start();
+        //     for (int i = 0; i < loopCnt; i++)
+        //     {
+        //         fixed (void* pSrc = TestData2, pDst = TestData)
+        //         {
+        //                 CustomCopy(pSrc, pDst, copySize);
+        //         }
+        //     }
+        //     sw.Stop();
+        //     long Test6MS = sw.ElapsedMilliseconds;
 
 
 
-            Console.WriteLine("{0} vs {1} vs {2} vs {3} vs {4} vs {5}", Test1MS, Test2MS, Test3MS, Test4MS, Test5MS, Test6MS);
+        //     Console.WriteLine("{0} vs {1} vs {2} vs {3} vs {4} vs {5}", Test1MS, Test2MS, Test3MS, Test4MS, Test5MS, Test6MS);
 
 
-        }
+        // }
 
         static unsafe void CustomCopy(void* dest, void* src, int count)
         {

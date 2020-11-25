@@ -22,7 +22,7 @@
   </metadata>
   
    <files>
-    <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\UnitTests\NumpyDotNet.UnitTests.zip" target="NumpyDotNet.UnitTests" />
+    <file src="src/NumpyDotNet/UnitTests/NumpyDotNet.UnitTests.zip" target="NumpyDotNet.UnitTests" />
    </files>
 </package>
 	

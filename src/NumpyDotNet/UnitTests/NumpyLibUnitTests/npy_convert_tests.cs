@@ -151,145 +151,145 @@ namespace NumpyLibTests
 
         }
 
-        [Ignore]
-        [TestMethod]
-        public void NpyArray_FillWithObject_TestByte()
-        {
-            int DataSize = 0;
+        // [Ignore]
+        // [TestMethod]
+        // public void NpyArray_FillWithObject_TestByte()
+        // {
+        //     int DataSize = 0;
 
-            var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_BYTE, ref DataSize);
-            Assert.AreEqual(NPY_TYPES.NPY_BYTE, SimpleArray.ItemType);
-
-
-            var FillData = byte.MaxValue ;
-            var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
-
-            bool AllFilled = true;
-
-            byte[] FloatData = (byte[])SimpleArray.data.datap;
-            foreach (var f in FloatData)
-            {
-                if (f != FillData)
-                    AllFilled = false;
-            }
-
-            Assert.IsTrue(AllFilled);
+        //     var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_BYTE, ref DataSize);
+        //     Assert.AreEqual(NPY_TYPES.NPY_BYTE, SimpleArray.ItemType);
 
 
-        }
+        //     var FillData = byte.MaxValue ;
+        //     var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
 
-        [Ignore]
-        [TestMethod]
-        public void NpyArray_FillWithObject_TestFloat()
-        {
-            int DataSize = 0;
+        //     bool AllFilled = true;
 
-            var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_FLOAT, ref DataSize);
-            Assert.AreEqual(NPY_TYPES.NPY_FLOAT, SimpleArray.ItemType);
+        //     byte[] FloatData = (byte[])SimpleArray.data.datap;
+        //     foreach (var f in FloatData)
+        //     {
+        //         if (f != FillData)
+        //             AllFilled = false;
+        //     }
 
-
-            float FillData = 195.43f;
-            var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
-
-            bool AllFilled = true;
-
-            float[]FloatData = (float [])SimpleArray.data.datap;
-            foreach (var f in FloatData)
-            {
-                if (f != FillData)
-                    AllFilled = false;
-            }
-
-            Assert.IsTrue(AllFilled);
+        //     Assert.IsTrue(AllFilled);
 
 
-        }
+        // }
 
-        [Ignore]
-        [TestMethod]
-        public void NpyArray_FillWithObject_TestInt32()
-        {
-            int DataSize = 0;
+        // [Ignore]
+        // [TestMethod]
+        // public void NpyArray_FillWithObject_TestFloat()
+        // {
+        //     int DataSize = 0;
 
-
-
-            var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_INT32, ref DataSize);
-            Assert.AreEqual(NPY_TYPES.NPY_INT32, SimpleArray.ItemType);
+        //     var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_FLOAT, ref DataSize);
+        //     Assert.AreEqual(NPY_TYPES.NPY_FLOAT, SimpleArray.ItemType);
 
 
-            var FillData = Int32.MaxValue;
+        //     float FillData = 195.43f;
+        //     var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
+
+        //     bool AllFilled = true;
+
+        //     float[]FloatData = (float [])SimpleArray.data.datap;
+        //     foreach (var f in FloatData)
+        //     {
+        //         if (f != FillData)
+        //             AllFilled = false;
+        //     }
+
+        //     Assert.IsTrue(AllFilled);
+
+
+        // }
+
+        // [Ignore]
+        // [TestMethod]
+        // public void NpyArray_FillWithObject_TestInt32()
+        // {
+        //     int DataSize = 0;
+
+
+
+        //     var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_INT32, ref DataSize);
+        //     Assert.AreEqual(NPY_TYPES.NPY_INT32, SimpleArray.ItemType);
+
+
+        //     var FillData = Int32.MaxValue;
 
             
-            var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
+        //     var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
 
-            bool AllFilled = true;
+        //     bool AllFilled = true;
 
-            Int32[] Int32data = (Int32[])SimpleArray.data.datap;
-            foreach (var f in Int32data)
-            {
-                if (f != FillData)
-                    AllFilled = false;
-            }
+        //     Int32[] Int32data = (Int32[])SimpleArray.data.datap;
+        //     foreach (var f in Int32data)
+        //     {
+        //         if (f != FillData)
+        //             AllFilled = false;
+        //     }
 
-            Assert.IsTrue(AllFilled);
-
-
-        }
+        //     Assert.IsTrue(AllFilled);
 
 
-        [Ignore]
-        [TestMethod]
-        public void NpyArray_FillWithObject_TestInt64()
-        {
-            int DataSize = 0;
-
-            var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_INT64, ref DataSize);
-            Assert.AreEqual(NPY_TYPES.NPY_INT64, SimpleArray.ItemType);
+        // }
 
 
-            var FillData = Int64.MaxValue;
-            var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
+        // [Ignore]
+        // [TestMethod]
+        // public void NpyArray_FillWithObject_TestInt64()
+        // {
+        //     int DataSize = 0;
 
-            bool AllFilled = true;
-
-            Int64[] Int64data = (Int64[])SimpleArray.data.datap;
-            foreach (var f in Int64data)
-            {
-                if (f != FillData)
-                    AllFilled = false;
-            }
-
-            Assert.IsTrue(AllFilled);
+        //     var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_INT64, ref DataSize);
+        //     Assert.AreEqual(NPY_TYPES.NPY_INT64, SimpleArray.ItemType);
 
 
-        }
+        //     var FillData = Int64.MaxValue;
+        //     var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
 
-        [Ignore]
-        [TestMethod]
-        public void NpyArray_FillWithObject_TestUInt64()
-        {
-            int DataSize = 0;
+        //     bool AllFilled = true;
 
-            var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_UINT64, ref DataSize);
-            Assert.AreEqual(NPY_TYPES.NPY_UINT64, SimpleArray.ItemType);
+        //     Int64[] Int64data = (Int64[])SimpleArray.data.datap;
+        //     foreach (var f in Int64data)
+        //     {
+        //         if (f != FillData)
+        //             AllFilled = false;
+        //     }
 
-
-            UInt64 FillData = 50;
-            var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
-
-            bool AllFilled = true;
-
-            UInt64[] Int64data = (UInt64[])SimpleArray.data.datap;
-            foreach (var f in Int64data)
-            {
-                if (f != FillData)
-                    AllFilled = false;
-            }
-
-            Assert.IsTrue(AllFilled);
+        //     Assert.IsTrue(AllFilled);
 
 
-        }
+        // }
+
+        // [Ignore]
+        // [TestMethod]
+        // public void NpyArray_FillWithObject_TestUInt64()
+        // {
+        //     int DataSize = 0;
+
+        //     var SimpleArray = Common.GetSimpleArray(NPY_TYPES.NPY_UINT64, ref DataSize);
+        //     Assert.AreEqual(NPY_TYPES.NPY_UINT64, SimpleArray.ItemType);
+
+
+        //     UInt64 FillData = 50;
+        //     var result = numpyAPI.NpyArray_FillWithObject(SimpleArray, FillData);
+
+        //     bool AllFilled = true;
+
+        //     UInt64[] Int64data = (UInt64[])SimpleArray.data.datap;
+        //     foreach (var f in Int64data)
+        //     {
+        //         if (f != FillData)
+        //             AllFilled = false;
+        //     }
+
+        //     Assert.IsTrue(AllFilled);
+
+
+        // }
 
         [Ignore]
         [TestMethod]
