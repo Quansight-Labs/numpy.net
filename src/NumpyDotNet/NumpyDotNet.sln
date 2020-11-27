@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserTestApps", "UserTestApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSHARPCPPN", "..\UserTestApps\CSHARPCPPN\CSHARPCPPN\CSHARPCPPN.csproj", "{8B12E3C9-5169-43C3-A65F-437EBC84777E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCodeTesterApp", "ConsoleApp1\TestCodeTesterApp.csproj", "{BCB32546-7A05-43B2-98E2-B415001E86C3}"
+EndProject
 Global
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
@@ -83,6 +85,14 @@ Global
 		{8B12E3C9-5169-43C3-A65F-437EBC84777E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B12E3C9-5169-43C3-A65F-437EBC84777E}.Release|x64.ActiveCfg = Release|Any CPU
 		{8B12E3C9-5169-43C3-A65F-437EBC84777E}.Release|x64.Build.0 = Release|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +104,11 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3CDBB85-F316-4E6B-85B4-CF0A491F27E3}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
