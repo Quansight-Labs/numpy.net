@@ -710,19 +710,16 @@ namespace NumpyLib
             DestIters[0] = destIter.copy();
             DestIters[0].size = taskSize;
             SrcIters[0] = srcIter.copy();
-
+ 
             for (int Index = 1; Index < DestIters.Length; Index++)
             {
                 DestIters[Index] = DestIters[Index-1].copy();
                 DestIters[Index].size += taskSize;
                 SrcIters[Index] = SrcIters[Index-1].copy();
 
-                while (DestIters[Index].index < DestIters[Index-1].size)
-                {
-                    numpyinternal.NpyArray_ITER_NEXT(SrcIters[Index]);
-                    numpyinternal.NpyArray_ITER_NEXT(DestIters[Index]);
-                }
-
+                npy_intp walkCount = DestIters[Index - 1].size - DestIters[Index].index;
+                numpyinternal.NpyArray_ITER_WALK(DestIters[Index], walkCount);
+                numpyinternal.NpyArray_ITER_WALK(SrcIters[Index], walkCount);
             }
             DestIters[DestIters.Length - 1].size = destIter.size;
 
