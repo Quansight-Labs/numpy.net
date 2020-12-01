@@ -71,7 +71,7 @@ We have ported the original "RandomState" random number generator and most of th
 
 Our version is implemented as an instantiable class, each with independent random engines so it can be used in multi-threaded applications.
 
-NEW FEATURE!  We now support user defined random number generators.  Implement a interface class with your generator and pass that to the random constructor and use that to generate randon numbers in all of the supported distributions.
+NEW FEATURE!  We now support user defined random number generators.  Implement a interface class with your generator and pass that to the random constructor and use that to generate random numbers in all of the supported distributions.
 
 ##### Future plans include support for:
 
@@ -87,7 +87,7 @@ You can mix and match data types within the same ndarray such as Int32, Floats, 
 
 Most NumPy operations have been shown to work really well with these object arrays.  We were pleasantly suprised by how well it worked. Check out the latest unit tests for examples of what can be done.
 
-It is very possible to build custom data types and have them processed by the NumpyDotNet system. If you want the ability to add an integer to your custom data object or to add two custom data objects together, simple define your custom data object class to overide the + sign. This holds true for all of the operators allowed by the C# language (https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading). 
+It is very possible to build custom data types and have them processed by the NumpyDotNet system. If you want the ability to add an integer to your custom data object or to add two custom data objects together, simply define your custom data object class to overide the + sign. This holds true for all of the operators allowed by the C# language (https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading). 
 
 Please see our latest unit tests and sample apps for examples on how to build custom data types with object arrays.
 
