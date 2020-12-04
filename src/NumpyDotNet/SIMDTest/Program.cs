@@ -41,6 +41,7 @@ namespace ConsoleApp1
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             var naiveTimesMs = new List<long>();
+            var fixedTimesMs = new List<long>();
             var hwTimesMs = new List<long>();
 
             for (int i = 0; i < 10; i++)
@@ -52,6 +53,15 @@ namespace ConsoleApp1
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
 
+                /////
+                sw.Restart();
+
+                var resultFixed = ArrayAdditionFixed(lhs, rhs);
+
+                var tsFixed = sw.ElapsedMilliseconds;
+                fixedTimesMs.Add(tsFixed);
+
+                /////
                 sw.Restart();
 
                 var result2 = SIMDArrayAddition(lhs, rhs);
@@ -60,11 +70,12 @@ namespace ConsoleApp1
                 hwTimesMs.Add(ts2);
 
 
-                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
+                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, tsFixed);
             }
 
             Console.WriteLine("Int32 array addition:");
             Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
+            Console.WriteLine($"Fixed method average time:          {fixedTimesMs.Average():.##}");
             Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
             Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
         }
@@ -80,6 +91,33 @@ namespace ConsoleApp1
 
             return result;
         }
+
+  
+        private static unsafe int[] ArrayAdditionFixed(int[] lhs, int[] rhs)
+        {
+            var result = new int[lhs.Length];
+
+            fixed (int* plhs = lhs  )
+            {
+                fixed (int* prhs = rhs)
+                {
+                    fixed (int* presult = result)
+                    {
+                        for (int i = 0; i < lhs.Length; i += 1)
+                        {
+                            presult[i] = plhs[i] + prhs[i];
+                            //presult[i+1] = plhs[i+1] + prhs[i+1];
+                            //presult[i + 2] = plhs[i + 2] + prhs[i + 2];
+                            //presult[i + 3] = plhs[i + 3] + prhs[i + 3];
+                        }
+                    }
+                }
+            }
+     
+
+            return result;
+        }
+   
 
         private static int[] SIMDArrayAddition(int[] lhs, int[] rhs)
         {
