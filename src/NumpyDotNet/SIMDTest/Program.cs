@@ -14,8 +14,22 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            int[] lhs = new int[33177600];
-            int[] rhs = new int[33177600];
+            SIMDTestInt();
+            SIMDTestInt64();
+            SIMDTestShort();
+            SIMDTestFloat();
+            SIMDTestDouble();
+
+            Console.ReadLine();
+
+
+        }
+
+        #region Int tests
+        private static void SIMDTestInt()
+        {
+            var lhs = new int[33177600];
+            var rhs = new int[33177600];
 
             for (int i = 0; i < lhs.Length; i++)
             {
@@ -28,40 +42,34 @@ namespace ConsoleApp1
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             var naiveTimesMs = new List<long>();
             var hwTimesMs = new List<long>();
-            var hwTimesMs2 = new List<long>();
 
             for (int i = 0; i < 10; i++)
             {
                 sw.Restart();
 
-                int[] result1 = ArrayAddition(lhs, rhs);
+                var result1 = ArrayAddition(lhs, rhs);
 
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
 
                 sw.Restart();
 
-                int[] result2 = SIMDArrayAddition(lhs, rhs);
+                var result2 = SIMDArrayAddition(lhs, rhs);
 
                 var ts2 = sw.ElapsedMilliseconds;
                 hwTimesMs.Add(ts2);
 
-      
+
                 Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
             }
 
-            Console.WriteLine("Int array addition:");
+            Console.WriteLine("Int32 array addition:");
             Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
             Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
-            Console.WriteLine($"HW2 accelerated method average time: {hwTimesMs2.Average():.##}");
             Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
-
-            Console.ReadLine();
-
-
         }
 
-        public static int[] ArrayAddition(int[] lhs, int[] rhs)
+        private static int[] ArrayAddition(int[] lhs, int[] rhs)
         {
             var result = new int[lhs.Length];
     
@@ -73,7 +81,7 @@ namespace ConsoleApp1
             return result;
         }
 
-        public static int[] SIMDArrayAddition(int[] lhs, int[] rhs)
+        private static int[] SIMDArrayAddition(int[] lhs, int[] rhs)
         {
             var simdLength = Vector<int>.Count;
             var result = new int[lhs.Length];
@@ -92,8 +100,315 @@ namespace ConsoleApp1
 
             return result;
         }
+        #endregion
+
+        #region Int64 tests
+        private static void SIMDTestInt64()
+        {
+            var lhs = new Int64[33177600];
+            var rhs = new Int64[33177600];
+
+            for (Int64 i = 0; i < lhs.Length; i++)
+            {
+                lhs[i] = i;
+                rhs[i] = i + 1;
+            }
+
+            bool isSimd = Vector.IsHardwareAccelerated;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var naiveTimesMs = new List<long>();
+            var hwTimesMs = new List<long>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                sw.Restart();
+
+                var result1 = ArrayAddition(lhs, rhs);
+
+                var ts1 = sw.ElapsedMilliseconds;
+                naiveTimesMs.Add(ts1);
+
+                sw.Restart();
+
+                var result2 = SIMDArrayAddition(lhs, rhs);
+
+                var ts2 = sw.ElapsedMilliseconds;
+                hwTimesMs.Add(ts2);
 
 
+                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
+            }
+
+            Console.WriteLine("Int64 array addition:");
+            Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
+            Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
+            Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
+        }
+
+        private static Int64[] ArrayAddition(Int64[] lhs, Int64[] rhs)
+        {
+            var result = new Int64[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] + rhs[i];
+            }
+
+            return result;
+        }
+
+        private static Int64[] SIMDArrayAddition(Int64[] lhs, Int64[] rhs)
+        {
+            var simdLength = Vector<Int64>.Count;
+            var result = new Int64[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<Int64>(lhs, i);
+                var vb = new Vector<Int64>(rhs, i);
+                (va + vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] + rhs[i];
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region short tests
+        private static void SIMDTestShort()
+        {
+            var lhs = new short[33177600];
+            var rhs = new short[33177600];
+
+            for (int i = 0; i < lhs.Length; i++)
+            {
+                lhs[i] = (short)i;
+                rhs[i] = (short)(i + 1);
+            }
+
+            bool isSimd = Vector.IsHardwareAccelerated;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var naiveTimesMs = new List<long>();
+            var hwTimesMs = new List<long>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                sw.Restart();
+
+                var result1 = ArrayAddition(lhs, rhs);
+
+                var ts1 = sw.ElapsedMilliseconds;
+                naiveTimesMs.Add(ts1);
+
+                sw.Restart();
+
+                var result2 = SIMDArrayAddition(lhs, rhs);
+
+                var ts2 = sw.ElapsedMilliseconds;
+                hwTimesMs.Add(ts2);
+
+
+                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
+            }
+
+            Console.WriteLine("short array addition:");
+            Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
+            Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
+            Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
+        }
+
+        private static short[] ArrayAddition(short[] lhs, short[] rhs)
+        {
+            var result = new short[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = (short)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+
+        private static short[] SIMDArrayAddition(short[] lhs, short[] rhs)
+        {
+            var simdLength = Vector<short>.Count;
+            var result = new short[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<short>(lhs, i);
+                var vb = new Vector<short>(rhs, i);
+                (va + vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = (short)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region float tests
+        private static void SIMDTestFloat()
+        {
+            var lhs = new float[33177600];
+            var rhs = new float[33177600];
+
+            for (int i = 0; i < lhs.Length; i++)
+            {
+                lhs[i] = (float)i;
+                rhs[i] = (float)(i + 1);
+            }
+
+            bool isSimd = Vector.IsHardwareAccelerated;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var naiveTimesMs = new List<long>();
+            var hwTimesMs = new List<long>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                sw.Restart();
+
+                var result1 = ArrayAddition(lhs, rhs);
+
+                var ts1 = sw.ElapsedMilliseconds;
+                naiveTimesMs.Add(ts1);
+
+                sw.Restart();
+
+                var result2 = SIMDArrayAddition(lhs, rhs);
+
+                var ts2 = sw.ElapsedMilliseconds;
+                hwTimesMs.Add(ts2);
+
+
+                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
+            }
+
+            Console.WriteLine("float array addition:");
+            Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
+            Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
+            Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
+        }
+
+        private static float[] ArrayAddition(float[] lhs, float[] rhs)
+        {
+            var result = new float[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = (float)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+
+        private static float[] SIMDArrayAddition(float[] lhs, float[] rhs)
+        {
+            var simdLength = Vector<float>.Count;
+            var result = new float[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<float>(lhs, i);
+                var vb = new Vector<float>(rhs, i);
+                (va + vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = (float)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region double tests
+        private static void SIMDTestDouble()
+        {
+            var lhs = new double[33177600];
+            var rhs = new double[33177600];
+
+            for (int i = 0; i < lhs.Length; i++)
+            {
+                lhs[i] = (double)i;
+                rhs[i] = (double)(i + 1);
+            }
+
+            bool isSimd = Vector.IsHardwareAccelerated;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var naiveTimesMs = new List<long>();
+            var hwTimesMs = new List<long>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                sw.Restart();
+
+                var result1 = ArrayAddition(lhs, rhs);
+
+                var ts1 = sw.ElapsedMilliseconds;
+                naiveTimesMs.Add(ts1);
+
+                sw.Restart();
+
+                var result2 = SIMDArrayAddition(lhs, rhs);
+
+                var ts2 = sw.ElapsedMilliseconds;
+                hwTimesMs.Add(ts2);
+
+
+                Console.WriteLine("{0} : {1} : {2}", ts1, ts2, isSimd);
+            }
+
+            Console.WriteLine("double array addition:");
+            Console.WriteLine($"Naive method average time:          {naiveTimesMs.Average():.##}");
+            Console.WriteLine($"HW accelerated method average time: {hwTimesMs.Average():.##}");
+            Console.WriteLine($"Hardware speedup:                   {naiveTimesMs.Average() / hwTimesMs.Average():P}%");
+        }
+
+        private static double[] ArrayAddition(double[] lhs, double[] rhs)
+        {
+            var result = new double[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = (float)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+
+        private static double[] SIMDArrayAddition(double[] lhs, double[] rhs)
+        {
+            var simdLength = Vector<double>.Count;
+            var result = new double[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<double>(lhs, i);
+                var vb = new Vector<double>(rhs, i);
+                (va + vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = (float)(lhs[i] + rhs[i]);
+            }
+
+            return result;
+        }
+        #endregion
 
     }
 }
