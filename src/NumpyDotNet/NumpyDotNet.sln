@@ -26,10 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSHARPCPPN", "..\UserTestAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCodeTesterApp", "ConsoleApp1\TestCodeTesterApp.csproj", "{BCB32546-7A05-43B2-98E2-B415001E86C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIMDTesterApp", "SIMDTest\SIMDTesterApp.csproj", "{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -93,6 +92,14 @@ Global
 		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|x64.ActiveCfg = Release|Any CPU
 		{BCB32546-7A05-43B2-98E2-B415001E86C3}.Release|x64.Build.0 = Release|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Debug|x64.Build.0 = Debug|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Release|x64.ActiveCfg = Release|Any CPU
+		{FD1DF5E2-D91A-417E-8E1C-6CFFC24401A5}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +111,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3CDBB85-F316-4E6B-85B4-CF0A491F27E3}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
