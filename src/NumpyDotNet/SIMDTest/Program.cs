@@ -22,7 +22,6 @@ namespace ConsoleApp1
 
             Console.ReadLine();
 
-
         }
 
         #region Int tests
@@ -33,7 +32,7 @@ namespace ConsoleApp1
 
             for (int i = 0; i < lhs.Length; i++)
             {
-                lhs[i] = i;
+                lhs[i] = i+100;
                 rhs[i] = i + 1;
             }
 
@@ -48,7 +47,8 @@ namespace ConsoleApp1
             {
                 sw.Restart();
 
-                var result1 = ArrayAddition(lhs, rhs);
+                //var result1 = ArrayAddition(lhs, rhs);
+                var result1 = ArrayDivide(lhs, rhs);
 
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
@@ -64,7 +64,8 @@ namespace ConsoleApp1
                 /////
                 sw.Restart();
 
-                var result2 = SIMDArrayAddition(lhs, rhs);
+                //var result2 = SIMDArrayAddition(lhs, rhs);
+                var result2 = SIMDArrayDivide(lhs, rhs);
 
                 var ts2 = sw.ElapsedMilliseconds;
                 hwTimesMs.Add(ts2);
@@ -92,7 +93,18 @@ namespace ConsoleApp1
             return result;
         }
 
-  
+        private static int[] ArrayDivide(int[] lhs, int[] rhs)
+        {
+            var result = new int[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] / rhs[i];
+            }
+
+            return result;
+        }
+
         private static unsafe int[] ArrayAdditionFixed(int[] lhs, int[] rhs)
         {
             var result = new int[lhs.Length];
@@ -138,6 +150,27 @@ namespace ConsoleApp1
 
             return result;
         }
+
+        private static int[] SIMDArrayDivide(int[] lhs, int[] rhs)
+        {
+            var simdLength = Vector<int>.Count;
+            var result = new int[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<int>(lhs, i);
+                var vb = new Vector<int>(rhs, i);
+                (va / vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] / rhs[i];
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region Int64 tests
@@ -379,7 +412,7 @@ namespace ConsoleApp1
 
             for (int i = 0; i < lhs.Length; i++)
             {
-                lhs[i] = (double)i;
+                lhs[i] = (double)i+100;
                 rhs[i] = (double)(i + 1);
             }
 
@@ -393,14 +426,16 @@ namespace ConsoleApp1
             {
                 sw.Restart();
 
-                var result1 = ArrayAddition(lhs, rhs);
+                //var result1 = ArrayAddition(lhs, rhs);
+                var result1 = ArrayDivide(lhs, rhs);
 
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
 
                 sw.Restart();
 
-                var result2 = SIMDArrayAddition(lhs, rhs);
+                //var result2 = SIMDArrayAddition(lhs, rhs);
+                var result2 = SIMDArrayDivide(lhs, rhs);
 
                 var ts2 = sw.ElapsedMilliseconds;
                 hwTimesMs.Add(ts2);
@@ -421,7 +456,19 @@ namespace ConsoleApp1
 
             for (int i = 0; i < lhs.Length; ++i)
             {
-                result[i] = (float)(lhs[i] + rhs[i]);
+                result[i] = lhs[i] + rhs[i];
+            }
+
+            return result;
+        }
+
+        private static double[] ArrayDivide(double[] lhs, double[] rhs)
+        {
+            var result = new double[lhs.Length];
+
+            for (int i = 0; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] / rhs[i];
             }
 
             return result;
@@ -446,6 +493,27 @@ namespace ConsoleApp1
 
             return result;
         }
+
+        private static double[] SIMDArrayDivide(double[] lhs, double[] rhs)
+        {
+            var simdLength = Vector<double>.Count;
+            var result = new double[lhs.Length];
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<double>(lhs, i);
+                var vb = new Vector<double>(rhs, i);
+                (va / vb).CopyTo(result, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                result[i] = lhs[i] / rhs[i];
+            }
+
+            return result;
+        }
+
         #endregion
 
     }
