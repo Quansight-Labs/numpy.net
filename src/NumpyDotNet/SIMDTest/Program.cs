@@ -48,7 +48,8 @@ namespace ConsoleApp1
                 sw.Restart();
 
                 //var result1 = ArrayAddition(lhs, rhs);
-                var result1 = ArrayDivide(lhs, rhs);
+                //var result1 = ArrayDivide(lhs, rhs);
+                ArrayCopy(lhs, rhs);
 
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
@@ -56,7 +57,7 @@ namespace ConsoleApp1
                 /////
                 sw.Restart();
 
-                var resultFixed = ArrayAdditionFixed(lhs, rhs);
+                //var resultFixed = ArrayAdditionFixed(lhs, rhs);
 
                 var tsFixed = sw.ElapsedMilliseconds;
                 fixedTimesMs.Add(tsFixed);
@@ -65,7 +66,8 @@ namespace ConsoleApp1
                 sw.Restart();
 
                 //var result2 = SIMDArrayAddition(lhs, rhs);
-                var result2 = SIMDArrayDivide(lhs, rhs);
+                //var result2 = SIMDArrayDivide(lhs, rhs);
+                SIMDArrayCopy(lhs, rhs);
 
                 var ts2 = sw.ElapsedMilliseconds;
                 hwTimesMs.Add(ts2);
@@ -171,6 +173,28 @@ namespace ConsoleApp1
             return result;
         }
 
+        private static void ArrayCopy(int[] lhs, int[] rhs)
+        {
+            Array.Copy(lhs, rhs, lhs.Length);
+        }
+
+        private static void SIMDArrayCopy(int[] lhs, int[] rhs)
+        {
+            var simdLength = Vector<int>.Count;
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<int>(lhs, i);
+                va.CopyTo(rhs, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                rhs[i] = lhs[i];
+            }
+
+        }
+
         #endregion
 
         #region Int64 tests
@@ -272,14 +296,16 @@ namespace ConsoleApp1
             {
                 sw.Restart();
 
-                var result1 = ArrayAddition(lhs, rhs);
+                //var result1 = ArrayAddition(lhs, rhs);
+                ArrayCopy(lhs, rhs);
 
                 var ts1 = sw.ElapsedMilliseconds;
                 naiveTimesMs.Add(ts1);
 
                 sw.Restart();
 
-                var result2 = SIMDArrayAddition(lhs, rhs);
+                //var result2 = SIMDArrayAddition(lhs, rhs);
+                SIMDArrayCopy(lhs, rhs);
 
                 var ts2 = sw.ElapsedMilliseconds;
                 hwTimesMs.Add(ts2);
@@ -310,6 +336,7 @@ namespace ConsoleApp1
         {
             var simdLength = Vector<short>.Count;
             var result = new short[lhs.Length];
+
             var i = 0;
             for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
             {
@@ -325,6 +352,34 @@ namespace ConsoleApp1
 
             return result;
         }
+
+        private static void ArrayCopy(short[] lhs, short[] rhs)
+        {
+            //for (int i = 0; i < rhs.Length; i++)
+            //{
+            //    rhs[i] = lhs[i];
+            //}
+
+            Array.Copy(lhs, rhs, lhs.Length);
+        }
+
+        private static void SIMDArrayCopy(short[] lhs, short[] rhs)
+        {
+            var simdLength = Vector<short>.Count;
+            var i = 0;
+            for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+            {
+                var va = new Vector<short>(lhs, i);
+                va.CopyTo(rhs, i);
+            }
+
+            for (; i < lhs.Length; ++i)
+            {
+                rhs[i] = lhs[i];
+            }
+
+        }
+
         #endregion
 
         #region float tests
