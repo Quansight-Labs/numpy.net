@@ -35,6 +35,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using static NumpyLib.numpyinternal;
@@ -842,11 +843,22 @@ namespace NumpyLib
                     return;
                 }
 
-                PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, destSize);
+                
+
+                if (Vector.IsHardwareAccelerated && destArray.ItemType == NPY_TYPES.NPY_DOUBLE && false)
+                {
+                    PerformNumericOpScalarSmallIterSIMD(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, destSize);
+                }
+                else
+                {
+                    PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, destSize);
+                }
+
                 return;
 
             }
 
+  
             protected void PerformNumericOpScalarSmallIterNEW(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
             {
                 T[] src = srcArray.data.datap as T[];
@@ -985,6 +997,129 @@ namespace NumpyLib
                     throw caughtExceptions[0];
                 }
             }
+
+            private void PerformNumericOpScalarSmallIterSIMD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, long destSize)
+            {
+                double[] src = srcArray.data.datap as double[];
+                double[] dest = destArray.data.datap as double[];
+                double[] oper = operArray.data.datap as double[];
+
+                List<Exception> caughtExceptions = new List<Exception>();
+
+                var simdLength = Vector<double>.Count * 100;
+                double[] srcItem = new double[simdLength];
+                double[] operItem = new double[simdLength];
+
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
+
+                //Parallel.For(0, destParallelIters.Count(), index =>
+                for (int index = 0; index < destParallelIters.Count(); index++) // 
+                {
+                    var ldestIter = destParallelIters.ElementAt(index);
+                    var lsrcIter = srcParallelIters.ElementAt(index);
+                    var loperIter = operParallelIters.ElementAt(index);
+
+                    npy_intp srcDataOffset = srcArray.data.data_offset;
+                    npy_intp operDataOffset = operArray.data.data_offset;
+
+                    while (ldestIter.index < ldestIter.size)
+                    {
+                        try
+                        {
+                            npy_intp simdIndex = 0;
+                            npy_intp destIndex = 0;
+
+                            long lsimdLength = Math.Min(simdLength, ldestIter.size - ldestIter.index);
+                            while (simdIndex < lsimdLength)
+                            {
+                                srcItem[simdIndex] = src[AdjustedIndex_GetItemFunction(lsrcIter.dataptr.data_offset - srcDataOffset, srcArray, src.Length)];
+                                operItem[simdIndex] = oper[AdjustedIndex_GetItemFunction(loperIter.dataptr.data_offset - operDataOffset, operArray, oper.Length)];
+                                
+                                if (simdIndex == 0)
+                                    destIndex = AdjustedIndex_GetItemFunction(ldestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dest.Length);
+
+                                simdIndex++;
+
+                                if (simdIndex == lsimdLength)
+                                {
+                                    try
+                                    {
+                                        if (op == NumpyLib.UFuncOperation.add)
+                                            SIMDArrayAddition(srcItem, operItem, dest, (int)destIndex);
+                                        else if (op == NumpyLib.UFuncOperation.divide)
+                                            SIMDArrayDivide(srcItem, operItem, dest, (int)destIndex);
+                                    }
+                                    catch
+                                    {
+                                        dest[destIndex] = 0;
+                                    }
+                                }
+           
+
+                                NpyArray_ITER_NEXT(ldestIter);
+                                NpyArray_ITER_NEXT(lsrcIter);
+                                NpyArray_ITER_NEXT(loperIter);
+                            }
+            
+
+                        }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
+                        }
+
+                    }
+                } //);
+
+
+
+
+                if (caughtExceptions.Count > 0)
+                {
+                    throw caughtExceptions[0];
+                }
+            }
+
+            private static double[] SIMDArrayAddition(double[] lhs, double[] rhs, double [] result, int resultOffset)
+            {
+                var simdLength = Vector<double>.Count;
+                var i = 0;
+                for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+                {
+                    var va = new Vector<double>(lhs, i);
+                    var vb = new Vector<double>(rhs, i);
+                    (va + vb).CopyTo(result, resultOffset);
+                }
+
+                for (; i < lhs.Length; ++i)
+                {
+                    result[resultOffset + i] = (float)(lhs[i] + rhs[i]);
+                }
+
+                return result;
+            }
+
+            private static double[] SIMDArrayDivide(double[] lhs, double[] rhs, double[] result, int resultOffset)
+            {
+                var simdLength = Vector<double>.Count;
+                var i = 0;
+                for (i = 0; i <= lhs.Length - simdLength; i += simdLength)
+                {
+                    var va = new Vector<double>(lhs, i);
+                    var vb = new Vector<double>(rhs, i);
+                    (va / vb).CopyTo(result, resultOffset);
+                }
+
+                for (; i < lhs.Length; ++i)
+                {
+                    result[resultOffset + i] = lhs[i] / rhs[i];
+                }
+
+                return result;
+            }
+
 
             protected void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
             {

@@ -15,12 +15,12 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if false
+#if true
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
     #region DOUBLE tests
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_ScalarOperation_DOUBLE()
         {
