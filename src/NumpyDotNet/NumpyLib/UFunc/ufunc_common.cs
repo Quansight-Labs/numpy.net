@@ -847,7 +847,7 @@ namespace NumpyLib
 
             }
 
-            protected void PerformNumericOpScalarSmallIterNEW(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+            protected void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
             {
                 T[] src = srcArray.data.datap as T[];
                 T[] dest = destArray.data.datap as T[];
@@ -919,7 +919,7 @@ namespace NumpyLib
             }
 
 
-            protected void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+            protected void PerformNumericOpScalarSmallIterOLD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
             {
                 T[] src = srcArray.data.datap as T[];
                 T[] dest = destArray.data.datap as T[];
