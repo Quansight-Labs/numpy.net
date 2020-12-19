@@ -606,7 +606,8 @@ namespace NumpyLib
                 }
             }
         }
-
+   
+ 
         internal static void NpyArray_ITER_WALK(NpyArrayIterObject it, npy_intp walkCount)
         {
             //Debug.Assert(Validate(it));
@@ -616,8 +617,8 @@ namespace NumpyLib
             if (it.nd_m1 == 0)
             {
                 it.dataptr.data_offset += walkCount * it.strides[0];
-                it.coordinates[0]+=walkCount;
-        
+                it.coordinates[0] += walkCount;
+
                 return;
             }
 
@@ -626,27 +627,45 @@ namespace NumpyLib
                 it.dataptr.data_offset += walkCount * (npy_intp)it.ao.descr.elsize;
                 return;
             }
-    
+
             if (it.nd_m1 == 1)
             {
+                npy_intp it_coordinates_1 = it.coordinates[1];
+                npy_intp it_dims_m1_1 = it.dims_m1[1];
+                npy_intp it_strides_0 = it.strides[0];
+                npy_intp it_strides_1 = it.strides[1];
+                npy_intp it_coordinates_0 = it.coordinates[0];
+                npy_intp it_backstrides_1 = it.backstrides[1];
+                npy_intp it_dataptr_data_offset = it.dataptr.data_offset;
+
                 while (walkCount-- > 0)
                 {
-                    if (it.coordinates[1] < it.dims_m1[1])
+                    if (it_coordinates_1 < it_dims_m1_1)
                     {
-                        it.coordinates[1]++;
-                        it.dataptr.data_offset += it.strides[1];
+                        it_coordinates_1++;
+                        it_dataptr_data_offset += it_strides_1;
                     }
                     else
                     {
-                        it.coordinates[1] = 0;
-                        it.coordinates[0]++;
-                        it.dataptr.data_offset += it.strides[0] - it.backstrides[1];
+                        it_coordinates_1 = 0;
+                        it_coordinates_0++;
+                        it_dataptr_data_offset += it_strides_0 - it_backstrides_1;
                     }
                 }
-  
+
+                it.coordinates[1] = it_coordinates_1;
+                it.dims_m1[1] = it_dims_m1_1;
+                it.strides[0] = it_strides_0;
+                it.strides[1] = it_strides_1;
+                it.coordinates[0] = it_coordinates_0;
+                it.backstrides[1] = it_backstrides_1;
+                it.dataptr.data_offset = it_dataptr_data_offset;
+
             }
             else
             {
+                npy_intp it_dataptr_data_offset = it.dataptr.data_offset;
+
                 while (walkCount-- > 0)
                 {
                     for (int i = it.nd_m1; i >= 0; i--)
@@ -654,21 +673,23 @@ namespace NumpyLib
                         if (it.coordinates[i] < it.dims_m1[i])
                         {
                             it.coordinates[i]++;
-                            it.dataptr.data_offset += it.strides[i];
+                            it_dataptr_data_offset += it.strides[i];
                             break;
                         }
                         else
                         {
                             it.coordinates[i] = 0;
-                            it.dataptr.data_offset -= it.backstrides[i];
+                            it_dataptr_data_offset -= it.backstrides[i];
                         }
                     }
                 }
+
+                it.dataptr.data_offset = it_dataptr_data_offset;
+
             }
 
             return;
         }
-
 
         internal static (IEnumerable<NpyArrayIterObject>, IEnumerable<NpyArrayIterObject>) NpyArray_ITER_ParallelSplit(NpyArrayIterObject destIter, NpyArrayIterObject srcIter)
         {
