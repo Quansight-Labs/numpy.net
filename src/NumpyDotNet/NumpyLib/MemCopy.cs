@@ -3599,6 +3599,31 @@ namespace NumpyLib
     abstract class CopyHelper<T>
     {
         public abstract int GetTypeSize(VoidPtr vp);
+        public int GetDivSize(VoidPtr vp)
+        {
+            return GetDivSize(GetTypeSize(vp));
+        }
+        public int GetDivSize(int elsize)
+        {
+            switch (elsize)
+            {
+                case 1: return 0;
+                case 2: return 1;
+                case 4: return 2;
+                case 8: return 3;
+                case 16: return 4;
+                case 32: return 5;
+                case 64: return 6;
+                case 128: return 7;
+                case 256: return 8;
+                case 512: return 9;
+                case 1024: return 10;
+                case 2048: return 11;
+                case 4096: return 12;
+            }
+
+            throw new Exception("Unexpected elsize in GetDivSize");
+        }
 
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                             VoidPtr src, npy_intp instrides,
@@ -3637,6 +3662,7 @@ namespace NumpyLib
         {
 
             int elsize = GetTypeSize(_dst);
+            int divsize = GetDivSize(elsize);
 
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3649,7 +3675,7 @@ namespace NumpyLib
                 {
                     numpyinternal.NpyArray_ITER_GOTO1D(srcIter, start);
 
-                    d[_dst.data_offset/elsize] = s[srcIter.dataptr.data_offset / elsize];
+                    d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
 
                     if (swap)
                     {
@@ -3662,13 +3688,13 @@ namespace NumpyLib
             }
             else
             {
-                _dst.data_offset /= elsize;
+                _dst.data_offset >>= divsize;
 
                 while (stepper-- > 0)
                 {
                     numpyinternal.NpyArray_ITER_GOTO1D(srcIter, start);
 
-                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
    
                     start += step_size;
                 }
@@ -3682,6 +3708,7 @@ namespace NumpyLib
         public void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap)
         {
             int elsize = GetTypeSize(_dst);
+            int divsize = GetDivSize(elsize);
 
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3696,7 +3723,7 @@ namespace NumpyLib
                 {
                     if (bool_array[dptr_index])
                     {
-                        d[_dst.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                        d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         numpyinternal.swapvalue(_dst, elsize);
                         _dst.data_offset += elsize;
                     }
@@ -3706,13 +3733,13 @@ namespace NumpyLib
             }
             else
             {
-                _dst.data_offset /= elsize;
+                _dst.data_offset >>= divsize;
 
                 while (bool_array_size-- > 0)
                 {
                     if (bool_array[dptr_index])
                     {
-                        d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+                        d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
                     }
                     dptr_index += stride;
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -3725,6 +3752,8 @@ namespace NumpyLib
         {
             npy_intp[] dataptr = index_iter.dataptr.datap as npy_intp[];
             var elsize = GetTypeSize(_dst);
+            var divsize = GetDivSize(elsize);
+            var divintp = GetDivSize(sizeof(npy_intp));
             var iterCount = index_iter.size;
 
             T[] d = _dst.datap as T[];
@@ -3737,7 +3766,7 @@ namespace NumpyLib
             {
                 while (iterCount-- > 0)
                 {
-                    npy_intp num = dataptr[index_iter.dataptr.data_offset / sizeof(npy_intp)];
+                    npy_intp num = dataptr[index_iter.dataptr.data_offset >> divintp];
                     if (num < 0)
                     {
                         num += srcIter.size;
@@ -3748,7 +3777,7 @@ namespace NumpyLib
                     }
                     numpyinternal.NpyArray_ITER_GOTO1D(srcIter, num);
 
-                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
                     _dst.data_offset += elsize;
 
                     numpyinternal.swapvalue(_dst, elsize);
@@ -3758,11 +3787,11 @@ namespace NumpyLib
             }
             else
             {
-                _dst.data_offset /= elsize;
+                _dst.data_offset >>= divsize;
 
                 while (iterCount-- > 0)
                 {
-                    npy_intp num = dataptr[index_iter.dataptr.data_offset / sizeof(npy_intp)];
+                    npy_intp num = dataptr[index_iter.dataptr.data_offset >> divintp];
                     if (num < 0)
                     {
                         num += srcIter.size;
@@ -3773,7 +3802,7 @@ namespace NumpyLib
                     }
                     numpyinternal.NpyArray_ITER_GOTO1D(srcIter, num);
 
-                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset / elsize];
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
 
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
@@ -3785,6 +3814,7 @@ namespace NumpyLib
         public void IterSubscriptAssignSlice(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp steps, npy_intp start, npy_intp step_size, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3794,13 +3824,13 @@ namespace NumpyLib
 
             if (srcIter.size == 1)
             {
-                srcIter.dataptr.data_offset /= elsize;
+                srcIter.dataptr.data_offset >>= divsize;
 
                 while (steps-- > 0)
                 {
                     numpyinternal.NpyArray_ITER_GOTO1D(destIter, start);
 
-                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
 
                     if (swap)
                     {
@@ -3816,7 +3846,7 @@ namespace NumpyLib
                 {
                     numpyinternal.NpyArray_ITER_GOTO1D(destIter, start);
 
-                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
 
                     if (swap)
                     {
@@ -3837,6 +3867,7 @@ namespace NumpyLib
         public void IterSubscriptAssignBoolArray(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp bool_size, bool[] bool_mask, npy_intp stride, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3845,7 +3876,7 @@ namespace NumpyLib
 
             npy_intp dptr_index = 0;
 
-            srcIter.dataptr.data_offset /= elsize;
+            srcIter.dataptr.data_offset >>= divsize;
 
             if (srcIter.size == 1)
             {
@@ -3853,7 +3884,7 @@ namespace NumpyLib
                 {
                     if (bool_mask[dptr_index])
                     {
-                        d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+                        d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
 
                         if (swap)
                         {
@@ -3871,7 +3902,7 @@ namespace NumpyLib
                 {
                     if (bool_mask[dptr_index])
                     {
-                        d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                        d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
 
                         if (swap)
                         {
@@ -3895,6 +3926,8 @@ namespace NumpyLib
         public npy_intp? IterSubscriptAssignIntpArray(NpyArrayIterObject destIter, NpyArrayIterObject indexIter, NpyArrayIterObject srcIter, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
+            var divintp = GetDivSize(sizeof(npy_intp));
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3904,11 +3937,11 @@ namespace NumpyLib
 
             if (srcIter.size == 1)
             {
-                srcIter.dataptr.data_offset /= elsize;
+                srcIter.dataptr.data_offset >>= divsize;
 
                 while (i-- > 0)
                 {
-                    npy_intp num = dataptr[indexIter.dataptr.data_offset / sizeof(npy_intp)];
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset >> divintp];
                     if (num < 0)
                     {
                         num += destIter.size;
@@ -3919,7 +3952,7 @@ namespace NumpyLib
                     }
                     numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
 
-                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset];
+                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
 
                     if (swap)
                     {
@@ -3933,7 +3966,7 @@ namespace NumpyLib
             {
                 while (i-- > 0)
                 {
-                    npy_intp num = dataptr[indexIter.dataptr.data_offset / sizeof(npy_intp)];
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset >> divintp];
                     if (num < 0)
                     {
                         num += destIter.size;
@@ -3944,7 +3977,7 @@ namespace NumpyLib
                     }
                     numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
 
-                    d[destIter.dataptr.data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
 
                     if (swap)
                     {
@@ -3967,6 +4000,7 @@ namespace NumpyLib
         public void GetMap(NpyArrayIterObject destIter, NpyArrayMapIterObject srcIter, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3985,13 +4019,13 @@ namespace NumpyLib
 
                 if (destIter.contiguous)
                 {
-                    destIter.dataptr.data_offset /= elsize;
+                    destIter.dataptr.data_offset >>= divsize;
 
                     while (numIndexes > 0)
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex].data_offset / elsize];
+                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex].data_offset >> divsize];
                             offsetsIndex++;
                         }
                         numIndexes -= offsetsIndex;
@@ -4010,7 +4044,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset / elsize] = s[offsets[offsetsIndex].data_offset / elsize];
+                            d[destIter.dataptr.data_offset >> divsize] = s[offsets[offsetsIndex].data_offset >> divsize];
                             offsetsIndex++;
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
@@ -4036,13 +4070,13 @@ namespace NumpyLib
 
                 if (destIter.contiguous)
                 {
-                    destIter.dataptr.data_offset /= elsize;
+                    destIter.dataptr.data_offset >>= divsize;
 
                     while (numIndexes > 0)
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex++] / elsize];
+                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex++] >> divsize];
                         }
 
                         numIndexes -= offsetsIndex;
@@ -4060,7 +4094,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset / elsize] = s[offsets[offsetsIndex++] / elsize];
+                            d[destIter.dataptr.data_offset >> divsize] = s[offsets[offsetsIndex++] >> divsize];
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
 
@@ -4081,6 +4115,7 @@ namespace NumpyLib
         public void SetMap(NpyArrayMapIterObject destIter, NpyArrayIterObject srcIter, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
 
             var numIndexes = destIter.size;
 
@@ -4121,7 +4156,7 @@ namespace NumpyLib
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
-            srcIter.dataptr.data_offset /= elsize;
+            srcIter.dataptr.data_offset >>= divsize;
 
 
             if (destIter.subspace != null)
@@ -4137,7 +4172,7 @@ namespace NumpyLib
                 {
                     while (offsetsIndex < offsetsLength)
                     {
-                        d[offsets[offsetsIndex].data_offset / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                        d[offsets[offsetsIndex].data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         if (swap)
                         {
                             numpyinternal.swapvalue(destIter.dataptr, elsize);
@@ -4168,7 +4203,7 @@ namespace NumpyLib
                 {
                     while (offsetsIndex < offsetsLength)
                     {
-                        d[offsets[offsetsIndex++] / elsize] = s[srcIter.dataptr.data_offset / elsize];
+                        d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         if (swap)
                         {
                             numpyinternal.swapvalue(destIter.dataptr, elsize);
@@ -4195,12 +4230,13 @@ namespace NumpyLib
         public void FillWithScalar(VoidPtr destPtr, VoidPtr srcPtr, npy_intp size, bool swap)
         {
             int elsize = GetTypeSize(destPtr);
+            int divsize = GetDivSize(elsize);
 
             T[] d = destPtr.datap as T[];
             T[] s = srcPtr.datap as T[];
             T fillValue = s[0];
 
-            destPtr.data_offset /= elsize;
+            destPtr.data_offset >>= divsize;
             while (size-- > 0)
             {
                 d[destPtr.data_offset++] = fillValue;
@@ -4215,6 +4251,7 @@ namespace NumpyLib
         public void FillWithScalarIter(NpyArrayIterObject destIter, VoidPtr srcPtr, npy_intp size, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
+            int divsize = GetDivSize(elsize);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcPtr.datap as T[];
@@ -4222,7 +4259,7 @@ namespace NumpyLib
 
             while (size-- > 0)
             {
-                d[destIter.dataptr.data_offset / elsize] = fillValue;
+                d[destIter.dataptr.data_offset >> divsize] = fillValue;
 
                 if (swap)
                 {
@@ -4547,13 +4584,14 @@ namespace NumpyLib
         {
 
             int elsize = GetTypeSize(_dst);
+            int divsize = GetDivSize(elsize);
 
             if (_src != null)
             {
                 T[] d = _dst.datap as T[];
                 T[] s = _src.datap as T[];
 
-                d[_dst.data_offset / elsize] = s[_src.data_offset / elsize];
+                d[_dst.data_offset >> divsize] = s[_src.data_offset >> divsize];
             }
 
             if (swap)
@@ -4565,6 +4603,7 @@ namespace NumpyLib
         public void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap)
         {
             int elsize = GetTypeSize(_dst);
+            int divsize = GetDivSize(elsize);
 
             if (_src != null)
             {
@@ -4575,7 +4614,7 @@ namespace NumpyLib
                 {
                     for (int i = 0; i < n; i++)
                     {
-                        d[_dst.data_offset / elsize] = s[_src.data_offset / elsize];
+                        d[_dst.data_offset >> divsize] = s[_src.data_offset >> divsize];
 
                         numpyinternal.swapvalue(_dst, elsize);
 
@@ -4585,10 +4624,10 @@ namespace NumpyLib
                 }
                 else
                 {
-                    _dst.data_offset /= elsize;
-                    dstride /= elsize;
-                    sstride /= elsize;
-                    _src.data_offset /= elsize;
+                    _dst.data_offset >>= divsize;
+                    dstride >>= divsize;
+                    sstride >>= divsize;
+                    _src.data_offset >>= divsize;
 
                     for (int i = 0; i < n; i++)
                     {
@@ -4629,11 +4668,11 @@ namespace NumpyLib
             T[] _dst = dest.datap as T[];
             T[] _src = src.datap as T[];
 
-            var ItemSize = GetTypeSize(dest);
+            var DivSize = GetDivSize(dest);
 
-            long ElementCount = len / ItemSize;
-            long sOffset = (src.data_offset + src_offset) / ItemSize;
-            long dOffset = (dest.data_offset + dest_offset) / ItemSize;
+            long ElementCount = len >> DivSize;
+            long sOffset = (src.data_offset + src_offset) >> DivSize;
+            long dOffset = (dest.data_offset + dest_offset) >> DivSize;
 
             if (ElementCount == 1)
             {
