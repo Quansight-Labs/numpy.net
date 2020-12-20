@@ -4535,9 +4535,9 @@ namespace NumpyLib
 
         private void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
-            int ip1Size = GetTypeSize(_ip1);
-            int ip2Size = GetTypeSize(_ip2);
-            int opSize = GetTypeSize(_op);
+            int ip1Div = GetDivSize(_ip1);
+            int ip2Div = GetDivSize(_ip2);
+            int opDiv = GetDivSize(_op);
 
 
             T tmp = default(T);
@@ -4547,17 +4547,17 @@ namespace NumpyLib
             T[] ip2 = _ip2.datap as T[];
             T[] op = _op.datap as T[];
 
-            npy_intp ip1_index = _ip1.data_offset / ip1Size;
-            npy_intp ip2_index = _ip2.data_offset / ip2Size;
-            is1 /= ip1Size;
-            is2 /= ip2Size;
+            npy_intp ip1_index = _ip1.data_offset >> ip1Div;
+            npy_intp ip2_index = _ip2.data_offset >> ip2Div;
+            is1 >>= ip1Div;
+            is2 >>= ip2Div;
 
 
             for (i = 0; i < n; i++, ip1_index += is1, ip2_index += is2)
             {
                 tmp = T_dot(tmp, ip1, ip2, ip1_index, ip2_index);
             }
-            op[_op.data_offset / opSize] = tmp;
+            op[_op.data_offset >> opDiv] = tmp;
         }
 
 

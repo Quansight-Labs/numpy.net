@@ -1004,7 +1004,7 @@ namespace NumpyLib
         internal static int NpyArray_SortFunc(object o1, npy_intp length, NpyArray NOTUSED, NPY_SORTKIND kind)
         {
             VoidPtr arr = o1 as VoidPtr;
-            return NpyArray_SortFuncTypeNum(arr, (int)(arr.data_offset / GetTypeSize(arr.type_num)), (int)length);
+            return NpyArray_SortFuncTypeNum(arr, (int)(arr.data_offset >> GetDivSize(GetTypeSize(arr.type_num))), (int)length);
         }
 
         private static int NpyArray_SortFuncTypeNum(VoidPtr data, int offset, int length)

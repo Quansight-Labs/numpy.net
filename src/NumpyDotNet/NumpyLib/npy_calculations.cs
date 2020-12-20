@@ -1319,7 +1319,7 @@ namespace NumpyLib
             VoidPtr ip;
             npy_intp[] rptr;
             npy_intp n, m;
-            int elsize;
+            int elsize, eldivsize;
             bool copyret = false;
             int i;
 
@@ -1371,6 +1371,8 @@ namespace NumpyLib
                 goto fail;
             }
             elsize = ap.descr.elsize;
+            eldivsize = GetDivSize(elsize);
+
             m = ap.dimensions[ap.nd - 1];
             if (m == 0)
             {
@@ -1410,9 +1412,10 @@ namespace NumpyLib
             n = NpyArray_SIZE(ap) / m;
             rptr = rp.data.datap as npy_intp[];
 
-            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
+            npy_intp m_elsize = elsize * m;
+            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += m_elsize)
             {
-                rptr[i] = arg_func(ip, ip.data_offset / elsize, m);
+                rptr[i] = arg_func(ip, ip.data_offset >> eldivsize, m);
             }
 
             Npy_DECREF(ap);
@@ -1440,7 +1443,7 @@ namespace NumpyLib
             VoidPtr ip;
             npy_intp[] rptr;
             npy_intp n, m;
-            int elsize;
+            int elsize, eldivsize;
             bool copyret = false;
             int i;
 
@@ -1492,6 +1495,8 @@ namespace NumpyLib
                 goto fail;
             }
             elsize = ap.descr.elsize;
+            eldivsize = GetDivSize(elsize);
+
             m = ap.dimensions[ap.nd - 1];
             if (m == 0)
             {
@@ -1531,9 +1536,10 @@ namespace NumpyLib
             n = NpyArray_SIZE(ap) / m;
             rptr = rp.data.datap as npy_intp[];
 
-            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += elsize * m)
+            npy_intp m_elsize = elsize * m;
+            for (ip = new VoidPtr(ap.data), i = 0; i < n; i++, ip.data_offset += m_elsize)
             {
-                rptr[i] = arg_func(ip, ip.data_offset / elsize, m);
+                rptr[i] = arg_func(ip, ip.data_offset >> eldivsize, m);
             }
 
             Npy_DECREF(ap);
