@@ -1544,7 +1544,7 @@ namespace NumpyLib
 
             var argSortDouble = new ArgSortData<T>[m];
 
-            var adjustedIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
+            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
 
             for (int i = 0; i < m; i++)
             {
@@ -1613,7 +1613,7 @@ namespace NumpyLib
 
             var argSortDouble = new ArgSortData_COMPLEX[m];
 
-            var adjustedIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
+            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
 
             for (int i = 0; i < m; i++)
             {
@@ -1638,7 +1638,7 @@ namespace NumpyLib
 
             var argSortDouble = new ArgSortData_OBJECT[m];
 
-            var adjustedIndex = startingIndex + sortData.data_offset / GetTypeSize(sortData.type_num);
+            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
 
             for (int i = 0; i < m; i++)
             {
