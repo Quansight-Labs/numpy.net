@@ -57,6 +57,7 @@ namespace NumpyLib
 
         System.Array ToArray(Array ssrc);
         int ItemSize { get; }
+        int ItemDiv { get; }
         Type ItemType { get; }
         int GetLength(VoidPtr vp);
         object AllocateNewArray(int size);

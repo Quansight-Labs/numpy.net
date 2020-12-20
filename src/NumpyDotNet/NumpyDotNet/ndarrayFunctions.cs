@@ -308,7 +308,7 @@ namespace NumpyDotNet
         public static ndarray array(VoidPtr arr, int numElements)
         {
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(arr.type_num);
-            int startingOffset = (int)(arr.data_offset / ArrayHandler.ItemSize);
+            int startingOffset = (int)(arr.data_offset >> ArrayHandler.ItemDiv);
             return array(ArrayHandler.AllocateAndCopy(arr.datap, startingOffset, numElements));
         }
 

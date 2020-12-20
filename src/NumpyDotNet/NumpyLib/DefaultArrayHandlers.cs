@@ -57,9 +57,12 @@ namespace NumpyLib
             HeavisideOperation = Heaviside;
             RintOperation = Rint;
             ConjugateOperation = Conjugate;
+
+            ItemDiv = numpyinternal.GetDivSize(ItemSize);
         }
 
         public virtual int ItemSize {get;}
+        public virtual int ItemDiv { get; }
 
         protected T[] _t = new T[1] { default(T) };
         public Type ItemType
@@ -74,7 +77,7 @@ namespace NumpyLib
         {
             T[] dp = data.datap as T[];
 
-            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
 
             if (AdjustedIndex < 0)
             {
@@ -102,7 +105,7 @@ namespace NumpyLib
         {
             T[] dp = data.datap as T[];
 
-            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
@@ -3118,7 +3121,7 @@ namespace NumpyLib
         {
             System.Numerics.Complex[] dp = data.datap as System.Numerics.Complex[];
 
-            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
@@ -3648,7 +3651,7 @@ namespace NumpyLib
         {
             System.Numerics.BigInteger[] dp = data.datap as System.Numerics.BigInteger[];
 
-            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
@@ -4124,7 +4127,7 @@ namespace NumpyLib
         {
             string[] dp = data.datap as string[];
 
-            long AdjustedIndex = (data.data_offset + index) / ItemSize;
+            long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
                 AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);

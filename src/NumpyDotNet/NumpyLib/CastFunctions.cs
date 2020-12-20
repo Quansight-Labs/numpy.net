@@ -58,7 +58,7 @@ namespace NumpyLib
         private static npy_intp AdjustedOffset(VoidPtr vp)
         {
             var Handler = numpyAPI.GetArrayHandler(vp.type_num);
-            return vp.data_offset / Handler.ItemSize;
+            return vp.data_offset >> Handler.ItemDiv;
         }
 
         #region First Level Sorting
