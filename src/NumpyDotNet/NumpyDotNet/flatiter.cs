@@ -219,12 +219,12 @@ namespace NumpyDotNet
         {
             get
             {
-                npy_intp index = (current.data_offset - arr.Array.data.data_offset) / arr.ItemSize;
+                npy_intp index = (current.data_offset - arr.Array.data.data_offset) >> arr.ItemSizeDiv;
                 return arr.GetItem(index);
             }
             set
             {
-                npy_intp index = (current.data_offset - arr.Array.data.data_offset) / arr.ItemSize;
+                npy_intp index = (current.data_offset - arr.Array.data.data_offset) >> arr.ItemSizeDiv;
                 arr.SetItem(value, index);
             }
         }

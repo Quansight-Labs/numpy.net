@@ -716,7 +716,7 @@ namespace NumpyDotNet
                             }
                             offset += val * s[i];
                         }
-                        return this.GetItem(offset/this.ItemSize);
+                        return this.GetItem(offset >> this.ItemSizeDiv);
                     }
                     else if (indexes.IsMultiField)
                     {
@@ -829,7 +829,7 @@ namespace NumpyDotNet
                     if (single_offset >= 0 && np.IsNumericType(value))
                     {
                         // This is a single item assignment. Use SetItem.
-                        SetItem(value, single_offset / this.ItemSize);
+                        SetItem(value, single_offset >> this.ItemSizeDiv);
                         return;
                     }
 
@@ -999,6 +999,18 @@ namespace NumpyDotNet
             }
         }
 
+        public int ItemSizeDiv
+        {
+            get
+            {
+
+                if (core == null)
+                    return 0;
+
+                return core.descr.eldivshift;
+            }
+        }
+
         public NPY_TYPES TypeNum
         {
             get
@@ -1112,7 +1124,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             npy_intp offset = indexes.SingleAssignOffset(this);
-                            return GetItem(offset / this.ItemSize);
+                            return GetItem(offset >> this.ItemSizeDiv);
                         }
                         else
                         {
@@ -1168,7 +1180,7 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             npy_intp offset = indexes.SingleAssignOffset(this);
-                            SetItem(value, offset / this.ItemSize);
+                            SetItem(value, offset >> this.ItemSizeDiv);
                         }
                         else
                         {
