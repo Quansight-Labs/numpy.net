@@ -273,7 +273,7 @@ namespace NumpyLib
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long AdjustedIndex_GetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
-            long AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
+            long AdjustedIndex = (npa.data.data_offset + index) >> npa.ItemDiv;
 
             if (AdjustedIndex < 0)
             {
@@ -511,7 +511,7 @@ namespace NumpyLib
 
         internal static long AdjustedIndex_SetItemFunction(npy_intp index, NpyArray npa, int dpLength)
         {
-            long AdjustedIndex = (npa.data.data_offset + index) / npa.ItemSize;
+            long AdjustedIndex = (npa.data.data_offset + index) >> npa.ItemDiv;
 
             if (AdjustedIndex < 0)
             {
@@ -993,8 +993,8 @@ namespace NumpyLib
 
         internal static int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray arr)
         {
-            npy_intp dest_offset = dest.data_offset / arr.ItemSize;
-            npy_intp scalar_offset = scalar.data_offset / arr.ItemSize;
+            npy_intp dest_offset = dest.data_offset >> arr.ItemDiv;
+            npy_intp scalar_offset = scalar.data_offset >> arr.ItemDiv;
 
             return DefaultArrayHandlers.GetArrayHandler(dest.type_num).ArrayFill(dest, scalar, (int)length, (int)dest_offset, (int)scalar_offset);
         }

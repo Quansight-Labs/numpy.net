@@ -95,7 +95,7 @@ namespace NumpyLib
             if (n == 1)
             {
                 var vp = NpyArray_BYTES(mp);
-                return NpyArray_DESCR(mp).f.nonzero(vp, vp.data_offset/ mp.ItemSize) ? 1 : 0;
+                return NpyArray_DESCR(mp).f.nonzero(vp, vp.data_offset >> mp.ItemDiv) ? 1 : 0;
             }
             else if (n == 0)
             {

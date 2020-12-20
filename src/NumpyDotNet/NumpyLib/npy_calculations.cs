@@ -1053,8 +1053,8 @@ namespace NumpyLib
             O[] oper = operArray.data.datap as O[];
 
 
-            int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-            int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
+            int srcAdjustment = (int)srcArray.data.data_offset >> srcArray.ItemDiv;
+            int destAdjustment = (int)destArray.data.data_offset >> destArray.ItemDiv;
 
             var exceptions = new ConcurrentQueue<Exception>();
 
@@ -1131,10 +1131,10 @@ namespace NumpyLib
             O[] oper = operArray.data.datap as O[];
 
    
-            var srcItemSize = srcArray.ItemSize;
+            var srcItemDiv = srcArray.ItemDiv;
 
-            int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-            int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
+            int srcAdjustment = (int)srcArray.data.data_offset >> srcArray.ItemDiv;
+            int destAdjustment = (int)destArray.data.data_offset >> destArray.ItemDiv;
 
             var exceptions = new ConcurrentQueue<Exception>();
 
@@ -1157,7 +1157,7 @@ namespace NumpyLib
                     {
                         while (ldestIter.index < ldestIter.size)
                         {
-                            var srcIndex = lsrcIter.dataptr.data_offset / srcItemSize;
+                            var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 
@@ -1194,7 +1194,7 @@ namespace NumpyLib
                         {
                             object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
 
-                            var srcIndex = lsrcIter.dataptr.data_offset / srcItemSize;
+                            var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 

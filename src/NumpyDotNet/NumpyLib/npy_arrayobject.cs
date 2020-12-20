@@ -112,6 +112,14 @@ namespace NumpyLib
                 return descr.elsize;
             }
         }
+        public int ItemDiv
+        {
+            get
+            {
+                return descr.eldivshift;
+            }
+        }
+
         public NPY_TYPES ItemType
         {
             get
@@ -143,7 +151,7 @@ namespace NumpyLib
         {
             if (dimIdx == nd)
             {
-                yield return offset / ItemSize;
+                yield return offset >> ItemDiv;
             }
             else
             {
@@ -178,7 +186,7 @@ namespace NumpyLib
         {
             if (dimIdx == arr.nd)
             {
-                offsets[offset_index++] = offset / arr.ItemSize;
+                offsets[offset_index++] = offset >> arr.ItemDiv;
             }
             else
             {
@@ -192,13 +200,13 @@ namespace NumpyLib
 
         internal static npy_intp[] GetViewOffsets(NpyArrayIterObject iter, long count)
         {
-            var itemSize = iter.ao.ItemSize;
+            var itemDiv = iter.ao.ItemDiv;
 
             npy_intp[] offsets = new npy_intp[count];
 
             for (int i = 0; i < count; i++)
             {
-                offsets[i] = iter.dataptr.data_offset / itemSize;
+                offsets[i] = iter.dataptr.data_offset >> itemDiv;
                 NpyArray_ITER_NEXT(iter);
             }
 

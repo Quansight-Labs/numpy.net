@@ -867,6 +867,10 @@ namespace NumpyLib
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
+                int srcItemDiv = srcArray.ItemDiv;
+                int operItemDiv = operArray.ItemDiv;
+                int destItemDiv = destArray.ItemDiv;
+
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
                 {
@@ -887,9 +891,6 @@ namespace NumpyLib
 
                         try
                         {
-                            int srcItemSize = srcArray.ItemSize;
-                            int operItemSize = operArray.ItemSize;
-                            int destItemSize = destArray.ItemSize;
                             for (int i = 0; i < ldestIter.internalCacheLength; i++)
                             {
                                 T srcValue, operand;
@@ -903,9 +904,9 @@ namespace NumpyLib
                                 }
                                 else
                                 {
-                                    srcValue = src[lsrcIter.internalCache[i] / srcItemSize];
-                                    operand = oper[loperIter.internalCache[i] / operItemSize];
-                                    destIndex = ldestIter.internalCache[i] / destItemSize;
+                                    srcValue = src[lsrcIter.internalCache[i] >> srcItemDiv];
+                                    operand = oper[loperIter.internalCache[i] >> operItemDiv];
+                                    destIndex = ldestIter.internalCache[i] >> destItemDiv;
                                 }
  
 
@@ -936,7 +937,7 @@ namespace NumpyLib
                     throw caughtExceptions[0];
                 }
             }
-
+ 
 
             protected void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
             {
@@ -945,8 +946,8 @@ namespace NumpyLib
                 T[] oper = operArray.data.datap as T[];
 
 
-                int srcAdjustment = (int)srcArray.data.data_offset / srcArray.ItemSize;
-                int destAdjustment = (int)destArray.data.data_offset / destArray.ItemSize;
+                int srcAdjustment = (int)srcArray.data.data_offset >> srcArray.ItemDiv;
+                int destAdjustment = (int)destArray.data.data_offset >> destArray.ItemDiv;
 
                 var exceptions = new ConcurrentQueue<Exception>();
 
@@ -1073,7 +1074,7 @@ namespace NumpyLib
                         {
                             var aValue = aValues[i];
 
-                            long destIndex = (destArray.data.data_offset / destArray.ItemSize) + i * bSize;
+                            long destIndex = (destArray.data.data_offset >> destArray.ItemDiv) + i * bSize;
 
                             for (long j = 0; j < bSize; j++)
                             {

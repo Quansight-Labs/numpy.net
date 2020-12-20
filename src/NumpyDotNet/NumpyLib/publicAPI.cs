@@ -471,7 +471,7 @@ namespace NumpyLib
                 {
                     //Console.WriteLine("Found offset:{0}, {1}", offset, offset / arr.ItemSize);
                     index--;
-                    return (offset / arr.ItemSize);
+                    return (offset >> arr.ItemDiv);
                 }
                 else
                 {

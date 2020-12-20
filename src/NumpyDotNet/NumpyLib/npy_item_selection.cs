@@ -1893,7 +1893,7 @@ namespace NumpyLib
             size = it.size;
             for (i = 0; i < size; i++)
             {
-                if (nonzero(it.dataptr, it.dataptr.data_offset / self.ItemSize))
+                if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
                 {
                     count++;
                 }
@@ -1917,7 +1917,7 @@ namespace NumpyLib
                 npy_intp dp_offset = 0;
                 for (i = 0; i < size; i++)
                 {
-                    if (nonzero(it.dataptr, it.dataptr.data_offset / self.ItemSize))
+                    if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
                     {
                         dp[dp_offset] = i;
                         dp_offset += 1;
@@ -1933,7 +1933,7 @@ namespace NumpyLib
                 it.contiguous = false;
                 for (i = 0; i < size; i++)
                 {
-                    if (nonzero(it.dataptr, it.dataptr.data_offset/ self.ItemSize))
+                    if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
                     {
                         for (j = 0; j < n; j++)
                         {
