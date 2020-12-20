@@ -520,6 +520,12 @@ namespace NumpyLib
             return arr.descr.elsize;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int NpyArray_DIVSIZE(NpyArray arr)
+        {
+            return arr.descr.eldivshift;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int NpyArray_ITEMSIZE(NpyArrayIterObject arr)
         {
             return arr.ao.descr.elsize;

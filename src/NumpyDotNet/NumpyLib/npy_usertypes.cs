@@ -193,7 +193,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        swapvalue(_dst, arr.ItemSize);
+                        swapvalue(_dst, arr.ItemDiv);
                     }
 
                     _dst.data_offset += dstride;

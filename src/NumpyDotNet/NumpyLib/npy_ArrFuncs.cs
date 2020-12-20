@@ -816,15 +816,15 @@ namespace NumpyLib
 
             if (swap)
             {
-                swapvalue(dest, NpyArray_ITEMSIZE(arr));
+                swapvalue(dest, NpyArray_DIVSIZE(arr));
             }
             return;
         }
         #endregion
 
-        internal static void swapvalue(VoidPtr dest, int ItemSize)
+        internal static void swapvalue(VoidPtr dest, int DivSize)
         {
-            npy_intp item_offset = dest.data_offset / ItemSize;
+            npy_intp item_offset = dest.data_offset >> DivSize;
 
             switch (dest.type_num)
             {
