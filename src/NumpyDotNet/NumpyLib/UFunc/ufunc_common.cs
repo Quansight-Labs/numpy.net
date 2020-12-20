@@ -861,6 +861,8 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
+                bool IteratorsCanBeNegative = false;
+
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
@@ -874,6 +876,7 @@ namespace NumpyLib
 
                     npy_intp srcDataOffset = srcArray.data.data_offset;
                     npy_intp operDataOffset = operArray.data.data_offset;
+                    npy_intp destDataOffset = destArray.data.data_offset;
 
                     while (ldestIter.index < ldestIter.size)
                     {
@@ -884,11 +887,27 @@ namespace NumpyLib
 
                         try
                         {
-                            while (ldestIter.IsCacheEmpty == false)
+                            int srcItemSize = srcArray.ItemSize;
+                            int operItemSize = operArray.ItemSize;
+                            int destItemSize = destArray.ItemSize;
+                            for (int i = 0; i < ldestIter.internalCacheLength; i++)
                             {
-                                var srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.GetNextCache() - srcDataOffset, srcArray, src.Length)];
-                                var operand = oper[AdjustedIndex_GetItemFunction(loperIter.GetNextCache() - operDataOffset, operArray, oper.Length)];
-                                var destIndex = AdjustedIndex_GetItemFunction(ldestIter.GetNextCache() - destArray.data.data_offset, destArray, dest.Length);
+                                T srcValue, operand;
+                                npy_intp destIndex;
+
+                                if (IteratorsCanBeNegative)
+                                {
+                                    srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.internalCache[i] - srcDataOffset, srcArray, src.Length)];
+                                    operand = oper[AdjustedIndex_GetItemFunction(loperIter.internalCache[i] - operDataOffset, operArray, oper.Length)];
+                                    destIndex = AdjustedIndex_GetItemFunction(ldestIter.internalCache[i] - destArray.data.data_offset, destArray, dest.Length);
+                                }
+                                else
+                                {
+                                    srcValue = src[lsrcIter.internalCache[i] / srcItemSize];
+                                    operand = oper[loperIter.internalCache[i] / operItemSize];
+                                    destIndex = ldestIter.internalCache[i] / destItemSize;
+                                }
+ 
 
                                 try
                                 {
