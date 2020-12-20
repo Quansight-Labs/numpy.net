@@ -54,7 +54,6 @@ namespace NumpyLib
         }
 
 
-
         internal static NpyArray NpyArray_TakeFrom(NpyArray self0, NpyArray indices0, int axis, NpyArray ret, NPY_CLIPMODE clipmode)
         {
             NpyArray self;
@@ -696,10 +695,12 @@ namespace NumpyLib
             ret_data = new VoidPtr(ret);
             int ret_data_index = 0;
 
+            int divsize = GetDivSize(sizeof(npy_intp));
+
             while (NpyArray_MultiIter_NOTDONE(multi))
             {
                 VoidPtr data = NpyArray_MultiIter_DATA(multi, n);
-                mi = (npy_intp)GetIndex(data,data.data_offset/sizeof(npy_intp));
+                mi = (npy_intp)GetIndex(data,data.data_offset >> divsize);
                 if (mi < 0 || mi >= n)
                 {
                     switch (clipmode)
@@ -1025,7 +1026,7 @@ namespace NumpyLib
                 }
 
                 iptr = new VoidPtr(idxptr);
-                iptr.data_offset /= GetTypeSize(iptr);
+                iptr.data_offset >>= GetDivSize(GetTypeSize(iptr));
 
                 for (i = 0; i < N; ++i)
                 {
@@ -1561,9 +1562,11 @@ namespace NumpyLib
             }
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
+            int divsize = GetDivSize(sizeof(npy_intp));
+
             for (int i = 0; i < m; i++)
             {
-                _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
@@ -1621,9 +1624,11 @@ namespace NumpyLib
             argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
+            int divsize = GetDivSize(sizeof(npy_intp));
+
             for (int i = 0; i < m; i++)
             {
-                _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
@@ -1644,9 +1649,11 @@ namespace NumpyLib
             argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
+            int divsize = GetDivSize(sizeof(npy_intp));
+
             for (int i = 0; i < m; i++)
             {
-                _ip[i + ip.data_offset / sizeof(npy_intp)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
