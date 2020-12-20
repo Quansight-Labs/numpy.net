@@ -52,8 +52,34 @@ namespace NumpyDotNet
 
             private object rk_lock = new object();
 
+            private int double_divsize = GetDivSize(sizeof(double));
+            private int long_divsize = GetDivSize(sizeof(long));
+
+            private static int GetDivSize(int elsize)
+            {
+                switch (elsize)
+                {
+                    case 1: return 0;
+                    case 2: return 1;
+                    case 4: return 2;
+                    case 8: return 3;
+                    case 16: return 4;
+                    case 32: return 5;
+                    case 64: return 6;
+                    case 128: return 7;
+                    case 256: return 8;
+                    case 512: return 9;
+                    case 1024: return 10;
+                    case 2048: return 11;
+                    case 4096: return 12;
+                }
+
+                throw new Exception("Unexpected elsize in GetDivSize");
+            }
+
+
             #region seed
-     
+
 
             public bool seed(Int32? seed)
             {
@@ -1848,14 +1874,18 @@ namespace NumpyDotNet
                     }
 
                     int index = 0;
+
                     foreach (var dd in iter)
                     {
-                        array_data[index++] = func(state, oa_data[iter.Iter.dataptr.data_offset / sizeof(double)]);
+                        array_data[index++] = func(state, oa_data[iter.Iter.dataptr.data_offset >> double_divsize]);
                     }
                 }
 
                 return np.array(array_data).reshape(size);
             }
+
+   
+
 
             private ndarray cont1_array_sc(rk_state state, Func<rk_state, double, double> func, npy_intp[] size, double a)
             {
@@ -1936,7 +1966,7 @@ namespace NumpyDotNet
                 {
                     vpoa=  multi.IterData(0);
                     vpob = multi.IterData(1);
-                    array_data[i] = func(state, oa_data[vpoa.data_offset/sizeof(double)], ob_data[vpob.data_offset / sizeof(double)]);
+                    array_data[i] = func(state, oa_data[vpoa.data_offset >> double_divsize], ob_data[vpob.data_offset >> double_divsize]);
                     multi.IterNext();
                 }
 
@@ -2003,9 +2033,9 @@ namespace NumpyDotNet
                     vpob = multi.IterData(1);
                     vpoc = multi.IterData(2);
 
-                    array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)], 
-                                                ob_data[vpob.data_offset / sizeof(double)],
-                                                oc_data[vpoc.data_offset / sizeof(double)]);
+                    array_data[i] = func(state, oa_data[vpoa.data_offset >> double_divsize], 
+                                                ob_data[vpob.data_offset >> double_divsize],
+                                                oc_data[vpoc.data_offset >> double_divsize]);
                     multi.IterNext();
                 }
 
@@ -2029,9 +2059,10 @@ namespace NumpyDotNet
                     double[] oa_data = oa.Array.data.datap as double[];
 
                     itera = NpyCoreApi.IterNew(oa);
+
                     foreach (var dd in itera)
                     {
-                        array_data[itera.Iter.index] = func(state, oa_data[itera.CurrentPtr.data_offset / sizeof(double)]);
+                        array_data[itera.Iter.index] = func(state, oa_data[itera.CurrentPtr.data_offset >> double_divsize]);
                     }
 
                     return np.array(array_data);
@@ -2051,7 +2082,7 @@ namespace NumpyDotNet
                     for (i = 0; i < multi.size; i++)
                     {
                         var vpoa = multi.IterData(1);
-                        array_data[i] = func(state, oa_data[vpoa.data_offset / sizeof(double)]);
+                        array_data[i] = func(state, oa_data[vpoa.data_offset >> double_divsize]);
                         multi.IterNext();
                     }
 
@@ -2112,7 +2143,7 @@ namespace NumpyDotNet
                 {
                     vpon = multi.IterData(0);
                     vpop = multi.IterData(1);
-                    array_data[i] = func(state, on_data[vpon.data_offset / sizeof(long)], op_data[vpop.data_offset / sizeof(double)]);
+                    array_data[i] = func(state, on_data[vpon.data_offset >> long_divsize], op_data[vpop.data_offset >> double_divsize]);
                     multi.IterNext();
                 }
 
@@ -2171,7 +2202,7 @@ namespace NumpyDotNet
                 {
                     vpon = multi.IterData(0);
                     vpop = multi.IterData(1);
-                    array_data[i] = func(state, on_data[vpon.data_offset / sizeof(long)], op_data[vpop.data_offset / sizeof(double)]);
+                    array_data[i] = func(state, on_data[vpon.data_offset >> long_divsize], op_data[vpop.data_offset >> double_divsize]);
                     multi.IterNext();
                 }
 
@@ -2237,9 +2268,9 @@ namespace NumpyDotNet
                     vpom = multi.IterData(1);
                     vpoN = multi.IterData(2);
 
-                    array_data[i] = func(state, on_data[vpon.data_offset / sizeof(long)], 
-                                                om_data[vpom.data_offset / sizeof(long)],
-                                                oN_data[vpoN.data_offset / sizeof(long)]);
+                    array_data[i] = func(state, on_data[vpon.data_offset >> long_divsize], 
+                                                om_data[vpom.data_offset >> long_divsize],
+                                                oN_data[vpoN.data_offset >> long_divsize]);
                     multi.IterNext();
                 }
 
