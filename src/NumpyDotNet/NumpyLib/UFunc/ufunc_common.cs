@@ -822,9 +822,11 @@ namespace NumpyLib
         {
             public UFUNC_BASE(int sizeOfItem)
             {
-                this.SizeOfItem = sizeOfItem;
+                this.ItemSize = sizeOfItem;
+                ItemDiv = GetDivSize(sizeOfItem);
             }
-            protected int SizeOfItem;
+            protected int ItemSize;
+            protected int ItemDiv;
 
 
             #region SCALAR CALCULATIONS
@@ -994,7 +996,7 @@ namespace NumpyLib
                         {
                             try
                             {
-                                T operand = oper[Iter.dataptr.data_offset / SizeOfItem];
+                                T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
                                 T srcValue = src[Iter.index - srcAdjustment];
 
                                 T retValue = retValue = UFuncOperation(srcValue, operand);
@@ -1180,11 +1182,11 @@ namespace NumpyLib
                 T[] Op1Array = Operand1.datap as T[];
                 T[] Op2Array = Operand2.datap as T[];
 
-                npy_intp R_Index = AdjustNegativeIndex(retArray, R_Offset / SizeOfItem);
-                npy_intp O1_Index = AdjustNegativeIndex(Op1Array, O1_Offset / SizeOfItem);
+                npy_intp R_Index = AdjustNegativeIndex(retArray, R_Offset >> ItemDiv);
+                npy_intp O1_Index = AdjustNegativeIndex(Op1Array, O1_Offset >> ItemDiv);
 
-                npy_intp O2_CalculatedStep = (O2_Step / SizeOfItem);
-                npy_intp O2_CalculatedOffset = (O2_Offset / SizeOfItem);
+                npy_intp O2_CalculatedStep = (O2_Step >> ItemDiv);
+                npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
 
 
                 T retValue = retArray[R_Index];
@@ -1245,14 +1247,14 @@ namespace NumpyLib
                 T[] Op1Array = Operand1.datap as T[];
                 T[] Op2Array = Operand2.datap as T[];
 
-                npy_intp O1_CalculatedStep = (O1_Step / SizeOfItem);
-                npy_intp O1_CalculatedOffset = (O1_Offset / SizeOfItem);
+                npy_intp O1_CalculatedStep = (O1_Step >> ItemDiv);
+                npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
 
-                npy_intp O2_CalculatedStep = (O2_Step / SizeOfItem);
-                npy_intp O2_CalculatedOffset = (O2_Offset / SizeOfItem);
+                npy_intp O2_CalculatedStep = (O2_Step >> ItemDiv);
+                npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
 
-                npy_intp R_CalculatedStep = (R_Step / SizeOfItem);
-                npy_intp R_CalculatedOffset = (R_Offset / SizeOfItem);
+                npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
+                npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
 
                 var UFuncOperation = GetUFuncOperation(ops);
                 if (UFuncOperation == null)
