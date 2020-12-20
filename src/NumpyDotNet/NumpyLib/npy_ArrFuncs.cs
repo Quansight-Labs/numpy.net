@@ -277,7 +277,7 @@ namespace NumpyLib
 
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dpLength - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dpLength - -AdjustedIndex;
             }
 
             return AdjustedIndex;
@@ -515,7 +515,7 @@ namespace NumpyLib
 
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dpLength - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dpLength - -AdjustedIndex;
             }
 
             return AdjustedIndex;

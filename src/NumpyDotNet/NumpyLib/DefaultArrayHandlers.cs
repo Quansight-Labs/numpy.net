@@ -81,7 +81,7 @@ namespace NumpyLib
 
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dp.Length - -AdjustedIndex;
             }
 
             return dp[AdjustedIndex];
@@ -108,7 +108,7 @@ namespace NumpyLib
             long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dp.Length - -AdjustedIndex;
             }
 
             dp[AdjustedIndex] = (T)value;
@@ -131,7 +131,7 @@ namespace NumpyLib
             if (index < 0)
             {
                 T[] dp = data.datap as T[];
-                index = dp.Length - Math.Abs(index);
+                index = dp.Length - -index;
             }
             return index;
         }
@@ -3124,7 +3124,7 @@ namespace NumpyLib
             long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dp.Length - -AdjustedIndex;
             }
             if (value is System.Numerics.Complex)
             {
@@ -3654,7 +3654,7 @@ namespace NumpyLib
             long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dp.Length - -AdjustedIndex;
             }
             if (value is System.Numerics.BigInteger)
             {
@@ -4130,7 +4130,7 @@ namespace NumpyLib
             long AdjustedIndex = (data.data_offset + index) >> ItemDiv;
             if (AdjustedIndex < 0)
             {
-                AdjustedIndex = dp.Length - Math.Abs(AdjustedIndex);
+                AdjustedIndex = dp.Length - -AdjustedIndex;
             }
 
             dp[AdjustedIndex] = SetCheck(value);

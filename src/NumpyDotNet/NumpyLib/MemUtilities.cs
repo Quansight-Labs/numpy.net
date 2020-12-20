@@ -49,7 +49,7 @@ namespace NumpyLib
             if (index < 0)
             {
                 dynamic dyndatap = obj.datap;
-                index = dyndatap.Length - Math.Abs(index);
+                index = dyndatap.Length - -index;
             }
 
             object ret = DefaultArrayHandlers.GetArrayHandler(obj.type_num).GetIndex(obj, index);
@@ -61,7 +61,7 @@ namespace NumpyLib
             if (index < 0)
             {
                 dynamic dyndatap = data.datap;
-                index = dyndatap.Length - Math.Abs(index);
+                index = dyndatap.Length - -index;
             }
 
             try

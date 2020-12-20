@@ -65,7 +65,7 @@ namespace NumpyLib
             if (index < 0)
             {
                 T[] dp = data.datap as T[];
-                index = dp.Length - Math.Abs(index);
+                index = dp.Length - -index;
             }
             return index;
         }
@@ -1297,7 +1297,7 @@ namespace NumpyLib
             {
                 if (index < 0)
                 {
-                    index = data.Length - Math.Abs(index);
+                    index = data.Length - -index;
                 }
                 return index;
             }
