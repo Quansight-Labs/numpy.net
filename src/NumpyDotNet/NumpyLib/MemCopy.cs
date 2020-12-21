@@ -4535,6 +4535,75 @@ namespace NumpyLib
 
         private void dot(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
         {
+            // lets use specific functions.  It is horrible replication of code but much more performant.
+            switch (_ip1.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    break;
+
+                case NPY_TYPES.NPY_BYTE:
+                    dot_BYTE(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_UBYTE:
+                    dot_UBYTE(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_INT16:
+                    dot_INT16(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_UINT16:
+                    dot_UINT16(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_INT32:
+                    dot_INT32(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+                case NPY_TYPES.NPY_UINT32:
+                    dot_UINT32(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_INT64:
+                    dot_INT64(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_UINT64:
+                    dot_UINT64(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_FLOAT:
+                    dot_FLOAT(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_DOUBLE:
+                    dot_DOUBLE(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_DECIMAL:
+                    dot_DECIMAL(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_COMPLEX:
+                    dot_COMPLEX(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_BIGINT:
+                    dot_BIGINT(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_OBJECT:
+                    dot_OBJECT(_ip1, is1, _ip2, is2, _op, n);
+                    return;
+
+                case NPY_TYPES.NPY_STRING:
+                    break;
+
+                default:
+                    break;
+            }
+ 
+
             int ip1Div = GetDivSize(_ip1);
             int ip2Div = GetDivSize(_ip2);
             int opDiv = GetDivSize(_op);
@@ -4557,9 +4626,347 @@ namespace NumpyLib
             {
                 tmp = T_dot(tmp, ip1, ip2, ip1_index, ip2_index);
             }
+
+
             op[_op.data_offset >> opDiv] = tmp;
         }
+        #region type specific DOT methods
+        private void dot_BYTE(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
 
+            sbyte tmp = 0;
+
+            var ip1 = _ip1.datap as sbyte[];
+            var ip2 = _ip2.datap as sbyte[];
+            var op = _op.datap as sbyte[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += (sbyte)(ip1[ip1_index] * ip2[ip2_index]);
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_UBYTE(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            byte tmp = 0;
+
+            var ip1 = _ip1.datap as byte[];
+            var ip2 = _ip2.datap as byte[];
+            var op = _op.datap as byte[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += (byte)(ip1[ip1_index] * ip2[ip2_index]);
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_INT16(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            Int16 tmp = 0;
+
+            var ip1 = _ip1.datap as Int16[];
+            var ip2 = _ip2.datap as Int16[];
+            var op = _op.datap as Int16[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += (Int16)(ip1[ip1_index] * ip2[ip2_index]);
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_UINT16(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            UInt16 tmp = 0;
+
+            var ip1 = _ip1.datap as UInt16[];
+            var ip2 = _ip2.datap as UInt16[];
+            var op = _op.datap as UInt16[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += (UInt16)(ip1[ip1_index] * ip2[ip2_index]);
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_INT32(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+   
+            Int32 tmp = 0;
+
+            var ip1 = _ip1.datap as Int32[];
+            var ip2 = _ip2.datap as Int32[];
+            var op = _op.datap as Int32[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_UINT32(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            UInt32 tmp = 0;
+
+            var ip1 = _ip1.datap as UInt32[];
+            var ip2 = _ip2.datap as UInt32[];
+            var op = _op.datap as UInt32[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_INT64(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            Int64 tmp = 0;
+
+            var ip1 = _ip1.datap as Int64[];
+            var ip2 = _ip2.datap as Int64[];
+            var op = _op.datap as Int64[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_UINT64(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            UInt64 tmp = 0;
+
+            var ip1 = _ip1.datap as UInt64[];
+            var ip2 = _ip2.datap as UInt64[];
+            var op = _op.datap as UInt64[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_FLOAT(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            float tmp = 0;
+
+            var ip1 = _ip1.datap as float[];
+            var ip2 = _ip2.datap as float[];
+            var op = _op.datap as float[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_DOUBLE(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            double tmp = 0;
+
+            var ip1 = _ip1.datap as double[];
+            var ip2 = _ip2.datap as double[];
+            var op = _op.datap as double[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_DECIMAL(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            decimal tmp = 0;
+
+            var ip1 = _ip1.datap as decimal[];
+            var ip2 = _ip2.datap as decimal[];
+            var op = _op.datap as decimal[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_BIGINT(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            System.Numerics.BigInteger tmp = 0;
+
+            var ip1 = _ip1.datap as System.Numerics.BigInteger[];
+            var ip2 = _ip2.datap as System.Numerics.BigInteger[];
+            var op = _op.datap as System.Numerics.BigInteger[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_COMPLEX(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            System.Numerics.Complex tmp = 0;
+
+            var ip1 = _ip1.datap as System.Numerics.Complex[];
+            var ip2 = _ip2.datap as System.Numerics.Complex[];
+            var op = _op.datap as System.Numerics.Complex[];
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+
+        private void dot_OBJECT(VoidPtr _ip1, npy_intp is1, VoidPtr _ip2, npy_intp is2, VoidPtr _op, npy_intp n)
+        {
+            int ipDiv = GetDivSize(_ip1);
+
+            dynamic tmp = 0;
+
+            var ip1 = _ip1.datap as dynamic;
+            var ip2 = _ip2.datap as dynamic;
+            var op = _op.datap as dynamic;
+
+            npy_intp ip1_index = _ip1.data_offset >> ipDiv;
+            npy_intp ip2_index = _ip2.data_offset >> ipDiv;
+            is1 >>= ipDiv;
+            is2 >>= ipDiv;
+
+            for (int i = 0; i < n; i++)
+            {
+                tmp += ip1[ip1_index] * ip2[ip2_index];
+                ip1_index += is1; ip2_index += is2;
+            }
+
+            op[_op.data_offset >> ipDiv] = tmp;
+        }
+        #endregion
 
         protected abstract T T_dot(T otmp, T[] op1, T[] op2, npy_intp ip1_index, npy_intp ip2_index);
    
