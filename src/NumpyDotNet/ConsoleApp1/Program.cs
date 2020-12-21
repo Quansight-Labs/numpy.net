@@ -21,9 +21,141 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test3();
+            Test5();
 
 
+
+        }
+
+        static void Test5()
+        {
+            const int TestDataSize = 10000000;
+            const int TestLoops = 1000;
+            Int64[] Results = new Int64[TestDataSize];
+            Int64[] Results2 = new Int64[TestDataSize];
+
+            /////////// 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results[i] = GetItem1(-i, 1000);
+                }
+            }
+
+            var ts1 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results2[i] = GetItem2(-i, 1000);
+                }
+            }
+
+            var ts2 = sw.ElapsedMilliseconds;
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                if (Results[i] != Results2[i])
+                {
+                    Console.WriteLine("Not same result");
+                }
+            }
+
+            Console.WriteLine("{0} : {1}", ts1.ToString(), ts2.ToString());
+            Console.ReadLine();
+
+
+
+        }
+        public static Int64 GetItem1(Int64 AdjustedIndex, Int32 Length)
+        {
+
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = Length - Math.Abs(AdjustedIndex);
+            }
+
+            return AdjustedIndex;
+        }
+
+        public static Int64 GetItem2(Int64 AdjustedIndex, Int32 Length)
+        {
+
+            if (AdjustedIndex < 0)
+            {
+                AdjustedIndex = Length - -AdjustedIndex;
+            }
+
+            return AdjustedIndex;
+        }
+
+
+        static void Test4()
+        {
+            const int TestDataSize = 10000000;
+            const int TestLoops = 1000;
+
+            Int64[] TestData1 = new Int64[TestDataSize];
+            Int64[] TestData2 = new Int64[TestDataSize];
+            Int64[] Results = new Int64[TestDataSize];
+            Int64[] Results2 = new Int64[TestDataSize];
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                TestData1[i] = i + 1000;
+                TestData2[i] = i + 1000 + 1;
+            }
+
+            int ItemSize = 8;
+            int ItemSizeRightShift = 3;
+
+            /////////// 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results[i] = TestData1[i] / ItemSize;
+                }
+            }
+            
+            var ts1 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results2[i] = TestData1[i] >> ItemSizeRightShift;
+                }
+            }
+
+            var ts2 = sw.ElapsedMilliseconds;
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                if (Results[i] != Results2[i])
+                {
+                    Console.WriteLine("Not same result");
+                }
+            }
+
+            Console.WriteLine("{0} : {1}", ts1.ToString(), ts2.ToString());
+            Console.ReadLine();
 
         }
 
