@@ -3580,6 +3580,7 @@ namespace NumpyLib
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
+        void ItemCopy(VoidPtr dest, VoidPtr src, int DivSize);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -5075,6 +5076,13 @@ namespace NumpyLib
                 Array.Copy(temp, 0, _dst, dOffset, ElementCount);
             }
  
+        }
+
+        public void ItemCopy(VoidPtr dest, VoidPtr src, int DivSize)
+        {
+            T[] _dst = dest.datap as T[];
+            T[] _src = src.datap as T[];
+            _dst[dest.data_offset >> DivSize] = _src[src.data_offset >> DivSize];
         }
 
 
