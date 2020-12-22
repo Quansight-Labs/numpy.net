@@ -202,6 +202,11 @@ namespace NumpyLib
 
     public class NpyArrayIterObjectFast : NpyArrayIterObject
     {
+        public npy_intp index;
+        public npy_intp size;
+        public int nd_m1;
+        public bool contiguous;
+
         public npy_intp data_offset;
         public int elsize;
         public npy_intp strides_0;

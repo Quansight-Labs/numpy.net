@@ -140,20 +140,33 @@ namespace NumpyLib
 
             array_iter_base_init(it, ao);
 
-            NpyArray_IterNewFastInit(it);
+            NpyArray_IterNewFastInit(it, it);
 
             return it;
         }
-        private static void NpyArray_IterNewFastInit(NpyArrayIterObjectFast it)
+
+        internal static NpyArrayIterObjectFast NpyArray_IterNewFast(NpyArrayIterObject iter)
         {
-            it.data_offset = it.dataptr.data_offset;
-            it.elsize = it.ao.descr.elsize;
-            it.strides_0 = it.strides[0];
-            it.strides_1 = it.strides[1];
-            it.dims_m1_1 = it.dims_m1[1];
-            it.coordinates_0 = it.coordinates[0];
-            it.coordinates_1 = it.coordinates[1];
-            it.backstrides_1 = it.backstrides[1];
+            NpyArrayIterObjectFast it = new NpyArrayIterObjectFast();
+            NpyArray_IterNewFastInit(it, iter);
+            return it;
+        }
+
+        private static void NpyArray_IterNewFastInit(NpyArrayIterObjectFast it, NpyArrayIterObject iter)
+        {
+            it.index = iter.index;
+            it.size = iter.size;
+            it.nd_m1 = iter.nd_m1;
+            it.contiguous = iter.contiguous;
+
+            it.data_offset = iter.dataptr.data_offset;
+            it.elsize = iter.ao.descr.elsize;
+            it.strides_0 = iter.strides[0];
+            it.strides_1 = iter.strides[1];
+            it.dims_m1_1 = iter.dims_m1[1];
+            it.coordinates_0 = iter.coordinates[0];
+            it.coordinates_1 = iter.coordinates[1];
+            it.backstrides_1 = iter.backstrides[1];
         }
 
         internal static NpyArrayIterObject NpyArray_BroadcastToShape(NpyArray ao, npy_intp[] dims, int nd)
@@ -1435,7 +1448,7 @@ namespace NumpyLib
         internal static void NpyArray_ITER_RESET(NpyArrayIterObjectFast it)
         {
             NpyArray_ITER_RESET((NpyArrayIterObject)it);
-            NpyArray_IterNewFastInit(it);
+            NpyArray_IterNewFastInit(it, it);
         }
 
         static int array_iter_base_init(NpyArrayIterObject it, NpyArray ao)
