@@ -3697,7 +3697,6 @@ namespace NumpyLib
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
-            NpyArrayIterObject srcIter2 = srcIter.copy();
 
             npy_intp dptr_index = 0;
 
