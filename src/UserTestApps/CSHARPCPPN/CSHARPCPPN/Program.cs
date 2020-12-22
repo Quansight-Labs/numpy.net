@@ -11,17 +11,24 @@ namespace CSHARPCPPN
         private static void Main(string[] args)
         {
 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
             using (var writer = new StreamWriter(@"C:\temp\output.txt"))
             {
                 // Redirect standard output from the console to the output file.
                 Console.SetOut(writer);
 
 
-                GenerateImageNumpyDotNet(256, 256);
+                GenerateImageNumpyDotNet(512, 512);
 
+                Console.WriteLine(sw.ElapsedMilliseconds.ToString());
+
+                sw.Restart();
                 System.Console.WriteLine("//////////////////////////////////////");
 
-                GenerateImageNumSharp(256, 256);
+                GenerateImageNumSharp(512, 512);
+                Console.WriteLine(sw.ElapsedMilliseconds.ToString());
 
             }
 
