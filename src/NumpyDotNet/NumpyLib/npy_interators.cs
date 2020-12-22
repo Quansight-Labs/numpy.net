@@ -129,6 +129,32 @@ namespace NumpyLib
             /* Defer creation of the wrapper - will be handled by Npy_INTERFACE. */
             return it;
         }
+        internal static NpyArrayIterObjectFast NpyArray_IterNewFast(NpyArray ao)
+        {
+            NpyArrayIterObjectFast it = new NpyArrayIterObjectFast();
+            NpyObject_Init(it, new NpyTypeObject());
+            if (it == null)
+            {
+                return null;
+            }
+
+            array_iter_base_init(it, ao);
+
+            NpyArray_IterNewFastInit(it);
+
+            return it;
+        }
+        private static void NpyArray_IterNewFastInit(NpyArrayIterObjectFast it)
+        {
+            it.data_offset = it.dataptr.data_offset;
+            it.elsize = it.ao.descr.elsize;
+            it.strides_0 = it.strides[0];
+            it.strides_1 = it.strides[1];
+            it.dims_m1_1 = it.dims_m1[1];
+            it.coordinates_0 = it.coordinates[0];
+            it.coordinates_1 = it.coordinates[1];
+            it.backstrides_1 = it.backstrides[1];
+        }
 
         internal static NpyArrayIterObject NpyArray_BroadcastToShape(NpyArray ao, npy_intp[] dims, int nd)
         {
@@ -651,8 +677,56 @@ namespace NumpyLib
                 }
             }
         }
-   
- 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void NpyArray_ITER_NEXT(NpyArrayIterObjectFast it)
+        {
+            //Debug.Assert(Validate(it));
+
+            it.index++;
+            if (it.nd_m1 == 0)
+            {
+                it.data_offset += it.strides_0;
+            }
+            else if (it.contiguous)
+            {
+                it.data_offset += it.elsize;
+            }
+            else if (it.nd_m1 == 1)
+            {
+                if (it.coordinates_1 < it.dims_m1_1)
+                {
+                    it.coordinates_1++;
+                    it.data_offset += it.strides_1;
+                }
+                else
+                {
+                    it.coordinates_1 = 0;
+                    it.coordinates_0++;
+                    it.data_offset += it.strides_0 - it.backstrides_1;
+                }
+            }
+            else
+            {
+                int i;
+                for (i = it.nd_m1; i >= 0; i--)
+                {
+                    if (it.coordinates[i] < it.dims_m1[i])
+                    {
+                        it.coordinates[i]++;
+                        it.data_offset += it.strides[i];
+                        break;
+                    }
+                    else
+                    {
+                        it.coordinates[i] = 0;
+                        it.data_offset -= it.backstrides[i];
+                    }
+                }
+            }
+        }
+
+
         internal static void NpyArray_ITER_WALK(NpyArrayIterObject it, npy_intp walkCount)
         {
             //Debug.Assert(Validate(it));
@@ -1355,6 +1429,13 @@ namespace NumpyLib
                 it.dataptr = new VoidPtr(it.ao);
             }
             Array.Clear(it.coordinates, 0, it.coordinates.Length);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void NpyArray_ITER_RESET(NpyArrayIterObjectFast it)
+        {
+            NpyArray_ITER_RESET((NpyArrayIterObject)it);
+            NpyArray_IterNewFastInit(it);
         }
 
         static int array_iter_base_init(NpyArrayIterObject it, NpyArray ao)

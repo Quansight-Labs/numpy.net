@@ -200,6 +200,19 @@ namespace NumpyLib
 
     public delegate VoidPtr npy_iter_get_dataptr_t(NpyArrayIterObject iter, npy_intp[] i1);
 
+    public class NpyArrayIterObjectFast : NpyArrayIterObject
+    {
+        public npy_intp data_offset;
+        public int elsize;
+        public npy_intp strides_0;
+        public npy_intp strides_1;
+        public npy_intp dims_m1_1;
+        public npy_intp coordinates_0;
+        public npy_intp coordinates_1;
+        public npy_intp backstrides_1;
+
+    }
+
     public class NpyArrayIterObject : NpyObject_HEAD
     {
         public int nd_m1;                                                   /* number of dimensions - 1 */
