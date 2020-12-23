@@ -1594,6 +1594,72 @@ namespace NumpyLib
             }
         }
 
+        internal static void NpyArray_ITER_GOTO1D_CACHE(NpyArrayIterObject it, npy_intp indices, npy_intp step, npy_intp cacheSize)
+        {
+            if (cacheSize == 0)
+                return;
+
+            it.internalCacheLength = Math.Min(cacheSize, numpyinternal.maxIterOffsetCacheSize);
+            if (it.internalCache == null || it.internalCache.Length < it.internalCacheLength)
+            {
+                it.internalCache = new npy_intp[it.internalCacheLength];
+            }
+            it.internalCacheIndex = 0;
+
+            if (indices < 0)
+                indices += it.size;
+
+            if (it.nd_m1 == 0)
+            {
+    
+                npy_intp it_strides_0 = it.strides[0];
+                npy_intp it_ao_data_data_offset = it.ao.data.data_offset;
+
+                for (int i = 0; i < it.internalCacheLength; i++)
+                {
+                    it.internalCache[i] = it_ao_data_data_offset + (indices * it_strides_0);
+                    indices += step;
+                }
+
+ 
+                it.strides[0] = it_strides_0;
+                it.ao.data.data_offset = it_ao_data_data_offset;
+
+                return;
+            }
+
+            if (it.contiguous)
+            {
+                npy_intp elsize = it.ao.descr.elsize;
+                npy_intp it_ao_data_data_offset = it.ao.data.data_offset;
+
+                for (int i = 0; i < it.internalCacheLength; i++)
+                {
+                    it.internalCache[i] = it_ao_data_data_offset + (indices * elsize);
+                    indices += step;
+                }
+
+                it.ao.data.data_offset = it_ao_data_data_offset;
+                return;
+            }
+
+            for (int i = 0; i < it.internalCacheLength; i++)
+            {
+                it.internalCache[i] = it.ao.data.data_offset;
+                npy_intp _indices = indices;
+                for (int index = 0; index <= it.nd_m1; index++)
+                {
+                    it.internalCache[i] += (_indices / it.factors[index]) * it.strides[index];
+                    _indices %= it.factors[index];
+                }
+
+                indices += step;
+            }
+
+            return;
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_GOTO(NpyArrayIterObject it, npy_intp[] destination)
         {
