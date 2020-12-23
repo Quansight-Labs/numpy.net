@@ -21,7 +21,7 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test5();
+            Test4();
 
 
 
@@ -108,6 +108,7 @@ namespace ConsoleApp1
             Int64[] TestData2 = new Int64[TestDataSize];
             Int64[] Results = new Int64[TestDataSize];
             Int64[] Results2 = new Int64[TestDataSize];
+            Int64[] Results3 = new Int64[TestDataSize];
 
             for (int i = 0; i < TestDataSize; i++)
             {
@@ -146,6 +147,21 @@ namespace ConsoleApp1
 
             var ts2 = sw.ElapsedMilliseconds;
 
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results3[i] = TestData1[i];
+                }
+            }
+
+            var ts3 = sw.ElapsedMilliseconds;
+
+
             for (int i = 0; i < TestDataSize; i++)
             {
                 if (Results[i] != Results2[i])
@@ -154,7 +170,7 @@ namespace ConsoleApp1
                 }
             }
 
-            Console.WriteLine("{0} : {1}", ts1.ToString(), ts2.ToString());
+            Console.WriteLine("{0} : {1} : {2}", ts1.ToString(), ts2.ToString(), ts3.ToString());
             Console.ReadLine();
 
         }
