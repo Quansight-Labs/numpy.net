@@ -3663,7 +3663,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(_dst, divsize);
+                        numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
                     }
                     _dst.data_offset += elsize;
 
@@ -3707,7 +3707,7 @@ namespace NumpyLib
                     if (bool_array[dptr_index])
                     {
                         d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
-                        numpyinternal.swapvalue(_dst, divsize);
+                        numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
                         _dst.data_offset += elsize;
                     }
                     dptr_index += stride;
@@ -3742,9 +3742,6 @@ namespace NumpyLib
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
-            NpyArrayIterObject index_iter2 = index_iter.copy();
-
-
             if (swap)
             {
                 while (iterCount-- > 0)
@@ -3763,7 +3760,7 @@ namespace NumpyLib
                     d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
                     _dst.data_offset += elsize;
 
-                    numpyinternal.swapvalue(_dst, divsize);
+                    numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
 
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
@@ -3817,9 +3814,9 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                     }
-   
+
                     start += step_size;
                 }
             }
@@ -3833,7 +3830,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                     }
 
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -3844,9 +3841,8 @@ namespace NumpyLib
                     start += step_size;
                 }
             }
-    
-        }
 
+        }
         public void IterSubscriptAssignBoolArray(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, npy_intp bool_size, bool[] bool_mask, npy_intp stride, bool swap)
         {
             int elsize = GetTypeSize(destIter.dataptr);
@@ -3871,7 +3867,7 @@ namespace NumpyLib
 
                         if (swap)
                         {
-                            numpyinternal.swapvalue(destIter.dataptr, divsize);
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                         }
 
                     }
@@ -3889,7 +3885,7 @@ namespace NumpyLib
 
                         if (swap)
                         {
-                            numpyinternal.swapvalue(destIter.dataptr, divsize);
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                         }
 
                         numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -3939,7 +3935,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                     }
     
                     numpyinternal.NpyArray_ITER_NEXT(indexIter);
@@ -3964,7 +3960,7 @@ namespace NumpyLib
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                     }
 
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
@@ -4118,7 +4114,7 @@ namespace NumpyLib
                         numpyinternal.memmove(offsets[offsetsIndex], srcIter.dataptr, elsize);
                         if (swap)
                         {
-                            numpyinternal.swapvalue(destIter.dataptr, divsize);
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                         }
                         numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     }
@@ -4158,7 +4154,7 @@ namespace NumpyLib
                         d[offsets[offsetsIndex].data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         if (swap)
                         {
-                            numpyinternal.swapvalue(destIter.dataptr, divsize);
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                         }
                         numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     }
@@ -4189,7 +4185,7 @@ namespace NumpyLib
                         d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         if (swap)
                         {
-                            numpyinternal.swapvalue(destIter.dataptr, divsize);
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                         }
                         numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     }
@@ -4226,7 +4222,7 @@ namespace NumpyLib
 
                 if (swap)
                 {
-                    numpyinternal.swapvalue(destPtr, divsize);
+                    numpyinternal.swapvalue(destPtr, destPtr.data_offset, divsize);
                 }
             }
         }
@@ -4246,7 +4242,7 @@ namespace NumpyLib
 
                 if (swap)
                 {
-                    numpyinternal.swapvalue(destIter.dataptr, divsize);
+                    numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
                 }
 
                 numpyinternal.NpyArray_ITER_NEXT(destIter);
@@ -4986,7 +4982,7 @@ namespace NumpyLib
 
             if (swap)
             {
-                numpyinternal.swapvalue(_dst, divsize);
+                numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
             }
         }
 
@@ -5006,7 +5002,7 @@ namespace NumpyLib
                     {
                         d[_dst.data_offset >> divsize] = s[_src.data_offset >> divsize];
 
-                        numpyinternal.swapvalue(_dst, divsize);
+                        numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
 
                         _dst.data_offset += dstride;
                         _src.data_offset += sstride;
@@ -5033,7 +5029,7 @@ namespace NumpyLib
                 {
                     if (swap)
                     {
-                        numpyinternal.swapvalue(_dst, divsize);
+                        numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
                     }
                     _dst.data_offset += dstride;
                 }
