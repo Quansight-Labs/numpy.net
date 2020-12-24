@@ -1492,7 +1492,6 @@ namespace NumpyLib
                 it.limits_sizes[i] = it.limits[i,1] - it.limits[i,0] + 1;
             }
 
-            it.translate = get_ptr_simple;
             NpyArray_ITER_RESET(it);
 
             return 0;

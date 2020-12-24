@@ -198,7 +198,6 @@ namespace NumpyLib
     }
 
 
-    public delegate VoidPtr npy_iter_get_dataptr_t(NpyArrayIterObject iter, npy_intp[] i1);
 
     public class NpyArrayIterObjectFast : NpyArrayIterObject
     {
@@ -243,7 +242,6 @@ namespace NumpyLib
         public npy_intp[,] bounds = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         public npy_intp[,] limits = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         public npy_intp[] limits_sizes = new npy_intp[npy_defs.NPY_MAXDIMS];
-        public npy_iter_get_dataptr_t translate;
 
         public npy_intp ParallelMask;
         public npy_intp ParallelIndex;
@@ -285,7 +283,6 @@ namespace NumpyLib
             Array.Copy(this.bounds, _copy.bounds, this.bounds.Length);
             Array.Copy(this.limits, _copy.limits, this.limits.Length);
             Array.Copy(this.limits_sizes, _copy.limits_sizes, this.limits_sizes.Length);
-            _copy.translate = this.translate;
             return _copy;
         }
     }
@@ -358,7 +355,6 @@ namespace NumpyLib
         npy_intp[,] bounds = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         npy_intp[,] limits = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         npy_intp[] limits_sizes = new npy_intp[npy_defs.NPY_MAXDIMS];
-        npy_iter_get_dataptr_t translate;
 
         /*
          * New members
