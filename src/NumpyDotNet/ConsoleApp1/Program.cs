@@ -21,10 +21,83 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test6();
+            Test7();
 
 
 
+        }
+
+        static void Test7()
+        {
+            // this test show there is very little performance difference using template functions.
+
+            const int TestDataSize = 10000000;
+            const int TestLoops = 1000;
+
+            Int64[] TestData1 = new Int64[TestDataSize];
+            Int64[] TestData2 = new Int64[TestDataSize];
+            Int64[] Results = new Int64[TestDataSize];
+            Int64[] Results2 = new Int64[TestDataSize];
+            Int64[] Results3 = new Int64[TestDataSize];
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                TestData1[i] = i + 1000;
+                TestData2[i] = i + 1000 + 1;
+            }
+
+            /////////// 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results[i] = Test7_1(TestData1, TestData2, i);
+                }
+            }
+
+            var ts1 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results2[i] = Test7_2(TestData1, TestData2, i);
+                }
+            }
+
+            var ts2 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                if (Results[i] != Results2[i])
+                {
+                    Console.WriteLine("Not same result");
+                }
+            }
+
+            Console.WriteLine("{0} : {1}", ts1.ToString(), ts2.ToString());
+            Console.ReadLine();
+        }
+
+        private static long Test7_1(long[] testData1, long[] testData2, int i)
+        {
+            testData1[i] = testData2[i];
+            return testData1[1];
+        }
+        private static T Test7_2<T>(T[] testData1, T[] testData2, int i)
+        {
+            testData1[i] = testData2[i];
+            return testData1[1];
         }
 
         public class VoidPtr
