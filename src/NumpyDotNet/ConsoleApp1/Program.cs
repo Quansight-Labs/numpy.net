@@ -21,10 +21,142 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test4();
+            Test6();
 
 
 
+        }
+
+        public class VoidPtr
+        {
+            public NPY_TYPES type_num;
+
+            public System.Int16[] Int16Datap;
+            public System.UInt16[] UInt16Datap;
+            public System.Int32[] Int32Datap;
+            public System.UInt32[] UInt32Datap;
+            public System.Int64[] Int64Datap;
+            public System.UInt64[] UInt64Datap;
+            public System.Single[] floatDatap;
+            public System.Double[] doubleDatap;
+            public System.Decimal[] decimalDatap;
+            public System.Object[] objectDatap;
+
+            public System.Object datap;
+
+            public System.Object datap2
+            {
+                get
+                {
+                    switch (type_num)
+                    {
+                        case NPY_TYPES.NPY_INT16:
+                            return Int16Datap;
+                        case NPY_TYPES.NPY_UINT16:
+                            return UInt16Datap;
+                        case NPY_TYPES.NPY_INT32:
+                            return Int32Datap;
+                        case NPY_TYPES.NPY_UINT32:
+                            return UInt32Datap;
+                        case NPY_TYPES.NPY_INT64:
+                            return Int64Datap;
+                        case NPY_TYPES.NPY_UINT64:
+                            return UInt64Datap;
+                        case NPY_TYPES.NPY_FLOAT:
+                            return floatDatap;
+                        case NPY_TYPES.NPY_DOUBLE:
+                            return doubleDatap;
+                        case NPY_TYPES.NPY_DECIMAL:
+                            return decimalDatap;
+                        case NPY_TYPES.NPY_OBJECT:
+                            return objectDatap;
+                        default:
+                            return null;
+                    }
+                }
+ 
+            }
+            public VoidPtr(decimal [] data)
+            {
+                datap = data;
+                decimalDatap = data;
+                type_num = NPY_TYPES.NPY_DECIMAL;
+            }
+        }
+
+        static void Test6()
+        {
+            const int TestDataSize = 10000000;
+            const int TestLoops = 1000;
+
+            VoidPtr vp = new VoidPtr(new Decimal[30]);
+
+            Decimal[] Results;
+            Decimal[] Results2;
+            Decimal[] Results3;
+
+    
+
+            /////////// 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results = VoidPtrGet1(vp);
+                }
+            }
+
+            var ts1 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results2 = VoidPtrGet2(vp);
+                }
+            }
+
+            var ts2 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results3 = VoidPtrGet3(vp);
+                }
+            }
+
+            var ts3 = sw.ElapsedMilliseconds;
+
+            Console.WriteLine("{0} : {1} : {2}", ts1.ToString(), ts2.ToString(), ts3.ToString());
+            Console.ReadLine();
+
+        }
+
+        private static decimal[] VoidPtrGet1(VoidPtr vp)
+        {
+            return vp.datap as decimal[];
+        }
+
+        private static decimal[] VoidPtrGet2(VoidPtr vp)
+        {
+            return vp.decimalDatap;
+        }
+
+        private static decimal[] VoidPtrGet3(VoidPtr vp)
+        {
+            return vp.datap2 as decimal[];
         }
 
         static void Test5()
