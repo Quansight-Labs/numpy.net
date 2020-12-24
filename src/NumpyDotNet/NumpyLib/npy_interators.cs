@@ -1485,11 +1485,11 @@ namespace NumpyLib
                 {
                     it.factors[nd - i - 1] = it.factors[nd - i] * ao.dimensions[nd - i];
                 }
-                it.bounds[i,0] = 0;
-                it.bounds[i,1] = ao.dimensions[i] - 1;
-                it.limits[i,0] = 0;
-                it.limits[i,1] = ao.dimensions[i] - 1;
-                it.limits_sizes[i] = it.limits[i,1] - it.limits[i,0] + 1;
+                //it.bounds[i,0] = 0;
+                //it.bounds[i,1] = ao.dimensions[i] - 1;
+                //it.limits[i,0] = 0;
+                //it.limits[i,1] = ao.dimensions[i] - 1;
+                //it.limits_sizes[i] = it.limits[i,1] - it.limits[i,0] + 1;
             }
 
             NpyArray_ITER_RESET(it);
