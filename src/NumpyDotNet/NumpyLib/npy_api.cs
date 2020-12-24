@@ -212,80 +212,81 @@ namespace NumpyLib
             SetSpecificDataType();
         }
 
+
         private void SetSpecificDataType()
         {
-            switch (type_num)
-            {
-                case NPY_TYPES.NPY_BOOL:
-                    Bool_Datap = datap as System.Boolean[];
-                    return;
-                case NPY_TYPES.NPY_BYTE:
-                    Byte_Datap = datap as System.SByte[];
-                    return;
-                case NPY_TYPES.NPY_UBYTE:
-                    UByte_Datap = datap as System.Byte[];
-                    return;
-                case NPY_TYPES.NPY_INT16:
-                    Int16_Datap = datap as System.Int16[];
-                    return;
-                case NPY_TYPES.NPY_UINT16:
-                    UInt16_Datap = datap as System.UInt16[];
-                    return;
-                case NPY_TYPES.NPY_INT32:
-                    Int32_Datap = datap as System.Int32[];
-                    return;
-                case NPY_TYPES.NPY_UINT32:
-                    UInt32_Datap = datap as System.UInt32[];
-                    return;
-                case NPY_TYPES.NPY_INT64:
-                    Int64_Datap = datap as System.Int64[];
-                    return;
-                case NPY_TYPES.NPY_UINT64:
-                    UInt64_Datap = datap as System.UInt64[];
-                    return;
-                case NPY_TYPES.NPY_FLOAT:
-                    Float_Datap = datap as System.Single[];
-                    return;
-                case NPY_TYPES.NPY_DOUBLE:
-                    Double_Datap = datap as System.Double[];
-                    return;
-                case NPY_TYPES.NPY_DECIMAL:
-                    Decimal_Datap = datap as System.Decimal[];
-                    return;
-                case NPY_TYPES.NPY_COMPLEX:
-                    Complex_Datap = datap as System.Numerics.Complex[];
-                    return;
-                case NPY_TYPES.NPY_BIGINT:
-                    BigInt_Datap = datap as System.Numerics.BigInteger[];
-                    return;
-                case NPY_TYPES.NPY_OBJECT:
-                    Object_Datap = datap as System.Object[];
-                    return;
-                case NPY_TYPES.NPY_STRING:
-                    String_Datap = datap as System.String[];
-                    return;
+            //switch (type_num)
+            //{
+            //    case NPY_TYPES.NPY_BOOL:
+            //        Bool_Datap = datap as System.Boolean[];
+            //        return;
+            //    case NPY_TYPES.NPY_BYTE:
+            //        Byte_Datap = datap as System.SByte[];
+            //        return;
+            //    case NPY_TYPES.NPY_UBYTE:
+            //        UByte_Datap = datap as System.Byte[];
+            //        return;
+            //    case NPY_TYPES.NPY_INT16:
+            //        Int16_Datap = datap as System.Int16[];
+            //        return;
+            //    case NPY_TYPES.NPY_UINT16:
+            //        UInt16_Datap = datap as System.UInt16[];
+            //        return;
+            //    case NPY_TYPES.NPY_INT32:
+            //        Int32_Datap = datap as System.Int32[];
+            //        return;
+            //    case NPY_TYPES.NPY_UINT32:
+            //        UInt32_Datap = datap as System.UInt32[];
+            //        return;
+            //    case NPY_TYPES.NPY_INT64:
+            //        Int64_Datap = datap as System.Int64[];
+            //        return;
+            //    case NPY_TYPES.NPY_UINT64:
+            //        UInt64_Datap = datap as System.UInt64[];
+            //        return;
+            //    case NPY_TYPES.NPY_FLOAT:
+            //        Float_Datap = datap as System.Single[];
+            //        return;
+            //    case NPY_TYPES.NPY_DOUBLE:
+            //        Double_Datap = datap as System.Double[];
+            //        return;
+            //    case NPY_TYPES.NPY_DECIMAL:
+            //        Decimal_Datap = datap as System.Decimal[];
+            //        return;
+            //    case NPY_TYPES.NPY_COMPLEX:
+            //        Complex_Datap = datap as System.Numerics.Complex[];
+            //        return;
+            //    case NPY_TYPES.NPY_BIGINT:
+            //        BigInt_Datap = datap as System.Numerics.BigInteger[];
+            //        return;
+            //    case NPY_TYPES.NPY_OBJECT:
+            //        Object_Datap = datap as System.Object[];
+            //        return;
+            //    case NPY_TYPES.NPY_STRING:
+            //        String_Datap = datap as System.String[];
+            //        return;
 
-            }
+            //}
         }
 
         public System.Object datap;
 
-        public System.Boolean[] Bool_Datap;
-        public System.Byte[] UByte_Datap;
-        public System.SByte[] Byte_Datap;
-        public System.Int16[] Int16_Datap;
-        public System.UInt16[] UInt16_Datap;
-        public System.Int32[] Int32_Datap;
-        public System.UInt32[] UInt32_Datap;
-        public System.Int64[] Int64_Datap;
-        public System.UInt64[] UInt64_Datap;
-        public System.Single[] Float_Datap;
-        public System.Double[] Double_Datap;
-        public System.Decimal[] Decimal_Datap;
-        public System.Numerics.Complex[] Complex_Datap;
-        public System.Numerics.BigInteger[] BigInt_Datap;
-        public System.Object[] Object_Datap;
-        public System.String[] String_Datap;
+        //public System.Boolean[] Bool_Datap;
+        //public System.Byte[] UByte_Datap;
+        //public System.SByte[] Byte_Datap;
+        //public System.Int16[] Int16_Datap;
+        //public System.UInt16[] UInt16_Datap;
+        //public System.Int32[] Int32_Datap;
+        //public System.UInt32[] UInt32_Datap;
+        //public System.Int64[] Int64_Datap;
+        //public System.UInt64[] UInt64_Datap;
+        //public System.Single[] Float_Datap;
+        //public System.Double[] Double_Datap;
+        //public System.Decimal[] Decimal_Datap;
+        //public System.Numerics.Complex[] Complex_Datap;
+        //public System.Numerics.BigInteger[] BigInt_Datap;
+        //public System.Object[] Object_Datap;
+        //public System.String[] String_Datap;
 
         public NPY_TYPES type_num = NPY_TYPES.NPY_OBJECT;
 
