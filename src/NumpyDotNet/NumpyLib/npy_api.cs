@@ -44,6 +44,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyLib
 {
+   
 
     public class VoidPtr
     {
@@ -71,6 +72,7 @@ namespace NumpyLib
         {
             datap = obj;
             type_num = typenum;
+            SetSpecificDataType();
         }
         public VoidPtr(NpyArray array) : this(array.data)
         {
@@ -86,6 +88,7 @@ namespace NumpyLib
             datap = vp.datap;
             type_num = vp.type_num;
             data_offset = vp.data_offset;
+            SetSpecificDataType();
         }
         public VoidPtr(VoidPtr vp, Int32 offset)
         {
@@ -94,6 +97,7 @@ namespace NumpyLib
             datap = vp.datap;
             type_num = vp.type_num;
             data_offset = (npy_intp)vp.data_offset + offset;
+            SetSpecificDataType();
         }
         public VoidPtr(VoidPtr vp, Int64 offset)
         {
@@ -102,101 +106,191 @@ namespace NumpyLib
             datap = vp.datap;
             type_num = vp.type_num;
             data_offset = (npy_intp)(vp.data_offset + offset);
+            SetSpecificDataType();
         }
-   
+
         public VoidPtr(bool [] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_BOOL;
+            SetSpecificDataType();
         }
         public VoidPtr(byte[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_UBYTE;
+            SetSpecificDataType();
         }
         public VoidPtr(sbyte[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_BYTE;
+            SetSpecificDataType();
         }
         public VoidPtr(Int16[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_INT16;
+            SetSpecificDataType();
         }
         public VoidPtr(UInt16[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_UINT16;
+            SetSpecificDataType();
         }
         public VoidPtr(Int32[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_INT32;
+            SetSpecificDataType();
         }
         public VoidPtr(UInt32[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_UINT32;
+            SetSpecificDataType();
         }
         public VoidPtr(Int64[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_INT64;
+            SetSpecificDataType();
         }
         public VoidPtr(UInt64[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_UINT64;
+            SetSpecificDataType();
         }
         public VoidPtr(float[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_FLOAT;
+            SetSpecificDataType();
         }
         public VoidPtr(double[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_DOUBLE;
+            SetSpecificDataType();
         }
         public VoidPtr(decimal[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_DECIMAL;
+            SetSpecificDataType();
         }
         public VoidPtr(System.Numerics.Complex[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_COMPLEX;
+            SetSpecificDataType();
         }
         public VoidPtr(System.Numerics.BigInteger[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_BIGINT;
+            SetSpecificDataType();
         }
         public VoidPtr(object[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_OBJECT;
+            SetSpecificDataType();
         }
         public VoidPtr(string[] obj)
         {
             datap = obj;
             type_num = NPY_TYPES.NPY_STRING;
+            SetSpecificDataType();
         }
         public VoidPtr()
         {
             datap = null;
             type_num = NPY_TYPES.NPY_OBJECT;
+            SetSpecificDataType();
+        }
+
+        private void SetSpecificDataType()
+        {
+            switch (type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    Bool_Datap = datap as System.Boolean[];
+                    return;
+                case NPY_TYPES.NPY_BYTE:
+                    Byte_Datap = datap as System.SByte[];
+                    return;
+                case NPY_TYPES.NPY_UBYTE:
+                    UByte_Datap = datap as System.Byte[];
+                    return;
+                case NPY_TYPES.NPY_INT16:
+                    Int16_Datap = datap as System.Int16[];
+                    return;
+                case NPY_TYPES.NPY_UINT16:
+                    UInt16_Datap = datap as System.UInt16[];
+                    return;
+                case NPY_TYPES.NPY_INT32:
+                    Int32_Datap = datap as System.Int32[];
+                    return;
+                case NPY_TYPES.NPY_UINT32:
+                    UInt32_Datap = datap as System.UInt32[];
+                    return;
+                case NPY_TYPES.NPY_INT64:
+                    Int64_Datap = datap as System.Int64[];
+                    return;
+                case NPY_TYPES.NPY_UINT64:
+                    UInt64_Datap = datap as System.UInt64[];
+                    return;
+                case NPY_TYPES.NPY_FLOAT:
+                    Float_Datap = datap as System.Single[];
+                    return;
+                case NPY_TYPES.NPY_DOUBLE:
+                    Double_Datap = datap as System.Double[];
+                    return;
+                case NPY_TYPES.NPY_DECIMAL:
+                    Decimal_Datap = datap as System.Decimal[];
+                    return;
+                case NPY_TYPES.NPY_COMPLEX:
+                    Complex_Datap = datap as System.Numerics.Complex[];
+                    return;
+                case NPY_TYPES.NPY_BIGINT:
+                    BigInt_Datap = datap as System.Numerics.BigInteger[];
+                    return;
+                case NPY_TYPES.NPY_OBJECT:
+                    Object_Datap = datap as System.Object[];
+                    return;
+                case NPY_TYPES.NPY_STRING:
+                    String_Datap = datap as System.String[];
+                    return;
+
+            }
         }
 
         public System.Object datap;
- 
+
+        public System.Boolean[] Bool_Datap;
+        public System.Byte[] UByte_Datap;
+        public System.SByte[] Byte_Datap;
+        public System.Int16[] Int16_Datap;
+        public System.UInt16[] UInt16_Datap;
+        public System.Int32[] Int32_Datap;
+        public System.UInt32[] UInt32_Datap;
+        public System.Int64[] Int64_Datap;
+        public System.UInt64[] UInt64_Datap;
+        public System.Single[] Float_Datap;
+        public System.Double[] Double_Datap;
+        public System.Decimal[] Decimal_Datap;
+        public System.Numerics.Complex[] Complex_Datap;
+        public System.Numerics.BigInteger[] BigInt_Datap;
+        public System.Object[] Object_Datap;
+        public System.String[] String_Datap;
+
         public NPY_TYPES type_num = NPY_TYPES.NPY_OBJECT;
 
         public npy_intp data_offset = 0;
     }
-
 
 
     public class NpyArrayIterObjectFast : NpyArrayIterObject
