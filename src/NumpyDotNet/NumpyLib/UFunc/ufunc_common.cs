@@ -1197,15 +1197,17 @@ namespace NumpyLib
                     throw new Exception(string.Format("UFunc op:{0} is not implemented", ops.ToString()));
                 }
 
-                // note: these can't be parrallized.
-                for (int i = 0; i < N; i++)
-                {
-                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
+                // note: these can't be parallelized.
 
+                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                for (npy_intp i = 0; i < N; i++)
+                {
                     var Op1Value = retValue;
                     var Op2Value = Op2Array[O2_Index];
 
                     retValue = UFuncOperation(Op1Value, Op2Value);
+
+                    O2_Index += O2_CalculatedStep;
                 }
 
                 retArray[R_Index] = retValue;
