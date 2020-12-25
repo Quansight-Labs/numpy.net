@@ -1262,18 +1262,21 @@ namespace NumpyLib
                     throw new Exception(string.Format("UFunc op:{0} is not implemented", ops.ToString()));
                 }
 
-                for (int i = 0; i < N; i++)
-                {
-                    npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
-                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
-                    npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
+                npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
 
+                for (npy_intp i = 0; i < N; i++)
+                {
                     var O1Value = Op1Array[O1_Index];                                            // get operand 1
                     var O2Value = Op2Array[O2_Index];                                            // get operand 2
-         
-                    retArray[R_Index] = UFuncOperation(O1Value, O2Value);
-                }
 
+                    retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                    O1_Index += O1_CalculatedStep;
+                    O2_Index += O2_CalculatedStep;
+                    R_Index += R_CalculatedStep;
+                }
 
             }
 
