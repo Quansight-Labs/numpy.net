@@ -518,6 +518,7 @@ namespace NumpyLib
 
             bool ThrewException = false;
 
+            npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
 
             for (int i = 0; i < N; i++)
             {
@@ -525,8 +526,6 @@ namespace NumpyLib
                 try
                 {
                     var O1Value = Op1Array[O1_Index];
-
-                    npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
                     var O2Value = Op2Array[O2_Index];                                            // get operand 2
 
                     retry:
@@ -559,6 +558,8 @@ namespace NumpyLib
                 {
                     NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                 }
+
+                O2_Index += O2_CalculatedStep;
             }
 
             return;
@@ -614,12 +615,12 @@ namespace NumpyLib
 
             bool ThrewException = false;
 
+            npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+            npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+            npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
             for (int i = 0; i < N; i++)
             {
-                npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
-                npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
-                npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
-
                 var O1Value = Op1Array[O1_Index];                                            // get operand 1
                 var O2Value = Op2Array[O2_Index];                                            // get operand 2
 
@@ -654,6 +655,10 @@ namespace NumpyLib
                 {
                     NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                 }
+
+                O1_Index += O1_CalculatedStep;
+                O2_Index += O2_CalculatedStep;
+                R_Index += R_CalculatedStep;
             }
         }
 
@@ -707,12 +712,12 @@ namespace NumpyLib
 
             bool ThrewException = false;
 
+            npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+            npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+            npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
             for (int i = 0; i < N; i++)
             {
-                npy_intp O1_Index = ((i * O1_CalculatedStep) + O1_CalculatedOffset);
-                npy_intp O2_Index = ((i * O2_CalculatedStep) + O2_CalculatedOffset);
-                npy_intp R_Index = ((i * R_CalculatedStep) + R_CalculatedOffset);
-
                 var O1Value = Op1Array[O1_Index];                                            // get operand 1
                 var O2Value = Op2Array[O2_Index];                                            // get operand 2
 
@@ -747,6 +752,10 @@ namespace NumpyLib
                 {
                     NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                 }
+
+                O1_Index += O1_CalculatedStep;
+                O2_Index += O2_CalculatedStep;
+                R_Index += R_CalculatedStep;
             }
         }
 
@@ -792,18 +801,18 @@ namespace NumpyLib
             npy_intp O2_CalculatedStep = (O2_Step >> O2_sizeDiv);
             npy_intp O2_CalculatedOffset = (O2_Offset >> O2_sizeDiv);
 
+            npy_intp O1_Index = ((0 * O1_Step) + O1_Offset);
+            npy_intp O2_Index = ((0 * O2_Step) + O2_Offset);
+            npy_intp R_Index = ((0 * R_Step) + R_Offset);
+
             for (int i = 0; i < N; i++)
             {
-                npy_intp O1_Index = ((i * O1_Step) + O1_Offset) >> O1_sizeDiv;
-                npy_intp O2_Index = ((i * O2_Step) + O2_Offset) >> O2_sizeDiv;
-                npy_intp R_Index = ((i * R_Step) + R_Offset) >> R_sizeDiv;
-
                 try
                 {
-                    var O1Value = Operand1Handler.GetIndex(Operand1, O1_Index);                  // get operand 1
-                    var O2Value = Operand2Handler.GetIndex(Operand2, O2_Index);                  // get operand 2
+                    var O1Value = Operand1Handler.GetIndex(Operand1, O1_Index >> O1_sizeDiv);    // get operand 1
+                    var O2Value = Operand2Handler.GetIndex(Operand2, O2_Index >> O2_sizeDiv);    // get operand 2
                     var RValue = Operation(O1Value, Operand1Handler.MathOpConvertOperand(O1Value, O2Value));    // calculate result
-                    ResultHandler.SetIndex(Result, R_Index, RValue);
+                    ResultHandler.SetIndex(Result, R_Index >> R_sizeDiv, RValue);
                 }
                 catch (System.OverflowException oe)
                 {
@@ -813,6 +822,10 @@ namespace NumpyLib
                 {
                     NpyErr_SetString(npyexc_type.NpyExc_ValueError, ex.Message);
                 }
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
             }
         }
 
