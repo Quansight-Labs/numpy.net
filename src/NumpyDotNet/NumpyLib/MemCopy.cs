@@ -3619,15 +3619,15 @@ namespace NumpyLib
             var da = dst.datap as T[];
             var sa = src.datap as T[];
 
-            tout_index /= elsize;
-            tin_index /= elsize;
-            instrides /= elsize;
-            outstrides /= elsize;
+            //tout_index /= elsize;
+            //tin_index /= elsize;
+            //instrides /= elsize;
+            //outstrides /= elsize;
 
-            //tout_index >>= eldiv;
-            //tin_index >>= eldiv;
-            //instrides >>= eldiv;
-            //outstrides >>= eldiv;
+            tout_index >>= eldiv;
+            tin_index >>= eldiv;
+            instrides >>= eldiv;
+            outstrides >>= eldiv;
 
             if (instrides == 1 && outstrides == 1)
             {
