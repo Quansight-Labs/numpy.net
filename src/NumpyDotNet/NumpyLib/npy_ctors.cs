@@ -65,7 +65,7 @@ namespace NumpyLib
 
         internal static void _strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                                    VoidPtr src, npy_intp instrides,
-                                                   npy_intp N, int elsize, NpyArray_Descr ignore)
+                                                   npy_intp N, int elsize, int eldiv)
         {
 
      
@@ -74,7 +74,7 @@ namespace NumpyLib
                 if (dst.type_num == src.type_num)
                 {
                     var helper = MemCopy.GetMemcopyHelper(dst);
-                    helper.strided_byte_copy(dst, outstrides, src, instrides, N, elsize);
+                    helper.strided_byte_copy(dst, outstrides, src, instrides, N, elsize, eldiv);
                 }
                 else
                 {
@@ -686,7 +686,7 @@ namespace NumpyLib
             }
 
         
-            self.data = new VoidPtr(data);
+            self.data = data;
 
             /*
              * call the __array_finalize__
@@ -1342,11 +1342,14 @@ namespace NumpyLib
   
             npy_intp TotalLoops = srcIter.size - srcIter.index;
             npy_intp TotalCopies = TotalLoops * N;
+            int eldiv = GetDivSize(outstride);
+
             if (TotalLoops < 2 || TotalCopies < flatCopyParallelSize)
             {
+
                 while (srcIter.index < srcIter.size)
                 {
-                    _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, null);
+                    _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, eldiv);
                     dest.data_offset += destOffset;
                     NpyArray_ITER_NEXT(srcIter);
                 }
@@ -1364,7 +1367,7 @@ namespace NumpyLib
 
                     while (ParallelIter.index < ParallelIter.size)
                     {
-                        _strided_byte_copy(ParallelDest, (npy_intp)outstride, ParallelIter.dataptr, instride, N, outstride, null);
+                        _strided_byte_copy(ParallelDest, (npy_intp)outstride, ParallelIter.dataptr, instride, N, outstride, eldiv);
                         ParallelDest.data_offset += destOffset; /// * ParallelIters.Count();
                         NpyArray_ITER_NEXT(ParallelIter);
                     }
@@ -1433,10 +1436,9 @@ namespace NumpyLib
 
         internal static int _copy_from_same_shape(NpyArray dest, NpyArray src, bool swap)
         {
-            int maxaxis = -1, elsize;
+            int maxaxis = -1, elsize, eldiv;
             npy_intp maxdim;
             NpyArrayIterObject dit, sit;
-            NpyArray_Descr descr;
 
             dit = NpyArray_IterAllButAxis(dest, ref maxaxis);
             sit = NpyArray_IterAllButAxis(src, ref maxaxis);
@@ -1451,7 +1453,7 @@ namespace NumpyLib
             }
 
             elsize = NpyArray_ITEMSIZE(dest);
-            descr = dest.descr;
+            eldiv = GetDivSize(elsize);
 
             var srcParallelIters = NpyArray_ITER_ParallelSplit(sit, numpyinternal.maxCopyFieldParallelSize);
             var destParallelIters = NpyArray_ITER_ParallelSplit(dit, numpyinternal.maxCopyFieldParallelSize);
@@ -1469,7 +1471,7 @@ namespace NumpyLib
                                  ldestIter.strides[maxaxis],
                                  lsrcIter.dataptr,
                                  lsrcIter.strides[maxaxis],
-                                 maxdim, elsize, descr);
+                                 maxdim, elsize, eldiv);
                     if (swap)
                     {
                         _strided_byte_swap(ldestIter.dataptr,
@@ -1494,6 +1496,7 @@ namespace NumpyLib
             npy_intp maxdim;
             NpyArray_Descr descr = dest.descr;
             int elsize = descr.elsize;
+            int eldiv = GetDivSize(elsize);
 
             multi = NpyArray_MultiIterFromArrays(null, 0, 2, dest, src);
             if (multi == null)
@@ -1534,7 +1537,7 @@ namespace NumpyLib
             npy_intp TotalSize = multi.size - multi.index;
             if (TotalSize < 4)
             {
-                _broadcast_copy(destIter, srcIter, maxaxis, maxdim, elsize, descr, swap);
+                _broadcast_copy(destIter, srcIter, maxaxis, maxdim, elsize, eldiv, swap);
             }
             else
             {
@@ -1544,7 +1547,7 @@ namespace NumpyLib
                 {
                     var _destIter = parallelIters.Item1.ElementAt(i);
                     var _srcIter = parallelIters.Item2.ElementAt(i);
-                    _broadcast_copy(_destIter, _srcIter, maxaxis, maxdim, elsize, descr, swap);
+                    _broadcast_copy(_destIter, _srcIter, maxaxis, maxdim, elsize, eldiv, swap);
                 });
             }
     
@@ -1553,7 +1556,7 @@ namespace NumpyLib
             return 0;
         }
 
-        private static void _broadcast_copy(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, int maxaxis, npy_intp maxdim, int elsize, NpyArray_Descr descr, bool swap)
+        private static void _broadcast_copy(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, int maxaxis, npy_intp maxdim, int elsize, int eldiv, bool swap)
         {
             while (destIter.index < destIter.size)
             {
@@ -1561,7 +1564,7 @@ namespace NumpyLib
                              destIter.strides[maxaxis],
                              srcIter.dataptr,
                              srcIter.strides[maxaxis],
-                             maxdim, elsize, descr);
+                             maxdim, elsize, eldiv);
                 if (swap)
                 {
                     _strided_byte_swap(destIter.dataptr,
@@ -1578,27 +1581,28 @@ namespace NumpyLib
         {
             byte[] aligned = null;
             VoidPtr sptr;
-            npy_intp numcopies, nbytes;
+            npy_intp numcopies;
+            int elsize, eldiv;
             int retval = -1;
-            NpyArray_Descr descr;
 
             numcopies = NpyArray_SIZE(dest);
             if (numcopies < 1)
             {
                 return 0;
             }
-            descr = src.descr;
-            nbytes = (npy_intp)descr.elsize;
+
+            elsize = src.descr.elsize;
+            eldiv = GetDivSize(elsize);
 
             if (!NpyArray_ISALIGNED(src))
             {
-                aligned = new byte[nbytes];
+                aligned = new byte[elsize];
                 if (aligned == null)
                 {
                     NpyErr_MEMORY();
                     return -1;
                 }
-                memcpy(new VoidPtr(aligned), src.data, nbytes);
+                memcpy(new VoidPtr(aligned), src.data, elsize);
                 usecopy = true;
                 sptr = new VoidPtr(aligned);
             }
@@ -1617,13 +1621,13 @@ namespace NumpyLib
                 }
                 else
                 {
-                    dstride = nbytes;
+                    dstride = elsize;
                 }
 
-                _strided_byte_copy(dest.data, dstride, sptr, 0, numcopies, (int)nbytes, descr);
+                _strided_byte_copy(dest.data, dstride, sptr, 0, numcopies, elsize, eldiv);
                 if (swap)
                 {
-                    _strided_byte_swap(dest.data, dstride, numcopies, (int)nbytes);
+                    _strided_byte_swap(dest.data, dstride, numcopies, (int)elsize);
                 }
             }
             else
@@ -1638,11 +1642,11 @@ namespace NumpyLib
                 }
                 while (dit.index < dit.size)
                 {
-                    _strided_byte_copy(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, NpyArray_DIM(dest, axis), (int)nbytes, descr);
+                    _strided_byte_copy(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, NpyArray_DIM(dest, axis), elsize, eldiv);
                     if (swap)
                     {
                         _strided_byte_swap(dit.dataptr, NpyArray_STRIDE(dest, axis),
-                                           NpyArray_DIM(dest, axis), (int)nbytes);
+                                           NpyArray_DIM(dest, axis), (int)elsize);
                     }
                     NpyArray_ITER_NEXT(dit);
                 }

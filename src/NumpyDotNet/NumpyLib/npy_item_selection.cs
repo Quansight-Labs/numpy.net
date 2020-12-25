@@ -2169,7 +2169,7 @@ namespace NumpyLib
             bool swap;
             npy_intp N;
             npy_intp size;
-            int elsize;
+            int elsize, eldiv;
             npy_intp astride;
             NpyArray_SortFunc sort;
 
@@ -2184,6 +2184,7 @@ namespace NumpyLib
             size = it.size;
             N = op.dimensions[axis];
             elsize = op.descr.elsize;
+            eldiv = GetDivSize(elsize);
             astride = op.strides[axis];
 
             needcopy = !((op.flags & NPYARRAYFLAGS.NPY_ALIGNED) != 0) || (astride != (npy_intp)elsize) || swap;
@@ -2202,7 +2203,7 @@ namespace NumpyLib
                     while (paraIter.index < paraIter.size)
                     {
                         _strided_byte_copy(buffer, (npy_intp)elsize, paraIter.dataptr,
-                                                     astride, N, elsize, null);
+                                                     astride, N, elsize, eldiv);
                         if (swap)
                         {
                             _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
@@ -2217,7 +2218,7 @@ namespace NumpyLib
                             _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
                         }
                         _strided_byte_copy(paraIter.dataptr, astride, buffer,
-                                                     (npy_intp)elsize, N, elsize, null);
+                                                     (npy_intp)elsize, N, elsize, eldiv);
 
                         NpyArray_ITER_NEXT(paraIter);
                     }
@@ -2256,7 +2257,7 @@ namespace NumpyLib
             bool needcopy = false;
             int i;
             npy_intp N, size;
-            int elsize;
+            int elsize, eldiv;
             bool swap;
             npy_intp astride, rstride; 
             VoidPtr iptr;
@@ -2281,6 +2282,7 @@ namespace NumpyLib
             size = it.size;
             N = op.dimensions[axis];
             elsize = op.descr.elsize;
+            eldiv = GetDivSize(elsize);
             astride = op.strides[axis];
             rstride = NpyArray_STRIDE(ret, axis);
 
@@ -2295,7 +2297,7 @@ namespace NumpyLib
                 while (size-- > 0)
                 {
                     _strided_byte_copy(valbuffer, (npy_intp)elsize,
-                                                 it.dataptr, astride, N, elsize, null);
+                                                 it.dataptr, astride, N, elsize, eldiv);
                     if (swap)
                     {
                         _strided_byte_swap(valbuffer, (npy_intp)elsize, N, elsize);
@@ -2310,7 +2312,7 @@ namespace NumpyLib
                         goto fail;
                     }
                     _strided_byte_copy(rit.dataptr, rstride, indbuffer,
-                                                 sizeof(npy_intp), N, sizeof(npy_intp), null);
+                                                 sizeof(npy_intp), N, sizeof(npy_intp), eldiv);
                     NpyArray_ITER_NEXT(it);
                     NpyArray_ITER_NEXT(rit);
                 }

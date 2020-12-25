@@ -3576,7 +3576,7 @@ namespace NumpyLib
 
     public interface ICopyHelper
     {
-        void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize);
+        void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, int eldiv);
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
@@ -3611,7 +3611,7 @@ namespace NumpyLib
 
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
                                             VoidPtr src, npy_intp instrides,
-                                            npy_intp N, int elsize)
+                                            npy_intp N, int elsize, int eldiv)
         {
             int tin_index = (int)src.data_offset;
             int tout_index = (int)dst.data_offset;
@@ -3623,6 +3623,11 @@ namespace NumpyLib
             tin_index /= elsize;
             instrides /= elsize;
             outstrides /= elsize;
+
+            //tout_index >>= eldiv;
+            //tin_index >>= eldiv;
+            //instrides >>= eldiv;
+            //outstrides >>= eldiv;
 
             if (instrides == 1 && outstrides == 1)
             {
