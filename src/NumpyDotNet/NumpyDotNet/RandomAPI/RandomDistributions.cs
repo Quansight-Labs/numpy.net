@@ -699,6 +699,11 @@ namespace NumpyDotNet
 
         internal static double rk_weibull(rk_state state, double a)
         {
+            if (a == 0.0)
+            {
+                return 0.0;
+            }
+
             return Math.Pow(rk_standard_exponential(state), 1.0/ a);
         }
 
