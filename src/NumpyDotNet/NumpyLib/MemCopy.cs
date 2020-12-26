@@ -3594,7 +3594,7 @@ namespace NumpyLib
         void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right);
-        void strided_byte_copy_init(VoidPtr dst, int outstrides, VoidPtr src, int intstrides, int elsize, int eldiv);
+        void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv);
         void strided_byte_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N);
         //void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset);
     }
@@ -3615,14 +3615,14 @@ namespace NumpyLib
         VoidPtr src;
         T[] da;
         T[] sa;
-        int outstrides;
-        int instrides;
+        npy_intp outstrides;
+        npy_intp instrides;
         int elsize;
         int eldiv;
         bool isSameType = false;
         bool useArrayCopy = false;
 
-        public void strided_byte_copy_init(VoidPtr dst, int outstrides, VoidPtr src, int intstrides, int elsize, int eldiv)
+        public void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv)
         {
             if (dst.type_num == src.type_num)
             {
@@ -3666,8 +3666,8 @@ namespace NumpyLib
                     for (int i = 0; i < N; i++)
                     {
                         da[tout_index] = sa[tin_index];
-                        tin_index += (int)instrides;
-                        tout_index += (int)outstrides;
+                        tin_index += instrides;
+                        tout_index += outstrides;
                     }
                 }
             }

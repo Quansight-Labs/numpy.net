@@ -1337,15 +1337,15 @@ namespace NumpyLib
             return 0;
         }
 
-        internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
+        internal static void flat_copyinto(VoidPtr dest, npy_intp outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
         {
 
             npy_intp TotalLoops = srcIter.size - srcIter.index;
             npy_intp TotalCopies = TotalLoops * N;
-            int eldiv = GetDivSize(outstride);
+            int eldiv = GetDivSize((int)outstride);
 
             var helper = MemCopy.GetMemcopyHelper(dest);
-            helper.strided_byte_copy_init(dest, outstride, srcIter.dataptr, (int)instride, outstride, eldiv);
+            helper.strided_byte_copy_init(dest, outstride, srcIter.dataptr, instride, (int)outstride, eldiv);
 
             if (TotalLoops < 2 || TotalCopies < numpyinternal.flatCopyParallelSize)
             {
@@ -1436,7 +1436,6 @@ namespace NumpyLib
             MemCopy.MemCpy(dest, 0, ConvertedByteVP, 0, (long)VoidPointer_BytesLength(ConvertedByteVP));
         }
 
-
         internal static int _copy_from_same_shape(NpyArray dest, NpyArray src, bool swap)
         {
             int maxaxis = -1, elsize, eldiv;
@@ -1461,6 +1460,9 @@ namespace NumpyLib
             var srcParallelIters = NpyArray_ITER_ParallelSplit(sit, numpyinternal.maxCopyFieldParallelSize);
             var destParallelIters = NpyArray_ITER_ParallelSplit(dit, numpyinternal.maxCopyFieldParallelSize);
 
+            var helper = MemCopy.GetMemcopyHelper(dest.data);
+            helper.strided_byte_copy_init(dest.data, dest.strides[maxaxis], src.data, src.strides[maxaxis], elsize, eldiv);
+
             Parallel.For(0, destParallelIters.Count(), index =>
             //for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
@@ -1470,11 +1472,8 @@ namespace NumpyLib
                 //Parallel.For(0, taskSize, i =>
                 while (ldestIter.index < ldestIter.size)
                 {
-                    _strided_byte_copy(ldestIter.dataptr,
-                                 ldestIter.strides[maxaxis],
-                                 lsrcIter.dataptr,
-                                 lsrcIter.strides[maxaxis],
-                                 maxdim, elsize, eldiv);
+                    helper.strided_byte_copy(ldestIter.dataptr.data_offset, lsrcIter.dataptr.data_offset, maxdim);
+  
                     if (swap)
                     {
                         _strided_byte_swap(ldestIter.dataptr,
@@ -1484,13 +1483,14 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(ldestIter);
                     NpyArray_ITER_NEXT(lsrcIter);
                 }
-            });
-  
+            } );
+
 
             Npy_DECREF(sit);
             Npy_DECREF(dit);
             return 0;
         }
+
 
         internal static int _broadcast_copy(NpyArray dest, NpyArray src, bool swap)
         {
