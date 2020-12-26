@@ -3594,6 +3594,8 @@ namespace NumpyLib
         void MatrixProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void InnerProduct(NpyArrayIterObject it1, NpyArrayIterObject it2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp l);
         void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right);
+        void strided_byte_copy_init(VoidPtr dst, int outstrides, VoidPtr src, int intstrides, int elsize, int eldiv);
+        void strided_byte_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N);
         //void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset);
     }
 
@@ -3607,6 +3609,83 @@ namespace NumpyLib
         public int GetDivSize(int elsize)
         {
             return numpyinternal.GetDivSize(elsize);
+        }
+
+        VoidPtr dst;
+        VoidPtr src;
+        T[] da;
+        T[] sa;
+        int outstrides;
+        int instrides;
+        int elsize;
+        int eldiv;
+        bool isSameType = false;
+        bool useArrayCopy = false;
+
+        public void strided_byte_copy_init(VoidPtr dst, int outstrides, VoidPtr src, int intstrides, int elsize, int eldiv)
+        {
+            if (dst.type_num == src.type_num)
+            {
+                da = dst.datap as T[];
+                sa = src.datap as T[];
+                this.eldiv = eldiv;
+
+                this.outstrides = outstrides >> eldiv;
+                this.instrides = intstrides >> eldiv;
+
+                isSameType = true;
+                if (this.instrides == 1 && this.outstrides == 1)
+                {
+                    useArrayCopy = true;
+                }
+            }
+            else
+            {
+                this.dst = dst;
+                this.src = src;
+                this.elsize = elsize;
+                this.outstrides = outstrides;
+                this.instrides = intstrides;
+            }
+        }
+
+        public void strided_byte_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N)
+        {
+
+            if (isSameType)
+            {
+                npy_intp tout_index = dest_offset >> eldiv;
+                npy_intp tin_index = src_offset >> eldiv;
+
+                if (useArrayCopy)
+                {
+                    Array.Copy(sa, tin_index, da, tout_index, N);
+                }
+                else
+                {
+                    for (int i = 0; i < N; i++)
+                    {
+                        da[tout_index] = sa[tin_index];
+                        tin_index += (int)instrides;
+                        tout_index += (int)outstrides;
+                    }
+                }
+            }
+            else
+            {
+                npy_intp tin_index = 0;
+                npy_intp tout_index = 0;
+
+                for (int i = 0; i < N; i++)
+                {
+                    VoidPtr Temp = new VoidPtr(new byte[elsize]);
+                    MemCopy.MemCpy(Temp, 0, src, tin_index, elsize);
+                    MemCopy.MemCpy(dst, tout_index, Temp, 0, elsize);
+
+                    tin_index += instrides;
+                    tout_index += outstrides;
+                }
+            }
         }
 
         public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
@@ -3715,11 +3794,7 @@ namespace NumpyLib
                     for (int i = 0; i < srcIter.internalCacheLength; i++)
                     {
                         d[_dst.data_offset >> divsize] = s[srcIter.internalCache[i] >> divsize];
-
-                        if (swap)
-                        {
-                            numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
-                        }
+                        numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
                         _dst.data_offset += elsize;
                     }
                     stepper -= srcIter.internalCacheLength;
