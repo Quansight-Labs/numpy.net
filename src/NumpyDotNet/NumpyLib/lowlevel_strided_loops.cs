@@ -148,7 +148,7 @@ namespace NumpyLib
 
             while (N > 0)
             {
-                memmove(_dst, _src, src_itemsize);
+                memmove(_dst, 0, _src, 0, src_itemsize);
                 _dst.data_offset += dst_stride;
                 _src.data_offset += src_stride;
                 --N;
@@ -318,7 +318,7 @@ namespace NumpyLib
 
         private static void _contig_to_contig(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
-            memmove(dst, src, src_itemsize * N);
+            memmove(dst, 0, src, 0, src_itemsize * N);
         }
 
         private static void _aligned_strided_to_contig_size16_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
