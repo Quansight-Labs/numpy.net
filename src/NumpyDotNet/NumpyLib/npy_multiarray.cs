@@ -832,12 +832,12 @@ namespace NumpyLib
             /* Ensure that multiarray.dot(<Nx0>,<0xM>) . zeros((N,M)) */
             if (NpyArray_SIZE(ap1) == 0 && NpyArray_SIZE(ap2) == 0)
             {
-                memset(NpyArray_DATA(ret), 0, (int)NpyArray_NBYTES(ret));
+                memclr(NpyArray_DATA(ret), (int)NpyArray_NBYTES(ret));
             }
             else
             {
                 /* Ensure that multiarray.dot([],[]) . 0 */
-                memset(NpyArray_DATA(ret), 0, (int)NpyArray_ITEMSIZE(ret));
+                memclr(NpyArray_DATA(ret), (int)NpyArray_ITEMSIZE(ret));
             }
 
 

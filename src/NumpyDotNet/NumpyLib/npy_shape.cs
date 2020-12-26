@@ -147,7 +147,7 @@ namespace NumpyLib
             {
                 /* Fill new memory with zeros */
                 elsize = self.descr.elsize;
-                memset(self.data + oldsize * elsize, 0, (newsize - oldsize) * elsize);
+                memclr(self.data + oldsize * elsize, (newsize - oldsize) * elsize);
             }
 
             if (self.nd != new_nd)

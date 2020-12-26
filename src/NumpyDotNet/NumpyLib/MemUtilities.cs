@@ -276,8 +276,12 @@ namespace NumpyLib
         #endregion
 
         #region memset
-  
-   
+
+        internal static void memclr(VoidPtr dest, long len)
+        {
+              MemSet.memset(dest, 0, 0, len);
+        }
+
         internal static void memset(VoidPtr dest, byte setvalue, long len)
         {
             MemSet.memset(dest, 0, setvalue, len);

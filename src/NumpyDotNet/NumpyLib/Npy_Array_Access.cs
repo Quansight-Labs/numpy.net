@@ -150,7 +150,7 @@ namespace NumpyLib
             npy_intp size = NpyArray_SIZE(arr) * itemsize;
             npy_intp off = offset * itemsize;
             npy_intp fill_size = size - off;
-            memset(arr.data, 0, fill_size);
+            memclr(arr.data, fill_size);
         }
 
         internal static void NpyArrayAccess_ClearUPDATEIFCOPY(NpyArray self)

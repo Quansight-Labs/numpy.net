@@ -86,7 +86,7 @@ namespace NumpyLib
 
         private static void NPY_RAW_ITER_START(int idim, int ndim, npy_intp[] coord, npy_intp[] shape_it)
         {
-            memset(new VoidPtr(coord), 0, ndim * sizeof(npy_intp));
+            memclr(new VoidPtr(coord), ndim * sizeof(npy_intp));
         }
 
 

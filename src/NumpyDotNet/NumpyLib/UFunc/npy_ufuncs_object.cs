@@ -1811,7 +1811,7 @@ namespace NumpyLib
                     NpyErr_MEMORY();
                     goto fail;
                 }
-                memset(new VoidPtr(loop.core_strides), 0, sizeof(npy_intp) * nstrides);
+                memclr(new VoidPtr(loop.core_strides), sizeof(npy_intp) * nstrides);
                 for (i = 0; i < num_dim_ix; i++)
                 {
                     loop.core_dim_sizes[i] = 1;
