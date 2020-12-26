@@ -1339,24 +1339,27 @@ namespace NumpyLib
 
         internal static void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
         {
-  
+
             npy_intp TotalLoops = srcIter.size - srcIter.index;
             npy_intp TotalCopies = TotalLoops * N;
             int eldiv = GetDivSize(outstride);
 
-            if (TotalLoops < 2 || TotalCopies < flatCopyParallelSize)
-            {
+            var helper = MemCopy.GetMemcopyHelper(dest);
+            helper.strided_byte_copy_init(dest, outstride, srcIter.dataptr, (int)instride, outstride, eldiv);
 
+            if (TotalLoops < 2 || TotalCopies < numpyinternal.flatCopyParallelSize)
+            {
                 while (srcIter.index < srcIter.size)
                 {
-                    _strided_byte_copy(dest, (npy_intp)outstride, srcIter.dataptr, instride, N, outstride, eldiv);
+                    helper.strided_byte_copy(dest.data_offset, srcIter.dataptr.data_offset, N);
                     dest.data_offset += destOffset;
                     NpyArray_ITER_NEXT(srcIter);
                 }
             }
             else
             {
-                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxCopyFieldParallelSize);
+                npy_intp SingleIterSize = N > numpyinternal.flatCopyParallelSize ? -1 : numpyinternal.maxCopyFieldParallelSize;
+                var ParallelIters = NpyArray_ITER_ParallelSplit(srcIter, SingleIterSize);
 
                 Parallel.For(0, ParallelIters.Count(), index =>
                 //for (int index = 0; index < ParallelIters.Count(); index++)
@@ -1367,7 +1370,7 @@ namespace NumpyLib
 
                     while (ParallelIter.index < ParallelIter.size)
                     {
-                        _strided_byte_copy(ParallelDest, (npy_intp)outstride, ParallelIter.dataptr, instride, N, outstride, eldiv);
+                        helper.strided_byte_copy(ParallelDest.data_offset, ParallelIter.dataptr.data_offset, N);
                         ParallelDest.data_offset += destOffset; /// * ParallelIters.Count();
                         NpyArray_ITER_NEXT(ParallelIter);
                     }
