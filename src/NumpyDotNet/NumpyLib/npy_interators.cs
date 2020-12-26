@@ -909,7 +909,7 @@ namespace NumpyLib
             }
 
 
-            var taskSize = it.size / DestIters.Length;
+            var taskSize = TotalSize / DestIters.Length;
             DestIters[0] = it.copy();
             DestIters[0].size = taskSize;
 
