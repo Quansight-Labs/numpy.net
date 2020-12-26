@@ -163,8 +163,8 @@ namespace NumpyLib
                     return -1;
                 }
 
-                memcpy(dimptr, self.dimensions, self.nd * sizeof(npy_intp));
-                memcpy(strptr, self.strides, self.nd * sizeof(npy_intp));
+                copydims(dimptr, self.dimensions, self.nd);
+                copydims(strptr, self.strides, self.nd);
                 self.dimensions = dimptr;
                 self.strides = strptr;
             }

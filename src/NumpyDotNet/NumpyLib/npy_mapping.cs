@@ -325,7 +325,7 @@ namespace NumpyLib
 
             if (mit.subspace != null)
             {
-                memcpy(coord, mit.bscoord, sizeof(npy_intp) * mit.ait.ao.nd);
+                copydims(coord, mit.bscoord, mit.ait.ao.nd);
                 NpyArray_ITER_RESET(mit.subspace);
                 for (i = 0; i < mit.numiter; i++)
                 {
@@ -392,7 +392,7 @@ namespace NumpyLib
                 if (mit.subspace.index >= mit.subspace.size)
                 {
                     /* reset coord to coordinates of beginning of the subspace */
-                    memcpy(coord, mit.bscoord, sizeof(npy_intp) * mit.ait.ao.nd);
+                    copydims(coord, mit.bscoord, mit.ait.ao.nd);
                     NpyArray_ITER_RESET(mit.subspace);
                     for (i = 0; i < mit.numiter; i++)
                     {
@@ -452,7 +452,7 @@ namespace NumpyLib
                     if (mit.subspace.index >= mit.subspace.size)
                     {
                         /* reset coord to coordinates of beginning of the subspace */
-                        memcpy(coord, mit.bscoord, sizeof(npy_intp) * mit.ait.ao.nd);
+                        copydims(coord, mit.bscoord, mit.ait.ao.nd);
                         NpyArray_ITER_RESET(mit.subspace);
                         for (i = 0; i < mit.numiter; i++)
                         {

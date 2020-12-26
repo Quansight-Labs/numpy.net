@@ -2614,7 +2614,7 @@ namespace NumpyLib
                     }
                     break;
                 case GenericReductionOp.NPY_UFUNC_REDUCEAT:
-                    memcpy(loop_i, NpyArray_DIMS(aar), nd * sizeof(npy_intp));
+                    copydims(loop_i, NpyArray_DIMS(aar), nd);
                     /* Index is 1-d array */
                     loop_i[axis] = ind_size;
                     if (_out == null)
@@ -3254,7 +3254,7 @@ namespace NumpyLib
             }
 
             /* copy loop dimensions */
-            memcpy(tmp_dims, loop.iter.dimensions, sizeof(npy_intp) * loop.iter.nd);
+            copydims(tmp_dims, loop.iter.dimensions, loop.iter.nd);
 
             /* copy core dimension */
             for (i = 0; i < ufunc.core_num_dims[iarg]; i++)

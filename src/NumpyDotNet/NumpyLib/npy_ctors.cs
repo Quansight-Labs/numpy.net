@@ -585,7 +585,7 @@ namespace NumpyLib
                 }
 
        
-                memcpy(self.dimensions, dims, sizeof(npy_intp) * nd);
+                copydims(self.dimensions, dims, nd);
                 if (strides == null)
                 { /* fill it in */
                     sd = npy_array_fill_strides(self.strides, dims, nd, sd,
@@ -597,7 +597,7 @@ namespace NumpyLib
                      * we allow strides even when we create
                      * the memory, but be careful with this...
                      */
-                    memcpy(self.strides, strides, sizeof(npy_intp) * nd);
+                    copydims(self.strides, strides, nd);
                     sd *= (ulong)size;
                 }
             }

@@ -250,7 +250,7 @@ namespace NumpyLib
                     ptr = ptr3;
                     break;
             }
-            memcpy(dims, ap.dimensions, nd * sizeof(npy_intp));
+            copydims(dims, ap.dimensions, nd);
             apIn = ap;
             return 0;
 
@@ -376,7 +376,7 @@ namespace NumpyLib
             * Figure out the final concatenated shape starting from the first
             * array's shape.
             */
-            memcpy(shape, arrays[0].dimensions, ndim * sizeof(npy_intp));
+            copydims(shape, arrays[0].dimensions, ndim);
             for (iarrays = 1; iarrays < narrays; ++iarrays)
             {
                 npy_intp[] arr_shape;

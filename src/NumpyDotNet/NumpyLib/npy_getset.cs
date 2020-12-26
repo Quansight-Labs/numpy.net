@@ -76,8 +76,8 @@ namespace NumpyLib
                     return -1;
                 }
                 NpyArray_STRIDES_Update(self, NpyDimMem_NEW(nd));
-                memcpy(NpyArray_DIMS(self), NpyArray_DIMS(ret), nd * sizeof(npy_intp));
-                memcpy(NpyArray_STRIDES(self), NpyArray_STRIDES(ret), nd * sizeof(npy_intp));
+                copydims(NpyArray_DIMS(self), NpyArray_DIMS(ret), nd);
+                copydims(NpyArray_STRIDES(self), NpyArray_STRIDES(ret), nd);
             }
             else
             {
@@ -143,7 +143,7 @@ namespace NumpyLib
                                  "strides is not compatible with available memory");
                 return -1;
             }
-            memcpy(NpyArray_STRIDES(self), newstrides.ptr, sizeof(npy_intp) * newstrides.len);
+            copydims(NpyArray_STRIDES(self), newstrides.ptr, newstrides.len);
             NpyArray_UpdateFlags(self, NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORTRAN);
             return 0;
         }

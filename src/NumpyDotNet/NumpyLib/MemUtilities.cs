@@ -257,10 +257,9 @@ namespace NumpyLib
 
         #region memcpy
 
-        internal static void memcpy(npy_intp[] dest, npy_intp[] src, long len)
+        internal static void copydims(npy_intp[] dest, npy_intp[] src, long len)
         {
-            Array.Copy(src, dest, len / sizeof(npy_intp));
-            //MemCopy.MemCpy(new VoidPtr(dest), 0, new VoidPtr(src), 0, len);
+            Array.Copy(src, dest, len);
         }
 
         internal static void memcpy(VoidPtr dest, VoidPtr src, long len)

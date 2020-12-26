@@ -207,7 +207,7 @@ namespace NumpyLib
             Npy_INCREF(baseDescr);
             descr.subarray.shape_num_dims = ndim;
             descr.subarray.shape_dims = new npy_intp[ndim];
-            memcpy(descr.subarray.shape_dims, dims, ndim * sizeof(npy_intp));
+            copydims(descr.subarray.shape_dims, dims, ndim);
         }
 
         /*
@@ -311,7 +311,7 @@ namespace NumpyLib
             if (0 < dest.shape_num_dims)
             {
                 dest.shape_dims = new npy_intp[dest.shape_num_dims];
-                memcpy(dest.shape_dims, src.shape_dims, dest.shape_num_dims * sizeof(npy_intp));
+                copydims(dest.shape_dims, src.shape_dims, dest.shape_num_dims);
             }
             else
             {
