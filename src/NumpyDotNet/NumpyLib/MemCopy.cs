@@ -3578,7 +3578,9 @@ namespace NumpyLib
     {
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
-        void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
+        void memmove_init(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
+        void memmove(npy_intp dest_offset, npy_intp src_offset, long len);
+        void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -3613,12 +3615,14 @@ namespace NumpyLib
         VoidPtr src;
         T[] da;
         T[] sa;
+        T[] Temp = null;
         npy_intp outstrides;
         npy_intp instrides;
         int elsize;
         int eldiv;
         bool isSameType = false;
         bool useArrayCopy = false;
+
 
         public void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv)
         {
@@ -5198,7 +5202,7 @@ namespace NumpyLib
 
         //public void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset)
         //{
-   
+
         //    while (srcIter.index < srcIter.size)
         //    {
         //        strided_byte_copy(dest, outstride, srcIter.dataptr, instride, N, outstride);
@@ -5208,17 +5212,49 @@ namespace NumpyLib
         //    }
         //}
 
+   
 
-        public void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
+        public void memmove_init(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
+        {
+            da = dest.datap as T[];
+            sa = src.datap as T[];
+
+            eldiv = GetDivSize(dest);
+        }
+
+        public void memmove(npy_intp dest_offset, npy_intp src_offset, long len)
+        {
+            long ElementCount = len >> eldiv;
+            long sOffset = src_offset >> eldiv;
+            long dOffset = dest_offset >> eldiv;
+
+            if (ElementCount == 1)
+            {
+                da[dOffset] = sa[sOffset];
+            }
+            else
+            {
+                if (Temp == null || Temp.Length < ElementCount)
+                {
+                    Temp = new T[ElementCount];
+                }
+
+                Array.Copy(sa, sOffset, Temp, 0, ElementCount);
+                Array.Copy(Temp, 0, da, dOffset, ElementCount);
+            }
+
+        }
+
+        public void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
             T[] _dst = dest.datap as T[];
             T[] _src = src.datap as T[];
 
-            var DivSize = GetDivSize(dest);
+            eldiv = GetDivSize(dest);
 
-            long ElementCount = len >> DivSize;
-            long sOffset = (src.data_offset + src_offset) >> DivSize;
-            long dOffset = (dest.data_offset + dest_offset) >> DivSize;
+            long ElementCount = len >> eldiv;
+            long sOffset = (src.data_offset + src_offset) >> eldiv;
+            long dOffset = (dest.data_offset + dest_offset) >> eldiv;
 
             if (ElementCount == 1)
             {
@@ -5226,9 +5262,12 @@ namespace NumpyLib
             }
             else
             {
-                var temp = new T[ElementCount];
-                Array.Copy(_src, sOffset, temp, 0, ElementCount);
-                Array.Copy(temp, 0, _dst, dOffset, ElementCount);
+                if (Temp == null || Temp.Length < ElementCount)
+                {
+                    Temp = new T[ElementCount];
+                }
+                Array.Copy(_src, sOffset, Temp, 0, ElementCount);
+                Array.Copy(Temp, 0, _dst, dOffset, ElementCount);
             }
  
         }

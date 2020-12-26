@@ -229,7 +229,7 @@ namespace NumpyLib
             if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
             {
                 var helper = MemCopy.GetMemcopyHelper(dest);
-                helper.memmove(dest, dest_offset, src, src_offset, len);
+                helper.memmove_real(dest, dest_offset, src, src_offset, len);
                 return;
             }
             else

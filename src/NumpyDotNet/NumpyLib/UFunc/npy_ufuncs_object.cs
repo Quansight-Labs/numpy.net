@@ -1090,9 +1090,10 @@ namespace NumpyLib
             {
                 case UFuncLoopMethod.ZERO_EL_REDUCELOOP:
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
+                    helper.memmove_init(loop.bufptr[0], 0, loop.idptr, 0, loop.outsize);
                     for (i = 0; i < loop.size; i++)
                     {
-                        helper.memmove(loop.bufptr[0], 0, loop.idptr, 0, loop.outsize);
+                        helper.memmove(loop.bufptr[0].data_offset, loop.idptr.data_offset, loop.outsize);
                         loop.bufptr[0] += loop.outsize;
                     }
                     break;
@@ -1100,9 +1101,11 @@ namespace NumpyLib
                     /*fprintf(stderr, "ONEDIM..%d\n", loop.size); */
 
                     // kevin - the loop count is not ever more than 2 or 3.  Probably not worth speeding up.
+
+                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                     while (loop.index < loop.size)
                     {
-                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                        helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
@@ -1111,12 +1114,14 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
+                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+
                     var loopcnt = loop.size - loop.index;
                     if (loopcnt <= 1)
                     {
                         while (loop.index < loop.size)
                         {
-                            helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                            helper.memmove(loop.bufptr[0].data_offset , loop.it.dataptr.data_offset, loop.outsize);
                             /* Adjust input pointer */
                             loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
@@ -1140,7 +1145,7 @@ namespace NumpyLib
 
                         while (loop.index < loop.size)
                         {
-                            helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                            helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
                             /* Adjust input pointer */
                             loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
@@ -1317,10 +1322,10 @@ namespace NumpyLib
                     /* Accumulate */
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
 
-                    // kevin - loop count never gets above 2.  Not worth fixing.
+                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                     while (loop.index < loop.size)
                     {
-                        helper.memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                        helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
                         NpyArray_ITER_NEXT(loop.it);
                         loop.bufptr[0] += loop.outsize;
                         loop.index++;
