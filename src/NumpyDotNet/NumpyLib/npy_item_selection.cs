@@ -2162,6 +2162,7 @@ namespace NumpyLib
         * it to the sorting routine.  An iterator is constructed and adjusted to walk
         * over all but the desired sorting axis.
         */
+   
         static int _new_sort(NpyArray op, int axis, NPY_SORTKIND kind)
         {
             NpyArrayIterObject it;
@@ -2200,10 +2201,15 @@ namespace NumpyLib
 
                     VoidPtr buffer = NpyDataMem_NEW(op.descr.type_num, (ulong)(N * elsize));
 
+                    var helper1 = MemCopy.GetMemcopyHelper(buffer);
+                    helper1.strided_byte_copy_init(buffer, elsize, paraIter.dataptr, astride, elsize, eldiv);
+
+                    var helper2 = MemCopy.GetMemcopyHelper(paraIter.dataptr);
+                    helper2.strided_byte_copy_init(paraIter.dataptr, astride, buffer, elsize, elsize, eldiv);
+
                     while (paraIter.index < paraIter.size)
                     {
-                        _strided_byte_copy(buffer, (npy_intp)elsize, paraIter.dataptr,
-                                                     astride, N, elsize, eldiv);
+                        helper1.strided_byte_copy(buffer.data_offset, paraIter.dataptr.data_offset, N);
                         if (swap)
                         {
                             _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
@@ -2217,15 +2223,14 @@ namespace NumpyLib
                         {
                             _strided_byte_swap(buffer, (npy_intp)elsize, N, elsize);
                         }
-                        _strided_byte_copy(paraIter.dataptr, astride, buffer,
-                                                     (npy_intp)elsize, N, elsize, eldiv);
+                        helper2.strided_byte_copy(paraIter.dataptr.data_offset, buffer.data_offset, N);
 
                         NpyArray_ITER_NEXT(paraIter);
                     }
                     NpyDataMem_FREE(buffer);
                 });
 
-    
+
             }
             else
             {
@@ -2243,10 +2248,11 @@ namespace NumpyLib
             Npy_DECREF(it);
             return 0;
 
-            fail:
+        fail:
             Npy_DECREF(it);
             return 0;
         }
+
 
         static NpyArray _new_argsort(NpyArray op, int axis, NPY_SORTKIND kind)
         {
