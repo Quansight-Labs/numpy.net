@@ -1335,7 +1335,7 @@ namespace NumpyLib
                     {
                         while (loop.index < loop.size)
                         {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                            memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                             /* Adjust input pointer */
                             loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
                             loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
@@ -1358,7 +1358,7 @@ namespace NumpyLib
 
                         while (loop.index < loop.size)
                         {
-                            memmove(loop.bufptr[0], loop.it.dataptr, loop.outsize);
+                            memmove(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
                             /* Adjust input pointer */
                             loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 

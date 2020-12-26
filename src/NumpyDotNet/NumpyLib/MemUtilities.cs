@@ -224,12 +224,6 @@ namespace NumpyLib
           
         #region memmove
 
-
-        internal static void memmove(VoidPtr dest, VoidPtr src, long len)
-        {
-            memmove(dest, 0, src, 0, len);
-        }
-
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
             if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))

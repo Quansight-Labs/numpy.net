@@ -335,7 +335,7 @@ namespace NumpyLib
                             goto fail;
                         }
 
-                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
                     }
                     break;
                 case NPY_CLIPMODE.NPY_WRAP:
@@ -359,7 +359,7 @@ namespace NumpyLib
                         }
 
 
-                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
                     }
                     break;
                 case NPY_CLIPMODE.NPY_CLIP:
@@ -376,7 +376,7 @@ namespace NumpyLib
                             tmp = max_item - 1;
                         }
 
-                        memmove(new VoidPtr(dest, tmp * chunk), src, chunk);
+                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
                     }
                     break;
             }
