@@ -289,7 +289,7 @@ namespace NumpyLib
                 npy_intp[] dataptr = it.dataptr.datap as npy_intp[];
                 while (it.index < it.size)
                 {
-                    indval =  dataptr[it.dataptr.data_offset / sizeof(npy_intp)];
+                    indval =  dataptr[it.dataptr.data_offset >> IntpDivSize];
                     if (indval < 0)
                     {
                         indval += dimsize;
@@ -334,7 +334,7 @@ namespace NumpyLib
                     j = mit.iteraxes[i];
 
                     npy_intp[] s = it.dataptr.datap as npy_intp[];
-                    coord[j] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
                     //if (!NpyArray_ISNOTSWAPPED(it.ao))
                     //{
                     //    // not sure I need to do anything here.
@@ -355,7 +355,7 @@ namespace NumpyLib
                         NpyArray_ITER_RESET(it);
 
                         npy_intp[] s = it.dataptr.datap as npy_intp[];
-                        coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                        coord[i] = s[it.dataptr.data_offset >> IntpDivSize];
                         //if (!NpyArray_ISNOTSWAPPED(it.ao))
                         //{
                         //    // not sure I need to do anything here.
@@ -401,7 +401,7 @@ namespace NumpyLib
                         j = mit.iteraxes[i];
 
                         npy_intp[] s = it.dataptr.datap as npy_intp[];
-                        coord[j] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                        coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
                         //if (!NpyArray_ISNOTSWAPPED(it.ao))
                         //{
                         //    // not sure I need to do anything here.
@@ -420,7 +420,7 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(it);
 
                     npy_intp[] s = it.dataptr.datap as npy_intp[];
-                    coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    coord[i] = s[it.dataptr.data_offset >> IntpDivSize];
                     //if (!NpyArray_ISNOTSWAPPED(it.ao))
                     //{
                     //    // not sure I need to do anything here.
@@ -461,7 +461,7 @@ namespace NumpyLib
                             j = mit.iteraxes[i];
 
                             npy_intp[] s = it.dataptr.datap as npy_intp[];
-                            coord[j] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                            coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
                             //if (!NpyArray_ISNOTSWAPPED(it.ao))
                             //{
                             //    // not sure I need to do anything here.
@@ -503,7 +503,7 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(it);
 
                     npy_intp[] s = it.dataptr.datap as npy_intp[];
-                    coord[i] = s[it.dataptr.data_offset / sizeof(npy_intp)];
+                    coord[i] = s[it.dataptr.data_offset >> IntpDivSize];
                     //if (!NpyArray_ISNOTSWAPPED(it.ao))
                     //{
                     //    // not sure I need to do anything here.

@@ -695,12 +695,10 @@ namespace NumpyLib
             ret_data = new VoidPtr(ret);
             int ret_data_index = 0;
 
-            int divsize = GetDivSize(sizeof(npy_intp));
-
             while (NpyArray_MultiIter_NOTDONE(multi))
             {
                 VoidPtr data = NpyArray_MultiIter_DATA(multi, n);
-                mi = (npy_intp)GetIndex(data,data.data_offset >> divsize);
+                mi = (npy_intp)GetIndex(data,data.data_offset >> IntpDivSize);
                 if (mi < 0 || mi >= n)
                 {
                     switch (clipmode)
@@ -1562,11 +1560,10 @@ namespace NumpyLib
             }
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
-            int divsize = GetDivSize(sizeof(npy_intp));
 
             for (int i = 0; i < m; i++)
             {
-                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
@@ -1624,11 +1621,10 @@ namespace NumpyLib
             argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
-            int divsize = GetDivSize(sizeof(npy_intp));
 
             for (int i = 0; i < m; i++)
             {
-                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
@@ -1649,11 +1645,10 @@ namespace NumpyLib
             argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
-            int divsize = GetDivSize(sizeof(npy_intp));
 
             for (int i = 0; i < m; i++)
             {
-                _ip[i + (ip.data_offset >> divsize)] = argSortDouble[i].index - startingIndex;
+                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
             }
         }
 
@@ -2428,7 +2423,7 @@ namespace NumpyLib
             var intpArr = iptr.datap as npy_intp[];
 
             // lets do the divide only once
-            npy_intp data_offset = iptr.data_offset / sizeof(npy_intp);
+            npy_intp data_offset = iptr.data_offset >> IntpDivSize;
 
             if (iptr.data_offset >= 0)
             {

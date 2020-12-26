@@ -200,6 +200,7 @@ namespace NumpyLib
             return ItemSize;
         }
 
+
         public static int GetDivSize(int elsize)
         {
             switch (elsize)
@@ -221,7 +222,9 @@ namespace NumpyLib
 
             throw new Exception("Unexpected elsize in GetDivSize");
         }
-          
+
+        internal static int IntpDivSize = GetDivSize(sizeof(npy_intp));
+
         #region memmove
 
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
