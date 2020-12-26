@@ -3576,7 +3576,6 @@ namespace NumpyLib
 
     public interface ICopyHelper
     {
-        void strided_byte_copy(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, int eldiv);
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
@@ -3688,42 +3687,6 @@ namespace NumpyLib
             }
         }
 
-        public void strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                            VoidPtr src, npy_intp instrides,
-                                            npy_intp N, int elsize, int eldiv)
-        {
-            int tin_index = (int)src.data_offset;
-            int tout_index = (int)dst.data_offset;
-
-            var da = dst.datap as T[];
-            var sa = src.datap as T[];
-
-            //tout_index /= elsize;
-            //tin_index /= elsize;
-            //instrides /= elsize;
-            //outstrides /= elsize;
-
-            tout_index >>= eldiv;
-            tin_index >>= eldiv;
-            instrides >>= eldiv;
-            outstrides >>= eldiv;
-
-            if (instrides == 1 && outstrides == 1)
-            {
-                Array.Copy(sa, tin_index, da, tout_index, N);
-            }
-            else
-            {
-                for (int i = 0; i < N; i++)
-                {
-                    da[tout_index] = sa[tin_index];
-                    tin_index += (int)instrides;
-                    tout_index += (int)outstrides;
-                }
-            }
-
-  
-        }
 
         //public void IterSubscriptSliceOLD(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
         // npy_intp start, npy_intp step_size, bool swap)

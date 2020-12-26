@@ -50,56 +50,6 @@ namespace NumpyLib
 {
     internal partial class numpyinternal
     {
-        internal delegate void strided_copy_func_t(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, npy_intp N, int elsize, NpyArray_Descr nad);
-
-        /*
-         * Reading from a file or a string.
-         *
-         * As much as possible, we try to use the same code for both files and strings,
-         * so the semantics for fromstring and fromfile are the same, especially with
-         * regards to the handling of text representations.
-         */
-        internal delegate int next_element(ref object o1, object o2, NpyArray_Descr ad, object o3);
-        internal delegate int skip_separator(ref object o1, string s1, object o2);
-
-
-        internal static void _strided_byte_copy(VoidPtr dst, npy_intp outstrides,
-                                                   VoidPtr src, npy_intp instrides,
-                                                   npy_intp N, int elsize, int eldiv)
-        {
-
-     
-            try
-            {
-                if (dst.type_num == src.type_num)
-                {
-                    var helper = MemCopy.GetMemcopyHelper(dst);
-                    helper.strided_byte_copy(dst, outstrides, src, instrides, N, elsize, eldiv);
-                }
-                else
-                {
-                    int tin_index = 0;
-                    int tout_index = 0;
-
-                    for (int i = 0; i < N; i++)
-                    {
-                        memmove(dst, tout_index, src, tin_index, elsize);
-
-                        tin_index += (int)instrides;
-                        tout_index += (int)outstrides;
-                    }
-                }
-      
-            }
-            catch (Exception ex)
-            {
-                NpyErr_SetString(npyexc_type.NpyExc_DotNetException, string.Format("_strided_byte_copy: Exception: {0}", ex.Message));
-            }
-
-            return;
-
-        }
-
         /*
          * This is the main array creation routine.
          *
