@@ -229,7 +229,9 @@ namespace NumpyLib
 
         internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
         {
-            if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
+            // we think it is impossible for memory to be not aligned in pure .NET so no need to do this big expensive check.
+            //if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
+            if (src.type_num == dest.type_num)
             {
                 var helper = MemCopy.GetMemcopyHelper(dest);
                 helper.memmove_real(dest, dest_offset, src, src_offset, len);
@@ -251,6 +253,7 @@ namespace NumpyLib
 
             if ((src_offset % ItemSize == 0) && (src.data_offset % ItemSize == 0))
                 return true;
+            throw new Exception();
             return false;
         }
 
