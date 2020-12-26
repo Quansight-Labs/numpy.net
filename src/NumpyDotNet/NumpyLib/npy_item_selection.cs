@@ -2300,10 +2300,16 @@ namespace NumpyLib
 
                 valbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_BYTE, (ulong)(N * elsize));
                 indbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
+
+                var helper1 = MemCopy.GetMemcopyHelper(valbuffer);
+                helper1.strided_byte_copy_init(valbuffer, elsize, it.dataptr, astride, elsize, eldiv);
+
+                var helper2 = MemCopy.GetMemcopyHelper(rit.dataptr);
+                helper2.strided_byte_copy_init(rit.dataptr, rstride, indbuffer, sizeof(npy_intp), sizeof(npy_intp), eldiv);
+
                 while (size-- > 0)
                 {
-                    _strided_byte_copy(valbuffer, (npy_intp)elsize,
-                                                 it.dataptr, astride, N, elsize, eldiv);
+                    helper1.strided_byte_copy(valbuffer.data_offset, it.dataptr.data_offset, N);
                     if (swap)
                     {
                         _strided_byte_swap(valbuffer, (npy_intp)elsize, N, elsize);
@@ -2317,8 +2323,7 @@ namespace NumpyLib
                         NpyDataMem_FREE(indbuffer);
                         goto fail;
                     }
-                    _strided_byte_copy(rit.dataptr, rstride, indbuffer,
-                                                 sizeof(npy_intp), N, sizeof(npy_intp), eldiv);
+                    helper2.strided_byte_copy(rit.dataptr.data_offset, indbuffer.data_offset, N);
                     NpyArray_ITER_NEXT(it);
                     NpyArray_ITER_NEXT(rit);
                 }
