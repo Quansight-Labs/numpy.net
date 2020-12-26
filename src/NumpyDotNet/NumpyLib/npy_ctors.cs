@@ -1630,8 +1630,10 @@ namespace NumpyLib
                 {
                     dstride = elsize;
                 }
+                var helper = MemCopy.GetMemcopyHelper(dest.data);
+                helper.strided_byte_copy_init(dest.data, dstride, sptr, 0, elsize, eldiv);
 
-                _strided_byte_copy(dest.data, dstride, sptr, 0, numcopies, elsize, eldiv);
+                helper.strided_byte_copy(dest.data.data_offset, sptr.data_offset, numcopies);
                 if (swap)
                 {
                     _strided_byte_swap(dest.data, dstride, numcopies, (int)elsize);
@@ -1647,9 +1649,13 @@ namespace NumpyLib
                 {
                     goto finish;
                 }
+
+                var helper = MemCopy.GetMemcopyHelper(dit.dataptr);
+                helper.strided_byte_copy_init(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, elsize, eldiv);
+
                 while (dit.index < dit.size)
                 {
-                    _strided_byte_copy(dit.dataptr, NpyArray_STRIDE(dest, axis), sptr, 0, NpyArray_DIM(dest, axis), elsize, eldiv);
+                    helper.strided_byte_copy(dit.dataptr.data_offset, sptr.data_offset, NpyArray_DIM(dest, axis));
                     if (swap)
                     {
                         _strided_byte_swap(dit.dataptr, NpyArray_STRIDE(dest, axis),
