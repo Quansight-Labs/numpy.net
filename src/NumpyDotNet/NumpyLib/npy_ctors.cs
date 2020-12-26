@@ -1561,13 +1561,18 @@ namespace NumpyLib
 
         private static void _broadcast_copy(NpyArrayIterObject destIter, NpyArrayIterObject srcIter, int maxaxis, npy_intp maxdim, int elsize, int eldiv, bool swap)
         {
-            while (destIter.index < destIter.size)
-            {
-                _strided_byte_copy(destIter.dataptr,
+            var helper = MemCopy.GetMemcopyHelper(destIter.dataptr);
+            helper.strided_byte_copy_init(destIter.dataptr,
                              destIter.strides[maxaxis],
                              srcIter.dataptr,
                              srcIter.strides[maxaxis],
-                             maxdim, elsize, eldiv);
+                             elsize, eldiv);
+
+            while (destIter.index < destIter.size)
+            {
+
+                helper.strided_byte_copy(destIter.dataptr.data_offset, srcIter.dataptr.data_offset, maxdim);
+
                 if (swap)
                 {
                     _strided_byte_swap(destIter.dataptr,
@@ -1578,7 +1583,6 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(srcIter);
             }
         }
-
 
         internal static int _copy_from0d(NpyArray dest, NpyArray src, bool usecopy, bool swap)
         {
