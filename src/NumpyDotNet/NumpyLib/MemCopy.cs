@@ -4265,8 +4265,7 @@ namespace NumpyLib
 
         public void SetMap(NpyArrayMapIterObject destIter, NpyArrayIterObject srcIter, bool swap)
         {
-            int elsize = GetTypeSize(destIter.dataptr);
-            int divsize = GetDivSize(elsize);
+            int divsize = GetDivSize(destIter.dataptr);
 
             var numIndexes = destIter.size;
 
@@ -4286,7 +4285,7 @@ namespace NumpyLib
                 {
                     while (offsetsIndex < offsetsLength)
                     {
-                        helper.memmove(offsets[offsetsIndex].data_offset, srcIter.dataptr.data_offset, elsize);
+                        helper.memmoveitem(offsets[offsetsIndex].data_offset, srcIter.dataptr.data_offset);
                         if (swap)
                         {
                             numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
