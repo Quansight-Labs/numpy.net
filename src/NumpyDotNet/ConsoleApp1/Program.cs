@@ -21,9 +21,85 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test8();
+            Test9();
 
 
+
+        }
+
+        static void Test9()
+        {
+            const int TestDataSize = 10000000;
+            const int TestLoops = 1000;
+
+            Int64[] TestData1 = new Int64[TestDataSize];
+            Int64[] TestData2 = new Int64[TestDataSize];
+            Int64[] Results = new Int64[TestDataSize];
+            Int64[] Results2 = new Int64[TestDataSize];
+            Int64[] Results3 = new Int64[TestDataSize];
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                TestData1[i] = i + 1000;
+                TestData2[i] = i + 1000 + 1;
+            }
+
+            int ItemSize = 8;
+            int ItemSizeMask = 0x7;
+
+            /////////// 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results[i] = TestData1[i] % ItemSize;
+                }
+            }
+
+            var ts1 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results2[i] = TestData1[i] & ItemSizeMask;
+                }
+            }
+
+            var ts2 = sw.ElapsedMilliseconds;
+
+            //////////////
+
+            sw.Restart();
+
+            for (int j = 0; j < TestLoops; j++)
+            {
+                for (int i = 0; i < TestDataSize; i++)
+                {
+                    Results3[i] = TestData1[i];
+                }
+            }
+
+            var ts3 = sw.ElapsedMilliseconds;
+
+
+            for (int i = 0; i < TestDataSize; i++)
+            {
+                if (Results[i] != Results2[i])
+                {
+                    Console.WriteLine("Not same result");
+                }
+            }
+
+            Console.WriteLine("{0} : {1} : {2}", ts1.ToString(), ts2.ToString(), ts3.ToString());
+            Console.ReadLine();
 
         }
 
