@@ -49,6 +49,15 @@ namespace NumpyLib
 {
     class MemoryAccess
     {
+        const int Shift16 = 1;
+        const int Shift32 = 2;
+        const int Shift64 = 3;
+        const int Shift128 = 4;
+        const int Mask16 = 0x01;
+        const int Mask32 = 0x03;
+        const int Mask64 = 0x07;
+        const int Mask128 = 0x0F;
+
         private static bool IsLittleEndian = BitConverter.IsLittleEndian;
         private static bool USE_BITCONVERTER
         {
@@ -127,10 +136,11 @@ namespace NumpyLib
             return Array[byte_index];
         }
 
+
         public static byte GetByte(Int16[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 2;
-            npy_intp ByteNumber = byte_index % 2;
+            npy_intp ArrayIndex = byte_index >> Shift16;
+            npy_intp ByteNumber = byte_index & Mask16;
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
 
@@ -154,8 +164,8 @@ namespace NumpyLib
 
         public static byte GetByte(UInt16[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 2;
-            npy_intp ByteNumber = byte_index % 2;
+            npy_intp ArrayIndex = byte_index >> Shift16;
+            npy_intp ByteNumber = byte_index & Mask16;
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
 
@@ -179,8 +189,8 @@ namespace NumpyLib
 
         public static byte GetByte(Int32[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
@@ -207,8 +217,8 @@ namespace NumpyLib
         }
         public static byte GetByte(UInt32[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
             
@@ -237,8 +247,8 @@ namespace NumpyLib
 
         public static byte GetByte(Int64[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
@@ -274,8 +284,8 @@ namespace NumpyLib
 
         public static byte GetByte(UInt64[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
@@ -311,8 +321,8 @@ namespace NumpyLib
 
         public static byte GetByte(double[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             var bytes = BitConverter.GetBytes(Array[ArrayIndex]);
 
@@ -333,8 +343,8 @@ namespace NumpyLib
 
         public static byte GetByte(float[] Array, npy_intp byte_index)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
 
             var bytes = BitConverter.GetBytes(Array[ArrayIndex]);
 
@@ -414,8 +424,8 @@ namespace NumpyLib
 
         public static void SetByte(Int16[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 2;
-            npy_intp ByteNumber = byte_index % 2;
+            npy_intp ArrayIndex = byte_index >> Shift16;
+            npy_intp ByteNumber = byte_index & Mask16;
 
             UInt16 ArrayValue = (UInt16)Array[ArrayIndex];
             if (USE_BITCONVERTER)
@@ -446,8 +456,8 @@ namespace NumpyLib
 
         public static void SetByte(UInt16[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 2;
-            npy_intp ByteNumber = byte_index % 2;
+            npy_intp ArrayIndex = byte_index >> Shift16;
+            npy_intp ByteNumber = byte_index & Mask16;
 
             UInt16 ArrayValue = Array[ArrayIndex];
 
@@ -480,8 +490,9 @@ namespace NumpyLib
 
         public static void SetByte(Int32[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
+
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
@@ -522,8 +533,8 @@ namespace NumpyLib
 
         public static void SetByte(UInt32[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
 
             UInt32 ArrayValue = (UInt32)Array[ArrayIndex];
 
@@ -563,8 +574,8 @@ namespace NumpyLib
 
         public static void SetByte(Int64[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
@@ -621,8 +632,8 @@ namespace NumpyLib
 
         public static void SetByte(UInt64[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             UInt64 ArrayValue = (UInt64)Array[ArrayIndex];
 
@@ -679,8 +690,8 @@ namespace NumpyLib
 
         public static void SetByte(float[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 4;
-            npy_intp ByteNumber = byte_index % 4;
+            npy_intp ArrayIndex = byte_index >> Shift32;
+            npy_intp ByteNumber = byte_index & Mask32;
 
             var bytes = BitConverter.GetBytes(Array[ArrayIndex]);
             bytes[ByteNumber] = data;
@@ -691,8 +702,8 @@ namespace NumpyLib
 
         public static void SetByte(double[] Array, npy_intp byte_index, byte data)
         {
-            npy_intp ArrayIndex = byte_index / 8;
-            npy_intp ByteNumber = byte_index % 8;
+            npy_intp ArrayIndex = byte_index >> Shift64;
+            npy_intp ByteNumber = byte_index & Mask64;
 
             var bytes = BitConverter.GetBytes(Array[ArrayIndex]);
             bytes[ByteNumber] = data;
