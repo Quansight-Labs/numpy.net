@@ -230,9 +230,9 @@ namespace NumpyLib
                 case 2: return 0x01;
                 case 4: return 0x03;
                 case 8: return 0x07;
-                case 16: return 0x17;
-                case 32: return 0x37;
-                case 64: return 0x77;
+                case 16: return 0x0F;
+                case 32: return 0x1F;
+                case 64: return 0x3F;
                     //case 128: return 7;
                     //case 256: return 8;
                     //case 512: return 9;

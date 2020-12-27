@@ -1196,16 +1196,15 @@ namespace NumpyLib
         {
             Int16[] sourceArray = Src.datap as Int16[];
             Int16[] destArray = Dest.datap as Int16[];
-            int ItemSize = sizeof(Int16);
 
            //  try to use DestOffset & ItemDivInt16 for speed.  Validate in test app
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskInt16;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskInt16;
  
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskInt16) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivInt16, destArray, DestOffset >> ItemDivInt16, totalBytesToCopy >> ItemDivInt16);
                 }
@@ -1383,15 +1382,14 @@ namespace NumpyLib
         {
             UInt16[] sourceArray = Src.datap as UInt16[];
             UInt16[] destArray = Dest.datap as UInt16[];
-            int ItemSize = sizeof(UInt16);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskUInt16;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskUInt16;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskUInt16) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivUInt16, destArray, DestOffset >> ItemDivUInt16, totalBytesToCopy >> ItemDivUInt16);
                 }
@@ -1565,16 +1563,15 @@ namespace NumpyLib
         {
             Int32[] sourceArray = Src.datap as Int32[];
             Int32[] destArray = Dest.datap as Int32[];
-            int ItemSize = sizeof(Int32);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskInt32;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskInt32;
 
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskInt32) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivInt32, destArray, DestOffset >> ItemDivInt32, totalBytesToCopy >> ItemDivInt32);
                 }
@@ -1746,15 +1743,14 @@ namespace NumpyLib
         {
             UInt32[] sourceArray = Src.datap as UInt32[];
             UInt32[] destArray = Dest.datap as UInt32[];
-            int ItemSize = sizeof(UInt32);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskUInt32;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskUInt32;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskUInt32) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivUInt32, destArray, DestOffset >> ItemDivUInt32, totalBytesToCopy >> ItemDivUInt32);
                 }
@@ -1928,15 +1924,14 @@ namespace NumpyLib
         {
             Int64[] sourceArray = Src.datap as Int64[];
             Int64[] destArray = Dest.datap as Int64[];
-            int ItemSize = sizeof(Int64);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskInt64;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskInt64;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskInt64) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivInt64, destArray, DestOffset >> ItemDivInt64, totalBytesToCopy >> ItemDivInt64);
                 }
@@ -2110,15 +2105,14 @@ namespace NumpyLib
         {
             UInt64[] sourceArray = Src.datap as UInt64[];
             UInt64[] destArray = Dest.datap as UInt64[];
-            int ItemSize = sizeof(UInt64);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskUInt64;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskUInt64;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskUInt64) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivUInt64, destArray, DestOffset >> ItemDivUInt64, totalBytesToCopy >> ItemDivUInt64);
                 }
@@ -2303,15 +2297,14 @@ namespace NumpyLib
         {
             float[] sourceArray = Src.datap as float[];
             float[] destArray = Dest.datap as float[];
-            int ItemSize = sizeof(float);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskFloat;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskFloat;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskFloat) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivFloat, destArray, DestOffset >> ItemDivFloat, totalBytesToCopy >> ItemDivFloat);
                 }
@@ -2495,15 +2488,14 @@ namespace NumpyLib
         {
             double[] sourceArray = Src.datap as double[];
             double[] destArray = Dest.datap as double[];
-            int ItemSize = sizeof(double);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskDouble;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskDouble;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskDouble) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivDouble, destArray, DestOffset >> ItemDivDouble, totalBytesToCopy >> ItemDivDouble);
                 }
@@ -2687,15 +2679,14 @@ namespace NumpyLib
         {
             decimal[] sourceArray = Src.datap as decimal[];
             decimal[] destArray = Dest.datap as decimal[];
-            int ItemSize = sizeof(decimal);
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskDecimal;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskDecimal;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskDecimal) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivDecimal, destArray, DestOffset >> ItemDivDecimal, totalBytesToCopy >> ItemDivDecimal);
                 }
@@ -2887,15 +2878,14 @@ namespace NumpyLib
                 ItemMaskComplex = numpyinternal.GetMaskSize(__ComplexSize);
             }
 
-            int ItemSize = __ComplexSize;
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskComplex;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskComplex;
 
 
             if (DestOffsetAdjustment == SrcOffsetAdjustment)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+                if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskComplex) == 0))
                 {
                     Array.Copy(sourceArray, SrcOffset >> ItemDivComplex, destArray, DestOffset >> ItemDivComplex, totalBytesToCopy >> ItemDivComplex);
                 }
@@ -2983,12 +2973,11 @@ namespace NumpyLib
                 ItemDivBigInt = numpyinternal.GetDivSize(__BigIntSize);
                 ItemMaskBigInt = numpyinternal.GetMaskSize(__BigIntSize);
             }
-            int ItemSize = __BigIntSize;
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskBigInt;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskBigInt;
 
-            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskBigInt) == 0))
             {
                 Array.Copy(sourceArray, SrcOffset >> ItemDivBigInt, destArray, DestOffset >> ItemDivBigInt, totalBytesToCopy >> ItemDivBigInt);
             }
@@ -3021,12 +3010,11 @@ namespace NumpyLib
                 ItemDivObject = numpyinternal.GetDivSize(__ObjectSize);
                 ItemMaskObject = numpyinternal.GetMaskSize(__ObjectSize);
             }
-            int ItemSize = __ObjectSize;
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskObject;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskObject;
 
-            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskObject) == 0))
             {
                 Array.Copy(sourceArray, SrcOffset >> ItemDivObject, destArray, DestOffset >> ItemDivObject, totalBytesToCopy >> ItemDivObject);
             }
@@ -3061,10 +3049,10 @@ namespace NumpyLib
             }
             int ItemSize = __StringSize;
 
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            npy_intp DestOffsetAdjustment = DestOffset & ItemMaskString;
+            npy_intp SrcOffsetAdjustment = SrcOffset & ItemMaskString;
 
-            if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
+            if ((DestOffsetAdjustment == 0) && ((totalBytesToCopy & ItemMaskString) == 0))
             {
                 Array.Copy(sourceArray, SrcOffset >> ItemDivString, destArray, DestOffset >> ItemDivString, totalBytesToCopy >> ItemDivString);
             }
