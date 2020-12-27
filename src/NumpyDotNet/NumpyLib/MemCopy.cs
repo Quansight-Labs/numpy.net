@@ -47,6 +47,24 @@ namespace NumpyLib
     public class MemCopy
     {
 
+        static int ItemDivInt16 = numpyinternal.GetDivSize(sizeof(Int16));
+        static int ItemDivUInt16 = numpyinternal.GetDivSize(sizeof(UInt16));
+        static int ItemDivInt32 = numpyinternal.GetDivSize(sizeof(Int32));
+        static int ItemDivUInt32 = numpyinternal.GetDivSize(sizeof(UInt32));
+        static int ItemDivInt64 = numpyinternal.GetDivSize(sizeof(Int64));
+        static int ItemDivUInt64 = numpyinternal.GetDivSize(sizeof(UInt64));
+        static int ItemDivFloat = numpyinternal.GetDivSize(sizeof(float));
+        static int ItemDivDouble = numpyinternal.GetDivSize(sizeof(double));
+        static int __ComplexSize = -1;
+        static int ItemDivComplex = 0;
+        static int __BigIntSize = -1;
+        static int ItemDivBigInt = 0;
+        static int __ObjectSize = -1;
+        static int ItemDivObject = 0;
+        static int __StringSize = -1;
+        static int ItemDivString = 0;
+
+
         // todo: take these out when performance improvements complete
         public static long MemCpy_TotalCount = 0;
         public static long MemCpy_ShortBufferCount = 0;
@@ -1174,7 +1192,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivInt16, destArray, DestOffset >> ItemDivInt16, totalBytesToCopy >> ItemDivInt16);
                 }
                 else
                 {
@@ -1360,7 +1378,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivUInt16, destArray, DestOffset >> ItemDivUInt16, totalBytesToCopy >> ItemDivUInt16);
                 }
                 else
                 {
@@ -1543,7 +1561,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivInt32, destArray, DestOffset >> ItemDivInt32, totalBytesToCopy >> ItemDivInt32);
                 }
                 else
                 {
@@ -1723,7 +1741,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivUInt32, destArray, DestOffset >> ItemDivUInt32, totalBytesToCopy >> ItemDivUInt32);
                 }
                 else
                 {
@@ -1905,7 +1923,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivInt64, destArray, DestOffset >> ItemDivInt64, totalBytesToCopy >> ItemDivInt64);
                 }
                 else
                 {
@@ -2087,7 +2105,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivUInt64, destArray, DestOffset >> ItemDivUInt64, totalBytesToCopy >> ItemDivUInt64);
                 }
                 else
                 {
@@ -2280,7 +2298,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivFloat, destArray, DestOffset >> ItemDivFloat, totalBytesToCopy >> ItemDivFloat);
                 }
                 else
                 {
@@ -2472,7 +2490,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivDouble, destArray, DestOffset >> ItemDivDouble, totalBytesToCopy >> ItemDivDouble);
                 }
                 else
                 {
@@ -2651,6 +2669,8 @@ namespace NumpyLib
             return true;
         }
 
+        static int ItemDivDecimal = numpyinternal.GetDivSize(sizeof(decimal));
+
         private static bool MemCpyDecimalsToDecimals(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             decimal[] sourceArray = Src.datap as decimal[];
@@ -2665,7 +2685,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivDecimal, destArray, DestOffset >> ItemDivDecimal, totalBytesToCopy >> ItemDivDecimal);
                 }
                 else
                 {
@@ -2818,7 +2838,7 @@ namespace NumpyLib
         }
         private static bool MemCpyDoublesToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
-            decimal[] sourceArray = Src.datap as decimal[];
+            double[] sourceArray = Src.datap as double[];
             System.Numerics.Complex[] destArray = Dest.datap as System.Numerics.Complex[];
 
 
@@ -2833,36 +2853,16 @@ namespace NumpyLib
         private static bool MemCpyDecimalsToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             decimal[] sourceArray = Src.datap as decimal[];
-            decimal[] destArray = Dest.datap as decimal[];
-            npy_intp ItemSize = sizeof(decimal);
-
-            npy_intp DestOffsetAdjustment = DestOffset % ItemSize;
-            npy_intp SrcOffsetAdjustment = SrcOffset % ItemSize;
+            System.Numerics.Complex[] destArray = Dest.datap as System.Numerics.Complex[];
 
 
-            if (DestOffsetAdjustment == SrcOffsetAdjustment)
+            for (npy_intp i = 0; i < totalBytesToCopy; i++)
             {
-                if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
-                {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
-                }
-                else
-                {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize);
-                }
-            }
-            else
-            {
-                for (npy_intp i = 0; i < totalBytesToCopy; i++)
-                {
-                    byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
-                    MemoryAccess.SetByte(destArray, i + DestOffset, data);
-                }
+                byte data = MemoryAccess.GetByte(sourceArray, i + SrcOffset);
+                destArray[i + DestOffset] = new System.Numerics.Complex(data, 0);
             }
             return true;
         }
-
-        private static int __ComplexSize = -1;
         private static bool MemCpyComplexToComplex(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             System.Numerics.Complex[] sourceArray = Src.datap as System.Numerics.Complex[];
@@ -2871,6 +2871,7 @@ namespace NumpyLib
             if (__ComplexSize < 0)
             {
                 __ComplexSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_COMPLEX).ItemSize;
+                ItemDivComplex = numpyinternal.GetDivSize(__ComplexSize);
             }
 
             npy_intp ItemSize = __ComplexSize;
@@ -2883,7 +2884,7 @@ namespace NumpyLib
             {
                 if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
                 {
-                    Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                    Array.Copy(sourceArray, SrcOffset >> ItemDivComplex, destArray, DestOffset >> ItemDivComplex, totalBytesToCopy >> ItemDivComplex);
                 }
                 else
                 {
@@ -2958,9 +2959,6 @@ namespace NumpyLib
         {
              return true;
         }
-
-        private static int __BigIntSize = -1;
-
         private static bool MemCpyBigIntToBigInt(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             System.Numerics.BigInteger[] sourceArray = Src.datap as System.Numerics.BigInteger[];
@@ -2969,6 +2967,7 @@ namespace NumpyLib
             if (__BigIntSize < 0)
             {
                 __BigIntSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_BIGINT).ItemSize;
+                ItemDivBigInt = numpyinternal.GetDivSize(__BigIntSize);
             }
             npy_intp ItemSize = __BigIntSize;
 
@@ -2977,7 +2976,7 @@ namespace NumpyLib
 
             if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
             {
-                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                Array.Copy(sourceArray, SrcOffset >> ItemDivBigInt, destArray, DestOffset >> ItemDivBigInt, totalBytesToCopy >> ItemDivBigInt);
             }
             else
             {
@@ -2991,7 +2990,6 @@ namespace NumpyLib
 
         #region Object specific
 
-        private static int __ObjectSize = -1;
         private static bool MemCpyObjectToObject(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             object[] sourceArray = Src.datap as object[];
@@ -3006,6 +3004,7 @@ namespace NumpyLib
             if (__ObjectSize < 0)
             {
                 __ObjectSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_OBJECT).ItemSize;
+                ItemDivObject = numpyinternal.GetDivSize(__ObjectSize);
             }
             npy_intp ItemSize = __ObjectSize;
 
@@ -3014,7 +3013,7 @@ namespace NumpyLib
 
             if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
             {
-                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                Array.Copy(sourceArray, SrcOffset >> ItemDivObject, destArray, DestOffset >> ItemDivObject, totalBytesToCopy >> ItemDivObject);
             }
             else
             {
@@ -3028,8 +3027,7 @@ namespace NumpyLib
 
         #region String specific
 
-        private static int __StringSize = -1;
-        private static bool MemCpyStringToString(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
+       private static bool MemCpyStringToString(VoidPtr Dest, npy_intp DestOffset, VoidPtr Src, npy_intp SrcOffset, long totalBytesToCopy)
         {
             string[] sourceArray = Src.datap as string[];
 
@@ -3043,6 +3041,7 @@ namespace NumpyLib
             if (__StringSize < 0)
             {
                 __StringSize = DefaultArrayHandlers.GetArrayHandler(NPY_TYPES.NPY_STRING).ItemSize;
+                ItemDivString = numpyinternal.GetDivSize(__StringSize);
             }
             npy_intp ItemSize = __StringSize;
 
@@ -3051,7 +3050,7 @@ namespace NumpyLib
 
             if ((DestOffsetAdjustment == 0) && (totalBytesToCopy % ItemSize == 0))
             {
-                Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+                Array.Copy(sourceArray, SrcOffset >> ItemDivString, destArray, DestOffset >> ItemDivString, totalBytesToCopy >> ItemDivString);
             }
             else
             {
