@@ -3631,7 +3631,7 @@ namespace NumpyLib
         }
 
 
-        public void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv)
+        public void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp instrides, int elsize, int eldiv)
         {
             if (dst.type_num == src.type_num)
             {
@@ -3640,7 +3640,7 @@ namespace NumpyLib
                 this.eldiv = eldiv;
 
                 this.outstrides = outstrides >> eldiv;
-                this.instrides = intstrides >> eldiv;
+                this.instrides = instrides >> eldiv;
 
                 isSameType = true;
                 if (this.instrides == 1 && this.outstrides == 1)
@@ -3654,7 +3654,7 @@ namespace NumpyLib
                 this.src = src;
                 this.elsize = elsize;
                 this.outstrides = outstrides;
-                this.instrides = intstrides;
+                this.instrides = instrides;
             }
         }
 
@@ -4278,11 +4278,14 @@ namespace NumpyLib
                 numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 1);
                 int offsetsIndex = 0;
 
+                var helper = MemCopy.GetMemcopyHelper(destIter.dataptr);
+                helper.memmove_init(destIter.dataptr, srcIter.dataptr);
+
                 while (numIndexes > 0)
                 {
                     while (offsetsIndex < offsetsLength)
                     {
-                        numpyinternal.memmove(offsets[offsetsIndex], 0, srcIter.dataptr, 0, elsize);
+                        helper.memmove(offsets[offsetsIndex].data_offset, srcIter.dataptr.data_offset, elsize);
                         if (swap)
                         {
                             numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
@@ -5223,32 +5226,50 @@ namespace NumpyLib
 
         public void memmove_init(VoidPtr dest, VoidPtr src)
         {
-            da = dest.datap as T[];
-            sa = src.datap as T[];
+            this.dst = dest;
+            this.src = src;
+            this.da = dest.datap as T[];
+            this.sa = src.datap as T[];
 
-            eldiv = GetDivSize(dest);
+            this.eldiv = GetDivSize(dest);
+
+            if (src.type_num == dest.type_num)
+                this.isSameType = true;
+            else
+                this.isSameType = false;
         }
 
         public void memmove(npy_intp dest_offset, npy_intp src_offset, long len)
         {
-            long ElementCount = len >> eldiv;
-            long sOffset = src_offset >> eldiv;
-            long dOffset = dest_offset >> eldiv;
-
-            if (ElementCount == 1)
+            if (isSameType)
             {
-                da[dOffset] = sa[sOffset];
+                long ElementCount = len >> eldiv;
+                long sOffset = src_offset >> eldiv;
+                long dOffset = dest_offset >> eldiv;
+
+                if (ElementCount == 1)
+                {
+                    da[dOffset] = sa[sOffset];
+                }
+                else
+                {
+                    if (Temp == null || Temp.Length < ElementCount)
+                    {
+                        Temp = new T[ElementCount];
+                    }
+
+                    Array.Copy(sa, sOffset, Temp, 0, ElementCount);
+                    Array.Copy(Temp, 0, da, dOffset, ElementCount);
+                }
             }
             else
             {
-                if (Temp == null || Temp.Length < ElementCount)
-                {
-                    Temp = new T[ElementCount];
-                }
-
-                Array.Copy(sa, sOffset, Temp, 0, ElementCount);
-                Array.Copy(Temp, 0, da, dOffset, ElementCount);
+                VoidPtr Temp = new VoidPtr(new byte[len]);
+                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+                MemCopy.MemCpy(dst, dest_offset, Temp, 0, len);
+                return;
             }
+  
 
         }
 

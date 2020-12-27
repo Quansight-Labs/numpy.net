@@ -146,9 +146,11 @@ namespace NumpyLib
             VoidPtr _dst = new VoidPtr(dst);
             VoidPtr _src = new VoidPtr(src);
 
+            var helper = MemCopy.GetMemcopyHelper(_dst);
+            helper.memmove_init(_dst, _src);
             while (N > 0)
             {
-                memmove(_dst, 0, _src, 0, src_itemsize);
+                helper.memmove(_dst.data_offset, _src.data_offset, src_itemsize);
                 _dst.data_offset += dst_stride;
                 _src.data_offset += src_stride;
                 --N;
@@ -318,7 +320,9 @@ namespace NumpyLib
 
         private static void _contig_to_contig(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
         {
-            memmove(dst, 0, src, 0, src_itemsize * N);
+            var helper = MemCopy.GetMemcopyHelper(dst);
+            helper.memmove_init(dst, src);
+            helper.memmove(dst.data_offset, src.data_offset, src_itemsize * N);
         }
 
         private static void _aligned_strided_to_contig_size16_srcstride0(VoidPtr dst, npy_intp dst_stride, VoidPtr src, npy_intp src_stride, npy_intp N, npy_intp src_itemsize, NpyAuxData transferdata)
