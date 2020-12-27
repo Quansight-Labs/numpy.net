@@ -696,6 +696,8 @@ namespace NumpyLib
             ret_data = new VoidPtr(ret);
             int ret_data_index = 0;
 
+            var helper = MemCopy.GetMemcopyHelper(ret_data);
+
             while (NpyArray_MultiIter_NOTDONE(multi))
             {
                 VoidPtr data = NpyArray_MultiIter_DATA(multi, n);
@@ -737,7 +739,10 @@ namespace NumpyLib
                 }
 
 
-                memmove(ret_data, ret_data_index, new VoidPtr(NpyArray_MultiIter_DATA(multi, mi)), 0, elsize);
+                var srcVP = new VoidPtr(NpyArray_MultiIter_DATA(multi, mi));
+                helper.memmove_init(ret_data, srcVP);
+                helper.memmove(ret_data.data_offset + ret_data_index, srcVP.data_offset, elsize);
+
                 ret_data_index += elsize;
 
                 NpyArray_MultiIter_NEXT(multi);

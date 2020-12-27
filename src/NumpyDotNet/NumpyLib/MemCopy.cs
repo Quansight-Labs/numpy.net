@@ -3581,7 +3581,6 @@ namespace NumpyLib
         void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len);
         void memmove_init(VoidPtr dest, VoidPtr src);
         void memmove(npy_intp dest_offset, npy_intp src_offset, npy_intp len);
-        void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, npy_intp len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -5271,33 +5270,6 @@ namespace NumpyLib
             }
   
 
-        }
-
-        public void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
-        {
-            T[] _dst = dest.datap as T[];
-            T[] _src = src.datap as T[];
-
-            eldiv = GetDivSize(dest);
-
-            long ElementCount = len >> eldiv;
-            long sOffset = (src.data_offset + src_offset) >> eldiv;
-            long dOffset = (dest.data_offset + dest_offset) >> eldiv;
-
-            if (ElementCount == 1)
-            {
-                _dst[dOffset] = _src[sOffset];
-            }
-            else
-            {
-                if (Temp == null || Temp.Length < ElementCount)
-                {
-                    Temp = new T[ElementCount];
-                }
-                Array.Copy(_src, sOffset, Temp, 0, ElementCount);
-                Array.Copy(Temp, 0, _dst, dOffset, ElementCount);
-            }
- 
         }
         
     }

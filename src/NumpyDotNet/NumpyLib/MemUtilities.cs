@@ -227,35 +227,35 @@ namespace NumpyLib
 
         #region memmove
 
-        internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
-        {
-            // we think it is impossible for memory to be not aligned in pure .NET so no need to do this big expensive check.
-            //if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
-            if (src.type_num == dest.type_num)
-            {
-                var helper = MemCopy.GetMemcopyHelper(dest);
-                helper.memmove_real(dest, dest_offset, src, src_offset, len);
-                return;
-            }
-            else
-            {
-                VoidPtr Temp = new VoidPtr(new byte[len]);
-                MemCopy.MemCpy(Temp, 0, src, src_offset, len);
-                MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
-                return;
-            }
+        //internal static void memmove(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
+        //{
+        //    // we think it is impossible for memory to be not aligned in pure .NET so no need to do this big expensive check.
+        //    //if ((src.type_num == dest.type_num) && IsElementAligned(src, src_offset) && IsElementAligned(dest, dest_offset))
+        //    if (src.type_num == dest.type_num)
+        //    {
+        //        var helper = MemCopy.GetMemcopyHelper(dest);
+        //        helper.memmove_real(dest, dest_offset, src, src_offset, len);
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        VoidPtr Temp = new VoidPtr(new byte[len]);
+        //        MemCopy.MemCpy(Temp, 0, src, src_offset, len);
+        //        MemCopy.MemCpy(dest, dest_offset, Temp, 0, len);
+        //        return;
+        //    }
 
-        }
+        //}
 
-        private static bool IsElementAligned(VoidPtr src, long src_offset)
-        {
-            long ItemSize = GetTypeSize(src.type_num);
+        //private static bool IsElementAligned(VoidPtr src, long src_offset)
+        //{
+        //    long ItemSize = GetTypeSize(src.type_num);
 
-            if ((src_offset % ItemSize == 0) && (src.data_offset % ItemSize == 0))
-                return true;
-            throw new Exception();
-            return false;
-        }
+        //    if ((src_offset % ItemSize == 0) && (src.data_offset % ItemSize == 0))
+        //        return true;
+        //    throw new Exception();
+        //    return false;
+        //}
 
 
 
