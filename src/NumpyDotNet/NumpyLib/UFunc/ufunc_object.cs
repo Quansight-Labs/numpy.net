@@ -196,6 +196,16 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
+        protected override System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override System.Object Subtract(dynamic aValue, dynamic bValue)
         {

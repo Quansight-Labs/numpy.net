@@ -206,6 +206,16 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
+        protected override System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override System.Numerics.BigInteger Subtract(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {

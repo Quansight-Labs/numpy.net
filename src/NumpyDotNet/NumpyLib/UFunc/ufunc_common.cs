@@ -1203,6 +1203,15 @@ namespace NumpyLib
 
 
                 T retValue = retArray[R_Index];
+                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+
+                var UFuncReduceOperation = GetUFuncReduceOperation(ops);
+                if (UFuncReduceOperation != null)
+                {
+                    retArray[R_Index] = UFuncReduceOperation(retValue, Op2Array, O2_Index, O2_CalculatedStep, N);
+                    return;
+                }
+
 
                 var UFuncOperation = GetUFuncOperation(ops);
                 if (UFuncOperation == null)
@@ -1211,8 +1220,6 @@ namespace NumpyLib
                 }
 
                 // note: these can't be parallelized.
-
-                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
                 for (npy_intp i = 0; i < N; i++)
                 {
                     var Op1Value = retValue;
@@ -1226,7 +1233,6 @@ namespace NumpyLib
                 retArray[R_Index] = retValue;
                 return;
             }
-
 
             #endregion
 
@@ -1448,9 +1454,32 @@ namespace NumpyLib
                 return null;
             }
 
+            protected opFunctionReduce GetUFuncReduceOperation(UFuncOperation ops)
+            {
+                switch (ops)
+                {
+                    case UFuncOperation.add:
+                        return AddReduce;
+
+                    //case UFuncOperation.subtract:
+                    //    return SubtractReduce;
+
+                    //case UFuncOperation.multiply:
+                    //    return MultiplyReduce;
+
+                    //case UFuncOperation.divide:
+                    //    return DivideReduce;
+
+                }
+
+                return null;
+            }
+
             protected delegate T opFunction(T o1, T o2);
+            protected delegate T opFunctionReduce(T Op1Value, T[] Op2Values, npy_intp O2_Index, npy_intp O2_CalculatedStep, npy_intp N);
 
             protected abstract T Add(T o1, T o2);
+            protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Subtract(T o1, T o2);
             protected abstract T Multiply(T o1, T o2);
             protected abstract T Divide(T o1, T o2);

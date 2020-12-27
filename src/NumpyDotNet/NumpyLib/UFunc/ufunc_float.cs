@@ -196,6 +196,15 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
+        protected override float AddReduce(float result, float[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+            return result;
+        }
 
         protected override float Subtract(float aValue, float bValue)
         {
