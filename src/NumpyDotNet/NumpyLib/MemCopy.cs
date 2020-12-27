@@ -33,6 +33,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 #if NPY_INTP_64
@@ -3581,6 +3582,7 @@ namespace NumpyLib
         void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len);
         void memmove_init(VoidPtr dest, VoidPtr src);
         void memmove(npy_intp dest_offset, npy_intp src_offset, npy_intp len);
+        void memmoveitem(npy_intp dest_offset, npy_intp src_offset);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -5271,6 +5273,13 @@ namespace NumpyLib
   
 
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void memmoveitem(npy_intp dest_offset, npy_intp src_offset)
+        {
+            da[dest_offset >> eldiv] = sa[src_offset >> eldiv];
+        }
+
+
     }
 }
