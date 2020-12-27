@@ -666,7 +666,7 @@ namespace NumpyLib
 
         #region Common functions
 
-        private static void CommonArrayCopy<T>(T[] destArray, npy_intp DestOffset, T[] sourceArray, npy_intp SrcOffset, long totalBytesToCopy, npy_intp DestOffsetAdjustment, npy_intp SrcOffsetAdjustment, int ItemSize, int ItemMask)
+        private static void CommonArrayCopy<T>(T[] destArray, npy_intp DestOffset, T[] sourceArray, npy_intp SrcOffset, long totalBytesToCopy, npy_intp DestOffsetAdjustment, npy_intp SrcOffsetAdjustment, int ItemDiv, int ItemMask)
         {
             for (npy_intp i = 0; i < DestOffsetAdjustment; i++)
             {
@@ -681,7 +681,7 @@ namespace NumpyLib
             npy_intp LengthAdjustment = (npy_intp)(totalBytesToCopy & ItemMask);
             totalBytesToCopy -= LengthAdjustment;
 
-            Array.Copy(sourceArray, SrcOffset / ItemSize, destArray, DestOffset / ItemSize, totalBytesToCopy / ItemSize);
+            Array.Copy(sourceArray, SrcOffset >> ItemDiv, destArray, DestOffset >> ItemDiv, totalBytesToCopy >> ItemDiv);
 
             for (npy_intp i = (npy_intp)totalBytesToCopy; i < totalBytesToCopy + LengthAdjustment; i++)
             {
@@ -1211,7 +1211,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskInt16);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivInt16, ItemMaskInt16);
                 }
             }
             else
@@ -1397,7 +1397,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskUInt16);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivUInt16, ItemMaskUInt16);
                 }
             }
             else
@@ -1580,7 +1580,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskInt32);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivInt32, ItemMaskInt32);
                 }
             }
             else
@@ -1760,7 +1760,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskUInt32);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivUInt32, ItemMaskUInt32);
                 }
             }
             else
@@ -1942,7 +1942,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskInt64);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivInt64, ItemMaskInt64);
                 }
             }
             else
@@ -2124,7 +2124,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskUInt64);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivUInt64, ItemMaskUInt64);
                 }
             }
             else
@@ -2317,7 +2317,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskFloat);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivFloat, ItemMaskFloat);
                 }
             }
             else
@@ -2509,7 +2509,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskDouble);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivDouble, ItemMaskDouble);
                 }
             }
             else
@@ -2701,7 +2701,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskDecimal);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivDecimal, ItemMaskDecimal);
                 }
             }
             else
@@ -2901,7 +2901,7 @@ namespace NumpyLib
                 }
                 else
                 {
-                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskComplex);
+                    CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivComplex, ItemMaskComplex);
                 }
             }
             else
@@ -2994,7 +2994,7 @@ namespace NumpyLib
             }
             else
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskBigInt);
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivBigInt, ItemMaskBigInt);
             }
 
             return true;
@@ -3032,7 +3032,7 @@ namespace NumpyLib
             }
             else
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskObject);
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivObject, ItemMaskObject);
             }
 
             return true;
@@ -3070,7 +3070,7 @@ namespace NumpyLib
             }
             else
             {
-                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemSize, ItemMaskString);
+                CommonArrayCopy(destArray, DestOffset, sourceArray, SrcOffset, totalBytesToCopy, DestOffsetAdjustment, SrcOffsetAdjustment, ItemDivString, ItemMaskString);
             }
 
             return true;
