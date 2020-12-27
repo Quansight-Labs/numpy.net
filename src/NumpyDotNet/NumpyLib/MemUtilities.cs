@@ -279,7 +279,8 @@ namespace NumpyLib
 
         internal static void memclr(VoidPtr dest, long len)
         {
-              MemSet.memset(dest, 0, 0, len);
+            var helper = MemCopy.GetMemcopyHelper(dest);
+            helper.memclr(dest, dest.data_offset, len);
         }
 
         internal static void memset(VoidPtr dest, byte setvalue, long len)

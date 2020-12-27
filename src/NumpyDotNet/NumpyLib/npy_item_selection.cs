@@ -918,7 +918,7 @@ namespace NumpyLib
             /* Check if there is any argsorting to do */
             if (N <= 1 || NpyArray_SIZE(op) == 0)
             {
-                memclr(NpyArray_DATA(rop), NpyArray_NBYTES(rop));
+                memclr(NpyArray_DATA(rop), NpyArray_SIZE(rop));
                 return rop;
             }
 

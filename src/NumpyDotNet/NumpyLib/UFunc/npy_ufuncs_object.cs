@@ -1090,7 +1090,7 @@ namespace NumpyLib
             {
                 case UFuncLoopMethod.ZERO_EL_REDUCELOOP:
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
-                    helper.memmove_init(loop.bufptr[0], 0, loop.idptr, 0, loop.outsize);
+                    helper.memmove_init(loop.bufptr[0], loop.idptr);
                     for (i = 0; i < loop.size; i++)
                     {
                         helper.memmove(loop.bufptr[0].data_offset, loop.idptr.data_offset, loop.outsize);
@@ -1102,7 +1102,7 @@ namespace NumpyLib
 
                     // kevin - the loop count is not ever more than 2 or 3.  Probably not worth speeding up.
 
-                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -1114,7 +1114,7 @@ namespace NumpyLib
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
-                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
                     var loopcnt = loop.size - loop.index;
                     if (loopcnt <= 1)
@@ -1322,7 +1322,7 @@ namespace NumpyLib
                     /* Accumulate */
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
 
-                    helper.memmove_init(loop.bufptr[0], 0, loop.it.dataptr, 0, loop.outsize);
+                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
                     while (loop.index < loop.size)
                     {
                         helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -1811,7 +1811,7 @@ namespace NumpyLib
                     NpyErr_MEMORY();
                     goto fail;
                 }
-                memclr(new VoidPtr(loop.core_strides), sizeof(npy_intp) * nstrides);
+                memclr(new VoidPtr(loop.core_strides), nstrides);
                 for (i = 0; i < num_dim_ix; i++)
                 {
                     loop.core_dim_sizes[i] = 1;

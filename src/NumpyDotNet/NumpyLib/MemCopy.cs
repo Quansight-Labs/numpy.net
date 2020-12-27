@@ -3578,9 +3578,10 @@ namespace NumpyLib
     {
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
-        void memmove_init(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
-        void memmove(npy_intp dest_offset, npy_intp src_offset, long len);
-        void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len);
+        void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len);
+        void memmove_init(VoidPtr dest, VoidPtr src);
+        void memmove(npy_intp dest_offset, npy_intp src_offset, npy_intp len);
+        void memmove_real(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, npy_intp len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -3622,6 +3623,12 @@ namespace NumpyLib
         int eldiv;
         bool isSameType = false;
         bool useArrayCopy = false;
+
+        public void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len)
+        {
+            var da = dest.datap as T[];
+            Array.Clear(da, (int)(dest_offset >> GetDivSize(dst)), (int)len);
+        }
 
 
         public void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv)
@@ -5214,7 +5221,7 @@ namespace NumpyLib
 
    
 
-        public void memmove_init(VoidPtr dest, npy_intp dest_offset, VoidPtr src, npy_intp src_offset, long len)
+        public void memmove_init(VoidPtr dest, VoidPtr src)
         {
             da = dest.datap as T[];
             sa = src.datap as T[];

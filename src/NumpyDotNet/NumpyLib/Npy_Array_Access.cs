@@ -146,10 +146,8 @@ namespace NumpyLib
 
         internal static void NpyArrayAccess_ZeroFill(NpyArray arr, npy_intp offset)
         {
-            int itemsize = NpyArray_ITEMSIZE(arr);
-            npy_intp size = NpyArray_SIZE(arr) * itemsize;
-            npy_intp off = offset * itemsize;
-            npy_intp fill_size = size - off;
+            npy_intp size = NpyArray_SIZE(arr);
+            npy_intp fill_size = size - offset;
             memclr(arr.data, fill_size);
         }
 
