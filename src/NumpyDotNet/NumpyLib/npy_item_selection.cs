@@ -156,6 +156,8 @@ namespace NumpyLib
 
             npy_intp[] indicesData = indices.data.datap as npy_intp[];
 
+            var helper = MemCopy.GetMemcopyHelper(dest);
+            helper.memmove_init(dest, src);
 
             switch (clipmode)
             {
@@ -175,7 +177,7 @@ namespace NumpyLib
                                 out_of_range = true;
                             }
 
-                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            helper.memmove(dest.data_offset + (dest_index + (j * chunk)), src.data_offset + (src_index + (tmp * chunk)), chunk);
                         });
 
                         if (out_of_range)
@@ -209,7 +211,7 @@ namespace NumpyLib
                                 }
                             }
 
-                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            helper.memmove(dest.data_offset + (dest_index + (j * chunk)), src.data_offset + (src_index + (tmp * chunk)), chunk);
                         });
 
                         dest_index += m * chunk;
@@ -231,7 +233,7 @@ namespace NumpyLib
                                 tmp = max_item - 1;
                             }
 
-                            memmove(dest, dest_index + (j * chunk), src, src_index + (tmp * chunk), chunk);
+                            helper.memmove(dest.data_offset + (dest_index + (j * chunk)), src.data_offset + (src_index + (tmp * chunk)), chunk);
                         });
 
                         dest_index += (m * chunk);
@@ -316,7 +318,8 @@ namespace NumpyLib
 
             npy_intp[] indicesData = indices.data.datap as npy_intp[];
 
-
+            var helper = MemCopy.GetMemcopyHelper(dest);
+            helper.memmove_init(dest, values.data);
 
             switch (clipmode)
             {
@@ -335,7 +338,7 @@ namespace NumpyLib
                             goto fail;
                         }
 
-                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
+                        helper.memmove(dest.data_offset + (tmp * chunk), src.data_offset, chunk);
                     }
                     break;
                 case NPY_CLIPMODE.NPY_WRAP:
@@ -358,8 +361,7 @@ namespace NumpyLib
                             }
                         }
 
-
-                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
+                        helper.memmove(dest.data_offset + (tmp * chunk), src.data_offset, chunk);
                     }
                     break;
                 case NPY_CLIPMODE.NPY_CLIP:
@@ -375,8 +377,7 @@ namespace NumpyLib
                         {
                             tmp = max_item - 1;
                         }
-
-                        memmove(new VoidPtr(dest, tmp * chunk), 0, src, 0, chunk);
+                        helper.memmove(dest.data_offset + (tmp * chunk), src.data_offset, chunk);
                     }
                     break;
             }
@@ -626,7 +627,7 @@ namespace NumpyLib
             return null;
         }
 
-        internal static NpyArray NpyArray_Choose(NpyArray ip, NpyArray []mps, int n, NpyArray ret, NPY_CLIPMODE clipmode)
+        internal static NpyArray NpyArray_Choose(NpyArray ip, NpyArray[] mps, int n, NpyArray ret, NPY_CLIPMODE clipmode)
         {
             int elsize;
             VoidPtr ret_data;
@@ -698,7 +699,7 @@ namespace NumpyLib
             while (NpyArray_MultiIter_NOTDONE(multi))
             {
                 VoidPtr data = NpyArray_MultiIter_DATA(multi, n);
-                mi = (npy_intp)GetIndex(data,data.data_offset >> IntpDivSize);
+                mi = (npy_intp)GetIndex(data, data.data_offset >> IntpDivSize);
                 if (mi < 0 || mi >= n)
                 {
                     switch (clipmode)
@@ -735,7 +736,7 @@ namespace NumpyLib
                     }
                 }
 
-  
+
                 memmove(ret_data, ret_data_index, new VoidPtr(NpyArray_MultiIter_DATA(multi, mi)), 0, elsize);
                 ret_data_index += elsize;
 
@@ -756,7 +757,7 @@ namespace NumpyLib
             }
             return ret;
 
-            fail:
+        fail:
             Npy_XDECREF(multi);
             Npy_XDECREF(ap);
             NpyArray_XDECREF_ERR(ret);
