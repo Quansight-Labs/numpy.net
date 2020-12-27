@@ -2118,7 +2118,8 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                srcArray = srcArray.flatten();
+                srcArray = srcArray.ravel();
+                //srcArray = srcArray.flatten();
                 axis = 0;
             }
 
