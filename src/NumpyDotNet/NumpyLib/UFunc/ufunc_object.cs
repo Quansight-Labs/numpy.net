@@ -374,15 +374,21 @@ namespace NumpyLib
         }
         protected override System.Object LogicalOr(dynamic bValue, dynamic operand)
         {
-            bool boolValue = bValue != 0 || operand != 0;
-            return boolValue ? 1 : 0;
+            bool boolValue = bValue != null || operand != null;
+            if (boolValue)
+                return 1;
+            else
+                return null;
         }
         protected override System.Object LogicalOrReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
+                bool boolValue = result != null || OperandArray[OperIndex] != null;
+                if (boolValue)
+                    result = 1;
+                else
+                    result = null;
                 OperIndex += OperStep;
             }
 
@@ -390,18 +396,23 @@ namespace NumpyLib
         }
         protected override System.Object LogicalAnd(dynamic bValue, dynamic operand)
         {
-            bool boolValue = bValue != 0 && operand != 0;
-            return boolValue ? 1 : 0;
+            bool boolValue = bValue != null && operand != null;
+            if (boolValue)
+                return 1;
+            else
+                return null;
         }
         protected override System.Object LogicalAndReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
+                bool boolValue = result != null && OperandArray[OperIndex] != null;
+                if (boolValue)
+                    result = 1;
+                else
+                    result = null;
                 OperIndex += OperStep;
             }
-
             return result;
         }
         protected override System.Object Floor(dynamic bValue, dynamic operand)
