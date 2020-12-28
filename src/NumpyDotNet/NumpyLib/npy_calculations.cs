@@ -1716,9 +1716,11 @@ namespace NumpyLib
             {
                 return null;
             }
+
+            
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.logical_or),
-                                            newArray, null, outPtr, axis,
-                                            NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
+                                            newArray, null, outPtr, axis, 
+                                            newArray.descr,
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
             Npy_DECREF(newArray);
             return ret;
@@ -1726,18 +1728,18 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_All(NpyArray srcArray, int axis, NpyArray outPtr, bool keepdims)
         {
-            NpyArray newPtr;
+            NpyArray newArray;
             NpyArray ret;
 
-            if (null == (newPtr = NpyArray_CheckAxis(srcArray, ref axis, 0)))
+            if (null == (newArray = NpyArray_CheckAxis(srcArray, ref axis, 0)))
             {
                 return null;
             }
             ret = NpyUFunc_GenericReduction(NpyArray_GetNumericOp(UFuncOperation.logical_and),
-                                            newPtr, null, outPtr, axis,
-                                            NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL),
+                                            newArray, null, outPtr, axis,
+                                            newArray.descr,
                                             GenericReductionOp.NPY_UFUNC_REDUCE, keepdims);
-            Npy_DECREF(newPtr);
+            Npy_DECREF(newArray);
             return ret;
         }
 
