@@ -1277,15 +1277,27 @@ namespace NumpyLib
                 npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
                 npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
 
+                npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
+                var UFuncAccumulateOperation = GetUFuncAccumulateOperation(ops);
+                if (UFuncAccumulateOperation != null)
+                {
+                    UFuncAccumulateOperation(
+                        Op1Array, O1_Index, O1_CalculatedStep,
+                        Op2Array, O2_Index, O2_CalculatedStep,
+                        retArray, R_Index, R_CalculatedStep,N);
+                    return;
+                }
+
                 var UFuncOperation = GetUFuncOperation(ops);
                 if (UFuncOperation == null)
                 {
                     throw new Exception(string.Format("UFunc op:{0} is not implemented", ops.ToString()));
                 }
 
-                npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
-                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
-                npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+  
 
                 for (npy_intp i = 0; i < N; i++)
                 {
@@ -1300,6 +1312,7 @@ namespace NumpyLib
                 }
 
             }
+ 
 
             #endregion
 
@@ -1487,8 +1500,27 @@ namespace NumpyLib
                 return null;
             }
 
+            protected opFunctionAccumulate GetUFuncAccumulateOperation(UFuncOperation ops)
+            {
+                switch (ops)
+                {
+                    //case UFuncOperation.add:
+                    //    return AddAccumulate;
+
+                    //case UFuncOperation.multiply:
+                    //    return MultiplyAccumulate;
+
+                }
+
+                return null;
+            }
+
             protected delegate T opFunction(T o1, T o2);
-            protected delegate T opFunctionReduce(T Op1Value, T[] Op2Values, npy_intp O2_Index, npy_intp O2_CalculatedStep, npy_intp N);
+            protected delegate T opFunctionReduce(T Op1Value, T[] Op2Values, npy_intp O2_Index, npy_intp O2_Step, npy_intp N);
+            protected delegate void opFunctionAccumulate(T[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                                                         T[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                                                         T[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N);
+
 
             protected abstract T Add(T o1, T o2);
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
