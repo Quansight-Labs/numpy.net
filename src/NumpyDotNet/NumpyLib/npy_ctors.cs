@@ -217,13 +217,13 @@ namespace NumpyLib
             if (simple && !alwaysstrided)
             {
                 var helper = MemCopy.GetMemcopyHelper(dest.data);
+                helper.memmove_init(dest.data, src.data);
                 if (usecopy)
                 {
-                    memcpy(dest.data, src.data, NpyArray_NBYTES(dest));
+                    helper.memcpy(dest.data.data_offset, src.data.data_offset, NpyArray_NBYTES(dest));
                 }
                 else
                 {
-                    helper.memmove_init(dest.data, src.data);
                     helper.memmove(dest.data.data_offset, src.data.data_offset, NpyArray_NBYTES(dest));
                 }
                 return 0;
