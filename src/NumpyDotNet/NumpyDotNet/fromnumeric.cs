@@ -2408,7 +2408,8 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 axis = 0;
-                a = a.flatten();
+                //a = a.flatten();
+                a = a.ravel();
             }
 
             return NpyCoreApi.CumSum(a, axis.Value, dtype, ret);
