@@ -279,7 +279,16 @@ namespace NumpyDotNetTests
 
             // strings can't be mapped by something besides another strings
             var y = x.view(np.UInt64);
-            Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
+
+            try
+            {
+                Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
 
             y = x.view(np.Strings);
             AssertArray(y, y.AsStringArray());

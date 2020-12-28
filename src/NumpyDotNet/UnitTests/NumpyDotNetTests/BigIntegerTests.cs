@@ -337,7 +337,16 @@ namespace NumpyDotNetTests
 
             // BigInteger can't be mapped by something besides another BigInteger
             var y = x.view(np.UInt64);
-            Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
+
+            try
+            {
+                Assert.AreEqual((UInt64)0, (UInt64)y.Sum().GetItem(0));
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
 
             y = x.view(np.BigInt);
             AssertArray(y, y.AsBigIntArray());
