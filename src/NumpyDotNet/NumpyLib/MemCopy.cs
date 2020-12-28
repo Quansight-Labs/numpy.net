@@ -3586,6 +3586,7 @@ namespace NumpyLib
         void memmove_init(VoidPtr dest, VoidPtr src);
         void memmove(npy_intp dest_offset, npy_intp src_offset, npy_intp len);
         void memmoveitem(npy_intp dest_offset, npy_intp src_offset);
+        void memcpy(npy_intp dest_offset, npy_intp src_offset, npy_intp len);
         void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst, npy_intp start, npy_intp step_size, bool swap);
         void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap);
         npy_intp? IterSubscriptIntpArray(NpyArrayIterObject srcIter, NpyArrayIterObject index_iter, VoidPtr _dst, bool swap);
@@ -5242,6 +5243,32 @@ namespace NumpyLib
                 this.isSameType = false;
         }
 
+        public void memcpy(npy_intp dest_offset, npy_intp src_offset, long len)
+        {
+            if (isSameType)
+            {
+                long ElementCount = len >> eldiv;
+                long sOffset = src_offset >> eldiv;
+                long dOffset = dest_offset >> eldiv;
+
+                if (ElementCount == 1)
+                {
+                    da[dOffset] = sa[sOffset];
+                }
+                else
+                {
+                    Array.Copy(sa, sOffset, da, dOffset, ElementCount);
+                }
+            }
+            else
+            {
+                MemCopy.MemCpy(dst, dest_offset, src, src_offset, len);
+                return;
+            }
+  
+
+        }
+
         public void memmove(npy_intp dest_offset, npy_intp src_offset, long len)
         {
             if (isSameType)
@@ -5272,7 +5299,7 @@ namespace NumpyLib
                 MemCopy.MemCpy(dst, dest_offset, Temp, 0, len);
                 return;
             }
-  
+
 
         }
 
