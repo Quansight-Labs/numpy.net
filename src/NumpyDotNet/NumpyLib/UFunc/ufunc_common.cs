@@ -1504,8 +1504,8 @@ namespace NumpyLib
             {
                 switch (ops)
                 {
-                    //case UFuncOperation.add:
-                    //    return AddAccumulate;
+                    case UFuncOperation.add:
+                        return AddAccumulate;
 
                     //case UFuncOperation.multiply:
                     //    return MultiplyAccumulate;
@@ -1524,6 +1524,7 @@ namespace NumpyLib
 
             protected abstract T Add(T o1, T o2);
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
+            protected abstract void AddAccumulate(T[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,T[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,T[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N);
             protected abstract T Subtract(T o1, T o2);
             protected abstract T SubtractReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Multiply(T o1, T o2);

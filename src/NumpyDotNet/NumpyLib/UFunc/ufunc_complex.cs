@@ -216,6 +216,21 @@ namespace NumpyLib
 
             return result;
         }
+        protected override void AddAccumulate(
+            System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+            System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+            System.Numerics.Complex[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+
         protected override System.Numerics.Complex Subtract(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             return aValue - bValue;

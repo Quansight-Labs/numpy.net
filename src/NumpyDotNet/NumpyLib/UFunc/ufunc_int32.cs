@@ -207,6 +207,20 @@ namespace NumpyLib
  
             return result;
         }
+        protected override void AddAccumulate(
+                Int32[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                Int32[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                Int32[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
 
         protected override Int32 Subtract(Int32 aValue, Int32 bValue)
         {
