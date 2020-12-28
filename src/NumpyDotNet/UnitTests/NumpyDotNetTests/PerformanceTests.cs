@@ -2789,7 +2789,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_append_DOUBLE()
         {
-            int LoopCount = 2;
+            int LoopCount = 100;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40,-1);
             var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
@@ -2797,14 +2797,15 @@ namespace NumpyDotNetTests
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-
+            ndarray inserted = null;
             for (int i = 0; i < LoopCount; i++)
             {
-                var inserted = np.append(m1, m2, axis: 1);
+                inserted = np.append(m1, m2, axis: 1);
             }
-
-
             sw.Stop();
+
+            Assert.AreEqual(255999984000000.0, (double)np.sum(inserted));
+
 
             Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
@@ -2851,6 +2852,32 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 ndarray c = np.intersect1d(m1, m2);
+            }
+
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_sort_DOUBLE()
+        {
+            int LoopCount = 30;
+
+            var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray perm1 = np.sort(m1);
+                ndarray perm2 = np.sort(m1, axis: null);
+                ndarray perm3 = np.sort(m1, axis: 0);
             }
 
 
@@ -3167,7 +3194,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_SetMap_DOUBLE()
         {
-            int LoopCount = 1;
+            int LoopCount = 10;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var mask = np.arange(16000000, dtype: np.Bool).reshape(40, -1);
@@ -3413,7 +3440,55 @@ namespace NumpyDotNetTests
             Console.WriteLine(string.Format("np.var operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
-         
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_Sum_UINT32()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32);
+            //var a = np.arange(0, 100, dtype: np.UInt32);
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.sum(a);
+                Assert.AreEqual((UInt32)945507328, (UInt32)c);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_Sum2_UINT32()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.sum(a, axis:0);
+                Assert.AreEqual((UInt32)169364480, (UInt32)c[0]);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
     }
 
 #endif

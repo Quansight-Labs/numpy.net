@@ -396,7 +396,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_append_DOUBLE(self):
 
-        LoopCount = 2;
+        LoopCount = 100;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
         m2 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
@@ -408,9 +408,9 @@ class PerformanceTests(unittest.TestCase):
         for i in range(LoopCount):
             inserted = np.append(m1, m2, axis=1)
              
-
-
         end = tm.time()
+
+        print(np.sum(inserted));
 
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
@@ -770,8 +770,8 @@ class PerformanceTests(unittest.TestCase):
              m3 = m1.flatten();
              m4 = m2.flatten();
 
-             print(np.sum(m3))
-             print(np.sum(m4))
+        print(np.sum(m3))
+        print(np.sum(m4))
 
 
         end = tm.time()
@@ -798,6 +798,41 @@ class PerformanceTests(unittest.TestCase):
 
         diff = end-start
         print("correlate calculations took %f milliseconds" %(diff))  
+
+    def test_Performance_Sum_UINT32(self):
+
+        LoopCount = 20;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.sum(a)
+        print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
+    def test_Performance_Sum2_UINT32(self):
+
+        LoopCount = 20;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.sum(a, axis = 0)
+        print(c[0])
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
 
     def test_Performance_Qadiym_test(self):
 
