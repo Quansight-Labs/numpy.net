@@ -1479,6 +1479,9 @@ namespace NumpyLib
                     case UFuncOperation.maximum:
                         return MaximumReduce;
 
+                    case UFuncOperation.minimum:
+                        return MinimumReduce;
+
                 }
 
                 return null;
