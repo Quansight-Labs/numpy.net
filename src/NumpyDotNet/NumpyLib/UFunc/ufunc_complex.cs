@@ -509,6 +509,16 @@ namespace NumpyLib
         {
             return Math.Min(bValue.Real, operand.Real);
         }
+        protected override System.Numerics.Complex MinimumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result.Real, OperandArray[OperIndex].Real);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.Complex Rint(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return new System.Numerics.Complex(Math.Round(bValue.Real), Math.Round(bValue.Imaginary));

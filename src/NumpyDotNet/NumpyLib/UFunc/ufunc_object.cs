@@ -443,6 +443,16 @@ namespace NumpyLib
                 return bValue;
             return operand;
         }
+        protected override System.Object MinimumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result <= OperandArray[OperIndex] ? result : OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Object Rint(dynamic bValue, dynamic operand)
         {
             if (bValue is decimal)

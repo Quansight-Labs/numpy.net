@@ -468,6 +468,16 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Min(bValue, operand);
         }
+        protected override System.Numerics.BigInteger MinimumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = System.Numerics.BigInteger.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.BigInteger Rint(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return bValue;

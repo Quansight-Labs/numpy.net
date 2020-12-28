@@ -438,6 +438,16 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
+        protected override Int16 MinimumReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override Int16 Rint(Int16 bValue, Int16 operand)
         {
             return Convert.ToInt16(Math.Round(Convert.ToDouble(bValue)));

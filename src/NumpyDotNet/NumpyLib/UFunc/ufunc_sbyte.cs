@@ -441,6 +441,16 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
+        protected override sbyte MinimumReduce(sbyte result, sbyte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override sbyte Rint(sbyte bValue, sbyte operand)
         {
             return Convert.ToSByte(Math.Round(Convert.ToDouble(bValue)));

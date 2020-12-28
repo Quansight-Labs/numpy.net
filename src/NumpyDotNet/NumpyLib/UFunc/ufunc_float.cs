@@ -441,6 +441,16 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
+        protected override float MinimumReduce(float result, float[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override float Rint(float bValue, float operand)
         {
             return Convert.ToSingle(Math.Round(bValue));

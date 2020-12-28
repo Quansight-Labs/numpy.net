@@ -1527,6 +1527,7 @@ namespace NumpyLib
             protected abstract T Maximum(T o1, T o2);
             protected abstract T MaximumReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Minimum(T o1, T o2);
+            protected abstract T MinimumReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Rint(T o1, T o2);
             protected abstract T Conjugate(T o1, T o2);
             protected abstract T IsNAN(T o1, T o2);

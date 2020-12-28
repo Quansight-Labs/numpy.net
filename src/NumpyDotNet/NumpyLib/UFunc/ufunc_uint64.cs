@@ -439,6 +439,16 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
+        protected override UInt64 MinimumReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override UInt64 Rint(UInt64 bValue, UInt64 operand)
         {
             return Convert.ToUInt64(Math.Round(Convert.ToDouble(bValue)));

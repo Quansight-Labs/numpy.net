@@ -402,6 +402,16 @@ namespace NumpyLib
                 return false;
             return operand;
         }
+        protected override bool MinimumReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = !result ? false : OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override bool Rint(bool bValue, bool operand)
         {
             return false;
