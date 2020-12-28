@@ -4120,6 +4120,16 @@ namespace NumpyLib
 
         private string SetCheck(object value)
         {
+            if (value != null)
+            {
+                if (value is bool)
+                {
+                    bool bValue = (bool)value;
+                    if (bValue == false)
+                        return null;
+                    return "1";
+                }
+            }
             return value != null ? value.ToString() : null;
         }
 
