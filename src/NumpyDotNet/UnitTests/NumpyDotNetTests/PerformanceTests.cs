@@ -3489,7 +3489,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_Prod_UINT64()
         {
@@ -3513,7 +3513,7 @@ namespace NumpyDotNetTests
 
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void Performance_Prod2_UINT64()
         {
@@ -3528,6 +3528,31 @@ namespace NumpyDotNetTests
             {
                 var c = np.prod(a, axis: 0);
                 Assert.AreEqual((UInt64)17833940057264458753, (UInt64)c[0]);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_Any_UINT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.zeros((10000, 10000), dtype: np.UInt64);
+            var b = np.ones((10000, 10000), dtype: np.UInt64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.any(a);
+                var d = np.any(b);
             }
 
             sw.Stop();
