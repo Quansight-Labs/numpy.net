@@ -833,6 +833,41 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 sum calculations took %f milliseconds" %(diff))
 
+    def test_Performance_CumSum_UINT32(self):
+
+        LoopCount = 20;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.cumsum(a)
+        print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
+    def test_Performance_CumSum2_UINT32(self):
+
+        LoopCount = 5;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.cumsum(a, axis = 0)
+        print(c[0])
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
+
     def test_Performance_Prod_UINT64(self):
 
         LoopCount = 20;

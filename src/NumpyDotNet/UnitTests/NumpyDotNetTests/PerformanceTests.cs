@@ -3491,6 +3491,54 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
+        public void Performance_CumSum_UINT32()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32);
+            //var a = np.arange(0, 100, dtype: np.UInt32);
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.cumsum(a);
+                //Assert.AreEqual((UInt32)945507328, (UInt32)c);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_CumSum2_UINT32()
+        {
+
+            int LoopCount = 5;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.cumsum(a, axis: 0);
+                //Assert.AreEqual((UInt32)169364480, (UInt32)c[0]);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
         public void Performance_Prod_UINT64()
         {
 
