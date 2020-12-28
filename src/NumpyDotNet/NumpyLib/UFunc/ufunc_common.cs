@@ -1469,6 +1469,11 @@ namespace NumpyLib
 
             protected opFunctionReduce GetUFuncReduceOperation(UFuncOperation ops)
             {
+                // these are the commonly used reduce operations.
+                //
+                // We can add more by implementing data type specific implementations
+                // and adding them to this switch statement
+
                 switch (ops)
                 {
                     case UFuncOperation.add:
@@ -1502,13 +1507,17 @@ namespace NumpyLib
 
             protected opFunctionAccumulate GetUFuncAccumulateOperation(UFuncOperation ops)
             {
+                // these are the commonly used accumulate operations.
+                //
+                // We can add more by implementing data type specific implementations
+                // and adding them to this switch statement
                 switch (ops)
                 {
                     case UFuncOperation.add:
                         return AddAccumulate;
 
-                    //case UFuncOperation.multiply:
-                    //    return MultiplyAccumulate;
+                    case UFuncOperation.multiply:
+                        return MultiplyAccumulate;
 
                 }
 
@@ -1529,6 +1538,7 @@ namespace NumpyLib
             protected abstract T SubtractReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Multiply(T o1, T o2);
             protected abstract T MultiplyReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
+            protected abstract void MultiplyAccumulate(T[] Op1Array, npy_intp O1_Index, npy_intp O1_Step, T[] Op2Array, npy_intp O2_Index, npy_intp O2_Step, T[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N);
             protected abstract T Divide(T o1, T o2);
             protected abstract T DivideReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Power(T o1, T o2);
