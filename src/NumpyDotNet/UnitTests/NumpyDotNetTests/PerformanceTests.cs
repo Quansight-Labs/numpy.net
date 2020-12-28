@@ -3489,6 +3489,54 @@ namespace NumpyDotNetTests
 
         }
 
+        //[Ignore]
+        [TestMethod]
+        public void Performance_Prod_UINT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(1, (4000 * 10 * 4000) + 1, dtype: np.UInt64);
+            //var a = np.arange(0, 100, dtype: np.UInt32);
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.prod(a);
+                Assert.AreEqual((UInt64)0, (UInt64)c);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void Performance_Prod2_UINT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(1, (4000 * 10 * 4000) + 1, dtype: np.UInt64).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.prod(a, axis: 0);
+                Assert.AreEqual((UInt64)17833940057264458753, (UInt64)c[0]);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
         [Ignore]
         [TestMethod]
         public void Performance_Repeat_UINT32()
