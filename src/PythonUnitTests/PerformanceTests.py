@@ -902,6 +902,40 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 sum calculations took %f milliseconds" %(diff))
 
+    def test_Performance_CumProd_UINT64(self):
+
+        LoopCount = 20;
+
+        a = np.arange(1, (4000 * 10 * 4000) +1, dtype=np.uint64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.cumprod(a)
+        print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
+    def test_Performance_CumProd2_UINT64(self):
+
+        LoopCount = 5;
+
+        a = np.arange(1, (4000 * 10 * 4000) + 1, dtype=np.uint64).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.cumprod(a, axis = 0)
+        print(c[0])
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 sum calculations took %f milliseconds" %(diff))
+
     def test_Performance_Any_UINT64(self):
 
         LoopCount = 20;
