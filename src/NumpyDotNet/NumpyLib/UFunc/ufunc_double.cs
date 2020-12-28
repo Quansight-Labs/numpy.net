@@ -214,6 +214,16 @@ namespace NumpyLib
         {
             return aValue * bValue;
         }
+        protected override double MultiplyReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result * OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override double Divide(double aValue, double bValue)
         {

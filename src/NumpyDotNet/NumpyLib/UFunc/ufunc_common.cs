@@ -1464,11 +1464,11 @@ namespace NumpyLib
                     //case UFuncOperation.subtract:
                     //    return SubtractReduce;
 
-                    //case UFuncOperation.multiply:
-                    //    return MultiplyReduce;
+                    case UFuncOperation.multiply:
+                        return MultiplyReduce;
 
-                    //case UFuncOperation.divide:
-                    //    return DivideReduce;
+                   //case UFuncOperation.divide:
+                   //    return DivideReduce;
 
                 }
 
@@ -1482,6 +1482,7 @@ namespace NumpyLib
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Subtract(T o1, T o2);
             protected abstract T Multiply(T o1, T o2);
+            protected abstract T MultiplyReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Divide(T o1, T o2);
             protected abstract T Power(T o1, T o2);
             protected abstract T Remainder(T o1, T o2);

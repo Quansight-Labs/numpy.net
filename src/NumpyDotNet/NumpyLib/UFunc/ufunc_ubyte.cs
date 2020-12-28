@@ -216,6 +216,16 @@ namespace NumpyLib
         {
             return (Byte)(aValue * bValue);
         }
+        protected override Byte MultiplyReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = (Byte)(result * OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override Byte Divide(Byte aValue, Byte bValue)
         {

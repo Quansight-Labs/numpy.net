@@ -216,6 +216,16 @@ namespace NumpyLib
         {
             return (sbyte)(aValue * bValue);
         }
+        protected override sbyte MultiplyReduce(sbyte result, sbyte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = (sbyte)(result * OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override sbyte Divide(sbyte aValue, sbyte bValue)
         {

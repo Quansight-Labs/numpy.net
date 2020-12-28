@@ -214,6 +214,16 @@ namespace NumpyLib
         {
             return (UInt16)(aValue * bValue);
         }
+        protected override UInt16 MultiplyReduce(UInt16 result, UInt16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = (UInt16)(result * OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
 
         protected override UInt16 Divide(UInt16 aValue, UInt16 bValue)
         {
