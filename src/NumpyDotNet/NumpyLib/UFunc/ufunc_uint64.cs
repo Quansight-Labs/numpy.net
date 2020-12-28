@@ -211,6 +211,16 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
+        protected override UInt64 SubtractReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override UInt64 Multiply(UInt64 aValue, UInt64 bValue)
         {
             return aValue * bValue;

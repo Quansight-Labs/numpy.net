@@ -1461,8 +1461,8 @@ namespace NumpyLib
                     case UFuncOperation.add:
                         return AddReduce;
 
-                    //case UFuncOperation.subtract:
-                    //    return SubtractReduce;
+                    case UFuncOperation.subtract:
+                        return SubtractReduce;
 
                     case UFuncOperation.multiply:
                         return MultiplyReduce;
@@ -1487,6 +1487,7 @@ namespace NumpyLib
             protected abstract T Add(T o1, T o2);
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Subtract(T o1, T o2);
+            protected abstract T SubtractReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Multiply(T o1, T o2);
             protected abstract T MultiplyReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Divide(T o1, T o2);

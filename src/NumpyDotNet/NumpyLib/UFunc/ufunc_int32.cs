@@ -212,6 +212,17 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
+        protected override Int32 SubtractReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
         protected override Int32 Multiply(Int32 aValue, Int32 bValue)
         {
             return aValue * bValue;

@@ -196,21 +196,30 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
-
-        protected override UInt32 AddReduce(UInt32 O1, UInt32[] O2Array, npy_intp O2_Index, npy_intp O2_Step, npy_intp N)
+        protected override UInt32 AddReduce(UInt32 result, UInt32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
-                O1 = O1 + O2Array[O2_Index];
-                O2_Index += O2_Step;
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
             }
 
-            return O1;
+            return result;
         }
-
+  
         protected override UInt32 Subtract(UInt32 aValue, UInt32 bValue)
         {
             return aValue - bValue;
+        }
+        protected override UInt32 SubtractReduce(UInt32 result, UInt32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override UInt32 Multiply(UInt32 aValue, UInt32 bValue)
         {

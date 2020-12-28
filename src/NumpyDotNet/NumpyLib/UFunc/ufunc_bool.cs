@@ -213,6 +213,16 @@ namespace NumpyLib
         {
             return aValue | bValue;
         }
+        protected override bool SubtractReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result | OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override bool Multiply(bool aValue, bool bValue)
         {
             return aValue ^ bValue;

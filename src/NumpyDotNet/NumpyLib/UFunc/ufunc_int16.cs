@@ -211,6 +211,16 @@ namespace NumpyLib
         {
             return (Int16)(aValue - bValue);
         }
+        protected override Int16 SubtractReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = (Int16)(result - OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+            return result;
+        }
+
         protected override Int16 Multiply(Int16 aValue, Int16 bValue)
         {
             return (Int16)(aValue * bValue);

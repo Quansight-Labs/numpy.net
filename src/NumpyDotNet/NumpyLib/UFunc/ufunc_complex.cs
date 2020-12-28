@@ -216,11 +216,19 @@ namespace NumpyLib
 
             return result;
         }
-
-
         protected override System.Numerics.Complex Subtract(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             return aValue - bValue;
+        }
+        protected override System.Numerics.Complex SubtractReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override System.Numerics.Complex Multiply(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
