@@ -244,6 +244,22 @@ namespace NumpyLib
                 return 0;
             return (sbyte)(aValue / bValue);
         }
+        protected override sbyte DivideReduce(sbyte result, sbyte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                var bValue = OperandArray[OperIndex];
+                if (bValue == 0)
+                    result = 0;
+                else
+                    result = (sbyte)(result / bValue);
+
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
         protected override sbyte Remainder(sbyte aValue, sbyte bValue)
         {
             if (bValue == 0)

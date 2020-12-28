@@ -242,6 +242,21 @@ namespace NumpyLib
                 return 0;
             return (Int16)(aValue / bValue);
         }
+        protected override Int16 DivideReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                var bValue = OperandArray[OperIndex];
+                if (bValue == 0)
+                    result = 0;
+                else
+                    result = (Int16)(result / bValue);
+
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override Int16 Remainder(Int16 aValue, Int16 bValue)
         {
             if (bValue == 0)
