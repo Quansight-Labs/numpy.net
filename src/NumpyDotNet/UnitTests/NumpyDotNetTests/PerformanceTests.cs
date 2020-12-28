@@ -3489,6 +3489,31 @@ namespace NumpyDotNetTests
 
         }
 
+        [Ignore]
+        [TestMethod]
+        public void Performance_Repeat_UINT32()
+        {
+
+            int LoopCount = 1;
+
+            var x = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32).reshape(-1, 4000);
+            var y = new Int32[] { 3 };
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray z = np.repeat(x, y);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("Repeat calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
     }
 
 #endif

@@ -834,6 +834,23 @@ class PerformanceTests(unittest.TestCase):
         print("1000000 sum calculations took %f milliseconds" %(diff))
 
 
+    def test_Performance_Repeat_UINT32(self):
+
+        LoopCount = 1;
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32).reshape(-1, 4000);
+        y = [3]
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            z = np.repeat(x, y)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 repeat calculations took %f milliseconds" %(diff))
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters
