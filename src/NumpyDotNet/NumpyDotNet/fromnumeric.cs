@@ -372,7 +372,8 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                _a = _a.flatten();
+                //_a = _a.flatten();
+                _a = _a.ravel();
             }
 
             return NpyCoreApi.Repeat(_a, _repeats, axis.HasValue  ? axis.Value : -1);
