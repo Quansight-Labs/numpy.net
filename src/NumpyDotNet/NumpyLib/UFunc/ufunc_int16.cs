@@ -250,6 +250,20 @@ namespace NumpyLib
 
             return result;
         }
+        protected override void MultiplyAccumulate(
+                Int16[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                Int16[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                Int16[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = (Int16)(Op1Array[O1_Index] * Op2Array[O2_Index]);
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
 
         protected override Int16 Divide(Int16 aValue, Int16 bValue)
         {
