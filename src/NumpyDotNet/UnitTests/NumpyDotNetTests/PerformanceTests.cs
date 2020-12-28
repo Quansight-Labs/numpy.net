@@ -3564,6 +3564,31 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
+        public void Performance_All_UINT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.zeros((10000, 10000), dtype: np.UInt64);
+            var b = np.ones((10000, 10000), dtype: np.UInt64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.all(a);
+                var d = np.all(b);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
         public void Performance_Repeat_UINT32()
         {
 

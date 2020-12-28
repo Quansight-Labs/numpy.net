@@ -885,6 +885,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 any calculations took %f milliseconds" %(diff))
 
+    def test_Performance_All_UINT64(self):
+
+        LoopCount = 20;
+
+        a = np.zeros((10000, 10000), dtype=np.uint64)
+        b = np.ones((10000, 10000), dtype=np.uint64)
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.all(a)
+            d = np.all(b)
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 any calculations took %f milliseconds" %(diff))
 
     def test_Performance_Repeat_UINT32(self):
 
