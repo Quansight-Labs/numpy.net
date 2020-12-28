@@ -601,6 +601,9 @@ namespace NumpyLib
             {
                 n_outer *= aop.dimensions[i];
             }
+
+            var helper = MemCopy.GetMemcopyHelper(new_data);
+            helper.memmove_init(new_data, old_data);
             for (i = 0; i < n_outer; i++)
             {
                 for (j = 0; j < n; j++)
@@ -608,7 +611,7 @@ namespace NumpyLib
                     tmp = broadcast ? counts[0] : counts[j];
                     for (k = 0; k < tmp; k++)
                     {
-                        memcpy(new_data, old_data, chunk);
+                        helper.memcpy(new_data.data_offset, old_data.data_offset, chunk);
                         new_data.data_offset += chunk;
                     }
                     old_data.data_offset += chunk;
