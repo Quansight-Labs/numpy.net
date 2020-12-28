@@ -2580,7 +2580,8 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                arr = arr.flatten();
+                //arr = arr.flatten();
+                arr = arr.ravel();
                 axis = 0;
                 
             }
@@ -2689,7 +2690,8 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                arr = arr.flatten();
+                //arr = arr.flatten();
+                arr = arr.ravel();
                 axis = 0;
 
             }
