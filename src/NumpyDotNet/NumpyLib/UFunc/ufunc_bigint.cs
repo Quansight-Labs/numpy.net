@@ -454,6 +454,16 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Max(bValue, operand);
         }
+        protected override System.Numerics.BigInteger MaximumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = System.Numerics.BigInteger.Max(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.BigInteger Minimum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Min(bValue, operand);

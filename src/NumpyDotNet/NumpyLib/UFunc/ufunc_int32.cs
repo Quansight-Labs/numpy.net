@@ -427,6 +427,16 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
+        protected override Int32 MaximumReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Max(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override Int32 Minimum(Int32 bValue, Int32 operand)
         {
             return Math.Min(bValue, operand);

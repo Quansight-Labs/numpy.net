@@ -495,6 +495,16 @@ namespace NumpyLib
         {
             return Math.Max(bValue.Real, operand.Real);
         }
+        protected override System.Numerics.Complex MaximumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Max(result.Real, OperandArray[OperIndex].Real);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.Complex Minimum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Min(bValue.Real, operand.Real);
