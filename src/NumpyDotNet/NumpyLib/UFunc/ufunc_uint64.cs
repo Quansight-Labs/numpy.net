@@ -359,11 +359,35 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return (UInt64)(boolValue ? 1 : 0);
         }
+        protected override UInt64 LogicalOrReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = (UInt64)(boolValue ? 1 : 0);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
         protected override UInt64 LogicalAnd(UInt64 bValue, UInt64 operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return (UInt64)(boolValue ? 1 : 0);
         }
+        protected override UInt64 LogicalAndReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = (UInt64)(boolValue ? 1 : 0);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
         protected override UInt64 Floor(UInt64 bValue, UInt64 operand)
         {
             return Convert.ToUInt64(Math.Floor(Convert.ToDouble(bValue)));

@@ -364,10 +364,32 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
+        protected override double LogicalOrReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override double LogicalAnd(double bValue, double operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
+        }
+        protected override double LogicalAndReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override double Floor(double bValue, double operand)
         {

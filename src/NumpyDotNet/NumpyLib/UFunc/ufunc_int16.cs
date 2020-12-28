@@ -360,10 +360,32 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return (Int16)(boolValue ? 1 : 0);
         }
+        protected override Int16 LogicalOrReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = (Int16)(boolValue ? 1 : 0);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override Int16 LogicalAnd(Int16 bValue, Int16 operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return (Int16)(boolValue ? 1 : 0);
+        }
+        protected override Int16 LogicalAndReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = (Int16)(boolValue ? 1 : 0);
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override Int16 Floor(Int16 bValue, Int16 operand)
         {

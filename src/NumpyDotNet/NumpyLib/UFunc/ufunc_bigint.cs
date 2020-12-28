@@ -389,10 +389,32 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
+        protected override System.Numerics.BigInteger LogicalOrReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.BigInteger LogicalAnd(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
+        }
+        protected override System.Numerics.BigInteger LogicalAndReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override System.Numerics.BigInteger Floor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {

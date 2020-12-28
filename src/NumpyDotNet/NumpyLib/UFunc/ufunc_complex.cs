@@ -432,10 +432,32 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
+        protected override System.Numerics.Complex LogicalOrReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
         protected override System.Numerics.Complex LogicalAnd(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
+        }
+        protected override System.Numerics.Complex LogicalAndReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
         }
         protected override System.Numerics.Complex Floor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {

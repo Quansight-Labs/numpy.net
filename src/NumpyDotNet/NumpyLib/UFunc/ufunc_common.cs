@@ -1467,8 +1467,14 @@ namespace NumpyLib
                     case UFuncOperation.multiply:
                         return MultiplyReduce;
 
-                   //case UFuncOperation.divide:
-                   //    return DivideReduce;
+                    //case UFuncOperation.divide:
+                    //    return DivideReduce;
+
+                    case UFuncOperation.logical_or:
+                        return LogicalOrReduce;
+
+                    case UFuncOperation.logical_and:
+                        return LogicalAndReduce;
 
                 }
 
@@ -1508,7 +1514,9 @@ namespace NumpyLib
             protected abstract T FloorDivide(T o1, T o2);
             protected abstract T TrueDivide(T o1, T o2);
             protected abstract T LogicalOr(T o1, T o2);
+            protected abstract T LogicalOrReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T LogicalAnd(T o1, T o2);
+            protected abstract T LogicalAndReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Floor(T o1, T o2);
             protected abstract T Ceiling(T o1, T o2);
             protected abstract T Maximum(T o1, T o2);
