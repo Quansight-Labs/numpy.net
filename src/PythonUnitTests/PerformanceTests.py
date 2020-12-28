@@ -903,6 +903,40 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 any calculations took %f milliseconds" %(diff))
 
+    def test_Performance_Minimum_INT64(self):
+
+        LoopCount = 20;
+
+        a = np.arange(1, (4000 * 10 * 4000) +1, dtype=np.int64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.amin(a)
+        print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 Minimum calculations took %f milliseconds" %(diff))
+
+    def test_Performance_Maximum_INT64(self):
+
+        LoopCount = 20;
+
+        a = np.arange(1, (4000 * 10 * 4000) +1, dtype=np.int64);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            c = np.amax(a)
+        print(c)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 Maximum calculations took %f milliseconds" %(diff))
+
     def test_Performance_Repeat_UINT32(self):
 
         LoopCount = 1;

@@ -3589,6 +3589,54 @@ namespace NumpyDotNetTests
 
         [Ignore]
         [TestMethod]
+        public void Performance_Minimum_INT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(1, (4000 * 10 * 4000) + 1, dtype: np.Int64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.amin(a);
+                Assert.AreEqual((Int64)1, (Int64)c);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void Performance_Maximum_INT64()
+        {
+
+            int LoopCount = 20;
+            var a = np.arange(1, (4000 * 10 * 4000) + 1, dtype: np.Int64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var c = np.amax(a);
+                Assert.AreEqual((Int64)160000000, (Int64)c);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [Ignore]
+        [TestMethod]
         public void Performance_Repeat_UINT32()
         {
 
