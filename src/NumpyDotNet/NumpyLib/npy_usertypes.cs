@@ -187,9 +187,12 @@ namespace NumpyLib
                 VoidPtr _dst = new VoidPtr(dst);
                 VoidPtr _src = new VoidPtr(src);
 
+                var helper = MemCopy.GetMemcopyHelper(_dst);
+                helper.memmove_init(_dst, _src);
+
                 for (npy_intp i = 0; i < n; i++)
                 {
-                    NpyArray_CopySwapFunc(_dst, _src, swap, arr);
+                    NpyArray_CopySwapFunc(helper, _dst, _src, swap, arr);
 
                     if (swap)
                     {

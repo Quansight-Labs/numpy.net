@@ -759,7 +759,7 @@ namespace NumpyLib
 
         #region copyswap
 
-        internal static void NpyArray_CopySwapFunc(VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
+        internal static void NpyArray_CopySwapFunc(ICopyHelper helper, VoidPtr dest, VoidPtr Source, bool swap, NpyArray arr)
         {
 
             if (arr == null)
@@ -811,7 +811,7 @@ namespace NumpyLib
             }
             if (Source != null)
             {
-                memcpy(dest, Source, NpyArray_ITEMSIZE(arr));
+                helper.memcpy(dest.data_offset, Source.data_offset, NpyArray_ITEMSIZE(arr));
             }
 
             if (swap)
