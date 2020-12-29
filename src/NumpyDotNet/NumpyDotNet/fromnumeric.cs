@@ -146,7 +146,7 @@ namespace NumpyDotNet
             
             if (axis == null)
             {
-                a = a.flatten();
+                a = a.ravel();
                 axis = 0;
             }
 
@@ -372,7 +372,6 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                //_a = _a.flatten();
                 _a = _a.ravel();
             }
 
@@ -786,7 +785,7 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                a = a.flatten();
+                a = a.ravel();
                 axis = -1;
             }
             else
@@ -1028,7 +1027,7 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 axis = 0;
-                a = a.flatten();
+                a = a.ravel();
             }
 
             return NpyCoreApi.ArgSort(a, axis.Value, kind);
@@ -1104,7 +1103,7 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 axis = 0;
-                a = a.flatten();
+                a = a.ravel();
             }
 
             return NpyCoreApi.ArrayArgMax(a, axis.Value, @out);
@@ -1179,7 +1178,7 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 axis = 0;
-                a = a.flatten();
+                a = a.ravel();
             }
 
             return NpyCoreApi.ArrayArgMin(a, axis.Value, @out);
@@ -2120,7 +2119,6 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 srcArray = srcArray.ravel();
-                //srcArray = srcArray.flatten();
                 axis = 0;
             }
 
@@ -2409,7 +2407,6 @@ namespace NumpyDotNet
             if (axis == null)
             {
                 axis = 0;
-                //a = a.flatten();
                 a = a.ravel();
             }
 
@@ -2581,7 +2578,6 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                //arr = arr.flatten();
                 arr = arr.ravel();
                 axis = 0;
                 
@@ -2691,7 +2687,6 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                //arr = arr.flatten();
                 arr = arr.ravel();
                 axis = 0;
 
