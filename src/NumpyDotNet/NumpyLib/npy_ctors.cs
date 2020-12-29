@@ -1563,6 +1563,7 @@ namespace NumpyLib
 
             if (!NpyArray_ISALIGNED(src))
             {
+                throw new Exception("_copy_from0d can't be un-aligned");
                 //aligned = new byte[elsize];
                 //if (aligned == null)
                 //{
