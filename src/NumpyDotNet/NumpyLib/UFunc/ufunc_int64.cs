@@ -247,7 +247,7 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
-        protected override Int64 AddReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 AddReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -276,7 +276,7 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
-        protected override Int64 SubtractReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 SubtractReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -291,7 +291,7 @@ namespace NumpyLib
         {
             return aValue * bValue;
         }
-        protected override Int64 MultiplyReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 MultiplyReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -322,7 +322,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        protected override Int64 DivideReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 DivideReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -466,7 +466,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override Int64 LogicalOrReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 LogicalOrReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -482,7 +482,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override Int64 LogicalAndReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 LogicalAndReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -506,7 +506,7 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
-        protected override Int64 MaximumReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 MaximumReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -520,7 +520,7 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
-        protected override Int64 MinimumReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int64 MinimumReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {

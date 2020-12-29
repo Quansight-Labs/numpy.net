@@ -257,7 +257,7 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
-        protected override System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -286,7 +286,7 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
-        protected override System.Numerics.Complex SubtractReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex SubtractReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -300,7 +300,7 @@ namespace NumpyLib
         {
             return aValue * bValue;
         }
-        protected override System.Numerics.Complex MultiplyReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex MultiplyReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -332,7 +332,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        protected override System.Numerics.Complex DivideReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex DivideReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -537,7 +537,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override System.Numerics.Complex LogicalOrReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex LogicalOrReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -553,7 +553,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override System.Numerics.Complex LogicalAndReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex LogicalAndReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -576,7 +576,7 @@ namespace NumpyLib
         {
             return Math.Max(bValue.Real, operand.Real);
         }
-        protected override System.Numerics.Complex MaximumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex MaximumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -590,7 +590,7 @@ namespace NumpyLib
         {
             return Math.Min(bValue.Real, operand.Real);
         }
-        protected override System.Numerics.Complex MinimumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.Complex MinimumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {

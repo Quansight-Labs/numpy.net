@@ -202,17 +202,10 @@ namespace NumpyLib
             switch (ops)
             {
                 case UFuncOperation.add:
-                    return AddReduce;
-
                 case UFuncOperation.subtract:
-                    return SubtractReduce;
-
                 case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
                 case UFuncOperation.divide:
-                    return DivideReduce;
-
+                    break;
                 case UFuncOperation.logical_or:
                     return LogicalOrReduce;
 
@@ -220,11 +213,8 @@ namespace NumpyLib
                     return LogicalAndReduce;
 
                 case UFuncOperation.maximum:
-                    return MaximumReduce;
-
                 case UFuncOperation.minimum:
-                    return MinimumReduce;
-
+                    break;
             }
 
             return null;
@@ -241,59 +231,19 @@ namespace NumpyLib
             return aValue | bValue;
         }
 
-        protected override bool AddReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result | OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override bool Subtract(bool aValue, bool bValue)
         {
             return aValue | bValue;
         }
-        protected override bool SubtractReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result | OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
+ 
         protected override bool Multiply(bool aValue, bool bValue)
         {
             return aValue ^ bValue;
-        }
-        protected override bool MultiplyReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result ^ OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
 
         protected override bool Divide(bool aValue, bool bValue)
         {
             return aValue ^ bValue;
-        }
-        protected override bool DivideReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result ^ OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
 
         protected override bool Remainder(bool aValue, bool bValue)
@@ -392,7 +342,7 @@ namespace NumpyLib
         {
             return bValue || operand;
         }
-        protected override bool LogicalOrReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected bool LogicalOrReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -406,7 +356,7 @@ namespace NumpyLib
         {
             return bValue && operand;
         }
-        protected override bool LogicalAndReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected bool LogicalAndReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -430,32 +380,14 @@ namespace NumpyLib
                 return true;
             return operand;
         }
-        protected override bool MaximumReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result ? true : OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
 
-            return result;
-        }
         protected override bool Minimum(bool bValue, bool operand)
         {
             if (!bValue)
                 return false;
             return operand;
         }
-        protected override bool MinimumReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = !result ? false : OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
 
-            return result;
-        }
         protected override bool Rint(bool bValue, bool operand)
         {
             return false;

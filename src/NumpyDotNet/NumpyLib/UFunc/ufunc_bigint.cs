@@ -258,7 +258,7 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
-        protected override System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -288,7 +288,7 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
-        protected override System.Numerics.BigInteger SubtractReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger SubtractReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -302,7 +302,7 @@ namespace NumpyLib
         {
             return aValue * bValue;
         }
-        protected override System.Numerics.BigInteger MultiplyReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger MultiplyReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -333,7 +333,7 @@ namespace NumpyLib
                 return 0;
             return aValue / bValue;
         }
-        protected override System.Numerics.BigInteger DivideReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger DivideReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -496,7 +496,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override System.Numerics.BigInteger LogicalOrReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger LogicalOrReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -512,7 +512,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected override System.Numerics.BigInteger LogicalAndReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger LogicalAndReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -535,7 +535,7 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Max(bValue, operand);
         }
-        protected override System.Numerics.BigInteger MaximumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger MaximumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -549,7 +549,7 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Min(bValue, operand);
         }
-        protected override System.Numerics.BigInteger MinimumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Numerics.BigInteger MinimumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {

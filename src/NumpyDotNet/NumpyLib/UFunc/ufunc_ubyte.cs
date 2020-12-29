@@ -202,29 +202,14 @@ namespace NumpyLib
             switch (ops)
             {
                 case UFuncOperation.add:
-                    return AddReduce;
-
                 case UFuncOperation.subtract:
-                    return SubtractReduce;
-
                 case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
                 case UFuncOperation.divide:
-                    return DivideReduce;
-
                 case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
                 case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
                 case UFuncOperation.maximum:
-                    return MaximumReduce;
-
                 case UFuncOperation.minimum:
-                    return MinimumReduce;
-
+                    break;
             }
 
             return null;
@@ -241,44 +226,15 @@ namespace NumpyLib
         {
             return (Byte)(aValue + bValue);
         }
-        protected override Byte AddReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = (Byte)(result + OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
+ 
         protected override Byte Subtract(Byte aValue, Byte bValue)
         {
             return (Byte)(aValue - bValue);
         }
-        protected override Byte SubtractReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = (Byte)(result - OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
+ 
         protected override Byte Multiply(Byte aValue, Byte bValue)
         {
             return (Byte)(aValue * bValue);
-        }
-        protected override Byte MultiplyReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = (Byte)(result * OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
 
         protected override Byte Divide(Byte aValue, Byte bValue)
@@ -287,21 +243,7 @@ namespace NumpyLib
                 return 0;
             return (Byte)(aValue / bValue);
         }
-        protected override Byte DivideReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                var bValue = OperandArray[OperIndex];
-                if (bValue == 0)
-                    result = 0;
-                else
-                    result = (Byte)(result / bValue);
 
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override Byte Remainder(Byte aValue, Byte bValue)
         {
             if (bValue == 0)
@@ -430,33 +372,12 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return (Byte)(boolValue ? 1 : 0);
         }
-        protected override Byte LogicalOrReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = (Byte)(boolValue ? 1 : 0);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override Byte LogicalAnd(Byte bValue, Byte operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return (Byte)(boolValue ? 1 : 0);
         }
-        protected override Byte LogicalAndReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = (Byte)(boolValue ? 1 : 0);
-                OperIndex += OperStep;
-            }
 
-            return result;
-        }
         protected override Byte Floor(Byte bValue, Byte operand)
         {
             return Convert.ToByte(Math.Floor(Convert.ToDouble(bValue)));
@@ -469,29 +390,10 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
-        protected override Byte MaximumReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Max(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
+ 
         protected override Byte Minimum(Byte bValue, Byte operand)
         {
             return Math.Min(bValue, operand);
-        }
-        protected override Byte MinimumReduce(Byte result, Byte[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Min(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override Byte Rint(Byte bValue, Byte operand)
         {

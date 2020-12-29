@@ -247,7 +247,7 @@ namespace NumpyLib
         {
             return aValue + bValue;
         }
-        protected override System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -276,7 +276,7 @@ namespace NumpyLib
         {
             return aValue - bValue;
         }
-        protected override System.Object SubtractReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object SubtractReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -290,7 +290,7 @@ namespace NumpyLib
         {
             return aValue * bValue;
         }
-        protected override System.Object MultiplyReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object MultiplyReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -319,7 +319,7 @@ namespace NumpyLib
         {
             return aValue / bValue;
         }
-        protected override System.Object DivideReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object DivideReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -459,7 +459,7 @@ namespace NumpyLib
             else
                 return null;
         }
-        protected override System.Object LogicalOrReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object LogicalOrReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -481,7 +481,7 @@ namespace NumpyLib
             else
                 return null;
         }
-        protected override System.Object LogicalAndReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object LogicalAndReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -516,7 +516,7 @@ namespace NumpyLib
                 return bValue;
             return operand;
         }
-        protected override System.Object MaximumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object MaximumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -533,7 +533,7 @@ namespace NumpyLib
                 return bValue;
             return operand;
         }
-        protected override System.Object MinimumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected System.Object MinimumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {

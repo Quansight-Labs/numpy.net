@@ -248,7 +248,7 @@ namespace NumpyLib
         {
             return (Int16)(aValue + bValue);
         }
-        protected override Int16 AddReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 AddReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -277,7 +277,7 @@ namespace NumpyLib
         {
             return (Int16)(aValue - bValue);
         }
-        protected override Int16 SubtractReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 SubtractReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -291,7 +291,7 @@ namespace NumpyLib
         {
             return (Int16)(aValue * bValue);
         }
-        protected override Int16 MultiplyReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 MultiplyReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -322,7 +322,7 @@ namespace NumpyLib
                 return 0;
             return (Int16)(aValue / bValue);
         }
-        protected override Int16 DivideReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 DivideReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -465,7 +465,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return (Int16)(boolValue ? 1 : 0);
         }
-        protected override Int16 LogicalOrReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 LogicalOrReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -481,7 +481,7 @@ namespace NumpyLib
             bool boolValue = bValue != 0 && operand != 0;
             return (Int16)(boolValue ? 1 : 0);
         }
-        protected override Int16 LogicalAndReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 LogicalAndReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -504,7 +504,7 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
-        protected override Int16 MaximumReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 MaximumReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {
@@ -518,7 +518,7 @@ namespace NumpyLib
         {
             return Math.Min(bValue, operand);
         }
-        protected override Int16 MinimumReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        protected Int16 MinimumReduce(Int16 result, Int16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
             {

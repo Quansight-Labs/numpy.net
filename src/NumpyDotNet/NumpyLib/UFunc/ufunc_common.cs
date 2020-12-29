@@ -1531,13 +1531,9 @@ namespace NumpyLib
             protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);
 
             protected abstract T Add(T o1, T o2);
-            protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Subtract(T o1, T o2);
-            protected abstract T SubtractReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Multiply(T o1, T o2);
-            protected abstract T MultiplyReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Divide(T o1, T o2);
-            protected abstract T DivideReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Power(T o1, T o2);
             protected abstract T Remainder(T o1, T o2);
             protected abstract T FMod(T o1, T o2);
@@ -1562,15 +1558,11 @@ namespace NumpyLib
             protected abstract T FloorDivide(T o1, T o2);
             protected abstract T TrueDivide(T o1, T o2);
             protected abstract T LogicalOr(T o1, T o2);
-            protected abstract T LogicalOrReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T LogicalAnd(T o1, T o2);
-            protected abstract T LogicalAndReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Floor(T o1, T o2);
             protected abstract T Ceiling(T o1, T o2);
             protected abstract T Maximum(T o1, T o2);
-            protected abstract T MaximumReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Minimum(T o1, T o2);
-            protected abstract T MinimumReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Rint(T o1, T o2);
             protected abstract T Conjugate(T o1, T o2);
             protected abstract T IsNAN(T o1, T o2);
