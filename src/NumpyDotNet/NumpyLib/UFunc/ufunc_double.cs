@@ -233,10 +233,10 @@ namespace NumpyLib
         {
             switch (ops)
             {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
+                //case UFuncOperation.add:
+                //    return AddAccumulate;
+                //case UFuncOperation.multiply:
+                //    return MultiplyAccumulate;
             }
 
             return null;
