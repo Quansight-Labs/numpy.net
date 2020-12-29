@@ -220,6 +220,31 @@ namespace NumpyLib
             }
         }
 
+        //protected override void AddScalerIter(
+        //    double[] src, npy_intp[] srcOffsets,
+        //    double[] oper, npy_intp[] operOffsets,
+        //    double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen)
+        //{
+        //    for (npy_intp i = 0; i < offsetsLen; i++)
+        //    {
+        //        double srcValue, operand;
+        //        npy_intp destIndex;
+
+        //        srcValue = src[srcOffsets[i] >> ItemDiv];
+        //        operand = oper[operOffsets[i] >> ItemDiv];
+        //        destIndex = destOffsets[i] >> ItemDiv;
+
+        //        try
+        //        {
+        //            dest[destIndex] = srcValue + operand;
+        //        }
+        //        catch
+        //        {
+        //            dest[destIndex] = 0;
+        //        }
+        //    }
+        //}
+
         protected override double Subtract(double aValue, double bValue)
         {
             return aValue - bValue;
