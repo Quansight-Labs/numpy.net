@@ -234,14 +234,14 @@ namespace NumpyLib
         //        operand = oper[operOffsets[i] >> ItemDiv];
         //        destIndex = destOffsets[i] >> ItemDiv;
 
-        //        try
-        //        {
+        //        //try
+        //        //{
         //            dest[destIndex] = srcValue + operand;
-        //        }
-        //        catch
-        //        {
-        //            dest[destIndex] = 0;
-        //        }
+        //        //}
+        //        //catch
+        //        //{
+        //        //   dest[destIndex] = 0;
+        //        //}
         //    }
         //}
 
