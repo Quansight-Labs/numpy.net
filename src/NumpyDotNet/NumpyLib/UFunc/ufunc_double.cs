@@ -246,9 +246,14 @@ namespace NumpyLib
         {
             switch (ops)
             {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
+                //case UFuncOperation.add:
+                //    return AddScalerIter;
+
+                //case UFuncOperation.multiply:
+                //    break;
+
+                //case UFuncOperation.divide:
+                //    return DivideScalerIter;
             }
             return null;
         }
@@ -282,30 +287,23 @@ namespace NumpyLib
             }
         }
 
-        //protected override void AddScalerIter(
-        //    double[] src, npy_intp[] srcOffsets,
-        //    double[] oper, npy_intp[] operOffsets,
-        //    double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen)
-        //{
-        //    for (npy_intp i = 0; i < offsetsLen; i++)
-        //    {
-        //        double srcValue, operand;
-        //        npy_intp destIndex;
+        protected void AddScalerIter(
+            double[] src, npy_intp[] srcOffsets,
+            double[] oper, npy_intp[] operOffsets,
+            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
+        {
+            for (npy_intp i = 0; i < offsetsLen; i++)
+            {
+                double srcValue, operand;
+                npy_intp destIndex;
 
-        //        srcValue = src[srcOffsets[i] >> ItemDiv];
-        //        operand = oper[operOffsets[i] >> ItemDiv];
-        //        destIndex = destOffsets[i] >> ItemDiv;
-
-        //        //try
-        //        //{
-        //            dest[destIndex] = srcValue + operand;
-        //        //}
-        //        //catch
-        //        //{
-        //        //   dest[destIndex] = 0;
-        //        //}
-        //    }
-        //}
+                srcValue = src[srcOffsets[i] >> ItemDiv];
+                operand = oper[operOffsets[i] >> ItemDiv];
+                destIndex = destOffsets[i] >> ItemDiv;
+   
+                dest[destIndex] = srcValue + operand;
+            }
+        }
 
         protected override double Subtract(double aValue, double bValue)
         {
@@ -369,6 +367,34 @@ namespace NumpyLib
             }
 
             return result;
+        }
+
+        protected void DivideScalerIter(
+            double[] src, npy_intp[] srcOffsets,
+            double[] oper, npy_intp[] operOffsets,
+            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
+        {
+            for (npy_intp i = 0; i < offsetsLen; i++)
+            {
+                double srcValue, operand;
+                npy_intp destIndex;
+
+                srcValue = src[srcOffsets[i] >> ItemDiv];
+                operand = oper[operOffsets[i] >> ItemDiv];
+                destIndex = destOffsets[i] >> ItemDiv;
+
+                try
+                {
+                    if (operand == 0)
+                        dest[destIndex] = 0;
+                    else
+                        dest[destIndex] = srcValue / operand;
+                }
+                catch
+                {
+                    dest[destIndex] = 0;
+                }
+            }
         }
 
         protected override double Remainder(double aValue, double bValue)
