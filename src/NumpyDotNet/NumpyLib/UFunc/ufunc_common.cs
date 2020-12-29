@@ -899,72 +899,73 @@ namespace NumpyLib
                     npy_intp operDataOffset = operArray.data.data_offset;
                     npy_intp destDataOffset = destArray.data.data_offset;
 
-                    if (UFuncScalerIterOperation != null)
+
+                    while (ldestIter.index < ldestIter.size)
                     {
-                        UFuncScalerIterOperation(src, lsrcIter.internalCache, 
-                                                 oper, loperIter.internalCache,
-                                                 dest, ldestIter.internalCache, 
-                                                 ldestIter.internalCacheLength);
-                    }
-                    else
-                    {
-                        while (ldestIter.index < ldestIter.size)
+                        npy_intp cacheSize = ldestIter.size - ldestIter.index;
+                        NpyArray_ITER_CACHE(ldestIter, cacheSize);
+                        NpyArray_ITER_CACHE(lsrcIter, cacheSize);
+                        NpyArray_ITER_CACHE(loperIter, cacheSize);
+
+                        try
                         {
-                            npy_intp cacheSize = ldestIter.size - ldestIter.index;
-                            NpyArray_ITER_CACHE(ldestIter, cacheSize);
-                            NpyArray_ITER_CACHE(lsrcIter, cacheSize);
-                            NpyArray_ITER_CACHE(loperIter, cacheSize);
-
-                            try
+                            if (UFuncScalerIterOperation != null)
                             {
-                                for (int i = 0; i < ldestIter.internalCacheLength; i++)
-                                {
-                                    T srcValue, operand;
-                                    npy_intp destIndex;
-
-                                    if (IteratorsCanBeNegative)
-                                    {
-                                        srcValue = src[AdjustedIndex_GetItemFunction(lsrcIter.internalCache[i] - srcDataOffset, srcArray, src.Length)];
-                                        operand = oper[AdjustedIndex_GetItemFunction(loperIter.internalCache[i] - operDataOffset, operArray, oper.Length)];
-                                        destIndex = AdjustedIndex_GetItemFunction(ldestIter.internalCache[i] - destArray.data.data_offset, destArray, dest.Length);
-                                    }
-                                    else
-                                    {
-                                        srcValue = src[lsrcIter.internalCache[i] >> srcItemDiv];
-                                        operand = oper[loperIter.internalCache[i] >> operItemDiv];
-                                        destIndex = ldestIter.internalCache[i] >> destItemDiv;
-                                    }
-
-
-                                    try
-                                    {
-                                        dest[destIndex] = UFuncOperation(srcValue, operand);
-                                    }
-                                    catch
-                                    {
-                                        dest[destIndex] = default(T);
-                                    }
-                                }
-
+                                UFuncScalerIterOperation(
+                                    src, lsrcIter.internalCache,
+                                    oper, loperIter.internalCache,
+                                    dest, ldestIter.internalCache,
+                                    ldestIter.internalCacheLength);
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                caughtExceptions.Add(ex);
+                                UFuncScalerIterTemplate(UFuncOperation,
+                                    src, lsrcIter.internalCache, oper,
+                                    loperIter.internalCache,
+                                    dest, ldestIter.internalCache,
+                                    ldestIter.internalCacheLength, srcItemDiv);
                             }
-
                         }
+                        catch (Exception ex)
+                        {
+                            caughtExceptions.Add(ex);
+                        }
+
                     }
-     
+
                 });
-
-
-
 
                 if (caughtExceptions.Count > 0)
                 {
                     throw caughtExceptions[0];
                 }
             }
+
+            protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
+                T[] src, npy_intp[] srcOffsets,
+                T[] oper, npy_intp[] operOffsets,
+                T[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, int ItemDiv)
+            {
+                for (npy_intp i = 0; i < offsetsLen; i++)
+                {
+                    T srcValue, operand;
+                    npy_intp destIndex;
+
+                    srcValue = src[srcOffsets[i] >> ItemDiv];
+                    operand = oper[operOffsets[i] >> ItemDiv];
+                    destIndex = destOffsets[i] >> ItemDiv;
+
+                    try
+                    {
+                        dest[destIndex] = UFuncOperation(srcValue, operand);
+                    }
+                    catch
+                    {
+                        dest[destIndex] = default(T);
+                    }
+                }
+            }
+
 
             protected void PerformNumericOpScalarIterContiguousNoIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation op, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
             {
