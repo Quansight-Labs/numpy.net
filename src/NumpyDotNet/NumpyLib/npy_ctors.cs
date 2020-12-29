@@ -1476,7 +1476,9 @@ namespace NumpyLib
             maxaxis = NpyArray_RemoveSmallest(multi);
             if (maxaxis < 0)
             {
-                memcpy(dest.data, src.data, elsize);
+                var helper = MemCopy.GetMemcopyHelper(dest.data);
+                helper.memmove_init(dest.data, src.data);
+                helper.memcpy(dest.data.data_offset, src.data.data_offset, elsize);
                 if (swap)
                 {
                     npy_byte_swap_vector(dest.data, 1, elsize);
@@ -1561,15 +1563,15 @@ namespace NumpyLib
 
             if (!NpyArray_ISALIGNED(src))
             {
-                aligned = new byte[elsize];
-                if (aligned == null)
-                {
-                    NpyErr_MEMORY();
-                    return -1;
-                }
-                memcpy(new VoidPtr(aligned), src.data, elsize);
-                usecopy = true;
-                sptr = new VoidPtr(aligned);
+                //aligned = new byte[elsize];
+                //if (aligned == null)
+                //{
+                //    NpyErr_MEMORY();
+                //    return -1;
+                //}
+                //memcpy(new VoidPtr(aligned), src.data, elsize);
+                //usecopy = true;
+                //sptr = new VoidPtr(aligned);
             }
             else
             {
