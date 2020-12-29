@@ -111,7 +111,11 @@ namespace NumpyLib
                     }
 
                     byte[] src = BitConverter.GetBytes(index.intp);
-                    memcpy(indarray.data, new VoidPtr(src), sizeof(npy_intp));
+
+                    var srcvp = new VoidPtr(src);
+                    var helper = MemCopy.GetMemcopyHelper(indarray.data);
+                    helper.memmove_init(indarray.data, srcvp);
+                    helper.memcpy(indarray.data.data_offset, srcvp.data_offset, sizeof(npy_intp));
                     mit.iters[j] = NpyArray_IterNew(indarray);
                     Npy_DECREF(indarray);
                     if (mit.iters[j] == null)
