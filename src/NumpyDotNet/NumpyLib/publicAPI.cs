@@ -773,11 +773,6 @@ namespace NumpyLib
             return numpyinternal.NpyArrayAccess_IterCoords(self);
         }
 
-        public static VoidPtr NpyArrayAccess_DupZeroElem(NpyArray arr)
-        {
-            return numpyinternal.NpyArrayAccess_DupZeroElem(arr);
-        }
-
         public static NpyArrayMultiIterObject NpyArrayAccess_MultiIterFromArrays(NpyArray[] arrays, int n)
         {
             return numpyinternal.NpyArrayAccess_MultiIterFromArrays(arrays, n);

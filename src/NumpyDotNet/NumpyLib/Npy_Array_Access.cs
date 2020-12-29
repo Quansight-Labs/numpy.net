@@ -397,13 +397,6 @@ namespace NumpyLib
             return self.coordinates;
         }
 
-        internal static VoidPtr NpyArrayAccess_DupZeroElem(NpyArray arr)
-        {
-            VoidPtr mem = NpyDataMem_NEW(arr.ItemType, (ulong)NpyArray_ITEMSIZE(arr));
-            memcpy(mem, NpyArray_DATA(arr), NpyArray_ITEMSIZE(arr));
-            return mem;
-        }
-
         internal static  NpyArrayMultiIterObject NpyArrayAccess_MultiIterFromArrays(NpyArray []arrays, int n)
         {
             return NpyArray_MultiIterFromArrays(arrays, n, 0);

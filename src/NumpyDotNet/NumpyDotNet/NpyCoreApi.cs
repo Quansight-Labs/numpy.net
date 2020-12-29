@@ -1959,23 +1959,6 @@ namespace NumpyDotNet {
             }
         }
 
-        /// <summary>
-        /// Allocates a block of memory using NpyDataMem_NEW that is the same size as a single
-        /// array element and zeros the bytes.  This is usually good enough, but is not a correct
-        /// zero for object arrays.  The caller must free the memory with NpyDataMem_FREE().
-        /// </summary>
-        /// <param name="arr">Array to take the element size from</param>
-        /// <returns>Pointer to zero'd memory</returns>
-        internal static VoidPtr DupZeroElem(ndarray arr)
-        {
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                return numpyAPI.NpyArrayAccess_DupZeroElem(arr.Array);
-            }
-        }
-
         internal static void SetNamesList(dtype descr, string[] nameslist)
         {
 #if ENABLELOCKING
