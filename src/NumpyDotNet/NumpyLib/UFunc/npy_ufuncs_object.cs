@@ -1220,7 +1220,6 @@ namespace NumpyLib
                      */
                     /* fprintf(stderr, "BUFFERED..%d %d\n", loop.size, loop.swap); */
 
-                    
                     while (loop.index < loop.size)
                     {
                         loop.inptr = loop.it.dataptr;
@@ -1231,7 +1230,8 @@ namespace NumpyLib
                             helper.copyswap(loop.buffer, loop.inptr, loop.swap);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
 
-                            memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
+                            helper.memmove_init(loop.bufptr[0], loop.castbuf);
+                            helper.memcpy(loop.bufptr[0].data_offset, loop.castbuf.data_offset, loop.outsize);
                         }
                         else
                         {
@@ -1321,7 +1321,8 @@ namespace NumpyLib
                     /* fprintf(stderr, "ZERO..%d\n", loop.size); */
                     for (i = 0; i < loop.size; i++)
                     {
-                        memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
+                        helper.memmove_init(loop.bufptr[0], loop.idptr);
+                        helper.memcpy(loop.bufptr[0].data_offset, loop.idptr.data_offset, loop.outsize);
                         loop.bufptr[0] += loop.outsize;
                     }
                     break;
@@ -1456,7 +1457,9 @@ namespace NumpyLib
                              cast it first */
                             helper.copyswap(loop.buffer, loop.inptr,loop.swap);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
-                            memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
+
+                            helper.memmove_init(loop.bufptr[0], loop.castbuf);
+                            helper.memcpy(loop.bufptr[0].data_offset, loop.castbuf.data_offset, loop.outsize);
                         }
                         else
                         {
@@ -1577,7 +1580,9 @@ namespace NumpyLib
                             for (i = 0; i < nn; i++)
                             {
                                 loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
-                                memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
+
+                                helper.memmove_init(loop.bufptr[0], loop.bufptr[1]);
+                                helper.memcpy(loop.bufptr[0].data_offset, loop.bufptr[1].data_offset, loop.outsize);
 
                                 mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
                                 if (mm > 0)
@@ -1613,7 +1618,9 @@ namespace NumpyLib
                             for (i = 0; i < nn; i++)
                             {
                                 loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
-                                memcpy(loop.bufptr[0], loop.bufptr[1], loop.outsize);
+
+                                helper.memmove_init(loop.bufptr[0], loop.bufptr[1]);
+                                helper.memcpy(loop.bufptr[0].data_offset, loop.bufptr[1].data_offset, loop.outsize);
 
                                 mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
                                 if (mm > 0)
@@ -1690,7 +1697,8 @@ namespace NumpyLib
                         ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
                         for (i = 0; i < nn; i++)
                         {
-                            memcpy(loop.bufptr[0], loop.idptr, loop.outsize);
+                            helper.memmove_init(loop.bufptr[0], loop.idptr);
+                            helper.memcpy(loop.bufptr[0].data_offset, loop.idptr.data_offset, loop.outsize);
                             n = 0;
                             mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] :
                                    ptr[i + 1] - ptr[i]) - 1;
@@ -2581,7 +2589,11 @@ namespace NumpyLib
                     Npy_DECREF(idarr);
                     goto fail;
                 }
-                memcpy(loop.idptr, NpyArray_BYTES(idarr), NpyArray_ITEMSIZE(idarr));
+
+                var helper = MemCopy.GetMemcopyHelper(loop.idptr);
+                var idarrvp = NpyArray_BYTES(idarr);
+                helper.memmove_init(loop.idptr, idarrvp);
+                helper.memcpy(loop.idptr.data_offset, idarrvp.data_offset, NpyArray_ITEMSIZE(idarr));
                 Npy_DECREF(idarr);
             }
 
