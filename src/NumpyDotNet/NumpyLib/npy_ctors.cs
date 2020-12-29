@@ -1040,7 +1040,9 @@ namespace NumpyLib
                  (NpyArray_ISFARRAY_RO(src) && NpyArray_ISFARRAY(dest)));
             if (simple)
             {
-                memcpy(dest.data, src.data, NpyArray_NBYTES(dest));
+                var helper1 = MemCopy.GetMemcopyHelper(dest.data);
+                helper1.memmove_init(dest.data, src.data);
+                helper1.memcpy(dest.data.data_offset, src.data.data_offset, NpyArray_NBYTES(dest));
                 return 0;
             }
 
@@ -1066,9 +1068,11 @@ namespace NumpyLib
             }
             elsize = dest.descr.elsize;
 
+            var helper = MemCopy.GetMemcopyHelper(idest.dataptr);
+            helper.memmove_init(idest.dataptr, isrc.dataptr);
             while (idest.index < idest.size)
             {
-                memcpy(idest.dataptr, isrc.dataptr, elsize);
+                helper.memcpy(idest.dataptr.data_offset, isrc.dataptr.data_offset, elsize);
                 NpyArray_ITER_NEXT(idest);
                 NpyArray_ITER_NEXT(isrc);
             }
@@ -1244,7 +1248,9 @@ namespace NumpyLib
             NpyArray orig_src = src;
             if (NpyArray_NDIM(src) == 0)
             {
-                memcpy(NpyArray_BYTES(dst), NpyArray_BYTES(src), (long)NpyArray_BYTES_Length(src));
+                var helper = MemCopy.GetMemcopyHelper(dst.data);
+                helper.memmove_init(dst.data, src.data);
+                helper.memcpy(dst.data.data_offset, src.data.data_offset, (long)NpyArray_BYTES_Length(src));
                 return 0;
             }
 
