@@ -636,6 +636,8 @@ namespace NumpyLib
                                         copysizes[i] = datasize[i] * mpselsize[i];
                                     }
                                 }
+
+                                var helper = MemCopy.GetMemcopyHelper(buffer[0]);
                                 for (i = 0; i < self.nin; i++)
                                 {
                                     if (!needbuffer[i])
@@ -644,15 +646,17 @@ namespace NumpyLib
                                     }
                                     if (fastmemcpy[i])
                                     {
-                                        memcpy(buffer[i], tptr[i], copysizes[i]);
+                                        helper.memmove_init(buffer[i], tptr[i]);
+                                        helper.memcpy(buffer[i].data_offset, tptr[i].data_offset, copysizes[i]);
                                     }
                                     else
                                     {
                                         myptr1 = buffer[i];
                                         myptr2 = tptr[i];
+                                        helper.memmove_init(myptr1, myptr2);
                                         for (j = 0; j < bufsize; j++)
                                         {
-                                            memcpy(myptr1, myptr2, mpselsize[i]);
+                                            helper.memcpy(myptr1.data_offset, myptr2.data_offset, mpselsize[i]);
                                             myptr1 += mpselsize[i];
                                             myptr2 += laststrides[i];
                                         }
@@ -715,15 +719,17 @@ namespace NumpyLib
                                     //}
                                     if (fastmemcpy[i])
                                     {
-                                        memcpy(tptr[i], buffer[i], copysizes[i]);
+                                        helper.memmove_init(tptr[i], buffer[i]);
+                                        helper.memcpy(tptr[i].data_offset, buffer[i].data_offset, copysizes[i]);
                                     }
                                     else
                                     {
                                         myptr2 = buffer[i];
                                         myptr1 = tptr[i];
+                                        helper.memmove_init(myptr1, myptr2);
                                         for (j = 0; j < bufsize; j++)
                                         {
-                                            memcpy(myptr1, myptr2, mpselsize[i]);
+                                            helper.memcpy(myptr1.data_offset, myptr2.data_offset, mpselsize[i]);
                                             myptr1 += laststrides[i];
                                             myptr2 += mpselsize[i];
                                         }
@@ -1214,7 +1220,7 @@ namespace NumpyLib
                      */
                     /* fprintf(stderr, "BUFFERED..%d %d\n", loop.size, loop.swap); */
 
-
+                    
                     while (loop.index < loop.size)
                     {
                         loop.inptr = loop.it.dataptr;
@@ -1224,6 +1230,7 @@ namespace NumpyLib
                             /* A little tricky because we need to cast it first */
                             helper.copyswap(loop.buffer, loop.inptr, loop.swap);
                             loop.cast(loop.buffer, loop.castbuf, 1, null, null);
+
                             memcpy(loop.bufptr[0], loop.castbuf, loop.outsize);
                         }
                         else
