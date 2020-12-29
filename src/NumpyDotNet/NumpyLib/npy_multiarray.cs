@@ -919,10 +919,13 @@ namespace NumpyLib
             {
                 iptr = new VoidPtr(arr);
                 iptr.data_offset += i * eltsize;
+
+                var helper = MemCopy.GetMemcopyHelper(optr);
+                helper.memmove_init(optr, iptr);
                 for (j = 0; j < dims[1]; j++)
                 {
                     /* optr[i,j] = iptr[j,i] */
-                    memcpy(optr, iptr, eltsize);
+                    helper.memcpy(optr.data_offset, iptr.data_offset, eltsize);
                     optr.data_offset += eltsize;
                     iptr.data_offset += stride2;
                 }
