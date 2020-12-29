@@ -1498,22 +1498,10 @@ namespace NumpyLib
 
             protected opFunctionScalerIter GetUFuncScalarIterOperation(UFuncOperation ops)
             {
-                // these are the commonly used scalar iter operations.
-                //
-                // We can add more by implementing data type specific implementations
-                // and adding them to this switch statement
-             
-                switch (ops)
-                {
-                    //case UFuncOperation.add:
-                    //    return AddScalerIter;
-
-                    //case UFuncOperation.multiply:
-                    //    return MultiplyAccumulate;
-
-                }
-
-                return null;
+                // each individual data type can support accelerator functions if
+                // it chooses.  This call will return a delegate if the operation
+                // is supported, else null.
+                return GetUFuncScalarIterHandler(ops);
             }
 
             protected delegate T opFunction(T o1, T o2);
@@ -1529,6 +1517,7 @@ namespace NumpyLib
 
             protected abstract opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops);
             protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);
+            protected abstract opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops);
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);

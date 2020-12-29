@@ -242,6 +242,17 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
         #region decimal specific operation handlers
         protected override decimal Add(decimal aValue, decimal bValue)
         {

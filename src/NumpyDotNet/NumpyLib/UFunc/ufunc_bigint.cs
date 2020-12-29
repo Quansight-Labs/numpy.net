@@ -252,6 +252,16 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
 
         #region System.Numerics.BigInteger specific operation handlers
         protected override System.Numerics.BigInteger Add(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
