@@ -201,6 +201,19 @@ namespace NumpyLib
             return destValue;
         }
 
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
         #region System.Numerics.Complex specific operation handlers
         protected override System.Numerics.Complex Add(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {

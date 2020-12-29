@@ -192,6 +192,19 @@ namespace NumpyLib
             return destValue;
         }
 
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
         #region sbyte specific operation handlers
         protected override sbyte Add(sbyte aValue, sbyte bValue)
         {

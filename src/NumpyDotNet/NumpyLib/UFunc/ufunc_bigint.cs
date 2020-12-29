@@ -201,6 +201,20 @@ namespace NumpyLib
             return destValue;
         }
 
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
+
         #region System.Numerics.BigInteger specific operation handlers
         protected override System.Numerics.BigInteger Add(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {

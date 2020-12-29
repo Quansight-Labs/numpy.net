@@ -1520,21 +1520,10 @@ namespace NumpyLib
 
             protected opFunctionAccumulate GetUFuncAccumulateOperation(UFuncOperation ops)
             {
-                // these are the commonly used accumulate operations.
-                //
-                // We can add more by implementing data type specific implementations
-                // and adding them to this switch statement
-                switch (ops)
-                {
-                    case UFuncOperation.add:
-                        return AddAccumulate;
-
-                    case UFuncOperation.multiply:
-                        return MultiplyAccumulate;
-
-                }
-
-                return null;
+                // each individual data type can support accelerator functions if
+                // it chooses.  This call will return a delegate if the operation
+                // is supported, else null.
+                return GetUFuncAccumulateHandler(ops);
             }
 
             protected opFunctionScalerIter GetUFuncScalarIterOperation(UFuncOperation ops)
@@ -1567,6 +1556,8 @@ namespace NumpyLib
                                                          T[] dest, npy_intp[] destOffsets, 
                                                          npy_intp OffetLength);
 
+
+            protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);
 
             protected abstract T Add(T o1, T o2);
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
