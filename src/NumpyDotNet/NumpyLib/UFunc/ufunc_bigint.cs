@@ -231,7 +231,7 @@ namespace NumpyLib
             return result;
         }
 
-        protected override void AddAccumulate(
+        protected void AddAccumulate(
                  System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                  System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                  System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
@@ -274,7 +274,7 @@ namespace NumpyLib
 
             return result;
         }
-        protected override void MultiplyAccumulate(
+        protected void MultiplyAccumulate(
                 System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                 System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)

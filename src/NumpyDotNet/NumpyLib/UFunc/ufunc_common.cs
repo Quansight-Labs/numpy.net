@@ -1561,13 +1561,10 @@ namespace NumpyLib
 
             protected abstract T Add(T o1, T o2);
             protected abstract T AddReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
-            protected abstract void AddAccumulate(T[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,T[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,T[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N);
-            //protected abstract void AddScalerIter(T[] src, npy_intp[] srcOffsets, T[] oper, npy_intp[] operOffsets,T[] dest, npy_intp[] destOffsets, npy_intp OffetLength);
             protected abstract T Subtract(T o1, T o2);
             protected abstract T SubtractReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Multiply(T o1, T o2);
             protected abstract T MultiplyReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
-            protected abstract void MultiplyAccumulate(T[] Op1Array, npy_intp O1_Index, npy_intp O1_Step, T[] Op2Array, npy_intp O2_Index, npy_intp O2_Step, T[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N);
             protected abstract T Divide(T o1, T o2);
             protected abstract T DivideReduce(T result, T[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N);
             protected abstract T Power(T o1, T o2);

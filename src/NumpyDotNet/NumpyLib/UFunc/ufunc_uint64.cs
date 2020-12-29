@@ -219,7 +219,7 @@ namespace NumpyLib
 
             return result;
         }
-        protected override void AddAccumulate(
+        protected void AddAccumulate(
                 UInt64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 UInt64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                 UInt64[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
@@ -262,7 +262,7 @@ namespace NumpyLib
 
             return result;
         }
-        protected override void MultiplyAccumulate(
+        protected void MultiplyAccumulate(
                 UInt64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 UInt64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                 UInt64[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)

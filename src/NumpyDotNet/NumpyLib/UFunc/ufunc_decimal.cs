@@ -220,7 +220,7 @@ namespace NumpyLib
 
             return result;
         }
-        protected override void AddAccumulate(
+        protected void AddAccumulate(
                 decimal[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 decimal[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                 decimal[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
@@ -263,7 +263,7 @@ namespace NumpyLib
 
             return result;
         }
-        protected override void MultiplyAccumulate(
+        protected void MultiplyAccumulate(
                 decimal[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 decimal[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
                 decimal[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
