@@ -303,11 +303,15 @@ namespace NumpyLib
 
             try
             {
+                var helper = MemCopy.GetMemcopyHelper(dest.data);
+
                 npy_intp destoffset = 0;
                 foreach (var array in ArraysToCombine)
                 {
                     npy_intp BytesToCopy = NpyArray_SIZE(array) * array.ItemSize;
-                    MemCopy.MemCpy(dest.data, destoffset, array.data, 0, BytesToCopy);
+
+                    helper.memmove_init(dest.data, array.data);
+                    helper.memcpy(dest.data.data_offset+destoffset, array.data.data_offset, BytesToCopy);
                     destoffset += BytesToCopy;
                 }
 
