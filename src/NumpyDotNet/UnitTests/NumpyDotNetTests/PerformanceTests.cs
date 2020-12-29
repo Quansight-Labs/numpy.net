@@ -2840,7 +2840,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void Performance_intersect_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount =5;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
@@ -3115,11 +3115,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_IterSubscriptAssignBoolArray_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount = 200;
 
             var m1 = np.arange(16000000, dtype: np.Float64);
             var mask = np.ndarray(m1.shape, dtype: np.Bool);
@@ -3141,11 +3141,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_IterSubscriptAssignIntpArray_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount = 200;
 
             var m1 = np.arange(16000000, dtype: np.Float64);
             var mask = np.arange(16000000, dtype: np.intp);
@@ -3166,11 +3166,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_GetMap_DOUBLE()
         {
-            int LoopCount = 20;
+            int LoopCount = 200;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var mask = np.arange(16000000, dtype: np.Bool).reshape(40, -1);
@@ -3192,10 +3192,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
+        //[Ignore]
         [TestMethod]
         public void Performance_SetMap_DOUBLE()
         {
-            int LoopCount = 10;
+            int LoopCount = 200;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var mask = np.arange(16000000, dtype: np.Bool).reshape(40, -1);
@@ -3269,7 +3270,7 @@ namespace NumpyDotNetTests
 
 
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_in1d_DOUBLE()
         {
@@ -3293,11 +3294,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_matmul_DOUBLE()
         {
-            int LoopCount = 1;
+            int LoopCount = 10;
 
             var m1 = np.arange(16000000, dtype: np.Int64).reshape(40, -1);
             var m2 = np.arange(16000000, dtype: np.Int64).reshape(-1,40);
@@ -3317,11 +3318,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_inner_DOUBLE()
         {
-            int LoopCount = 1;
+            int LoopCount = 10;
 
             var m1 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
             var m2 = np.arange(16000000, dtype: np.Float64).reshape(40, -1);
@@ -3341,7 +3342,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_correlate_DOUBLE()
         {
@@ -3367,11 +3368,11 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_flatcopy_INT32()
         {
-            int LoopCount = 20;
+            int LoopCount = 200;
 
             var m1 = np.arange(0, 16000000, dtype: np.Int32).reshape((400, -1));
             var m2 = np.arange(0, 16000000, dtype: np.Int32).reshape((-1, 400));
@@ -3382,9 +3383,9 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 ndarray m3 = m1.flatten();
-                Assert.AreEqual(1376644608, np.sum(m3).GetItem(0));
+                //Assert.AreEqual(1376644608, np.sum(m3).GetItem(0));
                 ndarray m4 = m2.flatten();
-                Assert.AreEqual(1376644608, np.sum(m4).GetItem(0));
+                //Assert.AreEqual(1376644608, np.sum(m4).GetItem(0));
             }
 
 
@@ -3394,7 +3395,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_var_INT32()
         {

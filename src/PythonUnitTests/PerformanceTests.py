@@ -453,7 +453,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_intersect_DOUBLE(self):
 
-        LoopCount = 100;
+        LoopCount = 5;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
         m2 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
@@ -688,7 +688,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptAssignBoolArray_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         mask = np.ndarray(m1.shape, dtype=np.bool);
@@ -710,7 +710,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptAssignIntpArray_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         mask = np.arange(16000000, dtype=np.intp);
@@ -730,7 +730,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_GetMap_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40, -1);
         mask = np.ndarray(m1.shape, dtype=np.bool).reshape(40, -1);
@@ -743,6 +743,29 @@ class PerformanceTests(unittest.TestCase):
 
         for i in range(LoopCount):
             m2 = m1[mask];
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff))  
+
+
+    def test_Performance_SetMap_DOUBLE(self):
+
+        LoopCount = 200;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(40, -1);
+        mask = np.ndarray(m1.shape, dtype=np.bool).reshape(40, -1);
+        mask[:] = False;
+        mask[::2] = True;
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m1[mask] = 99;
  
 
         end = tm.time()
@@ -773,7 +796,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_matmul_DOUBLE(self):
 
-        LoopCount = 1;
+        LoopCount = 10;
 
         m1 = np.arange(16000000, dtype=np.int64).reshape(40, -1);
         m2 = np.arange(16000000, dtype=np.int64).reshape(-1,40);
@@ -784,6 +807,27 @@ class PerformanceTests(unittest.TestCase):
 
         for i in range(LoopCount):
              m3 = np.matmul(m1, m2);
+ 
+
+        end = tm.time()
+
+        diff = end-start
+        print("mask calculations took %f milliseconds" %(diff)) 
+        
+
+    def test_Performance_inner_DOUBLE(self):
+
+        LoopCount = 10;
+
+        m1 = np.arange(16000000, dtype=np.int64).reshape(40, -1);
+        m2 = np.arange(16000000, dtype=np.int64).reshape(40, -1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+             m3 = np.inner(m1, m2);
  
 
         end = tm.time()
@@ -815,7 +859,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_flatcopy_INT32(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(0, 16000000, dtype= np.int32).reshape((400, -1));
         m2 = np.arange(0, 16000000, dtype= np.int32).reshape((-1, 400));
