@@ -72,7 +72,7 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 sin calculations took %f milliseconds" %(diff))
 
-    def test_AddReduce_Performance(self):
+    def test_AddReduce_Performance_DOUBLE   (self):
 
         LoopCount = 200;
 
@@ -82,14 +82,29 @@ class PerformanceTests(unittest.TestCase):
         
         for i in range(LoopCount):
             b = np.add.reduce(a)
-            print(b)
+        print(b)
 
         end = tm.time()
 
         diff = end-start
         print("1000000 add calculations took %f milliseconds" %(diff))
 
+    def test_AddReduce2_Performance_DOUBLE(self):
 
+        LoopCount = 200;
+
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            b = np.add.reduce(a)
+        print(b)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 add calculations took %f milliseconds" %(diff))
 
     def test_AddReduce_Performance_UINT32(self):
 
@@ -374,7 +389,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_insert_DOUBLE(self):
 
-        LoopCount = 2;
+        LoopCount = 20;
 
         m1 = np.arange(16000000, dtype=np.float64);
         m2 = np.arange(16000000, dtype=np.float64);
@@ -415,9 +430,30 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
+    def test_Performance_broadcastcopy_DOUBLE2(self):
+
+        LoopCount = 1000;
+
+        m1 = np.arange(32000000, dtype=np.float64).reshape(40,-1);
+        m2 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            m1[:,:] = 99
+             
+        end = tm.time()
+   
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
+
     def test_Performance_intersect_DOUBLE(self):
 
-        LoopCount = 2;
+        LoopCount = 100;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
         m2 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
@@ -436,9 +472,31 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("Int64 calculations took %f milliseconds" %(diff))
 
-    def test_Performance_intersect_DOUBLE(self):
+    def test_Performance_sort_DOUBLE(self):
 
-        LoopCount = 2;
+        LoopCount = 30;
+
+        m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
+
+        start = tm.time()
+
+        #matrix = matrix[1:40:2, 1:-2:3]
+
+        for i in range(LoopCount):
+            perm1 = np.sort(m1)
+            perm2 = np.sort(m1, axis=None)
+            perm3 = np.sort(m1, axis=0)
+             
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("Int64 calculations took %f milliseconds" %(diff))
+
+    def test_Performance_argsort_DOUBLE(self):
+
+        LoopCount = 20;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
 
@@ -458,7 +516,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_take_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
         indices = np.arange(0,16000000, 2,dtype=np.int32).reshape(20,-1);
@@ -524,7 +582,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptSlice_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64).reshape(40,-1);
 
@@ -543,7 +601,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptBoolArray_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         mask = np.ndarray(m1.shape, dtype=np.bool);
@@ -567,7 +625,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptIntpArray_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         index = np.arange(0,16000000, 2, dtype=np.intp);
@@ -589,7 +647,7 @@ class PerformanceTests(unittest.TestCase):
     
     def test_Performance_IterSubscriptAssignSlice_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         start = tm.time()
@@ -609,7 +667,7 @@ class PerformanceTests(unittest.TestCase):
 
     def test_Performance_IterSubscriptAssignSlice2_DOUBLE(self):
 
-        LoopCount = 20;
+        LoopCount = 200;
 
         m1 = np.arange(16000000, dtype=np.float64);
         m2 = np.arange(160, dtype=np.float64)
