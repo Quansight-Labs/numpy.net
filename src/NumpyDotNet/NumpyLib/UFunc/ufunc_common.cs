@@ -915,7 +915,7 @@ namespace NumpyLib
                                     src, lsrcIter.internalCache,
                                     oper, loperIter.internalCache,
                                     dest, ldestIter.internalCache,
-                                    ldestIter.internalCacheLength);
+                                    ldestIter.internalCacheLength,op);
                             }
                             else
                             {
@@ -1512,7 +1512,7 @@ namespace NumpyLib
             protected delegate void opFunctionScalerIter(T[] src, npy_intp[] srcOffsets,
                                                          T[] oper, npy_intp[] operOffsets,
                                                          T[] dest, npy_intp[] destOffsets, 
-                                                         npy_intp OffetLength);
+                                                         npy_intp OffetLength, UFuncOperation ops);
 
 
             protected abstract opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops);
