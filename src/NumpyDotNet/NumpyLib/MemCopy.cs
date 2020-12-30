@@ -3580,6 +3580,7 @@ namespace NumpyLib
 
     public interface ICopyHelper
     {
+        bool IsSingleElementCopy();
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);
         void default_copyswap(VoidPtr _dst, npy_intp dstride, VoidPtr _src, npy_intp sstride, npy_intp n, bool swap);
         void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len);
@@ -3602,6 +3603,7 @@ namespace NumpyLib
         void correlate(VoidPtr ip1, VoidPtr ip2, VoidPtr op, npy_intp is1, npy_intp is2, npy_intp os, npy_intp n, npy_intp n1, npy_intp n2, npy_intp n_left, npy_intp n_right);
         void strided_byte_copy_init(VoidPtr dst, npy_intp outstrides, VoidPtr src, npy_intp intstrides, int elsize, int eldiv);
         void strided_byte_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N);
+        void strided_single_element_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N);
         //void flat_copyinto(VoidPtr dest, int outstride, NpyArrayIterObject srcIter, npy_intp instride, npy_intp N, npy_intp destOffset);
     }
 
@@ -3616,6 +3618,11 @@ namespace NumpyLib
         {
             return numpyinternal.GetDivSize(elsize);
         }
+        public bool IsSingleElementCopy()
+        {
+            return isSingleElementCopy;
+        }
+
 
         VoidPtr dst;
         VoidPtr src;
@@ -3627,6 +3634,7 @@ namespace NumpyLib
         int elsize;
         int eldiv;
         bool isSameType = false;
+        bool isSingleElementCopy = false;
         bool useArrayCopy = false;
 
         public void memclr(VoidPtr dest, npy_intp dest_offset, npy_intp len)
@@ -3646,6 +3654,10 @@ namespace NumpyLib
 
                 this.outstrides = outstrides >> eldiv;
                 this.instrides = instrides >> eldiv;
+                if (this.instrides == 0)
+                {
+                    isSingleElementCopy = true;
+                }
 
                 isSameType = true;
                 if (this.instrides == 1 && this.outstrides == 1)
@@ -3677,12 +3689,25 @@ namespace NumpyLib
                 }
                 else
                 {
-                    for (int i = 0; i < N; i++)
+                    if (instrides == 0)
                     {
-                        da[tout_index] = sa[tin_index];
-                        tin_index += instrides;
-                        tout_index += outstrides;
+                        T saValue = sa[tin_index];
+                        for (int i = 0; i < N; i++)
+                        {
+                            da[tout_index] = saValue;
+                            tout_index += outstrides;
+                        }
                     }
+                    else
+                    {
+                        for (int i = 0; i < N; i++)
+                        {
+                            da[tout_index] = sa[tin_index];
+                            tin_index += instrides;
+                            tout_index += outstrides;
+                        }
+                    }
+         
                 }
             }
             else
@@ -3702,6 +3727,20 @@ namespace NumpyLib
             }
         }
 
+        public void strided_single_element_copy(npy_intp dest_offset, npy_intp src_offset, npy_intp N)
+        {
+            npy_intp tout_index = dest_offset >> eldiv;
+            npy_intp tin_index = src_offset >> eldiv;
+
+            
+            T saValue = sa[tin_index];
+            for (int i = 0; i < N; i++)
+            {
+                da[tout_index] = saValue;
+                tout_index += outstrides;
+            }
+
+        }
 
         //public void IterSubscriptSliceOLD(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
         // npy_intp start, npy_intp step_size, bool swap)

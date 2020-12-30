@@ -1532,20 +1532,33 @@ namespace NumpyLib
                              srcIter.strides[maxaxis],
                              elsize, eldiv);
 
-            while (destIter.index < destIter.size)
+            if (helper.IsSingleElementCopy() && !swap)
             {
-
-                helper.strided_byte_copy(destIter.dataptr.data_offset, srcIter.dataptr.data_offset, maxdim);
-
-                if (swap)
+                while (destIter.index < destIter.size)
                 {
-                    _strided_byte_swap(destIter.dataptr,
-                                       destIter.strides[maxaxis],
-                                       maxdim, elsize);
+                    helper.strided_single_element_copy(destIter.dataptr.data_offset, srcIter.dataptr.data_offset, maxdim);
+                    NpyArray_ITER_NEXT(destIter);
                 }
-                NpyArray_ITER_NEXT(destIter);
-                NpyArray_ITER_NEXT(srcIter);
             }
+            else
+            {
+                while (destIter.index < destIter.size)
+                {
+
+                    helper.strided_byte_copy(destIter.dataptr.data_offset, srcIter.dataptr.data_offset, maxdim);
+
+                    if (swap)
+                    {
+                        _strided_byte_swap(destIter.dataptr,
+                                           destIter.strides[maxaxis],
+                                           maxdim, elsize);
+                    }
+                    NpyArray_ITER_NEXT(destIter);
+                    NpyArray_ITER_NEXT(srcIter);
+                }
+            }
+
+    
         }
 
         internal static int _copy_from0d(NpyArray dest, NpyArray src, bool usecopy, bool swap)
