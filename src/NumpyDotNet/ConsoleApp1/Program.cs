@@ -21,10 +21,31 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test9();
+            Test10();
 
 
 
+        }
+
+        static void Test10()
+        {
+            int LoopCount = 1;
+            var a = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            ndarray b = null;
+            for (int i = 0; i < LoopCount; i++)
+            {
+                b = np.ufunc.reduce(UFuncOperation.add, a);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+            Console.ReadLine();
         }
 
         static void Test9()
