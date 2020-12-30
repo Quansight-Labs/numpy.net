@@ -49,6 +49,8 @@ namespace NumpyLib
         internal const int UFUNC_PARALLEL_DEST_MINSIZE = 1000;
         internal const int UFUNC_PARALLEL_DEST_ASIZE = 100;
 
+        internal delegate void UFuncGeneralReductionHandler(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N);
+
         internal interface IUFUNC_Operations
         {
             void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op);

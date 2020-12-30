@@ -256,7 +256,32 @@ namespace NumpyLib
             }
         }
 
+        internal static UFuncGeneralReductionHandler GetGeneralReductionUFuncHandler(GenericReductionOp op, VoidPtr[] bufPtr)
+        {
+            VoidPtr Result = bufPtr[2];
 
+            if (Result.type_num == bufPtr[0].type_num && Result.type_num == bufPtr[0].type_num)
+            {
+                IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                if (UFunc != null)
+                {
+                    if (op == GenericReductionOp.NPY_UFUNC_REDUCE)
+                    {
+                        return UFunc.PerformReduceOpArrayIter;
+                    }
+                    if (op == GenericReductionOp.NPY_UFUNC_ACCUMULATE)
+                    {
+                        return UFunc.PerformAccumulateOpArrayIter;
+                    }
+                    if (op == GenericReductionOp.NPY_UFUNC_REDUCEAT)
+                    {
+                        return UFunc.PerformReduceAtOpArrayIter;
+                    }
+                }
+            }
+
+            return null;
+        }
 
         internal static void UFuncCommon(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, UFuncOperation Ops)
         {

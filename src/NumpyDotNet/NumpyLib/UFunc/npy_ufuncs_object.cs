@@ -1122,8 +1122,10 @@ namespace NumpyLib
 
                     helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
+                    var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
+
                     var loopcnt = loop.size - loop.index;
-                    if (loopcnt <= 1)
+                    if (loopcnt <= 1 || UFuncHandler == null)
                     {
                         while (loop.index < loop.size)
                         {
@@ -1170,7 +1172,7 @@ namespace NumpyLib
                                             UFUNCLoopWorkerParams work = null;
                                             if (workToDo.TryDequeue(out work))
                                             {
-                                                loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
+                                                UFuncHandler(work.bufptr, work.steps, work.ops, work.N);
                                                 if (!NPY_UFUNC_CHECK_ERROR(loop))
                                                 {
                                                     HasError = true;
@@ -3432,14 +3434,14 @@ namespace NumpyLib
 
         private static bool NPY_UFUNC_CHECK_ERROR(NpyUFuncReduceObject arg)
         {
-            do
-            {
-                if ((NpyErr_Occurred() ||
-                      (arg.errormask != 0 && NpyUFunc_checkfperr(arg.ufunc.name, arg.errormask, arg.errobj, ref arg.first))))
-                {
-                    return false;
-                }
-            } while (false);
+            //do
+            //{
+            //    if ((NpyErr_Occurred() ||
+            //          (arg.errormask != 0 && NpyUFunc_checkfperr(arg.ufunc.name, arg.errormask, arg.errobj, ref arg.first))))
+            //    {
+            //        return false;
+            //    }
+            //} while (false);
 
             return true;
         }
