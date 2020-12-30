@@ -21,10 +21,25 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test10();
+            Test11();
 
 
 
+        }
+
+        static void Test11()
+        {
+            var img = np.fromfile("test.dat", sep : ",");
+            img = img.reshape(10, 10, 3);
+            //print(img)
+            var output = img.Copy();
+
+            ndarray equalFlags = np.equal(img, np.array(new float[] { 255, 255, 240 }));
+            ndarray valid = np.all(equalFlags, axis : -1);
+            ndarray[] rscs = valid.NonZero();
+            output[rscs[0], rscs[1], ":"] = np.array(new float[] { 255, 255, 255 });
+            //print(output)
+            return;
         }
 
         static void Test10()
