@@ -3771,7 +3771,9 @@ namespace NumpyDotNetTests
             ndarray equalFlags = np.equal(img, np.array(new float[] { 255, 255, 240 }));
             ndarray valid = np.all(equalFlags, axis : -1);
             ndarray[] rscs = valid.NonZero();
-            output[rscs[0], rscs[1], ":"] = np.array(new float[] { 255, 255, 255 });
+
+            //output[rscs[0], rscs[1], ":"] = np.array(new float[] { 255, 255, 255 });
+            output[rscs[0], rscs[1], ":"] = new float[] { 255, 255, 255 };
             print(output);
             return;
 
