@@ -2747,5 +2747,52 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_customer_goodgood_reported_issue()
+        {
+
+            var img = np.array(new float[]
+                { 208.0f, 54.0f, 1.0f, 255.0f, 255.0f,240.0f, 251.0f, 255.0f,252.0f,
+                  176.0f, 51.0f, 20.0f,255.0f, 255.0f, 238.0f,250.0f, 255.0f, 249.0f,
+                  146.0f, 53.0f, 28.0f,255.0f, 255.0f, 242.0f,251.0f, 255.0f, 251.0f,
+                  255.0f, 255.0f, 240.0f,255.0f, 255.0f, 240.0f,255.0f, 255.0f, 240.0f,
+                  253.0f, 255.0f, 251.0f,251.0f, 255.0f, 249.0f,255.0f, 252.0f, 255.0f });
+
+            img = img.reshape(5, 3, 3);
+            print(img);
+            var output = img.Copy();
+
+            ndarray equalFlags = np.equal(img, np.array(new float[] { 255, 255, 240 }));
+            ndarray valid = np.all(equalFlags, axis: -1);
+            ndarray[] rscs = valid.NonZero();
+
+            //output[rscs[0], rscs[1], ":"] = np.array(new float[] { 255, 255, 255 });
+            output[rscs[0], rscs[1], ":"] = new float[] { 255, 255, 255 };
+
+            var ExpectedDataB = new float[,,]
+                { { { 208.0f, 54.0f, 1.0f },
+                    { 255.0f, 255.0f, 255.0f },
+                    { 251.0f, 255.0f, 252.0f } },
+                  { { 176.0f, 51.0f, 20.0f },
+                    { 255.0f, 255.0f, 238.0f },
+                    { 250.0f, 255.0f, 249.0f } },
+                  { { 146.0f, 53.0f, 28.0f },
+                    { 255.0f, 255.0f, 242.0f },
+                    { 251.0f, 255.0f, 251.0f } },
+                  { { 255.0f, 255.0f, 255.0f },
+                    { 255.0f, 255.0f, 255.0f },
+                    { 255.0f, 255.0f, 255.0f } },
+                  { { 253.0f, 255.0f, 251.0f },
+                    { 251.0f, 255.0f, 249.0f },
+                    { 255.0f, 252.0f, 255.0f } } };
+
+            print(output);
+
+            AssertArray(output, ExpectedDataB);
+            return;
+
+        }
+
+
     }
 }
