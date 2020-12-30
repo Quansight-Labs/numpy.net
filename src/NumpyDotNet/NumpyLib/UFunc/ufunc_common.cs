@@ -186,59 +186,76 @@ namespace NumpyLib
 
         #region UFUNC Handlers
 
+        internal static UFUNC_Bool Instance_UFUNC_Bool = new UFUNC_Bool();
+        internal static UFUNC_SByte Instance_UFUNC_SByte = new UFUNC_SByte();
+        internal static UFUNC_UByte Instance_UFUNC_UByte = new UFUNC_UByte();
+        internal static UFUNC_Int16 Instance_UFUNC_Int16 = new UFUNC_Int16();
+        internal static UFUNC_UInt16 Instance_UFUNC_UInt16 = new UFUNC_UInt16();
+        internal static UFUNC_Int32 Instance_UFUNC_Int32 = new UFUNC_Int32();
+        internal static UFUNC_UInt32 Instance_UFUNC_UInt32 = new UFUNC_UInt32();
+        internal static UFUNC_Int64 Instance_UFUNC_Int64 = new UFUNC_Int64();
+        internal static UFUNC_UInt64 Instance_UFUNC_UInt64 = new UFUNC_UInt64();
+        internal static UFUNC_Float Instance_UFUNC_Float = new UFUNC_Float();
+        internal static UFUNC_Double Instance_UFunc_Double = new UFUNC_Double();
+        internal static UFUNC_Decimal Instance_UFUNC_Decimal = new UFUNC_Decimal();
+        internal static UFUNC_Complex Instance_UFUNC_Complex = new UFUNC_Complex();
+        internal static UFUNC_BigInt Instance_UFUNC_BigInt = new UFUNC_BigInt();
+        internal static UFUNC_Object Instance_UFUNC_Object = new UFUNC_Object();
+    
         private static IUFUNC_Operations GetUFuncHandler(NPY_TYPES npy_type)
         {
             switch (npy_type)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    return new UFUNC_Bool();
+                    return Instance_UFUNC_Bool;
 
                 case NPY_TYPES.NPY_BYTE:
-                    return new UFUNC_SByte();
+                    return Instance_UFUNC_SByte;
 
                 case NPY_TYPES.NPY_UBYTE:
-                    return new UFUNC_UByte();
+                    return Instance_UFUNC_UByte;
 
                 case NPY_TYPES.NPY_INT16:
-                    return new UFUNC_Int16();
+                    return Instance_UFUNC_Int16;
 
                 case NPY_TYPES.NPY_UINT16:
-                    return new UFUNC_UInt16();
+                    return Instance_UFUNC_UInt16;
 
                 case NPY_TYPES.NPY_INT32:
-                    return new UFUNC_Int32();
+                    return Instance_UFUNC_Int32;
 
                 case NPY_TYPES.NPY_UINT32:
-                    return new UFUNC_UInt32();
+                    return Instance_UFUNC_UInt32;
 
                 case NPY_TYPES.NPY_INT64:
-                    return new UFUNC_Int64();
+                    return Instance_UFUNC_Int64;
 
                 case NPY_TYPES.NPY_UINT64:
-                    return new UFUNC_UInt64();
+                    return Instance_UFUNC_UInt64;
 
                 case NPY_TYPES.NPY_FLOAT:
-                    return new UFUNC_Float();
+                    return Instance_UFUNC_Float;
 
                 case NPY_TYPES.NPY_DOUBLE:
-                    return new UFUNC_Double();
+                    return Instance_UFunc_Double;
 
                 case NPY_TYPES.NPY_DECIMAL:
-                    return new UFUNC_Decimal();
+                    return Instance_UFUNC_Decimal;
 
                 case NPY_TYPES.NPY_COMPLEX:
-                    return new UFUNC_Complex();
+                    return Instance_UFUNC_Complex;
 
                 case NPY_TYPES.NPY_BIGINT:
-                    return new UFUNC_BigInt();
+                    return Instance_UFUNC_BigInt;
 
                 case NPY_TYPES.NPY_OBJECT:
-                    return new UFUNC_Object();
+                    return Instance_UFUNC_Object;
 
                 default:
                     return null;
             }
         }
+
 
 
         internal static void UFuncCommon(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, UFuncOperation Ops)
