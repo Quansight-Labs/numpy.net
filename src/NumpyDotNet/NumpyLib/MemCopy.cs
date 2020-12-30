@@ -4368,7 +4368,7 @@ namespace NumpyLib
                 {
                     while (offsetsIndex < offsetsLength)
                     {
-                        d[offsets[offsetsIndex].data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
+                        d[offsets[offsetsIndex++].data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
                         if (swap)
                         {
                             numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
