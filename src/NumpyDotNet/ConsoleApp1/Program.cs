@@ -21,7 +21,7 @@ namespace ConsoleApp1
             //    Test2();
             //}
 
-            Test11();
+            Test4();
 
 
 
@@ -521,7 +521,7 @@ namespace ConsoleApp1
             {
                 for (int i = 0; i < TestDataSize; i++)
                 {
-                    Results[i] = TestData1[i] / ItemSize;
+                    Results[i] *= TestData1[i] / ItemSize;
                 }
             }
             
@@ -535,7 +535,7 @@ namespace ConsoleApp1
             {
                 for (int i = 0; i < TestDataSize; i++)
                 {
-                    Results2[i] = TestData1[i] >> ItemSizeRightShift;
+                    Results2[i] *= TestData1[i] >> ItemSizeRightShift;
                 }
             }
 
@@ -549,7 +549,7 @@ namespace ConsoleApp1
             {
                 for (int i = 0; i < TestDataSize; i++)
                 {
-                    Results3[i] = TestData1[i];
+                    Results3[i] *= TestData1[i];
                 }
             }
 
