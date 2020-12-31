@@ -680,19 +680,7 @@ namespace NumpyDotNet
                 {
                     args = new object[] { null };
                 }
-                //else
-                //{
-                //    if (args.Length == 1 && args[0] is PythonTuple)
-                //    {
-                //        args = ((IEnumerable<object>)args[0]).ToArray();
-                //    }
-
-                //    if (args.Length == 1 && args[0] is string)
-                //    {
-                //        string field = (string)args[0];
-                //        return ArrayReturn(NpyCoreApi.GetField(this, field));
-                //    }
-                //}
+  
                 NpyIndexes indexes = new NpyIndexes();
                 {
                     NpyUtil_IndexProcessing.IndexConverter(this, args, indexes);
@@ -1064,9 +1052,6 @@ namespace NumpyDotNet
             return NpyCoreApi.Byteswap(this, inplace);
         }
 
-        public object copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
-            return ArrayReturn(Copy(order));
-        }
 
         public ndarray Copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
             return NpyCoreApi.NewCopy(this, order);
@@ -1270,25 +1255,6 @@ namespace NumpyDotNet
             }
             RawFlags = flags;
         }
-
-        public object take(object indices, object axis = null, ndarray @out = null, object mode = null)
-        {
-            ndarray aIndices;
-            int iAxis;
-            NPY_CLIPMODE cMode;
-
-            aIndices = (indices as ndarray);
-            if (aIndices == null)
-            {
-                aIndices = np.FromAny(indices, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INTP),
-                    1, 0, NPYARRAYFLAGS.NPY_CONTIGUOUS, null);
-            }
-            iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
-            cMode = NpyUtil_ArgProcessing.ClipmodeConverter(mode);
-            return ArrayReturn(TakeFrom(aIndices, iAxis, @out, cMode));
-        }
-
-
 
 
         public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
@@ -1578,13 +1544,6 @@ namespace NumpyDotNet
             }
         }
 
-        public static object ArrayReturn(ndarray a) {
-            if (a.ndim == 0) {
-                return a.GetItem(0);
-            } else {
-                return a;
-            }
-        }
         private string BuildStringRepr(bool repr)
         {
             // Equivalent to array_repr_builtin (arrayobject.c)

@@ -606,31 +606,6 @@ namespace NumpyDotNet {
         }
 
 
-        internal static object GenericReduction(NpyUFuncObject UFunc, ndarray arr, ndarray indices, ndarray ret, int axis, dtype otype, GenericReductionOp op)
-        {
-            if (indices != null)
-            {
-                Incref(indices.Array);
-            }
-
-            ndarray rval;
-#if ENABLELOCKING
-            lock (GlobalIterpLock)
-#endif
-            {
-                rval = new ndarray(numpyAPI.NpyUFunc_GenericReduction(UFunc, arr.Array,
-                                    (indices != null) ? indices.Array : null,
-                                    (ret != null) ? ret.Array : null,
-                                    axis, (otype != null) ? otype.Descr : null, op));
-            }
-            if (rval != null)
-            {
-                // TODO: Call array wrap processing: ufunc_object.c:1011
-            }
-            return ndarray.ArrayReturn(rval);
-        }
-
-
         internal static ndarray Byteswap(ndarray arr, bool inplace)
         {
 #if ENABLELOCKING

@@ -44,7 +44,6 @@ namespace NumpyDotNet
     interface IArray
     {
         ndarray byteswap(bool inplace = false);
-        object copy(NumpyLib.NPY_ORDER order = NumpyLib.NPY_ORDER.NPY_KORDER);
         object dtype { get; }
         void fill(object scalar);
         flagsobj flags { get; }
@@ -59,7 +58,6 @@ namespace NumpyDotNet
         shape shape { get; }
         npy_intp size { get; }
         npy_intp[] strides { get; }
-        object take(object indices, object axis = null, ndarray @out = null, object mode = null);
         object this[params object[] args] { get; set; }
         object this[int index] { get; }
         object this[long index] { get; }
