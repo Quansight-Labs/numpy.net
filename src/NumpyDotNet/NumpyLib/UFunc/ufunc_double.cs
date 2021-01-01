@@ -270,6 +270,18 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                //case UFuncOperation.add:
+                //    return AddScalarOuterOpIter;
+
+                //case UFuncOperation.multiply:
+                //    return MultiplyScalarOuterOpIter;
+            }
+            return null;
+        }
 
 
         #region double specific operation handlers
@@ -326,6 +338,27 @@ namespace NumpyLib
                 dp[destIndex++] = aValue + bValues[j];
             }
         }
+        void AddScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                var bValue = bValues[j];
+
+                double destValue = aValue + bValue;
+
+                try
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    dp[AdjustedIndex] = destValue;
+                }
+                catch
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                }
+                NpyArray_ITER_NEXT(DestIter);
+            }
+        }
 
 
         protected override double Subtract(double aValue, double bValue)
@@ -371,11 +404,30 @@ namespace NumpyLib
         }
         protected void MultiplyScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
         {
-            throw new Exception();
-
             for (npy_intp j = 0; j < bSize; j++)
             {
                 dp[destIndex++] = aValue * bValues[j];
+            }
+        }
+        void MultiplyScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                var bValue = bValues[j];
+
+                double destValue = aValue * bValue;
+
+                try
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    dp[AdjustedIndex] = destValue;
+                }
+                catch
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                }
+                NpyArray_ITER_NEXT(DestIter);
             }
         }
 

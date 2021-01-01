@@ -1182,11 +1182,20 @@ namespace NumpyLib
                 {
                     try
                     {
+                        var UFuncOuterIterAccelerator = GetUFuncOuterIterOperation(op);
+
                         for (long i = 0; i < aSize; i++)
                         {
                             var aValue = aValues[i];
 
-                            PerformOuterOp(operations, aValue, bValues, bSize, dp, DestIter, destArray, UFuncOperation);
+                            if (UFuncOuterIterAccelerator != null)
+                            {
+                                UFuncOuterIterAccelerator(operations, aValue, bValues, bSize, dp, DestIter, destArray, op);
+                            }
+                            else
+                            {
+                                PerformOuterOp(operations, aValue, bValues, bSize, dp, DestIter, destArray, UFuncOperation);
+                            }
                         }
                     }
                     catch (System.OverflowException ex)
@@ -1572,6 +1581,14 @@ namespace NumpyLib
 
                 return GetUFuncOuterContigHandler(ops);
             }
+            protected opFunctionOuterOpIter GetUFuncOuterIterOperation(UFuncOperation ops)
+            {
+                // each individual data type can support accelerator functions if
+                // it chooses.  This call will return a delegate if the operation
+                // is supported, else null.
+
+                return GetUFuncOuterIterHandler(ops);
+            }
 
 
 
@@ -1585,12 +1602,15 @@ namespace NumpyLib
                                                          T[] dest, npy_intp[] destOffsets, 
                                                          npy_intp OffetLength, UFuncOperation ops);
             protected delegate void opFunctionOuterOpContig(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops);
+            protected delegate void opFunctionOuterOpIter(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops);
+
 
 
             protected abstract opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops);
             protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);
             protected abstract opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops);
             protected abstract opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops);
+            protected abstract opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops);
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);

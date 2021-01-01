@@ -265,6 +265,17 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
         #region Int16 specific operation handlers
         protected override Int16 Add(Int16 aValue, Int16 bValue)
         {

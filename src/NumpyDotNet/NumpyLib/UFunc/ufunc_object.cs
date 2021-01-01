@@ -264,6 +264,17 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
         #region System.Object specific operation handlers
         protected override System.Object Add(dynamic aValue, dynamic bValue)
         {
