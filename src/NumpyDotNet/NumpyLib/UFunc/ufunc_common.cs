@@ -1146,20 +1146,7 @@ namespace NumpyLib
 
                             long destIndex = (destArray.data.data_offset >> destArray.ItemDiv) + i * bSize;
 
-                            for (long j = 0; j < bSize; j++)
-                            {
-                                var bValue = bValues[j];
-  
-                                try
-                                {
-                                    dp[destIndex] = UFuncOperation(aValue, bValue);
-                                }
-                                catch
-                                {
-                                    operations.destSetItem(destIndex, 0, destArray);
-                                }
-                                destIndex++;
-                            }
+                            PerformOuterOp(operations, aValue, bValues, bSize, dp, destIndex, destArray, UFuncOperation);
                         }
                         catch (Exception ex)
                         {
@@ -1190,25 +1177,7 @@ namespace NumpyLib
                         {
                             var aValue = aValues[i];
 
-                            for (long j = 0; j < bSize; j++)
-                            {
-                                var bValue = bValues[j];
-
-                                T destValue = UFuncOperation(aValue, bValue);
-   
-                                try
-                                {
-                                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                                    dp[AdjustedIndex] = destValue;
-                                }
-                                catch
-                                {
-                                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                                    operations.destSetItem(AdjustedIndex, 0, destArray);
-                                }
-                                NpyArray_ITER_NEXT(DestIter);
-                            }
-
+                            PerformOuterOp(operations, aValue, bValues, bSize, dp, DestIter, destArray, UFuncOperation);
                         }
                     }
                     catch (System.OverflowException ex)
@@ -1225,6 +1194,46 @@ namespace NumpyLib
                 }
 
 
+            }
+
+            void PerformOuterOp(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T []dp, npy_intp destIndex, NpyArray destArray, opFunction UFuncOperation)
+            {
+                for (npy_intp j = 0; j < bSize; j++)
+                {
+                    var bValue = bValues[j];
+
+                    try
+                    {
+                        dp[destIndex] = UFuncOperation(aValue, bValue);
+                    }
+                    catch
+                    {
+                        operations.destSetItem(destIndex, 0, destArray);
+                    }
+                    destIndex++;
+                }
+            }
+
+            void PerformOuterOp(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, NpyArrayIterObject DestIter, NpyArray destArray, opFunction UFuncOperation)
+            {
+                for (npy_intp j = 0; j < bSize; j++)
+                {
+                    var bValue = bValues[j];
+
+                    T destValue = UFuncOperation(aValue, bValue);
+
+                    try
+                    {
+                        long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                        dp[AdjustedIndex] = destValue;
+                    }
+                    catch
+                    {
+                        long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                        operations.destSetItem(AdjustedIndex, 0, destArray);
+                    }
+                    NpyArray_ITER_NEXT(DestIter);
+                }
             }
 
             #endregion
