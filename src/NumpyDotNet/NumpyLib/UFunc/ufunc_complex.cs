@@ -263,6 +263,17 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
         #region System.Numerics.Complex specific operation handlers
         protected override System.Numerics.Complex Add(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {

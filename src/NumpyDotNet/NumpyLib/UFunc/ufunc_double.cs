@@ -258,6 +258,20 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                //case UFuncOperation.add:
+                //    return AddScalarOuterOpContig;
+
+                //case UFuncOperation.multiply:
+                //    return MultiplyScalarOuterOpContig;
+            }
+            return null;
+        }
+
+
         #region double specific operation handlers
         protected override double Add(double aValue, double bValue)
         {
@@ -305,6 +319,15 @@ namespace NumpyLib
             }
         }
 
+        protected void AddScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                dp[destIndex++] = aValue + bValues[j];
+            }
+        }
+
+
         protected override double Subtract(double aValue, double bValue)
         {
             return aValue - bValue;
@@ -344,6 +367,15 @@ namespace NumpyLib
                 O1_Index += O1_Step;
                 O2_Index += O2_Step;
                 R_Index += R_Step;
+            }
+        }
+        protected void MultiplyScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
+        {
+            throw new Exception();
+
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                dp[destIndex++] = aValue * bValues[j];
             }
         }
 

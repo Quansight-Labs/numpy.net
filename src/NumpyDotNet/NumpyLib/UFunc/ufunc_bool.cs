@@ -229,6 +229,11 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
         #region bool specific operation handlers
         protected override bool Add(bool aValue, bool bValue)
         {

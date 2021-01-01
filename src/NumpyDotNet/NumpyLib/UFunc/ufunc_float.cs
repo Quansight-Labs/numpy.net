@@ -253,6 +253,17 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
         #region float specific operation handlers
         protected override float Add(float aValue, float bValue)
         {
