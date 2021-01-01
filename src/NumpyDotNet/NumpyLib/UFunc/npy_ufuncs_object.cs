@@ -1575,6 +1575,8 @@ namespace NumpyLib
                      * NOBUFFER -- behaved array and same type
                      */
 
+                    var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
+
                     var loopcnt = loop.size - loop.index;
                     if (loopcnt <= 1)
                     {
@@ -1594,7 +1596,14 @@ namespace NumpyLib
                                     loop.bufptr[1] += loop.steps[1];
                                     loop.bufptr[2] = loop.bufptr[0];
 
-                                    loop.function(operation, loop.bufptr, mm, loop.steps, self.ops);
+                                    if (UFuncHandler != null)
+                                    {
+                                        UFuncHandler(loop.bufptr, loop.steps, self.ops, mm);
+                                    }
+                                    else
+                                    {
+                                        loop.function(operation, loop.bufptr, mm, loop.steps, self.ops);
+                                    }
                                     if (!NPY_UFUNC_CHECK_ERROR(loop))
                                     {
                                         goto fail;
@@ -1646,7 +1655,15 @@ namespace NumpyLib
                                                     UFUNCLoopWorkerParams work = null;
                                                     if (workToDo.TryDequeue(out work))
                                                     {
-                                                        loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
+                                                        if (UFuncHandler != null)
+                                                        {
+                                                            UFuncHandler(work.bufptr, work.steps, work.ops, work.N);
+                                                        }
+                                                        else
+                                                        {
+                                                            loop.function(work.op, work.bufptr, work.N, work.steps, work.ops);
+                                                        }
+
                                                         if (!NPY_UFUNC_CHECK_ERROR(loop))
                                                         {
                                                             HasError = true;
