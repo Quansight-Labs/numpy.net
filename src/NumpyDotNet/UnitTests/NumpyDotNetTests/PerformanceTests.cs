@@ -325,7 +325,7 @@ namespace NumpyDotNetTests
         {
 
             int LoopCount = 200;
-            var a = np.arange(0, 1000, dtype: np.Float64);
+            var a = np.arange(0, 5000, dtype: np.Float64);
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -336,7 +336,7 @@ namespace NumpyDotNetTests
                b = np.ufunc.outer(UFuncOperation.add, np.Float64, a, a);
             }
             var c = np.sum(b);
-            Assert.AreEqual(999000000.0, c.item(0));
+            Assert.AreEqual(124975000000.0, c.item(0));
 
             sw.Stop();
 
