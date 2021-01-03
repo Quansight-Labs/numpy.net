@@ -201,7 +201,8 @@ namespace NumpyLib
         internal static UFUNC_Complex Instance_UFUNC_Complex = new UFUNC_Complex();
         internal static UFUNC_BigInt Instance_UFUNC_BigInt = new UFUNC_BigInt();
         internal static UFUNC_Object Instance_UFUNC_Object = new UFUNC_Object();
-    
+        internal static UFUNC_String Instance_UFUNC_String = new UFUNC_String();
+
         private static IUFUNC_Operations GetUFuncHandler(NPY_TYPES npy_type)
         {
             switch (npy_type)
@@ -250,6 +251,9 @@ namespace NumpyLib
 
                 case NPY_TYPES.NPY_OBJECT:
                     return Instance_UFUNC_Object;
+
+                case NPY_TYPES.NPY_STRING:
+                    return Instance_UFUNC_String;
 
                 default:
                     return null;
@@ -910,7 +914,7 @@ namespace NumpyLib
                 T[] dest = destArray.data.datap as T[];
                 T[] oper = operArray.data.datap as T[];
 
-                var UFuncScalerIterOperation = GetUFuncScalarIterOperation(op);
+                var UFuncScalerIterAccelerator = GetUFuncScalarIterOperation(op);
 
                 var UFuncOperation = GetUFuncOperation(op);
                 if (UFuncOperation == null)
@@ -951,9 +955,9 @@ namespace NumpyLib
 
                         try
                         {
-                            if (UFuncScalerIterOperation != null)
+                            if (UFuncScalerIterAccelerator != null)
                             {
-                                UFuncScalerIterOperation(
+                                UFuncScalerIterAccelerator(
                                     src, lsrcIter.internalCache,
                                     oper, loperIter.internalCache,
                                     dest, ldestIter.internalCache,
