@@ -4566,7 +4566,7 @@ namespace NumpyLib
         {
             var spread = it1.size - it1.index;
             var spread2 = it2.size - it2.index;
-            if (spread < 4 || spread2 < 100)
+            if (spread < 4 || spread2 < 40)
             {
                 InnerProductExecute(it1, it2, op, is1, is2, os, l);
             }
