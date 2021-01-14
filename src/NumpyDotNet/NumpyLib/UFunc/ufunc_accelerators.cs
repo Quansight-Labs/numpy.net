@@ -1707,7 +1707,7 @@ namespace NumpyLib
 
     internal partial class UFUNC_Double : UFUNC_BASE<double>, IUFUNC_Operations
     {
-
+        #region Accelerator Handlers
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -1800,11 +1800,34 @@ namespace NumpyLib
             }
             return null;
         }
+
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
         {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.subtract:
+                case UFuncOperation.multiply:
+                    return AddSubMultScalerIterContigNoIter;
+
+                case UFuncOperation.divide:
+                case UFuncOperation.true_divide:
+                case UFuncOperation.floor_divide:
+                case UFuncOperation.remainder:
+                    return DivisionScalerIterContigNoIter;
+
+                case UFuncOperation.power:
+                case UFuncOperation.sqrt:
+                case UFuncOperation.absolute:
+                case UFuncOperation.maximum:
+                case UFuncOperation.minimum:
+                    return PowerSqrtScalerIterContigNoIter;
+            }
             return null;
         }
+        #endregion
 
+        #region Reduce accelerators
         protected double AddReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -1814,68 +1837,6 @@ namespace NumpyLib
             }
             return result;
         }
-        protected void AddAccumulate(
-                double[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                double[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                double[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
-        protected void AddScalerIter(
-            double[] src, npy_intp[] srcOffsets,
-            double[] oper, npy_intp[] operOffsets,
-            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
-        {
-            for (npy_intp i = 0; i < offsetsLen; i++)
-            {
-                double srcValue, operand;
-                npy_intp destIndex;
-
-                srcValue = src[srcOffsets[i] >> ItemDiv];
-                operand = oper[operOffsets[i] >> ItemDiv];
-                destIndex = destOffsets[i] >> ItemDiv;
-
-                dest[destIndex] = srcValue + operand;
-            }
-        }
-
-        protected void AddScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
-        {
-            for (npy_intp j = 0; j < bSize; j++)
-            {
-                dp[destIndex++] = aValue + bValues[j];
-            }
-        }
-        void AddScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
-        {
-            for (npy_intp j = 0; j < bSize; j++)
-            {
-                var bValue = bValues[j];
-
-                double destValue = aValue + bValue;
-
-                try
-                {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                    dp[AdjustedIndex] = destValue;
-                }
-                catch
-                {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                    operations.destSetItem(AdjustedIndex, 0, destArray);
-                }
-                NpyArray_ITER_NEXT(DestIter);
-            }
-        }
-
         protected double SubtractReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -1895,48 +1856,6 @@ namespace NumpyLib
 
             return result;
         }
-        protected void MultiplyAccumulate(
-                double[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                double[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                double[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-        protected void MultiplyScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
-        {
-            for (npy_intp j = 0; j < bSize; j++)
-            {
-                dp[destIndex++] = aValue * bValues[j];
-            }
-        }
-        void MultiplyScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
-        {
-            for (npy_intp j = 0; j < bSize; j++)
-            {
-                var bValue = bValues[j];
-
-                double destValue = aValue * bValue;
-
-                try
-                {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                    dp[AdjustedIndex] = destValue;
-                }
-                catch
-                {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
-                    operations.destSetItem(AdjustedIndex, 0, destArray);
-                }
-                NpyArray_ITER_NEXT(DestIter);
-            }
-        }
         protected double DivideReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -1951,34 +1870,6 @@ namespace NumpyLib
             }
 
             return result;
-        }
-
-        protected void DivideScalerIter(
-            double[] src, npy_intp[] srcOffsets,
-            double[] oper, npy_intp[] operOffsets,
-            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
-        {
-            for (npy_intp i = 0; i < offsetsLen; i++)
-            {
-                double srcValue, operand;
-                npy_intp destIndex;
-
-                srcValue = src[srcOffsets[i] >> ItemDiv];
-                operand = oper[operOffsets[i] >> ItemDiv];
-                destIndex = destOffsets[i] >> ItemDiv;
-
-                try
-                {
-                    if (operand == 0)
-                        dest[destIndex] = 0;
-                    else
-                        dest[destIndex] = srcValue / operand;
-                }
-                catch
-                {
-                    dest[destIndex] = 0;
-                }
-            }
         }
         protected double LogicalOrReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -2022,6 +1913,288 @@ namespace NumpyLib
 
             return result;
         }
+        #endregion
+
+        #region Accumulate accelerators
+        protected void AddAccumulate(
+         double[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+         double[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+         double[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+
+        protected void MultiplyAccumulate(
+        double[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+        double[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+        double[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        #endregion
+
+        #region ScalerIter
+        protected void AddScalerIter(
+            double[] src, npy_intp[] srcOffsets,
+            double[] oper, npy_intp[] operOffsets,
+            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
+        {
+            for (npy_intp i = 0; i < offsetsLen; i++)
+            {
+                double srcValue, operand;
+                npy_intp destIndex;
+
+                srcValue = src[srcOffsets[i] >> ItemDiv];
+                operand = oper[operOffsets[i] >> ItemDiv];
+                destIndex = destOffsets[i] >> ItemDiv;
+
+                dest[destIndex] = srcValue + operand;
+            }
+        }
+        protected void DivideScalerIter(
+            double[] src, npy_intp[] srcOffsets,
+            double[] oper, npy_intp[] operOffsets,
+            double[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, UFuncOperation ops)
+        {
+            for (npy_intp i = 0; i < offsetsLen; i++)
+            {
+                double srcValue, operand;
+                npy_intp destIndex;
+
+                srcValue = src[srcOffsets[i] >> ItemDiv];
+                operand = oper[operOffsets[i] >> ItemDiv];
+                destIndex = destOffsets[i] >> ItemDiv;
+
+                try
+                {
+                    if (operand == 0)
+                        dest[destIndex] = 0;
+                    else
+                        dest[destIndex] = srcValue / operand;
+                }
+                catch
+                {
+                    dest[destIndex] = 0;
+                }
+            }
+        }
+        #endregion
+
+        #region OuterOpContig
+        protected void AddScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                dp[destIndex++] = aValue + bValues[j];
+            }
+        }
+        protected void MultiplyScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                dp[destIndex++] = aValue * bValues[j];
+            }
+        }
+        #endregion
+
+        #region OuterOpIter
+        void AddScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                var bValue = bValues[j];
+
+                double destValue = aValue + bValue;
+
+                try
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    dp[AdjustedIndex] = destValue;
+                }
+                catch
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                }
+                NpyArray_ITER_NEXT(DestIter);
+            }
+        }
+        void MultiplyScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
+        {
+            for (npy_intp j = 0; j < bSize; j++)
+            {
+                var bValue = bValues[j];
+
+                double destValue = aValue * bValue;
+
+                try
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    dp[AdjustedIndex] = destValue;
+                }
+                catch
+                {
+                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
+                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                }
+                NpyArray_ITER_NEXT(DestIter);
+            }
+        }
+        #endregion
+
+        #region ScalerIterContigNoIter
+        private void AddSubMultScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.add)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] + operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.subtract)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] - operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.multiply)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] * operand;
+                }
+                return;
+            }
+
+        }
+
+        private void DivisionScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (operand == 0)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = 0;
+                }
+                return;
+            }
+
+            if (ops == UFuncOperation.divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.true_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.floor_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Floor(src[srcIndex++] / operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.remainder)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    var aValue = src[srcIndex++];
+                    var rem = aValue % operand;
+                    if ((aValue > 0) == (operand > 0) || rem == 0)
+                    {
+                        dest[destIndex++] = rem;
+                    }
+                    else
+                    {
+                        dest[destIndex++] = rem + operand;
+                    }
+                }
+                return;
+            }
+
+        }
+
+        private void PowerSqrtScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.power)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Pow(src[srcIndex++], operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.sqrt)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Sqrt(src[srcIndex++]);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.absolute)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Abs(src[srcIndex++]);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.maximum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Max(src[srcIndex++], operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.minimum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Min(src[srcIndex++], operand);
+                }
+                return;
+            }
+
+        }
+        #endregion
     }
 
     internal partial class UFUNC_Decimal : UFUNC_BASE<decimal>, IUFUNC_Operations
