@@ -1028,7 +1028,6 @@ namespace NumpyLib
 
                 var loopCount = NpyArray_Size(destArray);
 
-                var ScalarIterContiguousNoIterAccelerator = GetUFuncScalarIterContiguousNoIter(op);
 
                 var UFuncOperation = GetUFuncOperation(op);
                 if (UFuncOperation == null)
@@ -1038,6 +1037,8 @@ namespace NumpyLib
 
                 if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
                 {
+                    var ScalarIterContiguousNoIterAccelerator = GetUFuncScalarIterContiguousNoIter(op);
+
                     T operand = oper[0];
 
                     var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
