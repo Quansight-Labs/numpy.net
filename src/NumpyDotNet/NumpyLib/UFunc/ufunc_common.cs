@@ -1073,6 +1073,9 @@ namespace NumpyLib
                 }
                 else
                 {
+                    var ScalarIterContiguousIterAccelerator = GetUFuncScalarIterContiguousIter(op);
+
+
                     var ParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
                     Parallel.For(0, ParallelIters.Count(), index =>
@@ -1081,7 +1084,14 @@ namespace NumpyLib
 
                         try
                         {
-                            PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
+                            if (ScalarIterContiguousIterAccelerator != null)
+                            {
+                                ScalarIterContiguousIterAccelerator(Iter, src, dest, oper, srcAdjustment, destAdjustment, op);
+                            }
+                            else
+                            {
+                                PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -1649,7 +1659,14 @@ namespace NumpyLib
 
                 return GetUFuncScalarIterContiguousNoIterHandler(ops);
             }
+            protected opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIter(UFuncOperation ops)
+            {
+                // each individual data type can support accelerator functions if
+                // it chooses.  This call will return a delegate if the operation
+                // is supported, else null.
 
+                return GetUFuncScalarIterContiguousIterHandler(ops);
+            }
 
             protected delegate T opFunction(T o1, T o2);
             protected delegate T opFunctionReduce(T Op1Value, T[] Op2Values, npy_intp O2_Index, npy_intp O2_Step, npy_intp N);
@@ -1663,6 +1680,7 @@ namespace NumpyLib
             protected delegate void opFunctionOuterOpContig(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops);
             protected delegate void opFunctionOuterOpIter(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops);
             protected delegate void opFunctionScalarIterContiguousNoIter(T[] src, T[] dest, T operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops);
+            protected delegate void opFunctionScalarIterContiguousIter(NpyArrayIterObject Iter, T[] src, T[] dest, T[] oper, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops);
 
             protected abstract opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops);
             protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);
@@ -1670,6 +1688,8 @@ namespace NumpyLib
             protected abstract opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops);
             protected abstract opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops);
             protected abstract opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops);
+            protected abstract opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops);
+
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);

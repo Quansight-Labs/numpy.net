@@ -98,6 +98,11 @@ namespace NumpyLib
         {
             return null;
         }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -188,7 +193,13 @@ namespace NumpyLib
             }
             return null;
         }
+
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
         {
             return null;
         }
@@ -259,6 +270,11 @@ namespace NumpyLib
             return null;
         }
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
         {
             return null;
         }
@@ -377,6 +393,10 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -753,6 +773,10 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -1130,6 +1154,10 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -1508,6 +1536,10 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -1886,6 +1918,10 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -2260,6 +2296,11 @@ namespace NumpyLib
                 case UFuncOperation.minimum:
                     return PowerSqrtScalerIterContigNoIter;
             }
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
             return null;
         }
         #endregion
@@ -2638,6 +2679,11 @@ namespace NumpyLib
                 case UFuncOperation.minimum:
                     return PowerSqrtScalerIterContigNoIter;
             }
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
             return null;
         }
         #endregion
@@ -3022,6 +3068,11 @@ namespace NumpyLib
                 case UFuncOperation.minimum:
                     return PowerSqrtScalerIterContigNoIter;
             }
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
             return null;
         }
         #endregion
@@ -3508,6 +3559,11 @@ namespace NumpyLib
             return null;
         }
 
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
         #endregion
 
         #region Reduce accelerators
@@ -3856,6 +3912,11 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -4241,6 +4302,11 @@ namespace NumpyLib
         {
             return null;
         }
+
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -4457,6 +4523,10 @@ namespace NumpyLib
         {
             return null;
         }
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         #endregion
 
         #region Reduce accelerators
@@ -4611,6 +4681,10 @@ namespace NumpyLib
         }
 
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousIter GetUFuncScalarIterContiguousIterHandler(UFuncOperation ops)
         {
             return null;
         }
