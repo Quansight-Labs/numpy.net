@@ -1064,21 +1064,29 @@ namespace NumpyLib
             {
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
-                Parallel.For(0, loopCount, index =>
+                var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+
+                Parallel.For(0, segments.Count(), segment_index =>
                 {
-                    try
+                    var segment = segments.ElementAt(segment_index);
+
+                    for (npy_intp index = segment.start; index < segment.end; index++)
                     {
-                        var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
-                        dest[index - destAdjustment] = dValue;
+                        try
+                        {
+                            var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                            dest[index - destAdjustment] = dValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(D);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
                     }
-                    catch (System.OverflowException of)
-                    {
-                        dest[index - destAdjustment] = default(D);
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
+    
 
                 });
             }
