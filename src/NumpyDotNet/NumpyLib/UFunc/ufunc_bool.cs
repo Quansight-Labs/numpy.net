@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC BOOL
 
-    internal class UFUNC_Bool : UFUNC_BASE<bool>, IUFUNC_Operations
+    internal partial class UFUNC_Bool : UFUNC_BASE<bool>, IUFUNC_Operations
     {
         public UFUNC_Bool() : base(sizeof(bool))
         {
@@ -192,51 +192,7 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.subtract:
-                case UFuncOperation.multiply:
-                case UFuncOperation.divide:
-                    break;
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                case UFuncOperation.minimum:
-                    break;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            return null;
-        }
+  
 
         #region bool specific operation handlers
         protected override bool Add(bool aValue, bool bValue)
@@ -355,30 +311,12 @@ namespace NumpyLib
         {
             return bValue || operand;
         }
-        protected bool LogicalOrReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result || OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
 
-            return result;
-        }
         protected override bool LogicalAnd(bool bValue, bool operand)
         {
             return bValue && operand;
         }
-        protected bool LogicalAndReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result && OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
+  
         protected override bool Floor(bool bValue, bool operand)
         {
             return bValue ^ operand;
