@@ -93,7 +93,10 @@ namespace NumpyLib
         {
             return null;
         }
-
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
         protected bool LogicalOrReduce(bool result, bool[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -180,6 +183,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
     }
 
     internal partial class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
@@ -242,6 +249,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
     }
@@ -329,6 +340,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -533,6 +548,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected UInt16 AddReduce(UInt16 result, UInt16[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -734,6 +753,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -940,6 +963,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected UInt32 AddReduce(UInt32 result, UInt32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -1141,6 +1168,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -1347,6 +1378,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected UInt64 AddReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -1548,6 +1583,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -1761,6 +1800,11 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
         protected double AddReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -2065,7 +2109,10 @@ namespace NumpyLib
             }
             return null;
         }
-
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected decimal AddReduce(decimal result, decimal[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -2271,6 +2318,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -2474,6 +2525,10 @@ namespace NumpyLib
                 case UFuncOperation.multiply:
                     break;
             }
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
             return null;
         }
 
@@ -2682,6 +2737,10 @@ namespace NumpyLib
             }
             return null;
         }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
 
         protected System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
@@ -2824,6 +2883,10 @@ namespace NumpyLib
         }
 
         protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+        protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
         {
             return null;
         }

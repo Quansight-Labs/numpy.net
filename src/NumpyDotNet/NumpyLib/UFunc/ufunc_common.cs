@@ -1028,6 +1028,8 @@ namespace NumpyLib
 
                 var loopCount = NpyArray_Size(destArray);
 
+                var ScalarIterContiguousNoIterAccelerator = GetUFuncScalarIterContiguousNoIter(op);
+
                 var UFuncOperation = GetUFuncOperation(op);
                 if (UFuncOperation == null)
                 {
@@ -1047,9 +1049,19 @@ namespace NumpyLib
 
                         try
                         {
-                            PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
-                                 segment.start, segment.end, srcAdjustment, destAdjustment,
-                                 UFuncOperation);
+                            if (ScalarIterContiguousNoIterAccelerator != null)
+                            {
+                                ScalarIterContiguousNoIterAccelerator(src, dest, operand,
+                                        segment.start, segment.end, srcAdjustment, destAdjustment,
+                                        op);
+                            }
+                            else
+                            {
+                                PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
+                                        segment.start, segment.end, srcAdjustment, destAdjustment,
+                                        UFuncOperation);
+                            }
+   
                         }
                         catch (Exception ex)
                         {
@@ -1620,7 +1632,14 @@ namespace NumpyLib
 
                 return GetUFuncOuterIterHandler(ops);
             }
+            protected opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIter(UFuncOperation ops)
+            {
+                // each individual data type can support accelerator functions if
+                // it chooses.  This call will return a delegate if the operation
+                // is supported, else null.
 
+                return GetUFuncScalarIterContiguousNoIterHandler(ops);
+            }
 
 
             protected delegate T opFunction(T o1, T o2);
@@ -1641,6 +1660,7 @@ namespace NumpyLib
             protected abstract opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops);
             protected abstract opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops);
             protected abstract opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops);
+            protected abstract opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops);
 
             protected abstract T Add(T o1, T o2);
             protected abstract T Subtract(T o1, T o2);
