@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC INT32
 
-    internal class UFUNC_Int32 : UFUNC_BASE<Int32>, IUFUNC_Operations
+    internal partial class UFUNC_Int32 : UFUNC_BASE<Int32>, IUFUNC_Operations
     {
         public UFUNC_Int32() : base(sizeof(Int32))
         {
@@ -192,187 +192,25 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddReduce;
-
-                case UFuncOperation.subtract:
-                    return SubtractReduce;
-
-                case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
-                case UFuncOperation.divide:
-                    return DivideReduce;
-
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                    return MaximumReduce;
-
-                case UFuncOperation.minimum:
-                    return MinimumReduce;
-
-            }
-
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-
         #region Int32 specific operation handlers
         protected override Int32 Add(Int32 aValue, Int32 bValue)
         {
             return aValue + bValue;
         }
-        protected Int32 AddReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result + OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
- 
-            return result;
-        }
-        protected void AddAccumulate(
-                Int32[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                Int32[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                Int32[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override Int32 Subtract(Int32 aValue, Int32 bValue)
         {
             return aValue - bValue;
         }
-        protected Int32 SubtractReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result - OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override Int32 Multiply(Int32 aValue, Int32 bValue)
         {
             return aValue * bValue;
         }
-        protected Int32 MultiplyReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result * OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void MultiplyAccumulate(
-                Int32[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                Int32[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                Int32[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override Int32 Divide(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue / bValue;
         }
-        protected Int32 DivideReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                var bValue = OperandArray[OperIndex];
-                if (bValue == 0)
-                    result = 0;
-                else
-                    result = result / bValue;
-
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override Int32 Remainder(Int32 aValue, Int32 bValue)
         {
             if (bValue == 0)
@@ -501,32 +339,10 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected Int32 LogicalOrReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override Int32 LogicalAnd(Int32 bValue, Int32 operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
-        }
-        protected Int32 LogicalAndReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override Int32 Floor(Int32 bValue, Int32 operand)
         {
@@ -540,29 +356,9 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
-        protected Int32 MaximumReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Max(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override Int32 Minimum(Int32 bValue, Int32 operand)
         {
             return Math.Min(bValue, operand);
-        }
-        protected Int32 MinimumReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Min(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override Int32 Rint(Int32 bValue, Int32 operand)
         {
