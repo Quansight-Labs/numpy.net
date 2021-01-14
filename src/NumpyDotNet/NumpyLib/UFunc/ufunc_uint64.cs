@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC UINT64
-    internal class UFUNC_UInt64 : UFUNC_BASE<UInt64>, IUFUNC_Operations
+    internal partial class UFUNC_UInt64 : UFUNC_BASE<UInt64>, IUFUNC_Operations
     {
         public UFUNC_UInt64() : base(sizeof(UInt64))
         {
@@ -191,183 +191,24 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddReduce;
-
-                case UFuncOperation.subtract:
-                    return SubtractReduce;
-
-                case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
-                case UFuncOperation.divide:
-                    return DivideReduce;
-
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                    return MaximumReduce;
-
-                case UFuncOperation.minimum:
-                    return MinimumReduce;
-
-            }
-
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
         #region UInt64 specific operation handlers
         protected override UInt64 Add(UInt64 aValue, UInt64 bValue)
         {
             return aValue + bValue;
         }
-        protected UInt64 AddReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result + OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void AddAccumulate(
-                UInt64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                UInt64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                UInt64[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override UInt64 Subtract(UInt64 aValue, UInt64 bValue)
         {
             return aValue - bValue;
-        }
-        protected UInt64 SubtractReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result - OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override UInt64 Multiply(UInt64 aValue, UInt64 bValue)
         {
             return aValue * bValue;
         }
-        protected UInt64 MultiplyReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result * OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void MultiplyAccumulate(
-                UInt64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                UInt64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                UInt64[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override UInt64 Divide(UInt64 aValue, UInt64 bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue / bValue;
-        }
-        protected UInt64 DivideReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                var bValue = OperandArray[OperIndex];
-                if (bValue == 0)
-                    result = 0;
-                else
-                    result = result / bValue;
-
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override UInt64 Remainder(UInt64 aValue, UInt64 bValue)
         {
@@ -497,35 +338,11 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return (UInt64)(boolValue ? 1 : 0);
         }
-        protected UInt64 LogicalOrReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = (UInt64)(boolValue ? 1 : 0);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override UInt64 LogicalAnd(UInt64 bValue, UInt64 operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return (UInt64)(boolValue ? 1 : 0);
         }
-        protected UInt64 LogicalAndReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = (UInt64)(boolValue ? 1 : 0);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override UInt64 Floor(UInt64 bValue, UInt64 operand)
         {
             return Convert.ToUInt64(Math.Floor(Convert.ToDouble(bValue)));
@@ -538,29 +355,9 @@ namespace NumpyLib
         {
             return Math.Max(bValue, operand);
         }
-        protected UInt64 MaximumReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Max(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override UInt64 Minimum(UInt64 bValue, UInt64 operand)
         {
             return Math.Min(bValue, operand);
-        }
-        protected UInt64 MinimumReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Min(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override UInt64 Rint(UInt64 bValue, UInt64 operand)
         {
