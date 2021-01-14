@@ -1038,23 +1038,24 @@ namespace NumpyLib
                 {
                     T operand = oper[0];
 
-                    Parallel.For(0, loopCount, index =>
+                    var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+
+                    Parallel.For(0, segments.Count(), seg_index =>
                     //for (npy_intp index = 0; index < loopCount; index++)
                     {
+                        var segment = segments.ElementAt(seg_index);
+
                         try
                         {
-                            T srcValue = src[index - srcAdjustment];
-                            dest[index - destAdjustment] = UFuncOperation(srcValue, operand);
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(T);
+                            PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
+                                 segment.start, segment.end, srcAdjustment, destAdjustment,
+                                 UFuncOperation);
                         }
                         catch (Exception ex)
                         {
                             exceptions.Enqueue(ex);
                         }
-
+ 
                     } );
                 }
                 else
@@ -1093,6 +1094,31 @@ namespace NumpyLib
                 if (exceptions.Count > 0)
                 {
                     throw exceptions.ElementAt(0);
+                }
+
+            }
+
+            private void PerformNumericOpScalarIterContiguousNoIter(T []src, T []dest, T operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, opFunction UFuncOperation)
+            {
+                npy_intp srcIndex = start - srcAdjustment;
+                npy_intp destIndex = start - destAdjustment;
+
+                for (npy_intp index = start; index < end; index++)
+                {
+                    try
+                    {
+                        T srcValue = src[srcIndex];
+                        dest[destIndex] = UFuncOperation(srcValue, operand);
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[destIndex] = default(T);
+                    }
+    
+
+                    srcIndex++;
+                    destIndex++;
+
                 }
 
             }
@@ -1608,8 +1634,7 @@ namespace NumpyLib
                                                          npy_intp OffetLength, UFuncOperation ops);
             protected delegate void opFunctionOuterOpContig(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops);
             protected delegate void opFunctionOuterOpIter(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops);
-
-
+            protected delegate void opFunctionScalarIterContiguousNoIter(T[] src, T[] dest, T operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops);
 
             protected abstract opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops);
             protected abstract opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops);

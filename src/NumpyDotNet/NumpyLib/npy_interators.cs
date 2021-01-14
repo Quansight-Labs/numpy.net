@@ -925,6 +925,61 @@ namespace NumpyLib
             return DestIters;
         }
 
+        internal class LoopSegment
+        {
+            public npy_intp start;
+            public npy_intp end;
+        }
+
+        internal static IEnumerable<LoopSegment> NpyArray_SEGMENT_ParallelSplit(npy_intp loopCount, npy_intp SingleIterSize = -1)
+        {
+            npy_intp TotalSize = loopCount;
+            LoopSegment[] segments = null;
+
+            if (TotalSize <= SingleIterSize || maxParallelIterators == 1)
+            {
+                segments = new LoopSegment[1];
+            }
+            else
+            if (TotalSize <= (SingleIterSize * 2) || maxParallelIterators == 2)
+            {
+                segments = new LoopSegment[2];
+            }
+            else
+            if (TotalSize <= (SingleIterSize * 4) || maxParallelIterators == 4)
+            {
+                segments = new LoopSegment[4];
+            }
+            else
+            if (TotalSize <= (SingleIterSize * 8) || maxParallelIterators == 8)
+            {
+                segments = new LoopSegment[8];
+            }
+            else
+            {
+                segments = new LoopSegment[16];
+            }
+
+            for (int i = 0; i < segments.Length; i++)
+            {
+                segments[i] = new LoopSegment();
+            }
+
+            var taskSize = TotalSize / segments.Length;
+            segments[0].start = 0;
+            segments[0].end = taskSize;
+
+            for (int Index = 1; Index < segments.Length; Index++)
+            {
+                segments[Index].start = segments[Index - 1].end;
+                segments[Index].end = segments[Index].start + taskSize;
+
+            }
+            segments[segments.Length - 1].end = TotalSize;
+
+            return segments;
+        }
+
         [Obsolete]
         internal static IEnumerable<NpyArrayIterObject> NpyArray_ITER_ParallelSplit_SPLITBYTMASK(NpyArrayIterObject it)
         {
