@@ -48,7 +48,7 @@ namespace NumpyLib
 
     #region UFUNC BYTE
 
-    internal class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
+    internal partial class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
     {
         public UFUNC_UByte() : base(sizeof(byte))
         {
@@ -212,44 +212,6 @@ namespace NumpyLib
                     break;
             }
 
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-  
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
             return null;
         }
 

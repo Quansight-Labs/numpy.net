@@ -115,5 +115,111 @@ namespace NumpyLib
 
             return result;
         }
+
+    }
+
+    internal partial class UFUNC_SByte : UFUNC_BASE<sbyte>, IUFUNC_Operations
+    {
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            // these are the commonly used reduce operations.
+            //
+            // We can add more by implementing data type specific implementations
+            // and adding them to this switch statement
+
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.subtract:
+                case UFuncOperation.multiply:
+                case UFuncOperation.divide:
+                case UFuncOperation.logical_or:
+                case UFuncOperation.logical_and:
+                case UFuncOperation.maximum:
+                case UFuncOperation.minimum:
+                    break;
+            }
+
+            return null;
+        }
+
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+    }
+
+    internal partial class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
+    {
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
     }
 }
