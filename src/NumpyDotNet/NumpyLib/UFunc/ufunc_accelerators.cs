@@ -2618,6 +2618,26 @@ namespace NumpyLib
 
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
         {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.subtract:
+                case UFuncOperation.multiply:
+                    return AddSubMultScalerIterContigNoIter;
+
+                case UFuncOperation.divide:
+                case UFuncOperation.true_divide:
+                case UFuncOperation.floor_divide:
+                case UFuncOperation.remainder:
+                    return DivisionScalerIterContigNoIter;
+
+                case UFuncOperation.power:
+                case UFuncOperation.sqrt:
+                case UFuncOperation.absolute:
+                case UFuncOperation.maximum:
+                case UFuncOperation.minimum:
+                    return PowerSqrtScalerIterContigNoIter;
+            }
             return null;
         }
         #endregion
@@ -2739,6 +2759,147 @@ namespace NumpyLib
                 O2_Index += O2_Step;
                 R_Index += R_Step;
             }
+        }
+        #endregion
+
+
+        #region ScalerIterContigNoIter Accelerators
+        private void AddSubMultScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.add)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] + operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.subtract)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] - operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.multiply)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] * operand;
+                }
+                return;
+            }
+
+        }
+
+        private void DivisionScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (operand == 0)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = 0;
+                }
+                return;
+            }
+
+            if (ops == UFuncOperation.divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.true_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.floor_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Convert.ToSingle(Math.Floor(src[srcIndex++] / operand));
+                }
+                return;
+            }
+            if (ops == UFuncOperation.remainder)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    var aValue = src[srcIndex++];
+                    var rem = aValue % operand;
+                    if ((aValue > 0) == (operand > 0) || rem == 0)
+                    {
+                        dest[destIndex++] = rem;
+                    }
+                    else
+                    {
+                        dest[destIndex++] = rem + operand;
+                    }
+                }
+                return;
+            }
+
+        }
+
+        private void PowerSqrtScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.power)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Convert.ToSingle(Math.Pow(src[srcIndex++], operand));
+                }
+                return;
+            }
+            if (ops == UFuncOperation.sqrt)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Convert.ToSingle(Math.Sqrt(src[srcIndex++]));
+                }
+                return;
+            }
+            if (ops == UFuncOperation.absolute)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Abs(src[srcIndex++]);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.maximum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Max(src[srcIndex++], operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.minimum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Min(src[srcIndex++], operand);
+                }
+                return;
+            }
+
         }
         #endregion
     }
@@ -3324,8 +3485,29 @@ namespace NumpyLib
 
         protected override opFunctionScalarIterContiguousNoIter GetUFuncScalarIterContiguousNoIterHandler(UFuncOperation ops)
         {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.subtract:
+                case UFuncOperation.multiply:
+                    return AddSubMultScalerIterContigNoIter;
+
+                case UFuncOperation.divide:
+                case UFuncOperation.true_divide:
+                case UFuncOperation.floor_divide:
+                case UFuncOperation.remainder:
+                    return DivisionScalerIterContigNoIter;
+
+                case UFuncOperation.power:
+                //case UFuncOperation.sqrt:
+                case UFuncOperation.absolute:
+                case UFuncOperation.maximum:
+                case UFuncOperation.minimum:
+                    return PowerSqrtScalerIterContigNoIter;
+            }
             return null;
         }
+
         #endregion
 
         #region Reduce accelerators
@@ -3446,6 +3628,146 @@ namespace NumpyLib
                 O2_Index += O2_Step;
                 R_Index += R_Step;
             }
+        }
+        #endregion
+
+        #region ScalerIterContigNoIter Accelerators
+        private void AddSubMultScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.add)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] + operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.subtract)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] - operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.multiply)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] * operand;
+                }
+                return;
+            }
+
+        }
+
+        private void DivisionScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (operand == 0)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = 0;
+                }
+                return;
+            }
+
+            if (ops == UFuncOperation.divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.true_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = src[srcIndex++] / operand;
+                }
+                return;
+            }
+            if (ops == UFuncOperation.floor_divide)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Floor(src[srcIndex++] / operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.remainder)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    var aValue = src[srcIndex++];
+                    var rem = aValue % operand;
+                    if ((aValue > 0) == (operand > 0) || rem == 0)
+                    {
+                        dest[destIndex++] = rem;
+                    }
+                    else
+                    {
+                        dest[destIndex++] = rem + operand;
+                    }
+                }
+                return;
+            }
+
+        }
+
+        private void PowerSqrtScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        {
+            npy_intp srcIndex = start - srcAdjustment;
+            npy_intp destIndex = start - destAdjustment;
+
+            if (ops == UFuncOperation.power)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Convert.ToDecimal(Math.Pow(Convert.ToDouble(src[srcIndex++]), Convert.ToDouble(operand)));
+                }
+                return;
+            }
+            //if (ops == UFuncOperation.sqrt)
+            //{
+            //    for (npy_intp index = start; index < end; index++)
+            //    {
+            //        dest[destIndex++] = Math.Sqrt(src[srcIndex++]);
+            //    }
+            //    return;
+            //}
+            if (ops == UFuncOperation.absolute)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Abs(src[srcIndex++]);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.maximum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Max(src[srcIndex++], operand);
+                }
+                return;
+            }
+            if (ops == UFuncOperation.minimum)
+            {
+                for (npy_intp index = start; index < end; index++)
+                {
+                    dest[destIndex++] = Math.Min(src[srcIndex++], operand);
+                }
+                return;
+            }
+
         }
         #endregion
     }
