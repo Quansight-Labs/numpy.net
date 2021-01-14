@@ -1079,26 +1079,13 @@ namespace NumpyLib
                     {
                         var Iter = ParallelIters.ElementAt(index);
 
-                        while (Iter.index < Iter.size)
+                        try
                         {
-                            try
-                            {
-                                T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
-                                T srcValue = src[Iter.index - srcAdjustment];
-
-                                T retValue = retValue = UFuncOperation(srcValue, operand);
-                                dest[Iter.index - destAdjustment] = retValue;
-                            }
-                            catch (System.OverflowException of)
-                            {
-                                dest[Iter.index - destAdjustment] = default(T);
-                            }
-                            catch (Exception ex)
-                            {
-                                exceptions.Enqueue(ex);
-                            }
-
-                            NpyArray_ITER_NEXT(Iter);
+                            PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
                         }
 
                     } );
@@ -1109,6 +1096,27 @@ namespace NumpyLib
                     throw exceptions.ElementAt(0);
                 }
 
+            }
+
+            private void PerformNumericOpScalarIterContiguousIter(NpyArrayIterObject Iter, T[] src, T[] dest, T[]oper, npy_intp srcAdjustment, npy_intp destAdjustment, opFunction UFuncOperation)
+            {
+                while (Iter.index < Iter.size)
+                {
+                    try
+                    {
+                        T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
+                        T srcValue = src[Iter.index - srcAdjustment];
+
+                        T retValue = retValue = UFuncOperation(srcValue, operand);
+                        dest[Iter.index - destAdjustment] = retValue;
+                    }
+                    catch (System.OverflowException of)
+                    {
+                        dest[Iter.index - destAdjustment] = default(T);
+                    }
+ 
+                    NpyArray_ITER_NEXT(Iter);
+                }
             }
 
             private void PerformNumericOpScalarIterContiguousNoIter(T []src, T []dest, T operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, opFunction UFuncOperation)
