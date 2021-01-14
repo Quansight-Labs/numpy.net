@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC OBJECT
-    internal class UFUNC_String : UFUNC_BASE<System.String>, IUFUNC_Operations
+    internal partial class UFUNC_String : UFUNC_BASE<System.String>, IUFUNC_Operations
     {
         public UFUNC_String() : base(IntPtr.Size)
         {
@@ -189,31 +189,6 @@ namespace NumpyLib
             }
 
             return destValue;
-        }
-
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            return null;
         }
 
         #region System.String specific operation handlers

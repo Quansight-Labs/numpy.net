@@ -184,6 +184,29 @@ namespace NumpyLib
 
     internal partial class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
     {
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            // these are the commonly used reduce operations.
+            //
+            // We can add more by implementing data type specific implementations
+            // and adding them to this switch statement
+
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.subtract:
+                case UFuncOperation.multiply:
+                case UFuncOperation.divide:
+                case UFuncOperation.logical_or:
+                case UFuncOperation.logical_and:
+                case UFuncOperation.maximum:
+                case UFuncOperation.minimum:
+                    break;
+            }
+
+            return null;
+        }
+
         protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
         {
             return null;
@@ -2163,6 +2186,46 @@ namespace NumpyLib
 
     internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
     {
+
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            // these are the commonly used reduce operations.
+            //
+            // We can add more by implementing data type specific implementations
+            // and adding them to this switch statement
+
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddReduce;
+
+                case UFuncOperation.subtract:
+                    return SubtractReduce;
+
+                case UFuncOperation.multiply:
+                    return MultiplyReduce;
+
+                case UFuncOperation.divide:
+                    return DivideReduce;
+
+                case UFuncOperation.logical_or:
+                    return LogicalOrReduce;
+
+                case UFuncOperation.logical_and:
+                    return LogicalAndReduce;
+
+                case UFuncOperation.maximum:
+                    return MaximumReduce;
+
+                case UFuncOperation.minimum:
+                    return MinimumReduce;
+
+            }
+
+            return null;
+        }
+
+
         protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
         {
             switch (ops)
@@ -2531,5 +2594,238 @@ namespace NumpyLib
             return result;
         }
 
+    }
+
+    internal partial class UFUNC_Object : UFUNC_BASE<System.Object>, IUFUNC_Operations
+    {
+
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            // these are the commonly used reduce operations.
+            //
+            // We can add more by implementing data type specific implementations
+            // and adding them to this switch statement
+
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddReduce;
+
+                case UFuncOperation.subtract:
+                    return SubtractReduce;
+
+                case UFuncOperation.multiply:
+                    return MultiplyReduce;
+
+                case UFuncOperation.divide:
+                    return DivideReduce;
+
+                case UFuncOperation.logical_or:
+                    return LogicalOrReduce;
+
+                case UFuncOperation.logical_and:
+                    return LogicalAndReduce;
+
+                case UFuncOperation.maximum:
+                    return MaximumReduce;
+
+                case UFuncOperation.minimum:
+                    return MinimumReduce;
+
+            }
+
+            return null;
+        }
+
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected void AddAccumulate(
+                dynamic[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                dynamic[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                dynamic[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Object SubtractReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Object MultiplyReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result * OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected void MultiplyAccumulate(
+                dynamic[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                dynamic[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                dynamic[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Object DivideReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result / OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Object LogicalOrReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != null || OperandArray[OperIndex] != null;
+                if (boolValue)
+                    result = 1;
+                else
+                    result = null;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Object LogicalAndReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != null && OperandArray[OperIndex] != null;
+                if (boolValue)
+                    result = 1;
+                else
+                    result = null;
+                OperIndex += OperStep;
+            }
+            return result;
+        }
+        protected System.Object MaximumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result > OperandArray[OperIndex] ? result : OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Object MinimumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result <= OperandArray[OperIndex] ? result : OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+    }
+
+    internal partial class UFUNC_String : UFUNC_BASE<System.String>, IUFUNC_Operations
+    {
+
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            return null;
+        }
     }
 }

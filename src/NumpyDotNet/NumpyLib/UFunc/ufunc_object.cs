@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC OBJECT
-    internal class UFUNC_Object : UFUNC_BASE<System.Object>, IUFUNC_Operations
+    internal partial class UFUNC_Object : UFUNC_BASE<System.Object>, IUFUNC_Operations
     {
         public UFUNC_Object() : base(IntPtr.Size)
         {
@@ -191,178 +191,23 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddReduce;
-
-                case UFuncOperation.subtract:
-                    return SubtractReduce;
-
-                case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
-                case UFuncOperation.divide:
-                    return DivideReduce;
-
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                    return MaximumReduce;
-
-                case UFuncOperation.minimum:
-                    return MinimumReduce;
-
-            }
-
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
         #region System.Object specific operation handlers
         protected override System.Object Add(dynamic aValue, dynamic bValue)
         {
             return aValue + bValue;
         }
-        protected System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result + OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void AddAccumulate(
-                dynamic[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                dynamic[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                dynamic[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override System.Object Subtract(dynamic aValue, dynamic bValue)
         {
             return aValue - bValue;
-        }
-        protected System.Object SubtractReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result - OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Object Multiply(dynamic aValue, dynamic bValue)
         {
             return aValue * bValue;
         }
-        protected System.Object MultiplyReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result * OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void MultiplyAccumulate(
-                dynamic[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                dynamic[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                dynamic[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override System.Object Divide(dynamic aValue, dynamic bValue)
         {
             return aValue / bValue;
         }
-        protected System.Object DivideReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result / OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override System.Object Remainder(dynamic aValue, dynamic bValue)
         {
             if (bValue == 0)
@@ -492,20 +337,6 @@ namespace NumpyLib
             else
                 return null;
         }
-        protected System.Object LogicalOrReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != null || OperandArray[OperIndex] != null;
-                if (boolValue)
-                    result = 1;
-                else
-                    result = null;
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override System.Object LogicalAnd(dynamic bValue, dynamic operand)
         {
             bool boolValue = bValue != null && operand != null;
@@ -513,19 +344,6 @@ namespace NumpyLib
                 return 1;
             else
                 return null;
-        }
-        protected System.Object LogicalAndReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != null && OperandArray[OperIndex] != null;
-                if (boolValue)
-                    result = 1;
-                else
-                    result = null;
-                OperIndex += OperStep;
-            }
-            return result;
         }
         protected override System.Object Floor(dynamic bValue, dynamic operand)
         {
@@ -549,32 +367,11 @@ namespace NumpyLib
                 return bValue;
             return operand;
         }
-        protected System.Object MaximumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result > OperandArray[OperIndex] ? result : OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override System.Object Minimum(dynamic bValue, dynamic operand)
         {
             if (bValue <= operand)
                 return bValue;
             return operand;
-        }
-        protected System.Object MinimumReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result <= OperandArray[OperIndex] ? result : OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Object Rint(dynamic bValue, dynamic operand)
         {

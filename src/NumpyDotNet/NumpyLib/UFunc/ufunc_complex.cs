@@ -200,45 +200,7 @@ namespace NumpyLib
 
             return destValue;
         }
-
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddReduce;
-
-                case UFuncOperation.subtract:
-                    return SubtractReduce;
-
-                case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
-                case UFuncOperation.divide:
-                    return DivideReduce;
-
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                    return MaximumReduce;
-
-                case UFuncOperation.minimum:
-                    return MinimumReduce;
-
-            }
-
-            return null;
-        }
-        
+     
         #region System.Numerics.Complex specific operation handlers
         protected override System.Numerics.Complex Add(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {

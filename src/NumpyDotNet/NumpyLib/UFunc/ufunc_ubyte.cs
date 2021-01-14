@@ -192,28 +192,6 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.subtract:
-                case UFuncOperation.multiply:
-                case UFuncOperation.divide:
-                case UFuncOperation.logical_or:
-                case UFuncOperation.logical_and:
-                case UFuncOperation.maximum:
-                case UFuncOperation.minimum:
-                    break;
-            }
-
-            return null;
-        }
 
         #region Byte specific operation handlers
         protected override Byte Add(Byte aValue, Byte bValue)
