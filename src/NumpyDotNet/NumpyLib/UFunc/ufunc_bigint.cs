@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC BIGINT
-    internal class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
+    internal partial class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
     {
         public UFUNC_BigInt() : base(sizeof(double) * 4)
         {
@@ -201,186 +201,25 @@ namespace NumpyLib
             return destValue;
         }
 
-        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
-        {
-            // these are the commonly used reduce operations.
-            //
-            // We can add more by implementing data type specific implementations
-            // and adding them to this switch statement
-
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddReduce;
-
-                case UFuncOperation.subtract:
-                    return SubtractReduce;
-
-                case UFuncOperation.multiply:
-                    return MultiplyReduce;
-
-                case UFuncOperation.divide:
-                    return DivideReduce;
-
-                case UFuncOperation.logical_or:
-                    return LogicalOrReduce;
-
-                case UFuncOperation.logical_and:
-                    return LogicalAndReduce;
-
-                case UFuncOperation.maximum:
-                    return MaximumReduce;
-
-                case UFuncOperation.minimum:
-                    return MinimumReduce;
-
-            }
-
-            return null;
-        }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
         #region System.Numerics.BigInteger specific operation handlers
         protected override System.Numerics.BigInteger Add(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             return aValue + bValue;
         }
-        protected System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result + OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
-        protected void AddAccumulate(
-                 System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                 System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                 System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override System.Numerics.BigInteger Subtract(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             return aValue - bValue;
-        }
-        protected System.Numerics.BigInteger SubtractReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result - OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.BigInteger Multiply(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             return aValue * bValue;
         }
-        protected System.Numerics.BigInteger MultiplyReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result * OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void MultiplyAccumulate(
-                System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override System.Numerics.BigInteger Divide(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue / bValue;
         }
-        protected System.Numerics.BigInteger DivideReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                var bValue = OperandArray[OperIndex];
-                if (bValue == 0)
-                    result = 0;
-                else
-                    result = result / bValue;
-
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override System.Numerics.BigInteger Remainder(System.Numerics.BigInteger aValue, System.Numerics.BigInteger bValue)
         {
             if (bValue == 0)
@@ -528,32 +367,10 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected System.Numerics.BigInteger LogicalOrReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override System.Numerics.BigInteger LogicalAnd(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
-        }
-        protected System.Numerics.BigInteger LogicalAndReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.BigInteger Floor(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
@@ -567,29 +384,9 @@ namespace NumpyLib
         {
             return System.Numerics.BigInteger.Max(bValue, operand);
         }
-        protected System.Numerics.BigInteger MaximumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = System.Numerics.BigInteger.Max(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override System.Numerics.BigInteger Minimum(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {
             return System.Numerics.BigInteger.Min(bValue, operand);
-        }
-        protected System.Numerics.BigInteger MinimumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = System.Numerics.BigInteger.Min(result, OperandArray[OperIndex]);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.BigInteger Rint(System.Numerics.BigInteger bValue, System.Numerics.BigInteger operand)
         {

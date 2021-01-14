@@ -2160,4 +2160,376 @@ namespace NumpyLib
             return result;
         }
     }
+
+    internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
+    {
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected void AddAccumulate(
+            System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+            System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+            System.Numerics.Complex[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Numerics.Complex SubtractReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.Complex MultiplyReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result * OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected void MultiplyAccumulate(
+                System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                System.Numerics.Complex[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Numerics.Complex DivideReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                var bValue = OperandArray[OperIndex];
+                if (bValue == 0)
+                    result = 0;
+                else
+                    result = result / bValue;
+
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.Complex LogicalOrReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.Complex LogicalAndReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.Complex MaximumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Max(result.Real, OperandArray[OperIndex].Real);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.Complex MinimumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = Math.Min(result.Real, OperandArray[OperIndex].Real);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
+    }
+
+    internal partial class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
+    {
+
+        protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
+        {
+            // these are the commonly used reduce operations.
+            //
+            // We can add more by implementing data type specific implementations
+            // and adding them to this switch statement
+
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddReduce;
+
+                case UFuncOperation.subtract:
+                    return SubtractReduce;
+
+                case UFuncOperation.multiply:
+                    return MultiplyReduce;
+
+                case UFuncOperation.divide:
+                    return DivideReduce;
+
+                case UFuncOperation.logical_or:
+                    return LogicalOrReduce;
+
+                case UFuncOperation.logical_and:
+                    return LogicalAndReduce;
+
+                case UFuncOperation.maximum:
+                    return MaximumReduce;
+
+                case UFuncOperation.minimum:
+                    return MinimumReduce;
+
+            }
+
+            return null;
+        }
+
+        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                    return AddAccumulate;
+                case UFuncOperation.multiply:
+                    return MultiplyAccumulate;
+            }
+
+            return null;
+        }
+
+        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
+        {
+            switch (ops)
+            {
+                case UFuncOperation.add:
+                case UFuncOperation.multiply:
+                    break;
+            }
+            return null;
+        }
+
+        protected System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result + OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
+        protected void AddAccumulate(
+                 System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                 System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                 System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Numerics.BigInteger SubtractReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result - OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.BigInteger MultiplyReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = result * OperandArray[OperIndex];
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected void MultiplyAccumulate(
+                System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
+                System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
+                System.Numerics.BigInteger[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
+
+                O1_Index += O1_Step;
+                O2_Index += O2_Step;
+                R_Index += R_Step;
+            }
+        }
+        protected System.Numerics.BigInteger DivideReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                var bValue = OperandArray[OperIndex];
+                if (bValue == 0)
+                    result = 0;
+                else
+                    result = result / bValue;
+
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.BigInteger LogicalOrReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.BigInteger LogicalAndReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
+                result = boolValue ? 1 : 0;
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.BigInteger MaximumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = System.Numerics.BigInteger.Max(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+        protected System.Numerics.BigInteger MinimumReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
+        {
+            while (N-- > 0)
+            {
+                result = System.Numerics.BigInteger.Min(result, OperandArray[OperIndex]);
+                OperIndex += OperStep;
+            }
+
+            return result;
+        }
+
+    }
 }

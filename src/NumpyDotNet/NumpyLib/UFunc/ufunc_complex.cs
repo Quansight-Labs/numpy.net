@@ -47,7 +47,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
     #region UFUNC COMPLEX
-    internal class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
+    internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
     {
         public UFUNC_Complex() : base(sizeof(double) * 2)
         {
@@ -238,149 +238,26 @@ namespace NumpyLib
 
             return null;
         }
-
-        protected override opFunctionAccumulate GetUFuncAccumulateHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                    return AddAccumulate;
-                case UFuncOperation.multiply:
-                    return MultiplyAccumulate;
-            }
-
-            return null;
-        }
-
-        protected override opFunctionScalerIter GetUFuncScalarIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpContig GetUFuncOuterContigHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
-        protected override opFunctionOuterOpIter GetUFuncOuterIterHandler(UFuncOperation ops)
-        {
-            switch (ops)
-            {
-                case UFuncOperation.add:
-                case UFuncOperation.multiply:
-                    break;
-            }
-            return null;
-        }
-
+        
         #region System.Numerics.Complex specific operation handlers
         protected override System.Numerics.Complex Add(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             return aValue + bValue;
         }
-        protected System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result + OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void AddAccumulate(
-            System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-            System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-            System.Numerics.Complex[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] + Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
         protected override System.Numerics.Complex Subtract(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             return aValue - bValue;
-        }
-        protected System.Numerics.Complex SubtractReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result - OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.Complex Multiply(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             return aValue * bValue;
         }
-        protected System.Numerics.Complex MultiplyReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = result * OperandArray[OperIndex];
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-        protected void MultiplyAccumulate(
-                System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
-                System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
-                System.Numerics.Complex[] retArray, npy_intp R_Index, npy_intp R_Step, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                retArray[R_Index] = Op1Array[O1_Index] * Op2Array[O2_Index];
-
-                O1_Index += O1_Step;
-                O2_Index += O2_Step;
-                R_Index += R_Step;
-            }
-        }
-
-
         protected override System.Numerics.Complex Divide(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             if (bValue == 0)
                 return 0;
             return aValue / bValue;
         }
-        protected System.Numerics.Complex DivideReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                var bValue = OperandArray[OperIndex];
-                if (bValue == 0)
-                    result = 0;
-                else
-                    result = result / bValue;
-
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
-
         protected override System.Numerics.Complex Remainder(System.Numerics.Complex aValue, System.Numerics.Complex bValue)
         {
             if (bValue == 0)
@@ -570,32 +447,10 @@ namespace NumpyLib
             bool boolValue = bValue != 0 || operand != 0;
             return boolValue ? 1 : 0;
         }
-        protected System.Numerics.Complex LogicalOrReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 || OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override System.Numerics.Complex LogicalAnd(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             bool boolValue = bValue != 0 && operand != 0;
             return boolValue ? 1 : 0;
-        }
-        protected System.Numerics.Complex LogicalAndReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                bool boolValue = result != 0 && OperandArray[OperIndex] != 0;
-                result = boolValue ? 1 : 0;
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.Complex Floor(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
@@ -609,29 +464,9 @@ namespace NumpyLib
         {
             return Math.Max(bValue.Real, operand.Real);
         }
-        protected System.Numerics.Complex MaximumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Max(result.Real, OperandArray[OperIndex].Real);
-                OperIndex += OperStep;
-            }
-
-            return result;
-        }
         protected override System.Numerics.Complex Minimum(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
             return Math.Min(bValue.Real, operand.Real);
-        }
-        protected System.Numerics.Complex MinimumReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
-        {
-            while (N-- > 0)
-            {
-                result = Math.Min(result.Real, OperandArray[OperIndex].Real);
-                OperIndex += OperStep;
-            }
-
-            return result;
         }
         protected override System.Numerics.Complex Rint(System.Numerics.Complex bValue, System.Numerics.Complex operand)
         {
