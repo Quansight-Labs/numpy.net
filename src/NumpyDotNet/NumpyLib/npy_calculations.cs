@@ -607,7 +607,7 @@ namespace NumpyLib
 
             if (!SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
             {
-                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
+                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, op);
                 return;
             }
 
@@ -711,57 +711,57 @@ namespace NumpyLib
 
         }
 
-        private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
         {
             switch (srcArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguousSD_T1<bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguousSD_T1<sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguousSD_T1<byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguousSD_T1<float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguousSD_T1<double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguousSD_T1<decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguousSD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguousSD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
             }
         }
@@ -822,57 +822,57 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguousSD_T1<S>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        private static void PerformNumericOpScalarIterContiguousSD_T1<S>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
         {
             switch (destArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter,op);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
 
             }
@@ -934,57 +934,57 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguous_SD_T2<S, D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        private static void PerformNumericOpScalarIterContiguous_SD_T2<S, D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
         {
             switch (operArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
                     break;
 
             }
@@ -1046,7 +1046,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguousSD_T3<S, D, O>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
+        private static void PerformNumericOpScalarIterContiguousSD_T3<S, D, O>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
         {
             S[] src = srcArray.data.datap as S[];
             D[] dest = destArray.data.datap as D[];
@@ -1064,31 +1064,40 @@ namespace NumpyLib
             {
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
-                var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
-
-                Parallel.For(0, segments.Count(), segment_index =>
+                if (IsBoolReturn(op) && Calculate_BooleanOp(op, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
                 {
-                    var segment = segments.ElementAt(segment_index);
+                    return;
+                }
+                else
+                {
+                    var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
 
-                    for (npy_intp index = segment.start; index < segment.end; index++)
+                    Parallel.For(0, segments.Count(), segment_index =>
                     {
-                        try
-                        {
-                            var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
-                            dest[index - destAdjustment] = dValue;
-                        }
-                        catch (System.OverflowException of)
-                        {
-                            dest[index - destAdjustment] = default(D);
-                        }
-                        catch (Exception ex)
-                        {
-                            exceptions.Enqueue(ex);
-                        }
-                    }
-    
+                        var segment = segments.ElementAt(segment_index);
 
-                });
+                        for (npy_intp index = segment.start; index < segment.end; index++)
+                        {
+                            try
+                            {
+                                var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                                dest[index - destAdjustment] = dValue;
+                            }
+                            catch (System.OverflowException of)
+                            {
+                                dest[index - destAdjustment] = default(D);
+                            }
+                            catch (Exception ex)
+                            {
+                                exceptions.Enqueue(ex);
+                            }
+                        }
+
+
+                    });
+                }
+
+    
             }
             else
             {
@@ -1130,6 +1139,815 @@ namespace NumpyLib
                 });
             }
 
+        }
+
+        private static bool Calculate_BooleanOp<S, D>(UFuncOperation op, S[] _src, object _operand, D[] _dest, long loopCount, int srcAdjustment, int destAdjustment)
+        {
+            var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+
+            if (_operand is double)
+            {
+                if (_src is bool[])
+                {
+                    return Calculate_BooleanOp_BOOL(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is byte[])
+                {
+                    return Calculate_BooleanOp_BYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is sbyte[])
+                {
+                    return Calculate_BooleanOp_SBYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is Int16[])
+                {
+                    return Calculate_BooleanOp_INT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is UInt16[])
+                {
+                    return Calculate_BooleanOp_UINT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is Int32[])
+                {
+                    return Calculate_BooleanOp_INT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is UInt32[])
+                {
+                    return Calculate_BooleanOp_UINT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is Int64[])
+                {
+                    return Calculate_BooleanOp_INT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is UInt64[])
+                {
+                    return Calculate_BooleanOp_UINT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+
+                if (_src is float[])
+                {
+                    return Calculate_BooleanOp_FLOAT(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+                if (_src is double[])
+                {
+                    return Calculate_BooleanOp_DOUBLE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+            if (_operand is decimal)
+            {
+                if (_src is decimal[])
+                {
+                    return Calculate_BooleanOp_DECIMAL(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+            if (_operand is System.Numerics.Complex)
+            {
+                if (_src is System.Numerics.Complex[])
+                {
+                    return Calculate_BooleanOp_COMPLEX(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+            if (_operand is System.Numerics.BigInteger)
+            {
+                if (_src is System.Numerics.BigInteger[])
+                {
+                    return Calculate_BooleanOp_BIGINT(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+            if (_operand is System.String)
+            {
+                if (_src is System.String[])
+                {
+                    return Calculate_BooleanOp_STRING(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+            if (_operand is System.Object)
+            {
+                if (_src is System.Object[])
+                {
+                    return Calculate_BooleanOp_OBJECT(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+                }
+            }
+
+
+            return false;
+   
+        }
+        private static bool Calculate_BooleanOp_BOOL(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            bool[] src = _src as bool[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = false;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = false;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == Convert.ToBoolean(operand);
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != Convert.ToBoolean(operand);
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = true;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = true;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_BYTE(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            byte[] src = _src as byte[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_SBYTE(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            sbyte[] src = _src as sbyte[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_INT16(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            Int16[] src = _src as Int16[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_UINT16(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            UInt16[] src = _src as UInt16[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_INT32(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            Int32[] src = _src as Int32[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_UINT32(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            UInt32[] src = _src as UInt32[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_INT64(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            Int64[] src = _src as Int64[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_UINT64(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            UInt64[] src = _src as UInt64[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_FLOAT(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            float[] src = _src as float[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_DOUBLE(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            double[] src = _src as double[];
+            bool[] dest = _dest as bool[];
+            double operand = (double)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_DECIMAL(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            decimal[] src = _src as decimal[];
+            bool[] dest = _dest as bool[];
+            decimal operand = (decimal)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_COMPLEX(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            System.Numerics.Complex[] src = _src as System.Numerics.Complex[];
+            bool[] dest = _dest as bool[];
+            System.Numerics.Complex operand = (System.Numerics.Complex)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = false;
+                            if (operand.Imaginary == 0)
+                            {
+                                dValue = src[index - srcAdjustment].Real < operand.Real;
+                            }
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = false;
+                            if (operand.Imaginary == 0)
+                            {
+                                dValue = src[index - srcAdjustment].Real <= operand.Real;
+                            }
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = false;
+                            if (operand.Imaginary == 0)
+                            {
+                                dValue = src[index - srcAdjustment].Real > operand.Real;
+                            }
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = false;
+                            if (operand.Imaginary == 0)
+                            {
+                                dValue = src[index - srcAdjustment].Real >= operand.Real;
+                            }
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_BIGINT(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            System.Numerics.BigInteger[] src = _src as System.Numerics.BigInteger[];
+            bool[] dest = _dest as bool[];
+            System.Numerics.BigInteger operand = (System.Numerics.BigInteger)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_OBJECT(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            dynamic[] src = _src as dynamic[];
+            bool[] dest = _dest as bool[];
+            dynamic operand = (dynamic)_operand;
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = src[index - srcAdjustment] < operand;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = src[index - srcAdjustment] <= operand;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = src[index - srcAdjustment] == operand;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = src[index - srcAdjustment] != operand;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = src[index - srcAdjustment] > operand;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = src[index - srcAdjustment] >= operand;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+                }
+
+            });
+
+            return true;
+        }
+        private static bool Calculate_BooleanOp_STRING(IEnumerable<LoopSegment> segments, UFuncOperation op, object _src, object _operand, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            System.String[] src = _src as System.String[];
+            bool[] dest = _dest as bool[];
+            System.String operand = (System.String)_operand;
+
+            int CompareTo(string invalue, string comparevalue)
+            {
+                if (invalue == null)
+                {
+                    if (comparevalue == null)
+                    {
+                        return 0;
+                    }
+                    return 1;
+                }
+
+                return string.Compare(invalue.ToString(), comparevalue.ToString());
+            }
+
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+
+                    bool dValue = false;
+
+                    switch (op)
+                    {
+                        case UFuncOperation.less:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) < 0;
+                            break;
+                        case UFuncOperation.less_equal:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) <= 0;
+                            break;
+                        case UFuncOperation.equal:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) == 0;
+                            break;
+                        case UFuncOperation.not_equal:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) != 0;
+                            break;
+                        case UFuncOperation.greater:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) > 0;
+                            break;
+                        case UFuncOperation.greater_equal:
+                            dValue = CompareTo(src[index - srcAdjustment], operand) >= 0;
+                            break;
+                    }
+                    dest[index - destAdjustment] = dValue;
+
+                }
+
+
+            });
+
+            return true;
+        }
+
+        private static bool IsBoolReturn(UFuncOperation op)
+        {
+           switch (op)
+            {
+                case UFuncOperation.less:
+                case UFuncOperation.less_equal:
+                case UFuncOperation.equal:
+                case UFuncOperation.not_equal:
+                case UFuncOperation.greater:
+                case UFuncOperation.greater_equal:
+                    return true;
+            }
+            return false;
         }
 
         private static void PerformNumericOpScalarIterContiguousD_T3<S, D, O>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
