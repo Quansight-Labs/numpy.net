@@ -587,7 +587,6 @@ namespace NumpyLib
         #region PerformNumericOpScalarIter
         private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, UFuncOperation op)
         {
-            var destSize = NpyArray_Size(destArray);
 
             if (NpyArray_SIZE(operArray) == 0 || NpyArray_SIZE(srcArray) == 0)
             {
@@ -599,7 +598,7 @@ namespace NumpyLib
             if (handled)
                 return;
 
-    
+
 
             var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
@@ -617,7 +616,7 @@ namespace NumpyLib
                 return;
             }
 
-            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, destSize, op);
+            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, op);
             return;
         }
 
@@ -649,10 +648,25 @@ namespace NumpyLib
             }
 
             return false;
-    
+
         }
 
-        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize, UFuncOperation op)
+        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        {
+            if (IsBoolReturn(op) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
+            {
+                bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, op);
+                if (retValue)
+                    return;
+            }
+
+            PerformNumericOpScalarSmallIter(srcArray, srcIter, destArray, destIter, operArray, operIter, operations);
+        }
+
+        private static void PerformNumericOpScalarSmallIter(
+                NpyArray srcArray, NpyArrayIterObject srcIter,
+                NpyArray destArray, NpyArrayIterObject destIter, 
+                NpyArray operArray, NpyArrayIterObject operIter, NumericOperations operations)
         {
             List<Exception> caughtExceptions = new List<Exception>();
 
@@ -660,8 +674,9 @@ namespace NumpyLib
             var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
             var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
-            Parallel.For(0, destParallelIters.Count(), index =>
-            //for (int index = 0; index < destParallelIters.Count(); index++) // 
+
+            //Parallel.For(0, destParallelIters.Count(), index =>
+            for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
                 var ldestIter = destParallelIters.ElementAt(index);
                 var lsrcIter = srcParallelIters.ElementAt(index);
@@ -671,7 +686,6 @@ namespace NumpyLib
                 npy_intp operDataOffset = operArray.data.data_offset;
                 npy_intp destDataOffset = destArray.data.data_offset;
 
-                //Parallel.For(0, taskSize, i =>
                 while (ldestIter.index < ldestIter.size)
                 {
                     try
@@ -700,8 +714,8 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(ldestIter);
                     NpyArray_ITER_NEXT(lsrcIter);
                     NpyArray_ITER_NEXT(loperIter);
-                } //);
-            });
+                } 
+            } //);
 
 
             if (caughtExceptions.Count > 0)
@@ -710,6 +724,614 @@ namespace NumpyLib
             }
 
         }
+
+        #region BOOL OpScalarSmallIter accelerators
+        private static bool PerformBOOLOpScalarSmallIter_Accelerator(
+                NpyArray srcArray, NpyArrayIterObject srcIter,
+                NpyArray destArray, NpyArrayIterObject destIter,
+                NpyArray operArray, NpyArrayIterObject operIter, UFuncOperation op)
+        {
+
+            var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize * 1000);
+            var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize * 1000);
+            var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize * 1000);
+
+            bool retValue = false;
+
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) 
+            {
+                var ldestIter = destParallelIters.ElementAt(index);
+                var lsrcIter = srcParallelIters.ElementAt(index);
+                var loperIter = operParallelIters.ElementAt(index);
+
+                switch (srcArray.ItemType)
+                {
+                    case NPY_TYPES.NPY_INT16:
+                        BOOL_SmallIterAccelerator_INT16(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_UINT16:
+                        BOOL_SmallIterAccelerator_UINT16(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_INT32:
+                        BOOL_SmallIterAccelerator_INT32(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_UINT32:
+                        BOOL_SmallIterAccelerator_UINT32(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter, op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_INT64:
+                        BOOL_SmallIterAccelerator_INT64(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_UINT64:
+                        BOOL_SmallIterAccelerator_UINT64(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_FLOAT:
+                        BOOL_SmallIterAccelerator_FLOAT(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_DOUBLE:
+                        BOOL_SmallIterAccelerator_DOUBLE(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter,op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_DECIMAL:
+                        BOOL_SmallIterAccelerator_DECIMAL(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter, op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_COMPLEX:
+                        BOOL_SmallIterAccelerator_COMPLEX(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter, op);
+                        retValue = true;
+                        break;
+                    case NPY_TYPES.NPY_BIGINT:
+                        BOOL_SmallIterAccelerator_BIGINT(srcArray, lsrcIter, destArray, ldestIter, operArray, loperIter, op);
+                        retValue = true;
+                        break;
+                }
+
+  
+            } );
+
+            return retValue;
+
+        }
+
+        private static void BOOL_SmallIterAccelerator_INT16(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as Int16[];
+            var oper = operArray.data.datap as Int16[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_UINT16(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as UInt16[];
+            var oper = operArray.data.datap as UInt16[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_INT32(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as Int32[];
+            var oper = operArray.data.datap as Int32[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_UINT32(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as UInt32[];
+            var oper = operArray.data.datap as UInt32[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_INT64(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as Int64[];
+            var oper = operArray.data.datap as Int64[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_UINT64(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as UInt64[];
+            var oper = operArray.data.datap as UInt64[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_FLOAT(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as float[];
+            var oper = operArray.data.datap as float[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_DOUBLE(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as double[];
+            var oper = operArray.data.datap as double[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_DECIMAL(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as decimal[];
+            var oper = operArray.data.datap as decimal[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_COMPLEX(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as System.Numerics.Complex[];
+            var oper = operArray.data.datap as System.Numerics.Complex[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        if (srcValue.Imaginary == 0)
+                            destValue = srcValue.Real < operValue.Real;
+                        break;
+                    case UFuncOperation.less_equal:
+                        if (srcValue.Imaginary == 0)
+                            destValue = srcValue.Real <= operValue.Real;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        if (srcValue.Imaginary == 0)
+                            destValue = srcValue.Real > operValue.Real;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        if (srcValue.Imaginary == 0)
+                        destValue = srcValue.Real >= operValue.Real;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+
+        private static void BOOL_SmallIterAccelerator_BIGINT(
+                NpyArray srcArray, NpyArrayIterObject lsrcIter,
+                NpyArray destArray, NpyArrayIterObject ldestIter,
+                NpyArray operArray, NpyArrayIterObject loperIter,
+                UFuncOperation op)
+        {
+
+            var src = srcArray.data.datap as System.Numerics.BigInteger[];
+            var oper = operArray.data.datap as System.Numerics.BigInteger[];
+            var dest = destArray.data.datap as bool[];
+
+            while (ldestIter.index < ldestIter.size)
+            {
+                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
+                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+
+                bool destValue = false;
+
+                switch (op)
+                {
+                    case UFuncOperation.less:
+                        destValue = srcValue < operValue;
+                        break;
+                    case UFuncOperation.less_equal:
+                        destValue = srcValue <= operValue;
+                        break;
+                    case UFuncOperation.equal:
+                        destValue = srcValue == operValue;
+                        break;
+                    case UFuncOperation.not_equal:
+                        destValue = srcValue != operValue;
+                        break;
+                    case UFuncOperation.greater:
+                        destValue = srcValue > operValue;
+                        break;
+                    case UFuncOperation.greater_equal:
+                        destValue = srcValue >= operValue;
+                        break;
+                }
+
+                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+
+                NpyArray_ITER_NEXT(ldestIter);
+                NpyArray_ITER_NEXT(lsrcIter);
+                NpyArray_ITER_NEXT(loperIter);
+            }
+        }
+        #endregion
 
         private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
         {
