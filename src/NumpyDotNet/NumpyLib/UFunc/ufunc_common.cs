@@ -925,8 +925,6 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
-                bool IteratorsCanBeNegative = false;
-
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
@@ -1301,15 +1299,14 @@ namespace NumpyLib
                     var bValue = bValues[j];
 
                     T destValue = UFuncOperation(aValue, bValue);
+                    npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
 
                     try
                     {
-                        long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                         dp[AdjustedIndex] = destValue;
                     }
                     catch
                     {
-                        long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                         operations.destSetItem(AdjustedIndex, 0, destArray);
                     }
                     NpyArray_ITER_NEXT(DestIter);

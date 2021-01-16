@@ -625,7 +625,8 @@ namespace NumpyLib
             if (npa.ItemType == npa.data.type_num)
             {
                 Int64[] dp = npa.data.datap as Int64[];
-                dp[AdjustedIndex_SetItemFunction(index, npa, dp.Length)] = (Int64)value;
+                long AdjustedIndex = AdjustedIndex_SetItemFunction(index, npa, dp.Length);
+                dp[AdjustedIndex] = (Int64)value;
                 return 1;
             }
             else

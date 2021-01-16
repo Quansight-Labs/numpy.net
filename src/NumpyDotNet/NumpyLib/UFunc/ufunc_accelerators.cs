@@ -3269,15 +3269,14 @@ namespace NumpyLib
                 var bValue = bValues[j];
 
                 double destValue = aValue + bValue;
+                npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
 
                 try
                 {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                     dp[AdjustedIndex] = destValue;
                 }
                 catch
                 {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                     operations.destSetItem(AdjustedIndex, 0, destArray);
                 }
                 NpyArray_ITER_NEXT(DestIter);
@@ -3290,15 +3289,14 @@ namespace NumpyLib
                 var bValue = bValues[j];
 
                 double destValue = aValue * bValue;
+                npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
 
                 try
                 {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                     dp[AdjustedIndex] = destValue;
                 }
                 catch
                 {
-                    long AdjustedIndex = AdjustedIndex_SetItemFunction(DestIter.dataptr.data_offset - destArray.data.data_offset, destArray, dp.Length);
                     operations.destSetItem(AdjustedIndex, 0, destArray);
                 }
                 NpyArray_ITER_NEXT(DestIter);
