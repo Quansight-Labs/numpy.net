@@ -617,7 +617,7 @@ namespace NumpyLib
                 return;
             }
 
-            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, destSize);
+            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, destSize, op);
             return;
         }
 
@@ -652,7 +652,7 @@ namespace NumpyLib
     
         }
 
-        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize)
+        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, npy_intp taskSize, UFuncOperation op)
         {
             List<Exception> caughtExceptions = new List<Exception>();
 
