@@ -1064,40 +1064,46 @@ namespace NumpyLib
             {
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
-                if (IsBoolReturn(op) && Calculate_BooleanOp(op, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
+                // accelerate this common function
+                if (op == UFuncOperation.invert && srcArray.ItemType == NPY_TYPES.NPY_BOOL && destArray.ItemType == NPY_TYPES.NPY_BOOL)
+                {
+                    BOOL_Invert_Accelerator(loopCount, src, dest, srcAdjustment, destAdjustment);
+                    return;
+                }
+
+                // accelerate these common functions
+                if (IsBoolReturn(op) && BOOL_OpAccelerator(op, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
                 {
                     return;
                 }
-                else
+
+                var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+
+                Parallel.For(0, segments.Count(), segment_index =>
                 {
-                    var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+                    var segment = segments.ElementAt(segment_index);
 
-                    Parallel.For(0, segments.Count(), segment_index =>
+                    for (npy_intp index = segment.start; index < segment.end; index++)
                     {
-                        var segment = segments.ElementAt(segment_index);
-
-                        for (npy_intp index = segment.start; index < segment.end; index++)
+                        try
                         {
-                            try
-                            {
-                                var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
-                                dest[index - destAdjustment] = dValue;
-                            }
-                            catch (System.OverflowException of)
-                            {
-                                dest[index - destAdjustment] = default(D);
-                            }
-                            catch (Exception ex)
-                            {
-                                exceptions.Enqueue(ex);
-                            }
+                            var dValue = (D)(dynamic)operations.operation(src[index - srcAdjustment], operand);
+                            dest[index - destAdjustment] = dValue;
                         }
+                        catch (System.OverflowException of)
+                        {
+                            dest[index - destAdjustment] = default(D);
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Enqueue(ex);
+                        }
+                    }
 
 
-                    });
-                }
+                });
 
-    
+
             }
             else
             {
@@ -1141,7 +1147,30 @@ namespace NumpyLib
 
         }
 
-        private static bool Calculate_BooleanOp<S, D>(UFuncOperation op, S[] _src, object _operand, D[] _dest, long loopCount, int srcAdjustment, int destAdjustment)
+        private static bool BOOL_Invert_Accelerator(npy_intp loopCount, object _src, object _dest, int srcAdjustment, int destAdjustment)
+        {
+            var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize * 10);
+
+            bool[] src = _src as bool[];
+            bool[] dest = _dest as bool[];
+
+            Parallel.For(0, segments.Count(), segment_index =>
+            {
+                var segment = segments.ElementAt(segment_index);
+
+                for (npy_intp index = segment.start; index < segment.end; index++)
+                {
+                    dest[index - destAdjustment] = !src[index - srcAdjustment];
+                }
+
+
+            });
+
+            return true;
+        }
+
+
+        private static bool BOOL_OpAccelerator<S, D>(UFuncOperation op, S[] _src, object _operand, D[] _dest, long loopCount, int srcAdjustment, int destAdjustment)
         {
             var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
 
