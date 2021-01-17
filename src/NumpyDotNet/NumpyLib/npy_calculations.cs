@@ -675,8 +675,8 @@ namespace NumpyLib
             var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
 
-            //Parallel.For(0, destParallelIters.Count(), index =>
-            for (int index = 0; index < destParallelIters.Count(); index++) // 
+            Parallel.For(0, destParallelIters.Count(), index =>
+            //for (int index = 0; index < destParallelIters.Count(); index++) // 
             {
                 var ldestIter = destParallelIters.ElementAt(index);
                 var lsrcIter = srcParallelIters.ElementAt(index);
@@ -715,7 +715,7 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(lsrcIter);
                     NpyArray_ITER_NEXT(loperIter);
                 } 
-            } //);
+            } );
 
 
             if (caughtExceptions.Count > 0)
