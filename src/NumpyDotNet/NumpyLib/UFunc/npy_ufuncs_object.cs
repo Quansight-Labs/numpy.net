@@ -1037,7 +1037,7 @@ namespace NumpyLib
         {
             if (dimIdx == destArray.nd)
             {
-                var srcValue = operation.srcGetItem(src_offset, srcArray);
+                var srcValue = operation.srcGetItem(src_offset+srcArray.data.data_offset);
 
                 cumsum = operation.operation(srcValue, operation.ConvertOperand(srcValue, cumsum));
 

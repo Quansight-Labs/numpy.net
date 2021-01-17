@@ -1207,7 +1207,7 @@ namespace NumpyLib
 
             for (long j = 0; j < count; j++)
             {
-                var bValue = operations.srcGetItem(src_iter.dataptr.data_offset - src.data.data_offset, src);
+                var bValue = operations.srcGetItem(src_iter.dataptr.data_offset);
 
                 try
                 {

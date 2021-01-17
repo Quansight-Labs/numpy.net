@@ -690,8 +690,8 @@ namespace NumpyLib
                 {
                     try
                     {
-                        var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset - srcDataOffset, srcArray);
-                        var operValue = operations.operandGetItem(loperIter.dataptr.data_offset - operDataOffset, operArray);
+                        var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset);
+                        var operValue = operations.operHelper.GetItem(loperIter.dataptr.data_offset);
 
                         object destValue = null;
 
@@ -1744,7 +1744,7 @@ namespace NumpyLib
                     {
                         try
                         {
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
+                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset));
 
                             D dValue = (D)(dynamic)operations.operation(src[ldestIter.index - srcAdjustment], operand);
 
@@ -2668,7 +2668,7 @@ namespace NumpyLib
                     {
                         while (ldestIter.index < ldestIter.size)
                         {
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset, operArray));
+                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset));
 
                             var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);

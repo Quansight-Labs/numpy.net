@@ -1146,11 +1146,11 @@ namespace NumpyLib
 
                 while (ldestIter.index < ldestIter.size)
                 {
-                    var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset - srcArray.data.data_offset, srcArray);
+                    var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset);
 
                     if (WhereIter != null)
                     {
-                        whereValue = (bool)operations.operandGetItem(lwhereIter.dataptr.data_offset - whereArray.data.data_offset, whereArray);
+                        whereValue = (bool)operations.operandGetItem(lwhereIter.dataptr.data_offset);
                     }
 
                     if (whereValue)
@@ -1189,11 +1189,11 @@ namespace NumpyLib
       
             for (long i = 0; i < arrSize; i++)
             {
-                bool whereValue = (bool)operations.srcGetItem(maskIter.dataptr.data_offset - mask.data.data_offset, mask);
+                bool whereValue = (bool)operations.srcGetItem(maskIter.dataptr.data_offset);
 
                 if (whereValue)
                 {
-                    var valValue = operations.operandGetItem(valsIter.dataptr.data_offset - vals.data.data_offset, vals);
+                    var valValue = operations.operandGetItem(valsIter.dataptr.data_offset);
                     operations.destSetItem(arrIter.dataptr.data_offset - arr.data.data_offset, valValue, arr);
                     NpyArray_ITER_NEXT(valsIter);
                 }

@@ -1174,14 +1174,14 @@ namespace NumpyLib
                 T[] aValues = new T[aSize];
                 for (long i = 0; i < aSize; i++)
                 {
-                    aValues[i] = ConvertToTemplate(operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a));
+                    aValues[i] = ConvertToTemplate(operations.srcGetItem(aIter.dataptr.data_offset));
                     NpyArray_ITER_NEXT(aIter);
                 }
 
                 T[] bValues = new T[bSize];
                 for (long i = 0; i < bSize; i++)
                 {
-                    bValues[i] = ConvertToTemplate(operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b));
+                    bValues[i] = ConvertToTemplate(operations.operandGetItem(bIter.dataptr.data_offset));
                     NpyArray_ITER_NEXT(bIter);
                 }
 

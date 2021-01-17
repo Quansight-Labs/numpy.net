@@ -72,7 +72,7 @@ namespace NumpyLib
                 object[] aValues = new object[aSize];
                 for (long i = 0; i < aSize; i++)
                 {
-                    aValues[i] = operations.srcGetItem(aIter.dataptr.data_offset - a.data.data_offset, a);
+                    aValues[i] = operations.srcGetItem(aIter.dataptr.data_offset);
                     NpyArray_ITER_NEXT(aIter);
                 }
 
@@ -80,7 +80,7 @@ namespace NumpyLib
                 object[] bValues = new object[bSize];
                 for (long i = 0; i < bSize; i++)
                 {
-                    bValues[i] = operations.operandGetItem(bIter.dataptr.data_offset - b.data.data_offset, b);
+                    bValues[i] = operations.operandGetItem(bIter.dataptr.data_offset);
                     NpyArray_ITER_NEXT(bIter);
                 }
 

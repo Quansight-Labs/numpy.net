@@ -167,25 +167,196 @@ namespace NumpyLib
 
     }
 
+    internal interface INumericOperationsHelper
+    {
+        object GetItem(npy_intp offset);
+        void SetItem(npy_intp offset, object Item);
+    }
+
+    #region NumericOperationsHelper
+    internal abstract class NumericOperationsHelper<T>
+    {
+        NpyArray srcArray;
+        T[] Array;
+        int ItemDiv;
+        bool ArraySameType;
+
+        public NumericOperationsHelper(NpyArray srcArray)
+        {
+            this.srcArray = srcArray;
+            this.ItemDiv = srcArray.ItemDiv;
+            this.Array = srcArray.data.datap as T[];
+            this.ArraySameType = srcArray.ItemType == srcArray.data.type_num;
+        }
+
+        public object GetItem(npy_intp offset)
+        {
+            if (ArraySameType)
+            {
+                return Array[offset >> ItemDiv];
+            }
+            else
+            {
+                return numpyinternal.DifferentSizes_GetItemFunc(offset, srcArray);
+            }
+        }
+
+        public void SetItem(npy_intp offset, object Item)
+        {
+            if (ArraySameType)
+            {
+                Array[offset >> ItemDiv] = (T)Item;
+            }
+            else
+            {
+                numpyinternal.DifferentSizes_SetItemFunc(offset, Item, srcArray);
+            }
+
+        }
+    }
+    internal class NumericOperationsHelper_BOOL : NumericOperationsHelper<bool>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_BOOL(NpyArray srcArray) : base(srcArray)
+        {
+       
+        }
+    }
+    internal class NumericOperationsHelper_SBYTE : NumericOperationsHelper<sbyte>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_SBYTE(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_UBYTE : NumericOperationsHelper<byte>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_UBYTE(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+  
+    internal class NumericOperationsHelper_Int16 : NumericOperationsHelper<Int16>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_Int16(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_UInt16 : NumericOperationsHelper<UInt16>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_UInt16(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_Int32 : NumericOperationsHelper<Int32>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_Int32(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_UInt32 : NumericOperationsHelper<UInt32>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_UInt32(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_Int64 : NumericOperationsHelper<Int64>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_Int64(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_UInt64 : NumericOperationsHelper<UInt64>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_UInt64(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_FLOAT : NumericOperationsHelper<float>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_FLOAT(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_DOUBLE : NumericOperationsHelper<double>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_DOUBLE(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_DECIMAL : NumericOperationsHelper<decimal>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_DECIMAL(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_COMPLEX : NumericOperationsHelper<System.Numerics.Complex>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_COMPLEX(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_BIGINT : NumericOperationsHelper<System.Numerics.BigInteger>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_BIGINT(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_OBJECT : NumericOperationsHelper<System.Object>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_OBJECT(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    internal class NumericOperationsHelper_STRING : NumericOperationsHelper<System.String>, INumericOperationsHelper
+    {
+        public NumericOperationsHelper_STRING(NpyArray srcArray) : base(srcArray)
+        {
+
+        }
+    }
+    #endregion
+
     internal class NumericOperations
     {
         public NumericOperations()
         {
 
         }
-        public NpyArray_GetItemFunc srcGetItem;
+
+        public INumericOperationsHelper srcHelper;
+        public INumericOperationsHelper destHelper;
+        public INumericOperationsHelper operHelper;
+
         public NpyArray_SetItemFunc srcSetItem;
         public NumericOperation ConvertOperand;
 
-        public NpyArray_GetItemFunc destGetItem;
         public NpyArray_SetItemFunc destSetItem;
-
-
-        public NpyArray_GetItemFunc operandGetItem;
         public NpyArray_SetItemFunc operandSetItem;
 
         public UFuncOperation operationType;
         public NumericOperation operation;
+
+        public object srcGetItem(npy_intp offset)
+        {
+            return srcHelper.GetItem(offset);
+        }
+        public object operandGetItem(npy_intp offset)
+        {
+            return operHelper.GetItem(offset);
+        }
 
         public static NumericOperations GetOperations(UFuncOperation operationType, NumericOperation operation, NpyArray srcArray, NpyArray destArray, NpyArray operandArray)
         {
@@ -195,27 +366,84 @@ namespace NumpyLib
 
             if (srcArray != null)
             {
-                operations.srcGetItem = srcArray.descr.f.getitem;
+                operations.srcHelper = GetNumericOperationsHelper(srcArray);
                 operations.srcSetItem = srcArray.descr.f.setitem;
                 operations.ConvertOperand = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType).MathOpConvertOperand;
             }
 
             if (destArray != null)
             {
-                operations.destGetItem = destArray.descr.f.getitem;
+                operations.destHelper = GetNumericOperationsHelper(destArray);
                 operations.destSetItem = destArray.descr.f.setitem;
             }
 
             if (operandArray != null)
             {
-                operations.operandGetItem = operandArray.descr.f.getitem;
+                operations.operHelper = GetNumericOperationsHelper(operandArray);
                 operations.operandSetItem = operandArray.descr.f.setitem;
             }
 
 
             return operations;
         }
-  
+
+        private static INumericOperationsHelper GetNumericOperationsHelper(NpyArray Array)
+        {
+            switch (Array.ItemType)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return new NumericOperationsHelper_BOOL(Array);
+
+                case NPY_TYPES.NPY_BYTE:
+                    return new NumericOperationsHelper_SBYTE(Array);
+
+                case NPY_TYPES.NPY_UBYTE:
+                    return new NumericOperationsHelper_UBYTE(Array);
+
+                case NPY_TYPES.NPY_INT16:
+                    return new NumericOperationsHelper_Int16(Array);
+
+                case NPY_TYPES.NPY_UINT16:
+                    return new NumericOperationsHelper_UInt16(Array);
+
+                case NPY_TYPES.NPY_INT32:
+                    return new NumericOperationsHelper_Int32(Array);
+
+                case NPY_TYPES.NPY_UINT32:
+                    return new NumericOperationsHelper_UInt32(Array);
+
+                case NPY_TYPES.NPY_INT64:
+                    return new NumericOperationsHelper_Int64(Array);
+
+                case NPY_TYPES.NPY_UINT64:
+                    return new NumericOperationsHelper_UInt64(Array);
+
+                case NPY_TYPES.NPY_FLOAT:
+                    return new NumericOperationsHelper_FLOAT(Array);
+
+                case NPY_TYPES.NPY_DOUBLE:
+                    return new NumericOperationsHelper_DOUBLE(Array);
+
+                case NPY_TYPES.NPY_DECIMAL:
+                    return new NumericOperationsHelper_DECIMAL(Array);
+
+                case NPY_TYPES.NPY_COMPLEX:
+                    return new NumericOperationsHelper_COMPLEX(Array);
+
+                case NPY_TYPES.NPY_BIGINT:
+                    return new NumericOperationsHelper_BIGINT(Array);
+
+                case NPY_TYPES.NPY_OBJECT:
+                    return new NumericOperationsHelper_OBJECT(Array);
+
+                case NPY_TYPES.NPY_STRING:
+                    return new NumericOperationsHelper_STRING(Array);
+
+                default:
+                    return null;
+            }
+        }
+
     }
 
 }
