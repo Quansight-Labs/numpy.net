@@ -1211,11 +1211,11 @@ namespace NumpyLib
 
                 try
                 {
-                    operations.destSetItem(dst_iter.dataptr.data_offset - dst.data.data_offset, bValue, dst);
+                    operations.destSetItem(dst_iter.dataptr.data_offset, bValue);
                 }
                 catch
                 {
-                    operations.destSetItem(dst_iter.dataptr.data_offset - dst.data.data_offset, 0, dst);
+                    operations.destSetItem(dst_iter.dataptr.data_offset, 0);
                 }
                 NpyArray_ITER_NEXT(src_iter);
                 NpyArray_ITER_NEXT(dst_iter);

@@ -1155,7 +1155,7 @@ namespace NumpyLib
 
                     if (whereValue)
                     {
-                        operations.destSetItem(ldestIter.dataptr.data_offset - destArray.data.data_offset, srcValue, destArray);
+                        operations.destSetItem(ldestIter.dataptr.data_offset, srcValue);
                     }
 
                     NpyArray_ITER_NEXT(ldestIter);
@@ -1194,7 +1194,7 @@ namespace NumpyLib
                 if (whereValue)
                 {
                     var valValue = operations.operandGetItem(valsIter.dataptr.data_offset);
-                    operations.destSetItem(arrIter.dataptr.data_offset - arr.data.data_offset, valValue, arr);
+                    operations.destSetItem(arrIter.dataptr.data_offset, valValue);
                     NpyArray_ITER_NEXT(valsIter);
                 }
 

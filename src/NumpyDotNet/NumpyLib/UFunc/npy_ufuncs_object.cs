@@ -1043,11 +1043,11 @@ namespace NumpyLib
 
                 try
                 {
-                    operation.destSetItem(dest_offset, cumsum, destArray);
+                    operation.destSetItem(dest_offset+destArray.data.data_offset, cumsum);
                 }
                 catch
                 {
-                    operation.destSetItem(dest_offset, 0, destArray);
+                    operation.destSetItem(dest_offset + destArray.data.data_offset, 0);
                 }
             }
             else

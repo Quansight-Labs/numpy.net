@@ -1286,7 +1286,7 @@ namespace NumpyLib
                     }
                     catch
                     {
-                        operations.destSetItem(destIndex, 0, destArray);
+                        operations.destSetItem(destIndex, 0);
                     }
                     destIndex++;
                 }
@@ -1307,7 +1307,7 @@ namespace NumpyLib
                     }
                     catch
                     {
-                        operations.destSetItem(AdjustedIndex, 0, destArray);
+                        operations.destSetItem(AdjustedIndex, 0);
                     }
                     NpyArray_ITER_NEXT(DestIter);
                 }

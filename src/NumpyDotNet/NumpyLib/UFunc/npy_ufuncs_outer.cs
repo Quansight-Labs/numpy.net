@@ -98,11 +98,11 @@ namespace NumpyLib
 
                         try
                         {
-                            operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, destValue, destArray);
+                            operations.destSetItem(DestIter.dataptr.data_offset, destValue);
                         }
                         catch
                         {
-                            operations.destSetItem(DestIter.dataptr.data_offset - destArray.data.data_offset, 0, destArray);
+                            operations.destSetItem(DestIter.dataptr.data_offset, 0);
                         }
                         NpyArray_ITER_NEXT(DestIter);
                     }

@@ -176,10 +176,10 @@ namespace NumpyLib
     #region NumericOperationsHelper
     internal abstract class NumericOperationsHelper<T>
     {
-        NpyArray srcArray;
-        T[] Array;
-        int ItemDiv;
-        bool ArraySameType;
+        protected NpyArray srcArray;
+        protected T[] Array;
+        protected int ItemDiv;
+        protected bool ArraySameType;
 
         public NumericOperationsHelper(NpyArray srcArray)
         {
@@ -189,7 +189,7 @@ namespace NumpyLib
             this.ArraySameType = srcArray.ItemType == srcArray.data.type_num;
         }
 
-        public object GetItem(npy_intp offset)
+        virtual public object GetItem(npy_intp offset)
         {
             if (ArraySameType)
             {
@@ -201,7 +201,7 @@ namespace NumpyLib
             }
         }
 
-        public void SetItem(npy_intp offset, object Item)
+        virtual public void SetItem(npy_intp offset, dynamic Item)
         {
             if (ArraySameType)
             {
@@ -326,6 +326,19 @@ namespace NumpyLib
         {
 
         }
+
+        override public void SetItem(npy_intp offset, dynamic Item)
+        {
+            if (ArraySameType)
+            {
+                Array[offset >> ItemDiv] = Item != null ? Item.ToString() : null;
+            }
+            else
+            {
+                return;
+            }
+
+        }
     }
     #endregion
 
@@ -340,11 +353,7 @@ namespace NumpyLib
         public INumericOperationsHelper destHelper;
         public INumericOperationsHelper operHelper;
 
-        public NpyArray_SetItemFunc srcSetItem;
         public NumericOperation ConvertOperand;
-
-        public NpyArray_SetItemFunc destSetItem;
-        public NpyArray_SetItemFunc operandSetItem;
 
         public UFuncOperation operationType;
         public NumericOperation operation;
@@ -357,6 +366,10 @@ namespace NumpyLib
         {
             return operHelper.GetItem(offset);
         }
+        public void destSetItem(npy_intp offset, object Item)
+        {
+            destHelper.SetItem(offset, Item);
+        }
 
         public static NumericOperations GetOperations(UFuncOperation operationType, NumericOperation operation, NpyArray srcArray, NpyArray destArray, NpyArray operandArray)
         {
@@ -367,20 +380,17 @@ namespace NumpyLib
             if (srcArray != null)
             {
                 operations.srcHelper = GetNumericOperationsHelper(srcArray);
-                operations.srcSetItem = srcArray.descr.f.setitem;
                 operations.ConvertOperand = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType).MathOpConvertOperand;
             }
 
             if (destArray != null)
             {
                 operations.destHelper = GetNumericOperationsHelper(destArray);
-                operations.destSetItem = destArray.descr.f.setitem;
             }
 
             if (operandArray != null)
             {
                 operations.operHelper = GetNumericOperationsHelper(operandArray);
-                operations.operandSetItem = operandArray.descr.f.setitem;
             }
 
 

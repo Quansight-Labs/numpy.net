@@ -699,11 +699,11 @@ namespace NumpyLib
 
                         try
                         {
-                            operations.destSetItem(ldestIter.dataptr.data_offset - destDataOffset, destValue, destArray);
+                            operations.destSetItem(ldestIter.dataptr.data_offset, destValue);
                         }
                         catch
                         {
-                            operations.destSetItem(ldestIter.dataptr.data_offset - destDataOffset, 0, destArray);
+                            operations.destSetItem(ldestIter.dataptr.data_offset, 0);
                         }
                     }
                     catch (Exception ex)

@@ -3277,7 +3277,7 @@ namespace NumpyLib
                 }
                 catch
                 {
-                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                    operations.destSetItem(AdjustedIndex, 0);
                 }
                 NpyArray_ITER_NEXT(DestIter);
             }
@@ -3297,7 +3297,7 @@ namespace NumpyLib
                 }
                 catch
                 {
-                    operations.destSetItem(AdjustedIndex, 0, destArray);
+                    operations.destSetItem(AdjustedIndex, 0);
                 }
                 NpyArray_ITER_NEXT(DestIter);
             }
