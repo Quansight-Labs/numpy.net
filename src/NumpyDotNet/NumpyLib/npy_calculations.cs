@@ -691,7 +691,7 @@ namespace NumpyLib
                     try
                     {
                         var srcValue = operations.srcGetItem(lsrcIter.dataptr.data_offset);
-                        var operValue = operations.operHelper.GetItem(loperIter.dataptr.data_offset);
+                        var operValue = operations.operandGetItem(loperIter.dataptr.data_offset);
 
                         object destValue = null;
 

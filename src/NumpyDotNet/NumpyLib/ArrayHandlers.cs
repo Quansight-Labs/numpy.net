@@ -349,9 +349,9 @@ namespace NumpyLib
 
         }
 
-        public INumericOperationsHelper srcHelper;
-        public INumericOperationsHelper destHelper;
-        public INumericOperationsHelper operHelper;
+        private INumericOperationsHelper srcHelper;
+        private INumericOperationsHelper destHelper;
+        private INumericOperationsHelper operHelper;
 
         public NumericConversion _ConvertOperand;
 
