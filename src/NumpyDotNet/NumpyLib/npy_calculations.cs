@@ -2719,7 +2719,7 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(srcArray, operationType);
 
-            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
+            NumericOperations operations = NumericOperations.GetOperations(operationType,operation, srcArray, destArray, operandArray);
    
             PerformNumericOpScalarIter(srcArray, destArray, operandArray, operations, operationType);
         }
@@ -2728,7 +2728,7 @@ namespace NumpyLib
         {
             NumericOperation operation = GetOperation(srcArray, operationType);
 
-            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, destArray, operandArray);
+            NumericOperations operations = NumericOperations.GetOperations(operationType,operation, srcArray, destArray, operandArray);
   
             return NpyUFunc_PerformOuterOpArrayIter(srcArray, operandArray, destArray, operations, operationType);
         }
@@ -3141,7 +3141,7 @@ namespace NumpyLib
                 }
             }
 
-            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, outPtr, null);
+            NumericOperations operations = NumericOperations.GetOperations(UFuncOperation.floor,operation, srcArray, outPtr, null);
    
             object floor = 0;
             NpyUFunc_PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operations);
@@ -3157,7 +3157,7 @@ namespace NumpyLib
 
             NpyArray outPtr = NpyArray_FromArray(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORCECAST);
 
-            NumericOperations operations = NumericOperations.GetOperations(operation, srcArray, outPtr, null);
+            NumericOperations operations = NumericOperations.GetOperations(UFuncOperation.isnan,operation, srcArray, outPtr, null);
 
             object floor = 0;
             NpyUFunc_PerformUFunc(srcArray, outPtr, ref floor, outPtr.dimensions, 0, 0, 0, operations);

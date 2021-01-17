@@ -184,11 +184,13 @@ namespace NumpyLib
         public NpyArray_GetItemFunc operandGetItem;
         public NpyArray_SetItemFunc operandSetItem;
 
+        public UFuncOperation operationType;
         public NumericOperation operation;
 
-        public static NumericOperations GetOperations(NumericOperation operation, NpyArray srcArray, NpyArray destArray, NpyArray operandArray)
+        public static NumericOperations GetOperations(UFuncOperation operationType, NumericOperation operation, NpyArray srcArray, NpyArray destArray, NpyArray operandArray)
         {
             NumericOperations operations = new NumericOperations();
+            operations.operationType = operationType;
             operations.operation = operation;
 
             if (srcArray != null)

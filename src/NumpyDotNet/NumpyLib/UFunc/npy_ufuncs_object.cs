@@ -293,7 +293,8 @@ namespace NumpyLib
         heaviside,
 
         // special flags
-        special_operand_is_float
+        special_operand_is_float,
+        no_operation
     };
 
     public enum NpyUFuncIdentity

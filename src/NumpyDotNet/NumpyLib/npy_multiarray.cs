@@ -1111,7 +1111,7 @@ namespace NumpyLib
         {
             var destSize = NpyArray_Size(destArray);
 
-            NumericOperations operations = NumericOperations.GetOperations(null, srcArray, destArray, whereArray);
+            NumericOperations operations = NumericOperations.GetOperations(UFuncOperation.no_operation, null, srcArray, destArray, whereArray);
 
             NpyArrayIterObject SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
             NpyArrayIterObject DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
@@ -1181,7 +1181,7 @@ namespace NumpyLib
                 return;
             }
 
-            NumericOperations operations = NumericOperations.GetOperations(null, mask, arr, vals);
+            NumericOperations operations = NumericOperations.GetOperations(UFuncOperation.no_operation, null, mask, arr, vals);
 
             NpyArrayIterObject valsIter = NpyArray_IterNew(vals);
             NpyArrayIterObject arrIter = NpyArray_IterNew(arr);

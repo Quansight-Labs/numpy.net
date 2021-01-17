@@ -1099,7 +1099,8 @@ namespace NumpyLib
             bool needs_api = false;
             npy_intp dst_countptr, src_countptr;
 
-            NumericOperations operations = NumericOperations.GetOperations(null, src, dst, null);
+
+            NumericOperations operations = NumericOperations.GetOperations(UFuncOperation.no_operation, null, src, dst, null);
 
 
             if (NpyArray_FailUnlessWriteable(dst, "destination array") < 0)
