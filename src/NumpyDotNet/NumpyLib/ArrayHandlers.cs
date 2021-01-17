@@ -353,10 +353,13 @@ namespace NumpyLib
         public INumericOperationsHelper destHelper;
         public INumericOperationsHelper operHelper;
 
-        public NumericConversion ConvertOperand;
+        public NumericConversion _ConvertOperand;
 
         public UFuncOperation operationType;
         public NumericOperation operation;
+        public NPY_TYPES destItemType;
+
+        private bool IsSrcAndOperandSameType = false;
 
         public object srcGetItem(npy_intp offset)
         {
@@ -370,6 +373,15 @@ namespace NumpyLib
         {
             destHelper.SetItem(offset, Item);
         }
+        public object ConvertOperand(object Operand)
+        {
+            if (!numpyinternal.NpyTypeNum_ISFLOAT(destItemType) && IsSrcAndOperandSameType)
+            {
+                return Operand;
+            }
+
+            return _ConvertOperand(Operand);
+        }
 
         public static NumericOperations GetOperations(UFuncOperation operationType, NumericOperation operation, NpyArray srcArray, NpyArray destArray, NpyArray operandArray)
         {
@@ -380,17 +392,19 @@ namespace NumpyLib
             if (srcArray != null)
             {
                 operations.srcHelper = GetNumericOperationsHelper(srcArray);
-                operations.ConvertOperand = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType).MathOpConvertOperand;
+                operations._ConvertOperand = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType).MathOpConvertOperand;
             }
 
             if (destArray != null)
             {
                 operations.destHelper = GetNumericOperationsHelper(destArray);
+                operations.destItemType = destArray.ItemType;
             }
 
             if (operandArray != null)
             {
                 operations.operHelper = GetNumericOperationsHelper(operandArray);
+                operations.IsSrcAndOperandSameType = srcArray.ItemType == operandArray.ItemType;
             }
 
 
