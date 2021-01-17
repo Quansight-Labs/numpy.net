@@ -695,7 +695,7 @@ namespace NumpyLib
 
                         object destValue = null;
 
-                        destValue = operations.operation(srcValue, operations.ConvertOperand(srcValue, operValue));
+                        destValue = operations.operation(srcValue, operations.ConvertOperand(operValue));
 
                         try
                         {
@@ -1683,7 +1683,7 @@ namespace NumpyLib
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
-                object operand = operations.ConvertOperand(src[0], oper[0]);
+                object operand = operations.ConvertOperand(oper[0]);
 
                 // accelerate this common function
                 if (operations.operationType == UFuncOperation.invert && srcArray.ItemType == NPY_TYPES.NPY_BOOL && destArray.ItemType == NPY_TYPES.NPY_BOOL)
@@ -1744,7 +1744,7 @@ namespace NumpyLib
                     {
                         try
                         {
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset));
+                            object operand = operations.ConvertOperand(operations.operandGetItem(loperIter.dataptr.data_offset));
 
                             D dValue = (D)(dynamic)operations.operation(src[ldestIter.index - srcAdjustment], operand);
 
@@ -2622,7 +2622,7 @@ namespace NumpyLib
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
 
-                object operand = operations.ConvertOperand(src[0], oper[0]);
+                object operand = operations.ConvertOperand(oper[0]);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 {
@@ -2668,7 +2668,7 @@ namespace NumpyLib
                     {
                         while (ldestIter.index < ldestIter.size)
                         {
-                            object operand = operations.ConvertOperand(src[0], operations.operandGetItem(loperIter.dataptr.data_offset));
+                            object operand = operations.ConvertOperand(operations.operandGetItem(loperIter.dataptr.data_offset));
 
                             var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);

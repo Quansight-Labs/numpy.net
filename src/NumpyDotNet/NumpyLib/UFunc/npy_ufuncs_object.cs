@@ -1039,7 +1039,7 @@ namespace NumpyLib
             {
                 var srcValue = operation.srcGetItem(src_offset+srcArray.data.data_offset);
 
-                cumsum = operation.operation(srcValue, operation.ConvertOperand(srcValue, cumsum));
+                cumsum = operation.operation(srcValue, operation.ConvertOperand(cumsum));
 
                 try
                 {

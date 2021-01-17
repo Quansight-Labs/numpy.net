@@ -74,7 +74,7 @@ namespace NumpyLib
         int ArrayFill(VoidPtr dest, VoidPtr scalar, int length, int dest_offset, int fill_offset);
         NPY_TYPES MathOpReturnType(UFuncOperation Operation);
         NPY_TYPES MathOpFloatingType(UFuncOperation Operation);
-        object MathOpConvertOperand(object srcValue, object operValue);
+        object MathOpConvertOperand(object operValue);
         object GetArgSortMinValue();
         object GetArgSortMaxValue();
         object GetPositiveInfinity();
@@ -90,7 +90,7 @@ namespace NumpyLib
     }
 
     public delegate object NumericOperation(object bValue, object operand);
-
+    public delegate object NumericConversion(object operand);
 
     public class DefaultArrayHandlers
     {
@@ -353,7 +353,7 @@ namespace NumpyLib
         public INumericOperationsHelper destHelper;
         public INumericOperationsHelper operHelper;
 
-        public NumericOperation ConvertOperand;
+        public NumericConversion ConvertOperand;
 
         public UFuncOperation operationType;
         public NumericOperation operation;

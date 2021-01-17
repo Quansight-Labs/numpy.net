@@ -94,7 +94,7 @@ namespace NumpyLib
                     {
                         var bValue = bValues[j];
 
-                        object destValue = operations.operation(aValue, operations.ConvertOperand(aValue, bValue));
+                        object destValue = operations.operation(aValue, operations.ConvertOperand(bValue));
 
                         try
                         {

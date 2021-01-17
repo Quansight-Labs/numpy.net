@@ -302,7 +302,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
-        public virtual object MathOpConvertOperand(object srcValue, object operValue)
+        public virtual object MathOpConvertOperand(object operValue)
         {
             if (operValue is System.Numerics.Complex)
             {
@@ -642,7 +642,7 @@ namespace NumpyLib
             return !(bp[index] == null);
         }
 
-        public override object MathOpConvertOperand(object srcValue, object operValue)
+        public override object MathOpConvertOperand(object operValue)
         {
             return operValue;
         }
@@ -2896,7 +2896,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DECIMAL;
         }
 
-        public override object MathOpConvertOperand(object srcValue, object operValue)
+        public override object MathOpConvertOperand(object operValue)
         {
             return Convert.ToDecimal(operValue);
         }
@@ -3222,7 +3222,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_COMPLEX;
         }
 
-        public override object MathOpConvertOperand(object srcValue, object operValue)
+        public override object MathOpConvertOperand(object operValue)
         {
             if (operValue is System.Numerics.Complex)
             {
@@ -3757,7 +3757,7 @@ namespace NumpyLib
             return NPY_TYPES.NPY_DOUBLE;
         }
 
-        public override object MathOpConvertOperand(object srcValue, object operValue)
+        public override object MathOpConvertOperand(object operValue)
         {
             if (operValue is System.Numerics.BigInteger)
             {
@@ -4212,7 +4212,7 @@ namespace NumpyLib
             return !(bp[index] == null);
         }
 
-        public override object MathOpConvertOperand(object srcValue, object operValue)
+        public override object MathOpConvertOperand(object operValue)
         {
             if (operValue == null)
                 return null;
