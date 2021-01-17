@@ -606,7 +606,7 @@ namespace NumpyLib
 
             if (!SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
             {
-                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, op);
+                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
                 return;
             }
 
@@ -616,7 +616,7 @@ namespace NumpyLib
                 return;
             }
 
-            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter, op);
+            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
             return;
         }
 
@@ -651,11 +651,11 @@ namespace NumpyLib
 
         }
 
-        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        private static void PerformNumericOpScalarSmallIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
-            if (IsBoolReturn(op) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
+            if (IsBoolReturn(operations.operationType) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
             {
-                bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, op);
+                bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, operations.operationType);
                 if (retValue)
                     return;
             }
@@ -1333,57 +1333,57 @@ namespace NumpyLib
         }
         #endregion
 
-        private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        private static void PerformNumericOpScalarIterContiguousSD(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             switch (srcArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguousSD_T1<bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguousSD_T1<sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguousSD_T1<byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguousSD_T1<Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguousSD_T1<UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguousSD_T1<float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguousSD_T1<double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguousSD_T1<decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguousSD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguousSD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T1<string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
             }
         }
@@ -1444,57 +1444,56 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguousSD_T1<S>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        private static void PerformNumericOpScalarIterContiguousSD_T1<S>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             switch (destArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter,op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
-                    break;
-                case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
+                    break;                case NPY_TYPES.NPY_DOUBLE:
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguous_SD_T2<S, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
 
             }
@@ -1556,57 +1555,57 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguous_SD_T2<S, D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        private static void PerformNumericOpScalarIterContiguous_SD_T2<S, D>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             switch (operArray.ItemType)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, bool>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BYTE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, sbyte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UBYTE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, byte>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT16:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT16:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt16>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT32:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT32:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt32>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_INT64:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, Int64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_UINT64:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, UInt64>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_FLOAT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, decimal>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.Complex>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_BIGINT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, System.Numerics.BigInteger>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_OBJECT:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, object>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_STRING:
-                    PerformNumericOpScalarIterContiguousSD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter, op);
+                    PerformNumericOpScalarIterContiguousSD_T3<S, D, string>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
 
             }
@@ -1668,7 +1667,7 @@ namespace NumpyLib
             }
         }
 
-        private static void PerformNumericOpScalarIterContiguousSD_T3<S, D, O>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter, UFuncOperation op)
+        private static void PerformNumericOpScalarIterContiguousSD_T3<S, D, O>(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, NpyArrayIterObject srcIter, NpyArrayIterObject destIter, NpyArrayIterObject operIter)
         {
             S[] src = srcArray.data.datap as S[];
             D[] dest = destArray.data.datap as D[];
@@ -1687,14 +1686,14 @@ namespace NumpyLib
                 object operand = operations.ConvertOperand(src[0], oper[0]);
 
                 // accelerate this common function
-                if (op == UFuncOperation.invert && srcArray.ItemType == NPY_TYPES.NPY_BOOL && destArray.ItemType == NPY_TYPES.NPY_BOOL)
+                if (operations.operationType == UFuncOperation.invert && srcArray.ItemType == NPY_TYPES.NPY_BOOL && destArray.ItemType == NPY_TYPES.NPY_BOOL)
                 {
                     BOOL_Invert_Accelerator(loopCount, src, dest, srcAdjustment, destAdjustment);
                     return;
                 }
 
                 // accelerate these common functions
-                if (IsBoolReturn(op) && BOOL_OpAccelerator(op, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
+                if (IsBoolReturn(operations.operationType) && BOOL_OpAccelerator(operations.operationType, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
                 {
                     return;
                 }
