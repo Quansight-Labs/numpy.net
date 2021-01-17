@@ -358,6 +358,7 @@ namespace NumpyLib
         public UFuncOperation operationType;
         public NumericOperation operation;
         public NPY_TYPES destItemType;
+        public bool destTypeIsFloat;
 
         private bool IsSrcAndOperandSameType = false;
 
@@ -375,7 +376,7 @@ namespace NumpyLib
         }
         public object ConvertOperand(object Operand)
         {
-            if (!numpyinternal.NpyTypeNum_ISFLOAT(destItemType) && IsSrcAndOperandSameType)
+            if (!destTypeIsFloat && IsSrcAndOperandSameType)
             {
                 return Operand;
             }
@@ -399,6 +400,7 @@ namespace NumpyLib
             {
                 operations.destHelper = GetNumericOperationsHelper(destArray);
                 operations.destItemType = destArray.ItemType;
+                operations.destTypeIsFloat = numpyinternal.NpyTypeNum_ISFLOAT(destArray.ItemType);
             }
 
             if (operandArray != null)
