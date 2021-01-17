@@ -15,7 +15,8 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNetTests
 {
-#if true
+#if false
+
     [TestClass]
     public class PerformanceTests : TestBaseClass
     {
@@ -3757,7 +3758,32 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
 
         }
-  
+
+       // [Ignore]
+        [TestMethod]
+        public void Performance_DifferentSizesIter()
+        {
+
+            int LoopCount = 1;
+
+            var x = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32).reshape(-1, 4000);
+            var y = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                ndarray z = np.multiply(x, y);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("DifferentSizes calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
 
     }
 

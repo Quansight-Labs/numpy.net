@@ -1125,6 +1125,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 repeat calculations took %f milliseconds" %(diff))
 
+    def test_Performance_DifferentSizesIter(self):
+
+        LoopCount = 1;
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32).reshape(-1, 4000);
+        y = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            z = np.multiply(x, y)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 differentSizes calculations took %f milliseconds" %(diff))
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters
