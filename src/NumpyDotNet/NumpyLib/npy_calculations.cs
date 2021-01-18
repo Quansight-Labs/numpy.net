@@ -604,41 +604,7 @@ namespace NumpyLib
 
 
         #region PerformNumericOpScalarIter
-        private static void PerformNumericOpScalarIter(NpyArray srcArray, NpyArray destArray, NpyArray operArray, NumericOperations operations, UFuncOperation op)
-        {
-
-            if (NpyArray_SIZE(operArray) == 0 || NpyArray_SIZE(srcArray) == 0)
-            {
-                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
-                return;
-            }
-
-            bool handled = PerformNumericOpScalarAllSameType(destArray, srcArray, operArray, op);
-            if (handled)
-                return;
-
-
-
-            var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
-            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
-            var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
-
-            if (!SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
-            {
-                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
-                return;
-            }
-
-            if (SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
-            {
-                PerformNumericOpScalarIterContiguousD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
-                return;
-            }
-
-            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
-            return;
-        }
-
+ 
         private static bool PerformNumericOpScalarAllSameType(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)
         {
             IUFUNC_Operations UFunc = GetUFuncHandler(destArray.ItemType);
@@ -1308,13 +1274,39 @@ namespace NumpyLib
         #endregion
 
         #region array to array numeric functions
-        public static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArray operandArray, UFuncOperation operationType)
+        public static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation operationType)
         {
-            NumericOperation operation = GetOperation(srcArray, operationType);
+            if (NpyArray_SIZE(operArray) == 0 || NpyArray_SIZE(srcArray) == 0)
+            {
+                NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
+                return;
+            }
 
-            NumericOperations operations = NumericOperations.GetOperations(operationType,operation, srcArray, destArray, operandArray);
-   
-            PerformNumericOpScalarIter(srcArray, destArray, operandArray, operations, operationType);
+            bool handled = PerformNumericOpScalarAllSameType(destArray, srcArray, operArray, operationType);
+            if (handled)
+                return;
+
+            NumericOperation operation = GetOperation(srcArray, operationType);
+            NumericOperations operations = NumericOperations.GetOperations(operationType, operation, srcArray, destArray, operArray);
+
+            var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
+            var DestIter = NpyArray_BroadcastToShape(destArray, destArray.dimensions, destArray.nd);
+            var OperIter = NpyArray_BroadcastToShape(operArray, destArray.dimensions, destArray.nd);
+
+            if (!SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
+            {
+                PerformNumericOpScalarIterContiguousSD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
+                return;
+            }
+
+            if (SrcIter.requiresIteration && !DestIter.requiresIteration && !operArray.IsASlice)
+            {
+                PerformNumericOpScalarIterContiguousD(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
+                return;
+            }
+
+            PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, operations, SrcIter, DestIter, OperIter);
+            return;
         }
 
         public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, UFuncOperation operationType)
