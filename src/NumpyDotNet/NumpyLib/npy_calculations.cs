@@ -260,17 +260,23 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_PerformNumericOperation(UFuncOperation operationType, NpyArray x1Array, NpyArray x2Array, NpyArray outArray, NpyArray whereFilter)
         {
+            bool CastToBool = false;
             if (outArray == null)
             {
-                outArray = NpyArray_NumericOpArraySelection(x1Array, x2Array, operationType);
+                outArray = NpyArray_NumericOpArraySelection(x1Array, x2Array, operationType, ref CastToBool);
             }
 
             PerformNumericOpArray(x1Array, outArray, x2Array, operationType);
 
+            if (CastToBool)
+            {
+                outArray = NpyArray_CastToType(outArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), false);
+            }
+
             return outArray;
         }
 
-        private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, UFuncOperation operationType)
+        private static NpyArray NpyArray_NumericOpArraySelection(NpyArray srcArray, NpyArray operandArray, UFuncOperation operationType, ref bool CastToBool)
         {
             NpyArray_Descr newtype = srcArray.descr;
             NPYARRAYFLAGS flags = srcArray.flags | NPYARRAYFLAGS.NPY_ENSURECOPY | NPYARRAYFLAGS.NPY_FORCECAST;
@@ -288,7 +294,7 @@ namespace NumpyLib
                 }
             }
 
-
+            CastToBool = false;
             switch (operationType)
             {
                 case UFuncOperation.add:
@@ -376,10 +382,23 @@ namespace NumpyLib
                 case UFuncOperation.greater:
                 case UFuncOperation.greater_equal:
                 case UFuncOperation.isnan:
-                {
-                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
-                    break;
-                }
+                    {
+                        switch (srcArray.ItemType)
+                        {
+                            case NPY_TYPES.NPY_STRING:
+                            case NPY_TYPES.NPY_OBJECT:
+                                newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
+                                break;
+                            default:
+                                // if src and operand are the same and we haven't changed newtype
+                                if (srcArray.ItemType == operandArray.ItemType && srcArray.ItemType == newtype.type_num)
+                                    CastToBool = true;
+                                else
+                                    newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
+                                break;
+                        }
+                        break;
+                    }
 
                 case UFuncOperation.floor_divide:
                 {
