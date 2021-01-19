@@ -1694,6 +1694,14 @@ namespace NumpyLib
             }
             else
             {
+                // includes calls to np.isclose, np.allclose, np.array_equal, np.cov.  
+                if (IsBoolReturn(operations.operationType) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
+                {
+                    bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, operations.operationType);
+                    if (retValue)
+                        return;
+                }
+
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
@@ -2590,6 +2598,15 @@ namespace NumpyLib
 
                 object operand = operations.ConvertOperand(oper[0]);
 
+     
+                if (IsBoolReturn(operations.operationType) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
+                {
+                    bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, operations.operationType);
+                    if (retValue)
+                        return;
+                }
+
+
                 Parallel.For(0, destParallelIters.Count(), index =>
                 {
                     var ldestIter = destParallelIters.ElementAt(index);
@@ -2620,6 +2637,14 @@ namespace NumpyLib
             }
             else
             {
+
+                if (IsBoolReturn(operations.operationType) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
+                {
+                    bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, operations.operationType);
+                    if (retValue)
+                        return;
+                }
+
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
