@@ -76,7 +76,7 @@ class PerformanceTests(unittest.TestCase):
 
         LoopCount = 200;
 
-        a = np.arange(10000000, dtype=np.float64);
+        a = np.arange(0, 4000 * 10 * 4000, dtype=np.float64);
 
         start = tm.time()
         
