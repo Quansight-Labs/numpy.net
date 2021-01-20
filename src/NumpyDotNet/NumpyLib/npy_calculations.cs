@@ -1659,7 +1659,7 @@ namespace NumpyLib
                 }
 
                 // accelerate these common functions
-                if (IsBoolReturn(operations.operationType) && BOOL_OpAccelerator(operations.operationType, src, operand, dest, loopCount, srcAdjustment, destAdjustment))
+                if (IsBoolReturn(operations.operationType) && BOOL_OpAccelerator(operations.operationType, srcArray, operArray, operand, destArray, loopCount, srcAdjustment, destAdjustment))
                 {
                     return;
                 }
@@ -1765,49 +1765,52 @@ namespace NumpyLib
         }
 
 
-        private static bool BOOL_OpAccelerator<S, D>(UFuncOperation op, S[] _src, object _operand, D[] _dest, long loopCount, int srcAdjustment, int destAdjustment)
+        private static bool BOOL_OpAccelerator(UFuncOperation op, NpyArray srcArray, NpyArray OperArray, object _operand, NpyArray DestArray, long loopCount, int srcAdjustment, int destAdjustment)
         {
+            var _src = srcArray.data.datap;
+            var _dest = DestArray.data.datap;
+
             var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
+            
+            if (srcArray.ItemType == NPY_TYPES.NPY_BOOL && OperArray.ItemType == NPY_TYPES.NPY_BOOL)
+            {
+                return Calculate_BooleanOp_BOOL(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_UBYTE && OperArray.ItemType == NPY_TYPES.NPY_UBYTE)
+            {
+                return Calculate_BooleanOp_BYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_BYTE && OperArray.ItemType == NPY_TYPES.NPY_BYTE)
+            {
+                return Calculate_BooleanOp_SBYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_INT16 && OperArray.ItemType == NPY_TYPES.NPY_INT16)
+            {
+                return Calculate_BooleanOp_INT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_UINT16 && OperArray.ItemType == NPY_TYPES.NPY_UINT16)
+            {
+                return Calculate_BooleanOp_UINT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_INT32 && OperArray.ItemType == NPY_TYPES.NPY_INT32)
+            {
+                return Calculate_BooleanOp_INT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_UINT32 && OperArray.ItemType == NPY_TYPES.NPY_UINT32)
+            {
+                return Calculate_BooleanOp_UINT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_INT64 && OperArray.ItemType == NPY_TYPES.NPY_INT64)
+            {
+                return Calculate_BooleanOp_INT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
+            if (srcArray.ItemType == NPY_TYPES.NPY_UINT64 && OperArray.ItemType == NPY_TYPES.NPY_UINT64)
+            {
+                return Calculate_BooleanOp_UINT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
+            }
 
             if (_operand is double)
             {
-                if (_src is bool[])
-                {
-                    return Calculate_BooleanOp_BOOL(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is byte[])
-                {
-                    return Calculate_BooleanOp_BYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is sbyte[])
-                {
-                    return Calculate_BooleanOp_SBYTE(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is Int16[])
-                {
-                    return Calculate_BooleanOp_INT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is UInt16[])
-                {
-                    return Calculate_BooleanOp_UINT16(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is Int32[])
-                {
-                    return Calculate_BooleanOp_INT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is UInt32[])
-                {
-                    return Calculate_BooleanOp_UINT32(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is Int64[])
-                {
-                    return Calculate_BooleanOp_INT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-                if (_src is UInt64[])
-                {
-                    return Calculate_BooleanOp_UINT64(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
-                }
-
                 if (_src is float[])
                 {
                     return Calculate_BooleanOp_FLOAT(segments, op, _src, _operand, _dest, srcAdjustment, destAdjustment);
@@ -1861,7 +1864,7 @@ namespace NumpyLib
         {
             bool[] src = _src as bool[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            bool operand = (bool)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -1904,7 +1907,7 @@ namespace NumpyLib
         {
             byte[] src = _src as byte[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            byte operand = (byte)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -1946,7 +1949,7 @@ namespace NumpyLib
         {
             sbyte[] src = _src as sbyte[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            sbyte operand = (sbyte)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -1988,7 +1991,7 @@ namespace NumpyLib
         {
             Int16[] src = _src as Int16[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            Int16 operand = (Int16)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -2029,7 +2032,7 @@ namespace NumpyLib
         {
             UInt16[] src = _src as UInt16[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            UInt16 operand = (UInt16)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -2070,7 +2073,7 @@ namespace NumpyLib
         {
             Int32[] src = _src as Int32[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            Int32 operand = (Int32)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -2112,7 +2115,7 @@ namespace NumpyLib
         {
             UInt32[] src = _src as UInt32[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            UInt32 operand = (UInt32)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -2153,7 +2156,7 @@ namespace NumpyLib
         {
             Int64[] src = _src as Int64[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            Int64 operand = (Int64)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
@@ -2195,7 +2198,7 @@ namespace NumpyLib
         {
             UInt64[] src = _src as UInt64[];
             bool[] dest = _dest as bool[];
-            double operand = (double)_operand;
+            UInt64 operand = (UInt64)_operand;
 
             Parallel.For(0, segments.Count(), segment_index =>
             {
