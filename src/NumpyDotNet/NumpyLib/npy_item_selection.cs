@@ -936,48 +936,28 @@ namespace NumpyLib
     
             size = it.size;
 
-            List<VoidPtr> opIterList = new List<VoidPtr>();
-            List<VoidPtr> ropIterList = new List<VoidPtr>();
-            List<Task> tasks = new List<Task>();
-            npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
 
             int errorsDetected = 0;
 
-            while (size-- > 0)
+            var itParallelIters = NpyArray_ITER_ParallelSplit(it);
+            var ritParallelIters = NpyArray_ITER_ParallelSplit(rit);
+
+            Parallel.For(0, ritParallelIters.Count(), index =>
             {
-                opIterList.Add(new VoidPtr(it.dataptr));
-                ropIterList.Add(new VoidPtr(rit.dataptr));
+                var lritIter = ritParallelIters.ElementAt(index);
+                var litIter = itParallelIters.ElementAt(index);
 
-                if (opIterList.Count == taskCount)
+                while (litIter.index < litIter.size)
                 {
-                    var workerThreadOpIterList = opIterList;
-                    var workerThreadRopIterList = ropIterList;
+                    _new_argsortlike(litIter.dataptr, lritIter.dataptr, ref errorsDetected,
+                                op, axis, argsort, argpart, kth, nkth, needidxbuffer, rstride);
 
-                    var task = Task.Run(() =>
-                    {
-                        _new_argsortlike_worker_thread(workerThreadOpIterList, workerThreadRopIterList, ref errorsDetected,
-                               op, axis, argsort, argpart, kth, nkth, needidxbuffer, rstride);
-
-                        // free data ASAP
-                        workerThreadOpIterList.Clear();
-                        workerThreadOpIterList = null;
-                        workerThreadRopIterList.Clear();
-                        workerThreadRopIterList = null;
-                    });
-                    tasks.Add(task);
-
-                    opIterList = new List<VoidPtr>();
-                    ropIterList = new List<VoidPtr>();
-
-                    taskCount = Math.Min(iterationTaskCountMax, size);
+                    NpyArray_ITER_NEXT(litIter);
+                    NpyArray_ITER_NEXT(lritIter);
                 }
 
-
-                NpyArray_ITER_NEXT(it);
-                NpyArray_ITER_NEXT(rit);
-            }
-
-            Task.WaitAll(tasks.ToArray());
+            });
+   
 
             if (errorsDetected > 0)
             {
@@ -995,7 +975,7 @@ namespace NumpyLib
             return rop;
         }
 
-        private static void _new_argsortlike_worker_thread(List<VoidPtr> opIterList, List<VoidPtr> ropIterList, ref int errorsDetected, 
+        private static void _new_argsortlike(VoidPtr opIterList, VoidPtr ropIterList, ref int errorsDetected, 
                     NpyArray op, int axis, NpyArray_ArgSortFunc argsort, NpyArray_ArgPartitionFunc argpart,
                     npy_intp[] kth, npy_intp nkth, bool needidxbuffer, npy_intp rstride)
         {
@@ -1009,20 +989,19 @@ namespace NumpyLib
 
             bool has_failed = false;
 
-            var parallelLoopResult = Parallel.For(0, opIterList.Count, ii =>
+            
             {
-                VoidPtr valbuffer = null;
                 VoidPtr idxbuffer = null;
 
-                VoidPtr valptr = new VoidPtr(opIterList[ii]);
-                VoidPtr idxptr = new VoidPtr(ropIterList[ii]);
+                VoidPtr valptr = opIterList;
+                VoidPtr idxptr = ropIterList;
                 VoidPtr iptr;
                 int i;
 
                 if (needcopy)
                 {
-                    valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    _default_copyswap(valbuffer, elsize, opIterList[ii], astride, N, swap, op);
+                    var valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
+                    _default_copyswap(valbuffer, elsize, opIterList, astride, N, swap, op);
                     valptr = new VoidPtr(valbuffer);
                 }
 
@@ -1068,7 +1047,7 @@ namespace NumpyLib
 
                 if (needidxbuffer)
                 {
-                    VoidPtr rptr = new VoidPtr(ropIterList[ii]);
+                    VoidPtr rptr = new VoidPtr(ropIterList);
                     var rptrSize = GetTypeSize(rptr);
 
                     iptr = new VoidPtr(idxbuffer);
@@ -1082,9 +1061,9 @@ namespace NumpyLib
                     }
                 }
 
-            });
+            };
 
-            if (!parallelLoopResult.IsCompleted || has_failed)
+            if (has_failed)
             {
                 Interlocked.Increment(ref errorsDetected);
             }
