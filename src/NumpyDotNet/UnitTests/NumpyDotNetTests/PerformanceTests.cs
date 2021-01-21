@@ -2895,7 +2895,6 @@ namespace NumpyDotNetTests
             int LoopCount = 20;
 
             var m1 = np.arange(16000000, 0, -1, dtype: np.Float64).reshape(40, -1);
-
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
@@ -2908,7 +2907,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("argsort operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
