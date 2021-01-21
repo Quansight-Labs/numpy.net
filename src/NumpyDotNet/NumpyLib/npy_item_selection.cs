@@ -1460,15 +1460,9 @@ namespace NumpyLib
         // use struct for merge sorts.  It is faster.
         struct ArgSortData<T> : IComparable where T : IComparable
         {
-            T dvalue;
+            public T dvalue;
             public npy_intp index;
-
-            public ArgSortData(npy_intp index, T d)
-            {
-                this.index = index;
-                this.dvalue = d;
-            }
-
+    
             public int CompareTo(object obj)
             {
                 ArgSortData<T> cv = (ArgSortData<T>)obj;
@@ -1500,7 +1494,7 @@ namespace NumpyLib
         private static void ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right) where T : IComparable
         {
             int depthRemaining = (int)Math.Log(Environment.ProcessorCount, 2) + 4;
-
+   
             _ArgMergeSort(input, left, right, depthRemaining);
         }
 
@@ -1529,6 +1523,7 @@ namespace NumpyLib
                 _ArgMerge(input, left, middle, right);
             }
         }
+ 
         private static void _ArgMerge<T>(ArgSortData<T>[] input, npy_intp left, npy_intp middle, npy_intp right) where T : IComparable
         {
             var leftArray = new ArgSortData<T>[middle - left + 1];
@@ -1607,7 +1602,8 @@ namespace NumpyLib
 
             for (npy_intp i = 0; i < m; i++)
             {
-                argSortData[i] = new ArgSortData<T>(i, data[adjustedIndex++]);
+                argSortData[i].index = i;
+                argSortData[i].dvalue = data[adjustedIndex++];
             }
 
             ArgMergeSort(argSortData, 0, m - 1);
@@ -2388,51 +2384,32 @@ namespace NumpyLib
                 }
                 else
                 {
-                    List<VoidPtr> dataList = new List<VoidPtr>();
-                    List<VoidPtr> argList = new List<VoidPtr>();
-
-                    List<Task> tasks = new List<Task>();
-                    npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
-
                     int errorsDetected = 0;
 
-                    while (size-- > 0)
+                    var itParallelIters = NpyArray_ITER_ParallelSplit(it);
+                    var ritParallelIters = NpyArray_ITER_ParallelSplit(rit);
+
+                    Parallel.For(0, itParallelIters.Count(), index =>
                     {
-                        iptr = rit.dataptr;
+                        var litIter = itParallelIters.ElementAt(index);
+                        var lritIter = ritParallelIters.ElementAt(index);
 
-                        BuildINTPArray(iptr, N);
-                        dataList.Add(new VoidPtr(it.dataptr));
-                        argList.Add(new VoidPtr(iptr));
-
-                        if (dataList.Count == taskCount)
+                        while (litIter.index < litIter.size)
                         {
-                            var workerThreadDataList = dataList;
-                            var workerThreadArgList = argList;
+                            var intpArray = lritIter.dataptr;
 
-                            var task = Task.Run(() =>
+                            BuildINTPArray(intpArray, N);
+
+                            if (argsort(litIter.dataptr, intpArray, N, op, kind) < 0)
                             {
-                                _new_argsort_nocopy_worker_thread(workerThreadDataList, workerThreadArgList, ref errorsDetected,
-                                       op, argsort, N, kind);
+                                errorsDetected++;
+                            }
 
-                                // free data ASAP
-                                workerThreadDataList.Clear();
-                                workerThreadDataList = null;
-                                workerThreadArgList.Clear();
-                                workerThreadArgList = null;
-                            });
-                            tasks.Add(task);
-
-                            dataList = new List<VoidPtr>();
-                            argList = new List<VoidPtr>();
-
-                            taskCount = Math.Min(iterationTaskCountMax, it.size - it.index);
+                            NpyArray_ITER_NEXT(litIter);
+                            NpyArray_ITER_NEXT(lritIter);
                         }
 
-                        NpyArray_ITER_NEXT(it);
-                        NpyArray_ITER_NEXT(rit);
-                    }
-
-                    Task.WaitAll(tasks.ToArray());
+                    });
 
                     if (errorsDetected > 0)
                         goto fail;
@@ -2450,24 +2427,6 @@ namespace NumpyLib
             Npy_XDECREF(it);
             Npy_XDECREF(rit);
             return null;
-        }
-
-        internal static void _new_argsort_nocopy_worker_thread(List<VoidPtr> dataList, List<VoidPtr> argList, ref int errorsDetected,
-                            NpyArray op, NpyArray_ArgSortFunc argsort, npy_intp N, NPY_SORTKIND kind)
-        {
-            bool failure_detected = false;
-            var parallelLoopResult = Parallel.For(0, dataList.Count, ii =>
-            {
-                if (argsort(dataList[ii], argList[ii], N, op, kind) < 0)
-                {
-                    failure_detected = true;
-                }
-            });
-
-            if (!parallelLoopResult.IsCompleted || failure_detected)
-            {
-                Interlocked.Increment(ref errorsDetected);
-            }
         }
 
         internal static void BuildINTPArray(VoidPtr iptr, npy_intp N)
