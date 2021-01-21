@@ -883,6 +883,7 @@ namespace NumpyLib
         {
             npy_intp TotalSize = it.size - it.index;
             NpyArrayIterObject[] DestIters = null;
+   
 
             if (TotalSize <= SingleIterSize || maxParallelIterators == 1)
             {
@@ -910,6 +911,12 @@ namespace NumpyLib
 
 
             var taskSize = TotalSize / DestIters.Length;
+            if (taskSize == 0)
+            {
+                DestIters = new NpyArrayIterObject[1];
+                taskSize = TotalSize / DestIters.Length;
+            }
+
             DestIters[0] = it.copy();
             DestIters[0].size = taskSize;
 
