@@ -1457,7 +1457,7 @@ namespace NumpyLib
 
         }
 
-        class ArgSortData<T> : IComparable where T : IComparable
+        struct ArgSortData<T> : IComparable where T : IComparable
         {
             T dvalue;
             public npy_intp index;
@@ -1470,8 +1470,26 @@ namespace NumpyLib
 
             public int CompareTo(object obj)
             {
-                ArgSortData<T> cv = obj as ArgSortData<T>;
+                ArgSortData<T> cv = (ArgSortData<T>)obj;
                 return this.dvalue.CompareTo(cv.dvalue);    
+            }
+        }
+
+        class CArgSortData<T> : IComparable where T : IComparable
+        {
+            T dvalue;
+            public npy_intp index;
+
+            public CArgSortData(npy_intp index, T d)
+            {
+                this.index = index;
+                this.dvalue = d;
+            }
+
+            public int CompareTo(object obj)
+            {
+                CArgSortData<T> cv = obj as CArgSortData<T>;
+                return this.dvalue.CompareTo(cv.dvalue);
             }
         }
 
@@ -1490,7 +1508,8 @@ namespace NumpyLib
             {
                 npy_intp middle = (left + right) / 2;
 
-                if (depthRemaining > 0)
+                // disable threading.  Seems to be slower
+                if (false && depthRemaining > 0)
                 {
                     var t1 = Task.Run(() =>
                     {
@@ -1542,41 +1561,63 @@ namespace NumpyLib
                 }
             }
         }
-   
+
         #endregion
 
         private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind) where T : IComparable
         {
+            if (kind == NPY_SORTKIND.NPY_MERGESORT)
+            {
+                argMergeSortIndexes<T>(ip, m, sortData, startingIndex);
+                return;
+            }
+
             T[] data = sortData.datap as T[];
 
-            var argSortDouble = new ArgSortData<T>[m];
+            var argSortData = new CArgSortData<T>[m];
 
             var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
 
-            for (int i = 0; i < m; i++)
+            for (npy_intp i = 0; i < m; i++)
             {
-                argSortDouble[i] = new ArgSortData<T>(i, data[i+ adjustedIndex]);
+                argSortData[i] = new CArgSortData<T>(i, data[adjustedIndex++]);
             }
 
-            if (kind == NPY_SORTKIND.NPY_MERGESORT)
-            {
-                ArgMergeSort(argSortDouble, 0, m - 1);
-            }
-            else
-            {
-                //Array.Sort(argSortDouble);
-                argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
-            }
+            //Array.Sort(argSortData);
+            argSortData = argSortData.AsParallel().OrderBy(t => t).ToArray();
 
             npy_intp[] _ip = (npy_intp[])ip.datap;
 
+            npy_intp data_offset = ip.data_offset >> IntpDivSize;
             for (int i = 0; i < m; i++)
             {
-                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
+                _ip[data_offset++] = argSortData[i].index - startingIndex;
             }
         }
 
-    
+        private static void argMergeSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex) where T : IComparable
+        {
+            T[] data = sortData.datap as T[];
+
+            var argSortData = new ArgSortData<T>[m];
+
+            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
+
+            for (npy_intp i = 0; i < m; i++)
+            {
+                argSortData[i] = new ArgSortData<T>(i, data[adjustedIndex++]);
+            }
+
+            ArgMergeSort(argSortData, 0, m - 1);
+
+            npy_intp[] _ip = (npy_intp[])ip.datap;
+
+            npy_intp data_offset = ip.data_offset >> IntpDivSize;
+            for (int i = 0; i < m; i++)
+            {
+                _ip[data_offset++] = argSortData[i].index - startingIndex;
+            }
+        }
 
         class ArgSortData_COMPLEX : IComparable
         {
