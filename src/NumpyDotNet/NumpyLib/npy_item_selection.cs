@@ -779,7 +779,6 @@ namespace NumpyLib
             npy_intp size;
 
 
-
             /* Check if there is any sorting to do */
             if (N <= 1 || NpyArray_SIZE(op) == 0)
             {
@@ -793,33 +792,21 @@ namespace NumpyLib
             }
             size = it.size;
 
-
-            List<VoidPtr> iterList = new List<VoidPtr>();
-            List<Task> tasks = new List<Task>();
-            npy_intp taskCount = Math.Min(iterationTaskCountMax, size);
-
             int errorsDetected = 0;
-            while (size-- > 0)
-            {
-                iterList.Add(new VoidPtr(it.dataptr));
-                if (iterList.Count == taskCount)
-                {
-                    var workerThreadIterList = iterList;
-                    var task = Task.Run(() =>
-                    {
-                        _new_sortlike_worker_thread(workerThreadIterList, ref errorsDetected, op, axis, sort, part, kth, nkth,kind);
-                        // free data ASAP
-                        workerThreadIterList.Clear();
-                        workerThreadIterList = null;
-                    });
-                    tasks.Add(task);
-                    iterList = new List<VoidPtr>();
-                    taskCount = Math.Min(iterationTaskCountMax, size);
-                }
-                NpyArray_ITER_NEXT(it);
-            }
 
-            Task.WaitAll(tasks.ToArray());
+            var itParallelIters = NpyArray_ITER_ParallelSplit(it);
+
+            Parallel.For(0, itParallelIters.Count(), index =>
+            {
+                var litIter = itParallelIters.ElementAt(index);
+
+                while (litIter.index < litIter.size)
+                {
+                    _new_sortlike(litIter.dataptr, ref errorsDetected, op, axis, sort, part, kth, nkth, kind);
+                    NpyArray_ITER_NEXT(litIter);
+                }
+            });
+   
 
             Npy_DECREF(it);
 
@@ -828,7 +815,7 @@ namespace NumpyLib
             return 0;
         }
 
-        private static void _new_sortlike_worker_thread(List<VoidPtr> iterList, ref int errorsDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth, NPY_SORTKIND kind)
+        private static void _new_sortlike(VoidPtr iterList, ref int errorsDetected, NpyArray op, int axis, NpyArray_SortFunc sort, NpyArray_PartitionFunc part, npy_intp[] kth, npy_intp nkth, NPY_SORTKIND kind)
         {
             npy_intp N = NpyArray_DIM(op, axis);
             int elsize = NpyArray_ITEMSIZE(op);
@@ -840,55 +827,53 @@ namespace NumpyLib
 
             bool has_failed = false;
 
-            var parallelLoopResult = Parallel.For(0, iterList.Count,  ii =>
+
+            VoidPtr buffer = null;
+            VoidPtr bufptr = new VoidPtr(iterList);
+
+            if (needcopy)
             {
-                VoidPtr buffer = null;
-                VoidPtr bufptr = new VoidPtr(iterList[ii]);
+                buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
+                _default_copyswap(buffer, elsize, iterList, astride, N, swap, op);
+                bufptr = new VoidPtr(buffer);
+            }
+            /*
+             * TODO: If the input array is byte-swapped but contiguous and
+             * aligned, it could be swapped (and later unswapped) in-place
+             * rather than after copying to the buffer. Care would have to
+             * be taken to ensure that, if there is an error in the call to
+             * sort or part, the unswapping is still done before returning.
+             */
 
-                if (needcopy)
+            if (part == null)
+            {
+                ret = sort(bufptr, N, op, kind);
+                if (ret < 0)
                 {
-                    buffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
-                    _default_copyswap(buffer, elsize, iterList[ii], astride, N, swap, op);
-                    bufptr = new VoidPtr(buffer);
+                    has_failed = true;
                 }
-                /*
-                 * TODO: If the input array is byte-swapped but contiguous and
-                 * aligned, it could be swapped (and later unswapped) in-place
-                 * rather than after copying to the buffer. Care would have to
-                 * be taken to ensure that, if there is an error in the call to
-                 * sort or part, the unswapping is still done before returning.
-                 */
-
-                if (part == null)
+            }
+            else
+            {
+                npy_intp[] pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
+                npy_intp? npiv = 0;
+                for (npy_intp i = 0; i < nkth; ++i)
                 {
-                    ret = sort(bufptr, N, op, kind);
+                    ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
                     if (ret < 0)
                     {
                         has_failed = true;
                     }
                 }
-                else
-                {
-                    npy_intp[] pivots = new npy_intp[npy_defs.NPY_MAX_PIVOT_STACK];
-                    npy_intp? npiv = 0;
-                    for (npy_intp i = 0; i < nkth; ++i)
-                    {
-                        ret = part(bufptr, N, kth[i], pivots, ref npiv, op);
-                        if (ret < 0)
-                        {
-                            has_failed = true;
-                        }
-                    }
-                }
+            }
 
-                if (needcopy)
-                {
-                    _default_copyswap(iterList[ii], astride, buffer, elsize, N, swap, op);
-                }
+            if (needcopy)
+            {
+                _default_copyswap(iterList, astride, buffer, elsize, N, swap, op);
+            }
 
-            });
 
-            if (!parallelLoopResult.IsCompleted || has_failed)
+            if (has_failed)
             {
                 Interlocked.Increment(ref errorsDetected);
             }
