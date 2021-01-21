@@ -1457,6 +1457,7 @@ namespace NumpyLib
 
         }
 
+        // use struct for merge sorts.  It is faster.
         struct ArgSortData<T> : IComparable where T : IComparable
         {
             T dvalue;
@@ -1475,6 +1476,7 @@ namespace NumpyLib
             }
         }
 
+        // use class for quick sort.  It is faster.
         class CArgSortData<T> : IComparable where T : IComparable
         {
             T dvalue;
