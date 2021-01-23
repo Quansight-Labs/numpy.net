@@ -1409,312 +1409,76 @@ namespace NumpyLib
             return ret;
         }
 
-
-        private static dynamic ArgSortMaxValue(NPY_TYPES type)
-        {
-            return DefaultArrayHandlers.GetArrayHandler(type).GetArgSortMaxValue();
-        }
-
-        private static dynamic ArgSortMinValue(NPY_TYPES type)
-        {
-            return DefaultArrayHandlers.GetArrayHandler(type).GetArgSortMinValue();
-
-        }
-
-        // use struct for merge sorts.  It is faster.
-        struct ArgSortData<T> : IComparable where T : IComparable
-        {
-            public T dvalue;
-            public npy_intp index;
-    
-            public int CompareTo(object obj)
-            {
-                ArgSortData<T> cv = (ArgSortData<T>)obj;
-                return this.dvalue.CompareTo(cv.dvalue);    
-            }
-        }
-
-        // use class for quick sort.  It is faster.
-        class CArgSortData<T> : IComparable where T : IComparable
-        {
-            T dvalue;
-            public npy_intp index;
-
-            public CArgSortData(npy_intp index, T d)
-            {
-                this.index = index;
-                this.dvalue = d;
-            }
-
-            public int CompareTo(object obj)
-            {
-                CArgSortData<T> cv = obj as CArgSortData<T>;
-                return this.dvalue.CompareTo(cv.dvalue);
-            }
-        }
-
-        #region ArgSort MERGESORT
-
-        private static void ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right) where T : IComparable
-        {
-            int depthRemaining = (int)Math.Log(Environment.ProcessorCount, 2) + 4;
-   
-            _ArgMergeSort(input, left, right, depthRemaining);
-        }
-
-        private static void _ArgMergeSort<T>(ArgSortData<T>[] input, npy_intp left, npy_intp right, int depthRemaining) where T : IComparable
-        {
-            if (left < right)
-            {
-                npy_intp middle = (left + right) / 2;
-
-                // disable threading.  Seems to be slower
-                if (false && depthRemaining > 0)
-                {
-                    var t1 = Task.Run(() =>
-                    {
-                        _ArgMergeSort(input, left, middle, depthRemaining - 1);
-                    });
-                    _ArgMergeSort(input, middle + 1, right, depthRemaining - 1);
-                    Task.WaitAll(t1);
-                }
-                else
-                {
-                    _ArgMergeSort(input, left, middle, depthRemaining - 1);
-                    _ArgMergeSort(input, middle + 1, right, depthRemaining - 1);
-                }
-
-                _ArgMerge(input, left, middle, right);
-            }
-        }
- 
-        private static void _ArgMerge<T>(ArgSortData<T>[] input, npy_intp left, npy_intp middle, npy_intp right) where T : IComparable
-        {
-            var leftArray = new ArgSortData<T>[middle - left + 1];
-            var rightArray = new ArgSortData<T>[right - middle];
-
-            Array.Copy(input, left, leftArray, 0, middle - left + 1);
-            Array.Copy(input, middle + 1, rightArray, 0, right - middle);
-
-            int i = 0;
-            int j = 0;
-            for (npy_intp k = left; k < right + 1; k++)
-            {
-                if (i == leftArray.Length)
-                {
-                    input[k] = rightArray[j];
-                    j++;
-                }
-                else if (j == rightArray.Length)
-                {
-                    input[k] = leftArray[i];
-                    i++;
-                }
-                else if (leftArray[i].CompareTo(rightArray[j]) <= 0)
-                {
-                    input[k] = leftArray[i];
-                    i++;
-                }
-                else
-                {
-                    input[k] = rightArray[j];
-                    j++;
-                }
-            }
-        }
-
-        #endregion
-
-        private static void argSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind) where T : IComparable
-        {
-            if (kind == NPY_SORTKIND.NPY_MERGESORT)
-            {
-                argMergeSortIndexes<T>(ip, m, sortData, startingIndex);
-                return;
-            }
-
-            T[] data = sortData.datap as T[];
-
-            var argSortData = new CArgSortData<T>[m];
-
-            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
-
-            for (npy_intp i = 0; i < m; i++)
-            {
-                argSortData[i] = new CArgSortData<T>(i, data[adjustedIndex++]);
-            }
-
-            //Array.Sort(argSortData);
-            argSortData = argSortData.AsParallel().OrderBy(t => t).ToArray();
-
-            npy_intp[] _ip = (npy_intp[])ip.datap;
-
-            npy_intp data_offset = ip.data_offset >> IntpDivSize;
-            for (int i = 0; i < m; i++)
-            {
-                _ip[data_offset++] = argSortData[i].index - startingIndex;
-            }
-        }
-
-        private static void argMergeSortIndexes<T>(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex) where T : IComparable
-        {
-            T[] data = sortData.datap as T[];
-
-            var argSortData = new ArgSortData<T>[m];
-
-            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
-
-            for (npy_intp i = 0; i < m; i++)
-            {
-                argSortData[i].index = i;
-                argSortData[i].dvalue = data[adjustedIndex++];
-            }
-
-            ArgMergeSort(argSortData, 0, m - 1);
-
-            npy_intp[] _ip = (npy_intp[])ip.datap;
-
-            npy_intp data_offset = ip.data_offset >> IntpDivSize;
-            for (int i = 0; i < m; i++)
-            {
-                _ip[data_offset++] = argSortData[i].index - startingIndex;
-            }
-        }
-
-        class ArgSortData_COMPLEX : IComparable
-        {
-            System.Numerics.Complex dvalue;
-            public npy_intp index;
-
-            public ArgSortData_COMPLEX(npy_intp index, System.Numerics.Complex d)
-            {
-                this.index = index;
-                this.dvalue = d;
-            }
-
-            public int CompareTo(object obj)
-            {
-                ArgSortData_COMPLEX cv = obj as ArgSortData_COMPLEX;
-                return this.dvalue.Real.CompareTo(cv.dvalue.Real);
-            }
-        }
-        class ArgSortData_OBJECT : IComparable
-        {
-            dynamic dvalue;
-            public npy_intp index;
-
-            public ArgSortData_OBJECT(npy_intp index, System.Object d)
-            {
-                this.index = index;
-                this.dvalue = d;
-            }
-
-            public int CompareTo(object obj)
-            {
-                ArgSortData_OBJECT cv = obj as ArgSortData_OBJECT;
-                return this.dvalue.CompareTo(cv.dvalue);
-            }
-        }
-
-        private static void argSortIndexes_COMPLEX(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
-        {
-            var data = sortData.datap as System.Numerics.Complex[];
-
-            var argSortDouble = new ArgSortData_COMPLEX[m];
-
-            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
-
-            for (int i = 0; i < m; i++)
-            {
-                argSortDouble[i] = new ArgSortData_COMPLEX(i, data[i + adjustedIndex]);
-            }
-
-            //Array.Sort(argSortDouble);
-            argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
-
-            npy_intp[] _ip = (npy_intp[])ip.datap;
-
-            for (int i = 0; i < m; i++)
-            {
-                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
-            }
-        }
-
-        private static void argSortIndexes_OBJECT(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
-        {
-            var data = sortData.datap as System.Object[];
-
-            var argSortDouble = new ArgSortData_OBJECT[m];
-
-            var adjustedIndex = startingIndex + (sortData.data_offset >> GetDivSize(GetTypeSize(sortData.type_num)));
-
-            for (int i = 0; i < m; i++)
-            {
-                argSortDouble[i] = new ArgSortData_OBJECT(i, data[i + adjustedIndex]);
-            }
-
-            //Array.Sort(argSortDouble);
-            argSortDouble = argSortDouble.AsParallel().OrderBy(t => t).ToArray();
-
-            npy_intp[] _ip = (npy_intp[])ip.datap;
-
-            for (int i = 0; i < m; i++)
-            {
-                _ip[i + (ip.data_offset >> IntpDivSize)] = argSortDouble[i].index - startingIndex;
-            }
-        }
-
+  
         private static void ArgSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, NPY_SORTKIND kind)
         {
+            var DivSize = GetDivSize(GetTypeSize(sortData.type_num));
+
             switch (sortData.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    argSortIndexes<bool>(ip, m, sortData, startingIndex,kind);
+                    var sortBool = new Sort_BOOL();
+                    sortBool.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_BYTE:
-                    argSortIndexes<sbyte>(ip, m, sortData, startingIndex, kind);
+                    var sortByte = new Sort_BYTE();
+                    sortByte.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_UBYTE:
-                    argSortIndexes<byte>(ip, m, sortData, startingIndex, kind);
+                    var sortUByte = new Sort_UBYTE();
+                    sortUByte.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_INT16:
-                    argSortIndexes<Int16>(ip, m, sortData, startingIndex, kind);
+                    var sortInt16 = new Sort_INT16();
+                    sortInt16.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_UINT16:
-                    argSortIndexes<UInt16>(ip, m, sortData, startingIndex, kind);
+                    var sortUInt16 = new Sort_UINT16();
+                    sortUInt16.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_INT32:
-                    argSortIndexes<Int32>(ip, m, sortData, startingIndex, kind);
+                    var sortInt32 = new Sort_INT32();
+                    sortInt32.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_UINT32:
-                    argSortIndexes<UInt32>(ip, m, sortData, startingIndex, kind);
+                    var sortUInt32 = new Sort_UINT32();
+                    sortUInt32.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_INT64:
-                    argSortIndexes<Int64>(ip, m, sortData, startingIndex, kind);
+                    var sortInt64 = new Sort_INT64();
+                    sortInt64.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_UINT64:
-                    argSortIndexes<UInt64>(ip, m, sortData, startingIndex, kind);
+                    var sortUInt64 = new Sort_UINT64();
+                    sortUInt64.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_FLOAT:
-                    argSortIndexes<float>(ip, m, sortData, startingIndex, kind);
+                    var sortFloat = new Sort_FLOAT();
+                    sortFloat.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_DOUBLE:
-                    argSortIndexes<double>(ip, m, sortData, startingIndex, kind);
+                    var sortDouble = new Sort_DOUBLE();
+                    sortDouble.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_DECIMAL:
-                    argSortIndexes<decimal>(ip, m, sortData, startingIndex, kind);
+                    var sortDecimal = new Sort_DECIMAL();
+                    sortDecimal.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_COMPLEX:
-                    argSortIndexes_COMPLEX(ip, m, sortData, startingIndex, kind);
+                    var sortCOMPLEX = new Sort_COMPLEX();
+                    sortCOMPLEX.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_BIGINT:
-                    argSortIndexes<System.Numerics.BigInteger>(ip, m, sortData, startingIndex, kind);
+                    var sortBIGINT = new Sort_BIGINT();
+                    sortBIGINT.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_OBJECT:
-                    argSortIndexes_OBJECT(ip, m, sortData, startingIndex, kind);
+                    var sortOBJECT = new Sort_OBJECT();
+                    sortOBJECT.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 case NPY_TYPES.NPY_STRING:
-                    argSortIndexes<System.String>(ip, m, sortData, startingIndex, kind);
+                    var sortSTRING = new Sort_STRING();
+                    sortSTRING.argSortIndexes(ip, m, sortData, startingIndex, kind, DivSize, IntpDivSize);
                     return;
                 default:
                     throw new Exception("ArgSortIndexes does not support this data type");
