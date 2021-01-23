@@ -323,6 +323,25 @@ namespace NumpyLib
                 return;
             }
 
+            if (kind == NPY_SORTKIND.NPY_QUICKSORT)
+            {
+                argQuickSortIndexes(ip, m, sortData, startingIndex, DivSize, IntpDivSize);
+                return;
+            }
+
+            if (kind == NPY_SORTKIND.NPY_HEAPSORT)
+            {
+                throw new Exception("HEAPSORT not supported");
+            }
+
+            throw new Exception("Unrecognized sort type");
+
+    
+        }
+
+        #region QuickSort
+        private void argQuickSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, int DivSize, int IntpDivSize)
+        {
             T[] data = sortData.datap as T[];
 
             var argSortData = new CArgSortData[m];
@@ -345,7 +364,9 @@ namespace NumpyLib
                 _ip[data_offset++] = argSortData[i].index - startingIndex;
             }
         }
+        #endregion
 
+        #region MergeSort
         private void argMergeSortIndexes(VoidPtr ip, npy_intp m, VoidPtr sortData, npy_intp startingIndex, int DivSize, int IntpDivSize)
         {
             T[] data = sortData.datap as T[];
@@ -442,6 +463,7 @@ namespace NumpyLib
                 }
             }
         }
+        #endregion
     }
 
 }
