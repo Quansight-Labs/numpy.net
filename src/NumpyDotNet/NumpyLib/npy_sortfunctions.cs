@@ -325,7 +325,9 @@ namespace NumpyLib
 
             if (kind == NPY_SORTKIND.NPY_QUICKSORT)
             {
-                argQuickSortIndexes(ip, m, sortData, startingIndex, DivSize, IntpDivSize);
+                // use merge sort until we can get a faster quick sort.
+                argMergeSortIndexes(ip, m, sortData, startingIndex, DivSize, IntpDivSize);
+                //argQuickSortIndexes(ip, m, sortData, startingIndex, DivSize, IntpDivSize);
                 return;
             }
 
