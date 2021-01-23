@@ -4322,7 +4322,7 @@ namespace NumpyDotNet
 
             numnew = len(indices);
             ndarray order = indices.ArgSort(kind: NPY_SORTKIND.NPY_MERGESORT); // stable sort
-            indices[order] = indices.A(order) + np.arange(numnew);
+            indices[order] = indices.A(order) + np.arange(numnew, dtype:np.intp);
 
             newshape[(int)axis] += numnew;
             var old_mask = ones(new shape((int)newshape[(int)axis]), dtype: np.Bool);
