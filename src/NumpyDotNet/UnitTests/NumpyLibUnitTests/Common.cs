@@ -61,7 +61,6 @@ namespace NumpyLibTests
                 neighbor_iter_new_wrapper = numpy_interface_neighbor_iter_new_wrapper,
                 descr_new_from_type = numpy_interface_descr_new_from_type,
                 descr_new_from_wrapper = numpy_interface_descr_new_from_wrapper,
-                ufunc_new_wrapper = numpy_interface_ufunc_new_wrapper,
             };
 
             npy_tp_error_set error_set = ErrorSet_handler;
@@ -436,7 +435,7 @@ namespace NumpyLibTests
                     }
  
 
-                case NPY_TYPES.NPY_SHORT:
+                case NPY_TYPES.NPY_INT16:
                     {
                         Int16[] bdata = new Int16[dataLen];
 
@@ -463,7 +462,7 @@ namespace NumpyLibTests
                         break;
                     }
  
-                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_UINT16:
                     {
                         UInt16[] bdata = new UInt16[dataLen];
 
@@ -541,7 +540,7 @@ namespace NumpyLibTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_LONG:
+                case NPY_TYPES.NPY_INT64:
                     {
                         Int64[] bdata = new Int64[dataLen];
 
@@ -567,7 +566,7 @@ namespace NumpyLibTests
                         data = new VoidPtr(bdata);
                         break;
                     }
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_UINT64:
                     {
                         UInt64[] bdata = new UInt64[dataLen];
 
@@ -725,32 +724,7 @@ namespace NumpyLibTests
                     break;
                 }
 
-
-
-                // not sure about these yet.  Not really supported
-                case NPY_TYPES.NPY_DATETIME:
-                case NPY_TYPES.NPY_TIMEDELTA:
-                    {
-                        UInt64[] bdata = new UInt64[dataLen];
-
-                        for (int i = 0; i < bdata.Length; i++)
-                        {
-                            if (UseFillData)
-                            {
-                                bdata[i] = (UInt64)FillData;
-                            }
-                            else
-                            {
-                                bdata[i] = (UInt64)(i + ArrayDataAdjust);
-                            }
-                        }
-
-                        data = new VoidPtr(bdata);
-                        break;
-                    }
-
-
-       
+      
 
                 default:
                     throw new Exception(string.Format("GetArrayOfData: Unexpected item_type {0}", item_type));
@@ -774,14 +748,14 @@ namespace NumpyLibTests
                 case NPY_TYPES.NPY_BYTE:
                 case NPY_TYPES.NPY_UBYTE:
                     return 1;
-                case NPY_TYPES.NPY_SHORT:
-                case NPY_TYPES.NPY_USHORT:
+                case NPY_TYPES.NPY_INT16:
+                case NPY_TYPES.NPY_UINT16:
                     return 2;
-                case NPY_TYPES.NPY_INT:
-                case NPY_TYPES.NPY_UINT:
+                case NPY_TYPES.NPY_INT32:
+                case NPY_TYPES.NPY_UINT32:
                     return 4;
-                case NPY_TYPES.NPY_LONG:
-                case NPY_TYPES.NPY_ULONG:
+                case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_UINT64:
                     return 8;
   
                 case NPY_TYPES.NPY_FLOAT:
