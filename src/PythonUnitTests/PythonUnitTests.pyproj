@@ -77,6 +77,9 @@
     <Compile Include="RandomSamplingTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HistogramUnitTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
