@@ -89,5 +89,15 @@ class HistogramTests(unittest.TestCase):
         except:
             print("Exception occured")
 
+    def test_bincount_not1d(self):
+
+        try :
+            x = np.arange(100, dtype=np.int64).reshape(10,10);
+            a = np.bincount(x)
+            print(a)
+            self.fail("should have thrown exception")
+        except:
+            print("Exception occured")
+
 if __name__ == '__main__':
     unittest.main()
