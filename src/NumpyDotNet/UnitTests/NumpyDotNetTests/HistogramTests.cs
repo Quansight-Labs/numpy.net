@@ -17,6 +17,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class HistogramTests : TestBaseClass
     {
+        #region bincount
         [TestMethod]
         public void test_bincount_1()
         {
@@ -174,6 +175,52 @@ namespace NumpyDotNetTests
             }
 
         }
+        #endregion
 
+        #region digitize
+        [TestMethod]
+        public void test_digitize_1()
+        {
+            var x = np.array(new double[] { 0.2, 6.4, 3.0, 1.6 });
+            var bins = np.array(new double[] { 0.0, 1.0, 2.5, 4.0, 10.0 });
+            var inds = np.digitize(x, bins);
+            AssertArray(inds, new npy_intp[] { 1, 4, 3, 2 });
+            print(inds);
+
+        }
+
+        [TestMethod]
+        public void test_digitize_2()
+        {
+            var x = np.array(new double[] { 1.2, 10.0, 12.4, 15.5, 20.0});
+            var bins = np.array(new Int32[] { 0, 5, 10, 15, 20 });
+
+            var inds = np.digitize(x, bins, right: true);
+            AssertArray(inds, new npy_intp[] { 1, 2, 3, 4, 4 });
+            print(inds);
+
+            inds = np.digitize(x, bins, right: false);
+            AssertArray(inds, new npy_intp[] { 1, 3, 3, 4, 5 });
+            print(inds);
+
+        }
+
+        [TestMethod]
+        public void test_digitize_3()
+        {
+            var x = np.array(new double[] { 1.2, 10.0, 12.4, 15.5, 20.0 });
+            var bins = np.array(new Int32[] { 20, 15, 10, 5, 0 });
+
+            var inds = np.digitize(x, bins, right: true);
+            AssertArray(inds, new npy_intp[] { 4, 3, 2, 1, 1 });
+            print(inds);
+
+            inds = np.digitize(x, bins, right: false);
+            AssertArray(inds, new npy_intp[] { 4, 2, 2, 1, 0 });
+            print(inds);
+
+        }
+
+        #endregion
     }
 }

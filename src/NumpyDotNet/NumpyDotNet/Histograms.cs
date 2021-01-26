@@ -173,5 +173,114 @@ namespace NumpyDotNet
 
         }
 
+
+        /*
+        * digitize(x, bins, right=False) returns an array of integers the same length
+        * as x. The values i returned are such that bins[i - 1] <= x < bins[i] if
+        * bins is monotonically increasing, or bins[i - 1] > x >= bins[i] if bins
+        * is monotonically decreasing.  Beyond the bounds of bins, returns either
+        * i = 0 or i = len(bins) as appropriate. If right == True the comparison
+        * is bins [i - 1] < x <= bins[i] or bins [i - 1] >= x > bins[i]
+        */
+        public static ndarray digitize(object x, object bins, bool right= false)
+        {
+            ndarray arr_x = np.asanyarray(x).ravel();
+            ndarray arr_bins = np.asanyarray(bins).ravel();
+
+            arr_x = np.asarray(arr_x, np.Float64);
+            arr_bins = np.asarray(arr_bins, np.Float64);
+
+            var len_bins = arr_bins.Size;
+            if (len_bins == 0)
+            {
+                throw new Exception("bins must have non-zero length");
+            }
+
+            double[] arr_bins_data = arr_bins.ToArray<double>();
+
+            int monotonic = check_array_monotonic(arr_bins_data, len_bins);
+
+            if (monotonic == 0)
+            {
+                throw new Exception("bins must be monotonically increasing or decreasing");
+            }
+
+            /* PyArray_SearchSorted needs an increasing array */
+            if (monotonic == -1)
+            {
+                // reverse the array
+                arr_bins = arr_bins["::-1"] as ndarray;
+            }
+
+            var ret =  np.searchsorted(arr_bins, arr_x, right ?  NPY_SEARCHSIDE.NPY_SEARCHLEFT : NPY_SEARCHSIDE.NPY_SEARCHRIGHT, null);
+            if (ret == null)
+            {
+                return null;
+            }
+
+            /* If bins is decreasing, ret has bins from end, not start */
+            if (monotonic == -1)
+            {
+                npy_intp[] ret_data = ret.ToArray<npy_intp>();
+                npy_intp len_ret = ret.Size;
+
+
+                npy_intp index = 0;
+                while (len_ret-- > 0)
+                {
+                    ret_data[index] = len_bins - ret_data[index];
+                    index++;
+                }
+    
+            }
+
+            return ret;
+        }
+
+        private static int check_array_monotonic(double[] a, long lena)
+        {
+            npy_intp i;
+            double next;
+            double last = a[0];
+
+            /* Skip repeated values at the beginning of the array */
+            for (i = 1; (i < lena) && (a[i] == last); i++) ;
+
+            if (i == lena)
+            {
+                /* all bin edges hold the same value */
+                return 1;
+            }
+
+            next = a[i];
+            if (last < next)
+            {
+                /* Possibly monotonic increasing */
+                for (i += 1; i < lena; i++)
+                {
+                    last = next;
+                    next = a[i];
+                    if (last > next)
+                    {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            else
+            {
+                /* last > next, possibly monotonic decreasing */
+                for (i += 1; i < lena; i++)
+                {
+                    last = next;
+                    next = a[i];
+                    if (last < next)
+                    {
+                        return 0;
+                    }
+                }
+                return -1;
+            }
+        }
     }
 }
