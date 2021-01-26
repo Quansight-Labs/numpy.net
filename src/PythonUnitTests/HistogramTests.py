@@ -69,6 +69,14 @@ class HistogramTests(unittest.TestCase):
 
         print(a.size == np.amax(x)+1)
 
+    def test_bincount_slice(self):
+
+        w = np.array([0.3, 0.5, 0.2, 0.7, 1., -0.6, .19, -0.8, 0.3, 0.5, ]) # weights
+        x = np.arange(10, dtype=np.int64)
+        a = np.bincount(x[::2], weights=w[::2])
+        print(a)
+  
+
     def test_bincount_uint64(self):
 
         try :

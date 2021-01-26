@@ -103,6 +103,20 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_bincount_slice()
+        {
+
+            var w = np.array(new double[] { 0.3, 0.5, 0.2, 0.7, 1.0, -0.6, .19, -0.8, 0.3, 0.5 });  // weights
+
+            var x = np.arange(10, dtype: np.Int64);
+            var a = np.bincount(x["::2"], weights: w["::2"]);
+            AssertArray(a, new double[] { 0.3, 0.0, 0.2, 0.0, 1.0, 0.0, 0.19, 0.0, 0.3 });
+            print(a);
+
+       
+        }
+
         // python does not support unsigned integers.  That seems weird.
         // I see no reason to not support them so I will.  Easy to change if necessary.
         [TestMethod]

@@ -61,8 +61,8 @@ namespace NumpyDotNet
         */
         public static ndarray bincount(object x, object weights = null, npy_intp? minlength = null)
         {
-            ndarray list = np.asanyarray(x);
-            ndarray weight = weights != null ? np.asanyarray(weights) : null;
+            ndarray list = np.asanyarray(x).ravel();
+            ndarray weight = weights != null ? np.asanyarray(weights).ravel() : null;
             ndarray ans;
 
             #region validation
