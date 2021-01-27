@@ -63,10 +63,10 @@ namespace NumpyDotNet
         //-------
         //h : An estimate of the optimal bin width for the given data.
 
-        private static ndarray _hist_bin_sqrt(object _x)
+        private static double _hist_bin_sqrt(object _x)
         {
             var x = np.asanyarray(_x);
-            return (ndarray)(x.ptp() / np.sqrt(x.size));
+            return (double)(ndarray)(x.ptp() / np.sqrt(x.size));
         }
 
         // Sturges histogram bin estimator.
@@ -89,12 +89,11 @@ namespace NumpyDotNet
         //    -------
         //h : An estimate of the optimal bin width for the given data.
 
-        private static ndarray _hist_bin_sturges(object _x)
+        private static double _hist_bin_sturges(object _x)
         {
             var x = np.asanyarray(_x);
-            return (ndarray)(x.ptp() / (np.log2(x.size) + 1.0));
+            return (double)(ndarray)(x.ptp() / (np.log2(x.size) + 1.0));
         }
-
 
         //Rice histogram bin estimator.
         // Another simple estimator with no normality assumption. It has better
@@ -117,10 +116,10 @@ namespace NumpyDotNet
         //    -------
         // h : An estimate of the optimal bin width for the given data.
 
-        private static ndarray _hist_bin_rice(object _x)
+        private static double _hist_bin_rice(object _x)
         {
             var x = np.asanyarray(_x);
-            return (ndarray)(x.ptp() / (2.0 * np.power(x.size, (1.0 / 3))));
+            return (double)(ndarray)(x.ptp() / (2.0 * np.power(x.size, (1.0 / 3))));
         }
 
         //Scott histogram bin estimator.
@@ -139,13 +138,10 @@ namespace NumpyDotNet
         //    -------
         //h : An estimate of the optimal bin width for the given data.
 
-        private static ndarray _hist_bin_scott(object _x)
+        private static double _hist_bin_scott(object _x)
         {
             var x = np.asanyarray(_x);
-
-            //return (24.0 * np.pi **0.5 / x.size) **(1.0 / 3.0) * np.std(x)
-            double p1 = Math.Pow((24.0 * Math.Pow(Math.PI,0.5) / x.size), (1.0 / 3.0));
-            return p1 * np.std(x);
+            return (double)(ndarray)(Math.Pow((24.0 * Math.Pow(Math.PI, 0.5) / x.size), (1.0 / 3.0)) * np.std(x));
         }
 
         //Doane's histogram bin estimator.
@@ -165,7 +161,7 @@ namespace NumpyDotNet
         //h : An estimate of the optimal bin width for the given data.
         //
 
-        private static ndarray _hist_bin_doane(object _x)
+        private static double _hist_bin_doane(object _x)
         {
             var x = np.asanyarray(_x);
 
@@ -182,15 +178,14 @@ namespace NumpyDotNet
                     np.true_divide(temp, sigma, temp);
                     np.power(temp, 3, temp);
                     var g1 = np.mean(temp);
-                    return (ndarray)(x.ptp() / (1.0 + np.log2(x.size) + np.log2(1.0 + (ndarray)(np.absolute(g1) / sg1))));
+                    return (double)(ndarray)(x.ptp() / (1.0 + np.log2(x.size) + np.log2(1.0 + (ndarray)(np.absolute(g1) / sg1))));
                 }
-  
+
             }
 
-            return np.array(new double[] { 0.0 });
+            return 0.0;
 
         }
-
 
         //The Freedman-Diaconis histogram bin estimator.
 
@@ -214,15 +209,13 @@ namespace NumpyDotNet
         //-------
         //h : An estimate of the optimal bin width for the given data.
 
-        private static ndarray _hist_bin_fd(object _x)
+        private static double _hist_bin_fd(object _x)
         {
             var x = np.asanyarray(_x);
 
-            //var iqr = np.subtract(*np.percentile(x, new int[] { 75, 25 }));
-            //return 2.0 * iqr * Math.Pow(x.size, (-1.0 / 3.0));
-
-            throw new NotImplementedException();
-
+            var bins = np.percentile(x, new float[] { 75, 25 });
+            var iqr = (double)bins.GetItem(0) - (double)bins.GetItem(1);
+            return 2.0 * iqr * Math.Pow(x.size, (-1.0 / 3.0));
         }
 
         // Histogram bin estimator that uses the minimum width of the
@@ -247,11 +240,11 @@ namespace NumpyDotNet
         // --------
         //_hist_bin_fd, _hist_bin_sturges
 
-        private static ndarray _hist_bin_auto(object _x)
+        private static double _hist_bin_auto(object _x)
         {
             // There is no need to check for zero here. If ptp is, so is IQR and
             // vice versa. Either both are zero or neither one is.
-            return np.minimum(_hist_bin_fd(_x), _hist_bin_sturges(_x));
+            return (double)np.minimum(_hist_bin_fd(_x), _hist_bin_sturges(_x));
         }
         #endregion
 
