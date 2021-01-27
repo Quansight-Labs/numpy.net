@@ -141,5 +141,31 @@ class HistogramTests(unittest.TestCase):
         print(inds)
 #endregion
 
+    def test_histogram_prep_1(self):
+
+        x = np.arange(1, 21, dtype=np.int64)
+
+        binsize = nptest._hist_bin_sqrt(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_sturges(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_rice(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_scott(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_doane(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_fd(x);
+        print(binsize);
+
+        binsize = nptest._hist_bin_auto(x);
+        print(binsize);
+
+
 if __name__ == '__main__':
     unittest.main()
