@@ -47,6 +47,214 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        #region bin selectors
+        //Square root histogram bin estimator.
+
+        //Bin width is inversely proportional to the data size.Used by many
+        //programs for its simplicity.
+
+        //Parameters
+        //----------
+        //x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+
+        //Returns
+        //-------
+        //h : An estimate of the optimal bin width for the given data.
+
+        private static ndarray _hist_bin_sqrt(object _x)
+        {
+            var x = np.asanyarray(_x);
+            return (ndarray)(x.ptp() / np.sqrt(x.size));
+        }
+
+        // Sturges histogram bin estimator.
+        //
+        //A very simplistic estimator based on the assumption of normality of
+        //
+        //the data. This estimator has poor performance for non-normal data,
+        //which becomes especially obvious for large data sets.The estimate
+        //
+        //depends only on size of the data.
+        //
+        //Parameters
+        //    ----------
+        //
+        //x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+        //
+        //Returns
+        //    -------
+        //h : An estimate of the optimal bin width for the given data.
+
+        private static ndarray _hist_bin_sturges(object _x)
+        {
+            var x = np.asanyarray(_x);
+            return (ndarray)(x.ptp() / (np.log2(x.size) + 1.0));
+        }
+
+
+        //Rice histogram bin estimator.
+        // Another simple estimator with no normality assumption. It has better
+        // performance for large data than Sturges, but tends to overestimate
+        //
+        // the number of bins. The number of bins is proportional to the cube
+        //
+        // root of data size (asymptotically optimal). The estimate depends
+        // only on size of the data.
+        //
+        // Parameters
+        //    ----------
+        //
+        // x : array_like
+        //     Input data that is to be histogrammed, trimmed to range.May not
+        //
+        //     be empty.
+        //
+        // Returns
+        //    -------
+        // h : An estimate of the optimal bin width for the given data.
+
+        private static ndarray _hist_bin_rice(object _x)
+        {
+            var x = np.asanyarray(_x);
+            return (ndarray)(x.ptp() / (2.0 * np.power(x.size, (1.0 / 3))));
+        }
+
+        //Scott histogram bin estimator.
+        //
+        //The binwidth is proportional to the standard deviation of the data
+        //and inversely proportional to the cube root of data size
+        //(asymptotically optimal).
+        //
+        //Parameters
+        //    ----------
+        //x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+        //
+        //Returns
+        //    -------
+        //h : An estimate of the optimal bin width for the given data.
+
+        private static ndarray _hist_bin_scott(object _x)
+        {
+            var x = np.asanyarray(_x);
+
+            //return (24.0 * np.pi **0.5 / x.size) **(1.0 / 3.0) * np.std(x)
+            double p1 = Math.Pow((24.0 * Math.Pow(Math.PI,0.5) / x.size), (1.0 / 3.0));
+            return p1 * np.std(x);
+        }
+
+        //Doane's histogram bin estimator.
+
+        //Improved version of Sturges' formula which works better for
+        //non-normal data.See
+        //stats.stackexchange.com/questions/55134/doanes-formula-for-histogram-binning
+        //
+        //Parameters
+        //----------
+        //x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+        //
+        //Returns
+        //-------
+        //h : An estimate of the optimal bin width for the given data.
+        //
+
+        private static ndarray _hist_bin_doane(object _x)
+        {
+            var x = np.asanyarray(_x);
+
+            if (x.size > 2)
+            {
+                var sg1 = np.sqrt(6.0 * (x.size - 2) / ((x.size + 1.0) * (x.size + 3)));
+                var sigma = (double)np.std(x);
+                if (sigma > 0.0)
+                {
+                    //These three operations add up to
+                    // g1 = np.mean(((x - np.mean(x)) / sigma)**3)
+                    // but use only one temp array instead of three
+                    var temp = x - np.mean(x);
+                    np.true_divide(temp, sigma, temp);
+                    np.power(temp, 3, temp);
+                    var g1 = np.mean(temp);
+                    return (ndarray)(x.ptp() / (1.0 + np.log2(x.size) + np.log2(1.0 + (ndarray)(np.absolute(g1) / sg1))));
+                }
+  
+            }
+
+            return np.array(new double[] { 0.0 });
+
+        }
+
+
+        //The Freedman-Diaconis histogram bin estimator.
+
+        //The Freedman-Diaconis rule uses interquartile range (IQR) to
+        //estimate binwidth. It is considered a variation of the Scott rule
+        //with more robustness as the IQR is less affected by outliers than
+        //the standard deviation. However, the IQR depends on fewer points
+        //than the standard deviation, so it is less accurate, especially for
+        //long tailed distributions.
+
+        //If the IQR is 0, this function returns 1 for the number of bins.
+        //Binwidth is inversely proportional to the cube root of data size
+        //(asymptotically optimal).
+
+        //Parameters
+        //----------
+        //x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+        //Returns
+        //-------
+        //h : An estimate of the optimal bin width for the given data.
+
+        private static ndarray _hist_bin_fd(object _x)
+        {
+            var x = np.asanyarray(_x);
+
+            //var iqr = np.subtract(*np.percentile(x, new int[] { 75, 25 }));
+            //return 2.0 * iqr * Math.Pow(x.size, (-1.0 / 3.0));
+
+            throw new NotImplementedException();
+
+        }
+
+        // Histogram bin estimator that uses the minimum width of the
+        // Freedman-Diaconis and Sturges estimators.
+        //
+        // The FD estimator is usually the most robust method, but its width
+        // estimate tends to be too large for small `x`. The Sturges estimator
+        // is quite good for small (<1000) datasets and is the default in the R
+        // language.This method gives good off the shelf behaviour.
+        //
+        //Parameters
+        // ----------
+        // x : array_like
+        //    Input data that is to be histogrammed, trimmed to range.May not
+        //    be empty.
+        //
+        //Returns
+        // -------
+        //h : An estimate of the optimal bin width for the given data.
+        //
+        //See Also
+        // --------
+        //_hist_bin_fd, _hist_bin_sturges
+
+        private static ndarray _hist_bin_auto(object _x)
+        {
+            // There is no need to check for zero here. If ptp is, so is IQR and
+            // vice versa. Either both are zero or neither one is.
+            return np.minimum(_hist_bin_fd(_x), _hist_bin_sturges(_x));
+        }
+        #endregion
+
         /*
         *
         * bincount accepts one, two or three arguments. The first is an array of
