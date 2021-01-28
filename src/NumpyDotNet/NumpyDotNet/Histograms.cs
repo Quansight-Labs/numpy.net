@@ -248,6 +248,389 @@ namespace NumpyDotNet
         }
         #endregion
 
+
+        private static (ndarray hist, ndarray bin_edges) _histogram(object _a, object bins = null, float? rangeLow = null, float? rangeHigh = null, object _weights = null, bool? density = null)
+        {
+            dtype ntype;
+            ndarray a;
+            ndarray weights;
+            ndarray cum_n;
+            ndarray n;
+            ndarray bin_edges;
+            float first_edge;
+            float last_edge;
+            int? n_equal_bins;
+
+            var t1 = _ravel_and_check_weights(_a, _weights);
+            a = t1.a;
+            weights = t1.weights;
+            
+            var _bin_edges_data = _get_bin_edges(a, bins, rangeLow, rangeHigh, weights);
+            bin_edges = _bin_edges_data.bin_edges;
+            first_edge = _bin_edges_data.first_edge;
+            last_edge = _bin_edges_data.last_edge;
+            n_equal_bins = _bin_edges_data.n_equal_bins;
+
+            // Histogram is an integer or a float array depending on the weights.
+            if (_weights == null)
+                ntype = np.intp;
+            else
+                ntype = weights.Dtype;
+
+            // We set a block size, as this allows us to iterate over chunks when
+            // computing histograms, to minimize memory usage.
+            Int32 BLOCK = 65536;
+
+            //The fast path uses bincount, but that only works for certain types of weight
+            bool simple_weights =
+                (_weights == null ||
+                np.can_cast(weights.Dtype, np.Float64) ||
+                np.can_cast(weights.Dtype, np.Complex));
+
+            if (n_equal_bins != null && simple_weights)
+            {
+                // Fast algorithm for equal bins
+                // We now convert values of a to bin indices, under the assumption of
+                // equal bin widths (which is valid here).
+
+                // Initialize empty histogram
+                n = np.zeros(n_equal_bins, ntype);
+
+                // Pre-compute histogram scaling factor
+                var norm = n_equal_bins / (last_edge - first_edge);
+
+                // We iterate over blocks here for two reasons: the first is that for
+                // large arrays, it is actually faster (for example for a 10^8 array it
+                // is 2x as fast) and it results in a memory footprint 3x lower in the
+                // limit of large arrays.
+                foreach (int i in np.arange(0, len(a), BLOCK))
+                {
+                    ndarray tmp_w;
+
+                    var tmp_a = a.A(string.Format("{0}:{1}", i, i + BLOCK));
+                    if (weights == null)
+                        tmp_w = null;
+                    else
+                        tmp_w = weights.A(string.Format("{0}:{1}", i, i + BLOCK));
+
+
+                    // Only include values in the right range
+                    var keep = (tmp_a >= first_edge);
+                    keep &= (tmp_a <= last_edge);
+                    if ((bool)np.ufunc.reduce(UFuncOperation.logical_and, keep))
+                    {
+                        tmp_a = tmp_a.A(keep);
+                        if (tmp_w != null)
+                            tmp_w = tmp_w.A(keep);
+                    }
+
+                    // This cast ensures no type promotions occur below, which gh-10322
+                    // make unpredictable. Getting it wrong leads to precision errors
+                    // like gh-8123.
+                    tmp_a = tmp_a.astype(bin_edges.Dtype, copy: false);
+
+
+                    // Compute the bin indices, and for values that lie exactly on
+                    // last_edge we need to subtract one
+                    var f_indices = (tmp_a - first_edge) * norm;
+                    var indices = f_indices.astype(np.intp);
+
+                    var mask = np.equal(indices, n_equal_bins);
+                    indices[mask] = indices.A(mask) - 1;
+
+                    // The index computation is not guaranteed to give exactly
+                    // consistent results within ~1 ULP of the bin edges.
+                    var decrement = tmp_a < bin_edges[indices];
+                    indices[decrement] = indices.A(decrement) - 1;
+                    // The last bin includes the right edge. The other bins do not.
+                    var increment = ((tmp_a >= bin_edges[indices + 1])
+                         & (np.not_equal(indices,n_equal_bins - 1)));
+                    indices[increment] = indices.A(increment) + 1;
+
+                    // We now compute the histogram using bincount
+                    //if (ntype.kind == "c")
+                    //{
+                    //    n.Real += np.bincount(indices, weights = tmp_w.Real, minlength: n_equal_bins);
+                    //    n.Imag += np.bincount(indices, weights = tmp_w.Imag, minlength: n_equal_bins);
+                    //}
+                    //else
+                    {
+                        n += np.bincount(indices, weights = tmp_w, minlength: n_equal_bins).astype(ntype);
+                    }
+                }
+            }
+            else
+            {
+                // Compute via cumulative histogram
+                cum_n = np.zeros(bin_edges.shape, ntype);
+                if (weights == null)
+                {
+                    foreach (int i in np.arange(0, len(a), BLOCK))
+                    {
+                        var sa = np.sort(a[string.Format("{0}:{1}", i, i + BLOCK)]);
+                        cum_n += _search_sorted_inclusive(sa, bin_edges);
+                    }
+                }
+      
+                else
+                {
+                    var zero = np.zeros(1, dtype : ntype);
+                    foreach (int i in np.arange(0, len(a), BLOCK))
+                    {
+                        var tmp_a = a.A(string.Format("{0}:{1}", i, i + BLOCK));
+                        var tmp_w = weights.A(string.Format("{0}:{1}", i, i + BLOCK));
+                        var sorting_index = np.argsort(tmp_a);
+                        var sa = tmp_a.A(sorting_index);
+                        var sw = tmp_w.A(sorting_index);
+                        var cw = np.concatenate((zero, sw.cumsum()));
+                        var bin_index = _search_sorted_inclusive(sa, bin_edges);
+                        cum_n += cw.A(bin_index);
+                    }
+   
+                }
+
+
+                n = np.diff(cum_n);
+            }
+
+            bool normed = true;
+            // density overrides the normed keyword
+            if (density != null)
+                normed = false;
+
+            if (density == true)
+            {
+                var db = np.array(np.diff(bin_edges), dtype: np.Float32);
+                return (n / db / np.sum(n), bin_edges);
+            }
+            else if (normed)
+            {
+                // deprecated, buggy behavior. Remove for NumPy 2.0.0
+                var db = np.array(np.diff(bin_edges), dtype: np.Float32);
+                return ((ndarray)(n / np.sum(n * db)), bin_edges);
+            }
+            else
+            {
+                return (n, bin_edges);
+            }
+
+        }
+
+        private static ndarray _search_sorted_inclusive(ndarray a, ndarray v)
+        {
+            //Like `searchsorted`, but where the last item in `v` is placed on the right.
+
+            //In the context of a histogram, this makes the last bin edge inclusive
+
+            return np.concatenate((
+                a.searchsorted(v[":-1"], NPY_SEARCHSIDE.NPY_SEARCHLEFT),
+                a.searchsorted(v["-1:"], NPY_SEARCHSIDE.NPY_SEARCHRIGHT)));
+        }
+
+        private static (ndarray a, ndarray weights) _ravel_and_check_weights(object a, object weights)
+        {
+            ndarray _a = np.asarray(a);
+            ndarray _weights = null;
+            if (weights != null)
+            {
+                _weights = np.asarray(weights);
+                if (!_weights.shape.Equals(_a.shape))
+                {
+                    throw new Exception("weights should have the same shape as a!");
+                }
+
+                _weights = _weights.ravel();
+            }
+
+            _a = _a.ravel();
+            return (_a, _weights);
+        }
+
+        private class bin_edges_data
+        {
+            public ndarray bin_edges;
+            public float first_edge;
+            public float last_edge;
+            public Int32? n_equal_bins;
+        }
+
+        public enum Histogram_BinSelector
+        {
+            auto,
+            doane,
+            fd,
+            rice,
+            scott,
+            sqrt,
+            sturges,
+        }
+
+        private static bin_edges_data _get_bin_edges(ndarray a, object bins, float? rangeLow, float? rangeHigh, ndarray weights)
+        {
+            int n_equal_bins = -1;
+            float first_edge = 0;
+            float last_edge = 0;
+            ndarray bin_edges = null;
+
+            if (bins is Histogram_BinSelector)
+            {
+                Histogram_BinSelector binSelector = (Histogram_BinSelector)bins;
+
+                if (weights != null)
+                {
+                    throw new Exception("Automated estimation of the number of bins is not supported for weighted data");
+                }
+
+                var edges = _get_outer_edges(a, rangeLow, rangeHigh);
+                first_edge = edges.first_edge;
+                last_edge = edges.last_edge;
+
+                if (rangeLow.HasValue && rangeHigh.HasValue)
+                {
+                    ndarray keep = (a >= first_edge);
+                    keep &= (a <= last_edge);
+                    if (!(bool)np.ufunc.reduce(UFuncOperation.logical_and, keep))
+                    {
+                        a = a[keep] as ndarray;
+                    }
+                }
+
+                if (a.size == 0)
+                {
+                    n_equal_bins = 1;
+                }
+                else
+                {
+                    // Do not call selectors on empty arrays
+                    double width = 0.0;
+
+                    switch (binSelector)
+                    {
+                        case Histogram_BinSelector.auto:
+                            width = _hist_bin_auto(a);
+                            break;
+                        case Histogram_BinSelector.doane:
+                            width = _hist_bin_doane(a);
+                            break;
+                        case Histogram_BinSelector.fd:
+                            width = _hist_bin_fd(a);
+                            break;
+                        case Histogram_BinSelector.rice:
+                            width = _hist_bin_rice(a);
+                            break;
+                        case Histogram_BinSelector.scott:
+                            width = _hist_bin_scott(a);
+                            break;
+                        case Histogram_BinSelector.sqrt:
+                            width = _hist_bin_sqrt(a);
+                            break;
+                        case Histogram_BinSelector.sturges:
+                            width = _hist_bin_sturges(a);
+                            break;
+                        default:
+                            throw new Exception(string.Format("{0} is not a valid estimator for 'bins'", binSelector.ToString()));
+                    }
+
+                    if (width > 0)
+                    {
+                        n_equal_bins = Convert.ToInt32(np.ceil((last_edge - first_edge) / width));
+                    }
+                    else
+                    {
+                        // Width can be zero for some estimators, e.g. FD when
+                        // the IQR of the data is zero.
+                        n_equal_bins = 1;
+                    }
+ 
+                }
+            }
+            else if (bins is Int32)
+            {
+                n_equal_bins = Convert.ToInt32(bins);
+                if (n_equal_bins < 1)
+                {
+                    throw new Exception("'bins' must be a positive number");
+                }
+
+                var edges = _get_outer_edges(a, rangeLow, rangeHigh);
+                first_edge = edges.first_edge;
+                last_edge = edges.last_edge;
+            }
+            else if (bins is Int32[])
+            {
+                bin_edges = np.asarray(bins);
+                if (np.anyb((ndarray)bin_edges[":-1"] > (ndarray)bin_edges["1:"]))
+                {
+                    throw new Exception("'bins' must increase monotonically");
+                }
+            }
+            else
+            {
+                throw new Exception("unrecognized 'bin' value");
+            }
+
+            if (n_equal_bins > 0)
+            {
+                // gh-10322 means that type resolution rules are dependent on array
+                // shapes. To avoid this causing problems, we pick a type now and stick
+                // with it throughout.
+                double ret_step = 0;
+                bin_edges = np.linspace(first_edge, last_edge, ref ret_step, n_equal_bins + 1, endpoint: true, dtype: np.Float64);
+                return new bin_edges_data() { bin_edges = bin_edges, first_edge = first_edge, last_edge = last_edge, n_equal_bins = n_equal_bins };
+            }
+
+            return new bin_edges_data() { bin_edges = bin_edges, first_edge = -1, last_edge = -1, n_equal_bins = null };
+        }
+
+        private static (float first_edge, float last_edge) _get_outer_edges(ndarray a, float? rangeLow, float? rangeHigh)
+        {
+            float first_edge;
+            float last_edge;
+
+            //Determine the outer bin edges to use, from either the data or the range argument
+
+            if (rangeLow != null && rangeHigh != null)
+            {
+                first_edge = rangeLow.Value;
+                last_edge = rangeHigh.Value;
+                if (first_edge > last_edge)
+                {
+                    throw new Exception("max must be larger than min in range parameter.");
+                }
+                if (!((bool)np.isfinite(first_edge) && (bool)np.isfinite(last_edge)))
+                {
+                    throw new Exception(string.Format("supplied range of [{0}, {1}] is not finite", first_edge, last_edge));
+                }
+            }
+            else if (a.Size == 0)
+            {
+                first_edge = 0;
+                last_edge = 1;
+            }
+            else
+            {
+                first_edge = Convert.ToSingle(np.min(a));
+                last_edge = Convert.ToSingle(np.max(a));
+
+                if (!((bool)np.isfinite(first_edge) && (bool)np.isfinite(last_edge)))
+                {
+                    throw new Exception(string.Format("autodetected range of [{0}, {1}] is not finite", first_edge, last_edge));
+                }
+
+            }
+
+  
+
+            // expand empty range to avoid divide by zero
+            if (first_edge == last_edge)
+            {
+                first_edge = first_edge - 0.5f;
+                last_edge = last_edge + 0.5f;
+            }
+
+            return (first_edge, last_edge);
+        }
+
         /*
         *
         * bincount accepts one, two or three arguments. The first is an array of
