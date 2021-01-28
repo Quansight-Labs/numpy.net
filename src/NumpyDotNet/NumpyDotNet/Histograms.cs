@@ -477,8 +477,155 @@ namespace NumpyDotNet
 
         #endregion
 
+        #region histogramdd
 
-        #region histogram_bin_edges
+        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, T[] bins = null, T[] range = null, object weights = null, bool? density = null)
+        {
+            return _histogramdd<T>(sample, bins, range, weights, density);
+        }
+        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, ndarray bins = null, T[] range = null, object weights = null, bool? density = null)
+        {
+            return _histogramdd<T>(sample, bins, range, weights, density);
+        }
+        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, int? bins = null, T[] range = null, object weights = null, bool? density = null)
+        {
+            return _histogramdd<T>(sample, bins, range, weights, density);
+        }
+        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, T[] range = null, object weights = null, bool? density = null)
+        {
+            return _histogramdd<T>(sample, bins, range, weights, density);
+        }
+
+        private static (ndarray hist, ndarray bin_edges) _histogramdd<T>(object _sample, object _bins, T[] range, object _weights, bool? density)
+        {
+            npy_intp N, D;
+            npy_intp M;
+
+            ndarray sample = np.asanyarray(_sample);
+            ndarray weights;
+            double[] bins = null;
+            ndarray smin, smax;
+            dtype edge_dt;
+
+            try
+            {
+                N = sample.Dim(0);
+                D = sample.Dim(1);
+            }
+            catch (Exception ex)
+            {
+                sample = np.atleast_2d(sample).ElementAt(0).T;
+                N = sample.Dim(0);
+                D = sample.Dim(1);
+            }
+
+
+            ndarray nbin = np.empty(D, np.Int32);
+            var edges = new double[D];
+            var dedges = new double[D];
+
+            if (_weights != null)
+            {
+                weights = np.asarray(_weights);
+            }
+
+            if (_bins is double[])
+            {
+                bins = _bins as double[];
+                M = bins.Length;
+                if (M != D)
+                {
+                    throw new Exception("The dimension of bins must be equal to the dimension of the sample x.");
+                }
+            }
+            else if (_bins is Int32)
+            {
+                bins = new double[D];
+            }
+
+            // Select range for each dimension
+            // Used only if number of bins is given.
+            if (range == null)
+            {
+                // Handle empty input. Range can't be determined in that case, use 0-1.
+                if (N == 0)
+                {
+                    smin = np.zeros(D);
+                    smax = np.ones(D);
+                }
+                else
+                {
+                    smin = np.atleast_1d(np.array(np.amin(sample, axis: 0), np.Float32)).ElementAt(0);
+                    smax = np.atleast_1d(np.array(np.amax(sample, axis: 0), np.Float32)).ElementAt(0);
+                }
+            }
+            else
+            {
+                if (!np.allb(np.isfinite(range)))
+                {
+                    throw new Exception("range parameter must be finite.");
+                }
+                smin = np.zeros(D);
+                smax = np.zeros(D);
+                for (int i = 0; i < D; i++)
+                {
+                    smin[i] = smax[i] = range[i];
+                }
+            }
+
+#if false
+            // Make sure the bins have a finite width.
+            for (int i = 0; i < len(smin); i++)
+            {
+                if (smin[i] == smax[i])
+                {
+                    smin[i] = smin[i] - .5;
+                    smax[i] = smax[i] + .5;
+                }
+            }
+ 
+            if (sample.IsInexact)
+                edge_dt = sample.Dtype;
+            else
+                edge_dt = np.Float32;
+
+
+            // Create edge arrays
+            for (int i = 0; i < D; i++)
+            {
+                if (np.isscalar(bins[i]))
+                {
+                    if (bins[i] < 1)
+                    {
+                        throw new Exception(string.Format("Element at index {0} in 'bins' should be a positive integer.", i));
+                    }
+                    nbin[i] = bins[i] + 2;   // +2 for outlier bins
+
+                    double ret_step = 0;
+                    edges[i] = np.linspace(smin[i], smax[i], ref ret_step, nbin[i] - 1, dtype: edge_dt);
+                }
+   
+                else
+                {
+                    edges[i] = np.asarray(bins[i], edge_dt);
+                    nbin[i] = len(edges[i]) + 1;   // +1 for outlier bins
+                }
+
+                dedges[i] = np.diff(edges[i]);
+                if (np.anyb(np.asarray(dedges[i]) <= 0))
+                {
+                    throw new Exception("Found bin edge of size <= 0. Did you specify 'bins' with non-monotonic sequence?");
+                }
+   
+            }
+  
+#endif
+            throw new NotImplementedException();
+            return (null, null);
+        }
+#endregion
+
+#region histogram_bin_edges
         public static ndarray histogram_bin_edges<T>(object a, T[] bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
@@ -682,7 +829,9 @@ namespace NumpyDotNet
 
             return (first_edge, last_edge);
         }
-        #endregion
+#endregion
+
+
 
         /*
         *
@@ -702,7 +851,7 @@ namespace NumpyDotNet
             ndarray weight = weights != null ? np.asanyarray(weights).ravel() : null;
             ndarray ans;
 
-            #region validation
+#region validation
             if (list.ndim != 1)
             {
                 throw new Exception("Histograms only supported on 1d arrays");
@@ -745,7 +894,7 @@ namespace NumpyDotNet
                     throw new Exception("Histograms only supported on integer arrays");
 
             }
-            #endregion
+#endregion
 
             // convert input array to intp if not already
             ndarray lst = np.asarray(list, np.intp);

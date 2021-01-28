@@ -398,6 +398,24 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region histogramdd
+
+        [Ignore]
+        [TestMethod]
+        public void test_histogramdd_1()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var r = random.randint(10, 30, new shape(3000));
+
+            var x = np.histogramdd(r.reshape(-1, 4), bins : new int[] { 2, 2, 2, 2 });
+            print(x);
+
+        }
+
+        #endregion
+
         #region histogram_bin_edges
 
         [TestMethod]

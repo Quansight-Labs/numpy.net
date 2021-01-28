@@ -267,6 +267,30 @@ class HistogramTests(unittest.TestCase):
 
 #endregion
 
+#region histogramdd
+
+
+    def test_histogramdd_1(self):
+
+        np.random.seed(8765);
+
+        r = np.random.randint(10, 30, 3000)
+        x = np.histogramdd(r.reshape(-1,4), bins=[2,2,2,2])
+        print(x)
+        x = np.histogramdd(r.reshape(-1,4), bins=[2.0,2.0,2.0,2.0])
+        print(x)
+ 
+        #x= np.histogramdd(r.reshape(-1,2), bins=[3,3], density=True)
+        #print(x)
+
+        #x= np.histogramdd(r.reshape(-1,3), bins=[4,4,4], density=False)
+        #print(x)
+
+ 
+
+
+#endregion
+
     def test_histogram_prep_1(self):
 
         x = np.arange(1, 21, dtype=np.int64)
