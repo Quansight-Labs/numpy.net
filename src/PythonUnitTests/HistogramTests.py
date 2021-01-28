@@ -199,6 +199,22 @@ class HistogramTests(unittest.TestCase):
         print(x)
 
 
+    def test_histogram_4(self):
+
+
+        x= np.histogram(np.arange(40),  bins=np.arange(5), range=(15.0, 30.0), density=True)
+        print(x)
+
+        x= np.histogram(np.arange(40),  bins=np.arange(4), range=(15.0, 30.0), density=False)
+        print(x)
+
+        x= np.histogram(np.arange(40), bins=6, range=(15.0, 30.0), density=True)
+        print(x)
+
+        x= np.histogram(np.arange(40), bins=4, range=(15.0, 30.0), density=False)
+        print(x)
+
+
 #endregion
 
     def test_histogram_prep_1(self):

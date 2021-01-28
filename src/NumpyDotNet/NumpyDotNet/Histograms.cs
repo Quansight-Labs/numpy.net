@@ -345,7 +345,7 @@ namespace NumpyDotNet
                     // Only include values in the right range
                     var keep = (tmp_a >= first_edge);
                     keep &= (tmp_a <= last_edge);
-                    if ((bool)np.ufunc.reduce(UFuncOperation.logical_and, keep))
+                    if ((bool)np.ufunc.reduce(UFuncOperation.logical_and, keep) == false)
                     {
                         tmp_a = tmp_a.A(keep);
                         if (tmp_w != null)
@@ -507,7 +507,7 @@ namespace NumpyDotNet
                 {
                     ndarray keep = (a >= first_edge);
                     keep &= (a <= last_edge);
-                    if (!(bool)np.ufunc.reduce(UFuncOperation.logical_and, keep))
+                    if ((bool)np.ufunc.reduce(UFuncOperation.logical_and, keep) == false)
                     {
                         a = a[keep] as ndarray;
                     }
