@@ -234,6 +234,24 @@ class HistogramTests(unittest.TestCase):
 
 #endregion
 
+#region histogram_bin_edges
+
+
+    def test_histogram_bin_edges_1(self):
+
+        arr = np.arange(40, dtype=np.float64);
+
+        x = np.histogram_bin_edges(arr, bins='auto', range=(10, 30))
+        print(x)
+
+        x = np.histogram_bin_edges(arr, bins=4, range=(10, 30))
+        print(x)
+
+        x = np.histogram_bin_edges(arr, bins=np.arange(5), range=(10, 30))
+        print(x)
+
+#endregion
+
     def test_histogram_prep_1(self):
 
         x = np.arange(1, 21, dtype=np.int64)
