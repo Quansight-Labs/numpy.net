@@ -342,6 +342,34 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_histogram_5()
+        {
+            var weights = np.arange(40, dtype : np.Float64);
+            weights.fill(0.5);
+
+            var x = np.histogram(np.arange(40), bins: np.arange(5), range: (15.0f, 30.0f), _weights: weights, density: true);
+            AssertArray(x.hist, new double[] { 0.2, 0.2, 0.2, 0.4 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3, 4 });
+            print(x);
+
+            x = np.histogram(np.arange(40), bins: np.arange(4), range: (15.0f, 30.0f), _weights: weights, density: false);
+            AssertArray(x.hist, new double[] { 0.5, 0.5, 1.0});
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3 });
+            print(x);
+
+            x = np.histogram(np.arange(40), bins: 6, range: (15.0f, 30.0f), _weights: weights, density: true);
+            AssertArray(x.hist, new double[] { 0.075, 0.05, 0.075, 0.05, 0.075, 0.075 });
+            AssertArray(x.bin_edges, new double[] { 15, 17.5, 20, 22.5, 25, 27.5, 30 });
+            print(x);
+
+            x = np.histogram(np.arange(40), bins: 4, range: (15.0f, 30.0f), _weights: weights, density: false);
+            AssertArray(x.hist, new double[] { 2, 2, 2, 2 });
+            AssertArray(x.bin_edges, new double[] { 15, 18.75, 22.5, 26.25, 30 });
+            print(x);
+
+        }
+
 
         #endregion
     }

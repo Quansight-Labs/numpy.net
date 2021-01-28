@@ -215,6 +215,23 @@ class HistogramTests(unittest.TestCase):
         print(x)
 
 
+    def test_histogram_5(self):
+
+        weights = np.arange(40, dtype=np.float64);
+        weights.fill(0.5)
+
+        x= np.histogram(np.arange(40),  bins=np.arange(5), range=(15.0, 30.0), weights=weights, density=True)
+        print(x)
+
+        x= np.histogram(np.arange(40),  bins=np.arange(4), range=(15.0, 30.0),  weights=weights, density=False)
+        print(x)
+
+        x= np.histogram(np.arange(40), bins=6, range=(15.0, 30.0),  weights=weights, density=True)
+        print(x)
+
+        x= np.histogram(np.arange(40), bins=4, range=(15.0, 30.0),  weights=weights, density=False)
+        print(x)
+
 #endregion
 
     def test_histogram_prep_1(self):
