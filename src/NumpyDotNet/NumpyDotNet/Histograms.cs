@@ -45,6 +45,18 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet
 {
+    public enum Histogram_BinSelector
+    {
+        auto,
+        doane,
+        fd,
+        rice,
+        scott,
+        sqrt,
+        sturges,
+    }
+
+
     public static partial class np
     {
         #region bin selectors
@@ -256,6 +268,14 @@ namespace NumpyDotNet
         {
             return _histogram(_a, bins, range, _weights, density);
         }
+        public static (ndarray hist, ndarray bin_edges) histogram(object _a, int? bins = null, (float Low, float High)? range = null, object _weights = null, bool? density = null)
+        {
+            return _histogram(_a, bins, range, _weights, density);
+        }
+        public static (ndarray hist, ndarray bin_edges) histogram(object _a, Histogram_BinSelector bins, (float Low, float High)? range = null, object _weights = null, bool? density = null)
+        {
+            return _histogram(_a, bins, range, _weights, density);
+        }
 
         private static (ndarray hist, ndarray bin_edges) _histogram(object _a, object bins, (float Low, float High)? range, object _weights, bool? density)
         {
@@ -462,17 +482,7 @@ namespace NumpyDotNet
             public Int32? n_equal_bins;
         }
 
-        public enum Histogram_BinSelector
-        {
-            auto,
-            doane,
-            fd,
-            rice,
-            scott,
-            sqrt,
-            sturges,
-        }
-
+  
         private static bin_edges_data _get_bin_edges(ndarray a, object bins, (float Low, float High)? range, ndarray weights)
         {
             int n_equal_bins = -1;
@@ -541,7 +551,7 @@ namespace NumpyDotNet
 
                     if (width > 0)
                     {
-                        n_equal_bins = Convert.ToInt32(np.ceil((last_edge - first_edge) / width));
+                        n_equal_bins = Convert.ToInt32(np.ceil((last_edge - first_edge) / width).GetItem(0));
                     }
                     else
                     {

@@ -250,6 +250,71 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_histogram_2()
+        {
+            var x = np.histogram(new int[] { 1, 2, 1 }, bins: 4);
+            AssertArray(x.hist, new npy_intp[] { 2, 0, 0, 1 });
+            AssertArray(x.bin_edges, new double[] { 1.0, 1.25, 1.5, 1.75, 2.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: 5, density: true);
+            AssertArray(x.hist, new double[] { 0.416666650109822, 0.416666650109822, 0.0, 0.416666650109822, 0.416666650109822 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 0.6, 1.2, 1.8, 2.4, 3.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: 5, density: false);
+            AssertArray(x.hist, new npy_intp[] { 1, 1, 0, 1, 1 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 0.6, 1.2, 1.8, 2.4, 3.0 });
+            print(x);
+
+            x = np.histogram(new int[,] { { 1, 2, 1 }, { 1, 0, 1 } }, bins: 8);
+            AssertArray(x.hist, new npy_intp[] { 1, 0, 0, 0, 4, 0, 0, 1 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0 });
+            print(x);
+
+        }
+
+        [TestMethod]
+        public void test_histogram_3()
+        {
+            var x = np.histogram(new int[] { 1, 2, 1 }, bins: Histogram_BinSelector.auto);
+            AssertArray(x.hist, new npy_intp[] { 2, 0, 1 });
+            AssertArray(x.bin_edges, new double[] { 1.0, 1.33333333333333, 1.66666666666667, 2.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: Histogram_BinSelector.doane, density: true);
+            AssertArray(x.hist, new double[] { 0.25, 0.25, 0.5 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 1.0, 2.0, 3.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: Histogram_BinSelector.fd, density: false);
+            AssertArray(x.hist, new npy_intp[] { 2,2 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 1.5, 3.0 });
+            print(x);
+
+            x = np.histogram(new int[,] { { 1, 2, 1 }, { 1, 0, 1 } }, bins: Histogram_BinSelector.rice);
+            AssertArray(x.hist, new npy_intp[] { 1, 0, 4, 1 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 0.5, 1.0, 1.5, 2.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: Histogram_BinSelector.scott, density: true);
+            AssertArray(x.hist, new double[] { 0.333333333333333, 0.333333333333333});
+            AssertArray(x.bin_edges, new double[] { 0.0, 1.5, 3.0 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: Histogram_BinSelector.sqrt, density: false);
+            AssertArray(x.hist, new npy_intp[] { 2, 2 });
+            AssertArray(x.bin_edges, new double[] { 0.0, 1.5, 3.0 });
+            print(x);
+
+            x = np.histogram(new int[,] { { 1, 2, 1 }, { 1, 0, 1 } }, bins: Histogram_BinSelector.sturges);
+            AssertArray(x.hist, new npy_intp[] { 1, 0, 4, 1 });
+            AssertArray(x.bin_edges, new double[] {  0.0, 0.5, 1.0, 1.5, 2.0 });
+            print(x);
+
+        }
+
         #endregion
     }
 }

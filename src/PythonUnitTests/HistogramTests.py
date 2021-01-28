@@ -159,6 +159,46 @@ class HistogramTests(unittest.TestCase):
         x = np.histogram([[1, 2, 1], [1, 0, 1]], bins=[0,1,2,3])
         print(x)
 
+    def test_histogram_2(self):
+
+        x = np.histogram([1, 2, 1], bins=4)
+        print(x)
+
+ 
+        x= np.histogram(np.arange(4), bins=5, density=True)
+        print(x)
+
+        x= np.histogram(np.arange(4), bins=5, density=False)
+        print(x)
+
+        x = np.histogram([[1, 2, 1], [1, 0, 1]], bins=8)
+        print(x)
+
+    def test_histogram_3(self):
+
+        x = np.histogram([1, 2, 1], bins="auto")
+        print(x)
+
+ 
+        x= np.histogram(np.arange(4), bins="doane", density=True)
+        print(x)
+
+        x= np.histogram(np.arange(4), bins="fd", density=False)
+        print(x)
+
+        x = np.histogram([[1, 2, 1], [1, 0, 1]], bins="rice")
+        print(x)
+
+        x= np.histogram(np.arange(4), bins="scott", density=True)
+        print(x)
+
+        x= np.histogram(np.arange(4), bins="sqrt", density=False)
+        print(x)
+
+        x = np.histogram([[1, 2, 1], [1, 0, 1]], bins="sturges")
+        print(x)
+
+
 #endregion
 
     def test_histogram_prep_1(self):
