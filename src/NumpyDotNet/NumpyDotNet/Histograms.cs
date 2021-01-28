@@ -248,8 +248,16 @@ namespace NumpyDotNet
         }
         #endregion
 
+        public static (ndarray hist, ndarray bin_edges) histogram(object _a, int[] bins = null, (float Low, float High)? range = null, object _weights = null, bool? density = null)
+        {
+            return _histogram(_a, bins, range, _weights, density);
+        }
+        public static (ndarray hist, ndarray bin_edges) histogram(object _a, ndarray bins = null, (float Low, float High)? range = null, object _weights = null, bool? density = null)
+        {
+            return _histogram(_a, bins, range, _weights, density);
+        }
 
-        private static (ndarray hist, ndarray bin_edges) _histogram(object _a, object bins = null, float? rangeLow = null, float? rangeHigh = null, object _weights = null, bool? density = null)
+        private static (ndarray hist, ndarray bin_edges) _histogram(object _a, object bins, (float Low, float High)? range, object _weights, bool? density)
         {
             dtype ntype;
             ndarray a;
@@ -265,7 +273,7 @@ namespace NumpyDotNet
             a = t1.a;
             weights = t1.weights;
             
-            var _bin_edges_data = _get_bin_edges(a, bins, rangeLow, rangeHigh, weights);
+            var _bin_edges_data = _get_bin_edges(a, bins, range, weights);
             bin_edges = _bin_edges_data.bin_edges;
             first_edge = _bin_edges_data.first_edge;
             last_edge = _bin_edges_data.last_edge;
@@ -303,7 +311,7 @@ namespace NumpyDotNet
                 // large arrays, it is actually faster (for example for a 10^8 array it
                 // is 2x as fast) and it results in a memory footprint 3x lower in the
                 // limit of large arrays.
-                foreach (int i in np.arange(0, len(a), BLOCK))
+                for (int i = 0; i < len(a); i+= BLOCK)
                 {
                     ndarray tmp_w;
 
@@ -365,7 +373,7 @@ namespace NumpyDotNet
                 cum_n = np.zeros(bin_edges.shape, ntype);
                 if (weights == null)
                 {
-                    foreach (int i in np.arange(0, len(a), BLOCK))
+                    for (int i = 0; i < len(a); i+= BLOCK)
                     {
                         var sa = np.sort(a[string.Format("{0}:{1}", i, i + BLOCK)]);
                         cum_n += _search_sorted_inclusive(sa, bin_edges);
@@ -375,7 +383,7 @@ namespace NumpyDotNet
                 else
                 {
                     var zero = np.zeros(1, dtype : ntype);
-                    foreach (int i in np.arange(0, len(a), BLOCK))
+                    for (int i = 0; i < len(a); i += BLOCK)
                     {
                         var tmp_a = a.A(string.Format("{0}:{1}", i, i + BLOCK));
                         var tmp_w = weights.A(string.Format("{0}:{1}", i, i + BLOCK));
@@ -393,7 +401,7 @@ namespace NumpyDotNet
                 n = np.diff(cum_n);
             }
 
-            bool normed = true;
+            bool normed = false;
             // density overrides the normed keyword
             if (density != null)
                 normed = false;
@@ -465,7 +473,7 @@ namespace NumpyDotNet
             sturges,
         }
 
-        private static bin_edges_data _get_bin_edges(ndarray a, object bins, float? rangeLow, float? rangeHigh, ndarray weights)
+        private static bin_edges_data _get_bin_edges(ndarray a, object bins, (float Low, float High)? range, ndarray weights)
         {
             int n_equal_bins = -1;
             float first_edge = 0;
@@ -481,11 +489,11 @@ namespace NumpyDotNet
                     throw new Exception("Automated estimation of the number of bins is not supported for weighted data");
                 }
 
-                var edges = _get_outer_edges(a, rangeLow, rangeHigh);
+                var edges = _get_outer_edges(a, range);
                 first_edge = edges.first_edge;
                 last_edge = edges.last_edge;
 
-                if (rangeLow.HasValue && rangeHigh.HasValue)
+                if (range != null)
                 {
                     ndarray keep = (a >= first_edge);
                     keep &= (a <= last_edge);
@@ -552,11 +560,11 @@ namespace NumpyDotNet
                     throw new Exception("'bins' must be a positive number");
                 }
 
-                var edges = _get_outer_edges(a, rangeLow, rangeHigh);
+                var edges = _get_outer_edges(a, range);
                 first_edge = edges.first_edge;
                 last_edge = edges.last_edge;
             }
-            else if (bins is Int32[])
+            else if (bins is Int32[] || bins is ndarray)
             {
                 bin_edges = np.asarray(bins);
                 if (np.anyb((ndarray)bin_edges[":-1"] > (ndarray)bin_edges["1:"]))
@@ -582,17 +590,17 @@ namespace NumpyDotNet
             return new bin_edges_data() { bin_edges = bin_edges, first_edge = -1, last_edge = -1, n_equal_bins = null };
         }
 
-        private static (float first_edge, float last_edge) _get_outer_edges(ndarray a, float? rangeLow, float? rangeHigh)
+        private static (float first_edge, float last_edge) _get_outer_edges(ndarray a, (float Low, float High)? range)
         {
             float first_edge;
             float last_edge;
 
             //Determine the outer bin edges to use, from either the data or the range argument
 
-            if (rangeLow != null && rangeHigh != null)
+            if (range != null)
             {
-                first_edge = rangeLow.Value;
-                last_edge = rangeHigh.Value;
+                first_edge = range.Value.Low;
+                last_edge = range.Value.High;
                 if (first_edge > last_edge)
                 {
                     throw new Exception("max must be larger than min in range parameter.");

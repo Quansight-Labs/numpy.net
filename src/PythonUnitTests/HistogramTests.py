@@ -141,6 +141,26 @@ class HistogramTests(unittest.TestCase):
         print(inds)
 #endregion
 
+#region Histogram
+
+
+    def test_histogram_1(self):
+
+        x = np.histogram([1, 2, 1], bins=[0, 1, 2, 3])
+        print(x)
+
+ 
+        x= np.histogram(np.arange(4), bins=np.arange(5), density=True)
+        print(x)
+
+        x= np.histogram(np.arange(4), bins=np.arange(5), density=False)
+        print(x)
+
+        x = np.histogram([[1, 2, 1], [1, 0, 1]], bins=[0,1,2,3])
+        print(x)
+
+#endregion
+
     def test_histogram_prep_1(self):
 
         x = np.arange(1, 21, dtype=np.int64)
@@ -165,6 +185,7 @@ class HistogramTests(unittest.TestCase):
 
         binsize = nptest._hist_bin_auto(x);
         print(binsize);
+
 
 
 if __name__ == '__main__':

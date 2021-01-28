@@ -222,5 +222,34 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+        #region Histogram
+
+        [TestMethod]
+        public void test_histogram_1()
+        {
+            var x = np.histogram(new int[] { 1, 2, 1 }, bins: new int[] { 0, 1, 2, 3 });
+            AssertArray(x.hist, new npy_intp[] { 0, 2, 1 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: np.arange(5), density: true);
+            AssertArray(x.hist, new double[] { 0.25, 0.25, 0.25, 0.25 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3, 4 });
+            print(x);
+
+            x = np.histogram(np.arange(4), bins: np.arange(5), density: false);
+            AssertArray(x.hist, new npy_intp[] { 1, 1, 1, 1 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3, 4 });
+            print(x);
+
+            x = np.histogram(new int[,] { { 1, 2, 1 }, { 1, 0, 1 } }, bins: new int[] { 0, 1, 2, 3 });
+            AssertArray(x.hist, new npy_intp[] { 1, 4, 1 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3 });
+            print(x);
+
+        }
+
+        #endregion
     }
 }
