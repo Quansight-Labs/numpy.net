@@ -261,24 +261,24 @@ namespace NumpyDotNet
         #endregion
 
         #region histogram
-        public static (ndarray hist, ndarray bin_edges) histogram(object a, int[] bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray bin_edges) histogram<T>(object a, T[] bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
-            return _histogram(a, bins, range, weights, density);
+            return _histogram<T>(a, bins, range, weights, density);
         }
         public static (ndarray hist, ndarray bin_edges) histogram(object a, ndarray bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
-            return _histogram(a, bins, range, weights, density);
+            return _histogram<Int32>(a, bins, range, weights, density);
         }
         public static (ndarray hist, ndarray bin_edges) histogram(object a, int? bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
-            return _histogram(a, bins, range, weights, density);
+            return _histogram<Int32>(a, bins, range, weights, density);
         }
         public static (ndarray hist, ndarray bin_edges) histogram(object a, Histogram_BinSelector bins, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
-            return _histogram(a, bins, range, weights, density);
+            return _histogram<Int32>(a, bins, range, weights, density);
         }
 
-        private static (ndarray hist, ndarray bin_edges) _histogram(object _a, object bins, (float Low, float High)? range, object _weights, bool? density)
+        private static (ndarray hist, ndarray bin_edges) _histogram<T>(object _a, object bins, (float Low, float High)? range, object _weights, bool? density)
         {
             dtype ntype;
             ndarray a;
@@ -294,7 +294,7 @@ namespace NumpyDotNet
             a = t1.a;
             weights = t1.weights;
             
-            var _bin_edges_data = _get_bin_edges(a, bins, range, weights);
+            var _bin_edges_data = _get_bin_edges<T>(a, bins, range, weights);
             bin_edges = _bin_edges_data.bin_edges;
             first_edge = _bin_edges_data.first_edge;
             last_edge = _bin_edges_data.last_edge;
@@ -479,32 +479,32 @@ namespace NumpyDotNet
 
 
         #region histogram_bin_edges
-        public static ndarray histogram_bin_edges(object a, int[] bins = null, (float Low, float High)? range = null, object weights = null)
+        public static ndarray histogram_bin_edges<T>(object a, T[] bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
             ndarray _weights = np.asanyarray(weights);
-            var bin_edges = _get_bin_edges(_a, bins, range, _weights);
+            var bin_edges = _get_bin_edges<T>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
         public static ndarray histogram_bin_edges(object a, ndarray bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
             ndarray _weights = np.asanyarray(weights);
-            var bin_edges = _get_bin_edges(_a, bins, range, _weights);
+            var bin_edges = _get_bin_edges<Int32>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
         public static ndarray histogram_bin_edges(object a, int? bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
             ndarray _weights = np.asanyarray(weights);
-            var bin_edges = _get_bin_edges(_a, bins, range, _weights);
+            var bin_edges = _get_bin_edges<Int32>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
         public static ndarray histogram_bin_edges(object a, Histogram_BinSelector bins, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
             ndarray _weights = np.asanyarray(weights);
-            var bin_edges = _get_bin_edges(_a, bins, range, _weights);
+            var bin_edges = _get_bin_edges<Int32>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
 
@@ -517,7 +517,7 @@ namespace NumpyDotNet
         }
 
   
-        private static bin_edges_data _get_bin_edges(ndarray a, object bins, (float Low, float High)? range, ndarray weights)
+        private static bin_edges_data _get_bin_edges<T>(ndarray a, object bins, (float Low, float High)? range, ndarray weights)
         {
             int n_equal_bins = -1;
             float first_edge = 0;
@@ -608,7 +608,7 @@ namespace NumpyDotNet
                 first_edge = edges.first_edge;
                 last_edge = edges.last_edge;
             }
-            else if (bins is Int32[] || bins is ndarray)
+            else if (bins is T[] || bins is ndarray)
             {
                 bin_edges = np.asarray(bins);
                 if (np.anyb((ndarray)bin_edges[":-1"] > (ndarray)bin_edges["1:"]))

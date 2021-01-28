@@ -251,6 +251,31 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_histogram_1a()
+        {
+            var x = np.histogram(new float[] { 1, 2, 1 }, bins: new double[] { 0, 1, 2, 3 });
+            AssertArray(x.hist, new npy_intp[] { 0, 2, 1 });
+            AssertArray(x.bin_edges, new double[] { 0, 1, 2, 3 });
+            print(x);
+
+            x = np.histogram(np.arange(4, dtype: np.Float32), bins: np.arange(5, dtype: np.Float64), density: true);
+            AssertArray(x.hist, new double[] { 0.25, 0.25, 0.25, 0.25 });
+            AssertArray(x.bin_edges, new double[] { 0, 1, 2, 3, 4 });
+            print(x);
+
+            x = np.histogram(np.arange(4, dtype: np.Int16), bins: np.arange(5, dtype: np.Float64), density: false);
+            AssertArray(x.hist, new npy_intp[] { 1, 1, 1, 1 });
+            AssertArray(x.bin_edges, new double[] { 0, 1, 2, 3, 4 });
+            print(x);
+
+            x = np.histogram(new int[,] { { 1, 2, 1 }, { 1, 0, 1 } }, bins: new int[] { 0, 1, 2, 3 });
+            AssertArray(x.hist, new npy_intp[] { 1, 4, 1 });
+            AssertArray(x.bin_edges, new Int32[] { 0, 1, 2, 3 });
+            print(x);
+
+        }
+
+        [TestMethod]
         public void test_histogram_2()
         {
             var x = np.histogram(new int[] { 1, 2, 1 }, bins: 4);
