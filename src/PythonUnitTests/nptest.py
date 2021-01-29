@@ -217,6 +217,204 @@ class nptest(object):
         # vice versa. Either both are zero or neither one is.
         return min(nptest._hist_bin_fd(x), nptest._hist_bin_sturges(x))
 
+    @staticmethod
+    def histogramdd(sample, bins=10, range=None, normed=False, weights=None):
+        """
+        Compute the multidimensional histogram of some data.
+
+        Parameters
+        ----------
+        sample : array_like
+            The data to be histogrammed. It must be an (N,D) array or data
+            that can be converted to such. The rows of the resulting array
+            are the coordinates of points in a D dimensional polytope.
+        bins : sequence or int, optional
+            The bin specification:
+
+            * A sequence of arrays describing the bin edges along each dimension.
+            * The number of bins for each dimension (nx, ny, ... =bins)
+            * The number of bins for all dimensions (nx=ny=...=bins).
+
+        range : sequence, optional
+            A sequence of lower and upper bin edges to be used if the edges are
+            not given explicitly in `bins`. Defaults to the minimum and maximum
+            values along each dimension.
+        normed : bool, optional
+            If False, returns the number of samples in each bin. If True,
+            returns the bin density ``bin_count / sample_count / bin_volume``.
+        weights : (N,) array_like, optional
+            An array of values `w_i` weighing each sample `(x_i, y_i, z_i, ...)`.
+            Weights are normalized to 1 if normed is True. If normed is False,
+            the values of the returned histogram are equal to the sum of the
+            weights belonging to the samples falling into each bin.
+
+        Returns
+        -------
+        H : ndarray
+            The multidimensional histogram of sample x. See normed and weights
+            for the different possible semantics.
+        edges : list
+            A list of D arrays describing the bin edges for each dimension.
+
+        See Also
+        --------
+        histogram: 1-D histogram
+        histogram2d: 2-D histogram
+
+        Examples
+        --------
+        >>> r = np.random.randn(100,3)
+        >>> H, edges = np.histogramdd(r, bins = (5, 8, 4))
+        >>> H.shape, edges[0].size, edges[1].size, edges[2].size
+        ((5, 8, 4), 6, 9, 5)
+
+        """
+
+        try:
+            # Sample is an ND-array.
+            N, D = sample.shape
+        except (AttributeError, ValueError):
+            # Sample is a sequence of 1D arrays.
+            sample = np.atleast_2d(sample).T
+            N, D = sample.shape
+
+        nbin = np.empty(D, int)
+        edges = D*[None]
+        dedges = D*[None]
+        if weights is not None:
+            weights = np.asarray(weights)
+
+        try:
+            M = len(bins)
+            if M != D:
+                raise ValueError(
+                    'The dimension of bins must be equal to the dimension of the '
+                    ' sample x.')
+        except TypeError:
+            # bins is an integer
+            bins = D*[bins]
+
+        # Select range for each dimension
+        # Used only if number of bins is given.
+        if range is None:
+            # Handle empty input. Range can't be determined in that case, use 0-1.
+            if N == 0:
+                smin = np.zeros(D)
+                smax = np.ones(D)
+            else:
+                smin = np.atleast_1d(np.array(sample.min(0), float))
+                smax = np.atleast_1d(np.array(sample.max(0), float))
+        else:
+            if not np.all(np.isfinite(range)):
+                raise ValueError(
+                    'range parameter must be finite.')
+            smin = np.zeros(D)
+            smax = np.zeros(D)
+            for i in np.arange(D):
+                smin[i], smax[i] = range[i]
+
+        # Make sure the bins have a finite width.
+        for i in np.arange(len(smin)):
+            if smin[i] == smax[i]:
+                smin[i] = smin[i] - .5
+                smax[i] = smax[i] + .5
+
+        # avoid rounding issues for comparisons when dealing with inexact types
+        if np.issubdtype(sample.dtype, np.inexact):
+            edge_dt = sample.dtype
+        else:
+            edge_dt = float
+        # Create edge arrays
+        for i in np.arange(D):
+            if np.isscalar(bins[i]):
+                if bins[i] < 1:
+                    raise ValueError(
+                        "Element at index %s in `bins` should be a positive "
+                        "integer." % i)
+                nbin[i] = bins[i] + 2  # +2 for outlier bins
+                edges[i] = np.linspace(smin[i], smax[i], nbin[i]-1, dtype=edge_dt)
+            else:
+                edges[i] = np.asarray(bins[i], edge_dt)
+                nbin[i] = len(edges[i]) + 1  # +1 for outlier bins
+            dedges[i] = np.diff(edges[i])
+            if np.any(np.asarray(dedges[i]) <= 0):
+                raise ValueError(
+                    "Found bin edge of size <= 0. Did you specify `bins` with"
+                    "non-monotonic sequence?")
+
+        nbin = np.asarray(nbin)
+
+        # Handle empty input.
+        if N == 0:
+            return np.zeros(nbin-2), edges
+
+        # Compute the bin number each sample falls into.
+        Ncount = {}
+        for i in np.arange(D):
+            Ncount[i] = np.digitize(sample[:, i], edges[i])
+
+        # Using digitize, values that fall on an edge are put in the right bin.
+        # For the rightmost bin, we want values equal to the right edge to be
+        # counted in the last bin, and not as an outlier.
+        for i in np.arange(D):
+            # Rounding precision
+            mindiff = dedges[i].min()
+            if not np.isinf(mindiff):
+                decimal = int(-np.log10(mindiff)) + 6
+                # Find which points are on the rightmost edge.
+                not_smaller_than_edge = (sample[:, i] >= edges[i][-1])
+                on_edge = (np.around(sample[:, i], decimal) ==
+                           np.around(edges[i][-1], decimal))
+                # Shift these points one bin to the left.
+                Ncount[i][np.nonzero(on_edge & not_smaller_than_edge)[0]] -= 1
+
+        # Flattened histogram matrix (1D)
+        # Reshape is used so that overlarge arrays
+        # will raise an error.
+        hist = np.zeros(nbin, float).reshape(-1)
+
+        # Compute the sample indices in the flattened histogram matrix.
+        ni = nbin.argsort()
+        xy = np.zeros(N, int)
+        for i in np.arange(0, D-1):
+            xy += Ncount[ni[i]] * nbin[ni[i+1:]].prod()
+        xy += Ncount[ni[-1]]
+
+        # Compute the number of repetitions in xy and assign it to the
+        # flattened histmat.
+        if len(xy) == 0:
+            return np.zeros(nbin-2, int), edges
+
+        flatcount = np.bincount(xy, weights)
+        a = np.arange(len(flatcount))
+        hist[a] = flatcount
+
+        # Shape into a proper matrix
+        hist = hist.reshape(np.sort(nbin))
+        for i in np.arange(nbin.size):
+            j = ni.argsort()[i]
+            hist = hist.swapaxes(i, j)
+            ni[i], ni[j] = ni[j], ni[i]
+
+        # Remove outliers (indices 0 and -1 for each dimension).
+        core = D*[slice(1, -1)]
+        hist = hist[core]
+
+        # Normalize if normed is True
+        if normed:
+            s = hist.sum()
+            for i in np.arange(D):
+                shape = np.ones(D, int)
+                shape[i] = nbin[i] - 2
+                hist = hist / dedges[i].reshape(shape)
+            hist /= s
+
+        if (hist.shape != nbin - 2).any():
+            raise RuntimeError(
+                "Internal Shape Error")
+        return hist, edges
+
+
     
     mgrid = nd_grid(sparse=False)
     ogrid = nd_grid(sparse=True)
