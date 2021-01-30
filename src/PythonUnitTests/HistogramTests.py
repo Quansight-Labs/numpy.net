@@ -274,11 +274,11 @@ class HistogramTests(unittest.TestCase):
 
         np.random.seed(8765);
 
-        r = np.random.randint(10, 30, 3000)
+        r = np.random.randint(10, 30, 16)
         x = nptest.histogramdd(r.reshape(-1,4), bins=[2,2,2,2])
         print(x)
-        x = nptest.histogramdd(r.reshape(-1,4), bins=[2.0,2.0,2.0,2.0])
-        print(x)
+        #x = nptest.histogramdd(r.reshape(-1,4), bins=[2.0,2.0,2.0,2.0])
+        #print(x)
  
         #x= np.histogramdd(r.reshape(-1,2), bins=[3,3], density=True)
         #print(x)

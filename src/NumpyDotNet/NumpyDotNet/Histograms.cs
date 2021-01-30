@@ -479,31 +479,31 @@ namespace NumpyDotNet
 
         #region histogramdd
 
-        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, T[] bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, T[] bins = null, T[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, ndarray bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, ndarray bins = null, T[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, int? bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, int? bins = null, T[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, T[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
 
-        private static (ndarray hist, ndarray bin_edges) _histogramdd<T>(object _sample, object _bins, T[] range, object _weights, bool? density)
+        private static (ndarray hist, ndarray[] bin_edges) _histogramdd<T>(object _sample, object _bins, T[] range, object _weights, bool? density)
         {
             npy_intp N, D;
             npy_intp M;
 
             ndarray sample = np.asanyarray(_sample);
-            ndarray weights;
-            double[] bins = null;
+            ndarray weights = null;
+            T[] bins = null;
             ndarray smin, smax;
             dtype edge_dt;
 
@@ -521,17 +521,17 @@ namespace NumpyDotNet
 
 
             ndarray nbin = np.empty(D, np.Int32);
-            var edges = new double[D];
-            var dedges = new double[D];
+            var edges = new ndarray[D];
+            var dedges = new ndarray[D];
 
             if (_weights != null)
             {
                 weights = np.asarray(_weights);
             }
 
-            if (_bins is double[])
+            if (_bins is T[])
             {
-                bins = _bins as double[];
+                bins = _bins as T[];
                 M = bins.Length;
                 if (M != D)
                 {
@@ -540,7 +540,7 @@ namespace NumpyDotNet
             }
             else if (_bins is Int32)
             {
-                bins = new double[D];
+                bins = new T[D];
             }
 
             // Select range for each dimension
@@ -573,14 +573,14 @@ namespace NumpyDotNet
                 }
             }
 
-#if false
+
             // Make sure the bins have a finite width.
             for (int i = 0; i < len(smin); i++)
             {
                 if (smin[i] == smax[i])
                 {
-                    smin[i] = smin[i] - .5;
-                    smax[i] = smax[i] + .5;
+                    smin[i] = (dynamic)smin[i] - .5;
+                    smax[i] = (dynamic)smax[i] + .5;
                 }
             }
  
@@ -595,16 +595,15 @@ namespace NumpyDotNet
             {
                 if (np.isscalar(bins[i]))
                 {
-                    if (bins[i] < 1)
+                    if ((dynamic)bins[i] < 1)
                     {
                         throw new Exception(string.Format("Element at index {0} in 'bins' should be a positive integer.", i));
                     }
-                    nbin[i] = bins[i] + 2;   // +2 for outlier bins
+                    nbin[i] = (dynamic)bins[i] + 2;   // +2 for outlier bins
 
                     double ret_step = 0;
-                    edges[i] = np.linspace(smin[i], smax[i], ref ret_step, nbin[i] - 1, dtype: edge_dt);
+                    edges[i] = np.linspace((dynamic)smin[i], (dynamic)smax[i], ref ret_step, (dynamic)nbin[i] - 1, dtype: edge_dt);
                 }
-   
                 else
                 {
                     edges[i] = np.asarray(bins[i], edge_dt);
@@ -616,12 +615,109 @@ namespace NumpyDotNet
                 {
                     throw new Exception("Found bin edge of size <= 0. Did you specify 'bins' with non-monotonic sequence?");
                 }
-   
+
             }
+
+            nbin = np.asarray(nbin);
+
+            //Handle empty input.
+            if (N == 0)
+                return (np.zeros(new shape((nbin - 2))), edges);
+
+            List<ndarray> Ncount = new List<ndarray>();
+            for (int i = 0; i < D; i++)
+            {
+                Ncount.Add(np.digitize(sample[":", i], edges[i]));
+            }
+
+            // Using digitize, values that fall on an edge are put in the right bin.
+            // For the rightmost bin, we want values equal to the right edge to be
+            // counted in the last bin, and not as an outlier.
+            for (int i = 0; i < D; i++)
+            {
+                // Rounding precision
+                dynamic mindiff = np.min(dedges[i]);
+                if (!np.isinf(mindiff).GetItem(0))
+                {
+                    var log10 = -np.log10(mindiff).GetItem(0);
+                    int _decimal = (int)log10 +6;
+                    //Find which points are on the rightmost edge.
+                    ndarray not_smaller_than_edge = (sample.A(":", i) >= edges[i].A("-1"));
+                    ndarray on_edge = (np.around(sample.A(":", i), _decimal).Equals(np.around(edges[i].A("-1"), _decimal)));
+                    //# Shift these points one bin to the left.
+
+                    ndarray mask = np.nonzero(on_edge & not_smaller_than_edge)[0];
+                    Ncount[i][mask] = Ncount[i].A(mask) - 1;
+                }
   
-#endif
-            throw new NotImplementedException();
-            return (null, null);
+            }
+
+            // Flattened histogram matrix (1D)
+            // Reshape is used so that overlarge arrays
+            // will raise an error.
+            ndarray hist = np.zeros(new shape(nbin), np.Float32).reshape(-1);
+
+            // Compute the sample indices in the flattened histogram matrix.
+            var ni = np.argsort(nbin);
+            var xy = np.zeros(N, np.Int32);
+            for (int i = 0; i < D - 1; i++)
+            {
+                var k1 = Ncount[(int)(npy_intp)ni.GetItem(i)];
+                var k2 = nbin.A(ni[string.Format("{0}:", i+1)]);
+
+                xy += k1 * np.prod(k2);
+            }
+
+            xy += Ncount[(int)(npy_intp)ni.GetItem(-1)];
+
+            // Compute the number of repetitions in xy and assign it to the
+            // flattened histmat.
+            if (len(xy) == 0)
+            {
+                return (np.zeros(nbin - 2, np.Int32), edges);
+            }
+
+            var flatcount = np.bincount(xy, weights);
+            var a = np.arange(len(flatcount));
+            hist[a] = flatcount;
+
+
+            // Shape into a proper matrix
+            hist = hist.reshape(new shape(np.sort(nbin)));
+            for (int i = 0; i < nbin.size; i++)
+            {
+                var j = (npy_intp)np.argsort(ni)[i];
+                hist = np.swapaxes(hist, i, (int)j);
+
+                var temp = ni[i];
+                ni[j] = ni[i];
+                ni[j] = temp;
+            }
+
+            var core = BuildSliceArray(new Slice(1, -1), (int)D);
+            hist = hist.A(core);
+
+            // Normalize if density is True
+            if (density == true)
+            {
+                var s = hist.Sum();
+                for (int i = 0; i < D; i++)
+                {
+                    var shape = np.ones(D, np.Int32);
+                    shape[i] = np.subtract(nbin[i],2);
+                    hist = np.divide(hist, dedges[i].reshape(new shape(shape.ToArray<Int32>())));
+                }
+
+                hist = np.divide(hist, s);
+            }
+
+            if (!hist.shape.Equals(new shape(np.subtract(nbin,2))))
+            {
+                throw new RuntimeError("Internal Shape Error");
+            }
+
+            return (hist, edges);
+
         }
 #endregion
 
