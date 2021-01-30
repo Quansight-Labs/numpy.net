@@ -479,24 +479,24 @@ namespace NumpyDotNet
 
         #region histogramdd
 
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, T[] bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, T[] bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, ndarray bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, ndarray bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, int? bins = null, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, T[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
 
-        private static (ndarray hist, ndarray[] bin_edges) _histogramdd<T>(object _sample, object _bins, T[] range, object _weights, bool? density)
+        private static (ndarray hist, ndarray[] bin_edges) _histogramdd<T>(object _sample, object _bins, Tuple<int, int>[] range, object _weights, bool? density)
         {
             npy_intp N, D;
             npy_intp M;
@@ -561,23 +561,39 @@ namespace NumpyDotNet
             }
             else
             {
-                if (!np.allb(np.isfinite(range)))
+                if (range.Length != D)
                 {
-                    throw new Exception("range parameter must be finite.");
+                    throw new Exception("range element lenght must be same size as bins");
                 }
+
+
                 smin = np.zeros(D);
                 smax = np.zeros(D);
                 for (int i = 0; i < D; i++)
                 {
-                    smin[i] = smax[i] = range[i];
+                    smin[i] = range[i].Item1;
+                    smax[i] = range[i].Item2;
                 }
+
+                if (!np.allb(np.isfinite(smin)))
+                {
+                    throw new Exception("range parameter must be finite.");
+                }
+                if (!np.allb(np.isfinite(smax)))
+                {
+                    throw new Exception("range parameter must be finite.");
+                }
+
             }
 
 
             // Make sure the bins have a finite width.
             for (int i = 0; i < len(smin); i++)
             {
-                if (smin[i] == smax[i])
+                dynamic smin_i = smin[i];
+                dynamic smax_i = smax[i];
+
+                if (smin_i == smax_i)
                 {
                     smin[i] = (dynamic)smin[i] - .5;
                     smax[i] = (dynamic)smax[i] + .5;
