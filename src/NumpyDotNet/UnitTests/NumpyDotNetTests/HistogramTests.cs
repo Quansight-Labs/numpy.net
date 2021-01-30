@@ -550,6 +550,40 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_histogramdd_3()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var r = random.randint(10, 30, new shape(300000));
+
+            var weights = np.arange(300000/4, dtype: np.Float64);
+            weights.fill(0.5);
+
+            System.Tuple<int, int>[] range1 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            var x = np.histogramdd(r.reshape(-1, 4), bins: new int[] { 2, 2, 2, 2 }, range: range1, weights:weights);
+            var ExpectedHist = new double[,,,]
+            {{{{149.5, 176.0},{187.5, 223.5}},{{171.0, 227.0 },{194.5, 259.5}}},
+             {{{188.5, 186.0},{217.5, 267.5}},{{223.0, 248.5},{258.0, 312.5}}}};
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[1], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[2], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[3], new double[] { 15, 20, 25 });
+            print(x.hist);
+            print(x.bin_edges);
+
+
+        }
+
+
         #endregion
 
         #region histogram_bin_edges

@@ -306,6 +306,18 @@ class HistogramTests(unittest.TestCase):
         print(x)
 
 
+    def test_histogramdd_3(self):
+
+        np.random.seed(8765);
+        r = np.random.randint(10, 30, 300000)
+
+        weights = np.arange(300000/4, dtype=np.float64);
+        weights.fill(0.5)
+
+        x = nptest.histogramdd(r.reshape(-1,4), bins=[2,2,2,2], range=[(15, 25), (15,25), (15,25), (15,25)], weights=weights)
+        print(x)
+  
+
 #endregion
 
     def test_histogram_prep_1(self):
