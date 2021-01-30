@@ -97,6 +97,29 @@ namespace NumpyDotNet
             return !(s1 == s2);
         }
 
+        public shape(ndarray arr)
+        {
+            if (arr.TypeNum == NPY_TYPES.NPY_INT32 || arr.TypeNum == NPY_TYPES.NPY_INT64)
+            {
+                if (arr.ndim != 1)
+                    throw new Exception("only single dimension arrays can be used as shapes");
+
+                iDims = new npy_intp[arr.Size];
+
+                int i = 0;
+                foreach (var d in arr)
+                {
+                    iDims[i] = Convert.ToInt64(d);
+                    i++;
+                }
+                return;
+            }
+
+
+            throw new Exception("Only Int32 or Int64 arrays can be converted to shape objects");
+
+        }
+
         public shape(IEnumerable<Int32> dim)
         {
             int nd = dim.Count();
