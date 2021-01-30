@@ -407,9 +407,57 @@ namespace NumpyDotNetTests
             var random = new np.random();
             random.seed(8765);
 
-            var r = random.randint(10, 30, new shape(16));
+            var r = random.randint(10, 30, new shape(3000));
+
 
             var x = np.histogramdd(r.reshape(-1, 4), bins : new int[] { 2, 2, 2, 2 });
+            var ExpectedHist = new double[,,,]
+            {{{{48.0, 48.0},{38.0, 58.0}},{{50.0, 45.0},{46.0, 49.0}}},
+             {{{44.0, 40.0},{44.0, 50.0}},{{43.0, 36.0},{60.0, 51.0}}}};
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[1], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[2], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[3], new double[] { 10.0, 19.5, 29 });
+            print(x.hist);
+            print(x.bin_edges);
+
+            /////
+            x = np.histogramdd(r.reshape(-1, 4), bins: new double[] { 2, 2, 2, 2 });
+            ExpectedHist = new double[,,,]
+            {{{{48.0, 48.0},{38.0, 58.0}},{{50.0, 45.0},{46.0, 49.0}}},
+             {{{44.0, 40.0},{44.0, 50.0}},{{43.0, 36.0},{60.0, 51.0}}}};
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[1], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[2], new double[] { 10.0, 19.5, 29 });
+            AssertArray(x.bin_edges[3], new double[] { 10.0, 19.5, 29 });
+            print(x.hist);
+            print(x.bin_edges);
+
+            /////
+            x = np.histogramdd(r.reshape(-1, 2), bins: new Int32[] { 3,3 }, density:true);
+            var ExpectedHist2 = new double[,]
+            { { 0.00307479224376731, 0.00259279778393352, 0.00282548476454294 },
+              { 0.00245983379501385, 0.00237673130193906, 0.00280886426592798 },
+              { 0.00292520775623269, 0.00250969529085873, 0.0033573407202216 } };
+            AssertArray(x.hist, ExpectedHist2);
+            AssertArray(x.bin_edges[0], new double[] { 10.0, 16.3333333333333, 22.6666666666667, 29.0 });
+            AssertArray(x.bin_edges[1], new double[] { 10.0, 16.3333333333333, 22.6666666666667, 29.0 });
+            print(x.hist);
+            print(x.bin_edges);
+
+            x = np.histogramdd(r.reshape(-1, 3), bins: new Int32[] { 4, 4, 4 }, density: false);
+            var ExpectedHist3 = new double[,,]
+            {
+                {{ 19.0, 21.0, 19.0, 15.0 },{ 22.0, 11.0, 11.0, 10.0 },{ 17.0, 13.0, 7.0, 12.0 }, { 12.0, 11.0, 7.0, 23.0 }},
+                {{ 12.0, 13.0, 16.0, 14.0 },{ 12.0, 14.0, 15.0, 20.0 },{ 17.0, 16.0, 19.0, 12.0 },{ 13.0, 13.0, 17.0, 16.0 }},
+                {{ 23.0, 22.0, 9.0, 13.0 }, { 12.0, 23.0, 20.0, 21.0 },{ 23.0, 14.0, 14.0, 25.0 },{ 19.0, 19.0, 13.0, 21.0 }},
+                {{ 18.0, 18.0, 13.0, 11.0 },{ 11.0, 11.0, 15.0, 20.0 },{ 14.0, 15.0, 15.0, 24.0 },{ 13.0, 15.0, 11.0, 16.0 }}};
+            AssertArray(x.hist, ExpectedHist3);
+            AssertArray(x.bin_edges[0], new double[] { 10.0, 14.75, 19.5, 24.25, 29.0 });
+            AssertArray(x.bin_edges[1], new double[] { 10.0, 14.75, 19.5, 24.25, 29.0 });
+            AssertArray(x.bin_edges[2], new double[] { 10.0, 14.75, 19.5, 24.25, 29.0 });
             print(x.hist);
             print(x.bin_edges);
 

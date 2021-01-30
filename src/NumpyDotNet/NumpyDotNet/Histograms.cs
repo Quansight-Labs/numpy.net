@@ -555,8 +555,8 @@ namespace NumpyDotNet
                 }
                 else
                 {
-                    smin = np.atleast_1d(np.array(np.amin(sample, axis: 0), np.Float32)).ElementAt(0);
-                    smax = np.atleast_1d(np.array(np.amax(sample, axis: 0), np.Float32)).ElementAt(0);
+                    smin = np.atleast_1d(np.array(np.amin(sample, axis: 0), np.Float64)).ElementAt(0);
+                    smax = np.atleast_1d(np.array(np.amax(sample, axis: 0), np.Float64)).ElementAt(0);
                 }
             }
             else
@@ -587,7 +587,7 @@ namespace NumpyDotNet
             if (sample.IsInexact)
                 edge_dt = sample.Dtype;
             else
-                edge_dt = np.Float32;
+                edge_dt = np.Float64;
 
 
             // Create edge arrays
@@ -655,7 +655,7 @@ namespace NumpyDotNet
             // Flattened histogram matrix (1D)
             // Reshape is used so that overlarge arrays
             // will raise an error.
-            ndarray hist = np.zeros(new shape(nbin), np.Float32).reshape(-1);
+            ndarray hist = np.zeros(new shape(nbin), np.Float64).reshape(-1);
 
             // Compute the sample indices in the flattened histogram matrix.
             var ni = np.argsort(nbin);
