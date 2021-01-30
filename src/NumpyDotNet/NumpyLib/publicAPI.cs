@@ -457,6 +457,11 @@ namespace NumpyLib
 
             public npy_intp CalculateOffset(npy_intp index)
             {
+                if (index < 0)
+                {
+                    index = srcArray.dimensions[0] + index;
+                }
+
                 this.index = index;
                 return CalculateOffset(srcArray, 0, 0);
             }
