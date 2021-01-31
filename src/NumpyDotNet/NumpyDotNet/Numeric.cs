@@ -484,9 +484,18 @@ namespace NumpyDotNet
             }
             if (a is ndarray[])
             {
+                if (sametype(a as ndarray[]))
+                {
+                    if (sameshape(a as ndarray[]))
+                    {
+                        return np.vstack(a as ndarray[]);
+                    }
+                }
+
                 var b = np.Concatenate(a as ndarray[]);
                 return b;
             }
+   
  
             if (a.GetType().IsArray)
             {
@@ -532,6 +541,37 @@ namespace NumpyDotNet
 
             throw new Exception("Unable to convert object to ndarray");
         }
+
+        private static bool sametype(ndarray[] ndarray)
+        {
+            if (ndarray.Length <= 1)
+                return false;
+
+            foreach (var arr in ndarray)
+            {
+                if (arr.TypeNum != ndarray[0].TypeNum)
+                    return false;
+            }
+
+            return true;
+
+        }
+
+        private static bool sameshape(ndarray[] ndarray)
+        {
+            if (ndarray.Length <= 1)
+                return false;
+
+            foreach (var arr in ndarray)
+            {
+                if (!arr.shape.Equals(ndarray[0].shape))
+                    return false;
+            }
+
+            return true;
+
+        }
+
 
         private static object FindFirstNonNullValue(Array ssrc)
         {

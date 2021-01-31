@@ -361,6 +361,65 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_asanyarray_2()
+        {
+            var a = new int[] { 1, 2,3,4 };
+            var b = new int[] { 10, 20, 30, 40 };
+
+            try
+            {
+                // NOTE:  This is different behavior than python.  Necessary to support NPY_TYPES.NPY_OBJECT.
+                var c = np.asanyarray(new object[] { a, b });
+                print(c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+                
+            }
+
+            var aa = np.array(a);
+            var ba = np.array(b);
+            var ca = np.asanyarray(new ndarray[] { aa, ba, aa });
+
+            AssertArray(ca, new Int32[,] { { 1, 2, 3, 4 }, { 10, 20, 30, 40 }, { 1, 2, 3, 4 } });
+            print(ca);
+
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_asanyarray_3()
+        {
+            var a = new int[] { 1, 2, 3, 4 };
+            var b = new int[] { 10, 20, 30, 40 };
+
+            try
+            {
+                // NOTE:  This is different behavior than python.  Necessary to support NPY_TYPES.NPY_OBJECT.
+                var c = np.asanyarray(new object[] { a, b });
+                print(c);
+                Assert.Fail("This should have thrown an exception");
+            }
+            catch
+            {
+
+            }
+
+            var aa = np.array(a).reshape(2,2);
+            var ba = np.array(b).reshape(2,2);
+            var ca = np.asanyarray(new ndarray[] { aa, ba });
+
+            //AssertArray(ca, new Int32[,,] { { 1, 2 }, {3, 4 }, { 10, 20 }, {30, 40 }, { 1, 2 }, {3, 4 } });
+            print(ca);
+
+
+            return;
+        }
+
+
+        [TestMethod]
         public void test_ascontiguousarray_1()
         {
             var x = np.arange(6).reshape((2, 3));

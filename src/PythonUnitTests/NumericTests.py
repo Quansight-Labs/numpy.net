@@ -240,6 +240,44 @@ class NumericTests(unittest.TestCase):
         e = np.asanyarray(c, dtype=np.float64)
         print(e)
 
+
+    def test_asanyarray_2(self):
+        
+        a = [1, 2, 3, 4]
+        b = [10, 20, 30, 40]
+
+        c = np.asanyarray([a,b,a])
+        print(c)
+  
+        aa = np.array(a);
+        ba = np.array(b)
+
+        ca = np.asanyarray([aa, ba])
+        print(ca)
+
+    def test_asanyarray_3(self):
+        
+        a = [1, 2, 3, 4]
+        b = [10, 20, 30, 40]
+
+        c = np.asanyarray([a,b, a])
+        print(c)
+  
+        aa = np.array(a).reshape(2,2);
+        ba = np.array(b).reshape(2,2);
+
+        ca = np.asanyarray([aa, ba])
+        print(ca)
+
+    def test_asanyarray_4(self):
+        
+        a = [1, 2, 3, 4]
+        b = [10, 20, 30, 40, 50]
+
+        c = np.asanyarray([a,b, a])
+        print(c)
+
+
     def test_ascontiguousarray_1(self):
         
         x = np.arange(6).reshape(2,3)
