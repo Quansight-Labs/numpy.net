@@ -586,6 +586,37 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region test_histogram2d_1
+        //[Ignore]
+        [TestMethod]
+        public void test_histogram2d_1()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var x = random.normal(2, 1, new shape(100));
+            var y = random.normal(1, 1, new shape(100));
+
+            var xedges = new int[] { 0, 1, 3, 5 };
+            var yedges = new int[] { 0, 2, 3, 4, 6 };
+
+            var weights = np.arange(300000 / 4, dtype : np.Float64);
+            weights.fill(0.5);
+
+            var bins = new List<Int32[]>() { xedges, yedges };
+
+            var result = np.histogram2d(x, y, bins: bins);
+
+            AssertArray(result.H, new double[,] { { 11.0, 1.0, 2.0, 0.0 }, { 37.0, 15.0, 2.0, 0.0 }, { 13.0, 1.0, 0.0, 0.0 } });
+            print(result.H);
+            AssertArray(result.xedges, new double[] { 0,1,3,5 });
+            print(result.xedges);
+            AssertArray(result.yedges, new double[] { 0, 2, 3, 4, 6 });
+            print(result.yedges);
+        }
+    
+        #endregion
+
         #region histogram_bin_edges
 
         [TestMethod]

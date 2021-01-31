@@ -501,11 +501,20 @@ namespace NumpyDotNet
             npy_intp N, D;
             npy_intp M;
 
-            ndarray sample = np.asanyarray(_sample);
             ndarray weights = null;
             T[] bins = null;
             ndarray smin, smax;
             dtype edge_dt;
+            ndarray sample;
+
+            if (_sample is ndarray[])
+            {
+                 sample = np.asanyarray(_sample).T;
+            }
+            else
+            {
+                sample = np.asanyarray(_sample);
+            }
 
             try
             {
@@ -876,16 +885,32 @@ namespace NumpyDotNet
             int N;
             ndarray xedges = null;
             ndarray yedges = null;
+            ndarray[] bins = null;
 
             if (_bins is ndarray[])
             {
                 var t = _bins as ndarray[];
                 N = t.Length;
+
+                bins = new ndarray[N];
+
+                var __bins = _bins as ndarray[];
+                for (int i = 0; i < __bins.Length; i++)
+                {
+                    bins[i] = __bins[i];
+                }
             }
             else if (_bins is IEnumerable<Int32[]>)
             {
                 var t = _bins as IEnumerable<Int32[]>;
                 N = t.Count();
+
+                bins = new ndarray[N];
+                var __bins = _bins as IEnumerable<Int32[]>;
+                for (int i = 0; i < __bins.Count(); i++)
+                {
+                    bins[i] = np.array(__bins.ElementAt(i));
+                }
             }
             else if (_bins is Int32)
             {
@@ -896,13 +921,8 @@ namespace NumpyDotNet
             {
                 N = 1;
             }
-     
 
-            if (N != 1 && N != 2)
-            {
-                xedges = yedges = asarray(_bins, np.Float64);
-            }
-            var bins = new ndarray[] { xedges, yedges };
+  
 
             var result = np.histogramdd(new ndarray[] { np.asanyarray(x), np.asanyarray(y) }, bins, range, density:density, weights: _weights);
             return (result.hist, result.bin_edges[0], result.bin_edges[1]);

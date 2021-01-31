@@ -414,6 +414,21 @@ class nptest(object):
                 "Internal Shape Error")
         return hist, edges
 
+ 
+   
+    @staticmethod
+    def histogram2d(x, y, bins=10, range=None, normed=False, weights=None):
+        try:
+            N = len(bins)
+        except TypeError:
+            N = 1
+
+        if N != 1 and N != 2:
+            xedges = yedges = asarray(bins, float)
+            bins = [xedges, yedges]
+        hist, edges = nptest.histogramdd([x, y], bins, range, normed, weights)
+        return hist, edges[0], edges[1]
+
 
     
     mgrid = nd_grid(sparse=False)
