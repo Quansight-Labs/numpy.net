@@ -316,7 +316,23 @@ class HistogramTests(unittest.TestCase):
 
         x = nptest.histogramdd(r.reshape(-1,4), bins=[2,2,2,2], range=[(15, 25), (15,25), (15,25), (15,25)], weights=weights)
         print(x)
+
   
+    def test_histogramdd_4(self):
+
+        np.random.seed(8765);
+        r = np.random.randint(10, 30, 300000)
+
+        x = nptest.histogramdd(r.reshape(-1,4), bins=3, range=[(15, 25), (15,25), (15,25), (15,25)])
+        print(x)
+
+        print("")
+        print("*******************")
+        print("")
+
+        x= nptest.histogramdd(r.reshape(-1,2), bins=2, normed=True, range=[(15, 25), (15,25)])
+        print(x)
+
 
 #endregion
 

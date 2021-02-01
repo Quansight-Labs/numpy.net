@@ -487,13 +487,9 @@ namespace NumpyDotNet
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd(object sample, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
-            return _histogramdd<T>(sample, bins, range, weights, density);
-        }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, Histogram_BinSelector bins, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
-        {
-            return _histogramdd<T>(sample, bins, range, weights, density);
+            return _histogramdd<Int32>(sample, bins, range, weights, density);
         }
 
         private static (ndarray hist, ndarray[] bin_edges) _histogramdd<T>(object _sample, object _bins, Tuple<int, int>[] range, object _weights, bool? density)
@@ -549,7 +545,12 @@ namespace NumpyDotNet
             }
             else if (_bins is Int32)
             {
+                T ibins = (T)_bins;
                 bins = new T[D];
+                for (int i = 0; i < D; i++)
+                {
+                    bins[i] = ibins;
+                }
             }
 
             // Select range for each dimension

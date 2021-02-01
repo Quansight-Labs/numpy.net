@@ -584,6 +584,52 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_histogramdd_4()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var r = random.randint(10, 30, new shape(300000));
+
+            System.Tuple<int, int>[] range1 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            var x = np.histogramdd(r.reshape(-1, 4), bins: 3, range: range1);
+            var ExpectedHist = new double[,,,]
+   { { { { 131.0, 84.0, 112.0 }, { 100.0, 71.0, 95.0 }, { 125.0, 90.0, 127.0 } },{ { 79.0, 70.0, 97.0 },{ 69.0, 59.0, 79.0 }, { 80.0, 84.0, 99.0 } },
+    { { 112.0, 105.0, 113.0 },{ 80.0, 67.0, 91.0 },{ 107.0, 92.0, 129.0 } } },{ { { 109.0, 64.0, 78.0 },{ 73.0, 41.0, 64.0 }, { 91.0, 77.0, 110.0 } },
+    { { 65.0, 47.0, 59.0 },{ 59.0, 50.0, 56.0 }, { 71.0, 59.0, 71.0 } },{ { 96.0, 66.0, 103.0 }, { 89.0, 60.0, 65.0 }, { 95.0, 59.0, 85.0 } } },
+  { { { 127.0, 81.0, 100.0 },{ 89.0, 66.0, 82.0 }, { 126.0, 78.0, 143.0 } },{ { 86.0, 68.0, 76.0 }, { 65.0, 52.0, 69.0 }, { 78.0, 63.0, 101.0 } },
+    { { 123.0, 95.0, 124.0 }, { 111.0, 68.0, 99.0 }, { 102.0, 77.0, 122.0 } } } };
+
+            var ExpectedBinEdges = new double[] { 15.0, 18.3333333333333, 21.6666666666667, 25.0 };
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], ExpectedBinEdges);
+            AssertArray(x.bin_edges[1], ExpectedBinEdges);
+            AssertArray(x.bin_edges[2], ExpectedBinEdges);
+            AssertArray(x.bin_edges[3], ExpectedBinEdges);
+            print(x.hist);
+            print(x.bin_edges);
+
+            /////
+            System.Tuple<int, int>[] range3 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            x = np.histogramdd(r.reshape(-1, 2), bins: 2, density: true, range: range3);
+            print(x.hist);
+            print(x.bin_edges);
+            /////
+
+        }
+
+
         #endregion
 
         #region test_histogram2d_1
