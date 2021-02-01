@@ -764,15 +764,7 @@ namespace NumpyDotNet
 
         #region histogram2d
 
-        public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, Int32[] bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
-        {
-            return _histogram2d(x,y, bins, range, weights, density);
-        }
         public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, IEnumerable<Int32[]> bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
-        {
-            return _histogram2d(x, y, bins, range, weights, density);
-        }
-        public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, ndarray bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogram2d(x, y, bins, range, weights, density);
         }
@@ -780,7 +772,7 @@ namespace NumpyDotNet
         {
             return _histogram2d(x, y, bins, range, weights, density);
         }
-        public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, ndarray[] bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
+        public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, IEnumerable<ndarray> bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogram2d(x, y, bins, range, weights, density);
         }
@@ -1165,10 +1157,9 @@ namespace NumpyDotNet
 
             return (first_edge, last_edge);
         }
-#endregion
+        #endregion
 
-
-
+        #region bincoount
         /*
         *
         * bincount accepts one, two or three arguments. The first is an array of
@@ -1294,8 +1285,9 @@ namespace NumpyDotNet
             }
 
         }
+        #endregion
 
-
+        #region digitize
         /*
         * digitize(x, bins, right=False) returns an array of integers the same length
         * as x. The values i returned are such that bins[i - 1] <= x < bins[i] if
@@ -1404,5 +1396,8 @@ namespace NumpyDotNet
                 return -1;
             }
         }
+
+        #endregion
+
     }
 }
