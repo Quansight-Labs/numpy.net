@@ -333,6 +333,23 @@ class HistogramTests(unittest.TestCase):
         x= nptest.histogramdd(r.reshape(-1,2), bins=2, normed=True, range=[(15, 25), (15,25)])
         print(x)
 
+    def test_histogramdd_5(self):
+
+        np.random.seed(8765);
+        r = np.random.randint(10, 30, 300000)
+
+        x = nptest.histogramdd(r.reshape(-1,4), bins= np.array([2,2,2,2]), range=[(15, 25), (15,25), (15,25), (15,25)])
+        print(x)
+
+        x = nptest.histogramdd(r.reshape(-1,4), bins= np.array([2.0,2.0,2.0,2.0]), range=[(20, 20), (20,20), (20,20), (20,20)])
+        print(x)
+ 
+        x= np.histogramdd(r.reshape(-1,2), bins= np.array([3,3]), density=True, range=[(15, 25), (15,25)])
+        print(x)
+
+        x= np.histogramdd(r.reshape(-1,3), bins= np.array([4,4,4]), density=False, range=[(15, 25), (15,25), (15,25)])
+        print(x)
+
 
 #endregion
 

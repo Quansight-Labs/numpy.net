@@ -483,9 +483,9 @@ namespace NumpyDotNet
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
-        public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, ndarray bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
+        public static (ndarray hist, ndarray[] bin_edges) histogramdd(object sample, ndarray bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
-            return _histogramdd<T>(sample, bins, range, weights, density);
+            return _histogramdd<Int32>(sample, bins, range, weights, density);
         }
         public static (ndarray hist, ndarray[] bin_edges) histogramdd(object sample, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
@@ -550,6 +550,21 @@ namespace NumpyDotNet
                 for (int i = 0; i < D; i++)
                 {
                     bins[i] = ibins;
+                }
+            }
+            else if (_bins is ndarray)
+            {
+                ndarray arrbins = (ndarray)_bins;
+                Int32 []_ibins = arrbins.AsInt32Array();
+                if (_ibins.Length != D)
+                {
+                    throw new Exception("the length of bins must be equal to the dimension of sample x");
+                }
+
+                bins = new T[D];
+                for (int i = 0; i < D; i++)
+                {
+                    bins[i] = (dynamic)_ibins[i];
                 }
             }
 

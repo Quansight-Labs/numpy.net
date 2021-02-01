@@ -630,6 +630,94 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_histogramdd_5()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var r = random.randint(10, 30, new shape(300000));
+
+            System.Tuple<int, int>[] range1 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            var x = np.histogramdd(r.reshape(-1, 4), bins: np.array(new int[] { 2, 2, 2, 2 }), range: range1);
+            var ExpectedHist = new double[,,,]
+            {{{{299, 352},{375, 447}},{{342, 454},{389, 519}}},
+             {{{377, 372},{435, 535}},{{446, 497},{516, 625}}}};
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[1], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[2], new double[] { 15, 20, 25 });
+            AssertArray(x.bin_edges[3], new double[] { 15, 20, 25 });
+            print(x.hist);
+            print(x.bin_edges);
+
+            /////
+            System.Tuple<int, int>[] range2 = new Tuple<int, int>[]
+            {
+                Tuple.Create(20,20),
+                Tuple.Create(20,20),
+                Tuple.Create(20,20),
+                Tuple.Create(20,20),
+            };
+            x = np.histogramdd(r.reshape(-1, 4), bins:  np.array(new double[] { 2, 2, 2, 2 }), range: range2);
+            ExpectedHist = new double[,,,]
+            {{{{0, 0},{0, 0}},{{0, 0},{0, 0}}},
+             {{{0, 0},{0, 0}},{{0, 0},{0, 0}}}};
+            AssertArray(x.hist, ExpectedHist);
+            AssertArray(x.bin_edges[0], new double[] { 19.5, 20, 20.5 });
+            AssertArray(x.bin_edges[1], new double[] { 19.5, 20, 20.5 });
+            AssertArray(x.bin_edges[2], new double[] { 19.5, 20, 20.5 });
+            AssertArray(x.bin_edges[3], new double[] { 19.5, 20, 20.5 });
+            print(x.hist);
+            print(x.bin_edges);
+
+            /////
+            System.Tuple<int, int>[] range3 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            x = np.histogramdd(r.reshape(-1, 2), bins: np.array(new Int32[] { 3, 3 }), density: true, range: range3);
+            var ExpectedHist2 = new double[,]
+            { { 0.0119444935087874, 0.00873134328358209, 0.011668285789985 },
+              { 0.00910293208513644, 0.00670052106332243, 0.00903537048485383 },
+              { 0.0117239247549236, 0.00896184756689923, 0.0121312814625099 } };
+            AssertArray(x.hist, ExpectedHist2);
+            AssertArray(x.bin_edges[0], new double[] { 15.0, 18.3333333333333, 21.6666666666667, 25.0 });
+            AssertArray(x.bin_edges[1], new double[] { 15.0, 18.3333333333333, 21.6666666666667, 25.0 });
+            print(x.hist);
+            print(x.bin_edges);
+            /////
+
+            System.Tuple<int, int>[] range4 = new Tuple<int, int>[]
+            {
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+                Tuple.Create(15,25),
+            };
+            x = np.histogramdd(r.reshape(-1, 3), bins: np.array(new Int32[] { 4, 4, 4 }), density: false, range: range4);
+            var ExpectedHist3 = new double[,,]
+            {
+                {{ 317.0, 222.0, 322.0, 333.0 },{ 198.0, 151.0, 230.0, 228.0 },{ 339.0, 196.0, 333.0, 360.0 },{ 340.0, 211.0, 341.0, 324.0 }},
+                {{ 221.0, 164.0, 231.0, 213.0 },{ 147.0, 101.0, 162.0, 162.0 },{ 226.0, 165.0, 228.0, 235.0 },{ 239.0, 161.0, 242.0, 220.0 }},
+                {{ 334.0, 213.0, 361.0, 364.0 },{ 224.0, 157.0, 232.0, 217.0 },{ 372.0, 226.0, 331.0, 351.0 },{ 350.0, 249.0, 344.0, 347.0 }},
+                {{ 348.0, 214.0, 337.0, 313.0 },{ 207.0, 169.0, 234.0, 206.0 },{ 347.0, 225.0, 305.0, 343.0 },{ 331.0, 225.0, 357.0, 374.0}}};
+            AssertArray(x.hist, ExpectedHist3);
+            AssertArray(x.bin_edges[0], new double[] { 15.0, 17.5, 20.0, 22.5, 25.0 });
+            AssertArray(x.bin_edges[1], new double[] { 15.0, 17.5, 20.0, 22.5, 25.0 });
+            AssertArray(x.bin_edges[2], new double[] { 15.0, 17.5, 20.0, 22.5, 25.0 });
+            print(x.hist);
+            print(x.bin_edges);
+
+        }
+
+
         #endregion
 
         #region test_histogram2d_1
