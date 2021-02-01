@@ -748,7 +748,64 @@ namespace NumpyDotNetTests
             AssertArray(result.yedges, new double[] { 0, 2, 3, 4, 6 });
             print(result.yedges);
         }
-    
+
+        //[Ignore]
+        [TestMethod]
+        public void test_histogram2d_2()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var x = random.normal(2, 1, new shape(100));
+            var y = random.normal(1, 1, new shape(100));
+
+            var xedges = new int[] { 0, 1, 3, 5 };
+            var yedges = new int[] { 0, 2, 3, 4, 6 };
+
+            var weights = np.arange(300000 / 4, dtype: np.Float64);
+            weights.fill(0.5);
+
+            var bins = new List<Int32[]>() { xedges, yedges };
+
+            var result = np.histogram2d(x, y, bins: 2);
+
+            AssertArray(result.H, new double[,] { { 29.0, 17.0 }, { 33.0, 21.0 } });
+            print(result.H);
+            AssertArray(result.xedges, new double[] { -0.267399252084981, 2.06371407063072, 4.39482739334641 });
+            print(result.xedges);
+            AssertArray(result.yedges, new double[] {  -0.984644701475661, 1.45595900692665, 3.89656271532895 });
+            print(result.yedges);
+        }
+
+        //[Ignore]
+        [TestMethod]
+        public void test_histogram2d_3()
+        {
+            var random = new np.random();
+            random.seed(8765);
+
+            var x = random.normal(2, 1, new shape(100));
+            var y = random.normal(1, 1, new shape(100));
+
+            var xedges = np.array(new int[] { 0, 1, 3, 5 });
+            var yedges = np.array(new int[] { 0, 2, 3, 4, 6 });
+
+            var weights = np.arange(300000 / 4, dtype: np.Float64);
+            weights.fill(0.5);
+
+            var bins = new List<ndarray>() { xedges, yedges };
+
+            var result = np.histogram2d(x, y, bins: bins.ToArray());
+
+            AssertArray(result.H, new double[,] { { 11.0, 1.0, 2.0, 0.0 }, { 37.0, 15.0, 2.0, 0.0 }, { 13.0, 1.0, 0.0, 0.0 } });
+            print(result.H);
+            AssertArray(result.xedges, new double[] { 0, 1, 3, 5 });
+            print(result.xedges);
+            AssertArray(result.yedges, new double[] { 0, 2, 3, 4, 6 });
+            print(result.yedges);
+        }
+
+
         #endregion
 
         #region histogram_bin_edges

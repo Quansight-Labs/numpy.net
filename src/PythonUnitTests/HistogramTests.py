@@ -372,7 +372,39 @@ class HistogramTests(unittest.TestCase):
         print(xedges)
         print(yedges)
         
-   
+    def test_histogram2d_2(self):
+
+        np.random.seed(8765);
+        x = np.random.normal(2, 1, 100)
+        y = np.random.normal(1, 1, 100)
+
+        xedges = [0, 1, 3, 5]
+        yedges = [0, 2, 3, 4, 6]
+
+        weights = np.arange(300000/4, dtype=np.float64);
+        weights.fill(0.5)
+
+        H, xedges, yedges = np.histogram2d(x, y, bins=2)
+        print(H)
+        print(xedges)
+        print(yedges)
+           
+    def test_histogram2d_3(self):
+
+        np.random.seed(8765);
+        x = np.random.normal(2, 1, 100)
+        y = np.random.normal(1, 1, 100)
+
+        xedges = np.array([0, 1, 3, 5])
+        yedges = np.array([0, 2, 3, 4, 6])
+
+        weights = np.arange(300000/4, dtype=np.float64);
+        weights.fill(0.5)
+
+        H, xedges, yedges = np.histogram2d(x, y, bins=(xedges, yedges))
+        print(H)
+        print(xedges)
+        print(yedges)
 
 #endregion
 

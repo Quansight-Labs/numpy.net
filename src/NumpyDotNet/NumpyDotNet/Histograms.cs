@@ -932,17 +932,32 @@ namespace NumpyDotNet
             {
                 var t = (Int32)_bins;
                 N = t;
+                bins = null;
             }
             else
             {
                 N = 1;
             }
 
-  
+            if (N != 1 && N != 2)
+            {
+                xedges = np.asarray(_bins, dtype: np.Float64);
+                yedges = np.asarray(_bins, dtype: np.Float64);
+                bins = new ndarray[] { xedges, yedges };
+            }
 
-            var result = np.histogramdd(new ndarray[] { np.asanyarray(x), np.asanyarray(y) }, bins, range, density:density, weights: _weights);
-            return (result.hist, result.bin_edges[0], result.bin_edges[1]);
-         }
+
+            if (bins != null)
+            {
+                var result = np.histogramdd(new ndarray[] { np.asanyarray(x), np.asanyarray(y) }, bins, range, density: density, weights: _weights);
+                return (result.hist, result.bin_edges[0], result.bin_edges[1]);
+            }
+            else
+            {
+                var result = np.histogramdd(new ndarray[] { np.asanyarray(x), np.asanyarray(y) }, N, range, density: density, weights: _weights);
+                return (result.hist, result.bin_edges[0], result.bin_edges[1]);
+            }
+        }
 
         #endregion
 
