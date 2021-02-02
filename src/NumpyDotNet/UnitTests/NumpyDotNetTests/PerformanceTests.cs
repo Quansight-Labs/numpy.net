@@ -3801,6 +3801,7 @@ namespace NumpyDotNetTests
             for (int i = 0; i < LoopCount; i++)
             {
                 var z = np.histogram(r, bins : np.arange(5), density : true);
+                z = np.histogram(r, bins: 5, density: true);
             }
 
             sw.Stop();
