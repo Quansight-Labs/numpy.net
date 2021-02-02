@@ -1236,7 +1236,9 @@ namespace NumpyDotNet
 
 
             // get pointer to raw input data
-            npy_intp[] numbers = lst.ToArray<npy_intp>();
+            int IntpDivSize = sizeof(npy_intp) == 8 ? 3 : 2;
+            npy_intp[] numbers = lst.core.data.datap as npy_intp[];
+            npy_intp numbersOffset = lst.core.data.data_offset >> IntpDivSize;
 
             // get min and max values of the input data
             npy_intp mn = (npy_intp)np.amin(lst).GetItem(0);
@@ -1262,7 +1264,7 @@ namespace NumpyDotNet
                 npy_intp[] ians = new npy_intp[ans_size];
                 for (npy_intp i = 0; i < len; i++)
                 {
-                    ians[numbers[i]] += 1;
+                    ians[numbers[i+numbersOffset]] += 1;
                 }
 
                 ans = np.array(ians, dtype: np.intp);
@@ -1277,7 +1279,7 @@ namespace NumpyDotNet
 
                 for (npy_intp i = 0; i < len; i++)
                 {
-                    dans[numbers[i]] += _weights[i];
+                    dans[numbers[i+numbersOffset]] += _weights[i];
                 }
 
                 ans = np.array(dans, dtype: np.Float64);
