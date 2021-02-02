@@ -1152,8 +1152,11 @@ class PerformanceTests(unittest.TestCase):
         start = tm.time()
         
         for i in range(LoopCount):
-            z= np.histogram(r, bins=np.arange(5), density=True)
-            z= np.histogram(r, bins=5, density=True)
+            z1= np.histogram(r, bins=np.arange(15,25), density=False)
+            z2= np.histogram(r, bins=5, density=False)
+            
+        print(z1)
+        print(z2)
 
         end = tm.time()
 

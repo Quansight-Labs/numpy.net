@@ -3798,11 +3798,20 @@ namespace NumpyDotNetTests
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
+            (ndarray hist, ndarray bin_edges) z1 = (null, null);
+            (ndarray hist, ndarray bin_edges) z2 = (null, null);
+
             for (int i = 0; i < LoopCount; i++)
             {
-                var z = np.histogram(r, bins : np.arange(5), density : true);
-                z = np.histogram(r, bins: 5, density: true);
+                z1 = np.histogram(r, bins : np.arange(15,25), density : false);
+                z2 = np.histogram(r, bins: 5, density: false);
             }
+
+            AssertArray(z1.hist, new npy_intp[] {1499311, 1499768, 1500892, 1499684, 1497921, 1500965, 1500532, 1499487, 2999714 });
+            AssertArray(z1.bin_edges, new Int32[] { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+
+            AssertArray(z2.hist, new npy_intp[] { 5999825, 5999354, 5999102, 6000172, 6001547 });
+            AssertArray(z2.bin_edges, new double[] { 10.0 , 13.8, 17.6, 21.4, 25.2, 29.0 });
 
             sw.Stop();
 
