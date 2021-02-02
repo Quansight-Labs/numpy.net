@@ -3783,6 +3783,32 @@ namespace NumpyDotNetTests
 
         }
 
+        // [Ignore]
+        [TestMethod]
+        public void Performance_Histogram()
+        {
+
+            int LoopCount = 10;
+
+            var random = new np.random();
+            random.seed(8765);
+
+            var r = random.randint(10, 30, new shape(30000000));
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < LoopCount; i++)
+            {
+                var z = np.histogram(r, bins : np.arange(5), density : true);
+            }
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("Histogram calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
 
     }
 

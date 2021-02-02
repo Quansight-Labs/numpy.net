@@ -1142,6 +1142,23 @@ class PerformanceTests(unittest.TestCase):
         diff = end-start
         print("1000000 differentSizes calculations took %f milliseconds" %(diff))
 
+    def test_Performance_histogram(self):
+
+        LoopCount = 10;
+
+        np.random.seed(8765);
+        r = np.random.randint(10, 30, 30000000)
+
+        start = tm.time()
+        
+        for i in range(LoopCount):
+            x= np.histogram(r, bins=np.arange(5), density=True)
+
+        end = tm.time()
+
+        diff = end-start
+        print("1000000 histogram calculations took %f milliseconds" %(diff))
+
     def test_Performance_Qadiym_test(self):
 
         # basic parameters
