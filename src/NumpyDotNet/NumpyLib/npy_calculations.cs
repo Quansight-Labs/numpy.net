@@ -698,6 +698,13 @@ namespace NumpyLib
                 NpyArray operArray, NpyArrayIterObject operIter, UFuncOperation op)
         {
 
+            if (srcArray.ItemType == NPY_TYPES.NPY_STRING || srcArray.ItemType == NPY_TYPES.NPY_OBJECT)
+                return false;
+
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, srcArray.ItemDiv);
+            destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, destArray.ItemDiv);
+            operIter = numpyinternal.NpyArray_ITER_ConvertToIndex(operIter, operArray.ItemDiv);
+
             var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize * 1000);
             var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize * 1000);
             var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize * 1000);
@@ -779,8 +786,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -806,7 +813,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -827,8 +834,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -854,7 +861,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -875,8 +882,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -902,7 +909,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -923,8 +930,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -950,7 +957,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -971,8 +978,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -998,7 +1005,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1019,8 +1026,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1046,7 +1053,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1067,8 +1074,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1094,7 +1101,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1115,8 +1122,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1142,7 +1149,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1163,8 +1170,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1190,7 +1197,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1211,8 +1218,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1242,7 +1249,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -1263,8 +1270,8 @@ namespace NumpyLib
 
             while (ldestIter.index < ldestIter.size)
             {
-                var srcValue = src[lsrcIter.dataptr.data_offset >> srcArray.ItemDiv];
-                var operValue = oper[loperIter.dataptr.data_offset >> operArray.ItemDiv];
+                var srcValue = src[lsrcIter.dataptr.data_offset];
+                var operValue = oper[loperIter.dataptr.data_offset];
 
                 bool destValue = false;
 
@@ -1290,7 +1297,7 @@ namespace NumpyLib
                         break;
                 }
 
-                dest[ldestIter.dataptr.data_offset >> destArray.ItemDiv] = destValue;
+                dest[ldestIter.dataptr.data_offset] = destValue;
 
                 NpyArray_ITER_NEXT(ldestIter);
                 NpyArray_ITER_NEXT(lsrcIter);
@@ -2586,7 +2593,6 @@ namespace NumpyLib
    
             var srcItemDiv = srcArray.ItemDiv;
 
-            int srcAdjustment = (int)srcArray.data.data_offset >> srcArray.ItemDiv;
             int destAdjustment = (int)destArray.data.data_offset >> destArray.ItemDiv;
 
             var exceptions = new ConcurrentQueue<Exception>();
