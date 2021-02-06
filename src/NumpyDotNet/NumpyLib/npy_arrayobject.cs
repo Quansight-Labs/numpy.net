@@ -173,16 +173,16 @@ namespace NumpyLib
     internal partial class numpyinternal
     {
 
-        internal static long[] GetViewOffsets(NpyArray arr)
+        internal static npy_intp[] GetViewOffsets(NpyArray arr)
         {
-            long[] offsets = new long[NpyArray_SIZE(arr)];
+            npy_intp[] offsets = new npy_intp[NpyArray_SIZE(arr)];
             long offset_index = 0;
 
             GetViewOffsets(arr, 0, 0, offsets, ref offset_index);
             return offsets;
         }
 
-        private static void GetViewOffsets(NpyArray arr, int dimIdx, long offset, long[] offsets, ref long offset_index)
+        private static void GetViewOffsets(NpyArray arr, int dimIdx, npy_intp offset, npy_intp[] offsets, ref long offset_index)
         {
             if (dimIdx == arr.nd)
             {
@@ -562,7 +562,7 @@ namespace NumpyLib
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long NpyArray_NBYTES(NpyArray arr)
+        internal static npy_intp NpyArray_NBYTES(NpyArray arr)
         {
             return (NpyArray_ITEMSIZE(arr) * NpyArray_SIZE(arr));
         }

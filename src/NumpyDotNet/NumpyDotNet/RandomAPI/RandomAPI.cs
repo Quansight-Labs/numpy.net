@@ -1197,14 +1197,14 @@ namespace NumpyDotNet
 
                 var multin = np.zeros(newshape, np.Int64);
                 ndarray mnarr = multin;
-                long[] mnix = mnarr.Array.data.datap as Int64[];
+                long[] mnix = mnarr.Array.data.datap as long[];
                 npy_intp sz = mnarr.size;
 
                 npy_intp i = 0;
                 while (i < sz)
                 {
                     double Sum = 1.0;
-                    npy_intp dn = n;
+                    long dn = n;
                     for (npy_intp j = 0; j < d - 1; j++)
                     {
                         mnix[i + j] = RandomDistributions.rk_binomial(internal_state, dn, pix[j] / Sum);
@@ -1974,7 +1974,7 @@ namespace NumpyDotNet
 
             }
 
-            private ndarray cont3_array_sc(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, double a, double b, double c)
+            private ndarray cont3_array_sc(rk_state state, Func<rk_state, double, double, double, double> func, npy_intp[] size, double a, double b, double c)
             {
                 if (size == null)
                 {
@@ -1995,7 +1995,7 @@ namespace NumpyDotNet
                 }
             }
 
-            private ndarray cont3_array(rk_state state, Func<rk_state, double, double, double, double> func, long[] size, ndarray oa, ndarray ob, ndarray oc)
+            private ndarray cont3_array(rk_state state, Func<rk_state, double, double, double, double> func, npy_intp[] size, ndarray oa, ndarray ob, ndarray oc)
             {
                 broadcast multi;
                 ndarray array;
@@ -2168,7 +2168,7 @@ namespace NumpyDotNet
                 return asanyarray(array_data).reshape(size);
             }
 
-            private ndarray discdd_array(rk_state state, Func<rk_state, double, double, long> func, long[] size, ndarray on, ndarray op)
+            private ndarray discdd_array(rk_state state, Func<rk_state, double, double, long> func, npy_intp[] size, ndarray on, ndarray op)
             {
                 broadcast multi;
                 ndarray array;
@@ -2209,7 +2209,7 @@ namespace NumpyDotNet
                 return np.array(array_data);
             }
 
-            private ndarray discdd_array_sc(rk_state state, Func<rk_state, double, double, long> func, long[] size, long n, double p)
+            private ndarray discdd_array_sc(rk_state state, Func<rk_state, double, double, long> func, npy_intp[] size, long n, double p)
             {
                 if (size == null)
                 {
@@ -2312,7 +2312,7 @@ namespace NumpyDotNet
                 return sum;
             }
 
-            private shape _shape_from_size(shape size, long d)
+            private shape _shape_from_size(shape size, npy_intp d)
             {
                 if (size == null)
                 {

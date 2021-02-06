@@ -109,7 +109,11 @@ namespace NumpyDotNet
                 int i = 0;
                 foreach (var d in arr)
                 {
+#if NPY_INTP_64
                     iDims[i] = Convert.ToInt64(d);
+#else
+                    iDims[i] = Convert.ToInt32(d);
+#endif
                     i++;
                 }
                 return;

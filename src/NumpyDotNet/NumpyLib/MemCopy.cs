@@ -5282,7 +5282,7 @@ namespace NumpyLib
                 this.isSameType = false;
         }
 
-        public void memcpy(npy_intp dest_offset, npy_intp src_offset, long len)
+        public void memcpy(npy_intp dest_offset, npy_intp src_offset, npy_intp len)
         {
             if (isSameType)
             {
@@ -5308,7 +5308,7 @@ namespace NumpyLib
 
         }
 
-        public void memmove(npy_intp dest_offset, npy_intp src_offset, long len)
+        public void memmove(npy_intp dest_offset, npy_intp src_offset, npy_intp len)
         {
             if (isSameType)
             {

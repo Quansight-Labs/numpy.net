@@ -1121,7 +1121,7 @@ namespace NumpyDotNet {
         }
 
 
-        internal static npy_intp[] GetViewOffsets(NpyArrayIterObject iter, long count)
+        internal static npy_intp[] GetViewOffsets(NpyArrayIterObject iter, npy_intp count)
         {
 #if ENABLELOCKING
             lock (GlobalIterpLock)

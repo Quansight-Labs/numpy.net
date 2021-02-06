@@ -1206,7 +1206,7 @@ namespace NumpyLib
                         {
                             var aValue = aValues[i];
 
-                            long destIndex = (destArray.data.data_offset >> destArray.ItemDiv) + i * bSize;
+                            npy_intp destIndex = (destArray.data.data_offset >> destArray.ItemDiv) + i * bSize;
 
                             if (UFuncOuterContigAccelerator != null)
                             {

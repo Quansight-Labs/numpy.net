@@ -1255,7 +1255,7 @@ namespace NumpyLib
             {
                 var helper = MemCopy.GetMemcopyHelper(dst.data);
                 helper.memmove_init(dst.data, src.data);
-                helper.memcpy(dst.data.data_offset, src.data.data_offset, (long)NpyArray_BYTES_Length(src));
+                helper.memcpy(dst.data.data_offset, src.data.data_offset, (npy_intp)NpyArray_BYTES_Length(src));
                 return 0;
             }
 

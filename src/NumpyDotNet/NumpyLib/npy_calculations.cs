@@ -558,7 +558,7 @@ namespace NumpyLib
                         throw new Exception(string.Format("Unable to broadcast array size {0} to array size {1}", srcArraySize, operandArraySize));
                     }
 
-                    Int64 repeatNumber = operandArraySize / srcArraySize;
+                    npy_intp repeatNumber = operandArraySize / srcArraySize;
 
                     NpyArray repeatArray = NpyArray_Alloc(
                         NpyArray_DescrFromType(NPY_TYPES.NPY_INTP),
@@ -1765,7 +1765,7 @@ namespace NumpyLib
         }
 
 
-        private static bool BOOL_OpAccelerator(UFuncOperation op, NpyArray srcArray, NpyArray OperArray, object _operand, NpyArray DestArray, long loopCount, int srcAdjustment, int destAdjustment)
+        private static bool BOOL_OpAccelerator(UFuncOperation op, NpyArray srcArray, NpyArray OperArray, object _operand, NpyArray DestArray, npy_intp loopCount, int srcAdjustment, int destAdjustment)
         {
             var _src = srcArray.data.datap;
             var _dest = DestArray.data.datap;

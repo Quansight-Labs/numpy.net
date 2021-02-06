@@ -59,7 +59,7 @@ namespace NumpyDotNet
         {
             npy_intp[] newdims = new npy_intp[newshape.Length];
             for (int i = 0; i < newshape.Length; i++)
-                newdims[i] = newshape[i];
+                newdims[i] = (npy_intp)newshape[i];
             return a.reshape(newdims, NPY_ORDER.NPY_ANYORDER);
         }
         public static ndarray reshape(this ndarray a, shape newshape, NPY_ORDER order = NPY_ORDER.NPY_CORDER)

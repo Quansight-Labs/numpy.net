@@ -1742,7 +1742,7 @@ namespace NumpyDotNet
         }
 
         private ndarray arr;
-        private long index;
+        private npy_intp index;
 
         bool UseLocalCache = false;
         npy_intp MaxCacheSize = 10000;

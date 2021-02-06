@@ -298,7 +298,7 @@ namespace NumpyLib
 
         #region memset
 
-        internal static void memclr(VoidPtr dest, long len)
+        internal static void memclr(VoidPtr dest, npy_intp len)
         {
             var helper = MemCopy.GetMemcopyHelper(dest);
             helper.memclr(dest, dest.data_offset, len);

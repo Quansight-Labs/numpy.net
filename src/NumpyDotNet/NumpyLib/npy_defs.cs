@@ -103,7 +103,7 @@ namespace NumpyLib
 #if NPY_INTP_64
         NPY_INTP = NPY_INT64,
 #else
-        NPY_INTP = NPY_INT,
+        NPY_INTP = NPY_INT32,
 #endif
  
     };

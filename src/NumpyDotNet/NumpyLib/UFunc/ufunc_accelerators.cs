@@ -521,7 +521,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators Accelerators
-        private void AddSubMultScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -553,7 +553,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -611,7 +611,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(Int16[] src, Int16[] dest, Int16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -902,7 +902,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -934,7 +934,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -992,7 +992,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(UInt16[] src, UInt16[] dest, UInt16 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1283,7 +1283,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1315,7 +1315,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1373,7 +1373,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1665,7 +1665,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1697,7 +1697,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -1755,7 +1755,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2047,7 +2047,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2079,7 +2079,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2137,7 +2137,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2429,7 +2429,7 @@ namespace NumpyLib
 
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2461,7 +2461,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2519,7 +2519,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2810,7 +2810,7 @@ namespace NumpyLib
 
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(float[] src, float[] dest, float operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2842,7 +2842,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(float[] src, float[] dest, float operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -2900,7 +2900,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(float[] src, float[] dest, float operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(float[] src, float[] dest, float operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3305,7 +3305,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(double[] src, double[] dest, double operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3337,7 +3337,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(double[] src, double[] dest, double operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3395,7 +3395,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(double[] src, double[] dest, double operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(double[] src, double[] dest, double operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3686,7 +3686,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3718,7 +3718,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -3776,7 +3776,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -4067,7 +4067,7 @@ namespace NumpyLib
         #endregion
 
         #region ScalerIterContigNoIter Accelerators
-        private void AddSubMultScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void AddSubMultScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -4099,7 +4099,7 @@ namespace NumpyLib
 
         }
 
-        private void DivisionScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void DivisionScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
@@ -4157,7 +4157,7 @@ namespace NumpyLib
 
         }
 
-        private void PowerSqrtScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, long start, long end, long srcAdjustment, long destAdjustment, UFuncOperation ops)
+        private void PowerSqrtScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
             npy_intp destIndex = start - destAdjustment;
