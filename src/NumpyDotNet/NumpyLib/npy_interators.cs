@@ -129,45 +129,7 @@ namespace NumpyLib
             /* Defer creation of the wrapper - will be handled by Npy_INTERFACE. */
             return it;
         }
-        internal static NpyArrayIterObjectFast NpyArray_IterNewFast(NpyArray ao)
-        {
-            NpyArrayIterObjectFast it = new NpyArrayIterObjectFast();
-            NpyObject_Init(it, new NpyTypeObject());
-            if (it == null)
-            {
-                return null;
-            }
-
-            array_iter_base_init(it, ao);
-
-            NpyArray_IterNewFastInit(it, it);
-
-            return it;
-        }
-
-        internal static NpyArrayIterObjectFast NpyArray_IterNewFast(NpyArrayIterObject iter)
-        {
-            NpyArrayIterObjectFast it = new NpyArrayIterObjectFast();
-            NpyArray_IterNewFastInit(it, iter);
-            return it;
-        }
-
-        private static void NpyArray_IterNewFastInit(NpyArrayIterObjectFast it, NpyArrayIterObject iter)
-        {
-            it.index = iter.index;
-            it.size = iter.size;
-            it.nd_m1 = iter.nd_m1;
-            it.contiguous = iter.contiguous;
-
-            it.data_offset = iter.dataptr.data_offset;
-            it.elsize = iter.ao.descr.elsize;
-            it.strides_0 = iter.strides[0];
-            it.strides_1 = iter.strides[1];
-            it.dims_m1_1 = iter.dims_m1[1];
-            it.coordinates_0 = iter.coordinates[0];
-            it.coordinates_1 = iter.coordinates[1];
-            it.backstrides_1 = iter.backstrides[1];
-        }
+ 
 
         internal static NpyArrayIterObject NpyArray_BroadcastToShape(NpyArray ao, npy_intp[] dims, int nd)
         {
@@ -690,55 +652,6 @@ namespace NumpyLib
                 }
             }
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void NpyArray_ITER_NEXT(NpyArrayIterObjectFast it)
-        {
-            //Debug.Assert(Validate(it));
-
-            it.index++;
-            if (it.nd_m1 == 0)
-            {
-                it.data_offset += it.strides_0;
-            }
-            else if (it.contiguous)
-            {
-                it.data_offset += it.elsize;
-            }
-            else if (it.nd_m1 == 1)
-            {
-                if (it.coordinates_1 < it.dims_m1_1)
-                {
-                    it.coordinates_1++;
-                    it.data_offset += it.strides_1;
-                }
-                else
-                {
-                    it.coordinates_1 = 0;
-                    it.coordinates_0++;
-                    it.data_offset += it.strides_0 - it.backstrides_1;
-                }
-            }
-            else
-            {
-                int i;
-                for (i = it.nd_m1; i >= 0; i--)
-                {
-                    if (it.coordinates[i] < it.dims_m1[i])
-                    {
-                        it.coordinates[i]++;
-                        it.data_offset += it.strides[i];
-                        break;
-                    }
-                    else
-                    {
-                        it.coordinates[i] = 0;
-                        it.data_offset -= it.backstrides[i];
-                    }
-                }
-            }
-        }
-
 
         internal static void NpyArray_ITER_WALK(NpyArrayIterObject it, npy_intp walkCount)
         {
@@ -1504,13 +1417,6 @@ namespace NumpyLib
                 it.dataptr = new VoidPtr(it.ao);
             }
             Array.Clear(it.coordinates, 0, it.coordinates.Length);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void NpyArray_ITER_RESET(NpyArrayIterObjectFast it)
-        {
-            NpyArray_ITER_RESET((NpyArrayIterObject)it);
-            NpyArray_IterNewFastInit(it, it);
         }
 
         static int array_iter_base_init(NpyArrayIterObject it, NpyArray ao)
