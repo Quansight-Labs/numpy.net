@@ -925,6 +925,7 @@ namespace NumpyLib
 
                 List<Exception> caughtExceptions = new List<Exception>();
 
+
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
@@ -986,6 +987,7 @@ namespace NumpyLib
                 }
             }
 
+    
             protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
                 T[] src, npy_intp[] srcOffsets,
                 T[] oper, npy_intp[] operOffsets,
@@ -1465,13 +1467,6 @@ namespace NumpyLib
             }
 
             #endregion
-
-
-            protected int CalculateIterationArraySize(NpyArray Array, NpyArray destArray)
-            {
-                var OperIter = NpyArray_BroadcastToShape(Array, destArray.dimensions, destArray.nd);
-                return NpyArray_ITER_COUNT(OperIter);
-            }
 
             protected npy_intp AdjustNegativeIndex(T[] data, npy_intp index)
             {
