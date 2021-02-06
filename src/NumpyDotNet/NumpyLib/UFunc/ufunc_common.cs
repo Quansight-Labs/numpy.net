@@ -915,6 +915,11 @@ namespace NumpyLib
                 T[] dest = destArray.data.datap as T[];
                 T[] oper = operArray.data.datap as T[];
 
+                srcIter = NpyArray_ITER_ConvertToIndex(srcIter, srcArray.ItemDiv);
+                destIter = NpyArray_ITER_ConvertToIndex(destIter, destArray.ItemDiv);
+                operIter = NpyArray_ITER_ConvertToIndex(operIter, operArray.ItemDiv);
+
+
                 var UFuncScalerIterAccelerator = GetUFuncScalarIterOperation(op);
 
                 var UFuncOperation = GetUFuncOperation(op);
@@ -930,20 +935,12 @@ namespace NumpyLib
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
-                int srcItemDiv = srcArray.ItemDiv;
-                int operItemDiv = operArray.ItemDiv;
-                int destItemDiv = destArray.ItemDiv;
-
                 Parallel.For(0, destParallelIters.Count(), index =>
                 //for (int index = 0; index < destParallelIters.Count(); index++) // 
                 {
                     var ldestIter = destParallelIters.ElementAt(index);
                     var lsrcIter = srcParallelIters.ElementAt(index);
                     var loperIter = operParallelIters.ElementAt(index);
-
-                    npy_intp srcDataOffset = srcArray.data.data_offset;
-                    npy_intp operDataOffset = operArray.data.data_offset;
-                    npy_intp destDataOffset = destArray.data.data_offset;
 
 
                     while (ldestIter.index < ldestIter.size)
@@ -969,7 +966,7 @@ namespace NumpyLib
                                     src, lsrcIter.internalCache, oper,
                                     loperIter.internalCache,
                                     dest, ldestIter.internalCache,
-                                    ldestIter.internalCacheLength, srcItemDiv);
+                                    ldestIter.internalCacheLength);
                             }
                         }
                         catch (Exception ex)
@@ -979,7 +976,7 @@ namespace NumpyLib
 
                     }
 
-                });
+                } );
 
                 if (caughtExceptions.Count > 0)
                 {
@@ -987,20 +984,20 @@ namespace NumpyLib
                 }
             }
 
-    
+
             protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
                 T[] src, npy_intp[] srcOffsets,
                 T[] oper, npy_intp[] operOffsets,
-                T[] dest, npy_intp[] destOffsets, npy_intp offsetsLen, int ItemDiv)
+                T[] dest, npy_intp[] destOffsets, npy_intp offsetsLen)
             {
                 for (npy_intp i = 0; i < offsetsLen; i++)
                 {
                     T srcValue, operand;
                     npy_intp destIndex;
 
-                    srcValue = src[srcOffsets[i] >> ItemDiv];
-                    operand = oper[operOffsets[i] >> ItemDiv];
-                    destIndex = destOffsets[i] >> ItemDiv;
+                    srcValue = src[srcOffsets[i]];
+                    operand = oper[operOffsets[i]];
+                    destIndex = destOffsets[i];
 
                     try
                     {

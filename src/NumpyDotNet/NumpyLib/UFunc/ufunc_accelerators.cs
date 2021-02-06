@@ -3208,9 +3208,9 @@ namespace NumpyLib
                 double srcValue, operand;
                 npy_intp destIndex;
 
-                srcValue = src[srcOffsets[i] >> ItemDiv];
-                operand = oper[operOffsets[i] >> ItemDiv];
-                destIndex = destOffsets[i] >> ItemDiv;
+                srcValue = src[srcOffsets[i]];
+                operand = oper[operOffsets[i]];
+                destIndex = destOffsets[i];
 
                 dest[destIndex] = srcValue + operand;
             }
@@ -3225,9 +3225,9 @@ namespace NumpyLib
                 double srcValue, operand;
                 npy_intp destIndex;
 
-                srcValue = src[srcOffsets[i] >> ItemDiv];
-                operand = oper[operOffsets[i] >> ItemDiv];
-                destIndex = destOffsets[i] >> ItemDiv;
+                srcValue = src[srcOffsets[i]];
+                operand = oper[operOffsets[i]];
+                destIndex = destOffsets[i];
 
                 try
                 {

@@ -471,7 +471,9 @@ namespace NumpyLib
             return ret;
         }
 
- 
+
+
+
         internal static void NpyArray_ITER_CACHE(NpyArrayIterObject it, npy_intp cacheSize)
         {
             if (cacheSize == 0)
@@ -605,7 +607,24 @@ namespace NumpyLib
             }
         }
 
-    
+
+        internal static NpyArrayIterObject NpyArray_ITER_ConvertToIndex(NpyArrayIterObject it, int ItemDiv)
+        {
+            it.elsize >>= ItemDiv;
+            it.dataptr.data_offset >>= ItemDiv;
+
+            for (int i = 0; i < it.strides.Length; i++)
+            {
+                it.strides[i] >>= ItemDiv;
+            }
+            for (int i = 0; i < it.backstrides.Length; i++)
+            {
+                it.backstrides[i] >>= ItemDiv;
+            }
+
+            return (NpyArrayIterObject)it;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it)
         {
