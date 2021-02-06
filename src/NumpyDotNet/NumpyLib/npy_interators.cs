@@ -186,6 +186,7 @@ namespace NumpyLib
             }
             Npy_INCREF(ao);
             it.ao = ao;
+            it.elsize = ao.descr.elsize;
             it.size = NpyArray_MultiplyList(dims, nd);
             it.nd_m1 = nd - 1;
             it.factors[nd - 1] = 1;
@@ -512,7 +513,7 @@ namespace NumpyLib
             {
                 npy_intp it_index = it.index;
                 npy_intp it_dataptr_data_offset = it.dataptr.data_offset;
-                npy_intp elsize = (npy_intp)it.ao.descr.elsize;
+                int elsize = it.elsize;
 
                 for (int i = 0; i < it.internalCacheLength; i++)
                 {
@@ -618,7 +619,7 @@ namespace NumpyLib
             }
             else if (it.contiguous)
             {
-                it.dataptr.data_offset += (npy_intp)it.ao.descr.elsize;
+                it.dataptr.data_offset += it.elsize;
             }
             else if (it.nd_m1 == 1)
             {
@@ -670,7 +671,7 @@ namespace NumpyLib
 
             if (it.contiguous)
             {
-                it.dataptr.data_offset += walkCount * (npy_intp)it.ao.descr.elsize;
+                it.dataptr.data_offset += walkCount * it.elsize;
                 return;
             }
 
@@ -1117,6 +1118,7 @@ namespace NumpyLib
             }
             Npy_INCREF(ao);
             it.ao = ao;
+            it.elsize = ao.descr.elsize;
             it.size = NpyArray_SIZE(ao);
             it.nd_m1 = nd - 1;
 
@@ -1228,7 +1230,7 @@ namespace NumpyLib
             }
             else if (it.contiguous)
             {
-                it.dataptr.data_offset = it.ao.data.data_offset + (indices * it.ao.descr.elsize);
+                it.dataptr.data_offset = it.ao.data.data_offset + (indices * it.elsize);
             }
             else
             {
@@ -1277,7 +1279,7 @@ namespace NumpyLib
 
             if (it.contiguous)
             {
-                npy_intp elsize = it.ao.descr.elsize;
+                int elsize = it.elsize;
                 npy_intp it_ao_data_data_offset = it.ao.data.data_offset;
 
                 for (int i = 0; i < it.internalCacheLength; i++)
