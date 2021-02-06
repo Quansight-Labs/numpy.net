@@ -294,24 +294,6 @@ namespace NumpyLib
     }
 
 
-    public class NpyArrayIterObjectFast : NpyArrayIterObject
-    {
-        public npy_intp index;
-        public npy_intp size;
-        public int nd_m1;
-        public bool contiguous;
-
-        public npy_intp data_offset;
-        public int elsize;
-        public npy_intp strides_0;
-        public npy_intp strides_1;
-        public npy_intp dims_m1_1;
-        public npy_intp coordinates_0;
-        public npy_intp coordinates_1;
-        public npy_intp backstrides_1;
-
-    }
-
     public class NpyArrayIterObject : NpyObject_HEAD
     {
         public int nd_m1;                                                   /* number of dimensions - 1 */
@@ -322,6 +304,7 @@ namespace NumpyLib
         public npy_intp[] backstrides = new npy_intp[npy_defs.NPY_MAXDIMS]; /* how far to jump back */
         public npy_intp[] factors = new npy_intp[npy_defs.NPY_MAXDIMS];     /* shape factors */
         public NpyArray ao;
+        public int elsize;
         public VoidPtr dataptr = new VoidPtr();                             /* pointer to current item*/
         public bool contiguous;
         public bool requiresIteration
@@ -338,27 +321,10 @@ namespace NumpyLib
         //public npy_intp[,] limits = new npy_intp[npy_defs.NPY_MAXDIMS, 2];
         //public npy_intp[] limits_sizes = new npy_intp[npy_defs.NPY_MAXDIMS];
 
-        public npy_intp ParallelMask;
-        public npy_intp ParallelIndex;
-
 
         public npy_intp[] internalCache = null;
         public npy_intp internalCacheLength = 0;
         public npy_intp internalCacheIndex = 0;
-
-        public bool IsCacheEmpty
-        {
-            get
-            {
-                return internalCacheIndex >= internalCacheLength;
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public npy_intp GetNextCache()
-        {
-            return internalCache[internalCacheIndex++];
-        }
 
 
         public NpyArrayIterObject copy()
@@ -373,6 +339,7 @@ namespace NumpyLib
             Array.Copy(this.backstrides, _copy.backstrides, this.backstrides.Length);
             Array.Copy(this.factors, _copy.factors, this.factors.Length);
             _copy.ao = this.ao;
+            _copy.elsize = this.elsize;
             _copy.dataptr = new VoidPtr(this.dataptr);
             _copy.contiguous = this.contiguous;
             //Array.Copy(this.bounds, _copy.bounds, this.bounds.Length);
