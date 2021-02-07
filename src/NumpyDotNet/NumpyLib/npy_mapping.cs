@@ -436,11 +436,16 @@ namespace NumpyLib
             return;
         }
 
-        internal static void NpyArray_MapIterNext(NpyArrayMapIterObject mit, VoidPtr [] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
+        internal static void NpyArray_MapIterNext_SubSpace(NpyArrayMapIterObject mit, npy_intp[] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
         {
             NpyArrayIterObject it;
             npy_intp i, j;
             npy_intp[] coord = new npy_intp[npy_defs.NPY_MAXDIMS];
+
+            if (mit.subspace == null)
+            {
+                throw new Exception("NpyArray_MapIterNext called without a subspace");
+            }
 
             while (offsetsIndex < offsetsLength)
             {
@@ -449,40 +454,34 @@ namespace NumpyLib
                 {
                     return;
                 }
-                /* Sub-space iteration */
-                if (mit.subspace != null)
-                {
-                    NpyArray_ITER_NEXT(mit.subspace);
-                    if (mit.subspace.index >= mit.subspace.size)
-                    {
-                        /* reset coord to coordinates of beginning of the subspace */
-                        copydims(coord, mit.bscoord, mit.ait.ao.nd);
-                        NpyArray_ITER_RESET(mit.subspace);
-                        for (i = 0; i < mit.numiter; i++)
-                        {
-                            it = mit.iters[i];
-                            NpyArray_ITER_NEXT(it);
-                            j = mit.iteraxes[i];
 
-                            npy_intp[] s = it.dataptr.datap as npy_intp[];
-                            coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
-                            //if (!NpyArray_ISNOTSWAPPED(it.ao))
-                            //{
-                            //    // not sure I need to do anything here.
-                            //}
-                        }
-                        NpyArray_ITER_GOTO(mit.ait, coord);
-                        mit.subspace.dataptr = new VoidPtr(mit.ait.dataptr);
-                    }
-                    offsets[offsetsIndex++] = new VoidPtr(mit.subspace.dataptr);
-                }
-                else
+                NpyArray_ITER_NEXT(mit.subspace);
+                if (mit.subspace.index >= mit.subspace.size)
                 {
-                    throw new Exception("NpyArray_MapIterNext called without a subspace");
+                    /* reset coord to coordinates of beginning of the subspace */
+                    copydims(coord, mit.bscoord, mit.ait.ao.nd);
+                    NpyArray_ITER_RESET(mit.subspace);
+                    for (i = 0; i < mit.numiter; i++)
+                    {
+                        it = mit.iters[i];
+                        NpyArray_ITER_NEXT(it);
+                        j = mit.iteraxes[i];
+
+                        npy_intp[] s = it.dataptr.datap as npy_intp[];
+                        coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
+                        //if (!NpyArray_ISNOTSWAPPED(it.ao))
+                        //{
+                        //    // not sure I need to do anything here.
+                        //}
+                    }
+                    NpyArray_ITER_GOTO(mit.ait, coord);
+                    mit.subspace.dataptr = new VoidPtr(mit.ait.dataptr);
                 }
+                offsets[offsetsIndex++] = mit.subspace.dataptr.data_offset;
+
             }
 
- 
+
             return;
         }
 
