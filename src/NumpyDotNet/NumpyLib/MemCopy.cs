@@ -3848,6 +3848,7 @@ namespace NumpyLib
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, divsize);
 
             npy_intp dptr_index = 0;
 
@@ -3857,7 +3858,7 @@ namespace NumpyLib
                 {
                     if (bool_array[dptr_index])
                     {
-                        d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
+                        d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
                         numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
                         _dst.data_offset += elsize;
                     }
@@ -3873,7 +3874,7 @@ namespace NumpyLib
                 {
                     if (bool_array[dptr_index])
                     {
-                        d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
+                        d[_dst.data_offset++] = s[srcIter.dataptr.data_offset];
                     }
                     dptr_index += stride;
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
