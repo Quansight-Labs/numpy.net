@@ -2591,8 +2591,6 @@ namespace NumpyLib
             O[] oper = operArray.data.datap as O[];
 
    
-            var srcItemDiv = srcArray.ItemDiv;
-
             int destAdjustment = (int)destArray.data.data_offset >> destArray.ItemDiv;
 
             var exceptions = new ConcurrentQueue<Exception>();
@@ -2602,12 +2600,6 @@ namespace NumpyLib
 
             if (NpyArray_Size(operArray) == 1 && !operArray.IsASlice)
             {
-                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
-                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
-
-                object operand = operations.ConvertOperand(oper[0]);
-
-     
                 if (IsBoolReturn(operations.operationType) && (srcArray.ItemType == operArray.ItemType) && (destArray.ItemType == NPY_TYPES.NPY_BOOL))
                 {
                     bool retValue = PerformBOOLOpScalarSmallIter_Accelerator(srcArray, srcIter, destArray, destIter, operArray, operIter, operations.operationType);
@@ -2615,6 +2607,12 @@ namespace NumpyLib
                         return;
                 }
 
+                srcIter = NpyArray_ITER_ConvertToIndex(srcIter, srcArray.ItemDiv);
+
+                object operand = operations.ConvertOperand(oper[0]);
+
+                var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
 
                 Parallel.For(0, destParallelIters.Count(), index =>
                 {
@@ -2625,7 +2623,7 @@ namespace NumpyLib
                     {
                         while (ldestIter.index < ldestIter.size)
                         {
-                            var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
+                            var srcIndex = lsrcIter.dataptr.data_offset;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 
@@ -2654,6 +2652,9 @@ namespace NumpyLib
                         return;
                 }
 
+
+                srcIter = NpyArray_ITER_ConvertToIndex(srcIter, srcArray.ItemDiv);
+
                 var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
                 var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
                 var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
@@ -2670,7 +2671,7 @@ namespace NumpyLib
                         {
                             object operand = operations.ConvertOperand(operations.operandGetItem(loperIter.dataptr.data_offset));
 
-                            var srcIndex = lsrcIter.dataptr.data_offset >> srcItemDiv;
+                            var srcIndex = lsrcIter.dataptr.data_offset;
                             D dValue = (D)(dynamic)operations.operation(src[srcIndex], operand);
                             dest[ldestIter.index - destAdjustment] = dValue;
 
