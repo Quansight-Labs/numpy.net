@@ -3896,6 +3896,7 @@ namespace NumpyLib
 
 
             index_iter = numpyinternal.NpyArray_ITER_ConvertToIndex(index_iter, divintp);
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, divsize);
 
             if (swap)
             {
@@ -3910,12 +3911,12 @@ namespace NumpyLib
                     {
                         return num;
                     }
-                    numpyinternal.NpyArray_ITER_GOTO1D(srcIter, num);
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(srcIter, num);
 
-                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset];
                     _dst.data_offset += elsize;
 
-                    numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
+                    numpyinternal.swapvalue(_dst, _dst.data_offset, 0);
 
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
@@ -3935,9 +3936,9 @@ namespace NumpyLib
                     {
                         return num;
                     }
-                    numpyinternal.NpyArray_ITER_GOTO1D(srcIter, num);
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(srcIter, num);
 
-                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset];
 
                     numpyinternal.NpyArray_ITER_NEXT(index_iter);
                 }
@@ -4131,13 +4132,16 @@ namespace NumpyLib
             npy_intp[] dataptr = indexIter.dataptr.datap as npy_intp[];
             npy_intp i = indexIter.size;
 
+            indexIter = numpyinternal.NpyArray_ITER_ConvertToIndex(indexIter, divintp);
+            destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
+
             if (srcIter.size == 1)
             {
-                srcIter.dataptr.data_offset >>= divsize;
+                T sValue = s[srcIter.dataptr.data_offset >> divsize];
 
                 while (i-- > 0)
                 {
-                    npy_intp num = dataptr[indexIter.dataptr.data_offset >> divintp];
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset];
                     if (num < 0)
                     {
                         num += destIter.size;
@@ -4146,13 +4150,13 @@ namespace NumpyLib
                     {
                         return num;
                     }
-                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(destIter, num);
 
-                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
+                    d[destIter.dataptr.data_offset] = sValue;
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, 0);
                     }
     
                     numpyinternal.NpyArray_ITER_NEXT(indexIter);
@@ -4160,9 +4164,12 @@ namespace NumpyLib
             }
             else
             {
+
+                srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, divsize);
+
                 while (i-- > 0)
                 {
-                    npy_intp num = dataptr[indexIter.dataptr.data_offset >> divintp];
+                    npy_intp num = dataptr[indexIter.dataptr.data_offset];
                     if (num < 0)
                     {
                         num += destIter.size;
@@ -4171,19 +4178,19 @@ namespace NumpyLib
                     {
                         return num;
                     }
-                    numpyinternal.NpyArray_ITER_GOTO1D(destIter, num);
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(destIter, num);
 
-                    d[destIter.dataptr.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
+                    d[destIter.dataptr.data_offset] = s[srcIter.dataptr.data_offset];
 
                     if (swap)
                     {
-                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
+                        numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, 0);
                     }
 
                     numpyinternal.NpyArray_ITER_NEXT(srcIter);
                     if (!numpyinternal.NpyArray_ITER_NOTDONE(srcIter))
                     {
-                        numpyinternal.NpyArray_ITER_RESET(srcIter);
+                        numpyinternal.NpyArray_ITER_RESET(srcIter, divsize);
                     }
                     numpyinternal.NpyArray_ITER_NEXT(indexIter);
                 }
