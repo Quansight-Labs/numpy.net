@@ -305,6 +305,7 @@ namespace NumpyLib
         public npy_intp[] factors = new npy_intp[npy_defs.NPY_MAXDIMS];     /* shape factors */
         public NpyArray ao;
         public int elsize;
+        public npy_intp ao_offset;
         public VoidPtr dataptr = new VoidPtr();                             /* pointer to current item*/
         public bool contiguous;
         public bool requiresIteration

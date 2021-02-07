@@ -612,6 +612,7 @@ namespace NumpyLib
         {
             it.elsize >>= ItemDiv;
             it.dataptr.data_offset >>= ItemDiv;
+            it.ao_offset = it.ao.data.data_offset >> ItemDiv;
 
             for (int i = 0; i <= it.nd_m1; i++)
             {
@@ -1253,6 +1254,33 @@ namespace NumpyLib
             else
             {
                 it.dataptr.data_offset = it.ao.data.data_offset;
+                for (int index = 0; index <= it.nd_m1; index++)
+                {
+                    it.dataptr.data_offset += (indices / it.factors[index]) * it.strides[index];
+                    indices %= it.factors[index];
+                }
+            }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void NpyArray_ITER_GOTO1D_INDEX(NpyArrayIterObject it, npy_intp indices)
+        {
+            Debug.Assert(Validate(it));
+
+            if (indices < 0)
+                indices += it.size;
+
+            it.index = indices;
+            if (it.nd_m1 == 0)
+            {
+                it.dataptr.data_offset = it.ao_offset + (indices * it.strides[0]);
+            }
+            else if (it.contiguous)
+            {
+                it.dataptr.data_offset = it.ao_offset + (indices * it.elsize);
+            }
+            else
+            {
+                it.dataptr.data_offset = it.ao_offset;
                 for (int index = 0; index <= it.nd_m1; index++)
                 {
                     it.dataptr.data_offset += (indices / it.factors[index]) * it.strides[index];
