@@ -3894,11 +3894,14 @@ namespace NumpyLib
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
+
+            index_iter = numpyinternal.NpyArray_ITER_ConvertToIndex(index_iter, divintp);
+
             if (swap)
             {
                 while (iterCount-- > 0)
                 {
-                    npy_intp num = dataptr[index_iter.dataptr.data_offset >> divintp];
+                    npy_intp num = dataptr[index_iter.dataptr.data_offset];
                     if (num < 0)
                     {
                         num += srcIter.size;
@@ -3923,7 +3926,7 @@ namespace NumpyLib
 
                 while (iterCount-- > 0)
                 {
-                    npy_intp num = dataptr[index_iter.dataptr.data_offset >> divintp];
+                    npy_intp num = dataptr[index_iter.dataptr.data_offset];
                     if (num < 0)
                     {
                         num += srcIter.size;
