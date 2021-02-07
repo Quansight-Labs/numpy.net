@@ -4222,13 +4222,13 @@ namespace NumpyLib
 
                 if (destIter.contiguous)
                 {
-                    destIter.dataptr.data_offset >>= divsize;
+                    npy_intp destIndex = destIter.dataptr.data_offset >> divsize;
 
                     while (numIndexes > 0)
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex].data_offset >> divsize];
+                            d[destIndex++] = s[offsets[offsetsIndex].data_offset >> divsize];
                             offsetsIndex++;
                         }
                         numIndexes -= offsetsIndex;
@@ -4245,9 +4245,10 @@ namespace NumpyLib
                 {
                     while (numIndexes > 0)
                     {
+                        destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset >> divsize] = s[offsets[offsetsIndex].data_offset >> divsize];
+                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex].data_offset >> divsize];
                             offsetsIndex++;
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
@@ -4273,13 +4274,13 @@ namespace NumpyLib
 
                 if (destIter.contiguous)
                 {
-                    destIter.dataptr.data_offset >>= divsize;
+                    npy_intp destIndex = destIter.dataptr.data_offset >> divsize;
 
                     while (numIndexes > 0)
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset++] = s[offsets[offsetsIndex++] >> divsize];
+                            d[destIndex++] = s[offsets[offsetsIndex++] >> divsize];
                         }
 
                         numIndexes -= offsetsIndex;
@@ -4295,9 +4296,11 @@ namespace NumpyLib
                 {
                     while (numIndexes > 0)
                     {
+                        destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
+
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset >> divsize] = s[offsets[offsetsIndex++] >> divsize];
+                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex++] >> divsize];
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
 
