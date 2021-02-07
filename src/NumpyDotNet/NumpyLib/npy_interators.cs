@@ -623,6 +623,18 @@ namespace NumpyLib
             return it;
         }
 
+
+        internal static NpyArrayMapIterObject NpyArray_ITER_ConvertToIndex(NpyArrayMapIterObject mit)
+        {
+            for (int i = 0; i < mit.numiter; i++)
+            {
+                var it = mit.iters[i];
+                mit.iters[i] = NpyArray_ITER_ConvertToIndex(it, it.ao.ItemDiv);
+            }
+
+            return mit;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void NpyArray_ITER_NEXT(NpyArrayIterObject it)
         {
