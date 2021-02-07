@@ -613,16 +613,13 @@ namespace NumpyLib
             it.elsize >>= ItemDiv;
             it.dataptr.data_offset >>= ItemDiv;
 
-            for (int i = 0; i < it.strides.Length; i++)
+            for (int i = 0; i <= it.nd_m1; i++)
             {
                 it.strides[i] >>= ItemDiv;
-            }
-            for (int i = 0; i < it.backstrides.Length; i++)
-            {
                 it.backstrides[i] >>= ItemDiv;
             }
-
-            return (NpyArrayIterObject)it;
+  
+            return it;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
