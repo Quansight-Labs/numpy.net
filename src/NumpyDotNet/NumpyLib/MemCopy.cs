@@ -4007,8 +4007,6 @@ namespace NumpyLib
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
 
-            NpyArrayIterObject srcIter2 = srcIter.copy();
-
 
             if (srcIter.size == 1)
             {
