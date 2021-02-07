@@ -1104,7 +1104,7 @@ namespace NumpyLib
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void NpyArray_ITER_RESET(NpyArrayIterObject it)
+        internal static void NpyArray_ITER_RESET(NpyArrayIterObject it, int ItemDiv = 0)
         {
             Debug.Assert(Validate(it));
             it.index = 0;
@@ -1116,6 +1116,8 @@ namespace NumpyLib
             {
                 it.dataptr = new VoidPtr(it.ao);
             }
+
+            it.dataptr.data_offset >>= ItemDiv;
             Array.Clear(it.coordinates, 0, it.coordinates.Length);
         }
 

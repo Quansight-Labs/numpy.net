@@ -1668,17 +1668,19 @@ namespace NumpyLib
             {
                 return -1;
             }
+
+            it = NpyArray_ITER_ConvertToIndex(it, self.ItemDiv);
             size = it.size;
             for (i = 0; i < size; i++)
             {
-                if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
+                if (nonzero(it.dataptr, it.dataptr.data_offset))
                 {
                     count++;
                 }
                 NpyArray_ITER_NEXT(it);
             }
 
-            NpyArray_ITER_RESET(it);
+            NpyArray_ITER_RESET(it, self.ItemDiv);
             for (j = 0; j < n; j++)
             {
                 item = NpyArray_New(null, 1, new npy_intp[] { count }, NPY_TYPES.NPY_INTP, null, null, 0, 0, obj);
@@ -1695,7 +1697,7 @@ namespace NumpyLib
                 npy_intp dp_offset = 0;
                 for (i = 0; i < size; i++)
                 {
-                    if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
+                    if (nonzero(it.dataptr, it.dataptr.data_offset))
                     {
                         dp[dp_offset] = i;
                         dp_offset += 1;
@@ -1711,7 +1713,7 @@ namespace NumpyLib
                 it.contiguous = false;
                 for (i = 0; i < size; i++)
                 {
-                    if (nonzero(it.dataptr, it.dataptr.data_offset >> self.ItemDiv))
+                    if (nonzero(it.dataptr, it.dataptr.data_offset))
                     {
                         for (j = 0; j < n; j++)
                         {
