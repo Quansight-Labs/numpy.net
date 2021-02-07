@@ -648,10 +648,6 @@ namespace NumpyLib
                 var lsrcIter = srcParallelIters.ElementAt(index);
                 var loperIter = operParallelIters.ElementAt(index);
 
-                npy_intp srcDataOffset = srcArray.data.data_offset;
-                npy_intp operDataOffset = operArray.data.data_offset;
-                npy_intp destDataOffset = destArray.data.data_offset;
-
                 while (ldestIter.index < ldestIter.size)
                 {
                     try
