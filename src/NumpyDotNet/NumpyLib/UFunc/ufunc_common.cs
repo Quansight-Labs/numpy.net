@@ -904,6 +904,12 @@ namespace NumpyLib
                     return;
                 }
 
+                if (!SrcIter.requiresIteration && !DestIter.requiresIteration)
+                {
+                    PerformNumericOpScalarIterContiguousNoIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter);
+                    return;
+                }
+
                 PerformNumericOpScalarSmallIter(srcArray, destArray, operArray, op, SrcIter, DestIter, OperIter, destSize);
                 return;
 
