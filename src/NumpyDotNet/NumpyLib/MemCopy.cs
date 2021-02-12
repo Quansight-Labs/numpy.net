@@ -3742,60 +3742,14 @@ namespace NumpyLib
 
         }
 
-        //public void IterSubscriptSliceOLD(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
-        // npy_intp start, npy_intp step_size, bool swap)
-        //{
-
-        //    int elsize = GetTypeSize(_dst);
-        //    int divsize = GetDivSize(elsize);
-
-        //    T[] d = _dst.datap as T[];
-        //    T[] s = srcIter.dataptr.datap as T[];
-
-        //    npy_intp stepper = steps[0];
-
-        //    if (swap)
-        //    {
-        //        while (stepper-- > 0)
-        //        {
-        //            numpyinternal.NpyArray_ITER_GOTO1D(srcIter, start);
-
-        //            d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
-
-        //            if (swap)
-        //            {
-        //                numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
-        //            }
-        //            _dst.data_offset += elsize;
-
-        //            start += step_size;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _dst.data_offset >>= divsize;
-
-        //        while (stepper-- > 0)
-        //        {
-        //            numpyinternal.NpyArray_ITER_GOTO1D(srcIter, start);
-
-        //            d[_dst.data_offset++] = s[srcIter.dataptr.data_offset >> divsize];
-
-        //            start += step_size;
-        //        }
-        //    }
-
-
-
-        //    steps[0] = stepper;
-        //}
-
         public void IterSubscriptSlice(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
-             npy_intp start, npy_intp step_size, bool swap)
+         npy_intp start, npy_intp step_size, bool swap)
         {
 
             int elsize = GetTypeSize(_dst);
             int divsize = GetDivSize(elsize);
+
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, divsize);
 
             T[] d = _dst.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -3804,41 +3758,88 @@ namespace NumpyLib
 
             if (swap)
             {
-                while (stepper > 0)
+                while (stepper-- > 0)
                 {
-                    numpyinternal.NpyArray_ITER_GOTO1D_CACHE(srcIter, start, step_size, stepper);
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(srcIter, start);
 
-                    for (int i = 0; i < srcIter.internalCacheLength; i++)
+                    d[_dst.data_offset >> divsize] = s[srcIter.dataptr.data_offset];
+
+                    if (swap)
                     {
-                        d[_dst.data_offset >> divsize] = s[srcIter.internalCache[i] >> divsize];
                         numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
-                        _dst.data_offset += elsize;
                     }
-                    stepper -= srcIter.internalCacheLength;
-                    start += step_size * srcIter.internalCacheLength;
+                    _dst.data_offset += elsize;
+
+                    start += step_size;
                 }
             }
             else
             {
                 _dst.data_offset >>= divsize;
 
-                while (stepper > 0)
+                while (stepper-- > 0)
                 {
-                    numpyinternal.NpyArray_ITER_GOTO1D_CACHE(srcIter, start, step_size, stepper);
-                    for (int i = 0; i < srcIter.internalCacheLength; i++)
-                    {
-                        d[_dst.data_offset++] = s[srcIter.internalCache[i] >> divsize];
-                    }
+                    numpyinternal.NpyArray_ITER_GOTO1D_INDEX(srcIter, start);
 
-                    stepper -= srcIter.internalCacheLength;
-                    start += step_size * srcIter.internalCacheLength;
+                    d[_dst.data_offset++] = s[srcIter.dataptr.data_offset];
+
+                    start += step_size;
                 }
             }
 
-
-
             steps[0] = stepper;
         }
+
+        //public void IterSubscriptSlice_USECACHEMODEL(npy_intp[] steps, NpyArrayIterObject srcIter, VoidPtr _dst,
+        //     npy_intp start, npy_intp step_size, bool swap)
+        //{
+
+        //    int elsize = GetTypeSize(_dst);
+        //    int divsize = GetDivSize(elsize);
+
+
+        //    T[] d = _dst.datap as T[];
+        //    T[] s = srcIter.dataptr.datap as T[];
+
+        //    npy_intp stepper = steps[0];
+
+        //    if (swap)
+        //    {
+        //        while (stepper > 0)
+        //        {
+        //            numpyinternal.NpyArray_ITER_GOTO1D_CACHE(srcIter, start, step_size, stepper);
+
+        //            for (int i = 0; i < srcIter.internalCacheLength; i++)
+        //            {
+        //                d[_dst.data_offset >> divsize] = s[srcIter.internalCache[i] >> divsize];
+        //                numpyinternal.swapvalue(_dst, _dst.data_offset, divsize);
+        //                _dst.data_offset += elsize;
+        //            }
+        //            stepper -= srcIter.internalCacheLength;
+        //            start += step_size * srcIter.internalCacheLength;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        _dst.data_offset >>= divsize;
+
+        //        while (stepper > 0)
+        //        {
+        //            numpyinternal.NpyArray_ITER_GOTO1D_CACHE(srcIter, start, step_size, stepper);
+        //            for (int i = 0; i < srcIter.internalCacheLength; i++)
+        //            {
+        //                d[_dst.data_offset++] = s[srcIter.internalCache[i] >> divsize];
+        //            }
+
+        //            stepper -= srcIter.internalCacheLength;
+        //            start += step_size * srcIter.internalCacheLength;
+        //        }
+        //    }
+
+
+
+        //    steps[0] = stepper;
+        //}
 
         public void IterSubscriptBoolArray(NpyArrayIterObject srcIter, VoidPtr _dst, bool[] bool_array, npy_intp stride, npy_intp bool_array_size, bool swap)
         {
