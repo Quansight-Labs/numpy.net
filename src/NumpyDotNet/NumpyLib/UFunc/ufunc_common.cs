@@ -996,34 +996,71 @@ namespace NumpyLib
                 }
                 else
                 {
-                    var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
-                    var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
-                    var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
-
-
-                    Parallel.For(0, destParallelIters.Count(), index =>
-                    //for (int index = 0; index < destParallelIters.Count(); index++) // 
+                    if (destIter.contiguous)
                     {
-                        var ldestIter = destParallelIters.ElementAt(index);
-                        var lsrcIter = srcParallelIters.ElementAt(index);
-                        var loperIter = operParallelIters.ElementAt(index);
+                        var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                        var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                        var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
-                        while (ldestIter.index < ldestIter.size)
+
+                        //Parallel.For(0, destParallelIters.Count(), index =>
+                        for (int index = 0; index < destParallelIters.Count(); index++) // 
                         {
-                            npy_intp cacheSize = ldestIter.size - ldestIter.index;
-                            NpyArray_ITER_CACHE(ldestIter, cacheSize);
-                            NpyArray_ITER_CACHE(lsrcIter, cacheSize);
-                            NpyArray_ITER_CACHE(loperIter, cacheSize);
+                            var ldestIter = destParallelIters.ElementAt(index);
+                            var lsrcIter = srcParallelIters.ElementAt(index);
+                            var loperIter = operParallelIters.ElementAt(index);
+
+                            while (ldestIter.index < ldestIter.size)
+                            {
+                                npy_intp cacheSize = ldestIter.size - ldestIter.index;
+                                NpyArray_ITER_CACHE(lsrcIter, cacheSize);
+                                NpyArray_ITER_CACHE(loperIter, cacheSize);
 
 
-                            UFuncScalerIterTemplate(UFuncOperation,
-                                src, lsrcIter.internalCache, oper,
-                                loperIter.internalCache,
-                                dest, ldestIter.internalCache,
-                                ldestIter.internalCacheLength);
-                        }
+                                UFuncScalerIterTemplate(UFuncOperation,
+                                    src, lsrcIter.internalCache, oper,
+                                    loperIter.internalCache,
+                                    dest, ldestIter.index,
+                                    lsrcIter.internalCacheLength);
 
-                    });
+                                ldestIter.index += lsrcIter.internalCacheLength;
+                            }
+
+                        } //);
+                    }
+                    else
+                    {
+                        var srcParallelIters = NpyArray_ITER_ParallelSplit(srcIter, numpyinternal.maxNumericOpParallelSize);
+                        var destParallelIters = NpyArray_ITER_ParallelSplit(destIter, numpyinternal.maxNumericOpParallelSize);
+                        var operParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
+
+
+                        Parallel.For(0, destParallelIters.Count(), index =>
+                        //for (int index = 0; index < destParallelIters.Count(); index++) // 
+                        {
+                            var ldestIter = destParallelIters.ElementAt(index);
+                            var lsrcIter = srcParallelIters.ElementAt(index);
+                            var loperIter = operParallelIters.ElementAt(index);
+
+                            while (ldestIter.index < ldestIter.size)
+                            {
+                                npy_intp cacheSize = ldestIter.size - ldestIter.index;
+                                NpyArray_ITER_CACHE(ldestIter, cacheSize);
+                                NpyArray_ITER_CACHE(lsrcIter, cacheSize);
+                                NpyArray_ITER_CACHE(loperIter, cacheSize);
+
+
+                                UFuncScalerIterTemplate(UFuncOperation,
+                                    src, lsrcIter.internalCache, oper,
+                                    loperIter.internalCache,
+                                    dest, ldestIter.internalCache,
+                                    ldestIter.internalCacheLength);
+                            }
+
+                        });
+                    }
+
+    
                 }
 
             }
@@ -1053,6 +1090,34 @@ namespace NumpyLib
                     }
                 }
             }
+
+
+            protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
+                T[] src, npy_intp[] srcOffsets,
+                T[] oper, npy_intp[] operOffsets,
+                T[] dest, npy_intp destOffset, npy_intp offsetsLen)
+            {
+                for (npy_intp i = 0; i < offsetsLen; i++)
+                {
+                    T srcValue, operand;
+                    npy_intp destIndex;
+
+                    srcValue = src[srcOffsets[i]];
+                    operand = oper[operOffsets[i]];
+                    destIndex = destOffset + i;
+
+                    try
+                    {
+                        dest[destIndex] = UFuncOperation(srcValue, operand);
+                    }
+                    catch
+                    {
+                        dest[destIndex] = default(T);
+                    }
+                }
+            }
+
+
 
             protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
                 T[] src, npy_intp[] srcOffsets,
