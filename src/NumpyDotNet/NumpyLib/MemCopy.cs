@@ -4318,7 +4318,7 @@ namespace NumpyLib
                 npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
-                offsets[0] = srcIter.dataptr.data_offset;
+                offsets[0] = srcIter.dataptr.data_offset >>= divsize;
                 numpyinternal.NpyArray_MapIterNext_SubSpace(srcIter, offsets, offsetsLength, 1);
                 int offsetsIndex = 0;
 
@@ -4331,7 +4331,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIndex++] = s[offsets[offsetsIndex] >> divsize];
+                            d[destIndex++] = s[offsets[offsetsIndex]];
                             offsetsIndex++;
                         }
                         numIndexes -= offsetsIndex;
@@ -4351,7 +4351,7 @@ namespace NumpyLib
                         destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex] >> divsize];
+                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex]];
                             offsetsIndex++;
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
@@ -4371,7 +4371,7 @@ namespace NumpyLib
                 npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
-                offsets[0] = srcIter.dataptr.data_offset;
+                offsets[0] = srcIter.dataptr.data_offset >>= divsize;
                 numpyinternal.NpyArray_MapIterNext(srcIter, offsets, offsetsLength, 1);
                 int offsetsIndex = 0;
 
@@ -4383,7 +4383,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIndex++] = s[offsets[offsetsIndex++] >> divsize];
+                            d[destIndex++] = s[offsets[offsetsIndex++]];
                         }
 
                         numIndexes -= offsetsIndex;
@@ -4403,7 +4403,7 @@ namespace NumpyLib
 
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex++] >> divsize];
+                            d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex++]];
                             numpyinternal.NpyArray_ITER_NEXT(destIter);
                         }
 
@@ -4427,61 +4427,63 @@ namespace NumpyLib
 
             var numIndexes = destIter.size;
 
-            destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter);
 
             if (destIter.dataptr.type_num != srcIter.dataptr.type_num)
             {
-                npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
-                npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
+                throw new Exception(string.Format("Unable to set {0} values into {1} arrays", 
+                    srcIter.dataptr.type_num.ToString(), destIter.dataptr.type_num.ToString()));
+                //npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
+                //npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
-                offsets[0] = destIter.dataptr.data_offset;
+                //offsets[0] = destIter.dataptr.data_offset;
 
-                numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 1);
-                int offsetsIndex = 0;
+                //numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 1);
+                //int offsetsIndex = 0;
 
-                var helper = MemCopy.GetMemcopyHelper(destIter.dataptr);
-                helper.memmove_init(destIter.dataptr, srcIter.dataptr);
+                //var helper = MemCopy.GetMemcopyHelper(destIter.dataptr);
+                //helper.memmove_init(destIter.dataptr, srcIter.dataptr);
 
-                while (numIndexes > 0)
-                {
-                    if (swap)
-                    {
-                        while (offsetsIndex < offsetsLength)
-                        {
-                            helper.memmoveitem(offsets[offsetsIndex], srcIter.dataptr.data_offset);
+                //while (numIndexes > 0)
+                //{
+                //    if (swap)
+                //    {
+                //        while (offsetsIndex < offsetsLength)
+                //        {
+                //            helper.memmoveitem(offsets[offsetsIndex], srcIter.dataptr.data_offset);
  
-                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
-                            numpyinternal.NpyArray_ITER_NEXT(srcIter);
-                        }
-                    }
-                    else
-                    {
-                        while (offsetsIndex < offsetsLength)
-                        {
-                            helper.memmoveitem(offsets[offsetsIndex], srcIter.dataptr.data_offset);
+                //            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
+                //            numpyinternal.NpyArray_ITER_NEXT(srcIter);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        while (offsetsIndex < offsetsLength)
+                //        {
+                //            helper.memmoveitem(offsets[offsetsIndex], srcIter.dataptr.data_offset);
  
-                            numpyinternal.NpyArray_ITER_NEXT(srcIter);
-                        }
-                    }
+                //            numpyinternal.NpyArray_ITER_NEXT(srcIter);
+                //        }
+                //    }
     
 
-                    numIndexes -= offsetsIndex;
-                    if (numIndexes > 0)
-                    {
-                        offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
-                        numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 0);
-                        offsetsIndex = 0;
-                    }
+                //    numIndexes -= offsetsIndex;
+                //    if (numIndexes > 0)
+                //    {
+                //        offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
+                //        numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 0);
+                //        offsetsIndex = 0;
+                //    }
 
-                }
+                //}
       
-                return;
+                //return;
             }
+
+            destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter);
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter, divsize);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
-
-            srcIter.dataptr.data_offset >>= divsize;
 
 
             if (destIter.subspace != null)
@@ -4490,7 +4492,7 @@ namespace NumpyLib
                 npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
-                offsets[0] = destIter.dataptr.data_offset;
+                offsets[0] = destIter.dataptr.data_offset >> divsize;
                 numpyinternal.NpyArray_MapIterNext_SubSpace(destIter, offsets, offsetsLength, 1);
                 int offsetsIndex = 0;
 
@@ -4500,8 +4502,8 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
-                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
+                            d[offsets[offsetsIndex++]] = s[srcIter.dataptr.data_offset];
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, 0);
 
                             numpyinternal.NpyArray_ITER_NEXT(srcIter);
                         }
@@ -4510,7 +4512,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
+                            d[offsets[offsetsIndex++]] = s[srcIter.dataptr.data_offset];
  
                             numpyinternal.NpyArray_ITER_NEXT(srcIter);
                         }
@@ -4532,7 +4534,7 @@ namespace NumpyLib
                 npy_intp[] offsets = new npy_intp[numpyinternal.maxIterOffsetCacheSize];
                 npy_intp offsetsLength = Math.Min((npy_intp)offsets.Length, numIndexes);
 
-                offsets[0] = destIter.dataptr.data_offset;
+                offsets[0] = destIter.dataptr.data_offset >> divsize;
                 numpyinternal.NpyArray_MapIterNext(destIter, offsets, offsetsLength, 1);
                 int offsetsIndex = 0;
 
@@ -4542,8 +4544,8 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
-                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, divsize);
+                            d[offsets[offsetsIndex++]] = s[srcIter.dataptr.data_offset];
+                            numpyinternal.swapvalue(destIter.dataptr, destIter.dataptr.data_offset, 0);
 
                             numpyinternal.NpyArray_ITER_NEXT(srcIter);
                         }
@@ -4552,7 +4554,7 @@ namespace NumpyLib
                     {
                         while (offsetsIndex < offsetsLength)
                         {
-                            d[offsets[offsetsIndex++] >> divsize] = s[srcIter.dataptr.data_offset >> divsize];
+                            d[offsets[offsetsIndex++]] = s[srcIter.dataptr.data_offset];
                             numpyinternal.NpyArray_ITER_NEXT(srcIter);
                         }
                     }

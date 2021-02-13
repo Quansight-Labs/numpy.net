@@ -631,6 +631,10 @@ namespace NumpyLib
                 var it = mit.iters[i];
                 mit.iters[i] = NpyArray_ITER_ConvertToIndex(it, it.ao.ItemDiv);
             }
+            if (mit.subspace != null)
+            {
+                mit.subspace = NpyArray_ITER_ConvertToIndex(mit.subspace, mit.subspace.ao.ItemDiv);
+            }
 
             return mit;
         }
@@ -1382,6 +1386,24 @@ namespace NumpyLib
                 }
                 it.dataptr.data_offset += destination[i] * it.strides[i];
                 it.coordinates[i] =destination[i];
+                it.index += destination[i] * (i == it.nd_m1 ? 1 : it.dims_m1[i + 1] + 1);
+            }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void NpyArray_ITER_GOTO_INDEX(NpyArrayIterObject it, npy_intp[] destination)
+        {
+            Debug.Assert(Validate(it));
+            int i;
+            it.index = 0;
+            it.dataptr.data_offset = it.ao_offset;
+            for (i = it.nd_m1; i >= 0; i--)
+            {
+                if (destination[i] < 0)
+                {
+                    destination[i] += it.dims_m1[i] + 1;
+                }
+                it.dataptr.data_offset += ((destination[i] * it.strides[i]) >> it.ao.ItemDiv);
+                it.coordinates[i] = destination[i];
                 it.index += destination[i] * (i == it.nd_m1 ? 1 : it.dims_m1[i + 1] + 1);
             }
         }

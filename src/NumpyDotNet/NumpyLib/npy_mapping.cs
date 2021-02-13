@@ -436,6 +436,7 @@ namespace NumpyLib
             return;
         }
 
+     
         internal static void NpyArray_MapIterNext_SubSpace(NpyArrayMapIterObject mit, npy_intp[] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
         {
             NpyArrayIterObject it;
@@ -460,7 +461,7 @@ namespace NumpyLib
                 {
                     /* reset coord to coordinates of beginning of the subspace */
                     copydims(coord, mit.bscoord, mit.ait.ao.nd);
-                    NpyArray_ITER_RESET(mit.subspace);
+                    NpyArray_ITER_RESET(mit.subspace, mit.subspace.ao.ItemDiv);
                     for (i = 0; i < mit.numiter; i++)
                     {
                         it = mit.iters[i];
@@ -474,7 +475,7 @@ namespace NumpyLib
                         //    // not sure I need to do anything here.
                         //}
                     }
-                    NpyArray_ITER_GOTO(mit.ait, coord);
+                    NpyArray_ITER_GOTO_INDEX(mit.ait, coord);
                     mit.subspace.dataptr = new VoidPtr(mit.ait.dataptr);
                 }
                 offsets[offsetsIndex++] = mit.subspace.dataptr.data_offset;
@@ -484,7 +485,6 @@ namespace NumpyLib
 
             return;
         }
- 
 
         internal static void NpyArray_MapIterNext(NpyArrayMapIterObject mit, npy_intp[] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
         {
@@ -512,7 +512,7 @@ namespace NumpyLib
                     //    // not sure I need to do anything here.
                     //}
                 }
-                NpyArray_ITER_GOTO(mit.ait, coord);
+                NpyArray_ITER_GOTO_INDEX(mit.ait, coord);
                 offsets[offsetsIndex++] = mit.ait.dataptr.data_offset;
             }
 
