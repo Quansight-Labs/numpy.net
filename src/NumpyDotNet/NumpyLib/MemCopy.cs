@@ -4302,8 +4302,11 @@ namespace NumpyLib
         }
         public void GetMap(NpyArrayIterObject destIter, NpyArrayMapIterObject srcIter, bool swap)
         {
+
             int elsize = GetTypeSize(destIter.dataptr);
             int divsize = GetDivSize(elsize);
+
+            srcIter = numpyinternal.NpyArray_ITER_ConvertToIndex(srcIter);
 
             T[] d = destIter.dataptr.datap as T[];
             T[] s = srcIter.dataptr.datap as T[];
@@ -4423,6 +4426,8 @@ namespace NumpyLib
             int divsize = GetDivSize(destIter.dataptr);
 
             var numIndexes = destIter.size;
+
+            destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter);
 
             if (destIter.dataptr.type_num != srcIter.dataptr.type_num)
             {

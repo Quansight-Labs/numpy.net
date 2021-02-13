@@ -468,7 +468,7 @@ namespace NumpyLib
                         j = mit.iteraxes[i];
 
                         npy_intp[] s = it.dataptr.datap as npy_intp[];
-                        coord[j] = s[it.dataptr.data_offset >> IntpDivSize];
+                        coord[j] = s[it.dataptr.data_offset];
                         //if (!NpyArray_ISNOTSWAPPED(it.ao))
                         //{
                         //    // not sure I need to do anything here.
@@ -484,7 +484,7 @@ namespace NumpyLib
 
             return;
         }
-
+ 
 
         internal static void NpyArray_MapIterNext(NpyArrayMapIterObject mit, npy_intp[] offsets, npy_intp offsetsLength, npy_intp offsetsIndex)
         {
@@ -506,7 +506,7 @@ namespace NumpyLib
                     NpyArray_ITER_NEXT(it);
 
                     npy_intp[] s = it.dataptr.datap as npy_intp[];
-                    coord[i] = s[it.dataptr.data_offset >> IntpDivSize];
+                    coord[i] = s[it.dataptr.data_offset];
                     //if (!NpyArray_ISNOTSWAPPED(it.ao))
                     //{
                     //    // not sure I need to do anything here.
@@ -515,7 +515,7 @@ namespace NumpyLib
                 NpyArray_ITER_GOTO(mit.ait, coord);
                 offsets[offsetsIndex++] = mit.ait.dataptr.data_offset;
             }
-  
+
             return;
         }
 
