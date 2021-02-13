@@ -2729,7 +2729,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("COPY calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine(output.ToString());
             Console.WriteLine("************\n");
         }
@@ -2756,7 +2756,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("UNIQUE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
            // Console.WriteLine(output.ToString());
             Console.WriteLine("************\n");
         }
@@ -2782,7 +2782,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("insert calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2808,7 +2808,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual(255999984000000.0, (double)np.sum(inserted));
 
 
-            Console.WriteLine(string.Format("WHERE calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("append calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2833,7 +2833,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("broadcastcopy operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2858,7 +2858,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("intersect operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2884,7 +2884,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("sort operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2932,7 +2932,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("take operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2958,7 +2958,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("partition operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -2984,7 +2984,7 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("broadcast operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("argpartition operations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
         }
 
@@ -3443,7 +3443,7 @@ namespace NumpyDotNetTests
             Console.WriteLine("************\n");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Sum_UINT32()
         {
@@ -3462,12 +3462,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Sum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Sum2_UINT32()
         {
@@ -3486,12 +3486,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Sum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_CumSum_UINT32()
         {
@@ -3510,12 +3510,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("CumSum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_CumSum2_UINT32()
         {
@@ -3534,12 +3534,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("CumSum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Prod_UINT64()
         {
@@ -3558,12 +3558,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Prod calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Prod2_UINT64()
         {
@@ -3582,12 +3582,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Prod calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_CumProd_UINT64()
         {
@@ -3606,12 +3606,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("CumProd calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_CumProd2_UINT64()
         {
@@ -3630,12 +3630,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("CumProd calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Any_UINT64()
         {
@@ -3655,12 +3655,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("ANY calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_All_UINT64()
         {
@@ -3680,12 +3680,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("ALL calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Minimum_INT64()
         {
@@ -3704,12 +3704,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Minimum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Maximum_INT64()
         {
@@ -3728,12 +3728,12 @@ namespace NumpyDotNetTests
 
             sw.Stop();
 
-            Console.WriteLine(string.Format("AddReduce calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("Maximum calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
             Console.WriteLine("************\n");
 
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void Performance_Repeat_UINT32()
         {
