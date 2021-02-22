@@ -68,7 +68,7 @@
     <Compile Include="NotImplementedYet\MaskedArrays.cs" />
     <Compile Include="NotImplementedYet\MatrixLibraryTests.cs" />
     <Compile Include="NotImplementedYet\FFTTests.cs" />
-    <Compile Include="NotImplementedYet\FinancialFunctionsTests.cs" />
+    <Compile Include="FinancialFunctionsTests.cs" />
     <Compile Include="NotImplementedYet\LinearAlgebraTests.cs" />
     <Compile Include="MathematicalFunctionsTests.cs" />
     <Compile Include="NotImplementedYet\PaddingTests.cs" />

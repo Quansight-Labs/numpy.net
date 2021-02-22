@@ -80,6 +80,9 @@
     <Compile Include="HistogramTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FinancialFunctionsTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
