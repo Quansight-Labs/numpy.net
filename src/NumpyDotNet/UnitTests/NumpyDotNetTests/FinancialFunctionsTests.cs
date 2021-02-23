@@ -30,6 +30,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_fv_float_FLOAT()
+        {
+            var x = npf.fv(0.075f, 20, -2000, 0, 0);
+            AssertArray(x, new float[] { 86609.37f });
+            Assert.AreEqual(86609.37f, (float)x);
+            print(x);
+        }
+
+        [TestMethod]
         public void test_fv_decimal()
         {
             var x = npf.fv(0.075m, 20m, -2000m, 0, 0);
@@ -79,6 +88,14 @@ namespace NumpyDotNetTests
         {
             var result = npf.fv(new double[,] { { 0.1 }, { 0.2 } }, 5, 100, 0, new int[] { 0, 1 });
             AssertArray(result, new double[,] { { -610.510000000001, -671.561000000001 }, { -744.16, -892.992 } });
+            print(result);
+        }
+
+        [TestMethod]
+        public void test_fv_broadcast_FLOAT()
+        {
+            var result = npf.fv(new float[,] { { 0.1f }, { 0.2f } }, 5, 100, 0, new int[] { 0, 1 });
+            AssertArray(result, new float[,] { { -610.51f, -671.561f }, { -744.160034f, -892.992f } });
             print(result);
         }
 
