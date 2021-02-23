@@ -52,5 +52,37 @@ class FinancialFunctionsTests(unittest.TestCase):
         result = npf.fv([0, 0.1], 5, 100, 0)
         print(result)
 
+
+    def test_fv_float_array_1(self):
+
+        x = npf.fv([-0.075,1.075,-1.075], [20], [-2100,2000,-2500], 0, ['begin','end', 'begin'])
+        print(x)
+
+    def test_fv_float_array_1A(self):
+
+        x = npf.fv([-0.075,1.075,-1.075], [20], [-2100,2000,-2500], 0, [1,0,1])
+        print(x)
+
+    def test_fv_float_array_1B(self):
+
+        x = npf.fv([-0.075,1.075,-1.075], [20], [-2100,2000,-2500], 0, [1,'end', 'begin'])
+        print(x)
+
+    def test_fv_float_array_2(self):
+
+        try:
+            x = npf.fv([-0.075,1.075,-1.075], [20], [-2100,2000,-2500], 0, ['begin','end', 'xxx'])
+            print(x)
+        except:
+            print("exception caught")
+
+    def test_fv_float_array_3(self):
+
+        try:
+            x = npf.fv([-0.075,1.075,-1.075], [20], [-2100,2000,-2500], 0, ['begin','end'])
+            print(x)
+        except:
+            print("exception caught")
+
 if __name__ == '__main__':
     unittest.main()

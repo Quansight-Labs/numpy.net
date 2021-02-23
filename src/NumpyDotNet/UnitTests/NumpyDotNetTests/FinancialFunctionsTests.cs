@@ -82,5 +82,64 @@ namespace NumpyDotNetTests
             var result = npf.fv(new double[,] { { 0.0 }, { 0.1 } }, 5, 100, 0, 0);
             print(result);
         }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fv_float_array_1()
+        {
+            var x = npf.fv(new double[] { -0.075, 1.075, -1.075 }, new double[] { 20 }, new int[] { -2100, 2000, -2500 }, 0, new object[] { "begin", "end", "begin" });
+            print(x);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fv_float_array_1A()
+        {
+            var x = npf.fv(new double[] { -0.075, 1.075, -1.075 }, new double[] { 20 }, new int[] { -2100, 2000, -2500 }, 0, new object[] { 1, 0, 1 });
+            print(x);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fv_float_array_1B()
+        {
+            var x = npf.fv(new double[] { -0.075, 1.075, -1.075 }, new double[] { 20 }, new int[] { -2100, 2000, -2500 }, 0, new object[] { 1, "end", "begin" });
+            print(x);
+        }
+
+
+
+        [Ignore]
+        [TestMethod]
+        public void test_fv_float_array_2()
+        {
+            try
+            {
+                var x = npf.fv(new double[] { -0.075, 1.075, -1.075 }, new double[] { 20 }, new int[] { -2100, 2000, -2500 }, 0, new object[] { "begin", "end", "xxx" });
+                print(x);
+                Assert.Fail("Expected exception was not caught");
+            }
+            catch
+            {
+
+            }
+        }
+
+        [Ignore]
+        [TestMethod]
+        public void test_fv_float_array_3()
+        {
+            try
+            {
+                var x = npf.fv(new double[] { -0.075, 1.075, -1.075 }, new double[] { 20 }, new int[] { -2100, 2000, -2500 }, 0, new object[] { "begin", "end" });
+                print(x);
+                Assert.Fail("Expected exception was not caught");
+            }
+            catch
+            {
+
+            }
+        }
+
     }
 }
