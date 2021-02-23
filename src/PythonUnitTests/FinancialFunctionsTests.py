@@ -7,6 +7,8 @@ from _financial import npf
 
 class FinancialFunctionsTests(unittest.TestCase):
 
+#region npf.fv
+
     def test_fv_int(self):
 
         x = npf.fv(75, 20, -2000, 0, 0)
@@ -83,6 +85,63 @@ class FinancialFunctionsTests(unittest.TestCase):
             print(x)
         except:
             print("exception caught")
+#endregion
 
+#region pmt
+
+    def test_pmt_1_DOUBLE(self):
+
+        res = npf.pmt(0.08 / 12, 5 * 12, 15000)
+        print(res)
+
+        res = npf.pmt(0.0, 5 * 12, 15000)
+        print(res)
+
+        res = npf.pmt([[0.0, 0.8], [0.3, 0.8]], [12, 3], [2000, 20000])
+        print(res)
+
+
+    def test_pmt_1_DECIMAL(self):
+
+        res = npf.pmt(Decimal('0.08') / Decimal('12'), Decimal('60'), Decimal('15000'))
+        print(res)
+
+        res = npf.pmt(Decimal('0.0'), Decimal('60'), Decimal('15000'))
+        print(res)
+
+        res = npf.pmt([[Decimal('0.0'), Decimal('0.8')], [Decimal('0.3'), Decimal('0.8')]], [Decimal('12'), Decimal('3')], [Decimal('2000'), Decimal('20000')])
+        print(res)
+
+  
+    def test_pmt_when_DOUBLE(self):
+
+        res = npf.pmt(0.08 / 12, 5 * 12, 15000, 0, 0)
+        print(res)
+
+        res = npf.pmt(0.08 / 12, 5 * 12, 15000., 0, 'end')
+        print(res)
+
+        res = npf.pmt(0.08 / 12, 5 * 12, 15000., 0, 1)
+        print(res)
+
+        res = npf.pmt(0.08 / 12, 5 * 12, 15000., 0, 'begin')
+        print(res)
+
+    def test_pmt_when_DECIMAL(self):
+
+        res = npf.pmt(Decimal('0.08') / Decimal('12'), 5 * 12, 15000, 0, 0)
+        print(res)
+
+        res = npf.pmt(Decimal('0.08') / Decimal('12'), 5 * 12, 15000, 0, 'end')
+        print(res)
+
+        res = npf.pmt(Decimal('0.08') / Decimal('12'), 5 * 12, 15000, 0, 1)
+        print(res)
+
+        res = npf.pmt(Decimal('0.08') / Decimal('12'), 5 * 12, 15000, 0,'begin')
+        print(res)
+
+#endregion
+ 
 if __name__ == '__main__':
     unittest.main()

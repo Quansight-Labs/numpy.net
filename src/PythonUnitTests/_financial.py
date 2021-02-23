@@ -149,100 +149,100 @@ class npf(object):
             return fv_array.item(0)
         return fv_array
 
+    @staticmethod
+    def pmt(rate, nper, pv, fv=0, when='end'):
+        """
+        Compute the payment against loan principal plus interest.
 
-def pmt(rate, nper, pv, fv=0, when='end'):
-    """
-    Compute the payment against loan principal plus interest.
+        Given:
+         * a present value, `pv` (e.g., an amount borrowed)
+         * a future value, `fv` (e.g., 0)
+         * an interest `rate` compounded once per period, of which
+           there are
+         * `nper` total
+         * and (optional) specification of whether payment is made
+           at the beginning (`when` = {'begin', 1}) or the end
+           (`when` = {'end', 0}) of each period
 
-    Given:
-     * a present value, `pv` (e.g., an amount borrowed)
-     * a future value, `fv` (e.g., 0)
-     * an interest `rate` compounded once per period, of which
-       there are
-     * `nper` total
-     * and (optional) specification of whether payment is made
-       at the beginning (`when` = {'begin', 1}) or the end
-       (`when` = {'end', 0}) of each period
+        Return:
+           the (fixed) periodic payment.
 
-    Return:
-       the (fixed) periodic payment.
+        Parameters
+        ----------
+        rate : array_like
+            Rate of interest (per period)
+        nper : array_like
+            Number of compounding periods
+        pv : array_like
+            Present value
+        fv : array_like,  optional
+            Future value (default = 0)
+        when : {{'begin', 1}, {'end', 0}}, {string, int}
+            When payments are due ('begin' (1) or 'end' (0))
 
-    Parameters
-    ----------
-    rate : array_like
-        Rate of interest (per period)
-    nper : array_like
-        Number of compounding periods
-    pv : array_like
-        Present value
-    fv : array_like,  optional
-        Future value (default = 0)
-    when : {{'begin', 1}, {'end', 0}}, {string, int}
-        When payments are due ('begin' (1) or 'end' (0))
+        Returns
+        -------
+        out : ndarray
+            Payment against loan plus interest.  If all input is scalar, returns a
+            scalar float.  If any input is array_like, returns payment for each
+            input element. If multiple inputs are array_like, they all must have
+            the same shape.
 
-    Returns
-    -------
-    out : ndarray
-        Payment against loan plus interest.  If all input is scalar, returns a
-        scalar float.  If any input is array_like, returns payment for each
-        input element. If multiple inputs are array_like, they all must have
-        the same shape.
+        Notes
+        -----
+        The payment is computed by solving the equation::
 
-    Notes
-    -----
-    The payment is computed by solving the equation::
+         fv +
+         pv*(1 + rate)**nper +
+         pmt*(1 + rate*when)/rate*((1 + rate)**nper - 1) == 0
 
-     fv +
-     pv*(1 + rate)**nper +
-     pmt*(1 + rate*when)/rate*((1 + rate)**nper - 1) == 0
+        or, when ``rate == 0``::
 
-    or, when ``rate == 0``::
+          fv + pv + pmt * nper == 0
 
-      fv + pv + pmt * nper == 0
+        for ``pmt``.
 
-    for ``pmt``.
+        Note that computing a monthly mortgage payment is only
+        one use for this function.  For example, pmt returns the
+        periodic deposit one must make to achieve a specified
+        future balance given an initial deposit, a fixed,
+        periodically compounded interest rate, and the total
+        number of periods.
 
-    Note that computing a monthly mortgage payment is only
-    one use for this function.  For example, pmt returns the
-    periodic deposit one must make to achieve a specified
-    future balance given an initial deposit, a fixed,
-    periodically compounded interest rate, and the total
-    number of periods.
+        References
+        ----------
+        .. [WRW] Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May).
+           Open Document Format for Office Applications (OpenDocument)v1.2,
+           Part 2: Recalculated Formula (OpenFormula) Format - Annotated Version,
+           Pre-Draft 12. Organization for the Advancement of Structured Information
+           Standards (OASIS). Billerica, MA, USA. [ODT Document].
+           Available:
+           http://www.oasis-open.org/committees/documents.php
+           ?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt
 
-    References
-    ----------
-    .. [WRW] Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May).
-       Open Document Format for Office Applications (OpenDocument)v1.2,
-       Part 2: Recalculated Formula (OpenFormula) Format - Annotated Version,
-       Pre-Draft 12. Organization for the Advancement of Structured Information
-       Standards (OASIS). Billerica, MA, USA. [ODT Document].
-       Available:
-       http://www.oasis-open.org/committees/documents.php
-       ?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt
+        Examples
+        --------
+        >>> import numpy_financial as npf
 
-    Examples
-    --------
-    >>> import numpy_financial as npf
+        What is the monthly payment needed to pay off a $200,000 loan in 15
+        years at an annual interest rate of 7.5%?
 
-    What is the monthly payment needed to pay off a $200,000 loan in 15
-    years at an annual interest rate of 7.5%?
+        >>> npf.pmt(0.075/12, 12*15, 200000)
+        -1854.0247200054619
 
-    >>> npf.pmt(0.075/12, 12*15, 200000)
-    -1854.0247200054619
+        In order to pay-off (i.e., have a future-value of 0) the $200,000 obtained
+        today, a monthly payment of $1,854.02 would be required.  Note that this
+        example illustrates usage of `fv` having a default value of 0.
 
-    In order to pay-off (i.e., have a future-value of 0) the $200,000 obtained
-    today, a monthly payment of $1,854.02 would be required.  Note that this
-    example illustrates usage of `fv` having a default value of 0.
-
-    """
-    when = _convert_when(when)
-    (rate, nper, pv, fv, when) = map(np.array, [rate, nper, pv, fv, when])
-    temp = (1 + rate)**nper
-    mask = (rate == 0)
-    masked_rate = np.where(mask, 1, rate)
-    fact = np.where(mask != 0, nper,
-                    (1 + masked_rate*when)*(temp - 1)/masked_rate)
-    return -(fv + pv*temp) / fact
+        """
+        when = npf._convert_when(when)
+        (rate, nper, pv, fv, when) = map(np.array, [rate, nper, pv, fv, when])
+        temp = (1 + rate)**nper
+        mask = (rate == 0)
+        masked_rate = np.where(mask, 1, rate)
+        fact = np.where(mask != 0, nper,
+                        (1 + masked_rate*when)*(temp - 1)/masked_rate)
+        return -(fv + pv*temp) / fact
 
 
 def nper(rate, pmt, pv, fv=0, when='end'):
