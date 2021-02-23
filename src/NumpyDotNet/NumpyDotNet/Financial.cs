@@ -46,6 +46,54 @@ namespace NumpyDotNet
 {
     public static class npf
     {
+        private static object _convert_when(object when)
+        {
+            if (when is ndarray)
+                return when;
+
+            if (when is string)
+            {
+                string _swhen = when as string;
+                if (_swhen == "begin")
+                    return 1;
+                if (_swhen == "end")
+                    return 0;
+
+                throw new Exception(string.Format("only 'begin' and 'end' are supported as when parameters"));
+            }
+
+            if (when.GetType().IsArray)
+            {
+                try
+                {
+                    System.Array whenarray = when as System.Array;
+
+                    List<int> whenvals = new List<int>();
+                    foreach (var _when in whenarray)
+                    {
+                        whenvals.Add(Convert.ToInt32(_convert_when(_when)));
+                    }
+
+                    return whenvals.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("unrecognized when parameter.  Must be integers or 'begin' or 'end'");
+                }
+
+            }
+
+            try
+            {
+                return Convert.ToInt32(when);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("unrecognized when parameter.  Must be integers or 'begin' or 'end'");
+            }
+
+        }
+
         /*
         Compute the future value.
 
@@ -141,8 +189,45 @@ namespace NumpyDotNet
         /// <returns></returns>
         public static ndarray fv(object rate, object nper, object pmt, object pv, object when)
         {
-            throw new NotImplementedException();
+            when = _convert_when(when);
+
+            List<ndarray> inputArrays = new List<ndarray>();
+            inputArrays.Add(np.asanyarray(rate));
+            inputArrays.Add(np.asanyarray(nper));
+            inputArrays.Add(np.asanyarray(pmt));
+            inputArrays.Add(np.asanyarray(pv));
+            inputArrays.Add(np.asanyarray(when));
+
+            var outputArrays = np.broadcast_arrays(true, inputArrays.ToArray());
+            if (outputArrays.Count() != 5)
+            {
+                throw new Exception("broadcast_arrays did not produced expected result");
+            }
+
+            ndarray _rate = outputArrays.ElementAt(0);
+            ndarray _nper = outputArrays.ElementAt(1);
+            ndarray _pmt = outputArrays.ElementAt(2);
+            ndarray _pv = outputArrays.ElementAt(3);
+            ndarray _when = outputArrays.ElementAt(4);
+
+            ndarray fv_array = np.empty_like(_rate);
+            ndarray zero = _rate == 0;
+            ndarray nonzero = ~zero;
+            
+            fv_array[zero] = -(_pv.A(zero) + _pmt.A(zero) * _nper.A(zero));
+
+            ndarray rate_nonzero = _rate.A(nonzero);
+            ndarray temp = np.power((1 + rate_nonzero), _nper.A(nonzero));
+
+            fv_array[nonzero] = 
+                (-_pv.A(nonzero) * temp
+                - _pmt.A(nonzero) * (1 + rate_nonzero * _when.A(nonzero)) / rate_nonzero
+                * (temp - 1)
+                );
+
+            return fv_array;
         }
+
 
     }
 }
