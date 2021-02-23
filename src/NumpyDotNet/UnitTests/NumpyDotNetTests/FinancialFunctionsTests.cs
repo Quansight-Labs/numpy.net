@@ -11,6 +11,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class FinancialFunctionsTests : TestBaseClass
     {
+        #region npf.fv tests
         [TestMethod]
         public void test_fv_int()
         {
@@ -162,6 +163,7 @@ namespace NumpyDotNetTests
 
             }
         }
+        #endregion
 
     }
 }
