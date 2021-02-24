@@ -94,6 +94,7 @@ namespace NumpyDotNet
 
         }
 
+        #region fv
         /*
         Compute the future value.
 
@@ -213,13 +214,13 @@ namespace NumpyDotNet
             ndarray fv_array = np.empty_like(_rate);
             ndarray zero = _rate == 0;
             ndarray nonzero = ~zero;
-            
+
             fv_array[zero] = -(_pv.A(zero) + _pmt.A(zero) * _nper.A(zero));
 
             ndarray rate_nonzero = _rate.A(nonzero);
             ndarray temp = np.power((1 + rate_nonzero), _nper.A(nonzero));
 
-            fv_array[nonzero] = 
+            fv_array[nonzero] =
                 (-_pv.A(nonzero) * temp
                 - _pmt.A(nonzero) * (1 + rate_nonzero * _when.A(nonzero)) / rate_nonzero
                 * (temp - 1)
@@ -227,7 +228,159 @@ namespace NumpyDotNet
 
             return fv_array;
         }
+        #endregion
 
+        #region pmt
 
+        /*
+        Compute the payment against loan principal plus interest.
+
+        Given:
+         * a present value, `pv` (e.g., an amount borrowed)
+         * a future value, `fv` (e.g., 0)
+         * an interest `rate` compounded once per period, of which
+           there are
+         * `nper` total
+         * and(optional) specification of whether payment is made
+          at the beginning(`when` = { 'begin', 1}) or the end
+        (`when` = { 'end', 0}) of each period
+
+        Return:
+           the(fixed) periodic payment.
+
+       Parameters
+       ----------
+
+       rate : array_like
+
+           Rate of interest(per period)
+
+       nper : array_like
+
+           Number of compounding periods
+
+       pv : array_like
+
+           Present value
+
+       fv : array_like, optional
+
+           Future value(default = 0)
+
+       when : {{'begin', 1}, {'end', 0}}, {string, int}
+            When payments are due('begin' (1) or 'end' (0))
+
+        Returns
+        -------
+        out : ndarray
+            Payment against loan plus interest.If all input is scalar, returns a
+            scalar float.  If any input is array_like, returns payment for each
+            input element.If multiple inputs are array_like, they all must have
+            the same shape.
+
+        Notes
+        -----
+        The payment is computed by solving the equation::
+
+         fv +
+         pv*(1 + rate)** nper +
+         pmt* (1 + rate* when)/rate* ((1 + rate)** nper - 1) == 0
+
+        or, when ``rate == 0``::
+
+          fv + pv + pmt* nper == 0
+
+        for ``pmt``.
+
+        Note that computing a monthly mortgage payment is only
+        one use for this function.For example, pmt returns the
+        periodic deposit one must make to achieve a specified
+        future balance given an initial deposit, a fixed,
+        periodically compounded interest rate, and the total
+        number of periods.
+
+        References
+        ----------
+        .. [WRW] Wheeler, D.A., E.Rathke, and R. Weir (Eds.) (2009, May).
+           Open Document Format for Office Applications (OpenDocument)v1.2,
+           Part 2: Recalculated Formula (OpenFormula) Format - Annotated Version,
+           Pre-Draft 12. Organization for the Advancement of Structured Information
+           Standards (OASIS). Billerica, MA, USA. [ODT Document].
+           Available:
+           http://www.oasis-open.org/committees/documents.php
+           ?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt
+
+        Examples
+        --------
+        >>> import numpy_financial as npf
+
+        What is the monthly payment needed to pay off a $200,000 loan in 15
+        years at an annual interest rate of 7.5%?
+
+        >>> npf.pmt(0.075/12, 12*15, 200000)
+        -1854.0247200054619
+
+        In order to pay-off (i.e., have a future-value of 0) the $200,000 obtained
+        today, a monthly payment of $1,854.02 would be required.  Note that this
+        example illustrates usage of `fv` having a default value of 0.
+
+        */
+
+        /// <summary>
+        /// Compute the payment against loan principal plus interest.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">uture value (default = 0)</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray pmt(object rate, object nper, object pv)
+        {
+            return _pmt(rate, nper, pv, 0, "end");
+        }
+        /// <summary>
+        /// Compute the payment against loan principal plus interest.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">uture value (default = 0)</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray pmt(object rate, object nper, object pv, object fv)
+        {
+            return _pmt(rate, nper, pv, fv, "end");
+        }
+   
+        private static ndarray _pmt(object rate, object nper, object pv, object fv, object when)
+        {
+            when = _convert_when(when);
+
+            ndarray _rate = np.asanyarray(rate);
+            ndarray _nper = np.asanyarray(nper);
+            ndarray _pv = np.asanyarray(pv);
+            ndarray _fv = np.asanyarray(fv);
+            ndarray _when = np.asanyarray(when);
+
+            dtype retType = np.Float64;
+            if (_rate.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            {
+                retType = np.Decimal;
+            }
+            if (_rate.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            {
+                retType = np.Complex;
+            }
+
+            ndarray temp = np.power((1 + _rate), _nper);
+            ndarray mask = (_rate == 0);
+            ndarray masked_rate = (ndarray)np.where(mask, np.asanyarray(1).astype(retType), _rate);
+            ndarray fact = (ndarray)np.where(mask != 0, _nper.astype(retType),
+                 (1 + masked_rate * _when) * (temp - 1) / masked_rate);
+            return (-(_fv + _pv * temp) / fact) as ndarray;
+        }
+
+        #endregion
     }
 }

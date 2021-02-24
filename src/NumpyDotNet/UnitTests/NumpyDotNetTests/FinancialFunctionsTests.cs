@@ -165,5 +165,80 @@ namespace NumpyDotNetTests
         }
         #endregion
 
+        #region npf.pmt tests
+
+        [TestMethod]
+        public void test_pmt_1_DOUBLE()
+        {
+            var res = npf.pmt(0.08 / 12, 5 * 12, 15000);
+            AssertArray(res, new double[] { -304.14591432620773 });
+            Assert.AreEqual(-304.14591432620773, (double)res);
+            print(res);
+
+            res = npf.pmt(0.0, 5 * 12, 15000);
+            AssertArray(res, new double[] { -250.0 });
+            Assert.AreEqual(-250.0, (double)res);
+            print(res);
+
+            res = npf.pmt(new double[,] { { 0.0, 0.8 }, { 0.3, 0.8 } }, new int[] { 12, 3 }, new int[] { 2000, 20000 });
+            AssertArray(res, new double[,] { { -166.666666666667, -19311.2582781457 }, { -626.908140170076, -19311.2582781457 } });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_pmt_1_FLOAT()
+        {
+            var res = npf.pmt(0.08f / 12f, 5 * 12, 15000);
+            AssertArray(res, new double[] { -304.14591170539364 });
+            Assert.AreEqual(-304.14591170539364, (double)res);
+            print(res);
+
+            res = npf.pmt(0.0f, 5 * 12, 15000);
+            AssertArray(res, new double[] { -250.0 });
+            Assert.AreEqual(-250.0, (double)res);
+            print(res);
+
+            res = npf.pmt(new float[,] { { 0.0f, 0.8f }, { 0.3f, 0.8f } }, new int[] { 12, 3 }, new int[] { 2000, 20000 });
+            AssertArray(res, new double[,] { { -166.666666666667, -19311.2584865018 }, { -626.908161987423, -19311.2584865018 } });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_pmt_1_DECIMAL()
+        {
+            var res = npf.pmt(0.08m / 12m, 5m * 12m, 15000m);
+            AssertArray(res, new decimal[] { -304.14591432608479334671439365m });
+            Assert.AreEqual(-304.14591432608479334671439365m, (decimal)res);
+            print(res);
+
+            res = npf.pmt(0.0m, 5m * 12m, 15000m);
+            AssertArray(res, new decimal[] { -250.0m });
+            Assert.AreEqual(-250.0m, (decimal)res);
+            print(res);
+
+            res = npf.pmt(new decimal[,] { { 0.0m, 0.8m }, { 0.3m, 0.8m } }, new decimal[] { 12m, 3m }, new decimal[] { 2000m, 20000m });
+            AssertArray(res, new decimal[,] { { -166.66666666666666666666666667m, -19311.258278145695364238410596m }, { -626.90814017007577484025865996m, -19311.258278145695364238410596m } });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_pmt_1_COMPLEX()
+        {
+            var res = npf.pmt((Complex)0.08 / (Complex)12, 5 * 12, 15000);
+            AssertArray(res, new Complex[] { -304.145914326208 });
+            //Assert.AreEqual((Complex)(-304.145914326208), (Complex)res);
+            print(res);
+
+            res = npf.pmt((Complex)0.0, 5 * 12, 15000);
+            AssertArray(res, new Complex[] { -250.0 });
+            Assert.AreEqual(-250.0, (Complex)res);
+            print(res);
+
+            res = npf.pmt(new Complex[,] { { 0.0, 0.8 }, { 0.3, 0.8 } }, new int[] { 12, 3 }, new int[] { 2000, 20000 });
+            AssertArray(res, new Complex[,] { { -166.666666666667, -19311.2582781457 }, { -626.908140170076, -19311.2582781457 } });
+            print(res);
+        }
+
+        #endregion
     }
 }

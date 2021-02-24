@@ -112,6 +112,17 @@ class FinancialFunctionsTests(unittest.TestCase):
         res = npf.pmt([[Decimal('0.0'), Decimal('0.8')], [Decimal('0.3'), Decimal('0.8')]], [Decimal('12'), Decimal('3')], [Decimal('2000'), Decimal('20000')])
         print(res)
 
+    def test_pmt_1_COMPLEX(self):
+
+        res = npf.pmt(0.08j / 12j, 5 * 12, 15000)
+        print(res)
+
+        res = npf.pmt(0.0j, 5 * 12, 15000)
+        print(res)
+
+        res = npf.pmt([[0.0j, 0.8j], [0.3j, 0.8j]], [12, 3], [2000, 20000])
+        print(res)
+
   
     def test_pmt_when_DOUBLE(self):
 
