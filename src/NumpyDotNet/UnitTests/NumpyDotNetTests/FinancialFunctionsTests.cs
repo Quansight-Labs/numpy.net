@@ -49,6 +49,15 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_fv_complex()
+        {
+            var x = npf.fv((Complex)0.075, 20, -2000, 0, 0);
+            AssertArray(x, new double[] { 86609.362673042924 });
+            Assert.AreEqual(86609.362673042924, (double)x);
+            print(x);
+        }
+
+        [TestMethod]
         public void test_fv_when_is_begin_float()
         {
             var x = npf.fv(0.075, 20, -2000, 0, "begin");
