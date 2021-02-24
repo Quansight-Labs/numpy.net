@@ -24,6 +24,11 @@ class FinancialFunctionsTests(unittest.TestCase):
         x = npf.fv(Decimal('0.075'), Decimal('20'), Decimal('-2000'), 0, 0)
         print(x)
 
+    def test_fv_complex(self):
+
+        x = npf.fv(0.075j, 20, -2000, 0, 0)
+        print(x)
+
     def test_fv_when_is_begin_float(self):
 
         x = npf.fv(0.075, 20, -2000, 0, 'begin')

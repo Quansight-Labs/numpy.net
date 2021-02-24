@@ -52,8 +52,8 @@ namespace NumpyDotNetTests
         public void test_fv_complex()
         {
             var x = npf.fv((Complex)0.075, 20, -2000, 0, 0);
-            AssertArray(x, new double[] { 86609.362673042924 });
-            Assert.AreEqual(86609.362673042924, (double)x);
+            AssertArray(x, new Complex[] { 86609.362673042924 });
+            Assert.AreEqual(86609.362673042924, (Complex)x);
             print(x);
         }
 
