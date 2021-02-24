@@ -248,6 +248,56 @@ namespace NumpyDotNetTests
             print(res);
         }
 
+        [TestMethod]
+        public void test_pmt_when_DOUBLE()
+        {
+            var res = npf.pmt(0.08 / 12, 5 * 12, 15000, 0, 0);
+            AssertArray(res, new double[] { -304.14591432620773 });
+            Assert.AreEqual(-304.14591432620773, (double)res);
+            print(res);
+
+            res = npf.pmt(0.08 / 12, 5 * 12, 15000, 0, "end");
+            AssertArray(res, new double[] { -304.14591432620773 });
+            Assert.AreEqual(-304.14591432620773, (double)res);
+            print(res);
+
+            res = npf.pmt(0.08 / 12, 5 * 12, 15000, 0, 1);
+            AssertArray(res, new double[] { -302.131702973054 });
+            Assert.AreEqual(-302.131702973054, (double)res);
+            print(res);
+
+            res = npf.pmt(0.08 / 12, 5 * 12, 15000, 0, "begin");
+            AssertArray(res, new double[] { -302.131702973054 });
+            Assert.AreEqual(-302.131702973054, (double)res);
+            print(res);
+
+        }
+
+        [TestMethod]
+        public void test_pmt_when_DECIMAL()
+        {
+            var res = npf.pmt(0.08m / 12m, 5m * 12m, 15000m, 0, 0);
+            AssertArray(res, new decimal[] { -304.14591432608479334671439365m });
+            Assert.AreEqual(-304.14591432608479334671439365m, (decimal)res);
+            print(res);
+
+            res = npf.pmt(0.08m / 12m, 5m * 12m, 15000m, 0, "end");
+            AssertArray(res, new decimal[] { -304.14591432608479334671439365m });
+            Assert.AreEqual(-304.14591432608479334671439365m, (decimal)res);
+            print(res);
+
+            res = npf.pmt(0.08m / 12m, 5m * 12m, 15000m, 0, 1);
+            AssertArray(res, new decimal[] { -302.13170297293091348447465287m });
+            Assert.AreEqual(-302.13170297293091348447465287m, (decimal)res);
+            print(res);
+
+            res = npf.pmt(0.08m / 12m, 5m * 12m, 15000m, 0, "begin");
+            AssertArray(res, new decimal[] { -302.13170297293091348447465287m });
+            Assert.AreEqual(-302.13170297293091348447465287m, (decimal)res);
+            print(res);
+
+        }
+
         #endregion
     }
 }

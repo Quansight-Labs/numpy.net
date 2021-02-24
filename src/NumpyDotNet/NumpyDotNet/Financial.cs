@@ -78,18 +78,23 @@ namespace NumpyDotNet
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("unrecognized when parameter.  Must be integers or 'begin' or 'end'");
+                    throw new Exception("unrecognized when parameter.  Must be integers (0,1) or 'begin' or 'end'");
                 }
 
             }
 
             try
             {
-                return Convert.ToInt32(when);
+                Int32 iValue = Convert.ToInt32(when);
+                if (iValue != 0 && iValue != 1)
+                {
+                    throw new Exception("unrecognized when parameter.  Must be integers (0,1) or 'begin' or 'end'");
+                }
+                return iValue;
             }
             catch (Exception ex)
             {
-                throw new Exception("unrecognized when parameter.  Must be integers or 'begin' or 'end'");
+                throw new Exception("unrecognized when parameter.  Must be integers (0,1) or 'begin' or 'end'");
             }
 
         }
@@ -352,7 +357,20 @@ namespace NumpyDotNet
         {
             return _pmt(rate, nper, pv, fv, "end");
         }
-   
+        /// <summary>
+        /// Compute the payment against loan principal plus interest.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">uture value (default = 0)</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray pmt(object rate, object nper, object pv, object fv, object when)
+        {
+            return _pmt(rate, nper, pv, fv, when);
+        }
+
         private static ndarray _pmt(object rate, object nper, object pv, object fv, object when)
         {
             when = _convert_when(when);
