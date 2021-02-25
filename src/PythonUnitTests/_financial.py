@@ -451,34 +451,34 @@ class npf(object):
         """
         return npf.fv(rate, (per - 1), pmt, pv, when)
 
+    @staticmethod
+    def ppmt(rate, per, nper, pv, fv=0, when='end'):
+        """
+        Compute the payment against loan principal.
 
-def ppmt(rate, per, nper, pv, fv=0, when='end'):
-    """
-    Compute the payment against loan principal.
+        Parameters
+        ----------
+        rate : array_like
+            Rate of interest (per period)
+        per : array_like, int
+            Amount paid against the loan changes.  The `per` is the period of
+            interest.
+        nper : array_like
+            Number of compounding periods
+        pv : array_like
+            Present value
+        fv : array_like, optional
+            Future value
+        when : {{'begin', 1}, {'end', 0}}, {string, int}
+            When payments are due ('begin' (1) or 'end' (0))
 
-    Parameters
-    ----------
-    rate : array_like
-        Rate of interest (per period)
-    per : array_like, int
-        Amount paid against the loan changes.  The `per` is the period of
-        interest.
-    nper : array_like
-        Number of compounding periods
-    pv : array_like
-        Present value
-    fv : array_like, optional
-        Future value
-    when : {{'begin', 1}, {'end', 0}}, {string, int}
-        When payments are due ('begin' (1) or 'end' (0))
+        See Also
+        --------
+        pmt, pv, ipmt
 
-    See Also
-    --------
-    pmt, pv, ipmt
-
-    """
-    total = pmt(rate, nper, pv, fv, when)
-    return total - ipmt(rate, per, nper, pv, fv, when)
+        """
+        total = npf.pmt(rate, nper, pv, fv, when)
+        return total - npf.ipmt(rate, per, nper, pv, fv, when)
 
 
 def pv(rate, nper, pmt, fv=0, when='end'):
