@@ -521,7 +521,11 @@ namespace NumpyDotNet
             ndarray _fv = outputArrays.ElementAt(3);
             ndarray _when = outputArrays.ElementAt(4);
 
-            var nper_array = np.empty_like(_rate, dtype : np.Float64);
+            dtype retType = np.Float64;
+            if (_rate.TypeNum == NPY_TYPES.NPY_DECIMAL)
+                retType = np.Decimal;
+
+            var nper_array = np.empty_like(_rate, dtype : retType);
 
             var zero = _rate == 0;
             var nonzero = ~zero;
