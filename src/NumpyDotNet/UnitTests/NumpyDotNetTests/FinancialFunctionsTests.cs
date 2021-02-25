@@ -306,6 +306,7 @@ namespace NumpyDotNetTests
         public void test_nper_broadcast_DOUBLE()
         {
             var res = npf.nper(0.075, -2000, 0, 100000.0, new int[] { 0, 1 });
+            AssertArray(res, new double[] { 21.5449441973233, 20.7615644051895 });
             print(res);
         }
 
@@ -313,6 +314,7 @@ namespace NumpyDotNetTests
         public void test_nper_broadcast_DECIMAL()
         {
             var res = npf.nper(0.075m, -2000m, 0m, 100000.0m, new int[] { 0, 1 });
+            AssertArray(res, new decimal[] { 21.5449441973233m, 20.7615644051895m });
             print(res);
         }
 
@@ -320,6 +322,7 @@ namespace NumpyDotNetTests
         public void test_nper_basic_values_DOUBLE()
         {
             var res = npf.nper(new double[] { 0, 0.075 }, -2000, 0, 100000);
+            AssertArray(res, new double[] { 50.0, 21.5449441973233 });
             print(res);
         }
 
@@ -327,6 +330,7 @@ namespace NumpyDotNetTests
         public void test_nper_basic_values_DECIMAL()
         {
             var res = npf.nper(new decimal[] { 0, 0.075m }, -2000, 0, 100000);
+            AssertArray(res, new decimal[] { 50.0m, 21.5449441973234m });
             print(res);
         }
 
@@ -334,6 +338,7 @@ namespace NumpyDotNetTests
         public void test_nper_gh_18_DOUBLE()
         {
             var res = npf.nper(0.1, 0, -500, 1500);
+            AssertArray(res, new double[] { 11.5267046072476 });
             print(res);
         }
 
@@ -341,6 +346,7 @@ namespace NumpyDotNetTests
         public void test_nper_gh_18_DECIMAL()
         {
             var res = npf.nper(0.1m, 0, -500, 1500);
+            AssertArray(res, new decimal[] { 11.5267046072476m });
             print(res);
         }
 
@@ -348,6 +354,7 @@ namespace NumpyDotNetTests
         public void test_nper_infinite_payments_DOUBLE()
         {
             var res = npf.nper(0, -0.0, 1000);
+            AssertArray(res, new double[] { double.PositiveInfinity });
             print(res);
         }
 
@@ -355,6 +362,7 @@ namespace NumpyDotNetTests
         public void test_nper_infinite_payments_DECIMAL()
         {
             var res = npf.nper(0m, -0.0, 1000);
+            AssertArray(res, new decimal[] { 0m });
             print(res);
         }
 
@@ -362,6 +370,7 @@ namespace NumpyDotNetTests
         public void test_nper_no_interest_DOUBLE()
         {
             var res = npf.nper(0, -100, 1000);
+            AssertArray(res, new double[] { 10.0 });
             print(res);
         }
 
@@ -370,6 +379,7 @@ namespace NumpyDotNetTests
         public void test_nper_no_interest_DECIMAL()
         {
             var res = npf.nper(0m, -100, 1000);
+            AssertArray(res, new decimal[] { 10.0m });
             print(res);
         }
 
