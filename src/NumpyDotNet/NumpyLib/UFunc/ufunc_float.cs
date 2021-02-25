@@ -207,14 +207,14 @@ namespace NumpyLib
         protected override float Divide(float aValue, float bValue)
         {
             if (bValue == 0)
-                return 0;
+                return float.PositiveInfinity;
             return aValue / bValue;
         }
         protected override float Remainder(float aValue, float bValue)
         {
             if (bValue == 0)
             {
-                return 0;
+                return float.PositiveInfinity;
             }
             var rem = aValue % bValue;
             if ((aValue > 0) == (bValue > 0) || rem == 0)
@@ -229,7 +229,7 @@ namespace NumpyLib
         protected override float FMod(float aValue, float bValue)
         {
             if (bValue == 0)
-                return 0;
+                return float.PositiveInfinity;
             return aValue % bValue;
         }
         protected override float Power(float aValue, float bValue)
@@ -243,7 +243,7 @@ namespace NumpyLib
         protected override float Reciprocal(float bValue, float operand)
         {
             if (bValue == 0)
-                return 0;
+                return float.PositiveInfinity;
 
             return 1 / bValue;
         }
@@ -326,7 +326,7 @@ namespace NumpyLib
         {
             if (operand == 0)
             {
-                bValue = 0;
+                bValue = float.PositiveInfinity;
                 return bValue;
             }
             return Convert.ToSingle(Math.Floor(bValue / operand));
@@ -334,7 +334,7 @@ namespace NumpyLib
         protected override float TrueDivide(float bValue, float operand)
         {
             if (operand == 0)
-                return 0;
+                return float.PositiveInfinity;
 
             return bValue / operand;
         }

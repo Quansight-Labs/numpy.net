@@ -174,7 +174,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var ExpectedData = new double[,]
-                { { 0, 0, 0, 0,0 },
+                { { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity },
                   { 1.0, 1.0, 1.0, 1.0, 1.0 },
                   { 0.5, 0.5, 0.5, 0.5, 0.5 },
                   { 0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333 },
@@ -1442,7 +1442,7 @@ namespace NumpyDotNetTests
             var b = np.ufunc.accumulate(UFuncOperation.reciprocal, a1);
             print(b);
 
-            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { 0, 1.0, 0.5 }, { 0.0, 1.0, 2.0 } };
+            var ExpectedData = new double[,] { { 0.0, 1.0, 2.0 }, { double.PositiveInfinity, 1.0, 0.5 }, { 0.0, 1.0, 2.0 } };
 
             AssertArray(b, ExpectedData);
 

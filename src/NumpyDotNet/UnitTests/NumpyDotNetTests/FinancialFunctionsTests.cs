@@ -353,7 +353,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_nper_infinite_payments_DOUBLE()
         {
-            var res = npf.nper(0, -0.0, 1000);
+            var res = npf.nper(0.0, -0.0, 1000.0);
             AssertArray(res, new double[] { double.PositiveInfinity });
             print(res);
         }

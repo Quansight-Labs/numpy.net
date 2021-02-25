@@ -207,14 +207,14 @@ namespace NumpyLib
         protected override double Divide(double aValue, double bValue)
         {
             if (bValue == 0)
-                return 0;
+                return double.PositiveInfinity;
             return aValue / bValue;
         }
         protected override double Remainder(double aValue, double bValue)
         {
             if (bValue == 0)
             {
-                return 0;
+                return double.PositiveInfinity;
             }
             var rem = aValue % bValue;
             if ((aValue > 0) == (bValue > 0) || rem == 0)
@@ -229,7 +229,7 @@ namespace NumpyLib
         protected override double FMod(double aValue, double bValue)
         {
             if (bValue == 0)
-                return 0;
+                return double.PositiveInfinity;
             return aValue % bValue;
         }
         protected override double Power(double aValue, double bValue)
@@ -243,7 +243,7 @@ namespace NumpyLib
         protected override double Reciprocal(double bValue, double operand)
         {
             if (bValue == 0)
-                return 0;
+                return double.PositiveInfinity;
 
             return 1 / bValue;
         }
@@ -326,7 +326,7 @@ namespace NumpyLib
         {
             if (operand == 0)
             {
-                bValue = 0;
+                bValue = double.PositiveInfinity;
                 return bValue;
             }
             return Math.Floor(bValue / operand);
@@ -334,7 +334,7 @@ namespace NumpyLib
         protected override double TrueDivide(double bValue, double operand)
         {
             if (operand == 0)
-                return 0;
+                return double.PositiveInfinity;
 
             return bValue / operand;
         }

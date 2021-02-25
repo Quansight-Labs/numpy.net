@@ -2406,7 +2406,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = float.PositiveInfinity;
                 return dValue;
             }
             return dValue / doperand;
@@ -2417,7 +2417,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = float.PositiveInfinity;
                 return dValue;
             }
             var rem = dValue % doperand;
@@ -2436,7 +2436,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = float.PositiveInfinity;
                 return dValue;
             }
             return dValue % doperand;
@@ -2455,7 +2455,7 @@ namespace NumpyLib
         {
             float dValue = (float)bValue;
             if (dValue == 0)
-                return 0;
+                return float.PositiveInfinity;
 
             return 1 / dValue;
         }
@@ -2663,7 +2663,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = double.PositiveInfinity;
                 return dValue;
             }
             return dValue / doperand;
@@ -2674,7 +2674,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = double.PositiveInfinity;
                 return dValue;
             }
             var rem = dValue % doperand;
@@ -2693,7 +2693,7 @@ namespace NumpyLib
             double doperand = (dynamic)operand;
             if (doperand == 0)
             {
-                dValue = 0;
+                dValue = double.PositiveInfinity;
                 return dValue;
             }
             return dValue % doperand;
@@ -2712,7 +2712,7 @@ namespace NumpyLib
         {
             double dValue = (double)bValue;
             if (dValue == 0)
-                return 0;
+                return double.PositiveInfinity;
 
             return 1 / dValue;
         }

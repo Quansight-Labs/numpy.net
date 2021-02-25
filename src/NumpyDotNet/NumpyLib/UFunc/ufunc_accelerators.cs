@@ -2723,7 +2723,7 @@ namespace NumpyLib
             {
                 var bValue = OperandArray[OperIndex];
                 if (bValue == 0)
-                    result = 0;
+                    result = float.PositiveInfinity;
                 else
                     result = result / bValue;
 
@@ -2851,7 +2851,7 @@ namespace NumpyLib
             {
                 for (npy_intp index = start; index < end; index++)
                 {
-                    dest[destIndex++] = 0;
+                    dest[destIndex++] = float.PositiveInfinity;
                 }
                 return;
             }
@@ -3112,7 +3112,7 @@ namespace NumpyLib
             {
                 var bValue = OperandArray[OperIndex];
                 if (bValue == 0)
-                    result = 0;
+                    result = double.PositiveInfinity;
                 else
                     result = result / bValue;
 
@@ -3346,7 +3346,7 @@ namespace NumpyLib
             {
                 for (npy_intp index = start; index < end; index++)
                 {
-                    dest[destIndex++] = 0;
+                    dest[destIndex++] = double.PositiveInfinity;
                 }
                 return;
             }

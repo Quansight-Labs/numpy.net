@@ -4886,7 +4886,7 @@ namespace NumpyDotNetTests
 
 
             var a = np.corrcoef(x1);
-            AssertArray(a, new double[,] { { 0, 0 }, { 0, 0 } });
+            AssertArray(a, new double[,] { { double.PositiveInfinity, double.PositiveInfinity }, { double.PositiveInfinity, double.PositiveInfinity } });
             print(a);
   
 

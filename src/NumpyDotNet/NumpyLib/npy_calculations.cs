@@ -1446,7 +1446,8 @@ namespace NumpyLib
                     break;
                 case NPY_TYPES.NPY_FLOAT:
                     PerformNumericOpScalarIterContiguous_SD_T2<S, float>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
-                    break;                case NPY_TYPES.NPY_DOUBLE:
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
                     PerformNumericOpScalarIterContiguous_SD_T2<S, double>(srcArray, destArray, operArray, operations, srcIter, destIter, operIter);
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
