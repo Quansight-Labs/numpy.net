@@ -502,7 +502,45 @@ namespace NumpyDotNet
         {
             when = _convert_when(when);
 
-            throw new NotImplementedException();
+            List<ndarray> inputArrays = new List<ndarray>();
+            inputArrays.Add(np.asanyarray(rate));
+            inputArrays.Add(np.asanyarray(pmt));
+            inputArrays.Add(np.asanyarray(pv));
+            inputArrays.Add(np.asanyarray(fv));
+            inputArrays.Add(np.asanyarray(when));
+
+            var outputArrays = np.broadcast_arrays(true, inputArrays.ToArray());
+            if (outputArrays.Count() != 5)
+            {
+                throw new Exception("broadcast_arrays did not produced expected result");
+            }
+
+            ndarray _rate = outputArrays.ElementAt(0);
+            ndarray _pmt = outputArrays.ElementAt(1);
+            ndarray _pv = outputArrays.ElementAt(2);
+            ndarray _fv = outputArrays.ElementAt(3);
+            ndarray _when = outputArrays.ElementAt(4);
+
+            var nper_array = np.empty_like(_rate, dtype : np.Float64);
+
+            var zero = _rate == 0;
+            var nonzero = ~zero;
+
+            try
+            {
+                nper_array[zero] = -(_fv.A(zero) + _pv.A(zero)) / _pmt.A(zero);
+            }
+            catch (DivideByZeroException dbz)
+            {
+                Console.WriteLine("");
+            }
+
+            var nonzero_rate = _rate.A(nonzero);
+            var z = _pmt[nonzero] * (1 + nonzero_rate * _when.A(nonzero)) / nonzero_rate;
+
+            nper_array[nonzero] = (np.log((-_fv.A(nonzero) + z) / (_pv.A(nonzero) + z)) / np.log(1 + nonzero_rate));
+
+            return nper_array;
         }
 
         #endregion
