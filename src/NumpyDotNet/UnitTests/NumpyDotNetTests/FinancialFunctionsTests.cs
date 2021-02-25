@@ -299,5 +299,80 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+        #region npf.nper tests
+
+        [TestMethod]
+        public void test_nper_broadcast_DOUBLE()
+        {
+            var res = npf.nper(0.075, -2000, 0, 100000.0, new int[] { 0, 1 });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_broadcast_DECIMAL()
+        {
+            var res = npf.nper(0.075m, -2000m, 0m, 100000.0m, new int[] { 0, 1 });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_basic_values_DOUBLE()
+        {
+            var res = npf.nper(new double[] { 0, 0.075 }, -2000, 0, 100000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_basic_values_DECIMAL()
+        {
+            var res = npf.nper(new decimal[] { 0, 0.075m }, -2000, 0, 100000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_gh_18_DOUBLE()
+        {
+            var res = npf.nper(0.1, 0, -500, 1500);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_gh_18_DECIMAL()
+        {
+            var res = npf.nper(0.1m, 0, -500, 1500);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_infinite_payments_DOUBLE()
+        {
+            var res = npf.nper(0, -0.0, 1000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_infinite_payments_DECIMAL()
+        {
+            var res = npf.nper(0m, -0.0, 1000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_nper_no_interest_DOUBLE()
+        {
+            var res = npf.nper(0, -100, 1000);
+            print(res);
+        }
+
+
+        [TestMethod]
+        public void test_nper_no_interest_DECIMAL()
+        {
+            var res = npf.nper(0m, -100, 1000);
+            print(res);
+        }
+
+        #endregion
     }
 }
