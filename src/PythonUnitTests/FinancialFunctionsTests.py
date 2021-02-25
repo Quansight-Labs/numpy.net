@@ -158,6 +158,33 @@ class FinancialFunctionsTests(unittest.TestCase):
         print(res)
 
 #endregion
- 
+
+#region nper 
+    def test_nper_broadcast_DOUBLE(self):
+
+        res = npf.nper(0.075, -2000, 0, 100000., [0, 1])
+        print(res)
+
+    def test_nper_basic_values_DOUBLE(self):
+
+        res = npf.nper([0, 0.075], -2000, 0, 100000)
+        print(res)
+  
+    def test_nper_gh_18_DOUBLE(self):
+
+        res = npf.nper(0.1, 0, -500, 1500)
+        print(res)
+
+    def test_nper_infinite_payments_DOUBLE(self):
+
+        res = npf.nper(0, -0.0, 1000)
+        print(res)
+
+    def test_nper_no_interest_DOUBLE(self):
+
+        res = npf.nper(0, -100, 1000)
+        print(res)
+  
+#endregion
 if __name__ == '__main__':
     unittest.main()

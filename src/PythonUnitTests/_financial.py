@@ -244,81 +244,81 @@ class npf(object):
                         (1 + masked_rate*when)*(temp - 1)/masked_rate)
         return -(fv + pv*temp) / fact
 
+    @staticmethod
+    def nper(rate, pmt, pv, fv=0, when='end'):
+        """
+        Compute the number of periodic payments.
 
-def nper(rate, pmt, pv, fv=0, when='end'):
-    """
-    Compute the number of periodic payments.
+        :class:`decimal.Decimal` type is not supported.
 
-    :class:`decimal.Decimal` type is not supported.
+        Parameters
+        ----------
+        rate : array_like
+            Rate of interest (per period)
+        pmt : array_like
+            Payment
+        pv : array_like
+            Present value
+        fv : array_like, optional
+            Future value
+        when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
+            When payments are due ('begin' (1) or 'end' (0))
 
-    Parameters
-    ----------
-    rate : array_like
-        Rate of interest (per period)
-    pmt : array_like
-        Payment
-    pv : array_like
-        Present value
-    fv : array_like, optional
-        Future value
-    when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
-        When payments are due ('begin' (1) or 'end' (0))
+        Notes
+        -----
+        The number of periods ``nper`` is computed by solving the equation::
 
-    Notes
-    -----
-    The number of periods ``nper`` is computed by solving the equation::
+         fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate*((1+rate)**nper-1) = 0
 
-     fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate*((1+rate)**nper-1) = 0
+        but if ``rate = 0`` then::
 
-    but if ``rate = 0`` then::
+         fv + pv + pmt*nper = 0
 
-     fv + pv + pmt*nper = 0
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import numpy_financial as npf
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import numpy_financial as npf
+        If you only had $150/month to pay towards the loan, how long would it take
+        to pay-off a loan of $8,000 at 7% annual interest?
 
-    If you only had $150/month to pay towards the loan, how long would it take
-    to pay-off a loan of $8,000 at 7% annual interest?
+        >>> print(np.round(npf.nper(0.07/12, -150, 8000), 5))
+        64.07335
 
-    >>> print(np.round(npf.nper(0.07/12, -150, 8000), 5))
-    64.07335
+        So, over 64 months would be required to pay off the loan.
 
-    So, over 64 months would be required to pay off the loan.
+        The same analysis could be done with several different interest rates
+        and/or payments and/or total amounts to produce an entire table.
 
-    The same analysis could be done with several different interest rates
-    and/or payments and/or total amounts to produce an entire table.
+        >>> npf.nper(*(np.ogrid[0.07/12: 0.08/12: 0.01/12,
+        ...                     -150   : -99    : 50    ,
+        ...                     8000   : 9001   : 1000]))
+        array([[[ 64.07334877,  74.06368256],
+                [108.07548412, 127.99022654]],
+               [[ 66.12443902,  76.87897353],
+                [114.70165583, 137.90124779]]])
 
-    >>> npf.nper(*(np.ogrid[0.07/12: 0.08/12: 0.01/12,
-    ...                     -150   : -99    : 50    ,
-    ...                     8000   : 9001   : 1000]))
-    array([[[ 64.07334877,  74.06368256],
-            [108.07548412, 127.99022654]],
-           [[ 66.12443902,  76.87897353],
-            [114.70165583, 137.90124779]]])
+        """
+        when = npf._convert_when(when)
+        rate, pmt, pv, fv, when = np.broadcast_arrays(rate, pmt, pv, fv, when)
+        nper_array = np.empty_like(rate, dtype=np.float64)
 
-    """
-    when = _convert_when(when)
-    rate, pmt, pv, fv, when = np.broadcast_arrays(rate, pmt, pv, fv, when)
-    nper_array = np.empty_like(rate, dtype=np.float64)
+        zero = rate == 0
+        nonzero = ~zero
 
-    zero = rate == 0
-    nonzero = ~zero
+        with np.errstate(divide='ignore'):
+            # Infinite numbers of payments are okay, so ignore the
+            # potential divide by zero.
+            nper_array[zero] = -(fv[zero] + pv[zero]) / pmt[zero]
 
-    with np.errstate(divide='ignore'):
-        # Infinite numbers of payments are okay, so ignore the
-        # potential divide by zero.
-        nper_array[zero] = -(fv[zero] + pv[zero]) / pmt[zero]
+        nonzero_rate = rate[nonzero]
+        z = pmt[nonzero] * (1 + nonzero_rate * when[nonzero]) / nonzero_rate
+        nper_array[nonzero] = (
+            np.log((-fv[nonzero] + z) / (pv[nonzero] + z))
+            / np.log(1 + nonzero_rate)
+        )
 
-    nonzero_rate = rate[nonzero]
-    z = pmt[nonzero] * (1 + nonzero_rate * when[nonzero]) / nonzero_rate
-    nper_array[nonzero] = (
-        np.log((-fv[nonzero] + z) / (pv[nonzero] + z))
-        / np.log(1 + nonzero_rate)
-    )
-
-    return nper_array
+        return nper_array
 
 
 def _value_like(arr, value):
