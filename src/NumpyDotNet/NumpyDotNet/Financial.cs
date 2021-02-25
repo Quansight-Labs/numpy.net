@@ -681,9 +681,75 @@ namespace NumpyDotNet
             return _ipmt(rate, per, nper, pv, fv, when);
         }
 
+
+        private static object _value_like(ndarray arr, object value)
+        {
+            if (arr.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            {
+                try
+                {
+                    return Convert.ToDecimal(value);
+                }
+                catch
+                {
+                    return 0m;
+                }
+
+            }
+
+            var temp = np.array(value, dtype: arr.Dtype);
+            return temp.GetItem(0);
+        }
         private static ndarray _ipmt(object rate, object per, object nper, object pv, object fv, object when)
         {
-            throw new Exception();
+            when = _convert_when(when);
+
+            List<ndarray> inputArrays = new List<ndarray>();
+            inputArrays.Add(np.asanyarray(rate));
+            inputArrays.Add(np.asanyarray(per));
+            inputArrays.Add(np.asanyarray(nper));
+            inputArrays.Add(np.asanyarray(pv));
+            inputArrays.Add(np.asanyarray(fv));
+            inputArrays.Add(np.asanyarray(when));
+
+            var outputArrays = np.broadcast_arrays(true, inputArrays.ToArray());
+            if (outputArrays.Count() != 6)
+            {
+                throw new Exception("broadcast_arrays did not produced expected result");
+            }
+
+            ndarray _rate = outputArrays.ElementAt(0);
+            ndarray _per = outputArrays.ElementAt(1);
+            ndarray _nper = outputArrays.ElementAt(2);
+            ndarray _pv = outputArrays.ElementAt(3);
+            ndarray _fv = outputArrays.ElementAt(4);
+            ndarray _when = outputArrays.ElementAt(5);
+
+            var total_pmt = pmt(rate, nper, pv, fv, when);
+            var ipmt_array = np.array(_rbl(_rate, _per, total_pmt, _pv, _when) * _rate);
+
+            // Payments start at the first period, so payments before that
+            // don't make any sense.
+            ipmt_array[_per < 1] = _value_like(ipmt_array, np.NaN);
+            //If payments occur at the beginning of a period and this is the
+            //first period, then no interest has accrued.
+            var per1_and_begin = (_when == 1) & (_per == 1);
+            ipmt_array[per1_and_begin] = _value_like(ipmt_array, 0);
+            // If paying at the beginning we need to discount by one period.
+            var per_gt_1_and_begin = (_when == 1) & (_per > 1);
+            ipmt_array[per_gt_1_and_begin] = (ipmt_array.A(per_gt_1_and_begin) / (1 + _rate.A(per_gt_1_and_begin)));
+
+            return ipmt_array;
+        }
+    
+
+        //This function is here to simply have a different name for the 'fv'
+        //function to not interfere with the 'fv' keyword argument within the 'ipmt'
+        //function.It is the 'remaining balance on loan' which might be useful as
+        //it's own function, but is easily calculated with the 'fv' function.
+        private static ndarray _rbl(ndarray rate, ndarray per, ndarray pmt, ndarray pv, ndarray when)
+        {
+            return fv(rate, (per - 1), pmt, pv, when);
         }
 
         #endregion

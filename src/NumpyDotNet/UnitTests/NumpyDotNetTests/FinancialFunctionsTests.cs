@@ -391,6 +391,7 @@ namespace NumpyDotNetTests
         public void test_ipmt_DOUBLE()
         {
             var res = npf.ipmt(0.1 / 12, 1, 24, 2000);
+            AssertArray(res, new double[] { -16.6666666666667 });
             print(res);
         }
 
@@ -398,6 +399,7 @@ namespace NumpyDotNetTests
         public void test_ipmt_DECIMAL()
         {
             var res = npf.ipmt(0.1m / 12m, 1, 24, 2000);
+            AssertArray(res, new decimal[] { -16.666666666666666666666666600m });
             print(res);
         }
 
@@ -405,9 +407,11 @@ namespace NumpyDotNetTests
         public void test_ipmt_when_is_begin_DOUBLE()
         {
             var res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, "begin");
+            AssertArray(res, new double[] { 0.0 });
             print(res);
 
             res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 1);
+            AssertArray(res, new double[] { 0.0 });
             print(res);
         }
 
@@ -415,27 +419,33 @@ namespace NumpyDotNetTests
         public void test_ipmt_when_is_begin_DECIMAL()
         {
             var res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, "begin");
+            AssertArray(res, new decimal[] { 0.0m });
             print(res);
 
             res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, 1);
+            AssertArray(res, new decimal[] { 0.0m });
             print(res);
         }
         [TestMethod]
         public void test_ipmt_when_is_end_DOUBLE()
         {
             var res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, "end");
+            AssertArray(res, new double[] { -16.6666666666667 });
             print(res);
 
             res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 0);
+            AssertArray(res, new double[] { -16.6666666666667 });
             print(res);
         }
         [TestMethod]
         public void test_ipmt_when_is_end_DECIMAL()
         {
             var res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, "end");
+            AssertArray(res, new decimal[] { -16.666666666666666666666666600m });
             print(res);
 
             res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, 0);
+            AssertArray(res, new decimal[] { -16.666666666666666666666666600m });
             print(res);
         }
         [TestMethod]
@@ -444,15 +454,19 @@ namespace NumpyDotNetTests
             var rate = 0.001988079518355057;
 
             var res = npf.ipmt(rate, 0, 360, 300000, fv:0, when :"begin");
+            AssertArray(res, new double[] { double.NaN });
             print(res);
 
             res = npf.ipmt(rate, 1, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new double[] { 0.0 });
             print(res);
 
             res = npf.ipmt(rate, 2, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new double[] { -594.107157704708 });
             print(res);
 
             res = npf.ipmt(rate, 3, 360, 300000, fv: 0, when : "begin");
+            AssertArray(res, new double[] { -592.971592174841 });
             print(res);
 
         }
@@ -462,15 +476,19 @@ namespace NumpyDotNetTests
             var rate = 0.001988079518355057m;
 
             var res = npf.ipmt(rate, 0, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new decimal[] { 0.0m });
             print(res);
 
             res = npf.ipmt(rate, 1, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new decimal[] { 0.0m });
             print(res);
 
             res = npf.ipmt(rate, 2, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new decimal[] {-594.1071577047065727486948811m });
             print(res);
 
             res = npf.ipmt(rate, 3, 360, 300000, fv: 0, when: "begin");
+            AssertArray(res, new decimal[] { -592.97159217484060101674297453m });
             print(res);
         }
 
@@ -478,12 +496,14 @@ namespace NumpyDotNetTests
         public void test_ipmt_broadcasting_DOUBLE()
         {
             var res = npf.ipmt(0.1 / 12, np.arange(5), 24, 2000);
+            AssertArray(res, new double[] { double.NaN, -16.6666666666667, -16.0364734499303, -15.4010286230544, -14.7602884226213 });
             print(res);
         }
         [TestMethod]
         public void test_ipmt_broadcasting_DECIMAL()
         {
             var res = npf.ipmt(0.1m / 12m, np.arange(5), 24, 2000);
+            AssertArray(res, new decimal[] { 0m, -16.666666666666666666666666600m, -16.036473449930246209851847828m, -15.401028623054689584968442671m, -14.760288422620935478577742361m });
             print(res);
         }
 
