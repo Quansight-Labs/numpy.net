@@ -548,5 +548,144 @@ namespace NumpyDotNet
         }
 
         #endregion
+
+        #region ipmt
+
+        /*
+        Compute the interest portion of a payment.
+
+        Parameters
+        ----------
+        rate : scalar or array_like of shape(M, )
+            Rate of interest as decimal (not per cent) per period
+        per : scalar or array_like of shape(M, )
+            Interest paid against the loan changes during the life or the loan.
+            The `per` is the payment period to calculate the interest amount.
+        nper : scalar or array_like of shape(M, )
+            Number of compounding periods
+        pv : scalar or array_like of shape(M, )
+            Present value
+        fv : scalar or array_like of shape(M, ), optional
+            Future value
+        when : { { 'begin', 1}, { 'end', 0} }, {string, int }, optional
+            When payments are due('begin' (1) or 'end' (0)).
+            Defaults to {'end', 0}.
+
+        Returns
+        -------
+        out : ndarray
+            Interest portion of payment.If all input is scalar, returns a scalar
+            float.  If any input is array_like, returns interest payment for each
+            input element.If multiple inputs are array_like, they all must have
+            the same shape.
+
+        See Also
+        --------
+        ppmt, pmt, pv
+
+        Notes
+        -----
+        The total payment is made up of payment against principal plus interest.
+
+        ``pmt = ppmt + ipmt``
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import numpy_financial as npf
+
+        What is the amortization schedule for a 1 year loan of $2500 at
+        8.24% interest per year compounded monthly?
+
+        >>> principal = 2500.00
+
+        The 'per' variable represents the periods of the loan.Remember that
+        financial equations start the period count at 1!
+
+        >>> per = np.arange(1 * 12) + 1
+        >>> ipmt = npf.ipmt(0.0824 / 12, per, 1 * 12, principal)
+        >>> ppmt = npf.ppmt(0.0824 / 12, per, 1 * 12, principal)
+
+        Each element of the sum of the 'ipmt' and 'ppmt' arrays should equal
+        'pmt'.
+
+        >>> pmt = npf.pmt(0.0824 / 12, 1 * 12, principal)
+        >>> np.allclose(ipmt + ppmt, pmt)
+        True
+
+        >>> fmt = '{0:2d} {1:8.2f} {2:8.2f} {3:8.2f}'
+        >>> for payment in per:
+        ...     index = payment - 1
+        ...principal = principal + ppmt[index]
+        ...print(fmt.format(payment, ppmt[index], ipmt[index], principal))
+         1  -200.58   -17.17  2299.42
+         2  -201.96   -15.79  2097.46
+         3  -203.35   -14.40  1894.11
+         4  -204.74   -13.01  1689.37
+         5  -206.15   -11.60  1483.22
+         6  -207.56   -10.18  1275.66
+         7  -208.99    -8.76  1066.67
+         8  -210.42    -7.32   856.25
+         9  -211.87    -5.88   644.38
+        10  -213.32    -4.42   431.05
+        11  -214.79    -2.96   216.26
+        12  -216.26    -1.49    -0.00
+
+        >>> interestpd = np.sum(ipmt)
+        >>> np.round(interestpd, 2)
+        - 112.98
+
+        */
+
+        /// <summary>
+        /// Compute the interest portion of a payment.
+        /// </summary>
+        /// <param name="rate">Rate of interest as decimal (not per cent) per period</param>
+        /// <param name="per">Interest paid against the loan changes during the life or the loan. The 'per' is the payment period to calculate the interest amount.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray ipmt(object rate, object per, object nper, object pv)
+        {
+            return _ipmt(rate, per, nper, pv, 0, "end");
+        }
+        /// <summary>
+        /// Compute the interest portion of a payment.
+        /// </summary>
+        /// <param name="rate">Rate of interest as decimal (not per cent) per period</param>
+        /// <param name="per">Interest paid against the loan changes during the life or the loan. The 'per' is the payment period to calculate the interest amount.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray ipmt(object rate, object per, object nper, object pv, object fv)
+        {
+            return _ipmt(rate, per, nper, pv, fv, "end");
+        }
+
+        /// <summary>
+        /// Compute the interest portion of a payment.
+        /// </summary>
+        /// <param name="rate">Rate of interest as decimal (not per cent) per period</param>
+        /// <param name="per">Interest paid against the loan changes during the life or the loan. The 'per' is the payment period to calculate the interest amount.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray ipmt(object rate, object per, object nper, object pv, object fv, object when)
+        {
+            return _ipmt(rate, per, nper, pv, fv, when);
+        }
+
+        private static ndarray _ipmt(object rate, object per, object nper, object pv, object fv, object when)
+        {
+            throw new Exception();
+        }
+
+        #endregion
     }
 }

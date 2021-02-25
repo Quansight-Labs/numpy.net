@@ -384,5 +384,109 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+        #region npf.ipmt tests
+
+        [TestMethod]
+        public void test_ipmt_DOUBLE()
+        {
+            var res = npf.ipmt(0.1 / 12, 1, 24, 2000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_ipmt_DECIMAL()
+        {
+            var res = npf.ipmt(0.1m / 12m, 1, 24, 2000);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_ipmt_when_is_begin_DOUBLE()
+        {
+            var res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, "begin");
+            print(res);
+
+            res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 1);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_ipmt_when_is_begin_DECIMAL()
+        {
+            var res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, "begin");
+            print(res);
+
+            res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, 1);
+            print(res);
+        }
+        [TestMethod]
+        public void test_ipmt_when_is_end_DOUBLE()
+        {
+            var res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, "end");
+            print(res);
+
+            res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 0);
+            print(res);
+        }
+        [TestMethod]
+        public void test_ipmt_when_is_end_DECIMAL()
+        {
+            var res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, "end");
+            print(res);
+
+            res = npf.ipmt(0.1m / 12m, 1, 24, 2000, 0, 0);
+            print(res);
+        }
+        [TestMethod]
+        public void test_ipmt_gh_17_DOUBLE()
+        {
+            var rate = 0.001988079518355057;
+
+            var res = npf.ipmt(rate, 0, 360, 300000, fv:0, when :"begin");
+            print(res);
+
+            res = npf.ipmt(rate, 1, 360, 300000, fv: 0, when: "begin");
+            print(res);
+
+            res = npf.ipmt(rate, 2, 360, 300000, fv: 0, when: "begin");
+            print(res);
+
+            res = npf.ipmt(rate, 3, 360, 300000, fv: 0, when : "begin");
+            print(res);
+
+        }
+        [TestMethod]
+        public void test_ipmt_gh_17_DECIMAL()
+        {
+            var rate = 0.001988079518355057m;
+
+            var res = npf.ipmt(rate, 0, 360, 300000, fv: 0, when: "begin");
+            print(res);
+
+            res = npf.ipmt(rate, 1, 360, 300000, fv: 0, when: "begin");
+            print(res);
+
+            res = npf.ipmt(rate, 2, 360, 300000, fv: 0, when: "begin");
+            print(res);
+
+            res = npf.ipmt(rate, 3, 360, 300000, fv: 0, when: "begin");
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_ipmt_broadcasting_DOUBLE()
+        {
+            var res = npf.ipmt(0.1 / 12, np.arange(5), 24, 2000);
+            print(res);
+        }
+        [TestMethod]
+        public void test_ipmt_broadcasting_DECIMAL()
+        {
+            var res = npf.ipmt(0.1m / 12m, np.arange(5), 24, 2000);
+            print(res);
+        }
+
+        #endregion
     }
 }
