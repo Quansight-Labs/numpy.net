@@ -186,5 +186,56 @@ class FinancialFunctionsTests(unittest.TestCase):
         print(res)
   
 #endregion
+
+#region ipmt
+
+    def test_ipmt_DOUBLE(self):
+
+        res = npf.ipmt(0.1 / 12, 1, 24, 2000)
+        print(res)
+
+    def test_ipmt_DECIMAL(self):
+
+        res = npf.ipmt(Decimal('0.1') / Decimal('12'), 1, 24, 2000)
+        print(res)  
+        
+    def test_ipmt_when_is_begin_DOUBLE(self):
+
+        res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 'begin')
+        print(res) 
+
+        res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 1)
+        print(res) 
+
+    def test_ipmt_when_is_end_DOUBLE(self):
+
+        res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 'end')
+        print(res)  
+        
+        res = npf.ipmt(0.1 / 12, 1, 24, 2000, 0, 0)
+        print(res)         
+
+    def test_ipmt_gh_17_DOUBLE(self):
+
+        rate = 0.001988079518355057
+
+        res = npf.ipmt(rate, 0, 360, 300000, when="begin")
+        print(res)  
+
+        res = npf.ipmt(rate, 1, 360, 300000, when="begin")
+        print(res)  
+
+        res = npf.ipmt(rate, 2, 360, 300000, when="begin")
+        print(res)  
+
+        res = npf.ipmt(rate, 3, 360, 300000, when="begin")
+        print(res)  
+ 
+    def test_ipmt_broadcasting_DOUBLE(self):
+
+        res = npf.ipmt(0.1 / 12, np.arange(5), 24, 2000)
+        print(res)  
+
+#endregion
 if __name__ == '__main__':
     unittest.main()

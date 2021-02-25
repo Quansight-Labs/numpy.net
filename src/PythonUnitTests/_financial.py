@@ -320,136 +320,136 @@ class npf(object):
 
         return nper_array
 
+    @staticmethod
+    def _value_like(arr, value):
+        entry = arr.item(0)
+        if isinstance(entry, Decimal):
+            return Decimal(value)
+        else:
+            return np.array(value, dtype=arr.dtype).item(0)
 
-def _value_like(arr, value):
-    entry = arr.item(0)
-    if isinstance(entry, Decimal):
-        return Decimal(value)
-    else:
-        return np.array(value, dtype=arr.dtype).item(0)
+    @staticmethod
+    def ipmt(rate, per, nper, pv, fv=0, when='end'):
+        """
+        Compute the interest portion of a payment.
 
+        Parameters
+        ----------
+        rate : scalar or array_like of shape(M, )
+            Rate of interest as decimal (not per cent) per period
+        per : scalar or array_like of shape(M, )
+            Interest paid against the loan changes during the life or the loan.
+            The `per` is the payment period to calculate the interest amount.
+        nper : scalar or array_like of shape(M, )
+            Number of compounding periods
+        pv : scalar or array_like of shape(M, )
+            Present value
+        fv : scalar or array_like of shape(M, ), optional
+            Future value
+        when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
+            When payments are due ('begin' (1) or 'end' (0)).
+            Defaults to {'end', 0}.
 
-def ipmt(rate, per, nper, pv, fv=0, when='end'):
-    """
-    Compute the interest portion of a payment.
+        Returns
+        -------
+        out : ndarray
+            Interest portion of payment.  If all input is scalar, returns a scalar
+            float.  If any input is array_like, returns interest payment for each
+            input element. If multiple inputs are array_like, they all must have
+            the same shape.
 
-    Parameters
-    ----------
-    rate : scalar or array_like of shape(M, )
-        Rate of interest as decimal (not per cent) per period
-    per : scalar or array_like of shape(M, )
-        Interest paid against the loan changes during the life or the loan.
-        The `per` is the payment period to calculate the interest amount.
-    nper : scalar or array_like of shape(M, )
-        Number of compounding periods
-    pv : scalar or array_like of shape(M, )
-        Present value
-    fv : scalar or array_like of shape(M, ), optional
-        Future value
-    when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
-        When payments are due ('begin' (1) or 'end' (0)).
-        Defaults to {'end', 0}.
+        See Also
+        --------
+        ppmt, pmt, pv
 
-    Returns
-    -------
-    out : ndarray
-        Interest portion of payment.  If all input is scalar, returns a scalar
-        float.  If any input is array_like, returns interest payment for each
-        input element. If multiple inputs are array_like, they all must have
-        the same shape.
+        Notes
+        -----
+        The total payment is made up of payment against principal plus interest.
 
-    See Also
-    --------
-    ppmt, pmt, pv
+        ``pmt = ppmt + ipmt``
 
-    Notes
-    -----
-    The total payment is made up of payment against principal plus interest.
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import numpy_financial as npf
 
-    ``pmt = ppmt + ipmt``
+        What is the amortization schedule for a 1 year loan of $2500 at
+        8.24% interest per year compounded monthly?
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import numpy_financial as npf
+        >>> principal = 2500.00
 
-    What is the amortization schedule for a 1 year loan of $2500 at
-    8.24% interest per year compounded monthly?
+        The 'per' variable represents the periods of the loan.  Remember that
+        financial equations start the period count at 1!
 
-    >>> principal = 2500.00
+        >>> per = np.arange(1*12) + 1
+        >>> ipmt = npf.ipmt(0.0824/12, per, 1*12, principal)
+        >>> ppmt = npf.ppmt(0.0824/12, per, 1*12, principal)
 
-    The 'per' variable represents the periods of the loan.  Remember that
-    financial equations start the period count at 1!
+        Each element of the sum of the 'ipmt' and 'ppmt' arrays should equal
+        'pmt'.
 
-    >>> per = np.arange(1*12) + 1
-    >>> ipmt = npf.ipmt(0.0824/12, per, 1*12, principal)
-    >>> ppmt = npf.ppmt(0.0824/12, per, 1*12, principal)
+        >>> pmt = npf.pmt(0.0824/12, 1*12, principal)
+        >>> np.allclose(ipmt + ppmt, pmt)
+        True
 
-    Each element of the sum of the 'ipmt' and 'ppmt' arrays should equal
-    'pmt'.
+        >>> fmt = '{0:2d} {1:8.2f} {2:8.2f} {3:8.2f}'
+        >>> for payment in per:
+        ...     index = payment - 1
+        ...     principal = principal + ppmt[index]
+        ...     print(fmt.format(payment, ppmt[index], ipmt[index], principal))
+         1  -200.58   -17.17  2299.42
+         2  -201.96   -15.79  2097.46
+         3  -203.35   -14.40  1894.11
+         4  -204.74   -13.01  1689.37
+         5  -206.15   -11.60  1483.22
+         6  -207.56   -10.18  1275.66
+         7  -208.99    -8.76  1066.67
+         8  -210.42    -7.32   856.25
+         9  -211.87    -5.88   644.38
+        10  -213.32    -4.42   431.05
+        11  -214.79    -2.96   216.26
+        12  -216.26    -1.49    -0.00
 
-    >>> pmt = npf.pmt(0.0824/12, 1*12, principal)
-    >>> np.allclose(ipmt + ppmt, pmt)
-    True
+        >>> interestpd = np.sum(ipmt)
+        >>> np.round(interestpd, 2)
+        -112.98
 
-    >>> fmt = '{0:2d} {1:8.2f} {2:8.2f} {3:8.2f}'
-    >>> for payment in per:
-    ...     index = payment - 1
-    ...     principal = principal + ppmt[index]
-    ...     print(fmt.format(payment, ppmt[index], ipmt[index], principal))
-     1  -200.58   -17.17  2299.42
-     2  -201.96   -15.79  2097.46
-     3  -203.35   -14.40  1894.11
-     4  -204.74   -13.01  1689.37
-     5  -206.15   -11.60  1483.22
-     6  -207.56   -10.18  1275.66
-     7  -208.99    -8.76  1066.67
-     8  -210.42    -7.32   856.25
-     9  -211.87    -5.88   644.38
-    10  -213.32    -4.42   431.05
-    11  -214.79    -2.96   216.26
-    12  -216.26    -1.49    -0.00
+        """
+        when = npf._convert_when(when)
+        rate, per, nper, pv, fv, when = np.broadcast_arrays(rate, per, nper,
+                                                            pv, fv, when)
 
-    >>> interestpd = np.sum(ipmt)
-    >>> np.round(interestpd, 2)
-    -112.98
+        total_pmt = npf.pmt(rate, nper, pv, fv, when)
+        ipmt_array = np.array(npf._rbl(rate, per, total_pmt, pv, when) * rate)
 
-    """
-    when = _convert_when(when)
-    rate, per, nper, pv, fv, when = np.broadcast_arrays(rate, per, nper,
-                                                        pv, fv, when)
+        # Payments start at the first period, so payments before that
+        # don't make any sense.
+        ipmt_array[per < 1] = npf._value_like(ipmt_array, np.nan)
+        # If payments occur at the beginning of a period and this is the
+        # first period, then no interest has accrued.
+        per1_and_begin = (when == 1) & (per == 1)
+        ipmt_array[per1_and_begin] = npf._value_like(ipmt_array, 0)
+        # If paying at the beginning we need to discount by one period.
+        per_gt_1_and_begin = (when == 1) & (per > 1)
+        ipmt_array[per_gt_1_and_begin] = (
+            ipmt_array[per_gt_1_and_begin] / (1 + rate[per_gt_1_and_begin])
+        )
 
-    total_pmt = pmt(rate, nper, pv, fv, when)
-    ipmt_array = np.array(_rbl(rate, per, total_pmt, pv, when) * rate)
+        if np.ndim(ipmt_array) == 0:
+            # Follow the ufunc convention of returning scalars for scalar
+            # and 0d array inputs.
+            return ipmt_array.item(0)
+        return ipmt_array
 
-    # Payments start at the first period, so payments before that
-    # don't make any sense.
-    ipmt_array[per < 1] = _value_like(ipmt_array, np.nan)
-    # If payments occur at the beginning of a period and this is the
-    # first period, then no interest has accrued.
-    per1_and_begin = (when == 1) & (per == 1)
-    ipmt_array[per1_and_begin] = _value_like(ipmt_array, 0)
-    # If paying at the beginning we need to discount by one period.
-    per_gt_1_and_begin = (when == 1) & (per > 1)
-    ipmt_array[per_gt_1_and_begin] = (
-        ipmt_array[per_gt_1_and_begin] / (1 + rate[per_gt_1_and_begin])
-    )
-
-    if np.ndim(ipmt_array) == 0:
-        # Follow the ufunc convention of returning scalars for scalar
-        # and 0d array inputs.
-        return ipmt_array.item(0)
-    return ipmt_array
-
-
-def _rbl(rate, per, pmt, pv, when):
-    """
-    This function is here to simply have a different name for the 'fv'
-    function to not interfere with the 'fv' keyword argument within the 'ipmt'
-    function.  It is the 'remaining balance on loan' which might be useful as
-    it's own function, but is easily calculated with the 'fv' function.
-    """
-    return fv(rate, (per - 1), pmt, pv, when)
+    @staticmethod
+    def _rbl(rate, per, pmt, pv, when):
+        """
+        This function is here to simply have a different name for the 'fv'
+        function to not interfere with the 'fv' keyword argument within the 'ipmt'
+        function.  It is the 'remaining balance on loan' which might be useful as
+        it's own function, but is easily calculated with the 'fv' function.
+        """
+        return npf.fv(rate, (per - 1), pmt, pv, when)
 
 
 def ppmt(rate, per, nper, pv, fv=0, when='end'):
