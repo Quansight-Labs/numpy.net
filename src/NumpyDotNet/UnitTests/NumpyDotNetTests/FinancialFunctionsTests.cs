@@ -834,5 +834,17 @@ namespace NumpyDotNetTests
 
 
         #endregion
+
+        #region npf.ipp
+
+        [TestMethod]
+        public void test_irr_DOUBLE()
+        {
+            var cashflows = np.array(new double[] { -5, 10.5, 1, -8, 1, 0, 0, 0 });
+            var res = npf.irr(cashflows);
+            print(res);
+        }
+
+        #endregion
     }
 }

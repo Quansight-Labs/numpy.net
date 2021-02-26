@@ -1244,7 +1244,133 @@ namespace NumpyDotNet
                 }
             }
 
-      
+
+        }
+
+        #endregion
+
+        #region irr
+
+        /*   
+        Return the Internal Rate of Return(IRR).
+
+        This is the "average" periodically compounded rate of return
+        that gives a net present value of 0.0; for a more complete explanation,
+        see Notes below.
+
+        :class:`decimal.Decimal` type is not supported.
+
+        Parameters
+        ----------
+        values : array_like, shape(N,)
+            Input cash flows per time period.By convention, net "deposits"
+            are negative and net "withdrawals" are positive.  Thus, for
+            example, at least the first element of `values`, which represents
+            the initial investment, will typically be negative.
+
+        Returns
+        -------
+        out : float
+            Internal Rate of Return for periodic input values.
+
+        Notes
+        -----
+        The IRR is perhaps best understood through an example (illustrated
+        using np.irr in the Examples section below).  Suppose one invests 100
+        units and then makes the following withdrawals at regular(fixed)
+        intervals: 39, 59, 55, 20.  Assuming the ending value is 0, one's 100
+        unit investment yields 173 units; however, due to the combination of
+        compounding and the periodic withdrawals, the "average" rate of return
+        is neither simply 0.73/4 nor(1.73)^0.25-1.  Rather, it is the solution
+       (for :math:`r`) of the equation:
+
+        .. math:: -100 + \\frac{39}{1+r} + \\frac{59}{(1+r)^2}
+         + \\frac{55}{(1+r)^3} + \\frac{20}{(1+r)^4} = 0
+
+        In general, for `values` :math:`= [v_0, v_1, ...v_M]`,
+        irr is the solution of the equation: [G]
+        _
+
+        ..math:: \\sum_{t=0}^M{\\frac{v_t}{(1+irr)^{t}}} = 0
+
+        References
+        ----------
+        .. [G] L.J.Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
+         Addison-Wesley, 2003, pg. 348.
+
+
+      Examples
+        --------
+        >>> import numpy_financial as npf
+
+        >>> round(npf.irr([-100, 39, 59, 55, 20]), 5)
+        0.28095
+        >>> round(npf.irr([-100, 0, 0, 74]), 5)
+        -0.0955
+        >>> round(npf.irr([-100, 100, 0, -7]), 5)
+        -0.0833
+        >>> round(npf.irr([-100, 100, 0, 7]), 5)
+        0.06206
+        >>> round(npf.irr([-5, 10.5, 1, -8, 1]), 5)
+        0.0886
+
+        */
+
+        /// <summary>
+        /// Return the Internal Rate of Return (IRR).
+        /// </summary>
+        /// <param name="values">Input cash flows per time period.</param>
+        /// <returns></returns>
+        public static ndarray irr(object values)
+        {
+            var _values = np.atleast_1d(values).ElementAt(0);
+            if (_values.ndim != 1)
+            {
+                throw new ValueError("Cashflows must be a rank-1 array");
+            }
+
+            // Strip leading and trailing zeros. Since we only care about
+            // positive roots we can neglect roots at zero.
+            var non_zero = np.nonzero(np.ravel(_values))[0];
+
+            _values = _values.A(string.Format("{0}:{1}",(npy_intp)non_zero[0],(npy_intp)non_zero[-1] + 1));
+
+            var res = _roots(_values.A("::-1"));
+
+            var mask = (res.Imag == 0) & (res.Real > 0);
+            if (!mask.Anyb())
+            {
+                return np.array(double.NaN);
+            }
+
+            res = res.A(mask).Real;
+            // NPV(rate) = 0 can have more than one solution so we return
+            // only the solution closest to zero.
+            var rate = 1 / res - 1;
+            rate = np.array(rate.item(np.argmin(np.absolute(rate))));
+            return rate;
+        }
+
+        private static ndarray _roots(ndarray p)
+        {
+            var t1 = np.frexp(p);
+            var e = t1[1];
+
+            // Balance the most extreme exponents e_max and e_min by solving
+            // the equation
+            //
+            // |c + e_max| = |c + e_min|.
+            //
+            //Round the exponent to an integer to avoid rounding errors.
+
+            var c = (int)(-0.5 * ((ndarray)np.max(e) + (ndarray)np.min(e)));
+            p = np.ldexp(p, c);
+
+            var A = np.diag(np.full(p.size - 2, p[0]), k : -1);
+            A["0", ":"] = -p.A("1:");
+
+            var eigenvalues = np.array(10); // np.linalg.eigvals(A);
+            return eigenvalues / p[0];
         }
 
         #endregion
