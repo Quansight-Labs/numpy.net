@@ -618,5 +618,83 @@ namespace NumpyDotNetTests
 
 
         #endregion
+
+        #region pv
+
+        [TestMethod]
+        public void test_pv_DOUBLE()
+        {
+            var res = npf.pv(0.07, 20, 12000);
+            AssertArray(res, new double[] { -127128.170946194 });
+            print(res);
+
+            res = npf.pv(0.07, 20, 12000, 0);
+            AssertArray(res, new double[] { -127128.170946194 });
+            print(res);
+
+            res = npf.pv(0.07, 20, 12000, 222220);
+            AssertArray(res, new double[] { -184554.041751492 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_pv_DECIMAL()
+        {
+            var res = npf.pv(0.07m, 20, 12000);
+            AssertArray(res, new decimal[] { -127128.17094619401705869097106m });
+            print(res);
+
+            res = npf.pv(0.07m, 20, 12000, 0);
+            AssertArray(res, new decimal[] { -127128.17094619401705869097106m });
+            print(res);
+
+            res = npf.pv(0.07m, 20, 12000, 222220);
+            AssertArray(res, new decimal[] { -184554.04175149191168891218562m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_pv_begin_DOUBLE()
+        {
+            var res = npf.pv(0.07, 20, 12000, 0, 1);
+            AssertArray(res, new double[] { -136027.142912428 });
+            print(res);
+
+            res = npf.pv(0.07, 20, 12000, 0, "begin");
+            AssertArray(res, new double[] { -136027.142912428 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_pv_begin_DECIMAL()
+        {
+            var res = npf.pv(0.07m, 20, 12000, 0, 1);
+            AssertArray(res, new decimal[] { -136027.14291242755173737883254m });
+            print(res);
+
+            res = npf.pv(0.07m, 20, 12000, 0, "begin");
+            AssertArray(res, new decimal[] { -136027.14291242755173737883254m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_pv_end_DOUBLE()
+        {
+            var res = npf.pv(0.07, 20, 12000, 0, 0);
+            AssertArray(res, new double[] { -127128.170946194 });
+            print(res);
+
+            res = npf.pv(0.07, 20, 12000, 0, "end");
+            AssertArray(res, new double[] { -127128.170946194 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_pv_end_DECIMAL()
+        {
+            var res = npf.pv(0.07m, 20, 12000, 0, 0);
+            AssertArray(res, new decimal[] { -127128.17094619401705869097106m });
+            print(res);
+
+            res = npf.pv(0.07m, 20, 12000, 0, "end");
+            AssertArray(res, new decimal[] { -127128.17094619401705869097106m });
+            print(res);
+        }
+        #endregion
     }
 }
