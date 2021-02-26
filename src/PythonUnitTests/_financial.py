@@ -675,119 +675,119 @@ class npf(object):
         else:
             return rn
 
+    @staticmethod
+    def _roots(p):
+        """Modified version of NumPy's roots function.
 
-def _roots(p):
-    """Modified version of NumPy's roots function.
+        NumPy's roots uses the companion matrix method, which divides by
+        p[0]. This can causes overflows/underflows. Instead form a
+        modified companion matrix that is scaled by 2^c * p[0], where the
+        exponent c is chosen to balance the magnitudes of the
+        coefficients. Since scaling the matrix just scales the
+        eigenvalues, we can remove the scaling at the end.
 
-    NumPy's roots uses the companion matrix method, which divides by
-    p[0]. This can causes overflows/underflows. Instead form a
-    modified companion matrix that is scaled by 2^c * p[0], where the
-    exponent c is chosen to balance the magnitudes of the
-    coefficients. Since scaling the matrix just scales the
-    eigenvalues, we can remove the scaling at the end.
+        Scaling by a power of 2 is chosen to avoid rounding errors.
 
-    Scaling by a power of 2 is chosen to avoid rounding errors.
+        """
+        _, e = np.frexp(p)
+        # Balance the most extreme exponents e_max and e_min by solving
+        # the equation
+        #
+        # |c + e_max| = |c + e_min|.
+        #
+        # Round the exponent to an integer to avoid rounding errors.
+        c = int(-0.5 * (np.max(e) + np.min(e)))
+        p = np.ldexp(p, c)
 
-    """
-    _, e = np.frexp(p)
-    # Balance the most extreme exponents e_max and e_min by solving
-    # the equation
-    #
-    # |c + e_max| = |c + e_min|.
-    #
-    # Round the exponent to an integer to avoid rounding errors.
-    c = int(-0.5 * (np.max(e) + np.min(e)))
-    p = np.ldexp(p, c)
+        A = np.diag(np.full(p.size - 2, p[0]), k=-1)
+        A[0,:] = -p[1:]
+        eigenvalues = np.linalg.eigvals(A)
+        return eigenvalues / p[0]
 
-    A = np.diag(np.full(p.size - 2, p[0]), k=-1)
-    A[0,:] = -p[1:]
-    eigenvalues = np.linalg.eigvals(A)
-    return eigenvalues / p[0]
+    @staticmethod
+    def irr(values):
+        """
+        Return the Internal Rate of Return (IRR).
 
+        This is the "average" periodically compounded rate of return
+        that gives a net present value of 0.0; for a more complete explanation,
+        see Notes below.
 
-def irr(values):
-    """
-    Return the Internal Rate of Return (IRR).
+        :class:`decimal.Decimal` type is not supported.
 
-    This is the "average" periodically compounded rate of return
-    that gives a net present value of 0.0; for a more complete explanation,
-    see Notes below.
+        Parameters
+        ----------
+        values : array_like, shape(N,)
+            Input cash flows per time period.  By convention, net "deposits"
+            are negative and net "withdrawals" are positive.  Thus, for
+            example, at least the first element of `values`, which represents
+            the initial investment, will typically be negative.
 
-    :class:`decimal.Decimal` type is not supported.
+        Returns
+        -------
+        out : float
+            Internal Rate of Return for periodic input values.
 
-    Parameters
-    ----------
-    values : array_like, shape(N,)
-        Input cash flows per time period.  By convention, net "deposits"
-        are negative and net "withdrawals" are positive.  Thus, for
-        example, at least the first element of `values`, which represents
-        the initial investment, will typically be negative.
+        Notes
+        -----
+        The IRR is perhaps best understood through an example (illustrated
+        using np.irr in the Examples section below).  Suppose one invests 100
+        units and then makes the following withdrawals at regular (fixed)
+        intervals: 39, 59, 55, 20.  Assuming the ending value is 0, one's 100
+        unit investment yields 173 units; however, due to the combination of
+        compounding and the periodic withdrawals, the "average" rate of return
+        is neither simply 0.73/4 nor (1.73)^0.25-1.  Rather, it is the solution
+        (for :math:`r`) of the equation:
 
-    Returns
-    -------
-    out : float
-        Internal Rate of Return for periodic input values.
+        .. math:: -100 + \\frac{39}{1+r} + \\frac{59}{(1+r)^2}
+         + \\frac{55}{(1+r)^3} + \\frac{20}{(1+r)^4} = 0
 
-    Notes
-    -----
-    The IRR is perhaps best understood through an example (illustrated
-    using np.irr in the Examples section below).  Suppose one invests 100
-    units and then makes the following withdrawals at regular (fixed)
-    intervals: 39, 59, 55, 20.  Assuming the ending value is 0, one's 100
-    unit investment yields 173 units; however, due to the combination of
-    compounding and the periodic withdrawals, the "average" rate of return
-    is neither simply 0.73/4 nor (1.73)^0.25-1.  Rather, it is the solution
-    (for :math:`r`) of the equation:
+        In general, for `values` :math:`= [v_0, v_1, ... v_M]`,
+        irr is the solution of the equation: [G]_
 
-    .. math:: -100 + \\frac{39}{1+r} + \\frac{59}{(1+r)^2}
-     + \\frac{55}{(1+r)^3} + \\frac{20}{(1+r)^4} = 0
+        .. math:: \\sum_{t=0}^M{\\frac{v_t}{(1+irr)^{t}}} = 0
 
-    In general, for `values` :math:`= [v_0, v_1, ... v_M]`,
-    irr is the solution of the equation: [G]_
+        References
+        ----------
+        .. [G] L. J. Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
+           Addison-Wesley, 2003, pg. 348.
 
-    .. math:: \\sum_{t=0}^M{\\frac{v_t}{(1+irr)^{t}}} = 0
+        Examples
+        --------
+        >>> import numpy_financial as npf
 
-    References
-    ----------
-    .. [G] L. J. Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
-       Addison-Wesley, 2003, pg. 348.
+        >>> round(npf.irr([-100, 39, 59, 55, 20]), 5)
+        0.28095
+        >>> round(npf.irr([-100, 0, 0, 74]), 5)
+        -0.0955
+        >>> round(npf.irr([-100, 100, 0, -7]), 5)
+        -0.0833
+        >>> round(npf.irr([-100, 100, 0, 7]), 5)
+        0.06206
+        >>> round(npf.irr([-5, 10.5, 1, -8, 1]), 5)
+        0.0886
 
-    Examples
-    --------
-    >>> import numpy_financial as npf
+        """
+        values = np.atleast_1d(values)
+        if values.ndim != 1:
+            raise ValueError("Cashflows must be a rank-1 array")
 
-    >>> round(npf.irr([-100, 39, 59, 55, 20]), 5)
-    0.28095
-    >>> round(npf.irr([-100, 0, 0, 74]), 5)
-    -0.0955
-    >>> round(npf.irr([-100, 100, 0, -7]), 5)
-    -0.0833
-    >>> round(npf.irr([-100, 100, 0, 7]), 5)
-    0.06206
-    >>> round(npf.irr([-5, 10.5, 1, -8, 1]), 5)
-    0.0886
+        # Strip leading and trailing zeros. Since we only care about
+        # positive roots we can neglect roots at zero.
+        non_zero = np.nonzero(np.ravel(values))[0]
+        values = values[int(non_zero[0]):int(non_zero[-1])+1]
 
-    """
-    values = np.atleast_1d(values)
-    if values.ndim != 1:
-        raise ValueError("Cashflows must be a rank-1 array")
+        res = npf._roots(values[::-1])
 
-    # Strip leading and trailing zeros. Since we only care about
-    # positive roots we can neglect roots at zero.
-    non_zero = np.nonzero(np.ravel(values))[0]
-    values = values[int(non_zero[0]):int(non_zero[-1])+1]
-
-    res = _roots(values[::-1])
-
-    mask = (res.imag == 0) & (res.real > 0)
-    if not mask.any():
-        return np.nan
-    res = res[mask].real
-    # NPV(rate) = 0 can have more than one solution so we return
-    # only the solution closest to zero.
-    rate = 1/res - 1
-    rate = rate.item(np.argmin(np.abs(rate)))
-    return rate
+        mask = (res.imag == 0) & (res.real > 0)
+        if not mask.any():
+            return np.nan
+        res = res[mask].real
+        # NPV(rate) = 0 can have more than one solution so we return
+        # only the solution closest to zero.
+        rate = 1/res - 1
+        rate = rate.item(np.argmin(np.abs(rate)))
+        return rate
 
 
 def npv(rate, values):
