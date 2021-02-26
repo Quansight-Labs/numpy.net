@@ -995,5 +995,94 @@ namespace NumpyDotNet
 
         }
         #endregion
+
+        #region rate
+
+        /*
+        Compute the rate of interest per period.
+
+        Parameters
+        ----------
+        nper : array_like
+            Number of compounding periods
+        pmt : array_like
+            Payment
+        pv : array_like
+            Present value
+        fv : array_like
+            Future value
+        when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
+            When payments are due('begin' (1) or 'end' (0))
+        guess : Number, optional
+            Starting guess for solving the rate of interest, default 0.1
+        tol : Number, optional
+            Required tolerance for the solution, default 1e-6
+        maxiter : int, optional
+            Maximum iterations in finding the solution
+
+        Notes
+        -----
+        The rate of interest is computed by iteratively solving the
+        (non-linear) equation::
+
+         fv + pv* (1+rate)** nper + pmt* (1+rate* when)/rate* ((1+rate)** nper - 1) = 0
+
+        for ``rate``.
+
+        References
+        ----------
+        Wheeler, D.A., E.Rathke, and R.Weir(Eds.) (2009, May). Open Document
+        Format for Office Applications(OpenDocument)v1.2, Part 2: Recalculated
+       Formula(OpenFormula) Format - Annotated Version, Pre-Draft 12.
+        Organization for the Advancement of Structured Information Standards
+        (OASIS). Billerica, MA, USA. [ODT Document]. Available:
+        http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formula
+        OpenDocument-formula-20090508.odt
+
+        */
+
+
+        private static ndarray _g_div_gp(ndarray r, ndarray n, ndarray p, ndarray x, ndarray y, ndarray w)
+        {
+            // Evaluate g(r_n)/g'(r_n), where g =
+            // fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1)
+
+            var t1 = np.power(r + 1,n);
+            var t2 = np.power(r + 1, n - 1);
+            var g = y + t1 * x + p * (t1 - 1) * (r * w + 1) / r;
+            var gp = (n * t2 * x
+                 - p * (t1 - 1) * (r * w + 1) / (np.power(r,2))
+                 + n * p * t2 * (r * w + 1) / r
+                 + p * (t1 - 1) * w / r);
+            return (ndarray)(g / gp);
+        }
+
+        public static ndarray rate(object nper, object pmt, object pv, object fv)
+        {
+            return _rate(nper, pmt, pv, fv, "end", null, null, 100);
+        }
+        public static ndarray rate(object nper, object pmt, object pv, object fv, object when)
+        {
+            return _rate(nper, pmt, pv, fv, when, null, null, 100);
+        }
+        public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess)
+        {
+            return _rate(nper, pmt, pv, fv, when, guess, null, 100);
+        }
+        public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess, double tol)
+        {
+            return _rate(nper, pmt, pv, fv, when, guess, tol, 100);
+        }
+        public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess, double tol, Int32 maxiter)
+        {
+            return _rate(nper, pmt, pv, fv, when, guess, tol, maxiter);
+        }
+
+        private static ndarray _rate(object nper, object pmt, object pv, object fv, object when, double? guess, double? tol, Int32 maxiter)
+        {
+            throw new Exception();
+        }
+
+        #endregion
     }
 }
