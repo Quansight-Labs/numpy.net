@@ -1042,7 +1042,7 @@ namespace NumpyDotNet
         */
 
 
-        private static ndarray _g_div_gp(ndarray r, ndarray n, ndarray p, ndarray x, ndarray y, ndarray w)
+        private static double _g_div_gp(double? r, ndarray n, ndarray p, ndarray x, ndarray y, ndarray w)
         {
             // Evaluate g(r_n)/g'(r_n), where g =
             // fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1)
@@ -1054,25 +1054,105 @@ namespace NumpyDotNet
                  - p * (t1 - 1) * (r * w + 1) / (np.power(r,2))
                  + n * p * t2 * (r * w + 1) / r
                  + p * (t1 - 1) * w / r);
-            return (ndarray)(g / gp);
+
+            ndarray t3 = (ndarray)(g / gp);
+            return (double)t3;
         }
 
+        private static decimal _g_div_gp(decimal? r, ndarray n, ndarray p, ndarray x, ndarray y, ndarray w)
+        {
+            // Evaluate g(r_n)/g'(r_n), where g =
+            // fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1)
+
+            var t1 = np.power(r + 1, n);
+            var t2 = np.power(r + 1, n - 1);
+            var g = y + t1 * x + p * (t1 - 1) * (r * w + 1) / r;
+            var gp = (n * t2 * x
+                 - p * (t1 - 1) * (r * w + 1) / (np.power(r, 2))
+                 + n * p * t2 * (r * w + 1) / r
+                 + p * (t1 - 1) * w / r);
+
+            ndarray t3 = (ndarray)(g / gp);
+            return (decimal)t3;
+        }
+
+        /// <summary>
+        /// Compute the rate of interest per period.
+        /// </summary>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pmt">Payment</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <param name="guess">Starting guess for solving the rate of interest, default 0.1</param>
+        /// <param name="tol">Required tolerance for the solution, default 1e-6</param>
+        /// <param name="maxiter">Maximum iterations in finding the solution</param>
+        /// <returns></returns>
         public static ndarray rate(object nper, object pmt, object pv, object fv)
         {
             return _rate(nper, pmt, pv, fv, "end", null, null, 100);
         }
+        /// <summary>
+        /// Compute the rate of interest per period.
+        /// </summary>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pmt">Payment</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <param name="guess">Starting guess for solving the rate of interest, default 0.1</param>
+        /// <param name="tol">Required tolerance for the solution, default 1e-6</param>
+        /// <param name="maxiter">Maximum iterations in finding the solution</param>
+        /// <returns></returns>       
         public static ndarray rate(object nper, object pmt, object pv, object fv, object when)
         {
             return _rate(nper, pmt, pv, fv, when, null, null, 100);
         }
+         /// <summary>
+        /// Compute the rate of interest per period.
+        /// </summary>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pmt">Payment</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <param name="guess">Starting guess for solving the rate of interest, default 0.1</param>
+        /// <param name="tol">Required tolerance for the solution, default 1e-6</param>
+        /// <param name="maxiter">Maximum iterations in finding the solution</param>
+        /// <returns></returns>     
         public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess)
         {
             return _rate(nper, pmt, pv, fv, when, guess, null, 100);
         }
+        /// <summary>
+        /// Compute the rate of interest per period.
+        /// </summary>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pmt">Payment</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <param name="guess">Starting guess for solving the rate of interest, default 0.1</param>
+        /// <param name="tol">Required tolerance for the solution, default 1e-6</param>
+        /// <param name="maxiter">Maximum iterations in finding the solution</param>
+        /// <returns></returns>      
         public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess, double tol)
         {
             return _rate(nper, pmt, pv, fv, when, guess, tol, 100);
         }
+
+        /// <summary>
+        /// Compute the rate of interest per period.
+        /// </summary>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pmt">Payment</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <param name="guess">Starting guess for solving the rate of interest, default 0.1</param>
+        /// <param name="tol">Required tolerance for the solution, default 1e-6</param>
+        /// <param name="maxiter">Maximum iterations in finding the solution</param>
+        /// <returns></returns>
         public static ndarray rate(object nper, object pmt, object pv, object fv, object when, double guess, double tol, Int32 maxiter)
         {
             return _rate(nper, pmt, pv, fv, when, guess, tol, maxiter);
@@ -1080,7 +1160,91 @@ namespace NumpyDotNet
 
         private static ndarray _rate(object nper, object pmt, object pv, object fv, object when, double? guess, double? tol, Int32 maxiter)
         {
-            throw new Exception();
+            when = _convert_when(when);
+
+            ndarray _nper = np.asanyarray(nper);
+            ndarray _pmt = np.asanyarray(pmt);
+            ndarray _pv = np.asanyarray(pv);
+            ndarray _fv = np.asanyarray(fv);
+            ndarray _when = np.asanyarray(when);
+
+            if (_pmt.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            {
+                decimal? dguess = null;
+                if (guess.HasValue)
+                    dguess = Convert.ToDecimal(guess);
+
+                decimal? dtol = null;
+                if (tol.HasValue)
+                    dtol = Convert.ToDecimal(tol);
+
+                if (dguess == null)
+                {
+                    dguess = 0.1m;
+                }
+                if (dtol == null)
+                {
+                    dtol = 1e-6m;
+                }
+
+                var rn = dguess;
+                Int32 iterator = 0;
+                bool close = false;
+
+                while ((iterator < maxiter) && !close)
+                {
+                    var rnp1 = rn - npf._g_div_gp(rn, _nper, _pmt, _pv, _fv, _when);
+                    var diff = Math.Abs(rnp1.Value - rn.Value);
+                    close = np.allb(diff < dtol);
+                    iterator += 1;
+                    rn = rnp1;
+                }
+                if (!close)
+                {
+                    throw new Exception("Decimal numbers don't support NaN values");
+                }
+                else
+                {
+                    return np.array(rn, _pmt.Dtype);
+                }
+            }
+            else
+            {
+                _pmt = _pmt.astype(np.Float64);
+
+                if (guess == null)
+                {
+                    guess = 0.1;
+                }
+                if (tol == null)
+                {
+                    tol = 1e-6;
+                }
+
+                var rn = guess;
+                Int32 iterator = 0;
+                bool close = false;
+
+                while ((iterator < maxiter) && !close)
+                {
+                    var rnp1 = rn - npf._g_div_gp(rn, _nper, _pmt, _pv, _fv, _when);
+                    var diff = Math.Abs(rnp1.Value - rn.Value);
+                    close = np.allb(diff < tol);
+                    iterator += 1;
+                    rn = rnp1;
+                }
+                if (!close)
+                {
+                    // Return nan's in array of the same shape as rn
+                    return np.array(double.NaN + rn, _pmt.Dtype);
+                }
+                else
+                {
+                    return np.array(rn, _pmt.Dtype);
+                }
+            }
+
+      
         }
 
         #endregion

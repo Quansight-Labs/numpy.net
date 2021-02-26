@@ -703,13 +703,15 @@ namespace NumpyDotNetTests
         public void test_rate_DOUBLE()
         {
             var res = npf.rate(10, 0, -3500, 10000);
+            AssertArray(res, new double[] { 0.11069085371426901 });
             print(res);
         }
 
         [TestMethod]
         public void test_rate_DECIMAL()
         {
-            var res = npf.rate(10m, 0, -3500, 10000);
+            var res = npf.rate(10m, 0m, -3500, 10000);
+            AssertArray(res, new decimal[] { 0.1106908537142690373121121834m });
             print(res);
         }
 
@@ -717,18 +719,22 @@ namespace NumpyDotNetTests
         public void test_rate_begin_DOUBLE()
         {
             var res = npf.rate(10, 0, -3500, 10000, 1);
+            AssertArray(res, new double[] { 0.11069085371426901 });
             print(res);
 
             res = npf.rate(10, 0, -3500, 10000, "begin");
+            AssertArray(res, new double[] { 0.11069085371426901 });
             print(res);
         }
         [TestMethod]
         public void test_rate_begin_DECIMAL()
         {
-            var res = npf.rate(10m, 0, -3500, 10000, 1);
+            var res = npf.rate(10m, 0m, -3500, 10000, 1);
+            AssertArray(res, new decimal[] { 0.1106908537142690373121121834m });
             print(res);
 
-            res = npf.rate(10m, 0, -3500, 10000, "begin");
+            res = npf.rate(10m, 0m, -3500, 10000, "begin");
+            AssertArray(res, new decimal[] { 0.1106908537142690373121121834m });
             print(res);
         }
 
@@ -736,18 +742,22 @@ namespace NumpyDotNetTests
         public void test_rate_end_DOUBLE()
         {
             var res = npf.rate(10, 0, -3500, 10000, 0);
+            AssertArray(res, new double[] { 0.11069085371426901 });
             print(res);
 
             res = npf.rate(10, 0, -3500, 10000, "end");
+            AssertArray(res, new double[] { 0.11069085371426901 });
             print(res);
         }
         [TestMethod]
         public void test_rate_end_DECIMAL()
         {
-            var res = npf.rate(10m, 0, -3500, 10000, 0);
+            var res = npf.rate(10m, 0m, -3500, 10000, 0);
+            AssertArray(res, new decimal[] { 0.1106908537142690373121121834m });
             print(res);
 
-            res = npf.rate(10m, 0, -3500, 10000, "end");
+            res = npf.rate(10m, 0m, -3500, 10000, "end");
+            AssertArray(res, new decimal[] { 0.1106908537142690373121121834m });
             print(res);
 
         }
@@ -755,32 +765,70 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_rate_infeasable_solution_DOUBLE()
         {
-            var res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when : 0);
+            var res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when: 0);
+            AssertArray(res, new double[] { double.NaN });
             print(res);
 
             res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when: 1);
+            AssertArray(res, new double[] { double.NaN });
             print(res);
 
-            res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when : "end");
+            res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when: "end");
+            AssertArray(res, new double[] { double.NaN });
             print(res);
 
-            res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when : "begin");
+            res = npf.rate(12.0, 400.0, 10000.0, 5000.0, when: "begin");
+            AssertArray(res, new double[] { double.NaN });
             print(res);
+
+   
         }
         [TestMethod]
         public void test_rate_infeasable_solution_DECIMAL()
         {
-            var res = npf.rate(12.0m, 400.0, 10000.0, 5000.0, when: 0);
-            print(res);
+            try
+            {
+                var res = npf.rate(12.0m, 400.0m, 10000.0, 5000.0, when: 0);
+                print(res);
+                Assert.Fail("This should have thrown exception");
+            }
+            catch
+            {
 
-            res = npf.rate(12.0m, 400.0, 10000.0, 5000.0, when: 1);
-            print(res);
+            }
 
-            res = npf.rate(12.0m, 400.0, 10000.0, 5000.0, when: "end");
-            print(res);
+            try
+            {
+                var res = npf.rate(12.0m, 400.0m, 10000.0, 5000.0, when: 1);
+                print(res);
+                Assert.Fail("This should have thrown exception");
+            }
+            catch
+            {
 
-            res = npf.rate(12.0m, 400.0, 10000.0, 5000.0, when: "begin");
-            print(res);
+            }
+
+            try
+            {
+                var res = npf.rate(12.0m, 400.0m, 10000.0, 5000.0, when: "end");
+                print(res);
+                Assert.Fail("This should have thrown exception");
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+                var res = npf.rate(12.0m, 400.0m, 10000.0, 5000.0, when: "begin");
+                print(res);
+                Assert.Fail("This should have thrown exception");
+            }
+            catch
+            {
+
+            }
 
         }
 
