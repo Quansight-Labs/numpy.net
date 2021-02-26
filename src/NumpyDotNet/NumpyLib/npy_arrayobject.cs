@@ -175,11 +175,27 @@ namespace NumpyLib
 
         internal static npy_intp[] GetViewOffsets(NpyArray arr)
         {
+            if (HasNegativeIndexing(arr))
+            {
+                var Iter = NpyArray_IterNew(arr);
+                return GetViewOffsets(Iter, NpyArray_SIZE(arr));
+            }
+
             npy_intp[] offsets = new npy_intp[NpyArray_SIZE(arr)];
             long offset_index = 0;
 
             GetViewOffsets(arr, 0, 0, offsets, ref offset_index);
             return offsets;
+        }
+
+        private static bool HasNegativeIndexing(NpyArray arr)
+        {
+            for (int i = 0; i < arr.nd; i++)
+            {
+                if (arr.strides[i] < 0)
+                    return true;
+            }
+            return false;
         }
 
         private static void GetViewOffsets(NpyArray arr, int dimIdx, npy_intp offset, npy_intp[] offsets, ref long offset_index)
