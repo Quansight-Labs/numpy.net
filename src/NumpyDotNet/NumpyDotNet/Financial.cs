@@ -753,5 +753,84 @@ namespace NumpyDotNet
         }
 
         #endregion
+
+        #region ppmt
+
+        /*
+        Compute the payment against loan principal.
+
+        Parameters
+        ----------
+        rate : array_like
+            Rate of interest (per period)
+        per : array_like, int
+            Amount paid against the loan changes.The `per` is the period of
+            interest.
+        nper : array_like
+            Number of compounding periods
+        pv : array_like
+            Present value
+        fv : array_like, optional
+            Future value
+        when : { { 'begin', 1}, { 'end', 0} }, {string, int }
+            When payments are due('begin' (1) or 'end' (0)) 
+
+        See Also
+        --------
+        pmt, pv, ipmt
+        */
+
+        /// <summary>
+        /// Compute the payment against loan principal.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="per">Amount paid against the loan changes.  The `per` is the period of interest.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>       
+        public static ndarray ppmt(object rate, object per, object nper, object pv)
+        {
+            return _ppmt(rate, per, nper, pv, 0, "end");
+        }
+
+         /// <summary>
+        /// Compute the payment against loan principal.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="per">Amount paid against the loan changes.  The `per` is the period of interest.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>      
+        public static ndarray ppmt(object rate, object per, object nper, object pv, object fv)
+        {
+            return _ppmt(rate, per, nper, pv, fv, "end");
+        }
+
+        /// <summary>
+        /// Compute the payment against loan principal.
+        /// </summary>
+        /// <param name="rate">Rate of interest (per period)</param>
+        /// <param name="per">Amount paid against the loan changes.  The `per` is the period of interest.</param>
+        /// <param name="nper">Number of compounding periods</param>
+        /// <param name="pv">Present value</param>
+        /// <param name="fv">Future value</param>
+        /// <param name="when">When payments are due ('begin' (1) or 'end' (0))</param>
+        /// <returns></returns>
+        public static ndarray ppmt(object rate, object per, object nper, object pv, object fv, object when)
+        {
+            return _ppmt(rate, per, nper, pv, fv, when);
+        }
+
+        public static ndarray _ppmt(object rate, object per, object nper, object pv, object fv, object when)
+        {
+            var total = npf.pmt(rate, nper, pv, fv, when);
+            return total - npf.ipmt(rate, per, nper, pv, fv, when);     
+        }
+
+        #endregion
     }
 }

@@ -508,5 +508,115 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+        #region npf.ppmt tests
+
+        [TestMethod]
+        public void test_ppmt_DOUBLE()
+        {
+            var res = npf.ppmt(0.1 / 12, 1, 60, 55000);
+            AssertArray(res, new double[] { -710.254125786425 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_DECIMAL()
+        {
+            var res = npf.ppmt(0.1m / 12m, 1, 60, 55000);
+            AssertArray(res, new decimal[] { -710.25412578678316794930885490m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_begin_DOUBLE()
+        {
+            var res = npf.ppmt(0.1 / 12, 1, 60, 55000, 0, 1);
+            AssertArray(res, new double[] { -1158.92971152373 });
+            print(res);
+
+            res = npf.ppmt(0.1 / 12, 1, 60, 55000, 0, "begin");
+            AssertArray(res, new double[] { -1158.92971152373 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_begin_DECIMAL()
+        {
+            var res = npf.ppmt(0.1m / 12m, 1, 60, 55000, 0, 1);
+            AssertArray(res, new decimal[] { -1158.9297115240863117834848926m });
+            print(res);
+
+            res = npf.ppmt(0.1m / 12m, 1, 60, 55000, 0, "begin");
+            AssertArray(res, new decimal[] { -1158.9297115240863117834848926m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_end_DOUBLE()
+        {
+            var res = npf.ppmt(0.1 / 12, 1, 60, 55000, 0, 0);
+            AssertArray(res, new double[] { -710.254125786425 });
+            print(res);
+
+            res = npf.ppmt(0.1 / 12, 1, 60, 55000, 0, "end");
+            AssertArray(res, new double[] { -710.254125786425 });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_end_DECIMAL()
+        {
+            var res = npf.ppmt(0.1m / 12m, 1, 60, 55000, 0, 0);
+            AssertArray(res, new decimal[] { -710.25412578678316794930885490m });
+            print(res);
+
+            res = npf.ppmt(0.1m / 12m, 1, 60, 55000, 0, "end");
+            AssertArray(res, new decimal[] { -710.25412578678316794930885490m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_invalid_per_DOUBLE()
+        {
+            var res = npf.ppmt(0.1 / 12, 0, 60, 15000);
+            AssertArray(res, new double[] { double.NaN });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_invalid_per_DECIMAL()
+        {
+            var res = npf.ppmt(0.1m / 12m, 0, 60, 15000);
+            AssertArray(res, new decimal[] { -318.70567066912268216799332357m });
+            print(res);
+        }
+        [TestMethod]
+        public void test_ppmt_broadcast_DOUBLE()
+        {
+            var res = npf.ppmt(0.1 / 12, np.arange(1, 5), 24, 2000, 0);
+            AssertArray(res, new double[] { -75.6231860083666, -76.253379225103, -76.8888240519789, -77.529564252412 });
+            print(res);
+
+            res = npf.ppmt(0.1 / 12, np.arange(1, 5), 24, 2000, 0, "end");
+            AssertArray(res, new double[] { -75.6231860083666, -76.253379225103, -76.8888240519789, -77.529564252412 });
+            print(res);
+
+            res = npf.ppmt(0.1 / 12, np.arange(1, 5), 24, 2000, 0, "begin");
+            AssertArray(res, new double[] { -91.5271266198677, -75.6231860083666, -76.253379225103, -76.8888240519789 });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_ppmt_broadcast_DECIMAL()
+        {
+            var res = npf.ppmt(0.1m / 12m, np.arange(1, 5), 24, 2000, 0);
+            AssertArray(res, new decimal[] { -75.623186008400704092181612840m, -76.253379225137124548996431612m, -76.888824052012681173879836769m, -77.529564252446435280270537079m });
+            print(res);
+
+            res = npf.ppmt(0.1m / 12m, np.arange(1, 5), 24, 2000, 0, "end");
+            AssertArray(res, new decimal[] { -75.623186008400704092181612840m, -76.253379225137124548996431612m, -76.888824052012681173879836769m, -77.529564252446435280270537079m });
+            print(res);
+
+            res = npf.ppmt(0.1m / 12m, np.arange(1, 5), 24, 2000, 0, "begin");
+            AssertArray(res, new decimal[] { -91.52712661990182728853257433m, -75.623186008400704092181612844m, -76.253379225136795390225375764m, -76.888824052013247844314754175m });
+            print(res);
+
+        }
+
+
+        #endregion
     }
 }
