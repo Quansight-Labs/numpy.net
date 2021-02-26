@@ -42,6 +42,15 @@ class MathematicalFunctionsTests(unittest.TestCase):
         b = np.sin(a, where= x, out = out )
         print(b)
 
+    def test_sin_3(self):
+
+        a = np.arange(0, 5, dtype = np.float64)
+        b = np.sin(a)
+        c = np.sin(a[::-1])
+
+        print(b)
+        print(c)
+
     def test_cos_1(self):
 
         a = np.arange(0, 10, dtype = np.float64)

@@ -90,6 +90,20 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_sin_3()
+        {
+            var a = np.arange(0, 5, dtype: np.Float64);
+ 
+            ndarray b = np.sin(a);
+            ndarray c = np.sin(a.A("::-1"));
+
+            AssertArray(b, new double[] { 0.0, 0.841470984807897, 0.909297426825682, 0.141120008059867, -0.756802495307928 });
+            print(b);
+            AssertArray(c, new double[] { -0.756802495307928, 0.141120008059867, 0.909297426825682, 0.841470984807897, 0.0 });
+            print(c);
+       
+        }
+        [TestMethod]
         public void test_cos_1()
         {
             var ExpectedResult = new double[] { 1.0, -0.416146836547142, -0.653643620863612, 0.960170286650366, -0.145500033808614 };
