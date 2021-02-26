@@ -278,6 +278,33 @@ class FinancialFunctionsTests(unittest.TestCase):
         res = npf.ppmt(0.1 / 12, np.arange(1,5), 24, 2000, 0,'begin')
         print(res)
 
+#region pv
+
+    def test_pv_DOUBLE(self):
+        res = npf.pv(0.07, 20, 12000)
+        print(res)
+
+        res = npf.pv(0.07, 20, 12000, 0)
+        print(res)
+
+        res = npf.pv(0.07, 20, 12000, 222220)
+        print(res)
+
+    def test_pv_begin_DOUBLE(self):
+        res = npf.pv(0.07, 20, 12000, 0, 1)
+        print(res)
+
+        res = npf.pv(0.07, 20, 12000, 0, 'begin')
+        print(res)
+
+    def test_pv_end_DOUBLE(self):
+        res = npf.pv(0.07, 20, 12000, 0, 0)
+        print(res)
+
+        res = npf.pv(0.07, 20, 12000, 0, 'end')
+        print(res)     
+#endregion
+
 #endregion
 if __name__ == '__main__':
     unittest.main()
