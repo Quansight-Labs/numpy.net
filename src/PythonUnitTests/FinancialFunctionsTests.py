@@ -277,6 +277,7 @@ class FinancialFunctionsTests(unittest.TestCase):
 
         res = npf.ppmt(0.1 / 12, np.arange(1,5), 24, 2000, 0,'begin')
         print(res)
+#endregion
 
 #region pv
 
@@ -304,6 +305,44 @@ class FinancialFunctionsTests(unittest.TestCase):
         res = npf.pv(0.07, 20, 12000, 0, 'end')
         print(res)     
 #endregion
+
+#region rate
+
+    def test_rate_DOUBLE(self):
+
+        res = npf.rate(10, 0, -3500, 10000)
+        print(res)
+
+    def test_rate_begin_DOUBLE(self):
+
+        res = npf.rate(10, 0, -3500, 10000, 1)
+        print(res)
+
+        res = npf.rate(10, 0, -3500, 10000, 'begin')
+        print(res)
+
+    def test_rate_end_DOUBLE(self):
+
+        res = npf.rate(10, 0, -3500, 10000, 0)
+        print(res)
+
+        res = npf.rate(10, 0, -3500, 10000, 'end')
+        print(res)
+
+    def test_rate_infeasable_solution_DOUBLE(self):
+
+        res = npf.rate(12.0,400.0,10000.0,5000.0, when=0)
+        print(res)
+
+        res = npf.rate(12.0,400.0,10000.0,5000.0, when=1)
+        print(res)
+
+        res = npf.rate(12.0,400.0,10000.0,5000.0, when='end')
+        print(res)
+
+        res = npf.rate(12.0,400.0,10000.0,5000.0, when='begin')
+        print(res)
+ 
 
 #endregion
 if __name__ == '__main__':

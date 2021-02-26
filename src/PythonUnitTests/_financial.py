@@ -576,102 +576,104 @@ class npf(object):
         fact = np.where(rate == 0, nper, (1+rate*when)*(temp-1)/rate)
         return -(fv + pmt*fact)/temp
 
-# Computed with Sage
-#  (y + (r + 1)^n*x + p*((r + 1)^n - 1)*(r*w + 1)/r)/(n*(r + 1)^(n - 1)*x -
-#  p*((r + 1)^n - 1)*(r*w + 1)/r^2 + n*p*(r + 1)^(n - 1)*(r*w + 1)/r +
-#  p*((r + 1)^n - 1)*w/r)
+    # Computed with Sage
+    #  (y + (r + 1)^n*x + p*((r + 1)^n - 1)*(r*w + 1)/r)/(n*(r + 1)^(n - 1)*x -
+    #  p*((r + 1)^n - 1)*(r*w + 1)/r^2 + n*p*(r + 1)^(n - 1)*(r*w + 1)/r +
+    #  p*((r + 1)^n - 1)*w/r)
+
+    @staticmethod
+    def _g_div_gp(r, n, p, x, y, w):
+        # Evaluate g(r_n)/g'(r_n), where g =
+        # fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1)
+        t1 = (r+1)**n
+        t2 = (r+1)**(n-1)
+        g = y + t1*x + p*(t1 - 1) * (r*w + 1) / r
+        gp = (n*t2*x
+              - p*(t1 - 1) * (r*w + 1) / (r**2)
+              + n*p*t2 * (r*w + 1) / r
+              + p*(t1 - 1) * w/r)
+        return g / gp
 
 
-def _g_div_gp(r, n, p, x, y, w):
-    # Evaluate g(r_n)/g'(r_n), where g =
-    # fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1)
-    t1 = (r+1)**n
-    t2 = (r+1)**(n-1)
-    g = y + t1*x + p*(t1 - 1) * (r*w + 1) / r
-    gp = (n*t2*x
-          - p*(t1 - 1) * (r*w + 1) / (r**2)
-          + n*p*t2 * (r*w + 1) / r
-          + p*(t1 - 1) * w/r)
-    return g / gp
+    # Use Newton's iteration until the change is less than 1e-6
+    #  for all values or a maximum of 100 iterations is reached.
+    #  Newton's rule is
+    #  r_{n+1} = r_{n} - g(r_n)/g'(r_n)
+    #     where
+    #  g(r) is the formula
+    #  g'(r) is the derivative with respect to r.
 
+    @staticmethod
+    def rate(nper, pmt, pv, fv, when='end', guess=None, tol=None, maxiter=100):
+        """
+        Compute the rate of interest per period.
 
-# Use Newton's iteration until the change is less than 1e-6
-#  for all values or a maximum of 100 iterations is reached.
-#  Newton's rule is
-#  r_{n+1} = r_{n} - g(r_n)/g'(r_n)
-#     where
-#  g(r) is the formula
-#  g'(r) is the derivative with respect to r.
-def rate(nper, pmt, pv, fv, when='end', guess=None, tol=None, maxiter=100):
-    """
-    Compute the rate of interest per period.
+        Parameters
+        ----------
+        nper : array_like
+            Number of compounding periods
+        pmt : array_like
+            Payment
+        pv : array_like
+            Present value
+        fv : array_like
+            Future value
+        when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
+            When payments are due ('begin' (1) or 'end' (0))
+        guess : Number, optional
+            Starting guess for solving the rate of interest, default 0.1
+        tol : Number, optional
+            Required tolerance for the solution, default 1e-6
+        maxiter : int, optional
+            Maximum iterations in finding the solution
 
-    Parameters
-    ----------
-    nper : array_like
-        Number of compounding periods
-    pmt : array_like
-        Payment
-    pv : array_like
-        Present value
-    fv : array_like
-        Future value
-    when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
-        When payments are due ('begin' (1) or 'end' (0))
-    guess : Number, optional
-        Starting guess for solving the rate of interest, default 0.1
-    tol : Number, optional
-        Required tolerance for the solution, default 1e-6
-    maxiter : int, optional
-        Maximum iterations in finding the solution
+        Notes
+        -----
+        The rate of interest is computed by iteratively solving the
+        (non-linear) equation::
 
-    Notes
-    -----
-    The rate of interest is computed by iteratively solving the
-    (non-linear) equation::
+         fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1) = 0
 
-     fv + pv*(1+rate)**nper + pmt*(1+rate*when)/rate * ((1+rate)**nper - 1) = 0
+        for ``rate``.
 
-    for ``rate``.
+        References
+        ----------
+        Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May). Open Document
+        Format for Office Applications (OpenDocument)v1.2, Part 2: Recalculated
+        Formula (OpenFormula) Format - Annotated Version, Pre-Draft 12.
+        Organization for the Advancement of Structured Information Standards
+        (OASIS). Billerica, MA, USA. [ODT Document]. Available:
+        http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formula
+        OpenDocument-formula-20090508.odt
 
-    References
-    ----------
-    Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May). Open Document
-    Format for Office Applications (OpenDocument)v1.2, Part 2: Recalculated
-    Formula (OpenFormula) Format - Annotated Version, Pre-Draft 12.
-    Organization for the Advancement of Structured Information Standards
-    (OASIS). Billerica, MA, USA. [ODT Document]. Available:
-    http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formula
-    OpenDocument-formula-20090508.odt
+        """
+        when = npf._convert_when(when)
+        default_type = Decimal if isinstance(pmt, Decimal) else float
 
-    """
-    when = _convert_when(when)
-    default_type = Decimal if isinstance(pmt, Decimal) else float
+        # Handle casting defaults to Decimal if/when pmt is a Decimal and
+        # guess and/or tol are not given default values
+        if guess is None:
+            guess = default_type('0.1')
 
-    # Handle casting defaults to Decimal if/when pmt is a Decimal and
-    # guess and/or tol are not given default values
-    if guess is None:
-        guess = default_type('0.1')
+        if tol is None:
+            tol = default_type('1e-6')
 
-    if tol is None:
-        tol = default_type('1e-6')
+        (nper, pmt, pv, fv, when) = map(np.asarray, [nper, pmt, pv, fv, when])
 
-    (nper, pmt, pv, fv, when) = map(np.asarray, [nper, pmt, pv, fv, when])
-
-    rn = guess
-    iterator = 0
-    close = False
-    while (iterator < maxiter) and not close:
-        rnp1 = rn - _g_div_gp(rn, nper, pmt, pv, fv, when)
-        diff = abs(rnp1-rn)
-        close = np.all(diff < tol)
-        iterator += 1
-        rn = rnp1
-    if not close:
-        # Return nan's in array of the same shape as rn
-        return default_type(np.nan) + rn
-    else:
-        return rn
+        rn = guess
+        iterator = 0
+        close = False
+        while (iterator < maxiter) and not close:
+            rnp1 = rn - npf._g_div_gp(rn, nper, pmt, pv, fv, when)
+            diff = abs(rnp1-rn)
+            close = np.all(diff < tol)
+            iterator += 1
+            rn = rnp1
+        if not close:
+            # Return nan's in array of the same shape as rn
+            return default_type(np.nan) + rn
+        else:
+            return rn
 
 
 def _roots(p):
