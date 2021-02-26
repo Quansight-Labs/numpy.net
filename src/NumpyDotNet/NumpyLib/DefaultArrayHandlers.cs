@@ -917,6 +917,12 @@ namespace NumpyLib
             return 1;
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            sbyte[] bp = vp.datap as sbyte[];
+            return (bp[index] != (sbyte)0);
+        }
+
         protected override object Add(object bValue, object operand)
         {
             sbyte dValue = (sbyte)bValue;
@@ -1092,6 +1098,12 @@ namespace NumpyLib
             var dbyte = data.datap as byte[];
             dbyte[index] = Convert.ToByte(value);
             return 1;
+        }
+
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            byte[] bp = vp.datap as byte[];
+            return (bp[index] != (byte)0);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1272,6 +1284,12 @@ namespace NumpyLib
             return 1;
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            Int16[] bp = vp.datap as Int16[];
+            return (bp[index] != (Int16)0);
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int16 dValue = (Int16)bValue;
@@ -1449,7 +1467,13 @@ namespace NumpyLib
             return 1;
         }
 
-         protected override object Add(object bValue, object operand)
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            UInt16[] bp = vp.datap as UInt16[];
+            return (bp[index] != (UInt16)0);
+        }
+
+        protected override object Add(object bValue, object operand)
         {
             UInt16 dValue = (UInt16)bValue;
             return dValue + (dynamic)operand;
@@ -1623,6 +1647,12 @@ namespace NumpyLib
             var dint32 = data.datap as Int32[];
             dint32[index] = Convert.ToInt32(value);
             return 1;
+        }
+
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            Int32[] bp = vp.datap as Int32[];
+            return (bp[index] != (Int32)0);
         }
 
         protected override object Add(object bValue, object operand)
@@ -1802,6 +1832,12 @@ namespace NumpyLib
             return 1;
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            UInt32[] bp = vp.datap as UInt32[];
+            return (bp[index] != (UInt32)0);
+        }
+
         protected override object Add(object bValue, object operand)
         {
             UInt32 dValue = (UInt32)bValue;
@@ -1978,6 +2014,12 @@ namespace NumpyLib
             return 1;
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            Int64[] bp = vp.datap as Int64[];
+            return (bp[index] != (Int64)0);
+        }
+
         protected override object Add(object bValue, object operand)
         {
             Int64 dValue = (Int64)bValue;
@@ -2152,6 +2194,12 @@ namespace NumpyLib
             var duint64 = data.datap as UInt64[];
             duint64[index] = Convert.ToUInt64(value);
             return 1;
+        }
+
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            UInt64[] bp = vp.datap as UInt64[];
+            return (bp[index] != (UInt64)0);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2383,6 +2431,12 @@ namespace NumpyLib
         public override NPY_TYPES MathOpFloatingType(UFuncOperation Operation)
         {
              return NPY_TYPES.NPY_FLOAT;
+        }
+
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            float[] bp = vp.datap as float[];
+            return (bp[index] != 0.0f);
         }
 
         protected override object Add(object bValue, object operand)
@@ -2633,6 +2687,11 @@ namespace NumpyLib
             return Convert.ToDouble(o);
         }
 
+        public override bool NonZero(VoidPtr vp, npy_intp index)
+        {
+            double[] bp = vp.datap as double[];
+            return (bp[index] != 0.0);
+        }
         public override NPY_TYPES MathOpReturnType(UFuncOperation Operation)
         {
             return NPY_TYPES.NPY_DOUBLE;
