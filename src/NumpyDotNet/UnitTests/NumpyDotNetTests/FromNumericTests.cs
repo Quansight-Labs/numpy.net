@@ -1439,7 +1439,103 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1()
+        public void test_nonzero_BOOL()
+        {
+            ndarray x = np.array(new bool[,] { { true, false, false }, { false, true, false }, { true, true, false } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new bool[] { true, true, true, true });
+            print("*****");
+
+        }
+
+        [TestMethod]
+        public void test_nonzero_SBYTE()
+        {
+            ndarray x = np.array(new sbyte[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new sbyte[] { 1, 2, 1, 1 });
+            print("*****");
+ 
+        }
+        [TestMethod]
+        public void test_nonzero_UBYTE()
+        {
+            ndarray x = np.array(new byte[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new byte[] { 1, 2, 1, 1 });
+            print("*****");
+
+        }
+        [TestMethod]
+        public void test_nonzero_INT16()
+        {
+            ndarray x = np.array(new Int16[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new Int16[] { 1, 2, 1, 1 });
+            print("*****");
+
+        }
+        [TestMethod]
+        public void test_nonzero_UINT16()
+        {
+            ndarray x = np.array(new UInt16[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new UInt16[] { 1, 2, 1, 1 });
+            print("*****");
+
+        }
+        [TestMethod]
+        public void test_nonzero_INT32()
         {
             ndarray x = np.array(new Int32[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);
@@ -1456,8 +1552,96 @@ namespace NumpyDotNetTests
             AssertArray(z, new Int32[] { 1,2,1,1 });
             print("*****");
 
-            //ndarray q = np.transpose(np.nonzero(x));
-            //print(q);
+        }
+        [TestMethod]
+        public void test_nonzero_UINT32()
+        {
+            ndarray x = np.array(new UInt32[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new UInt32[] { 1, 2, 1, 1 });
+            print("*****");
+        }
+        [TestMethod]
+        public void test_nonzero_INT64()
+        {
+            ndarray x = np.array(new Int64[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new Int64[] { 1, 2, 1, 1 });
+            print("*****");
+        }
+        [TestMethod]
+        public void test_nonzero_UINT64()
+        {
+            ndarray x = np.array(new UInt64[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new UInt64[] { 1, 2, 1, 1 });
+            print("*****");
+        }
+        [TestMethod]
+        public void test_nonzero_FLOAT()
+        {
+            ndarray x = np.array(new float[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new float[] { 1, 2, 1, 1 });
+            print("*****");
+        }
+        [TestMethod]
+        public void test_nonzero_1_DOUBLE()
+        {
+            ndarray x = np.array(new double[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
+            print(x);
+            print("*****");
+
+            ndarray[] y = np.nonzero(x);
+            print(y);
+            AssertArray(y[0], new npy_intp[] { 0, 1, 2, 2 });
+            AssertArray(y[1], new npy_intp[] { 0, 1, 0, 1 });
+            print("*****");
+
+            ndarray z = x.A(np.nonzero(x));
+            print(z);
+            AssertArray(z, new double[] { 1, 2, 1, 1 });
+            print("*****");
 
         }
 
