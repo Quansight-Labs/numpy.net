@@ -1466,7 +1466,7 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="rate">The discount rate.</param>
         /// <param name="values">The values of the time series of cash flows.</param>
-        /// <returns></returns>
+        /// <returns>The NPV of the input cash flow series `values` at the discount `rate`.</returns>
         public static ndarray npv(object rate, object values)
         {
             var _values = np.asanyarray(values);
@@ -1475,6 +1475,58 @@ namespace NumpyDotNet
             ndarray npvArr = (ndarray)(_values / np.power((1 + _rate), np.arange(0,_values.Dim(0))));
             ndarray npvValue = npvArr.Sum(axis: 0);
             return np.atleast_1d(npvValue).ElementAt(0);
+        }
+
+        #endregion
+
+        #region mirr
+
+        /*
+        Modified internal rate of return.
+
+        Parameters
+        ----------
+        values : array_like
+            Cash flows(must contain at least one positive and one negative
+            value) or nan is returned.The first value is considered a sunk
+          cost at time zero.
+        finance_rate : scalar
+          Interest rate paid on the cash flows
+        reinvest_rate : scalar
+            Interest rate received on the cash flows upon reinvestment
+
+        Returns
+        -------
+        out : float
+            Modified internal rate of return
+
+        */
+
+        /// <summary>
+        /// Modified internal rate of return.
+        /// </summary>
+        /// <param name="values">Cash flows (must contain at least one positive and one negative value) or nan is returned.</param>
+        /// <param name="finance_rate">Interest rate paid on the cash flows</param>
+        /// <param name="reinvest_rate">Interest rate received on the cash flows upon reinvestment</param>
+        /// <returns>Modified internal rate of return</returns>
+        public static ndarray mirr(object values, object finance_rate, object reinvest_rate)
+        {
+            ndarray _values = np.asanyarray(values);
+            ndarray _finance_rate = np.asanyarray(finance_rate);
+            ndarray _reinvest_rate = np.asanyarray(reinvest_rate);
+            double n = _values.size;
+
+            ndarray pos = _values > 0;
+            ndarray neg = _values < 0;
+            if (!(pos.Anyb() && neg.Anyb()))
+            {
+                return np.asanyarray(double.NaN);
+            }
+
+            ndarray numer = np.absolute(npf.npv(_reinvest_rate, _values * pos));
+            ndarray denom = np.absolute(npf.npv(_finance_rate, _values * neg));
+
+            return np.power((ndarray)(numer / denom), (1 / (n - 1))) * (1 + _reinvest_rate) - 1;
         }
 
         #endregion

@@ -887,5 +887,59 @@ namespace NumpyDotNetTests
         }
 
         #endregion
+
+        #region npf.mirr tests
+
+        [TestMethod]
+        public void test_mirr_DOUBLE()
+        {
+            var val = new Int32[] { -4500, -800, 800, 800, 600, 600, 800, 800, 700, 3000 };
+            var res = npf.mirr(val, 0.08, 0.055);
+            AssertArray(res, new double[] { 0.0665971750315535 });
+            print(res);
+
+            val = new Int32[] { -120000, 39000, 30000, 21000, 37000, 46000 };
+            res = npf.mirr(val, 0.10, 0.12);
+            AssertArray(res, new double[] { 0.126094130365905 });
+            print(res);
+
+            val = new Int32[] { 100, 200, -50, 300, -200 };
+            res = npf.mirr(val, 0.05, 0.06);
+            AssertArray(res, new double[] { 0.342823387842177 });
+            print(res);
+
+            val = new Int32[] { 39000, 30000, 21000, 37000, 46000 };
+            res = npf.mirr(val, 0.10, 0.12);
+            AssertArray(res, new double[] { double.NaN });
+            print(res);
+
+        }
+
+        [TestMethod]
+        public void test_mirr_DECIMAL()
+        {
+            var val = new Int32[] { -4500, -800, 800, 800, 600, 600, 800, 800, 700, 3000 };
+            var res = npf.mirr(val, 0.08m, 0.055m);
+            AssertArray(res, new decimal[] { 0.0665971750315565m });
+            print(res);
+
+            val = new Int32[] { -120000, 39000, 30000, 21000, 37000, 46000 };
+            res = npf.mirr(val, 0.10m, 0.12m);
+            AssertArray(res, new decimal[] { 0.126094130365904m });
+            print(res);
+
+            val = new Int32[] { 100, 200, -50, 300, -200 };
+            res = npf.mirr(val, 0.05m, 0.06m);
+            AssertArray(res, new decimal[] { 0.3428233878421744m });
+            print(res);
+
+            val = new Int32[] { 39000, 30000, 21000, 37000, 46000 };
+            res = npf.mirr(val, 0.10m, 0.12m);
+            AssertArray(res, new double[] { double.NaN });  // NOTE: return double.NaN cuz decimals don't support NaN values.
+            print(res);
+
+        }
+
+        #endregion
     }
 }
