@@ -427,5 +427,41 @@ class FinancialFunctionsTests(unittest.TestCase):
 
 #endregion
 
+#region npv
+
+    def test_npv_DOUBLE(self):
+
+        res = npf.npv(0.05, [-15000, 1500, 2500, 3500, 4500, 6000]);
+        print(res)
+
+    def test_npv_irr_congruence_DOUBLE(self):
+
+        cashflows = np.array([-40000, 5000, 8000, 12000, 30000])
+        res = npf.npv(cashflows, cashflows);
+        print(res)
+
+#endregion
+
+#region mirr
+
+    def test_mirr_DOUBLE(self):
+
+        val = [-4500, -800, 800, 800, 600, 600, 800, 800, 700, 3000]
+        res = npf.mirr(val, 0.08, 0.055)
+        print(res)
+
+        val = [-120000, 39000, 30000, 21000, 37000, 46000]
+        res = npf.mirr(val, 0.10, 0.12)
+        print(res)
+
+        val = [100, 200, -50, 300, -200]
+        res = npf.mirr(val, 0.05, 0.06)
+        print(res)
+
+        val = [39000, 30000, 21000, 37000, 46000]
+        res = npf.mirr(val, 0.10, 0.12)
+        print(res)
+
+#endregion
 if __name__ == '__main__':
     unittest.main()

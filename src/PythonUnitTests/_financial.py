@@ -789,113 +789,113 @@ class npf(object):
         rate = rate.item(np.argmin(np.abs(rate)))
         return rate
 
+    @staticmethod
+    def npv(rate, values):
+        """
+        Returns the NPV (Net Present Value) of a cash flow series.
 
-def npv(rate, values):
-    """
-    Returns the NPV (Net Present Value) of a cash flow series.
+        Parameters
+        ----------
+        rate : scalar
+            The discount rate.
+        values : array_like, shape(M, )
+            The values of the time series of cash flows.  The (fixed) time
+            interval between cash flow "events" must be the same as that for
+            which `rate` is given (i.e., if `rate` is per year, then precisely
+            a year is understood to elapse between each cash flow event).  By
+            convention, investments or "deposits" are negative, income or
+            "withdrawals" are positive; `values` must begin with the initial
+            investment, thus `values[0]` will typically be negative.
 
-    Parameters
-    ----------
-    rate : scalar
-        The discount rate.
-    values : array_like, shape(M, )
-        The values of the time series of cash flows.  The (fixed) time
-        interval between cash flow "events" must be the same as that for
-        which `rate` is given (i.e., if `rate` is per year, then precisely
-        a year is understood to elapse between each cash flow event).  By
-        convention, investments or "deposits" are negative, income or
-        "withdrawals" are positive; `values` must begin with the initial
-        investment, thus `values[0]` will typically be negative.
+        Returns
+        -------
+        out : float
+            The NPV of the input cash flow series `values` at the discount
+            `rate`.
 
-    Returns
-    -------
-    out : float
-        The NPV of the input cash flow series `values` at the discount
-        `rate`.
+        Warnings
+        --------
+        ``npv`` considers a series of cashflows starting in the present (t = 0).
+        NPV can also be defined with a series of future cashflows, paid at the
+        end, rather than the start, of each period. If future cashflows are used,
+        the first cashflow `values[0]` must be zeroed and added to the net
+        present value of the future cashflows. This is demonstrated in the
+        examples.
 
-    Warnings
-    --------
-    ``npv`` considers a series of cashflows starting in the present (t = 0).
-    NPV can also be defined with a series of future cashflows, paid at the
-    end, rather than the start, of each period. If future cashflows are used,
-    the first cashflow `values[0]` must be zeroed and added to the net
-    present value of the future cashflows. This is demonstrated in the
-    examples.
+        Notes
+        -----
+        Returns the result of: [G]_
 
-    Notes
-    -----
-    Returns the result of: [G]_
+        .. math :: \\sum_{t=0}^{M-1}{\\frac{values_t}{(1+rate)^{t}}}
 
-    .. math :: \\sum_{t=0}^{M-1}{\\frac{values_t}{(1+rate)^{t}}}
+        References
+        ----------
+        .. [G] L. J. Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
+           Addison-Wesley, 2003, pg. 346.
 
-    References
-    ----------
-    .. [G] L. J. Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
-       Addison-Wesley, 2003, pg. 346.
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import numpy_financial as npf
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import numpy_financial as npf
+        Consider a potential project with an initial investment of $40 000 and
+        projected cashflows of $5 000, $8 000, $12 000 and $30 000 at the end of
+        each period discounted at a rate of 8% per period. To find the project's
+        net present value:
 
-    Consider a potential project with an initial investment of $40 000 and
-    projected cashflows of $5 000, $8 000, $12 000 and $30 000 at the end of
-    each period discounted at a rate of 8% per period. To find the project's
-    net present value:
+        >>> rate, cashflows = 0.08, [-40_000, 5_000, 8_000, 12_000, 30_000]
+        >>> npf.npv(rate, cashflows).round(5)
+        3065.22267
 
-    >>> rate, cashflows = 0.08, [-40_000, 5_000, 8_000, 12_000, 30_000]
-    >>> npf.npv(rate, cashflows).round(5)
-    3065.22267
+        It may be preferable to split the projected cashflow into an initial
+        investment and expected future cashflows. In this case, the value of
+        the initial cashflow is zero and the initial investment is later added
+        to the future cashflows net present value:
 
-    It may be preferable to split the projected cashflow into an initial
-    investment and expected future cashflows. In this case, the value of
-    the initial cashflow is zero and the initial investment is later added
-    to the future cashflows net present value:
+        >>> initial_cashflow = cashflows[0]
+        >>> cashflows[0] = 0
+        >>> np.round(npf.npv(rate, cashflows) + initial_cashflow, 5)
+        3065.22267
 
-    >>> initial_cashflow = cashflows[0]
-    >>> cashflows[0] = 0
-    >>> np.round(npf.npv(rate, cashflows) + initial_cashflow, 5)
-    3065.22267
+        """
+        values = np.asarray(values)
+        return (values / (1+rate)**np.arange(0, len(values))).sum(axis=0)
 
-    """
-    values = np.asarray(values)
-    return (values / (1+rate)**np.arange(0, len(values))).sum(axis=0)
+    @staticmethod
+    def mirr(values, finance_rate, reinvest_rate):
+        """
+        Modified internal rate of return.
 
+        Parameters
+        ----------
+        values : array_like
+            Cash flows (must contain at least one positive and one negative
+            value) or nan is returned.  The first value is considered a sunk
+            cost at time zero.
+        finance_rate : scalar
+            Interest rate paid on the cash flows
+        reinvest_rate : scalar
+            Interest rate received on the cash flows upon reinvestment
 
-def mirr(values, finance_rate, reinvest_rate):
-    """
-    Modified internal rate of return.
+        Returns
+        -------
+        out : float
+            Modified internal rate of return
 
-    Parameters
-    ----------
-    values : array_like
-        Cash flows (must contain at least one positive and one negative
-        value) or nan is returned.  The first value is considered a sunk
-        cost at time zero.
-    finance_rate : scalar
-        Interest rate paid on the cash flows
-    reinvest_rate : scalar
-        Interest rate received on the cash flows upon reinvestment
+        """
+        values = np.asarray(values)
+        n = values.size
 
-    Returns
-    -------
-    out : float
-        Modified internal rate of return
+        # Without this explicit cast the 1/(n - 1) computation below
+        # becomes a float, which causes TypeError when using Decimal
+        # values.
+        if isinstance(finance_rate, Decimal):
+            n = Decimal(n)
 
-    """
-    values = np.asarray(values)
-    n = values.size
-
-    # Without this explicit cast the 1/(n - 1) computation below
-    # becomes a float, which causes TypeError when using Decimal
-    # values.
-    if isinstance(finance_rate, Decimal):
-        n = Decimal(n)
-
-    pos = values > 0
-    neg = values < 0
-    if not (pos.any() and neg.any()):
-        return np.nan
-    numer = np.abs(npv(reinvest_rate, values*pos))
-    denom = np.abs(npv(finance_rate, values*neg))
-    return (numer/denom)**(1/(n - 1))*(1 + reinvest_rate) - 1
+        pos = values > 0
+        neg = values < 0
+        if not (pos.any() and neg.any()):
+            return np.nan
+        numer = np.abs(npf.npv(reinvest_rate, values*pos))
+        denom = np.abs(npf.npv(finance_rate, values*neg))
+        return (numer/denom)**(1/(n - 1))*(1 + reinvest_rate) - 1
