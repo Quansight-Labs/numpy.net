@@ -835,7 +835,7 @@ namespace NumpyDotNetTests
 
         #endregion
 
-        #region npf.ipp
+        #region npf.ipp tests
 
         [Ignore]   // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
         [TestMethod]
@@ -843,6 +843,46 @@ namespace NumpyDotNetTests
         {
             var cashflows = np.array(new double[] { -5, 10.5, 1, -8, 1, 0, 0, 0 });
             var res = npf.irr(cashflows);
+            print(res);
+        }
+
+        #endregion
+
+        #region  npf.npv tests
+
+        [TestMethod]
+        public void test_npv_DOUBLE()
+        {
+            var res = npf.npv(0.05, new Int32[] { -15000, 1500, 2500, 3500, 4500, 6000 });
+            AssertArray(res, new double[] { 122.89485495093959 });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_npv_DECIMAL()
+        {
+            var res = npf.npv(0.05m, new Int32[] { -15000, 1500, 2500, 3500, 4500, 6000 });
+            AssertArray(res, new decimal[] {  122.89485495095m });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_npv_irr_congruence_DOUBLE()
+        {
+
+            var cashflows = np.array(new Int32[] { -40000, 5000, 8000, 12000, 30000 });
+            var res = npf.npv(cashflows, cashflows);
+            AssertArray(res, new double[] { -39999.0000749843 });
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_npv_irr_congruence_DECIMAL()
+        {
+
+            var cashflows = np.array(new decimal[] { -40000, 5000, 8000, 12000, 30000 });
+            var res = npf.npv(cashflows, cashflows);
+            AssertArray(res, new decimal[] { -39999.000074984309394346985692m });
             print(res);
         }
 
