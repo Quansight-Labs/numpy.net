@@ -4761,7 +4761,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1_DECIMAL()
+        public void test_nonzero_DECIMAL()
         {
             ndarray x = np.array(new decimal[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);

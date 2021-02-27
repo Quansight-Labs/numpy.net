@@ -4818,7 +4818,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1_BIGINT()
+        public void test_nonzero_BIGINT()
         {
             ndarray x = np.array(new BigInteger[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);

@@ -1626,7 +1626,7 @@ namespace NumpyDotNetTests
             print("*****");
         }
         [TestMethod]
-        public void test_nonzero_1_DOUBLE()
+        public void test_nonzero_DOUBLE()
         {
             ndarray x = np.array(new double[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);

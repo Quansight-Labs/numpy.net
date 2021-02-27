@@ -3887,7 +3887,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1_OBJECT()
+        public void test_nonzero_OBJECT()
         {
             ndarray x = np.array(new Object[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);

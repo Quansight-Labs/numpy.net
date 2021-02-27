@@ -3774,7 +3774,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1_STRING()
+        public void test_nonzero_STRING()
         {
             ndarray x = np.array(new string[,] { { "1", null, null }, { null, "2", null }, { "1", "1", null } });
             print(x);

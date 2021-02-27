@@ -4969,7 +4969,7 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_nonzero_1_COMPLEX()
+        public void test_nonzero_COMPLEX()
         {
             ndarray x = np.array(new Complex[,] { { 1, 0, 0 }, { 0, 2, 0 }, { 1, 1, 0 } });
             print(x);
