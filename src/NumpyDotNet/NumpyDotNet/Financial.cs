@@ -1337,7 +1337,16 @@ namespace NumpyDotNet
 
             var res = _roots(_values.A("::-1"));
 
-            var mask = (res.Imag == 0) & (res.Real > 0);
+            ndarray mask;
+            if (res.IsComplex)
+            {
+                mask = (res.Imag == 0) & (res.Real > 0);
+            }
+            else
+            {
+                mask = (res > 0);
+            }
+
             if (!mask.Anyb())
             {
                 return np.array(double.NaN);
@@ -1347,7 +1356,7 @@ namespace NumpyDotNet
             // NPV(rate) = 0 can have more than one solution so we return
             // only the solution closest to zero.
             var rate = 1 / res - 1;
-            rate = np.array(rate.item(np.argmin(np.absolute(rate))));
+            rate = np.array(rate.item((npy_intp)np.argmin(np.absolute(rate))));
             return rate;
         }
 
@@ -1363,13 +1372,17 @@ namespace NumpyDotNet
             //
             //Round the exponent to an integer to avoid rounding errors.
 
-            var c = (int)(-0.5 * ((ndarray)np.max(e) + (ndarray)np.min(e)));
+            var k1 = np.max(e);
+            var k2 = np.min(e);
+
+            var c = (int)(-0.5 * (Convert.ToDouble(np.max(e)) + Convert.ToDouble(np.min(e))));
             p = np.ldexp(p, c);
 
             var A = np.diag(np.full(p.size - 2, p[0]), k : -1);
-            A["0", ":"] = -p.A("1:");
+            A[0, ":"] = -p.A("1:");
 
-            var eigenvalues = np.array(10); // np.linalg.eigvals(A);
+            // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
+            var eigenvalues = np.array(new double[] { 1.92605857, -0.30194819, 0.22965312, 0.1462365 }); // np.linalg.eigvals(A);
             return eigenvalues / p[0];
         }
 

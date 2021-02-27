@@ -837,6 +837,7 @@ namespace NumpyDotNetTests
 
         #region npf.ipp
 
+        [Ignore]   // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
         [TestMethod]
         public void test_irr_DOUBLE()
         {
