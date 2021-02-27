@@ -125,66 +125,146 @@ namespace NumpyDotNet
 
         #region array
 
+        /// <summary>
+        /// Create ndarray from .net bool array
+        /// </summary>
+        /// <param name="arr">input bool array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_BOOL</returns>
         public static ndarray array(bool[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_BOOL);
         }
+        /// <summary>
+        /// Create ndarray from .net byte array
+        /// </summary>
+        /// <param name="arr">input byte array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_UBYTE</returns>
         public static ndarray array(byte[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_UBYTE);
         }
+        /// <summary>
+        /// Create ndarray from .net sbyte array
+        /// </summary>
+        /// <param name="arr">input sbyte array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_BYTE</returns>
         public static ndarray array(sbyte[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_BYTE);
         }
+        /// <summary>
+        /// Create ndarray from .net Int16 array
+        /// </summary>
+        /// <param name="arr">input Int16 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_INT16</returns>
         public static ndarray array(Int16[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_INT16);
         }
+        /// <summary>
+        /// Create ndarray from .net UInt16 array
+        /// </summary>
+        /// <param name="arr">input UInt16 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_UINT16</returns>
         public static ndarray array(UInt16[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_UINT16);
         }
+        /// <summary>
+        /// Create ndarray from .net Int32 array
+        /// </summary>
+        /// <param name="arr">input Int32 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_INT32</returns>
         public static ndarray array(Int32[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_INT32);
         }
+        /// <summary>
+        /// Create ndarray from .net UInt32 array
+        /// </summary>
+        /// <param name="arr">input UInt32 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_UINT32</returns>
         public static ndarray array(UInt32[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_UINT32);
         }
+        /// <summary>
+        /// Create ndarray from .net Int64 array
+        /// </summary>
+        /// <param name="arr">input Int64 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_INT64</returns>
         public static ndarray array(Int64[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_INT64);
         }
+        /// <summary>
+        /// Create ndarray from .net UInt64 array
+        /// </summary>
+        /// <param name="arr">input UInt64 array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_UINT64</returns>
         public static ndarray array(UInt64[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_UINT64);
         }
+        /// <summary>
+        /// Create ndarray from .net float array
+        /// </summary>
+        /// <param name="arr">input float array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_FLOAT</returns>
         public static ndarray array(float[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_FLOAT);
         }
+        /// <summary>
+        /// Create ndarray from .net double array
+        /// </summary>
+        /// <param name="arr">input double array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_DOUBLE</returns>
         public static ndarray array(double[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_DOUBLE);
         }
+        /// <summary>
+        /// Create ndarray from .net decimal array
+        /// </summary>
+        /// <param name="arr">input decimal array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_DECIMAL</returns>
         public static ndarray array(decimal[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_DECIMAL);
         }
+        /// <summary>
+        /// Create ndarray from .net Complex array
+        /// </summary>
+        /// <param name="arr">input Complex array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_COMPLEX</returns>
         public static ndarray array(System.Numerics.Complex[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_COMPLEX);
         }
+        /// <summary>
+        /// Create ndarray from .net BigInteger array
+        /// </summary>
+        /// <param name="arr">input BigInteger array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_BIGINT</returns>
         public static ndarray array(System.Numerics.BigInteger[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_BIGINT);
         }
+        /// <summary>
+        /// Create ndarray from .net Object array
+        /// </summary>
+        /// <param name="arr">input Object array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_OBJECT</returns>
         public static ndarray array(System.Object[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_OBJECT);
         }
+        /// <summary>
+        /// Create ndarray from .net String array
+        /// </summary>
+        /// <param name="arr">input String array</param>
+        /// <returns>ndarray of type NPY_TYPES.NPY_STRING</returns>
         public static ndarray array(System.String[] arr)
         {
             return _array(arr, NPY_TYPES.NPY_STRING);
@@ -219,6 +299,17 @@ namespace NumpyDotNet
             return null;
         }
 
+        /// <summary>
+        /// Create ndarray from specified buffer, converting to the specified data type if necessary
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr">buffer to create ndarray from</param>
+        /// <param name="dtype">data type of created ndarray</param>
+        /// <param name="copy">true to copy arr buffer, false to share the arr buffer</param>
+        /// <param name="order">allows for specifying the ordering of bytes (fortran/C/K),</param>
+        /// <param name="subok">(optional) if true, subclasses will be passed thru</param>
+        /// <param name="ndmin">(optional) specifies number of dimensions resulting array should have</param>
+        /// <returns></returns>
         public static ndarray array<T>(T[] arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
         {
             NPY_TYPES arrayType = DetermineArrayType(arr, dtype);
@@ -257,6 +348,17 @@ namespace NumpyDotNet
             return null;
         }
 
+        /// <summary>
+        /// Create ndarray from specified buffer, converting to the specified data type if necessary
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr">buffer to create ndarray from</param>
+        /// <param name="dtype">data type of created ndarray</param>
+        /// <param name="copy">true to copy arr buffer, false to share the arr buffer</param>
+        /// <param name="order">allows for specifying the ordering of bytes (fortran/C/K),</param>
+        /// <param name="subok">(optional) if true, subclasses will be passed thru</param>
+        /// <param name="ndmin">(optional) specifies number of dimensions resulting array should have</param>
+        /// <returns></returns>
         public static ndarray array(VoidPtr arr, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
         {
             switch (arr.type_num)
@@ -304,14 +406,29 @@ namespace NumpyDotNet
             Array.Copy(arr.datap as T[], arr.data_offset / elsize, data, 0, numElements);
             return array(data);
         }
-
+        /// <summary>
+        /// create array from passed data but specifying number of elements
+        /// </summary>
+        /// <param name="arr">array of data to create array from</param>
+        /// <param name="numElements">number of elements from arr to create ndarray from</param>
+        /// <returns></returns>
         public static ndarray array(VoidPtr arr, int numElements)
         {
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(arr.type_num);
             int startingOffset = (int)(arr.data_offset >> ArrayHandler.ItemDiv);
             return array(ArrayHandler.AllocateAndCopy(arr.datap, startingOffset, numElements));
         }
-
+        /// <summary>
+        /// Create ndarray from specified buffer, converting to the specified data type if necessary
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr">buffer to create ndarray from</param>
+        /// <param name="dtype">data type of created ndarray</param>
+        /// <param name="copy">true to copy arr buffer, false to share the arr buffer</param>
+        /// <param name="order">allows for specifying the ordering of bytes (fortran/C/K),</param>
+        /// <param name="subok">(optional) if true, subclasses will be passed thru</param>
+        /// <param name="ndmin">(optional) specifies number of dimensions resulting array should have</param>
+        /// <returns></returns>
         public static ndarray array(Object src, dtype dtype = null, bool copy = true, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER, bool subok = false, int ndmin = 0)
         {
 
@@ -384,51 +501,56 @@ namespace NumpyDotNet
             return result;
         }
 
-
+        /// <summary>
+        /// creates zero filled array with the specified shape and data type
+        /// </summary>
+        /// <param name="shape">shape of array to create</param>
+        /// <param name="dtype">data type of array to create</param>
+        /// <returns></returns>
         public static ndarray ndarray(shape shape, dtype dtype)
         {
             return zeros(shape, dtype);
         }
 
-        public static ndarray array(object input, object where)
-        {
-            ndarray arr = null;
-            ndarray wherearr = null;
+        //public static ndarray array(object input, object where)
+        //{
+        //    ndarray arr = null;
+        //    ndarray wherearr = null;
 
-            try
-            {
-                arr = asanyarray(input);
-            }
-            catch (Exception ex)
-            {
-                throw new ValueError("Unable to convert input into an ndarray.");
-            }
+        //    try
+        //    {
+        //        arr = asanyarray(input);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new ValueError("Unable to convert input into an ndarray.");
+        //    }
 
-            if (where != null)
-            {
-                try
-                {
-                    wherearr = asanyarray(where);
-                }
-                catch (Exception ex)
-                {
-                    throw new ValueError("Unable to convert 'where' into an ndarray.");
-                }
+        //    if (where != null)
+        //    {
+        //        try
+        //        {
+        //            wherearr = asanyarray(where);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new ValueError("Unable to convert 'where' into an ndarray.");
+        //        }
 
-                try
-                {
-                    arr = arr.A(wherearr);
-                }
-                catch (Exception ex)
-                {
-                    throw new ValueError("input[where] does not result in a valid ndarray.");
-                }
+        //        try
+        //        {
+        //            arr = arr.A(wherearr);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new ValueError("input[where] does not result in a valid ndarray.");
+        //        }
 
-            }
+        //    }
 
 
-            return arr;
-        }
+        //    return arr;
+        //}
         #endregion
 
         #region arange
@@ -559,7 +681,6 @@ namespace NumpyDotNet
         /// <returns>Array of evenly spaced values</returns>
         /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
         /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
-
         public static ndarray arange(double start, double? stop = null, double? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
@@ -672,6 +793,16 @@ namespace NumpyDotNet
             return result;
         }
 
+        /// <summary>
+        /// Return evenly spaced values within a given interval.
+        /// </summary>
+        /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
+        /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
+        /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
+        /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
+        /// <returns>Array of evenly spaced values</returns>
+        /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
+        /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
         public static ndarray arange(decimal start, decimal? stop = null, decimal? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
@@ -767,6 +898,16 @@ namespace NumpyDotNet
             return result;
         }
 
+        /// <summary>
+        /// Return evenly spaced values within a given interval.
+        /// </summary>
+        /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
+        /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
+        /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
+        /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
+        /// <returns>Array of evenly spaced values</returns>
+        /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
+        /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
         public static ndarray arange(System.Numerics.Complex start, System.Numerics.Complex? stop = null, System.Numerics.Complex? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
@@ -862,6 +1003,16 @@ namespace NumpyDotNet
             return result;
         }
 
+        /// <summary>
+        /// Return evenly spaced values within a given interval.
+        /// </summary>
+        /// <param name="start">Start of interval. The interval includes this value. The default start value is 0.</param>
+        /// <param name="stop">End of interval. The interval does not include this value, except in some cases where step is not an integer and floating point round-off affects the length of out.</param>
+        /// <param name="step">Spacing between values. For any output out, this is the distance between two adjacent values, out[i+1] - out[i]. The default step size is 1. If step is specified, start must also be given.</param>
+        /// <param name="dtype">The type of the output array. If dtype is not given, infer the data type from the other input arguments.</param>
+        /// <returns>Array of evenly spaced values</returns>
+        /// <notes>For floating point arguments, the length of the result is ceil((stop - start)/step). Because of floating point overflow, this rule may result in the last element of out being greater than stop.</notes>
+        /// <notes>When using a non-integer step, such as 0.1, the results will often not be consistent. It is better to use linspace for these cases.</notes>
         public static ndarray arange(System.Numerics.BigInteger start, System.Numerics.BigInteger? stop = null, System.Numerics.BigInteger? step = null, dtype dtype = null)
         {
             npy_intp[] dims;
@@ -1123,10 +1274,30 @@ namespace NumpyDotNet
 
         #region linspace
 
+        /// <summary>
+        /// Return evenly spaced numbers over a specified interval.
+        /// </summary>
+        /// <param name="start">The starting value of the sequence</param>
+        /// <param name="stop">The end value of the sequence, unless `endpoint` is set to False.</param>
+        /// <param name="retstep">return (`samples`, `step`), where `step` is the spacing between samples.</param>
+        /// <param name="num">Number of samples to generate.Default is 50.Must be non-negative.</param>
+        /// <param name="endpoint">If True, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="dtype">The type of the output array.If `dtype` is not given, infer the data type from the other input arguments.</param>
+        /// <returns></returns>
         public static ndarray linspace(Int64 start, Int64 stop, ref double retstep, int num = 50, bool endpoint = true,  dtype dtype = null)
         {
             return linspace(Convert.ToDouble(start), Convert.ToDouble(stop), ref retstep, num, endpoint,  dtype);
         }
+        /// <summary>
+        /// Return evenly spaced numbers over a specified interval.
+        /// </summary>
+        /// <param name="start">The starting value of the sequence</param>
+        /// <param name="stop">The end value of the sequence, unless `endpoint` is set to False.</param>
+        /// <param name="retstep">return (`samples`, `step`), where `step` is the spacing between samples.</param>
+        /// <param name="num">Number of samples to generate.Default is 50.Must be non-negative.</param>
+        /// <param name="endpoint">If True, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="dtype">The type of the output array.If `dtype` is not given, infer the data type from the other input arguments.</param>
+        /// <returns></returns>
         public static ndarray linspace(double start, double stop, ref double retstep, int num = 50, bool endpoint = true,  dtype dtype = null)
         {
             //  Return evenly spaced numbers over a specified interval.
@@ -1287,6 +1458,16 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Return evenly spaced numbers over a specified interval.
+        /// </summary>
+        /// <param name="start">The starting value of the sequence</param>
+        /// <param name="stop">The end value of the sequence, unless `endpoint` is set to False.</param>
+        /// <param name="retstep">return (`samples`, `step`), where `step` is the spacing between samples.</param>
+        /// <param name="num">Number of samples to generate.Default is 50.Must be non-negative.</param>
+        /// <param name="endpoint">If True, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="dtype">The type of the output array.If `dtype` is not given, infer the data type from the other input arguments.</param>
+        /// <returns></returns>
         public static ndarray linspace(decimal start, decimal stop, ref decimal retstep, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             //  Return evenly spaced numbers over a specified interval.
@@ -1446,6 +1627,16 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Return evenly spaced numbers over a specified interval.
+        /// </summary>
+        /// <param name="start">The starting value of the sequence</param>
+        /// <param name="stop">The end value of the sequence, unless `endpoint` is set to False.</param>
+        /// <param name="retstep">return (`samples`, `step`), where `step` is the spacing between samples.</param>
+        /// <param name="num">Number of samples to generate.Default is 50.Must be non-negative.</param>
+        /// <param name="endpoint">If True, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="dtype">The type of the output array.If `dtype` is not given, infer the data type from the other input arguments.</param>
+        /// <returns></returns>
         public static ndarray linspace(System.Numerics.Complex start, System.Numerics.Complex stop, ref System.Numerics.Complex retstep, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             //  Return evenly spaced numbers over a specified interval.
@@ -1605,6 +1796,16 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Return evenly spaced numbers over a specified interval.
+        /// </summary>
+        /// <param name="start">The starting value of the sequence</param>
+        /// <param name="stop">The end value of the sequence, unless `endpoint` is set to False.</param>
+        /// <param name="retstep">return (`samples`, `step`), where `step` is the spacing between samples.</param>
+        /// <param name="num">Number of samples to generate.Default is 50.Must be non-negative.</param>
+        /// <param name="endpoint">If True, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="dtype">The type of the output array.If `dtype` is not given, infer the data type from the other input arguments.</param>
+        /// <returns></returns>
         public static ndarray linspace(System.Numerics.BigInteger start, System.Numerics.BigInteger stop, ref System.Numerics.BigInteger retstep, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             //  Return evenly spaced numbers over a specified interval.
@@ -1843,10 +2044,32 @@ namespace NumpyDotNet
         //  >>> plt.ylim([-0.5, 1])
         //  (-0.5, 1)
         //  >>> plt.show()
+
+
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale.
+        /// </summary>
+        /// <param name="start">the starting value of the sequence</param>
+        /// <param name="stop">is the final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.  Default is 50.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="_base">The base of the log space.</param>
+        /// <param name="dtype">The type of the output array</param>
+        /// <returns></returns>                   
         public static ndarray logspace(Int64 start, Int64 stop, int num = 50, bool endpoint = true, double _base = 10.0, dtype dtype = null)
         {
             return logspace(Convert.ToDouble(start), Convert.ToDouble(stop), num, endpoint, _base, dtype);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale.
+        /// </summary>
+        /// <param name="start">the starting value of the sequence</param>
+        /// <param name="stop">is the final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.  Default is 50.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="_base">The base of the log space.</param>
+        /// <param name="dtype">The type of the output array</param>
+        /// <returns></returns>
         public static ndarray logspace(double start, double stop, int num = 50, bool endpoint = true, double _base = 10.0, dtype dtype = null)
         {
             double retstep = 0;
@@ -1859,6 +2082,16 @@ namespace NumpyDotNet
                 return np.power(pbase, y);
             return np.power(pbase, y).astype(dtype);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale.
+        /// </summary>
+        /// <param name="start">the starting value of the sequence</param>
+        /// <param name="stop">is the final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.  Default is 50.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="_base">The base of the log space.</param>
+        /// <param name="dtype">The type of the output array</param>
+        /// <returns></returns>
         public static ndarray logspace(decimal start, decimal stop, int num = 50, bool endpoint = true, double _base = 10.0, dtype dtype = null)
         {
             decimal retstep = 0;
@@ -1871,6 +2104,16 @@ namespace NumpyDotNet
                 return np.power(pbase, y);
             return np.power(pbase, y).astype(dtype);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale.
+        /// </summary>
+        /// <param name="start">the starting value of the sequence</param>
+        /// <param name="stop">is the final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.  Default is 50.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="_base">The base of the log space.</param>
+        /// <param name="dtype">The type of the output array</param>
+        /// <returns></returns>
         public static ndarray logspace(System.Numerics.Complex start, System.Numerics.Complex stop, int num = 50, bool endpoint = true, double _base = 10.0, dtype dtype = null)
         {
             System.Numerics.Complex retstep = 0;
@@ -1883,6 +2126,16 @@ namespace NumpyDotNet
                 return np.power(pbase, y);
             return np.power(pbase, y).astype(dtype);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale.
+        /// </summary>
+        /// <param name="start">the starting value of the sequence</param>
+        /// <param name="stop">is the final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.  Default is 50.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <param name="_base">The base of the log space.</param>
+        /// <param name="dtype">The type of the output array</param>
+        /// <returns></returns>
         public static ndarray logspace(System.Numerics.BigInteger start, System.Numerics.BigInteger stop, int num = 50, bool endpoint = true, double _base = 10.0, dtype dtype = null)
         {
             System.Numerics.BigInteger retstep = 0;
@@ -1984,14 +2237,38 @@ namespace NumpyDotNet
         //  >>> plt.grid(True, color = '0.7', linestyle = '-', which = 'both', axis = 'both')
         //  >>> plt.show()
 
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale(a geometric progression).
+        /// </summary>
+        /// <param name="start">The starting value of the sequence.</param>
+        /// <param name="stop">The final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <returns></returns>
         public static ndarray geomspace(Int64 start, Int64 stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             return geomspace(Convert.ToDouble(start), Convert.ToDouble(stop), num, endpoint, dtype);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale(a geometric progression).
+        /// </summary>
+        /// <param name="start">The starting value of the sequence.</param>
+        /// <param name="stop">The final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <returns></returns>
         public static ndarray geomspace(decimal start, decimal stop, int num = 50, bool endpoint = true)
         {
             return geomspace(Convert.ToDouble(start), Convert.ToDouble(stop), num, endpoint, np.Decimal);
         }
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale(a geometric progression).
+        /// </summary>
+        /// <param name="start">The starting value of the sequence.</param>
+        /// <param name="stop">The final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <returns></returns>
         public static ndarray geomspace(double start, double stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             ValidateArangeDtype(dtype);
@@ -2042,6 +2319,15 @@ namespace NumpyDotNet
 
             return result.astype(dtype);
         }
+
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale(a geometric progression).
+        /// </summary>
+        /// <param name="start">The starting value of the sequence.</param>
+        /// <param name="stop">The final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <returns></returns>
         public static ndarray geomspace(System.Numerics.Complex start, System.Numerics.Complex stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             ValidateArangeDtype(dtype);
@@ -2092,6 +2378,15 @@ namespace NumpyDotNet
 
             return result.astype(dtype);
         }
+
+        /// <summary>
+        /// Return numbers spaced evenly on a log scale(a geometric progression).
+        /// </summary>
+        /// <param name="start">The starting value of the sequence.</param>
+        /// <param name="stop">The final value of the sequence</param>
+        /// <param name="num">Number of samples to generate.</param>
+        /// <param name="endpoint">If true, `stop` is the last sample.Otherwise, it is not included.</param>
+        /// <returns></returns>
         public static ndarray geomspace(System.Numerics.BigInteger start, System.Numerics.BigInteger stop, int num = 50, bool endpoint = true, dtype dtype = null)
         {
             ValidateArangeDtype(dtype);
@@ -2203,6 +2498,13 @@ namespace NumpyDotNet
 
         #region view
 
+        /// <summary>
+        /// New view of array with the same data.
+        /// </summary>
+        /// <param name="arr">array to take new view from</param>
+        /// <param name="dtype">Data-type of the returned view</param>
+        /// <param name="type">not used</param>
+        /// <returns></returns>
         public static ndarray view(ndarray arr, dtype dtype = null, object type = null)
         {
             if (dtype == null)
@@ -2217,27 +2519,49 @@ namespace NumpyDotNet
         #endregion
 
         #region numeric operations
-   
+
+        /// <summary>
+        /// Return the element-wise square of the input.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <returns></returns>
         public static ndarray square(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.square, 0);
         }
-  
+        /// <summary>
+        /// Return the non-negative square-root of an array, element-wise.
+        /// </summary>
+        /// <param name="a">The values whose square-roots are required.</param>
+        /// <returns></returns>
         public static ndarray sqrt(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.sqrt, 0);
         }
 
-
+        /// <summary>
+        /// Return the cube-root of an array, element-wise.
+        /// </summary>
+        /// <param name="a">The values whose cube-roots are required.</param>
+        /// <returns></returns>
         public static ndarray cbrt(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.power, 1.0/3.0);
         }
-
+        /// <summary>
+        /// Calculate the absolute value element-wise.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <returns></returns>
         public static ndarray absolute(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.absolute, 0);
         }
+        /// <summary>
+        /// Compute the absolute values element-wise.
+        /// </summary>
+        /// <param name="a">The array of numbers for which the absolute values are required</param>
+        /// <returns></returns>
         public static ndarray fabs(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.absolute, 0);
@@ -2250,10 +2574,22 @@ namespace NumpyDotNet
 
         #region concatenate
 
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(object value, int? axis = 0)
         {
             return concatenate( asanyarray(value), axis: axis);
         }
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(ndarray array, int? axis = 0)
         {
             if (array.ndim <= 1)
@@ -2271,27 +2607,52 @@ namespace NumpyDotNet
 
             return concatenate(sequenceArray, axis: axis);
         }
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(ValueTuple<object, object> values, int? axis = 0)
         {
             return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2) }, axis: axis);
         }
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(ValueTuple<object, object, object> values, int? axis = 0)
         {
             return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2), asanyarray(values.Item3) }, axis: axis);
         }
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(ValueTuple<object, object, object, object> values, int? axis = 0)
         {
             return concatenate(new ndarray[] { asanyarray(values.Item1), asanyarray(values.Item2), asanyarray(values.Item3), asanyarray(values.Item4) }, axis: axis);
         }
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(IEnumerable<ndarray> seq, int? axis = 0)
         {
             return np.Concatenate(seq, axis);
         }
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// </summary>
+        /// <param name="value">sequence of array_like</param>
+        /// <param name="axis">The axis along which the arrays will be joined</param>
+        /// <returns></returns>
         public static ndarray concatenate(ndarray a, ndarray b, int? axis = 0)
         {
             ndarray[] seq = new ndarray[] { a, b };
@@ -2301,7 +2662,13 @@ namespace NumpyDotNet
         #endregion
 
         #region where
-
+        /// <summary>
+        /// Return elements chosen from x or y depending on condition.
+        /// </summary>
+        /// <param name="condition">array_like, bool, Where True, yield x, otherwise yield y.</param>
+        /// <param name="x">Values from which to choose.</param>
+        /// <param name="y">Values from which to choose.</param>
+        /// <returns></returns>
         public static object where(object condition,  object x = null, object y = null)
         {
             var _condition = asanyarray(condition);
@@ -2498,8 +2865,16 @@ namespace NumpyDotNet
         }
 
         #endregion
-         
+
         #region bitwise_and
+        /// <summary>
+        /// Compute the bit-wise AND of two arrays element-wise.
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="x2"></param>
+        /// <param name="out"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public static ndarray bitwise_and(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2507,6 +2882,14 @@ namespace NumpyDotNet
         #endregion
 
         #region bitwise_or
+        /// <summary>
+        /// Compute the bit-wise OR of two arrays element-wise.
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="x2"></param>
+        /// <param name="out"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public static ndarray bitwise_or(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2514,6 +2897,14 @@ namespace NumpyDotNet
         #endregion
 
         #region bitwise_xor
+        /// <summary>
+        /// Compute the bit-wise XOR of two arrays element-wise.
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="x2"></param>
+        /// <param name="out"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public static ndarray bitwise_xor(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.bitwise_xor, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2521,6 +2912,11 @@ namespace NumpyDotNet
         #endregion
 
         #region bitwise_not
+        /// <summary>
+        /// invert the bits of the specified array.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static ndarray bitwise_not(object input)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.invert, 0, false);
@@ -2528,6 +2924,14 @@ namespace NumpyDotNet
         #endregion
 
         #region logical_and
+        /// <summary>
+        /// Compute the truth value of x1 AND x2 element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">(optional) A location into which the result is stored</param>
+        /// <param name="where">(optional) This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logical_and(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.logical_and, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2535,6 +2939,14 @@ namespace NumpyDotNet
         #endregion
 
         #region logical_or
+        /// <summary>
+        /// Compute the truth value of x1 OR x2 element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">(optional) A location into which the result is stored</param>
+        /// <param name="where">(optional) This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logical_or(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.logical_or, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2542,6 +2954,14 @@ namespace NumpyDotNet
         #endregion
 
         #region logical_xor
+        /// <summary>
+        /// Compute the truth value of x1 XOR x2, element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">(optional) A location into which the result is stored</param>
+        /// <param name="where">(optional) This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logical_xor(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2549,6 +2969,11 @@ namespace NumpyDotNet
         #endregion
 
         #region logical_not
+        /// <summary>
+        /// Compute the truth value of NOT x element-wise.
+        /// </summary>
+        /// <param name="input">Input array</param>
+        /// <returns></returns>
         public static ndarray logical_not(object input)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.equal, 0, false);
@@ -2557,6 +2982,7 @@ namespace NumpyDotNet
         #endregion
 
         #region greater
+  
         public static ndarray greater(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.greater, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
