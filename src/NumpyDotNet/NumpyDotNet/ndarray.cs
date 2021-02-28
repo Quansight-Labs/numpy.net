@@ -50,9 +50,7 @@ using npy_intp = System.Int32;
 namespace NumpyDotNet
 {
     /// <summary>
-    /// Implements the Numpy python 'ndarray' object and acts as an interface to
-    /// the core NpyArray data structure.  Npy_INTERFACE(NpyArray *) points an
-    /// instance of this class.
+    /// Implements the Numpy python 'ndarray' class
     /// </summary>
     public partial class ndarray : IEnumerable<object>, NumpyDotNet.IArray
     {

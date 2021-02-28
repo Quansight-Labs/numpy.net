@@ -50,6 +50,13 @@ namespace NumpyDotNet
     {
         #region ediff1d
 
+        /// <summary>
+        /// The differences between consecutive elements of an array.
+        /// </summary>
+        /// <param name="ary">If necessary, will be flattened before the differences are taken.</param>
+        /// <param name="to_end">Number(s) to append at the end of the returned differences.</param>
+        /// <param name="to_begin">Number(s) to prepend at the beginning of the returned differences.</param>
+        /// <returns></returns>
         public static ndarray ediff1d(ndarray ary, ndarray to_end= null, ndarray to_begin= null)
         {
             /*
@@ -158,7 +165,15 @@ namespace NumpyDotNet
             public ndarray inverse;
             public ndarray counts;
         }
-
+        /// <summary>
+        /// Find the unique elements of an array.
+        /// </summary>
+        /// <param name="ar">Input array. Unless `axis` is specified, this will be flattened if it is not already 1-D.</param>
+        /// <param name="return_index">If True, also return the indices of `ar` (along the specified axis, if provided, or in the flattened array) that result in the unique array.</param>
+        /// <param name="return_inverse">If True, also return the indices of the unique array (for the specified axis, if provided) that can be used to reconstruct `ar`.</param>
+        /// <param name="return_counts">If True, also return the number of times each unique item appears in `ar`.</param>
+        /// <param name="axis">The axis to operate on. If null, `ar` will be flattened.</param>
+        /// <returns></returns>
         public static uniqueData unique(ndarray ar, bool return_index = false, bool return_inverse = false, bool return_counts = false, int? axis = null)
         {
             /*
@@ -339,6 +354,13 @@ namespace NumpyDotNet
 
         #region intersect1d
 
+        /// <summary>
+        /// Find the intersection of two arrays.
+        /// </summary>
+        /// <param name="ar1">Input array</param>
+        /// <param name="ar2">Input array</param>
+        /// <param name="assume_unique">If True, the input arrays are both assumed to be unique, which can speed up the calculation.Default is False.</param>
+        /// <returns></returns>
         public static ndarray intersect1d(ndarray ar1, ndarray ar2, bool assume_unique = false)
         {
             /*
@@ -395,6 +417,13 @@ namespace NumpyDotNet
 
         #region setxor1d
 
+        /// <summary>
+        /// Find the set exclusive-or of two arrays.
+        /// </summary>
+        /// <param name="ar1">Input array</param>
+        /// <param name="ar2">Input array</param>
+        /// <param name="assume_unique">If True, the input arrays are both assumed to be unique, which can speed up the calculation.Default is False.</param>
+        /// <returns></returns>
         public static ndarray setxor1d(ndarray ar1, ndarray ar2, bool assume_unique = false)
         {
             /*
@@ -450,6 +479,14 @@ namespace NumpyDotNet
         #endregion
 
         #region in1d
+        /// <summary>
+        /// Test whether each element of a 1-D array is also present in a second array.
+        /// </summary>
+        /// <param name="ar1">Input array</param>
+        /// <param name="ar2">The values against which to test each value of `ar1`.</param>
+        /// <param name="assume_unique">If True, the input arrays are both assumed to be unique, which can speed up the calculation.Default is False.</param>
+        /// <param name="invert">If True, the values in the returned array are inverted</param>
+        /// <returns></returns>
         public static ndarray in1d(ndarray ar1, ndarray ar2, bool assume_unique = false, bool invert = false)
         {
             /*
@@ -618,6 +655,14 @@ namespace NumpyDotNet
 
         #region isin
 
+        /// <summary>
+        /// Calculates element in test_elements, broadcasting over element only.
+        /// </summary>
+        /// <param name="element">Input array</param>
+        /// <param name="test_elements">The values against which to test each value of `element`</param>
+        /// <param name="assume_unique">If True, the input arrays are both assumed to be unique</param>
+        /// <param name="invert">If True, the values in the returned array are inverted</param>
+        /// <returns></returns>
         public static ndarray isin(ndarray element, ndarray test_elements, bool assume_unique = false, bool invert = false)
         {
             /*
@@ -714,6 +759,12 @@ namespace NumpyDotNet
 
         #region union1d
 
+        /// <summary>
+        /// Find the union of two arrays
+        /// </summary>
+        /// <param name="ar1">Input array</param>
+        /// <param name="ar2">Input array</param>
+        /// <returns></returns>
         public static ndarray union1d(ndarray ar1, ndarray ar2)
         {
             /*
@@ -754,6 +805,13 @@ namespace NumpyDotNet
         #endregion
 
         #region setdiff1d
+        /// <summary>
+        /// Find the set difference of two arrays.
+        /// </summary>
+        /// <param name="ar1">Input array</param>
+        /// <param name="ar2">Input comparison array</param>
+        /// <param name="assume_unique">If True, the input arrays are both assumed to be unique.</param>
+        /// <returns></returns>
         public static ndarray setdiff1d(ndarray ar1, ndarray ar2, bool assume_unique = false)
         {
             /*
