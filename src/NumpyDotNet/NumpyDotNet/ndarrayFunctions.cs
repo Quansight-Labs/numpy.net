@@ -48,15 +48,7 @@ using npy_ucs4 = System.Int32;
 
 namespace NumpyDotNet
 {
-    public class MaskedArray : ndarray
-    {
-        public ndarray ndarray;
-        public MaskedArray(ndarray a)
-        {
-            this.ndarray = a.Copy();
-        }
-    }
-
+ 
     public static partial class np
     {
         // need this static initializer.  It forces the code below to be initialized in release mode.
@@ -3451,8 +3443,13 @@ namespace NumpyDotNet
 
         }
 
-
-
+        /// <summary>
+        /// Copies values from one array to another, broadcasting as necessary.
+        /// </summary>
+        /// <param name="dst">The array into which values are copied.</param>
+        /// <param name="src">The array from which values are copied.</param>
+        /// <param name="casting">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional</param>
+        /// <param name="where"> A boolean array which is broadcasted to match the dimensions of dst, and selects elements to copy from src to dst wherever it contains the value True.</param>
         public static void copyto(ndarray dst, object src, NPY_CASTING casting = NPY_CASTING.NPY_SAME_KIND_CASTING, object where = null)
         {
             /*
@@ -3654,12 +3651,6 @@ namespace NumpyDotNet
 
             return result;
         }
-
-        private static MaskedArray masked_array(ndarray a, dtype dtype, bool copy, bool keep_mask, bool sub_ok)
-        {
-            return new MaskedArray(a);
-        }
-
    
 
         class zip2IntArrays
