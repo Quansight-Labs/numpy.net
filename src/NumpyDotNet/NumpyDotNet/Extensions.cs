@@ -364,123 +364,284 @@ namespace NumpyDotNet
             return np.argsort(a, axis, kind);
         }
 
+        /// <summary>
+        /// Returns the indices of the maximum values along an axis.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">By default, the index is into the flattened array, otherwise along the specified axis.</param>
+        /// <param name="ret">If provided, the result will be inserted into this array</param>
+        /// <returns></returns>
         public static ndarray ArgMax(this ndarray a, int? axis = -1, ndarray ret = null)
         {
             return np.argmax(a, axis, ret);
         }
 
+        /// <summary>
+        /// Returns the indices of the minimum values along an axis.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">By default, the index is into the flattened array, otherwise along the specified axis.</param>
+        /// <param name="ret">If provided, the result will be inserted into this array</param>
+        /// <returns></returns>
         public static ndarray ArgMin(this ndarray a, int? axis = -1, ndarray ret = null)
         {
             return np.argmin(a, axis, ret);
         }
 
-        public static ndarray SearchSorted(this ndarray a, ndarray keys, NPY_SEARCHSIDE side = NPY_SEARCHSIDE.NPY_SEARCHLEFT)
+        /// <summary>
+        /// Find indices where elements of v should be inserted in a to maintain order.
+        /// </summary>
+        /// <param name="a">Input array 1-D</param>
+        /// <param name="v">Values to insert into a.</param>
+        /// <param name="side">{‘left’, ‘right’}</param>
+        /// <returns></returns>
+        public static ndarray SearchSorted(this ndarray a, ndarray v, NPY_SEARCHSIDE side = NPY_SEARCHSIDE.NPY_SEARCHLEFT)
         {
-            return np.searchsorted(a, keys, side);
+            return np.searchsorted(a, v, side);
         }
-
+        /// <summary>
+        /// Return specified diagonals.
+        /// </summary>
+        /// <param name="a">Array from which the diagonals are taken.</param>
+        /// <param name="offset">Offset of the diagonal from the main diagonal</param>
+        /// <param name="axis1">Axis to be used as the first axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <param name="axis2">Axis to be used as the second axis of the 2-D sub-arrays from which the diagonals should be taken.</param>
+        /// <returns></returns>
         public static ndarray diagonal(this ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1)
         {
             return np.diagonal(a, offset, axis1, axis2);
         }
 
-        public static ndarray trace(this ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1, dtype dtype = null, ndarray @out = null)
+        /// <summary>
+        /// Return the sum along diagonals of the array.
+        /// </summary>
+        /// <param name="a">Input array, from which the diagonals are taken.</param>
+        /// <param name="offset">Offset of the diagonal from the main diagonal</param>
+        /// <param name="axis1">Axis to be used as the first axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <param name="axis2">Axis to be used as the second axis of the 2-D sub-arrays from which the diagonals should be taken.</param>
+        /// <param name="dtype">Determines the data-type of the returned array and of the accumulator where the elements are summed.</param>
+        /// <param name="ret">Array into which the output is placed</param>
+        /// <returns></returns>
+        public static ndarray trace(this ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1, dtype dtype = null, ndarray ret = null)
         {
-            return np.trace(a, offset, axis1, axis2, dtype, @out);
+            return np.trace(a, offset, axis1, axis2, dtype, ret);
         }
 
-
-        public static ndarray trace(this ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1)
-        {
-            return np.diagonal(a, offset, axis1, axis2);
-        }
-
-
+        /// <summary>
+        /// Return the indices of the elements that are non-zero.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <returns></returns>
         public static ndarray[] NonZero(this ndarray a)
         {
             return np.nonzero(a);
         }
 
+        /// <summary>
+        /// Return selected slices of an array along given axis.
+        /// </summary>
+        /// <param name="a">Array from which to extract a part.</param>
+        /// <param name="condition">Array that selects which entries to return. If len(condition) is less than the size of a along the given axis, then output is truncated to the length of the condition array.</param>
+        /// <param name="axis">Axis along which to take slices. If None (default), work on the flattened array.</param>
+        /// <param name="out">Output array. Its type is preserved and it must be of the right shape to hold the output.</param>
+        /// <returns></returns>
         public static ndarray compress(this ndarray a, object condition, object axis = null, ndarray @out = null)
         {
             return np.compress(condition, a, axis, @out);
         }
 
+        /// <summary>
+        /// Return selected slices of an array along given axis.
+        /// </summary>
+        /// <param name="a">Array from which to extract a part.</param>
+        /// <param name="condition">Array that selects which entries to return. If len(condition) is less than the size of a along the given axis, then output is truncated to the length of the condition array.</param>
+        /// <param name="axis">Axis along which to take slices. If None (default), work on the flattened array.</param>
+        /// <param name="out">Output array. Its type is preserved and it must be of the right shape to hold the output.</param>
+        /// <returns></returns>
         public static ndarray compress(this ndarray a, ndarray condition, int? axis = null, ndarray @out = null)
         {
             return np.compress(condition, a, axis, @out);
         }
-
+        /// <summary>
+        /// Clip (limit) the values in an array.
+        /// </summary>
+        /// <param name="a">Array containing elements to clip.</param>
+        /// <param name="a_min">Minimum value</param>
+        /// <param name="a_max">maximum value</param>
+        /// <param name="ret">The results will be placed in this array</param>
+        /// <returns></returns>
         public static ndarray clip(this ndarray a, object a_min, object a_max, ndarray ret = null)
         {
             return np.clip(a, a_min, a_max, ret);
         }
 
+        /// <summary>
+        /// Sum of array elements over a given axis.
+        /// </summary>
+        /// <param name="a">Elements to sum.</param>
+        /// <param name="axis">Axis or axes along which a sum is performed.</param>
+        /// <param name="dtype">The type of the returned array and of the accumulator in which the elements are summed. </param>
+        /// <param name="ret">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray Sum(this ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             return np.sum(a, axis, dtype, ret);
         }
 
+        /// <summary>
+        /// Test whether any array element along a given axis evaluates to True.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">Axis or axes along which a logical OR reduction is performed</param>
+        /// <param name="out">Alternate output array in which to place the result</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one</param>
+        /// <returns></returns>
         public static ndarray Any(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.any(a, axis, @out, keepdims);
         }
+
+        /// <summary>
+        /// return bool result from np.any
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">Axis or axes along which a logical OR reduction is performed</param>
+        /// <param name="out">Alternate output array in which to place the result</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one</param>
+        /// <returns></returns>
         public static bool Anyb(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.anyb(a, axis, @out, keepdims);
         }
 
+        /// <summary>
+        /// Test whether all array elements along a given axis evaluate to True.
+        /// </summary>
+        /// <param name="a">Input array </param>
+        /// <param name="axis">Axis or axes along which a logical AND reduction is performed</param>
+        /// <param name="out">Alternate output array in which to place the result</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one</param>
+        /// <returns></returns>
         public static ndarray All(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.all(a, axis, @out, keepdims);
         }
 
+        /// <summary>
+        /// Return the cumulative sum of the elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">Axis along which the cumulative sum is computed. </param>
+        /// <param name="dtype">Type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="ret">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray cumsum(this ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             return np.cumsum(a, axis, dtype, ret);
         }
-
+        /// <summary>
+        /// Range of values (maximum - minimum) along an axis.
+        /// </summary>
+        /// <param name="a">Input values.</param>
+        /// <param name="axis">Axis along which to find the peaks.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray ptp(this ndarray a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.ptp(a, axis, @out, keepdims);
         }
-
+        /// <summary>
+        /// Return the maximum of an array or maximum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray AMax(this ndarray a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.amax(a, axis, @out, keepdims);
         }
-
+        /// <summary>
+        /// Return the minimum of an array or minimum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray AMin(this ndarray a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             return np.amin(a, axis, @out, keepdims);
         }
 
-
+        /// <summary>
+        /// Return the product of array elements over a given axis.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="axis">Axis or axes along which a product is performed. </param>
+        /// <param name="dtype">The type of the returned array, as well as of the accumulator in which the elements are multiplied.</param>
+        /// <param name="ret">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray Prod(this ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             return np.prod(a, axis, dtype, ret);
         }
-
+        /// <summary>
+        /// Return the cumulative product of elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">Axis along which the cumulative product is computed.</param>
+        /// <param name="dtype">Type of the returned array, as well as of the accumulator in which the elements are multiplied.</param>
+        /// <param name="ret">Alternative output array in which to place the result</param>
+        /// <returns></returns>
         public static ndarray CumProd(this ndarray a, int axis, dtype dtype, ndarray ret = null)
         {
             return np.cumprod(a, axis, dtype, ret);
         }
-        
+        /// <summary>
+        /// Compute the arithmetic mean along the specified axis.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose mean is desired.</param>
+        /// <param name="axis">Axis or axes along which the means are computed.</param>
+        /// <param name="dtype">Type to use in computing the mean. </param>
+        /// <returns></returns>
         public static ndarray Mean(this ndarray a, int? axis = null, dtype dtype = null)
         {
             return np.mean(a, axis, dtype);
         }
-
+        /// <summary>
+        /// Compute the standard deviation along the specified axis.
+        /// </summary>
+        /// <param name="a">Calculate the standard deviation of these values.</param>
+        /// <param name="axis">Axis or axes along which the standard deviation is computed.</param>
+        /// <param name="dtype">Type to use in computing the standard deviation.</param>
+        /// <returns></returns>
         public static ndarray Std(this ndarray a, int? axis = null, dtype dtype = null)
         {
             return np.std(a, axis, dtype);
         }
-
+        /// <summary>
+        /// Return a partitioned copy of an array.
+        /// </summary>
+        /// <param name="a">Array to be sorted.</param>
+        /// <param name="kth">Element index to partition by</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Selection algorithm</param>
+        /// <param name="order">When a is an array with fields defined, this argument specifies which fields to compare first, second, etc.</param>
+        /// <returns></returns>
         public static ndarray partition(this ndarray a, npy_intp[] kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             return np.partition(a, kth, axis, kind, order);
         }
 
+        /// <summary>
+        /// Converts ndarray data items into a .NET List<>/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static List<T> ToList<T>(this ndarray a)
         {
             if (a.IsASlice)
@@ -499,7 +660,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Converts ndarray data items into a raw data array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static T[] ToArray<T>(this ndarray a)
         {
             if (a.IsASlice)
@@ -514,15 +680,32 @@ namespace NumpyDotNet
             }
  
         }
-
+        /// <summary>
+        /// Compute the arithmetic mean
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Mean<T>(this ndarray a)
         {
             return a.ToList<T>().Mean();
         }
+        /// <summary>
+        /// Compute the arithmetic mean
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Mean<T>(this IList<T> values)
         {
             return values.Count == 0 ? 0 : values.Mean(0, values.Count);
         }
+        /// <summary>
+        /// Compute the arithmetic mean
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Mean<T>(this IList<T> values, int start, int end)
         {
             double s = 0;
@@ -534,19 +717,42 @@ namespace NumpyDotNet
 
             return s / (end - start);
         }
-
+        /// <summary>
+        /// Compute the variance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Variance<T>(this ndarray a)
         {
             return a.ToList<T>().Variance();
         }
+        /// <summary>
+        /// Compute the variance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Variance<T>(this IList<T> values)
         {
             return values.Variance(values.Mean(), 0, values.Count);
         }
+        /// <summary>
+        /// Compute the variance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Variance<T>(this IList<T> values, double mean)
         {
             return values.Variance(mean, 0, values.Count);
         }
+        /// <summary>
+        /// Compute the variance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double Variance<T>(this IList<T> values, double mean, int start, int end)
         {
             double variance = 0;
@@ -561,15 +767,32 @@ namespace NumpyDotNet
 
             return variance / (n);
         }
-
+        /// <summary>
+        /// Compute the standard deviation
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double StandardDeviation<T>(this ndarray a)
         {
             return a.ToList<T>().StandardDeviation();
         }
+        /// <summary>
+        /// Compute the standard deviation
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double StandardDeviation<T>(this IList<T> values)
         {
             return values.Count == 0 ? 0 : values.StandardDeviation(0, values.Count);
         }
+        /// <summary>
+        /// Compute the standard deviation
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double StandardDeviation<T>(this IList<T> values, int start, int end)
         {
             double mean = values.Mean(start, end);
@@ -578,66 +801,146 @@ namespace NumpyDotNet
             return Math.Sqrt(variance);
         }
 
+        /// <summary>
+        /// Returns bool array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static bool[] AsBoolArray(this ndarray a)
         {
             return np.AsBoolArray(a);
         }
+        /// <summary>
+        /// Returns sbyte array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static sbyte[] AsSByteArray(this ndarray a)
         {
             return np.AsSByteArray(a);
         }
+        /// <summary>
+        /// Returns byte array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static byte[] AsByteArray(this ndarray a)
         {
             return np.AsByteArray(a);
         }
+        /// <summary>
+        /// Returns Int16 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Int16[] AsInt16Array(this ndarray a)
         {
             return np.AsInt16Array(a);
         }
+        /// <summary>
+        /// Returns UInt16 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static UInt16[] AsUInt16Array(this ndarray a)
         {
             return np.AsUInt16Array(a);
         }
+        /// <summary>
+        /// Returns Int32 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Int32[] AsInt32Array(this ndarray a)
         {
             return np.AsInt32Array(a);
         }
+        /// <summary>
+        /// Returns UInt32 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static UInt32[] AsUInt32Array(this ndarray a)
         {
             return np.AsUInt32Array(a);
         }
+        /// <summary>
+        /// Returns Int64 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Int64[] AsInt64Array(this ndarray a)
         {
             return np.AsInt64Array(a);
         }
+        /// <summary>
+        /// Returns UInt64 array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static UInt64[] AsUInt64Array(this ndarray a)
         {
             return np.AsUInt64Array(a);
         }
+        /// <summary>
+        /// Returns float array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static float[] AsFloatArray(this ndarray a)
         {
             return np.AsFloatArray(a);
         }
+        /// <summary>
+        /// Returns double array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double[] AsDoubleArray(this ndarray a)
         {
             return np.AsDoubleArray(a);
         }
+        /// <summary>
+        /// Returns decimal array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static decimal[] AsDecimalArray(this ndarray a)
         {
             return np.AsDecimalArray(a);
         }
+        /// <summary>
+        /// Returns Complex array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static System.Numerics.Complex[] AsComplexArray(this ndarray a)
         {
             return np.AsComplexArray(a);
         }
+        /// <summary>
+        /// Returns BigInt array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static System.Numerics.BigInteger[] AsBigIntArray(this ndarray a)
         {
             return np.AsBigIntArray(a);
         }
+        /// <summary>
+        /// Returns Object array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static object[] AsObjectArray(this ndarray a)
         {
             return np.AsObjectArray(a);
         }
+        /// <summary>
+        /// Returns String array.  Converts if necessary
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static string[] AsStringArray(this ndarray a)
         {
             return np.AsStringArray(a);
@@ -692,7 +995,7 @@ namespace NumpyDotNet
                 return NpyCoreApi.PerformAccumulateOp(arr, axis, ops, rtype, @out);
             }
 
-            public static ndarray outer(UFuncOperation ops, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
+            internal static ndarray outer(UFuncOperation ops, dtype dtype, object a, object b, ndarray @out = null)
             {
 
                 var a1 = np.asanyarray(a);
@@ -718,24 +1021,56 @@ namespace NumpyDotNet
 
         public class ufunc 
         {
+            /// <summary>
+            /// Accumulate the result of applying the operator to all elements.
+            /// </summary>
+            /// <param name="operation">ufunc operation to perform</param>
+            /// <param name="a">The array to act on.</param>
+            /// <param name="axis">The axis along which to apply the accumulation; default is zero.</param>
+            /// <param name="out">A location into which the result is stored.</param>
+            /// <returns></returns>
             public static ndarray accumulate(UFuncOperation operation, object a, int axis = 0, ndarray @out = null)
             {
                 return ufuncbase.accumulate(operation, a, axis, null, @out);
             }
-
+            /// <summary>
+            /// Reduces array’s dimension by one, by applying ufunc along one axis.
+            /// </summary>
+            /// <param name="operation">ufunc operation to peform</param>
+            /// <param name="a">The array to act on.</param>
+            /// <param name="axis">Axis or axes along which a reduction is performed. </param>
+            /// <param name="out">A location into which the result is stored.</param>
+            /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+            /// <returns></returns>
             public static ndarray reduce(UFuncOperation operation, object a, int axis = 0, ndarray @out = null, bool keepdims = false)
             {
                 return ufuncbase.reduce(operation, a, axis, null, @out, keepdims);
             }
-
+            /// <summary>
+            /// Performs a (local) reduce with specified slices over a single axis.
+            /// </summary>
+            /// <param name="operation">ufunc operation to peform</param>
+            /// <param name="a">The array to act on.</param>
+            /// <param name="indices">Paired indices, comma separated (not colon), specifying slices to reduce</param>
+            /// <param name="axis">A location into which the result is stored..</param>
+            /// <param name="out">A location into which the result is stored. </param>
+            /// <returns></returns>
             public static ndarray reduceat(UFuncOperation operation, object a, object indices, int axis = 0, ndarray @out = null)
             {
                 return ufuncbase.reduceat(operation, a, indices, axis, null, @out);
             }
-
-            public static ndarray outer(UFuncOperation operation, dtype dtype, object a, object b, ndarray @out = null, int? axis = null)
+            /// <summary>
+            /// Apply the ufunc op to all pairs (a, b) with a in A and b in B.
+            /// </summary>
+            /// <param name="operation">ufunc operation to perform</param>
+            /// <param name="dtype"></param>
+            /// <param name="a">First array</param>
+            /// <param name="b">Second array</param>
+            /// <param name="out">A location into which the result is stored.</param>
+            /// <returns></returns>
+            public static ndarray outer(UFuncOperation operation, dtype dtype, object a, object b, ndarray @out = null)
             {
-                return ufuncbase.outer(operation, dtype, a, b, @out, axis);
+                return ufuncbase.outer(operation, dtype, a, b, @out);
             }
 
 
@@ -749,6 +1084,11 @@ namespace NumpyDotNet
     {
         #region as(.NET System.Array)
 
+        /// <summary>
+        /// Returns bool array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static bool[] AsBoolArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -760,6 +1100,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as bool[];
         }
+        /// <summary>
+        /// Returns sbyte array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static sbyte[] AsSByteArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -771,6 +1116,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as sbyte[];
         }
+        /// <summary>
+        /// Returns byte array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static byte[] AsByteArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -782,6 +1132,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as byte[];
         }
+        /// <summary>
+        /// Returns Int16 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static Int16[] AsInt16Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -793,6 +1148,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as Int16[];
         }
+        /// <summary>
+        /// Returns UInt16 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static UInt16[] AsUInt16Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -804,6 +1164,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as UInt16[];
         }
+        /// <summary>
+        /// Returns Int32 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static Int32[] AsInt32Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -815,6 +1180,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as Int32[];
         }
+        /// <summary>
+        /// Returns UInt32 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static UInt32[] AsUInt32Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -826,6 +1196,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as UInt32[];
         }
+        /// <summary>
+        /// Returns Int64 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static Int64[] AsInt64Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -837,6 +1212,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as Int64[];
         }
+        /// <summary>
+        /// Returns UInt64 array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static UInt64[] AsUInt64Array(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -848,6 +1228,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as UInt64[];
         }
+        /// <summary>
+        /// Returns float array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static float[] AsFloatArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -859,6 +1244,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as float[];
         }
+        /// <summary>
+        /// Returns double array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static double[] AsDoubleArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -870,6 +1260,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as double[];
         }
+        /// <summary>
+        /// Returns decimal array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static decimal[] AsDecimalArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -881,6 +1276,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as decimal[];
         }
+        /// <summary>
+        /// Returns Complex array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static System.Numerics.Complex[] AsComplexArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -892,6 +1292,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as System.Numerics.Complex[];
         }
+        /// <summary>
+        /// Returns BigInt array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static System.Numerics.BigInteger[] AsBigIntArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -903,6 +1308,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as System.Numerics.BigInteger[];
         }
+        /// <summary>
+        /// Returns Object array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static object[] AsObjectArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
@@ -914,6 +1324,11 @@ namespace NumpyDotNet
 
             return a.rawdata(0).datap as Object[];
         }
+        /// <summary>
+        /// Returns String array.  Converts if necessary
+        /// </summary>
+        /// <param name="oa"></param>
+        /// <returns></returns>
         public static string[] AsStringArray(object oa)
         {
             var a = ConvertToFlattenedArray(oa);
