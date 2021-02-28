@@ -46,7 +46,15 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+
         #region rot90
+        /// <summary>
+        /// Rotate an array by 90 degrees in the plane specified by axes.
+        /// </summary>
+        /// <param name="m">Array of two or more dimensions.</param>
+        /// <param name="k">Number of times the array is rotated by 90 degrees.</param>
+        /// <param name="axes">The array is rotated in the plane defined by the axes. Axes must be different.</param>
+        /// <returns></returns>
         public static ndarray rot90(ndarray m, int k = 1, int[] axes = null)
         {
             /*
@@ -158,6 +166,12 @@ namespace NumpyDotNet
         #endregion
 
         #region flip
+        /// <summary>
+        /// Reverse the order of elements in an array along the given axis.
+        /// </summary>
+        /// <param name="m">Input array.</param>
+        /// <param name="axis">Axis in array, which entries are reversed.</param>
+        /// <returns></returns>
         public static ndarray flip(ndarray m, int axis)
         {
             /*
@@ -243,6 +257,11 @@ namespace NumpyDotNet
         #endregion
 
         #region iterable
+        /// <summary>
+        /// Check whether or not an object can be iterated over.
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public static bool iterable(object o)
         {
             /*
@@ -277,8 +296,14 @@ namespace NumpyDotNet
         }
         #endregion
 
-
         #region asarray_chkfinite
+        /// <summary>
+        /// onvert the input to an array, checking for NaNs or Infs.
+        /// </summary>
+        /// <param name="a">Input data, in any form that can be converted to an array</param>
+        /// <param name="dtype">data-type, optional</param>
+        /// <param name="order">{'C', 'F'}, optional</param>
+        /// <returns></returns>
         public static ndarray asarray_chkfinite(ndarray a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             /*
@@ -346,6 +371,15 @@ namespace NumpyDotNet
         #endregion
 
         #region piecewise
+        /// <summary>
+        /// Evaluate a piecewise-defined function.
+        /// </summary>
+        /// <param name="x">The input domain.</param>
+        /// <param name="condlist">list of bool arrays or bool scalars</param>
+        /// <param name="funclist">list of callables, f(x,*args,**kw), or scalars</param>
+        /// <param name="args">Any further arguments given to `piecewise` are passed to the functions upon execution</param>
+        /// <param name="kw">Keyword arguments used in calling `piecewise` are passed to the functions upon execution</param>
+        /// <returns></returns>
         public static ndarray piecewise(ndarray x, bool[] condlist, object[] funclist, string[] args, string[] kw)
         {
             /*
@@ -440,6 +474,13 @@ namespace NumpyDotNet
         #endregion
 
         #region select
+        /// <summary>
+        /// Return an array drawn from elements in choicelist, depending on conditions.
+        /// </summary>
+        /// <param name="condlist">The list of conditions which determine from which array in `choicelist` the output elements are taken</param>
+        /// <param name="choicelist">The list of arrays from which the output elements are taken. It has to be of the same length as `condlist`.</param>
+        /// <param name="_default">The element inserted in `output` when all conditions evaluate to False.</param>
+        /// <returns></returns>
         public static ndarray select(ndarray[] condlist, ndarray[] choicelist, int _default = 0)
         {
             /*
@@ -540,6 +581,12 @@ namespace NumpyDotNet
         #endregion
 
         #region copy
+        /// <summary>
+        /// Return an array copy of the given object.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="order">{'C', 'F', 'A', 'K'}, optional</param>
+        /// <returns></returns>
         public static ndarray copy(ndarray a, NPY_ORDER order = NPY_ORDER.NPY_KORDER)
         {
             /*
@@ -590,10 +637,26 @@ namespace NumpyDotNet
         #endregion
 
         #region gradient
+        /// <summary>
+        /// Return the gradient of an N-dimensional array.
+        /// </summary>
+        /// <param name="f">An N-dimensional array containing samples of a scalar function.</param>
+        /// <param name="varargs">Spacing between f values. </param>
+        /// <param name="axes">Gradient is calculated only along the given axis or axes</param>
+        /// <param name="edge_order">{1, 2}, optional</param>
+        /// <returns></returns>
         public static ndarray[] gradient(object f, IList<object> varargs = null, int? axes = null, int edge_order = 1)
         {
             return gradient(f, varargs, axes != null ? new int[] { axes.Value } : null, edge_order);
         }
+        /// <summary>
+        /// Return the gradient of an N-dimensional array.
+        /// </summary>
+        /// <param name="f">An N-dimensional array containing samples of a scalar function.</param>
+        /// <param name="varargs">Spacing between f values. </param>
+        /// <param name="axes">Gradient is calculated only along the given axis or axes</param>
+        /// <param name="edge_order">{1, 2}, optional</param>
+        /// <returns></returns>
         public static ndarray[] gradient(object f, IList<object> varargs, IList<int> axes, int edge_order = 1)
         {
             var f1 = np.asanyarray(f);
@@ -867,7 +930,13 @@ namespace NumpyDotNet
         #endregion
 
         #region diff
-
+        /// <summary>
+        /// Calculate the n - th discrete difference along the given axis.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="n">The number of times values are differenced.If zero, the input is returned as-is.</param>
+        /// <param name="axis">The axis along which the difference is taken, default is the last axis.</param>
+        /// <returns></returns>
         public static ndarray diff(object a, int n = 1, int axis = -1)
         {
             //    Calculate the n - th discrete difference along the given axis.
@@ -985,6 +1054,16 @@ namespace NumpyDotNet
         #endregion
 
         #region interp
+        /// <summary>
+        /// One-dimensional linear interpolation.
+        /// </summary>
+        /// <param name="x">The x-coordinates of the interpolated values.</param>
+        /// <param name="xp">1-D sequence of floats, the x-coordinates of the data points</param>
+        /// <param name="fp">1-D sequence of float or complex, the y-coordinates of the data points</param>
+        /// <param name="left"> optional float or complex corresponding to fp value to return for `x < xp[0]`</param>
+        /// <param name="right">optional float or complex corresponding to fp value to return for `x > xp[-1]</param>
+        /// <param name="period">A period for the x-coordinates. This parameter allows the proper interpolation of angular x-coordinates.</param>
+        /// <returns></returns>
         public static ndarray interp(object x, float[] xp, float[] fp, float? left = null, float? right = null, float? period = null)
         {
             /*
@@ -1086,6 +1165,12 @@ namespace NumpyDotNet
         #endregion
 
         #region angle
+        /// <summary>
+        /// Return the angle of the complex argument.
+        /// </summary>
+        /// <param name="z"> A complex number or sequence of complex numbers.</param>
+        /// <param name="deg">Return angle in degrees if True, radians if False (default).</param>
+        /// <returns></returns>
         public static ndarray angle(object z, bool deg = false)
         {
             /*
@@ -1151,7 +1236,13 @@ namespace NumpyDotNet
         #endregion
 
         #region unwrap
-
+        /// <summary>
+        /// Unwrap by changing deltas between values to 2*pi complement.
+        /// </summary>
+        /// <param name="p">Input array.</param>
+        /// <param name="discont">Maximum discontinuity between values, default is "pi"</param>
+        /// <param name="axis">Axis along which unwrap will operate, default is the last axis.</param>
+        /// <returns></returns>
         public static ndarray unwrap(object p, double discont = Math.PI, int axis = -1)
         {
             /*
@@ -1228,7 +1319,7 @@ namespace NumpyDotNet
 
             Parameters
             ----------
-            a : array_like
+            o : array_like
                 Input array
 
             Returns
@@ -1244,9 +1335,15 @@ namespace NumpyDotNet
             >>> np.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])
             array([ 1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])
         */
-        public static ndarray sort_complex(object o)
+
+        /// <summary>
+        /// Sort a complex array using the real part first, then the imaginary part.
+        /// </summary>
+        /// <param name="oa">Input array</param>
+        /// <returns></returns>
+        public static ndarray sort_complex(object oa)
         {
-            var a = asanyarray(o);
+            var a = asanyarray(oa);
             var b = np.array(a, copy: true);
             b = b.Sort();
 
@@ -1260,6 +1357,12 @@ namespace NumpyDotNet
         #endregion
 
         #region trim_zero
+        /// <summary>
+        /// Trim the leading and/or trailing zeros from a 1-D array or sequence.
+        /// </summary>
+        /// <param name="filt">1-D array or sequence Input array.</param>
+        /// <param name="trim">A string with 'f' representing trim from front and 'b' to trim from back.</param>
+        /// <returns></returns>
         public static ndarray trim_zeros(ndarray filt, string trim = "fb")
         {
             /*
@@ -1328,13 +1431,15 @@ namespace NumpyDotNet
             return filt.A(first.ToString() + ":" + last.ToString());
         }
 
- 
-
         #endregion
 
-   
-
         #region extract
+        /// <summary>
+        /// Return the elements of an array that satisfy some condition.
+        /// </summary>
+        /// <param name="condition">An array whose nonzero or True entries indicate the elements of 'arr' to extract.</param>
+        /// <param name="arr">Input array of the same size as 'condition'</param>
+        /// <returns></returns>
         public static ndarray extract(ndarray condition, ndarray arr)
         {
             /*
@@ -1389,6 +1494,12 @@ namespace NumpyDotNet
         #endregion
 
         #region place
+        /// <summary>
+        /// Change elements of an array based on conditional and input values.
+        /// </summary>
+        /// <param name="arr">Array to put data into.</param>
+        /// <param name="mask"> Boolean mask array. Must have the same size as 'arr'.</param>
+        /// <param name="vals">Values to put into 'arr'. Only the first N elements are used, where N is the number of True values in 'mask'</param>
         public static void place(object arr, object mask, object vals)
         {
             /*
@@ -1458,7 +1569,17 @@ namespace NumpyDotNet
         #endregion
 
         #region cov
-
+        /// <summary>
+        /// Estimate a covariance matrix, given data and weights.
+        /// </summary>
+        /// <param name="m">A 1-D or 2-D array containing multiple variables and observations.</param>
+        /// <param name="y">An additional set of variables and observations.</param>
+        /// <param name="rowvar">If `rowvar` is True (default), then each row represents a variable, with observations in the columns.</param>
+        /// <param name="bias">Default normalization (False) is by '(N - 1)', where 'N' is the number of observations given(unbiased estimate)</param>
+        /// <param name="ddof">If not null the default value implied by 'bias' is overridden.</param>
+        /// <param name="fweights">1-D array of integer frequency weights</param>
+        /// <param name="aweights">1-D array of observation vector weights.</param>
+        /// <returns></returns>
         public static ndarray cov(object m, object y = null, bool rowvar = true,
             bool bias = false, int? ddof = null, object fweights = null, object aweights = null)
         {
