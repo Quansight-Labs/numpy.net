@@ -835,7 +835,7 @@ namespace NumpyDotNetTests
 
         #endregion
 
-        #region npf.ipp tests
+        #region npf.irr tests
 
         [Ignore]   // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
         [TestMethod]
