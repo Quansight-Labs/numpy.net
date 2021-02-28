@@ -2982,7 +2982,15 @@ namespace NumpyDotNet
         #endregion
 
         #region greater
-  
+
+        /// <summary>
+        /// Return the truth value of (x1 > x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray greater(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.greater, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2990,6 +2998,14 @@ namespace NumpyDotNet
         #endregion
 
         #region greater_equal
+        /// <summary>
+        /// Return the truth value of (x1 >= x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray greater_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.greater_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -2997,6 +3013,14 @@ namespace NumpyDotNet
         #endregion
 
         #region less
+        /// <summary>
+        /// Return the truth value of (x1 < x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray less(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.less, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3004,6 +3028,14 @@ namespace NumpyDotNet
         #endregion
 
         #region less_equal
+        /// <summary>
+        /// Return the truth value of (x1 <= x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray less_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.less_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3011,6 +3043,14 @@ namespace NumpyDotNet
         #endregion
 
         #region equal
+        /// <summary>
+        /// Return the truth value of (x1 == x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray equal(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3018,6 +3058,14 @@ namespace NumpyDotNet
         #endregion
 
         #region not_equal
+        /// <summary>
+        /// Return the truth value of (x1 != x2) element-wise.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray not_equal(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.not_equal, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3025,6 +3073,11 @@ namespace NumpyDotNet
         #endregion
 
         #region invert
+        /// <summary>
+        /// Compute bit-wise inversion, or bit-wise NOT, element-wise.
+        /// </summary>
+        /// <param name="input">Only integer and boolean types are handled.</param>
+        /// <returns></returns>
         public static ndarray invert(object input)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(input), UFuncOperation.invert, 0, false);
@@ -3033,6 +3086,14 @@ namespace NumpyDotNet
         #endregion
 
         #region right_shift
+        /// <summary>
+        /// Shift the bits of an integer to the right.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Number of bits to remove at the right of x1</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray right_shift(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.right_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3040,6 +3101,14 @@ namespace NumpyDotNet
         #endregion
 
         #region left_shift
+        /// <summary>
+        /// Shift the bits of an integer to the left.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Number of bits to remove at the right of x1</param>
+        /// <param name="out">A location into which the result is stored</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray left_shift(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.left_shift, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
@@ -3047,9 +3116,14 @@ namespace NumpyDotNet
         #endregion
 
         #region floor
-        public static ndarray floor(object srcArray)
+        /// <summary>
+        /// Return the floor of the input, element-wise.
+        /// </summary>
+        /// <param name="x">Input data.</param>
+        /// <returns></returns>
+        public static ndarray floor(object x)
         {
-            return NpyCoreApi.Floor(asanyarray(srcArray), null);
+            return NpyCoreApi.Floor(asanyarray(x), null);
         }
 
 
@@ -3057,6 +3131,11 @@ namespace NumpyDotNet
 
         #region isnan
         public static float NaN = float.NaN;
+        /// <summary>
+        /// Test element-wise for NaN and return result as a boolean array.
+        /// </summary>
+        /// <param name="input">Input array.</param>
+        /// <returns></returns>
         public static ndarray isnan(ndarray input)
         {
             return NpyCoreApi.IsNaN(input);
@@ -3068,6 +3147,11 @@ namespace NumpyDotNet
         public static float Inf = float.PositiveInfinity;
         public static float NInf = float.NegativeInfinity;
 
+        /// <summary>
+        /// Test element-wise for positive or negative infinity.
+        /// </summary>
+        /// <param name="o">Input values</param>
+        /// <returns></returns>
         public static ndarray isfinite(object o)
         {
             var input = asanyarray(o);
@@ -3087,7 +3171,11 @@ namespace NumpyDotNet
 
             return array(output).reshape(input.shape);
         }
-
+        /// <summary>
+        /// Test element-wise for positive or negative infinity.
+        /// </summary>
+        /// <param name="o">Input values</param>
+        /// <returns></returns>
         public static ndarray isinf(object o)
         {
             var input = asanyarray(o);
@@ -3106,7 +3194,11 @@ namespace NumpyDotNet
 
             return array(output).reshape(input.shape);
         }
-
+        /// <summary>
+        /// Test element-wise for negative infinity, return result as bool array.
+        /// </summary>
+        /// <param name="o">The input array</param>
+        /// <returns></returns>
         public static ndarray isneginf(object o)
         {
             var input = asanyarray(o);
@@ -3125,7 +3217,11 @@ namespace NumpyDotNet
 
             return array(output).reshape(input.shape);
         }
-
+        /// <summary>
+        /// Test element-wise for positive infinity, return result as bool array.
+        /// </summary>
+        /// <param name="o">The input array.</param>
+        /// <returns></returns>
         public static ndarray isposinf(object o)
         {
             var input = asanyarray(o);
@@ -3145,63 +3241,6 @@ namespace NumpyDotNet
             return array(output).reshape(input.shape);
         }
         #endregion
-
-        #region Ravel
-        private static ndarray ravel(dynamic values, dtype dtype = null)
-        {
-            return np.array(values, dtype: dtype, copy: true, order: NPY_ORDER.NPY_ANYORDER).flatten();
-        }
-        private static ndarray ravel(Boolean values)
-        {
-            return ravel(new Boolean[] { values }, np.Bool);
-        }
-        private static ndarray ravel(sbyte values)
-        {
-            return ravel(new sbyte[] { values }, np.Int8);
-        }
-        private static ndarray ravel(byte values)
-        {
-            return ravel(new byte[] { values }, np.UInt8);
-        }
-        private static ndarray ravel(Int16 values)
-        {
-            return ravel(new Int16[] { values }, np.Int16);
-        }
-        private static ndarray ravel(UInt16 values)
-        {
-            return ravel(new UInt16[] { values }, np.UInt16);
-        }
-        private static ndarray ravel(Int32 values)
-        {
-            return np.array(new Int32[] { values }, dtype: np.Int32, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(UInt32 values)
-        {
-            return np.array(new UInt32[] { values }, dtype: np.UInt32, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(Int64 values)
-        {
-            return np.array(new Int64[] { values }, dtype: np.Int64, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(UInt64 values)
-        {
-            return np.array(new UInt64[] { values }, dtype: np.UInt64, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(float values)
-        {
-            return np.array(new float[] { values }, dtype: np.Float32, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(double values)
-        {
-            return np.array(new double[] { values }, dtype: np.Float64, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-        private static ndarray ravel(decimal values)
-        {
-            return np.array(new decimal[] { values }, dtype: np.Decimal, copy: true, order: NPY_ORDER.NPY_ANYORDER);
-        }
-
-        #endregion
-
 
         #region IndicesFromAxis
         public static IList<npy_intp> IndicesFromAxis(ndarray a, int axis)
@@ -3236,6 +3275,13 @@ namespace NumpyDotNet
         #endregion
 
         #region correlate
+        /// <summary>
+        /// Cross-correlation of two 1-dimensional sequences.
+        /// </summary>
+        /// <param name="o1">Input sequence</param>
+        /// <param name="o2">Input sequence</param>
+        /// <param name="mode">{‘valid’, ‘same’, ‘full’}, optional</param>
+        /// <returns></returns>
         public static ndarray correlate(object o1, object o2, NPY_CONVOLE_MODE mode = NPY_CONVOLE_MODE.NPY_CONVOLVE_VALID)
         {
             //Cross - correlation of two 1 - dimensional sequences.
@@ -3311,21 +3357,53 @@ namespace NumpyDotNet
 
         #region maximum/minimum/fmax/fmin
 
-        public static ndarray maximum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        /// <summary>
+        /// Element-wise maximum of array elements.
+        /// </summary>
+        /// <param name="x1">The arrays holding the elements to be compared.</param>
+        /// <param name="x2">The arrays holding the elements to be compared.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
+        public static ndarray maximum(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.maximum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.maximum, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray minimum(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        /// <summary>
+        /// Element-wise minimum of array elements.
+        /// </summary>
+        /// <param name="x1">The arrays holding the elements to be compared.</param>
+        /// <param name="x2">The arrays holding the elements to be compared.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
+        public static ndarray minimum(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.minimum, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.minimum, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray fmax(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        /// <summary>
+        /// Element-wise maximum of array elements.
+        /// </summary>
+        /// <param name="x1">The arrays holding the elements to be compared.</param>
+        /// <param name="x2">The arrays holding the elements to be compared.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
+        public static ndarray fmax(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmax, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmax, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-        public static ndarray fmin(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        /// <summary>
+        /// Element-wise minimum of array elements.
+        /// </summary>
+        /// <param name="x1">The arrays holding the elements to be compared.</param>
+        /// <param name="x2">The arrays holding the elements to be compared.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
+        public static ndarray fmin(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmin, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.fmin, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
 
@@ -3333,10 +3411,17 @@ namespace NumpyDotNet
 
         #region heaviside
 
-
-        public static ndarray heaviside(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
+        /// <summary>
+        /// Compute the Heaviside step function.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Input values.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
+        public static ndarray heaviside(object x1, object x2, ndarray @out = null, object where = null)
         {
-            return NpyCoreApi.PerformUFUNC(UFuncOperation.heaviside, asanyarray(x1), asanyarray(x2), @out1, asanyarray(where));
+            return NpyCoreApi.PerformUFUNC(UFuncOperation.heaviside, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
         #endregion

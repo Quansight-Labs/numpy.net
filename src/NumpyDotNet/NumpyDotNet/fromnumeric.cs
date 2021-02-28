@@ -1801,6 +1801,11 @@ namespace NumpyDotNet
             return ravel(asanyarray(a), order);
         }
 
+        private static ndarray ravel(dynamic values, dtype dtype = null)
+        {
+            return np.array(values, dtype: dtype, copy: true, order: NPY_ORDER.NPY_ANYORDER).flatten();
+        }
+
         #endregion
 
         #region nonzero
