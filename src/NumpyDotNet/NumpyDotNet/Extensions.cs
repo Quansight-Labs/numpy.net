@@ -48,6 +48,12 @@ namespace NumpyDotNet
 {
     public static class NumpyExtensions
     {
+        /// <summary>
+        /// Returns an array containing the same data with a new shape.
+        /// </summary>
+        /// <param name="a">array to reshape</param>
+        /// <param name="newshape">New shape for the array. The new shape should be compatible with the original shape</param>
+        /// <returns></returns>
         public static ndarray reshape(this ndarray a, params int[] newshape)
         {
             npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -55,6 +61,12 @@ namespace NumpyDotNet
                 newdims[i] = newshape[i];
             return a.reshape(newdims, NPY_ORDER.NPY_ANYORDER);
         }
+        /// <summary>
+        /// Returns an array containing the same data with a new shape.
+        /// </summary>
+        /// <param name="a">array to reshape</param>
+        /// <param name="newshape">New shape for the array. The new shape should be compatible with the original shape</param>
+        /// <returns></returns>
         public static ndarray reshape(this ndarray a, params long[] newshape)
         {
             npy_intp[] newdims = new npy_intp[newshape.Length];
@@ -62,10 +74,24 @@ namespace NumpyDotNet
                 newdims[i] = (npy_intp)newshape[i];
             return a.reshape(newdims, NPY_ORDER.NPY_ANYORDER);
         }
+        /// <summary>
+        /// Returns an array containing the same data with a new shape.
+        /// </summary>
+        /// <param name="a">array to reshape</param>
+        /// <param name="newshape">New shape for the array. The new shape should be compatible with the original shape</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’}, optional</param>
+        /// <returns></returns>
         public static ndarray reshape(this ndarray a, shape newshape, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             return np.reshape(a, newshape, order);
         }
+        /// <summary>
+        /// Returns an array containing the same data with a new shape.
+        /// </summary>
+        /// <param name="a">array to reshape</param>
+        /// <param name="newshape">New shape for the array. The new shape should be compatible with the original shape</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’}, optional</param>
+        /// <returns></returns>
         public static ndarray reshape(this ndarray a, object oshape, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             shape newshape = ConvertTupleToShape(oshape);
@@ -77,7 +103,7 @@ namespace NumpyDotNet
             return np.reshape(a, newshape, order);
         }
 
-        public static shape ConvertTupleToShape(object oshape)
+        internal static shape ConvertTupleToShape(object oshape)
         {
             var T = oshape.GetType();
 
@@ -185,12 +211,24 @@ namespace NumpyDotNet
             return null;
         }
 
-
+        /// <summary>
+        /// Write array to a file as text or binary (default).
+        /// </summary>
+        /// <param name="a">array to write to file</param>
+        /// <param name="fileName">string containing a filename</param>
+        /// <param name="sep">Separator between array items for text output.</param>
+        /// <param name="format">Format string for text file output.</param>
         public static void tofile(this ndarray a, string fileName, string sep = null, string format = null)
         {
             np.tofile(a, fileName, sep, format);
         }
-
+        /// <summary>
+        /// Write array to a stream as text or binary (default).
+        /// </summary>
+        /// <param name="a">array to write to stream</param>
+        /// <param name="stream">stream to write to</param>
+        /// <param name="sep">Separator between array items for text output.</param>
+        /// <param name="format">Format string for text file output.</param>
         public static void tofile(this ndarray a, Stream stream, string sep = null, string format = null)
         {
             np.tofile(a, stream, sep, format);
