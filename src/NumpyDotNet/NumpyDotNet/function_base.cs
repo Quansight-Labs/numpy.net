@@ -1879,6 +1879,13 @@ namespace NumpyDotNet
 
         #region corrcoef
 
+        /// <summary>
+        /// Return Pearson product-moment correlation coefficients.
+        /// </summary>
+        /// <param name="x">A 1-D or 2-D array containing multiple variables and observations.</param>
+        /// <param name="y">An additional set of variables and observations.</param>
+        /// <param name="rowvar">If `rowvar` is True (default), then each row represents a variable, with observations in the columns.</param>
+        /// <returns></returns>
         public static ndarray corrcoef(object x, object y = null, bool rowvar = true)
         {
             /*
@@ -1966,7 +1973,11 @@ namespace NumpyDotNet
         #endregion
 
         #region blackman
-
+        /// <summary>
+        /// Return the Blackman window.
+        /// </summary>
+        /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
+        /// <returns></returns>
         public static ndarray blackman(int M)
         {
             /*
@@ -2072,7 +2083,11 @@ namespace NumpyDotNet
         #endregion
 
         #region bartlett
-
+        /// <summary>
+        /// Return the Bartlett window.
+        /// </summary>
+        /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
+        /// <returns></returns>
         public static ndarray bartlett(int M)
         {
             /*
@@ -2185,6 +2200,12 @@ namespace NumpyDotNet
         #endregion
 
         #region hanning
+
+        /// <summary>
+        /// Return the Hanning window.
+        /// </summary>
+        /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
+        /// <returns></returns>
         public static ndarray hanning(int M)
         {
             /*
@@ -2291,7 +2312,11 @@ namespace NumpyDotNet
         #endregion
 
         #region hamming
-
+        /// <summary>
+        /// Return the Hamming window.
+        /// </summary>
+        /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
+        /// <returns></returns>
         public static ndarray hamming(int M)
         {
             /*
@@ -2487,7 +2512,11 @@ namespace NumpyDotNet
             return (exp(x) * _chbevl(np.divide(asanyarray(32.0), x) - 2.0, _i0B) / sqrt(x)) as ndarray;
         }
 
-
+        /// <summary>
+        /// Modified Bessel function of the first kind, order 0.
+        /// </summary>
+        /// <param name="x">array_like, dtype float or complex Argument of the Bessel function.</param>
+        /// <returns></returns>
         public static ndarray i0(object x)
         {
             /*
@@ -2566,7 +2595,12 @@ namespace NumpyDotNet
         #endregion
 
         #region kaiser
-
+        /// <summary>
+        /// Return the Kaiser window.
+        /// </summary>
+        /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
+        /// <param name="beta">Shape parameter for window.</param>
+        /// <returns></returns>
         public static ndarray kaiser(int M, float beta)
         {
             /*
@@ -2699,7 +2733,11 @@ namespace NumpyDotNet
         #endregion
 
         #region sinc
-
+        /// <summary>
+        /// Return the sinc function.
+        /// </summary>
+        /// <param name="x">Array (possibly multi-dimensional) of values for which to to calculate 'sinc(x)'.</param>
+        /// <returns></returns>
         public static ndarray sinc(ndarray x)
         {
             /*
@@ -2799,7 +2837,11 @@ namespace NumpyDotNet
         #endregion
 
         #region msort
-
+        /// <summary>
+        /// Return a copy of an array sorted along the first axis.
+        /// </summary>
+        /// <param name="a">Array to be sorted.</param>
+        /// <returns></returns>
         public static ndarray msort(ndarray a)
         {
             // Return a copy of an array sorted along the first axis.
@@ -2933,7 +2975,13 @@ namespace NumpyDotNet
         #endregion
 
         #region median
-
+        /// <summary>
+        /// Compute the median along the specified axis.
+        /// </summary>
+        /// <param name="a">Input array or object that can be converted to an array.</param>
+        /// <param name="axis">Axis or axes along which the medians are computed.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray median(ndarray a, int[] axis = null, bool keepdims = false)
         {
             /*
@@ -3025,6 +3073,13 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Compute the median along the specified axis.
+        /// </summary>
+        /// <param name="a">Input array or object that can be converted to an array.</param>
+        /// <param name="axis">Axis or axes along which the medians are computed.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray median(ndarray a, int axis, bool keepdims = false)
         {
             return median(a, new int[] { axis }, keepdims);
@@ -3179,7 +3234,15 @@ namespace NumpyDotNet
         #endregion
 
         #region percentile
-
+        /// <summary>
+        /// Compute the qth percentile of the data along the specified axis.
+        /// </summary>
+        /// <param name="a">Input array or object that can be converted to an array.</param>
+        /// <param name="q">Percentile or sequence of percentiles to compute, which must be between 0 and 100 inclusive.</param>
+        /// <param name="axis">Axis or axes along which the percentiles are computed.</param>
+        /// <param name="interpolation">{'linear', 'lower', 'higher', 'midpoint', 'nearest'}</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray percentile(object a, object q, int? axis = null,  
                 string interpolation = "linear", bool keepdims=false)
         {
@@ -3309,194 +3372,120 @@ namespace NumpyDotNet
             return _quantile_unchecked(aa, q1,IsQArray, axis, overwrite_input, interpolation, keepdims);
         }
 
+        /// <summary>
+        /// Compute the q-th quantile of the data along the specified axis.
+        /// </summary>
+        /// <param name="a">Input array or object that can be converted to an array.</param>
+        /// <param name="q">Quantile or sequence of quantiles to compute, which must be between 0 and 1 inclusive.</param>
+        /// <param name="axis">Axis or axes along which the quantiles are computed.</param>
+        /// <param name="interpolation">{'linear', 'lower', 'higher', 'midpoint', 'nearest'}</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one. </param>
+        /// <returns></returns>
         public static ndarray quantile(object a, object q, int? axis = null,
             string interpolation = "linear", bool keepdims = false)
         {
             /*
             Compute the q-th quantile of the data along the specified axis.
-
             Parameters
-
             ----------
-
             a : array_like
-
                 Input array or object that can be converted to an array.
-
             q : array_like of float
-
                 Quantile or sequence of quantiles to compute, which must be between
-
                 0 and 1 inclusive.
-
             axis : {int, tuple of int, None}, optional
-
                 Axis or axes along which the quantiles are computed. The
-
                 default is to compute the quantile(s) along a flattened
-
                 version of the array.
-
             out : ndarray, optional
-
                 Alternative output array in which to place the result. It must
-
                 have the same shape and buffer length as the expected output,
-
                 but the type (of the output) will be cast if necessary.
-
             overwrite_input : bool, optional
-
                 If True, then allow the input array `a` to be modified by intermediate
-
                 calculations, to save memory. In this case, the contents of the input
-
                 `a` after this function completes is undefined.
-
             interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
-
                 This optional parameter specifies the interpolation method to
-
                 use when the desired quantile lies between two data points
-
                 ``i < j``:
 
-
-
                     * linear: ``i + (j - i) * fraction``, where ``fraction``
-
                       is the fractional part of the index surrounded by ``i``
-
                       and ``j``.
-
                     * lower: ``i``.
-
                     * higher: ``j``.
-
                     * nearest: ``i`` or ``j``, whichever is nearest.
-
                     * midpoint: ``(i + j) / 2``.
-
             keepdims : bool, optional
-
                 If this is set to True, the axes which are reduced are left in
-
                 the result as dimensions with size one. With this option, the
-
                 result will broadcast correctly against the original array `a`.
 
-
-
             Returns
-
             -------
-
             quantile : scalar or ndarray
-
                 If `q` is a single quantile and `axis=None`, then the result
-
                 is a scalar. If multiple quantiles are given, first axis of
-
                 the result corresponds to the quantiles. The other axes are
-
                 the axes that remain after the reduction of `a`. If the input
-
                 contains integers or floats smaller than ``float64``, the output
-
                 data-type is ``float64``. Otherwise, the output data-type is the
-
                 same as that of the input. If `out` is specified, that array is
-
                 returned instead.
 
-
-
             See Also
-
             --------
-
             mean
-
             percentile : equivalent to quantile, but with q in the range [0, 100].
-
             median : equivalent to ``quantile(..., 0.5)``
-
             nanquantile
 
-
-
             Notes
-
             -----
-
             Given a vector ``V`` of length ``N``, the q-th quantile of
-
             ``V`` is the value ``q`` of the way from the minimum to the
-
             maximum in a sorted copy of ``V``. The values and distances of
-
             the two nearest neighbors as well as the `interpolation` parameter
-
             will determine the quantile if the normalized ranking does not
-
             match the location of ``q`` exactly. This function is the same as
-
             the median if ``q=0.5``, the same as the minimum if ``q=0.0`` and the
-
             same as the maximum if ``q=1.0``.
 
-
-
             Examples
-
             --------
-
             >>> a = np.array([[10, 7, 4], [3, 2, 1]])
-
             >>> a
 
             array([[10,  7,  4],
-
                    [ 3,  2,  1]])
 
             >>> np.quantile(a, 0.5)
-
             3.5
 
             >>> np.quantile(a, 0.5, axis=0)
-
             array([6.5, 4.5, 2.5])
 
             >>> np.quantile(a, 0.5, axis=1)
-
             array([7.,  2.])
 
             >>> np.quantile(a, 0.5, axis=1, keepdims=True)
-
             array([[7.],
-
                    [2.]])
 
             >>> m = np.quantile(a, 0.5, axis=0)
-
             >>> out = np.zeros_like(m)
-
             >>> np.quantile(a, 0.5, axis=0, out=out)
-
             array([6.5, 4.5, 2.5])
 
             >>> m
-
             array([6.5, 4.5, 2.5])
 
             >>> b = a.copy()
-
             >>> np.quantile(b, 0.5, axis=1, overwrite_input=True)
-
             array([7.,  2.])
 
             >>> assert not np.all(a == b)        
-
              */
 
             bool overwrite_input = false;
@@ -3751,7 +3740,14 @@ namespace NumpyDotNet
         #endregion
 
         #region trapz
-
+        /// <summary>
+        /// Integrate along the given axis using the composite trapezoidal rule.
+        /// </summary>
+        /// <param name="y">Input array to integrate.</param>
+        /// <param name="x">The sample points corresponding to the 'y' values</param>
+        /// <param name="dx">The spacing between sample points when 'x' is null</param>
+        /// <param name="axis">The axis along which to integrate.</param>
+        /// <returns></returns>
         public static ndarray trapz(object y, object x = null, double dx=1.0, int axis= -1)
         {
             /*
@@ -3896,7 +3892,14 @@ namespace NumpyDotNet
 
         #region meshgrid
 
-
+        /// <summary>
+        /// Return coordinate matrices from coordinate vectors.
+        /// </summary>
+        /// <param name="xi">1-D arrays representing the coordinates of a grid.</param>
+        /// <param name="indexing">Cartesian ('xy', default) or matrix ('ij') indexing of output.</param>
+        /// <param name="sparse">If True a sparse grid is returned in order to conserve memory.</param>
+        /// <param name="copy">If False, a view into the original arrays are returned in order to conserve memory</param>
+        /// <returns></returns>
         public static ndarray[] meshgrid(ndarray []xi, string indexing = "xy", bool sparse = false, bool copy = true)
         {
             /*
@@ -4058,8 +4061,14 @@ namespace NumpyDotNet
 
         #region delete
 
-
-        public static ndarray delete(ndarray srcArray, Slice slice, int axis)
+        /// <summary>
+        /// Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by 'arr[obj]'.
+        /// </summary>
+        /// <param name="arr">Input array.</param>
+        /// <param name="slice">slice, int or array of ints. Indicate which sub-arrays to remove.</param>
+        /// <param name="axis">The axis along which to delete the subarray defined by 'slice'</param>
+        /// <returns></returns>
+        public static ndarray delete(ndarray arr, Slice slice, int axis)
         {
             /*
             Return a new array with sub-arrays along an axis deleted. For a one
@@ -4119,15 +4128,21 @@ namespace NumpyDotNet
              */
 
             // create a bool mask to indicate which of the fields to delete (false == delete)
-            var mask = np.ones_like(srcArray, dtype: np.Bool);
+            var mask = np.ones_like(arr, dtype: np.Bool);
             mask[slice, axis] = false;
 
             // use the "fancy index" feature to get only the data items marked true
-            var retArray = srcArray.A(mask);
+            var retArray = arr.A(mask);
             return retArray;
         }
-
-        public static ndarray delete(ndarray srcArray, int index, int axis)
+        /// <summary>
+        /// Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by 'arr[obj]'
+        /// </summary>
+        /// <param name="arr">Input array.</param>
+        /// <param name="index">Indicate which sub-arrays to remove.</param>
+        /// <param name="axis">The axis along which to delete the subarray defined by 'index'</param>
+        /// <returns></returns>
+        public static ndarray delete(ndarray arr, int index, int axis)
         {
             /*
             Return a new array with sub-arrays along an axis deleted. For a one
@@ -4186,7 +4201,7 @@ namespace NumpyDotNet
             array([ 1,  3,  5,  7,  8,  9, 10, 11, 12])
              */
             // create a bool mask to indicate which of the fields to delete (false == delete)
-            var mask = np.ones_like(srcArray, dtype: np.Bool);
+            var mask = np.ones_like(arr, dtype: np.Bool);
 
             if (mask.ndim == 1)
             {
@@ -4210,14 +4225,21 @@ namespace NumpyDotNet
 
 
             // use the "fancy index" feature to get only the data items marked true
-            var retArray = srcArray.A(mask);
+            var retArray = arr.A(mask);
             return retArray;
         }
 
         #endregion
 
         #region insert
-
+        /// <summary>
+        /// Insert values along the given axis before the given indices.
+        /// </summary>
+        /// <param name="arr">Input array.</param>
+        /// <param name="obj"> Object that defines the index or indices before which 'values' is inserted.</param>
+        /// <param name="_invalues">Values to insert into 'arr'.</param>
+        /// <param name="axis">Axis along which to insert 'values'.</param>
+        /// <returns></returns>
         public static ndarray insert(ndarray arr, object obj, dynamic _invalues, int? axis = null)
         {
             // Insert values along the given axis before the given indices.
@@ -4469,7 +4491,13 @@ namespace NumpyDotNet
         #endregion
 
         #region append
-
+        /// <summary>
+        /// Append values to the end of an array.
+        /// </summary>
+        /// <param name="arr">Values are appended to a copy of this array.</param>
+        /// <param name="values">These values are appended to a copy of 'arr'.</param>
+        /// <param name="axis">The axis along which 'values' are appended.</param>
+        /// <returns></returns>
         public static ndarray append(ndarray arr, dynamic values, int? axis = null)
         {
             // Append values to the end of an array.
