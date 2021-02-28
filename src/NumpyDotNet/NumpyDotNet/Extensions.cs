@@ -234,63 +234,131 @@ namespace NumpyDotNet
             np.tofile(a, stream, sep, format);
         }
 
+        /// <summary>
+        /// New view of array with the same data.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="dtype">Data-type descriptor of the returned view</param>
+        /// <param name="type">Type of the returned view, e.g., ndarray or matrix (not used)</param>
+        /// <returns></returns>
         public static ndarray view(this ndarray a, dtype dtype = null, object type = null)
         {
             return np.view(a, dtype, type);
         }
-
+        /// <summary>
+        /// Return a copy of the array collapsed into one dimension.
+        /// </summary>
+        /// <param name="a">array to flatten</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}</param>
+        /// <returns></returns>
         public static ndarray Flatten(this ndarray a, NPY_ORDER order)
         {
             return NpyCoreApi.Flatten(a, order);
         }
-
+        /// <summary>
+        /// Return a contiguous flattened array.
+        /// </summary>
+        /// <param name="a">array to flatten</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}</param>
+        /// <returns></returns>
         public static ndarray Ravel(this ndarray a, NPY_ORDER order)
         {
             return np.ravel(a, order);
         }
-
-        public static void Resize(this ndarray a, npy_intp[] newdims, bool refcheck, NPY_ORDER order)
+        /// <summary>
+        /// Change shape and size of array in-place.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="newdims">Shape of resized array.</param>
+        /// <param name="order"></param>
+        public static void Resize(this ndarray a, npy_intp[] newdims)
         {
-            np.resize(a, newdims, refcheck, order);
+            np.resize(a, newdims);
         }
-
+        /// <summary>
+        /// Remove axes of length one from a.
+        /// </summary>
+        /// <param name="a">array to squeeze</param>
+        /// <returns></returns>
         public static ndarray Squeeze(this ndarray a)
         {
             return np.squeeze(a);
         }
-
-        public static ndarray SwapAxes(this ndarray a, int a1, int a2)
+        /// <summary>
+        /// Interchange two axes of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis1">First axis.</param>
+        /// <param name="axis2">Second axis.</param>
+        /// <returns></returns>
+        public static ndarray SwapAxes(this ndarray a, int axis1, int axis2)
         {
-            return np.swapaxes(a, a1, a2);
+            return np.swapaxes(a, axis1, axis2);
         }
- 
-        public static ndarray Transpose(this ndarray a, npy_intp[] permute = null)
+        /// <summary>
+        /// Returns a view of the array with axes transposed.
+        /// </summary>
+        /// <param name="a">array to transpose</param>
+        /// <param name="axes">array of npy_intp: i in the j-th place in the array means a’s i-th axis becomes a.transpose()’s j-th axis</param>
+        /// <returns></returns>
+        public static ndarray Transpose(this ndarray a, npy_intp[] axes = null)
         {
-            return np.transpose(a, permute);
+            return np.transpose(a, axes);
         }
-
-        public static ndarray Choose(this ndarray a, IEnumerable<ndarray> choices, ndarray ret = null, NPY_CLIPMODE clipMode = NPY_CLIPMODE.NPY_RAISE)
+        /// <summary>
+        /// Construct an array from an index array and a set of arrays to choose from.
+        /// </summary>
+        /// <param name="a">array to perform choose operation on.</param>
+        /// <param name="choices">Choice arrays. a and all of the choices must be broadcastable to the same shape</param>
+        /// <param name="out">f provided, the result will be inserted into this array</param>
+        /// <param name="clipMode">{‘raise’ (default), ‘wrap’, ‘clip’}</param>
+        /// <returns></returns>
+        public static ndarray Choose(this ndarray a, IEnumerable<ndarray> choices, ndarray @out = null, NPY_CLIPMODE clipMode = NPY_CLIPMODE.NPY_RAISE)
         {
-            return np.choose(a, choices, ret, clipMode);
+            return np.choose(a, choices, @out, clipMode);
         }
 
-
+        /// <summary>
+        /// Repeat elements of an array.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="repeats">The number of repetitions for each element</param>
+        /// <param name="axis">The axis along which to repeat values</param>
+        /// <returns></returns>
         public static ndarray Repeat(this ndarray a, object repeats, int? axis)
         {
             return np.repeat(a, repeats, axis);
         }
-
-        public static void PutTo(this ndarray a, ndarray values, ndarray indices, NPY_CLIPMODE mode)
+        /// <summary>
+        /// Replaces specified elements of an array with given values.
+        /// </summary>
+        /// <param name="a">target ndarray</param>
+        /// <param name="values">Values to place in a at target indices</param>
+        /// <param name="ind">Target indices, interpreted as integers.</param>
+        /// <param name="mode">{‘raise’, ‘wrap’, ‘clip’}</param>
+        public static void PutTo(this ndarray a, ndarray values, ndarray ind, NPY_CLIPMODE mode)
         {
-            int ret = np.put(a, indices, values, mode);
+            int ret = np.put(a, ind, values, mode);
         }
-
+        /// <summary>
+        /// Sort an array in-place.
+        /// </summary>
+        /// <param name="a">array to sort</param>
+        /// <param name="axis">Axis along which to sort. Default is -1, which means sort along the last axis.</param>
+        /// <param name="sortkind">Sorting algorithm. The default is ‘quicksort’.</param>
+        /// <returns></returns>
         public static ndarray Sort(this ndarray a, int? axis = -1, NPY_SORTKIND sortkind = NPY_SORTKIND.NPY_QUICKSORT)
         {
             return np.sort(a, axis, sortkind, null);
         }
 
-
+        /// <summary>
+        /// Returns the indices that would sort an array.
+        /// </summary>
+        /// <param name="a">array to sort</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Sorting algorithm. The default is ‘quicksort’.</param>
+        /// <returns></returns>
         public static ndarray ArgSort(this ndarray a, int? axis =-1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT)
         {
             return np.argsort(a, axis, kind);
