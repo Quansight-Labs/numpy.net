@@ -48,6 +48,15 @@ namespace NumpyDotNet
     {
         #region take
 
+        /// <summary>
+        /// Take elements from an array along an axis.
+        /// </summary>
+        /// <param name="a">The source array.</param>
+        /// <param name="indices">The indices of the values to extract.</param>
+        /// <param name="axis">The axis over which to select values. By default, the flattened input array is used.</param>
+        /// <param name="_out">If provided, the result will be placed in this array.</param>
+        /// <param name="mode">{'raise', 'wrap', 'clip'}, optional</param>
+        /// <returns></returns>
         public static ndarray take(ndarray a, ndarray indices, int? axis = null, ndarray _out = null, NPY_CLIPMODE mode = NPY_CLIPMODE.NPY_RAISE)
         {
             /*
@@ -197,7 +206,14 @@ namespace NumpyDotNet
         #endregion
 
         #region choose
-
+        /// <summary>
+        /// Construct an array from an index array and a set of arrays to choose from.
+        /// </summary>
+        /// <param name="a">This array must contain integers in `[0, n-1]`, where `n` is the number of choices,</param>
+        /// <param name="choices">sequence of arrays Choice arrays. `a` and all of the choices must be broadcastable to the same shape</param>
+        /// <param name="out"> If provided, the result will be inserted into this array.</param>
+        /// <param name="mode">{'raise' (default), 'wrap', 'clip'}, optional</param>
+        /// <returns></returns>
         public static ndarray choose(ndarray a, IEnumerable<ndarray> choices, ndarray @out = null, NPY_CLIPMODE mode= NPY_CLIPMODE.NPY_RAISE)
         {
             /*
@@ -325,6 +341,13 @@ namespace NumpyDotNet
 
         #region repeat
 
+        /// <summary>
+        /// Repeat elements of an array
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="repeats">The number of repetitions for each element.</param>
+        /// <param name="axis">The axis along which to repeat values.</param>
+        /// <returns></returns>
         public static ndarray repeat(object a, object repeats, int? axis = null)
         {
             /*
@@ -381,7 +404,14 @@ namespace NumpyDotNet
         #endregion
 
         #region put
-
+        /// <summary>
+        /// Replaces specified elements of an array with given values.
+        /// </summary>
+        /// <param name="a">Target array.</param>
+        /// <param name="ind">Target indices, interpreted as integers.</param>
+        /// <param name="v">Values to place in `a` at target indices.</param>
+        /// <param name="mode">{'raise', 'wrap', 'clip'}, optional</param>
+        /// <returns></returns>
         public static int put(ndarray a, ndarray ind, ndarray v, NPY_CLIPMODE mode = NPY_CLIPMODE.NPY_RAISE)
         {
             /*
@@ -439,7 +469,15 @@ namespace NumpyDotNet
 
             return ret;
         }
-
+        
+        /// <summary>
+        /// Replaces specified elements of an array with given values.
+        /// </summary>
+        /// <param name="a">Target array.</param>
+        /// <param name="ind">Target indices, interpreted as integers.</param>
+        /// <param name="v">Values to place in `a` at target indices.</param>
+        /// <param name="mode">{'raise', 'wrap', 'clip'}, optional</param>
+        /// <returns></returns>
         public static int put(ndarray a, object indices, object values, object mode = null)
         {
             ndarray aIndices;
@@ -464,7 +502,13 @@ namespace NumpyDotNet
         #endregion
 
         #region swapaxes
-
+        /// <summary>
+        /// Interchange two axes of an array.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="axis1">First axis.</param>
+        /// <param name="axis2">Second axis.</param>
+        /// <returns></returns>
         public static ndarray swapaxes(ndarray a, int axis1, int axis2)
         {
             /*
@@ -515,7 +559,12 @@ namespace NumpyDotNet
         #endregion
 
         #region transpose
-
+        /// <summary>
+        /// Permute the dimensions of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axes">list of ints, optional.By default, reverse the dimensions, otherwise permute the axes according to the values given.</param>
+        /// <returns></returns>
         public static ndarray transpose(ndarray a, npy_intp[] axes = null)
         {
             /*
@@ -566,12 +615,25 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Transpose(a, axes == null ? null : axes.ToArray());
         }
+
+        /// <summary>
+        /// Permute the dimensions of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axes">list of ints, optional.By default, reverse the dimensions, otherwise permute the axes according to the values given.</param>
+        /// <returns></returns>
         public static ndarray transpose(ndarray []a, npy_intp[] axes = null)
         {
             return transpose(vstack(a), axes);
         }
 
 #if NPY_INTP_64
+        /// <summary>
+        /// Permute the dimensions of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axes">list of ints, optional.By default, reverse the dimensions, otherwise permute the axes according to the values given.</param>
+        /// <returns></returns>
         public static ndarray transpose(ndarray a, int[] axes)
         {
             if (axes != null)
@@ -587,6 +649,12 @@ namespace NumpyDotNet
             return transpose(a, (npy_intp[])null);
         }
 #else
+        /// <summary>
+        /// Permute the dimensions of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axes">list of ints, optional.By default, reverse the dimensions, otherwise permute the axes according to the values given.</param>
+        /// <returns></returns>
         public static ndarray transpose(ndarray a, long[] axes)
         {
             if (axes != null)
@@ -602,16 +670,19 @@ namespace NumpyDotNet
             return transpose(a, (npy_intp[])null);
         }
 #endif
-
-
-
-
-
-
         #endregion
 
         #region partition
 
+        /// <summary>
+        /// Return a partitioned copy of an array.
+        /// </summary>
+        /// <param name="a">Array to be sorted.</param>
+        /// <param name="kth">Element index to partition by.</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Selection algorithm.</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
         public static ndarray partition(ndarray a, IEnumerable<npy_intp> kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             /*
@@ -709,6 +780,15 @@ namespace NumpyDotNet
             return a;
         }
 
+        /// <summary>
+        /// Return a partitioned copy of an array.
+        /// </summary>
+        /// <param name="a">Array to be sorted.</param>
+        /// <param name="kth">Element index to partition by.</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Selection algorithm.</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
         public static ndarray partition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             return partition(a, new npy_intp[1] { kth }, axis, kind, order);
@@ -717,7 +797,15 @@ namespace NumpyDotNet
         #endregion
 
         #region argpartition
-
+        /// <summary>
+        /// Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword.
+        /// </summary>
+        /// <param name="a">Array to sort</param>
+        /// <param name="kth">Element index to partition by.</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Selection algorithm</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
         public static ndarray argpartition(ndarray a, IEnumerable<int> kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             /*
@@ -796,7 +884,15 @@ namespace NumpyDotNet
             ndarray ret = NpyCoreApi.ArgPartition(a, asanyarray(kth), axis.Value, which: NPY_SELECTKIND.NPY_INTROSELECT);
             return ret;
         }
-
+        /// <summary>
+        /// Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword.
+        /// </summary>
+        /// <param name="a">Array to sort</param>
+        /// <param name="kth">Element index to partition by.</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">Selection algorithm</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
         public static ndarray argpartition(ndarray a, int kth, int? axis = null, string kind = "introselect", IEnumerable<string> order = null)
         {
             return argpartition(a, new Int32[1] { kth }, axis, kind, order);
@@ -806,7 +902,15 @@ namespace NumpyDotNet
 
         #region sort
 
-        public static ndarray sort(object o, int? axis = -1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT, IEnumerable<string> order= null)
+        /// <summary>
+        /// Return a sorted copy of an array.
+        /// </summary>
+        /// <param name="a">Array to be sorted.</param>
+        /// <param name="axis">Axis along which to sort</param>
+        /// <param name="kind">{'quicksort', 'mergesort', 'heapsort'}, optional</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
+        public static ndarray sort(object a, int? axis = -1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT, IEnumerable<string> order= null)
         {
             /*
             Return a sorted copy of an array.
@@ -915,25 +1019,32 @@ namespace NumpyDotNet
                   dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
             */
 
-            ndarray a = null;
+            ndarray _a = null;
             if (axis == null)
             {
                 axis = 0;
-                a = asanyarray(o).flatten();
+                _a = asanyarray(a).flatten();
             }
             else
             {
-                a = asanyarray(o).Copy();
+                _a = asanyarray(a).Copy();
             }
 
-            NpyCoreApi.Sort(a, axis.Value, kind);
-            return a;
+            NpyCoreApi.Sort(_a, axis.Value, kind);
+            return _a;
         }
 
         #endregion
 
         #region argsort
-
+        /// <summary>
+        /// Returns the indices that would sort an array.
+        /// </summary>
+        /// <param name="a">Array to sort.</param>
+        /// <param name="axis">Axis along which to sort.</param>
+        /// <param name="kind">{'quicksort', 'mergesort', 'heapsort'}, optional</param>
+        /// <param name="order">str or list of str, optional</param>
+        /// <returns></returns>
         public static ndarray argsort(ndarray a, int? axis = -1, NPY_SORTKIND kind = NPY_SORTKIND.NPY_QUICKSORT, IEnumerable<string> order = null)
         {
             /*
