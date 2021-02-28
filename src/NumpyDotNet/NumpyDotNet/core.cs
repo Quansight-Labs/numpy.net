@@ -97,7 +97,7 @@ namespace NumpyDotNet
             }
         }
 
-        public static VoidPtr GetSingleElementArray(object o)
+        private static VoidPtr GetSingleElementArray(object o)
         {
             switch (Type.GetTypeCode(o.GetType()))
             {
