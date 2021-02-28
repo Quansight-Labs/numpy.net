@@ -1149,6 +1149,13 @@ namespace NumpyDotNet
 
         #region argmax
 
+        /// <summary>
+        /// Returns the indices of the maximum values along an axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">By default, the index is into the flattened array, otherwise along the specified axis.</param>
+        /// <param name="out">If provided, the result will be inserted into this array.</param>
+        /// <returns></returns>
         public static ndarray argmax(ndarray a, int? axis= null, ndarray @out = null)
         {
             /*
@@ -1223,7 +1230,13 @@ namespace NumpyDotNet
         #endregion
 
         #region argmin
-
+        /// <summary>
+        /// Returns the indices of the minimum values along an axis.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">By default, the index is into the flattened array, otherwise along the specified axis.</param>
+        /// <param name="out">If provided, the result will be inserted into this array</param>
+        /// <returns></returns>
         public static ndarray argmin(ndarray a, int? axis = null, ndarray @out = null)
         {
             /*
@@ -1299,7 +1312,14 @@ namespace NumpyDotNet
         #endregion
 
         #region searchsorted
-
+        /// <summary>
+        /// Find indices where elements should be inserted to maintain order.
+        /// </summary>
+        /// <param name="a">1-D array_like</param>
+        /// <param name="v">Values to insert into `a`</param>
+        /// <param name="side"> {'left', 'right'}</param>
+        /// <param name="sorter">Optional array of integer indices that sort array a into ascending order.They are typically the result of argsort.</param>
+        /// <returns></returns>
         public static ndarray searchsorted(ndarray a, ndarray v, NPY_SEARCHSIDE side = NPY_SEARCHSIDE.NPY_SEARCHLEFT, ndarray sorter = null)
         {
             /*
@@ -1370,7 +1390,15 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Searchsorted(a, v, side);
         }
-
+        
+        /// <summary>
+        /// Find indices where elements should be inserted to maintain order.
+        /// </summary>
+        /// <param name="a">1-D array_like</param>
+        /// <param name="v">Values to insert into `a`</param>
+        /// <param name="side"> {'left', 'right'}</param>
+        /// <param name="sorter">Optional array of integer indices that sort array a into ascending order.They are typically the result of argsort.</param>
+        /// <returns></returns>
         public static ndarray searchsorted(this ndarray a, object keys, NPY_SEARCHSIDE side = NPY_SEARCHSIDE.NPY_SEARCHLEFT)
         {
             ndarray aKeys = (keys as ndarray);
@@ -1385,12 +1413,23 @@ namespace NumpyDotNet
         #endregion
 
         #region resize
-
+        /// <summary>
+        /// Return a new array with the specified shape.
+        /// </summary>
+        /// <param name="a">Array to be resized</param>
+        /// <param name="new_shape">Shape of resized array</param>
+        /// <returns></returns>
         public static ndarray resize(ndarray a, shape new_shape)
         {
             return np.resize(a, new_shape.iDims);
         }
 
+        /// <summary>
+        /// Return a new array with the specified shape.
+        /// </summary>
+        /// <param name="a">Array to be resized</param>
+        /// <param name="newdims">Shape of resized array</param>
+        /// <returns></returns>
         public static ndarray resize(ndarray a, npy_intp[] newdims)
         {
             /*
@@ -1479,10 +1518,10 @@ namespace NumpyDotNet
         #region squeeze
 
         /// <summary>
-        /// 
+        /// Remove single-dimensional entries from the shape of an array
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="axis">Not currently supported</param>
+        /// <param name="a">Input data</param>
+        /// <param name="axis">Selects a subset of the single-dimensional entries in the shape</param>
         /// <returns></returns>
         public static ndarray squeeze(ndarray a, int? axis = null)
         {
@@ -1546,7 +1585,14 @@ namespace NumpyDotNet
         #endregion
 
         #region diagonal
-
+        /// <summary>
+        /// Return specified diagonals
+        /// </summary>
+        /// <param name="a">Array from which the diagonals are taken</param>
+        /// <param name="offset">Offset of the diagonal from the main diagonal</param>
+        /// <param name="axis1">Axis to be used as the first axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <param name="axis2">Axis to be used as the second axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <returns></returns>
         public static ndarray diagonal(ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1)
         {
             /*
@@ -1734,7 +1780,16 @@ namespace NumpyDotNet
         #endregion
 
         #region trace
-
+        /// <summary>
+        /// Return the sum along diagonals of the array.
+        /// </summary>
+        /// <param name="a">Input array, from which the diagonals are taken.</param>
+        /// <param name="offset">Offset of the diagonal from the main diagonal.</param>
+        /// <param name="axis1">Axis to be used as the first axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <param name="axis2">Axis to be used as the second axis of the 2-D sub-arrays from which the diagonals should be taken</param>
+        /// <param name="dtype">Determines the data-type of the returned array and of the accumulator where the elements are summed.</param>
+        /// <param name="out">Array into which the output is placed</param>
+        /// <returns></returns>
         public static ndarray trace(ndarray a, int offset = 0, int axis1 = 0, int axis2 = 1, dtype dtype = null, ndarray @out = null)
         {
             /*
@@ -1801,7 +1856,12 @@ namespace NumpyDotNet
         #endregion
 
         #region ravel 
-
+        /// <summary>
+        /// Return a contiguous flattened array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="order">{'C','F', 'A', 'K'}, optional</param>
+        /// <returns></returns>
         public static ndarray ravel(ndarray a, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             /*
@@ -1907,11 +1967,24 @@ namespace NumpyDotNet
 
             return NpyCoreApi.Ravel(a, order);
         }
+
+        /// <summary>
+        /// Return a contiguous flattened array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="order">{'C','F', 'A', 'K'}, optional</param>
+        /// <returns></returns>
         public static ndarray ravel(System.Array a, NPY_ORDER order = NPY_ORDER.NPY_CORDER)
         {
             return ravel(asanyarray(a), order);
         }
 
+        /// <summary>
+        /// Return a contiguous flattened array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="order">{'C','F', 'A', 'K'}, optional</param>
+        /// <returns></returns>
         private static ndarray ravel(dynamic values, dtype dtype = null)
         {
             return np.array(values, dtype: dtype, copy: true, order: NPY_ORDER.NPY_ANYORDER).flatten();
@@ -1920,7 +1993,11 @@ namespace NumpyDotNet
         #endregion
 
         #region nonzero
-
+        /// <summary>
+        /// Return the indices of the elements that are non-zero.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <returns></returns>
         public static ndarray[] nonzero(ndarray a)
         {
             /*
@@ -2004,7 +2081,11 @@ namespace NumpyDotNet
         #endregion
 
         #region shape
-
+        /// <summary>
+        /// Return the shape of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <returns></returns>
         public static NumpyDotNet.shape shape(ndarray a)
         {
             /*
@@ -2050,7 +2131,14 @@ namespace NumpyDotNet
         #endregion
 
         #region compress
-
+        /// <summary>
+        /// Return selected slices of an array along given axis.
+        /// </summary>
+        /// <param name="condition">Array that selects which entries to return.</param>
+        /// <param name="a">Array from which to extract a part.</param>
+        /// <param name="axis">Axis along which to take slices.</param>
+        /// <param name="out">Output array, if specified</param>
+        /// <returns></returns>
         public static ndarray compress(ndarray condition, ndarray a, int? axis = null, ndarray @out = null)
         {
             /*
@@ -2122,7 +2210,14 @@ namespace NumpyDotNet
 
             return np.take(a, indexes, axis, @out, NPY_CLIPMODE.NPY_RAISE);
         }
-
+        /// <summary>
+        /// Return selected slices of an array along given axis.
+        /// </summary>
+        /// <param name="condition">Array that selects which entries to return.</param>
+        /// <param name="a">Array from which to extract a part.</param>
+        /// <param name="axis">Axis along which to take slices.</param>
+        /// <param name="out">Output array, if specified</param>
+        /// <returns></returns>
         public static ndarray compress(object condition, ndarray a, object axis = null, ndarray @out = null)
         {
             ndarray aCondition = np.FromAny(condition, null, 0, 0, 0, null);
@@ -2133,7 +2228,14 @@ namespace NumpyDotNet
         #endregion
 
         #region clip
-
+        /// <summary>
+        /// Clip (limit) the values in an array.
+        /// </summary>
+        /// <param name="a">Array containing elements to clip.</param>
+        /// <param name="a_min">Minimum value</param>
+        /// <param name="a_max">maximum  value</param>
+        /// <param name="out">The results will be placed in this array.</param>
+        /// <returns></returns>
         public static ndarray clip(ndarray a, object a_min, object a_max, ndarray @out = null)
         {
             return a.Clip(a_min, a_max, @out);
@@ -2143,8 +2245,16 @@ namespace NumpyDotNet
         #endregion
 
         #region sum
-
-        public static ndarray sum(ndarray srcArray, int? axis = null, dtype dtype = null, ndarray ret = null, bool keepdims = false)
+        /// <summary>
+        /// Sum of array elements over a given axis.
+        /// </summary>
+        /// <param name="a">Elements to sum.</param>
+        /// <param name="axis">Axis or axes along which a sum is performed.</param>
+        /// <param name="dtype">The type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="ret">Alternative output array in which to place the result</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
+        public static ndarray sum(ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null, bool keepdims = false)
         {
             /*
             Sum of array elements over a given axis.
@@ -2234,22 +2344,29 @@ namespace NumpyDotNet
 
             if (axis == null)
             {
-                srcArray = srcArray.ravel();
+                a = a.ravel();
                 axis = 0;
             }
 
             if (dtype == null)
             {
-                dtype = srcArray.Dtype;
+                dtype = a.Dtype;
             }
 
-            return NpyCoreApi.Sum(srcArray, axis.Value, dtype, ret, keepdims);
+            return NpyCoreApi.Sum(a, axis.Value, dtype, ret, keepdims);
         }
 
         #endregion
 
         #region any
-
+        /// <summary>
+        /// helper function to convert the results of np.any to a boolean value
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="axis"></param>
+        /// <param name="out"></param>
+        /// <param name="keepdims"></param>
+        /// <returns></returns>
         public static bool anyb(object a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             var any = np.any(a, axis, @out, keepdims);
@@ -2264,7 +2381,14 @@ namespace NumpyDotNet
             }
             return false;
         }
-
+        /// <summary>
+        /// Test whether any array element along a given axis evaluates to True.
+        /// </summary>
+        /// <param name="a">Input array or object</param>
+        /// <param name="axis">Axis or axes along which a logical OR reduction is performed.</param>
+        /// <param name="out">Alternate output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray any(object a, object axis = null, ndarray @out=null, bool keepdims = false)
         {
             /*
@@ -2354,7 +2478,14 @@ namespace NumpyDotNet
         #endregion
 
         #region all
-
+        /// <summary>
+        /// helper function to convert the results of np.all to a boolean value
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="axis"></param>
+        /// <param name="out"></param>
+        /// <param name="keepdims"></param>
+        /// <returns></returns>
         public static bool allb(object a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             var all = np.all(a, axis, @out, keepdims);
@@ -2369,7 +2500,14 @@ namespace NumpyDotNet
             }
             return false;
         }
-
+        /// <summary>
+        /// Test whether all array elements along a given axis evaluate to True.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">Axis or axes along which a logical AND reduction is performed.</param>
+        /// <param name="out">Alternate output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray all(object a, object axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
@@ -2454,7 +2592,14 @@ namespace NumpyDotNet
         #endregion
 
         #region cumsum
-
+        /// <summary>
+        /// Return the cumulative sum of the elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">Axis along which the cumulative sum is computed.</param>
+        /// <param name="dtype">Type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="ret">Alternative output array in which to place the result</param>
+        /// <returns></returns>
         public static ndarray cumsum(ndarray a, int? axis = null, dtype dtype = null, ndarray ret = null)
         {
             /*
@@ -2532,7 +2677,14 @@ namespace NumpyDotNet
         #endregion
 
         #region ptp
-
+        /// <summary>
+        /// Range of values (maximum - minimum) along an axis.
+        /// </summary>
+        /// <param name="a">Input values.</param>
+        /// <param name="axis">Axis along which to find the peaks.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one. </param>
+        /// <returns></returns>
         public static ndarray ptp(ndarray a, object axis = null, ndarray @out=null, bool keepdims = false)
         {
             /*
@@ -2602,7 +2754,14 @@ namespace NumpyDotNet
         #endregion
 
         #region amax
-
+        /// <summary>
+        /// Return the maximum of an array or maximum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray amax(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
 
@@ -2703,6 +2862,11 @@ namespace NumpyDotNet
             return resultArray;
         }
 
+        /// <summary>
+        /// Return the maximum of an array
+        /// </summary>
+        /// <param name="arr">Input data.</param>
+        /// <returns></returns>
         public static object max(object arr)
         {
             var resultArray = np.amax(arr);
@@ -2712,7 +2876,14 @@ namespace NumpyDotNet
         #endregion
 
         #region amin
-
+        /// <summary>
+        /// Return the minimum of an array or minimum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray amin(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
@@ -2811,7 +2982,11 @@ namespace NumpyDotNet
             var resultArray = NpyCoreApi.ArrayMin(arr, axis.Value, @out, keepdims);
             return resultArray;
         }
-
+        /// <summary>
+        /// Return the minimum of an array
+        /// </summary>
+        /// <param name="arr">Input data.</param>
+        /// <returns></returns>
         public static object min(object arr)
         {
             var resultArray = np.amin(arr);
@@ -2821,7 +2996,11 @@ namespace NumpyDotNet
         #endregion
 
         #region alen
-
+        /// <summary>
+        /// Return the length of the first dimension of the input array.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <returns></returns>
         public static int alen(ndarray a)
         {
             /*
@@ -2856,7 +3035,15 @@ namespace NumpyDotNet
         #endregion
 
         #region prod
-
+        /// <summary>
+        /// Return the product of array elements over a given axis.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="axis">Axis or axes along which a product is performed.</param>
+        /// <param name="dtype">The type of the returned array, as well as of the accumulator in which the elements are multiplied.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray prod(ndarray a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
@@ -2866,7 +3053,14 @@ namespace NumpyDotNet
         #endregion
 
         #region cumprod
-
+        /// <summary>
+        /// Return the cumulative product of elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">Axis along which the cumulative product is computed.</param>
+        /// <param name="dtype">Type of the returned array, as well as of the accumulator in which the elements are multiplied. </param>
+        /// <param name="out">Alternative output array in which to place the result. </param>
+        /// <returns></returns>
         public static ndarray cumprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
         {
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
@@ -2876,7 +3070,11 @@ namespace NumpyDotNet
         #endregion
 
         #region ndim
-
+        /// <summary>
+        /// Return the number of dimensions of an array.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <returns></returns>
         public static int ndim(ndarray a)
         {
             /*
@@ -2915,7 +3113,12 @@ namespace NumpyDotNet
         #endregion
 
         #region size
-
+        /// <summary>
+        /// Return the number of elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="axis">Axis along which the elements are counted.</param>
+        /// <returns></returns>
         public static npy_intp size(ndarray a, int? axis = null)
         {
             /*
@@ -2968,8 +3171,14 @@ namespace NumpyDotNet
         #endregion
 
         #region around
-
-        public static ndarray around(ndarray a, int decimals = 0, ndarray ret = null)
+        /// <summary>
+        /// Evenly round to the given number of decimals.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="decimals">Number of decimal places to round to (default: 0).</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
+        public static ndarray around(ndarray a, int decimals = 0, ndarray @out = null)
         {
             /*
             Evenly round to the given number of decimals.
@@ -3042,13 +3251,26 @@ namespace NumpyDotNet
             }
 
 
-            return a.Round(decimals, ret) as ndarray;
+            return a.Round(decimals, @out) as ndarray;
         }
-
+        /// <summary>
+        /// Evenly round to the given number of decimals.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="decimals">Number of decimal places to round to (default: 0).</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray round_(ndarray a, int decimals = 0, ndarray @out = null)
         {
             return np.around(a, decimals, @out);
         }
+        /// <summary>
+        /// Evenly round to the given number of decimals.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <param name="decimals">Number of decimal places to round to (default: 0).</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray round(ndarray a, int decimals = 0, ndarray @out = null)
         {
             return np.around(a, decimals, @out);
@@ -3058,7 +3280,7 @@ namespace NumpyDotNet
         #region mean
 
         /// <summary>
-        /// 
+        /// Compute the arithmetic mean along the specified axis.
         /// </summary>
         /// <param name="input">Array containing numbers whose mean is desired</param>
         /// <param name="axis">Axis or axes along which the means are computed. The default is to compute the mean of the flattened arra</param>
@@ -3175,12 +3397,26 @@ namespace NumpyDotNet
    
         }
 
+        /// <summary>
+        /// Compute the weighted average along the specified axis.
+        /// </summary>
+        /// <param name="a">Array containing data to be averaged.</param>
+        /// <param name="axis">Axis or axes along which to average a.</param>
+        /// <param name="weights">An array of weights associated with the values in a. Each value in a contributes to the average according to its associated weight.</param>
+        /// <returns></returns>
         public static ndarray average(object a, int? axis = null, object weights = null)
         {
             var average_result = average(a, axis, weights, false);
             return average_result.retval;
         }
 
+        /// <summary>
+        /// Compute the weighted average along the specified axis.
+        /// </summary>
+        /// <param name="a">Array containing data to be averaged.</param>
+        /// <param name="axis">Axis or axes along which to average a.</param>
+        /// <param name="weights">An array of weights associated with the values in a. Each value in a contributes to the average according to its associated weight.</param>
+        /// <returns></returns>
         public static (ndarray retval, ndarray sum_of_weights) average(object a, int? axis, object weights, bool returned = false)
         {
             ndarray avg = null;
@@ -3259,6 +3495,15 @@ namespace NumpyDotNet
 
         #region std
 
+        /// <summary>
+        /// Compute the standard deviation along the specified axis.
+        /// </summary>
+        /// <param name="a">Calculate the standard deviation of these values.</param>
+        /// <param name="axis">Axis or axes along which the standard deviation is computed.</param>
+        /// <param name="dtype">Type to use in computing the standard deviation.</param>
+        /// <param name="ddof">Means Delta Degrees of Freedom.</param>
+        /// <param name="keep_dims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray std(ndarray a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
             /*
@@ -3448,10 +3693,19 @@ namespace NumpyDotNet
         }
 
 
-#endregion
+        #endregion
 
         #region var
 
+        /// <summary>
+        /// Compute the variance along the specified axis.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose variance is desired.</param>
+        /// <param name="axis">Axis or axes along which the variance is computed.</param>
+        /// <param name="dtype">Type to use in computing the variance.</param>
+        /// <param name="ddof">"Delta Degrees of Freedom": the divisor used in the calculation</param>
+        /// <param name="keep_dims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray var(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keep_dims = false)
         {
             /*
