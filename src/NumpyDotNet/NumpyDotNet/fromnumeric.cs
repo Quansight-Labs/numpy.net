@@ -1275,12 +1275,12 @@ namespace NumpyDotNet
 
         #region resize
 
-        public static ndarray resize(ndarray a, shape new_shape, bool refcheck = false, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
+        public static ndarray resize(ndarray a, shape new_shape)
         {
-            return np.resize(a, new_shape.iDims, refcheck, order);
+            return np.resize(a, new_shape.iDims);
         }
 
-        public static ndarray resize(ndarray a, npy_intp[] newdims, bool refcheck = false, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
+        public static ndarray resize(ndarray a, npy_intp[] newdims)
         {
             /*
              Return a new array with the specified shape.
