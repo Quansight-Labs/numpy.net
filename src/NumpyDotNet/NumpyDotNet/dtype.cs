@@ -49,7 +49,7 @@ using npy_intp = System.Int32;
 namespace NumpyDotNet {
 
 
-    public class dtype : IEnumerable<Object> {
+    public class dtype  {
 
         NpyArray_Descr core;
 
@@ -107,18 +107,7 @@ namespace NumpyDotNet {
             }
             return ret;
         }
-
-        #region IEnumerable<object> interface
-
-        public IEnumerator<object> GetEnumerator() {
-            return new dtype_Enumerator(this);
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return new dtype_Enumerator(this);
-        }
-
-        #endregion
+  
 
         #region Python interface
 
@@ -600,33 +589,5 @@ namespace NumpyDotNet {
 
     }
 
-    internal class dtype_Enumerator : IEnumerator<object>
-    {
-        public dtype_Enumerator(dtype a) {
-            descr = a;
-            index = -1;
-        }
-
-        public object Current {
-            get { return descr[index]; }
-        }
-
-        public void Dispose() {
-            descr = null;
-        }
-
-
-        public bool MoveNext() {
-            index += 1;
-            return (index < descr.Length);
-        }
-
-        public void Reset() {
-            index = -1;
-        }
-
-        private dtype descr;
-        private int index;
-    }
 
 }
