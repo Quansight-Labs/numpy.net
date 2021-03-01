@@ -48,7 +48,7 @@ namespace NumpyDotNet
     internal class NpyIndexes
     {
 
-        public NpyIndexes()
+        internal NpyIndexes()
         {
             indexes = new NpyIndex[NpyDefs.NPY_MAXDIMS];
             for (int i = 0; i < indexes.Length; i++)
@@ -79,7 +79,7 @@ namespace NumpyDotNet
             }
         }
 
-        public int NumIndexes
+        internal int NumIndexes
         {
             get
             {
@@ -87,7 +87,7 @@ namespace NumpyDotNet
             }
         }
 
-        public NpyIndex[]Indexes
+        internal NpyIndex[]Indexes
         {
             get
             {
@@ -95,11 +95,11 @@ namespace NumpyDotNet
             }
         }
 
-   
+
         /// <summary>
         /// Whether or not this is a simple (not fancy) index.
         /// </summary>
-        public bool IsSimple
+        internal bool IsSimple
         {
             get
             {
@@ -120,7 +120,7 @@ namespace NumpyDotNet
         /// <summary>
         /// Returns true if this index is all strings accessing fields in the array.
         /// </summary>
-        public bool IsMultiField {
+        internal bool IsMultiField {
             get {
                 for (int i = 0; i < num_indexes; i++) {
                     if (IndexType(i) != NpyIndexType.NPY_INDEX_STRING) {
@@ -134,7 +134,7 @@ namespace NumpyDotNet
         /// <summary>
         /// Returns whether or not this index is a single item index for an array on size ndims.
         /// </summary>
-        public bool IsSingleItem(int ndims)
+        internal bool IsSingleItem(int ndims)
         {
             if (num_indexes != ndims)
             {
@@ -155,7 +155,7 @@ namespace NumpyDotNet
         /// </summary>
         /// <param name="arr">The array we are assigning to.</param>
         /// <returns>The offset or -1 if this is not a single assignment.</returns>
-        public npy_intp SingleAssignOffset(ndarray arr)
+        internal npy_intp SingleAssignOffset(ndarray arr)
         {
             // Check to see that there are just newaxis, ellipsis, intp or bool indexes
             for (int i = 0; i < num_indexes; i++)
@@ -205,7 +205,7 @@ namespace NumpyDotNet
             }
         }
 
-        public NpyIndexes Bind(ndarray arr)
+        internal NpyIndexes Bind(ndarray arr)
         {
             NpyIndexes result = new NpyIndexes();
             int n = NpyCoreApi.BindIndex(arr, this, result);
@@ -221,7 +221,7 @@ namespace NumpyDotNet
         }
 
 
-        public void AddCSharpTuple(CSharpTuple CSTuple)
+        internal void AddCSharpTuple(CSharpTuple CSTuple)
         {
             IsAdvancedIndexing = true;
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_SLICE;
@@ -238,7 +238,7 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddIndex(bool value)
+        internal void AddIndex(bool value)
         {
             // Write the type
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_BOOL;
@@ -248,7 +248,7 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddIndex(npy_intp value)
+        internal void AddIndex(npy_intp value)
         {
             // Write the type
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_INTP;
@@ -259,7 +259,7 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddIndex(ndarray arr, string s, int index)
+        internal void AddIndex(ndarray arr, string s, int index)
         {
             index -= num_newindexes;
             if (arr != null)
@@ -449,7 +449,7 @@ namespace NumpyDotNet
             #endif
         }
 
-        public void AddIndex(ISlice slice)
+        internal void AddIndex(ISlice slice)
         {
             npy_intp step;
             bool negativeStep;
@@ -524,7 +524,7 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddBoolArray(Object arg)
+        internal void AddBoolArray(Object arg)
         {
             // Convert to an intp array
             ndarray arr = np.FromAny(arg, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BOOL), 0, 0, 0, null);
@@ -537,7 +537,7 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddIntpArray(Object arg)
+        internal void AddIntpArray(Object arg)
         {
             // Convert to an intp array
             ndarray arr = np.FromAny(arg, NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INTP), 0, 0, NPYARRAYFLAGS.NPY_FORCECAST, null);
@@ -550,14 +550,14 @@ namespace NumpyDotNet
             ++num_indexes;
         }
 
-        public void AddNewAxis()
+        internal void AddNewAxis()
         {
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_NEWAXIS;
             ++num_indexes;
             ++num_newindexes;
         }
 
-        public void AddEllipsis()
+        internal void AddEllipsis()
         {
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_ELLIPSIS;
             ++num_indexes;
@@ -568,17 +568,17 @@ namespace NumpyDotNet
             return indexes[n].type;
         }
 
-        public npy_intp GetIntP(int i)
+        internal npy_intp GetIntP(int i)
         {
             return indexes[i].intp;
         }
 
-        public bool GetBool(int i)
+        internal bool GetBool(int i)
         {
             return indexes[i].boolean;
         }
 
-        public bool IsAdvancedIndexing = false;
+        internal bool IsAdvancedIndexing = false;
         private int num_indexes;
         private int num_newindexes = 0;
         private NpyIndex[]indexes;
