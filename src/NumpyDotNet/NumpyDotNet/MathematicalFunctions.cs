@@ -1914,64 +1914,132 @@ namespace NumpyDotNet
 
         #region Arithmetic operations
 
-
+        /// <summary>
+        /// Add arguments element-wise.
+        /// </summary>
+        /// <param name="x1">The arrays to be added.</param>
+        /// <param name="x2">The arrays to be added.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray add(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.add, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-
+        /// <summary>
+        /// Return the reciprocal of the argument, element-wise.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <returns></returns>
         public static ndarray reciprocal(object a)
         {
             return NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.reciprocal, 0);
         }
-
-        public static ndarray positive(object o)
+        /// <summary>
+        /// Numerical positive, element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <returns></returns>
+        public static ndarray positive(object x)
         {
-            var a = asanyarray(o);
+            var a = asanyarray(x);
             return a.Copy();
         }
-
-        public static ndarray negative(object a, ndarray @out = null)
+        /// <summary>
+        /// Numerical negative, element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <returns></returns>
+        public static ndarray negative(object x, ndarray @out = null)
         {
-            var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.negative, 0, UseSrcAsDest: false );
+            var result = NpyCoreApi.PerformNumericOp(asanyarray(x), UFuncOperation.negative, 0, UseSrcAsDest: false );
             if (@out != null)
             {
                 np.copyto(@out, result);
             }
             return result;
         }
-
+        /// <summary>
+        /// Multiply arguments element-wise.
+        /// </summary>
+        /// <param name="x1">Input arrays to be multiplied.</param>
+        /// <param name="x2">Input arrays to be multiplied.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray multiply(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.multiply, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-
+        /// <summary>
+        /// Returns a true division of the inputs, element-wise.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor array.</param>
+        /// <param name="out">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-
+        /// <summary>
+        /// First array elements raised to powers from second array, element-wise.
+        /// </summary>
+        /// <param name="x1">The bases.</param>
+        /// <param name="x2">The exponents.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray power(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.power, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-
+        /// <summary>
+        /// Subtract arguments, element-wise.
+        /// </summary>
+        /// <param name="x1">The arrays to be subtracted from each other.</param>
+        /// <param name="x2">The arrays to be subtracted from each other.</param>
+        /// <param name="out">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray subtract(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.subtract, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
 
- 
+        /// <summary>
+        /// Returns a true division of the inputs, element-wise.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor array.</param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray true_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.true_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
-          
+        /// <summary>
+        /// Return the largest integer smaller or equal to the division of the inputs. 
+        /// </summary>
+        /// <param name="x1">Numerator.</param>
+        /// <param name="x2">Denominator. </param>
+        /// <param name="out">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray floor_divide(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.floor_divide, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
- 
+        /// <summary>
+        /// First array elements raised to powers from second array, element-wise.
+        /// </summary>
+        /// <param name="x1">The bases.</param>
+        /// <param name="x2">The exponents.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray float_power(object x1, object x2, object where = null)
         {
             var x1a = asanyarray(x1);
@@ -2025,31 +2093,63 @@ namespace NumpyDotNet
         }
 
         #region mod/remainder
-
+        /// <summary>
+        /// Return element-wise remainder of division.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor array</param>
+        /// <returns></returns>
         public static ndarray mod(object x1, object x2)
         {
             return remainder(x1, x2);
         }
+        /// <summary>
+        /// Return element-wise remainder of division.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor</param>
+        /// <returns></returns>
         public static ndarray mod(object x1, int x2)
         {
             return remainder(x1, x2);
         }
+        /// <summary>
+        /// Return element-wise remainder of division.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor array. </param>
+        /// <param name="out">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray remainder(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.remainder, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
- 
+        /// <summary>
+        /// Return the element-wise remainder of division.
+        /// </summary>
+        /// <param name="x1">Dividend.</param>
+        /// <param name="x2">Divisor</param>
+        /// <returns></returns>
         public static ndarray fmod(object x1, object x2, ndarray @out = null, object where = null)
         {
             return NpyCoreApi.PerformUFUNC(UFuncOperation.fmod, asanyarray(x1), asanyarray(x2), @out, asanyarray(where));
         }
- 
+
 
         #endregion
 
 
         #region divmod
-
+        /// <summary>
+        /// Return element-wise quotient and remainder simultaneously.
+        /// </summary>
+        /// <param name="x1">Dividend array.</param>
+        /// <param name="x2">Divisor array.</param>
+        /// <param name="out1">A location into which the result is stored.</param>
+        /// <param name="out2">A location into which the result is stored.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray[] divmod(object x1, object x2, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
             ndarray[] results = new ndarray[2];
@@ -2064,7 +2164,14 @@ namespace NumpyDotNet
         #endregion
 
         #region modf
-
+        /// <summary>
+        /// Return the fractional and integral parts of an array, element-wise.
+        /// </summary>
+        /// <param name="x1">Input array.</param>
+        /// <param name="out1">A location into which the result is stored. </param>
+        /// <param name="out2">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray[] modf(object x1, ndarray @out1 = null, ndarray @out2 = null, object where = null)
         {
             ndarray[] results = new ndarray[2];
@@ -2085,7 +2192,12 @@ namespace NumpyDotNet
         #endregion
 
         #region Misc
-
+        /// <summary>
+        /// Returns an element-wise indication of the sign of a number.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray sign(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -2260,7 +2372,13 @@ namespace NumpyDotNet
 
         }
 
-
+        /// <summary>
+        /// Returns the discrete, linear convolution of two one-dimensional sequences.
+        /// </summary>
+        /// <param name="a">First one-dimensional input array.</param>
+        /// <param name="v">Second one-dimensional input array.</param>
+        /// <param name="mode">{‘full’, ‘valid’, ‘same’}, optional</param>
+        /// <returns></returns>
         public static ndarray convolve(object a, object v, NPY_CONVOLE_MODE mode = NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL)
         {
             //  Returns the discrete, linear convolution of two one - dimensional sequences.
@@ -2367,7 +2485,13 @@ namespace NumpyDotNet
 
             return correlate(a_arr, v_arr["::-1"], mode);
         }
-
+        /// <summary>
+        /// Return the complex conjugate, element-wise.
+        /// </summary>
+        /// <param name="a">Input value.</param>
+        /// <param name="out">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray conj(object a, ndarray @out = null, object where = null)
         {
             var result = NpyCoreApi.PerformNumericOp(asanyarray(a), UFuncOperation.conjugate, 0, UseSrcAsDest: false);
@@ -2377,7 +2501,13 @@ namespace NumpyDotNet
             }
             return result;
         }
-
+        /// <summary>
+        /// Return the complex conjugate, element-wise.
+        /// </summary>
+        /// <param name="x1">Input value.</param>
+        /// <param name="out">A location into which the result is stored. </param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray conjugate(object x1, ndarray @out = null, object where = null)
         {
             return conj(x1, @out, where);
