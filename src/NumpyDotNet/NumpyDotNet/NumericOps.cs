@@ -43,16 +43,16 @@ using npy_intp = System.Int32;
 namespace NumpyDotNet {
 
 
-    public static class NumericOps
+    internal static class NumericOps
     {
         #region Default array handlers
 
-        public static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
+        internal static void SetNumericHandler(NPY_TYPES ItemType, IArrayHandlers Handlers)
         {
             NpyCoreApi.SetArrayHandler(ItemType, Handlers);
         }
 
-        public static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
+        internal static IArrayHandlers GetNumericHandler(NPY_TYPES ItemType)
         {
             return NpyCoreApi.GetArrayHandler(ItemType);
         }
