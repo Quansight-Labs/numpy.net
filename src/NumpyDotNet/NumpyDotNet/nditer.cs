@@ -46,33 +46,50 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet
 {
+    /// <summary>
+    /// Efficient multi-dimensional iterator object to iterate over arrays.
+    /// </summary>
     public class nditer : IEnumerable, IEnumerator, IEnumerator<object>
     {
         private NpyArrayMultiIterObject core = null;
         private NpyArrayMultiIterObject current;
         private int creationCount = 0;
 
+        /// <summary>
+        /// Efficient multi-dimensional iterator object to iterate over arrays.
+        /// </summary>
         public nditer(ndarray a)
         {
             creationCount = 1;
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { a, a });
         }
-
+        /// <summary>
+        /// Efficient multi-dimensional iterator object to iterate over arrays.
+        /// </summary>
         public nditer(ValueTuple<ndarray, ndarray> arr)
         {
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2 });
             creationCount = core.numiter;
         }
+        /// <summary>
+        /// Efficient multi-dimensional iterator object to iterate over arrays.
+        /// </summary>
         public nditer(ValueTuple<ndarray, ndarray, ndarray> arr)
         {
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2, arr.Item3 });
             creationCount = core.numiter;
         }
+        /// <summary>
+        /// Efficient multi-dimensional iterator object to iterate over arrays.
+        /// </summary>
         public nditer(ValueTuple<ndarray, ndarray, ndarray, ndarray> arr)
         {
             core = NpyCoreApi.MultiIterFromArrays(new ndarray[] { arr.Item1, arr.Item2, arr.Item3, arr.Item4 });
             creationCount = core.numiter;
         }
+        /// <summary>
+        /// Efficient multi-dimensional iterator object to iterate over arrays.
+        /// </summary>
         public nditer(ndarray[] arrays)
         {
             core = NpyCoreApi.MultiIterFromArrays(arrays);
@@ -175,12 +192,17 @@ namespace NumpyDotNet
 
     }
 
-
+    /// <summary>
+    /// An N-dimensional iterator object to index arrays.
+    /// </summary>
     public class ndindex : IEnumerable, IEnumerator, IEnumerator<object>
     {
         nditer core;
         private nditer current;
 
+        /// <summary>
+        /// An N-dimensional iterator object to index arrays.
+        /// </summary>
         public ndindex(object oshape)
         {
 
@@ -242,12 +264,17 @@ namespace NumpyDotNet
 
     }
 
-
+    /// <summary>
+    /// Multidimensional index iterator.
+    /// </summary>
     public class ndenumerate : IEnumerable, IEnumerator, IEnumerator<object>
     {
         flatiter core;
         private flatiter current;
-
+        /// <summary>
+        /// Multidimensional index iterator.
+        /// </summary>
+        /// <param name="a"></param>
         public ndenumerate(ndarray a)
         {
             core = np.asarray(a).Flat;
@@ -384,6 +411,11 @@ namespace NumpyDotNet
 
     public static partial class np
     {
+        /// <summary>
+        /// Produce an object that mimics broadcasting.
+        /// </summary>
+        /// <param name="aobjects">Input parameters.</param>
+        /// <returns></returns>
         public static broadcast broadcast(params object[] aobjects)
         {
             ndarray[] arrays = new ndarray[aobjects.Length];

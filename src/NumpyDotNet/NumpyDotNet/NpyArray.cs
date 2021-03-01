@@ -60,7 +60,7 @@ namespace NumpyDotNet {
         /// </summary>
         /// <param name="dest">Destination array</param>
         /// <param name="src">Source object</param>
-        public static void CopyObject(ndarray dest, Object src)
+        internal static void CopyObject(ndarray dest, Object src)
         {
             ndarray srcArray;
             if (src is ndarray)
@@ -78,7 +78,13 @@ namespace NumpyDotNet {
             NpyCoreApi.MoveInto(dest, srcArray);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="descr"></param>
+        /// <param name="offset"></param>
+        /// <param name="src"></param>
         internal static void SetField(ndarray dest, NpyArray_Descr descr, int offset, object src)
         {
  
@@ -103,7 +109,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static ndarray CheckFromAny(Object src, dtype descr, int minDepth,
+        internal static ndarray CheckFromAny(Object src, dtype descr, int minDepth,
             int maxDepth, NPYARRAYFLAGS requires, Object context)
         {
 
@@ -194,7 +200,7 @@ namespace NumpyDotNet {
         /// <param name="requires"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static ndarray FromAny(Object src, dtype descr = null, int minDepth = 0,
+        internal static ndarray FromAny(Object src, dtype descr = null, int minDepth = 0,
             int maxDepth = 0, NPYARRAYFLAGS flags = 0, Object context = null)
         {
             ndarray result = null;
@@ -500,7 +506,7 @@ namespace NumpyDotNet {
         /// <param name="minitype">Minimum type, or null if any</param>
         /// <param name="max">Maximum dimensions</param>
         /// <returns>Type descriptor fitting requirements</returns>
-        public static dtype FindArrayType(Object src, dtype minitype, int max = NpyDefs.NPY_MAXDIMS)
+        internal static dtype FindArrayType(Object src, dtype minitype, int max = NpyDefs.NPY_MAXDIMS)
         {
             dtype chktype = null;
 
@@ -855,31 +861,46 @@ namespace NumpyDotNet {
             return result;
 
         }
-
-        public static ndarray inner(object o1, object o2)
+        /// <summary>
+        /// Inner product of two arrays.
+        /// </summary>
+        /// <param name="a">input array</param>
+        /// <param name="b">input array</param>
+        /// <returns></returns>
+        public static ndarray inner(object a, object b)
         {
-            dtype d = FindArrayType(asanyarray(o1), null);
-            d = FindArrayType(asanyarray(o2), d);
+            dtype d = FindArrayType(asanyarray(a), null);
+            d = FindArrayType(asanyarray(b), d);
 
-            ndarray a1 = np.FromAny(o1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
-            ndarray a2 = np.FromAny(o2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
-            return NpyCoreApi.InnerProduct(a1, a2, d.TypeNum);
+            ndarray arr1 = np.FromAny(a, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            ndarray arr2 = np.FromAny(b, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            return NpyCoreApi.InnerProduct(arr1, arr2, d.TypeNum);
         }
-
-        public static ndarray dot(object o1, object o2)
+        /// <summary>
+        /// Dot product of two arrays. 
+        /// </summary>
+        /// <param name="a">input array</param>
+        /// <param name="b">input array</param>
+        /// <returns></returns>
+        public static ndarray dot(object a, object b)
         {
-            dtype d = FindArrayType(asanyarray(o1), null);
-            d = FindArrayType(asanyarray(o2), d);
+            dtype d = FindArrayType(asanyarray(a), null);
+            d = FindArrayType(asanyarray(b), d);
 
-            ndarray a1 = np.FromAny(o1, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
-            ndarray a2 = np.FromAny(o2, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
-            return NpyCoreApi.MatrixProduct(a1, a2, d.TypeNum);
+            ndarray arr1 = np.FromAny(a, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            ndarray arr2 = np.FromAny(b, d, flags: NPYARRAYFLAGS.NPY_ALIGNED);
+            return NpyCoreApi.MatrixProduct(arr1, arr2, d.TypeNum);
         }
-
-        public static ndarray matmul(object o1, object o2)
+        /// <summary>
+        /// Matrix product of two arrays.
+        /// </summary>
+        /// <param name="x1">Input array</param>
+        /// <param name="x2">Input array</param>
+        /// <returns></returns>
+        public static ndarray matmul(object x1, object x2)
         {
-            ndarray a1 = asanyarray(o1);
-            ndarray a2 = asanyarray(o2);
+            ndarray a1 = asanyarray(x1);
+            ndarray a2 = asanyarray(x2);
 
             if (a1.IsAScalar || a2.IsAScalar)
             {
@@ -934,9 +955,9 @@ namespace NumpyDotNet {
                 npy_intp[] index = new npy_intp[1];
                 for (int j = 0; j < index.Length; j++) index[j] = i;
 
-                ndarray x0 = bcastArrays[0][index] as ndarray;
-                ndarray x1 = bcastArrays[1][index] as ndarray;
-                ndarray x3 = np.squeeze(MatrixProduct(x0, x1));
+                ndarray _x0 = bcastArrays[0][index] as ndarray;
+                ndarray _x1 = bcastArrays[1][index] as ndarray;
+                ndarray x3 = np.squeeze(MatrixProduct(_x0, _x1));
 
                 retArrays.Add(x3);
             }
@@ -946,6 +967,12 @@ namespace NumpyDotNet {
 
         }
 
+        /// <summary>
+        /// Matrix product of two arrays.
+        /// </summary>
+        /// <param name="o1"></param>
+        /// <param name="o2"></param>
+        /// <returns></returns>
         public static ndarray MatrixProduct(object o1, object o2)
         {
             dtype d = FindArrayType(o1, null);
