@@ -228,6 +228,13 @@ namespace NumpyDotNet
             return np.divide(a, b);
         }
 
+        /// <summary>
+        /// Return minimum of an array or minimum along an axis, ignoring any NaNs. 
+        /// </summary>
+        /// <param name="a">Array containing numbers whose minimum is desired</param>
+        /// <param name="axis">Axis or axes along which the minimum is computed.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanmin(object a, int? axis = null, bool keepdims = false)
         {
             /*
@@ -347,7 +354,13 @@ namespace NumpyDotNet
 
             return res;
         }
-
+        /// <summary>
+        /// Return the maximum of an array or maximum along an axis, ignoring any NaNs.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose maximum is desired.</param>
+        /// <param name="axis">Axis or axes along which the maximum is computed.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanmax(object a, int? axis = null, bool keepdims = false)
         {
             /*
@@ -472,6 +485,12 @@ namespace NumpyDotNet
             return res;
         }
 
+        /// <summary>
+        /// Return the indices of the minimum values in the specified axis ignoring NaNs.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis along which to operate.By default flattened input is used.</param>
+        /// <returns></returns>
         public static ndarray nanargmin(object a, int? axis = null)
         {
             /*
@@ -523,7 +542,12 @@ namespace NumpyDotNet
             }
             return res;
         }
-
+        /// <summary>
+        /// Return the indices of the maximum values in the specified axis ignoring NaNs.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis along which to operate.By default flattened input is used.</param>
+        /// <returns></returns>
         public static ndarray nanargmax(object a, int? axis = null)
         {
             /*
@@ -576,7 +600,15 @@ namespace NumpyDotNet
             }
             return res;
         }
-
+        /// <summary>
+        /// Return the sum of array elements over a given axis treating Not a Numbers(NaNs) as zero.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose sum is desired.</param>
+        /// <param name="axis">Axis or axes along which the sum is computed.</param>
+        /// <param name="dtype">The type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="out">Alternate output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nansum(object a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             /*
@@ -668,7 +700,15 @@ namespace NumpyDotNet
             var replaced = _replace_nan(asanyarray(a), 0);
             return np.sum(replaced.a, axis: axis, dtype: dtype, ret: @out, keepdims: keepdims);
         }
-
+        /// <summary>
+        /// Return the product of array elements over a given axis treating Not a Numbers(NaNs) as ones.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose product is desired.</param>
+        /// <param name="axis">Axis or axes along which the product is computed.</param>
+        /// <param name="dtype">The type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="out">Alternate output array in which to place the result.</param>
+        /// <param name="keepdims">If True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null, bool keepdims = false)
         {
             /*
@@ -734,7 +774,14 @@ namespace NumpyDotNet
             var replaced = _replace_nan(asanyarray(a), 1);
             return np.prod(replaced.a, axis: axis, dtype: dtype, @out: @out, keepdims:keepdims);
         }
-
+        /// <summary>
+        /// Return the cumulative sum of array elements over a given axis treating Not a Numbers(NaNs) as zero.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">Axis along which the cumulative sum is computed.</param>
+        /// <param name="dtype">Type of the returned array and of the accumulator in which the elements are summed.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray nancumsum(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
         {
             /*
@@ -801,7 +848,14 @@ namespace NumpyDotNet
             var replaced = _replace_nan(asanyarray(a), 0);
             return np.cumsum(replaced.a, axis: axis, dtype: dtype, ret: @out);
         }
-
+        /// <summary>
+        /// Return the cumulative product of array elements over a given axis treating Not a Numbers(NaNs) as one.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">Axis along which the cumulative product is computed.</param>
+        /// <param name="dtype">Type of the returned array, as well as of the accumulator in which the elements are multiplied.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <returns></returns>
         public static ndarray nancumprod(object a, int? axis = null, dtype dtype = null, ndarray @out = null)
         {
             /*
@@ -865,7 +919,14 @@ namespace NumpyDotNet
             return np.cumprod(replaced.a, axis: axis, dtype: dtype, @out: @out);
         }
 
-
+        /// <summary>
+        /// Compute the arithmetic mean along the specified axis, ignoring NaNs.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose mean is desired.</param>
+        /// <param name="axis">Axis or axes along which the means are computed.</param>
+        /// <param name="dtype">Type to use in computing the mean.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanmean(object a, int? axis = null, dtype dtype = null, bool keepdims = false)
         {
             /*
@@ -1048,7 +1109,14 @@ namespace NumpyDotNet
 
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Compute the median along the specified axis, while ignoring NaNs.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="axis">Axis or axes along which the medians are computed.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanmedian(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
         {
             /*
@@ -1163,6 +1231,16 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Compute the qth percentile of the data along the specified axis, while ignoring nan values.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="q">Percentile or sequence of percentiles to compute, which must be between 0 and 100 inclusive.</param>
+        /// <param name="axis">Axis or axes along which the percentiles are computed.</param>
+        /// <param name="overwrite_input">If True, then allow the input array `a` to be modified by intermediate calculations, to save memory.</param>
+        /// <param name="interpolation">{'linear', 'lower', 'higher', 'midpoint', 'nearest'}</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanpercentile(object a, object q, int? axis = null, bool overwrite_input = false,
                   string interpolation = "linear", bool keepdims = false)
         {
@@ -1291,7 +1369,16 @@ namespace NumpyDotNet
         }
 
 
-
+        /// <summary>
+        /// Compute the qth quantile of the data along the specified axis, while ignoring nan values.
+        /// </summary>
+        /// <param name="a">Input array</param>
+        /// <param name="q">Quantile or sequence of quantiles to compute, which must be between 0 and 1 inclusive.</param>
+        /// <param name="axis">Axis or axes along which the quantiles are computed.</param>
+        /// <param name="overwrite_input">If True, then allow the input array `a` to be modified by intermediate calculations, to save memory. </param>
+        /// <param name="interpolation">{'linear', 'lower', 'higher', 'midpoint', 'nearest'}</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanquantile(object a, object q, int? axis = null, bool overwrite_input = false,
                   string interpolation = "linear", bool keepdims = false)
         {
@@ -1513,7 +1600,15 @@ namespace NumpyDotNet
 
         }
 
-   
+        /// <summary>
+        /// Compute the variance along the specified axis, while ignoring NaNs.
+        /// </summary>
+        /// <param name="a">Array containing numbers whose variance is desired.</param>
+        /// <param name="axis">Axis or axes along which the variance is computed.</param>
+        /// <param name="dtype">Type to use in computing the variance.</param>
+        /// <param name="ddof">"Delta Degrees of Freedom": the divisor used in the calculation</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanvar(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keepdims = false)
         {
             /*
@@ -1675,6 +1770,15 @@ namespace NumpyDotNet
             return var;
         }
 
+        /// <summary>
+        /// Compute the standard deviation along the specified axis, while ignoring NaNs
+        /// </summary>
+        /// <param name="a">Calculate the standard deviation of the non-NaN values.</param>
+        /// <param name="axis">Axis or axes along which the standard deviation is computed.</param>
+        /// <param name="dtype">Type to use in computing the standard deviation.</param>
+        /// <param name="ddof">Means Delta Degrees of Freedom.  The divisor used in calculations</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
         public static ndarray nanstd(object a, int? axis = null, dtype dtype = null, int ddof = 0, bool keepdims = false)
         {
             /*
