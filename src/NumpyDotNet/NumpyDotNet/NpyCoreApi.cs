@@ -616,7 +616,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static ndarray CastToType(ndarray arr, dtype d, bool fortran)
+        internal static ndarray CastToType(ndarray arr, dtype d, bool fortran)
         {
             Incref(d.Descr);
 #if ENABLELOCKING
@@ -2017,7 +2017,7 @@ namespace NumpyDotNet {
             [ThreadStatic]
         private static string ErrorMessage = null;
 
-        public static void CheckError() {
+        internal static void CheckError() {
             if (ErrorCode != npyexc_type.NpyExc_NoError) {
                 npyexc_type errTmp = ErrorCode;
                 String msgTmp = ErrorMessage;
