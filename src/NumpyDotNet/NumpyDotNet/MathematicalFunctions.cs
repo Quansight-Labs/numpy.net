@@ -1274,7 +1274,12 @@ namespace NumpyDotNet
         #endregion
 
         #region Floating point routines
-
+        /// <summary>
+        /// Returns element-wise True where signbit is set (less than zero).
+        /// </summary>
+        /// <param name="x">The input value(s).</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray signbit(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -1409,7 +1414,13 @@ namespace NumpyDotNet
 
         }
 
-
+        /// <summary>
+        /// Change the sign of x1 to that of x2, element-wise.
+        /// </summary>
+        /// <param name="x1">Values to change the sign of.</param>
+        /// <param name="x2">The sign of x2 is copied to x1</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray copysign(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -1533,7 +1544,12 @@ namespace NumpyDotNet
 
     
         }
-
+        /// <summary>
+        /// Decompose the elements of x into mantissa and twos exponent.
+        /// </summary>
+        /// <param name="x">Array of numbers to be decomposed.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray[] frexp(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -1623,7 +1639,13 @@ namespace NumpyDotNet
 
 
         }
-
+        /// <summary>
+        /// Returns x1 * 2**x2, element-wise.
+        /// </summary>
+        /// <param name="x1">Array of multipliers.</param>
+        /// <param name="x2">Array of twos exponents.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray ldexp(object x1, object x2, object where = null)
         {
             var a1 = asanyarray(x1);
@@ -1693,7 +1715,13 @@ namespace NumpyDotNet
 
  
         }
-
+        /// <summary>
+        /// Return the next floating-point value after x1 towards x2, element-wise.
+        /// </summary>
+        /// <param name="x1">Values to find the next representable value of.</param>
+        /// <param name="x2">The direction where to look for the next representable value of x1.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray nextafter(object x1, object x2, object where = null)
         {
             var a1 = asanyarray(x1);
@@ -1799,7 +1827,13 @@ namespace NumpyDotNet
         {
             return a / _gcdb(a, b) * b;
         }
- 
+        /// <summary>
+        /// Returns the lowest common multiple of |x1| and |x2|
+        /// </summary>
+        /// <param name="x1">Arrays of values</param>
+        /// <param name="x2">Arrays of values</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray lcm(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -1834,7 +1868,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Returns the greatest common divisor of |x1| and |x2|
+        /// </summary>
+        /// <param name="x1">Arrays of values.</param>
+        /// <param name="x2">Arrays of values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray gcd(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
