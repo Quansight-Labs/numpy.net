@@ -635,7 +635,12 @@ namespace NumpyDotNet
         #endregion
 
         #region Hyperbolic functions
-
+        /// <summary>
+        /// Hyperbolic sine, element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray sinh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -663,7 +668,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Hyperbolic cosine, element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray cosh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -691,7 +701,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Compute hyperbolic tangent element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray tanh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -719,7 +734,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Inverse hyperbolic sine element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arcsinh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -747,7 +767,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Inverse hyperbolic cosine, element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arccosh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -775,9 +800,12 @@ namespace NumpyDotNet
             }
 
         }
- 
-
-
+        /// <summary>
+        /// Inverse hyperbolic tangent element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arctanh(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -808,7 +836,12 @@ namespace NumpyDotNet
         #endregion
 
         #region Rounding Functions
-
+        /// <summary>
+        /// Round elements of the array to the nearest integer.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray rint(object x, object where = null)
         {
             var a = asanyarray(x);
@@ -827,7 +860,11 @@ namespace NumpyDotNet
 
             return ret;
         }
-
+        /// <summary>
+        /// Round to nearest integer towards zero.
+        /// </summary>
+        /// <param name="x">An array of floats to be rounded</param>
+        /// <returns></returns>
         public static ndarray fix(object x)
         {
             var a = asanyarray(x);
@@ -843,7 +880,12 @@ namespace NumpyDotNet
             y1["..."] = np.where(a >= 0, y1, y2);
             return y1;
         }
-
+        /// <summary>
+        /// Return the ceiling of the input, element-wise.
+        /// </summary>
+        /// <param name="x">Input data.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray ceil(object x, object where = null)
         {
             var a = asanyarray(x);
@@ -858,7 +900,11 @@ namespace NumpyDotNet
 
             return ret;
         }
-
+        /// <summary>
+        /// Return the truncated value of the input, element-wise.
+        /// </summary>
+        /// <param name="x">Input data.</param>
+        /// <returns></returns>
         public static ndarray trunc(object x)
         {
             var a = asanyarray(x);
@@ -874,7 +920,12 @@ namespace NumpyDotNet
         #endregion
 
         #region Exponents and logarithms
-
+        /// <summary>
+        /// Calculate the exponential of all elements in the input array.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray exp(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -901,7 +952,12 @@ namespace NumpyDotNet
             }
   
         }
-
+        /// <summary>
+        /// Calculate exp(x) - 1 for all elements in the array.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray expm1(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -943,7 +999,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Calculate 2**p for all p in the input array.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray exp2(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -965,7 +1026,12 @@ namespace NumpyDotNet
             }
   
         }
-
+        /// <summary>
+        /// Natural logarithm, element-wise.
+        /// </summary>
+        /// <param name="x">Input value.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray log(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -987,7 +1053,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Return the base 10 logarithm of the input array, element-wise.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray log10(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -1009,7 +1080,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Base-2 logarithm of x.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result. </param>
+        /// <returns></returns>
         public static ndarray log2(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -1031,7 +1107,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Take log base n of x.
+        /// </summary>
+        /// <param name="x">The value(s) whose log base n is (are) required.</param>
+        /// <param name="n">The integer base(s) in which the log is taken.</param>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public static ndarray logn(object x, int n, object where = null)
         {
             var xa = asanyarray(x);
@@ -1053,7 +1135,12 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Return the natural logarithm of one plus the input array, element-wise.
+        /// </summary>
+        /// <param name="x">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray log1p(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -1075,7 +1162,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Logarithm of the sum of exponentiations of the inputs.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logaddexp(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -1103,7 +1196,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Logarithm of the sum of exponentiations of the inputs in base-2.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Input values.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logaddexp2(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -1131,7 +1230,14 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Logarithm of the sum of exponentiations of the inputs in base-n.
+        /// </summary>
+        /// <param name="x1">Input values.</param>
+        /// <param name="x2">Input values.</param>
+        /// <param name="n">The integer base(s) in which the log is taken.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray logaddexpn(object x1, object x2, int n, object where = null)
         {
             var xa = asanyarray(x1);
