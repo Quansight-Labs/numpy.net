@@ -478,11 +478,10 @@ namespace NumpyDotNet
         /// <param name="v">Values to place in `a` at target indices.</param>
         /// <param name="mode">{'raise', 'wrap', 'clip'}, optional</param>
         /// <returns></returns>
-        public static int put(ndarray a, object indices, object values, object mode = null)
+        public static int put(ndarray a, object indices, object values, NPY_CLIPMODE mode = NPY_CLIPMODE.NPY_RAISE)
         {
             ndarray aIndices;
             ndarray aValues;
-            NPY_CLIPMODE eMode;
 
             aIndices = asanyarray(indices);
             if (aIndices == null)
@@ -495,8 +494,7 @@ namespace NumpyDotNet
             {
                 aValues = np.FromAny(values, a.Dtype, 0, 0, NPYARRAYFLAGS.NPY_CARRAY, null);
             }
-            eMode = NpyUtil_ArgProcessing.ClipmodeConverter(mode);
-            return np.put(a, aIndices, aValues, eMode);
+            return np.put(a, aIndices, aValues, mode);
         }
 
         #endregion

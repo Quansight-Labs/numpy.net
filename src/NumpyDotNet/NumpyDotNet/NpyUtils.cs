@@ -171,33 +171,6 @@ namespace NumpyDotNet {
                     String.Format("Type '{0}' is not supported for an axis.", o.GetType().Name));
             }
         }
-
-        internal static NPY_CLIPMODE ClipmodeConverter(object o) {
-            if (o == null) return NPY_CLIPMODE.NPY_RAISE;
-            else if (o is string) {
-                string s = (string)o;
-                switch (s[0]) {
-                    case 'C':
-                    case 'c':
-                        return NPY_CLIPMODE.NPY_CLIP;
-                    case 'W':
-                    case 'w':
-                        return NPY_CLIPMODE.NPY_WRAP;
-                    case 'r':
-                    case 'R':
-                        return NPY_CLIPMODE.NPY_RAISE;
-                    default:
-                        throw new ArgumentTypeException("clipmode not understood");
-                }
-            } else {
-                int i = IntConverter(o);
-                if (i < (int)NPY_CLIPMODE.NPY_CLIP || i > (int)NPY_CLIPMODE.NPY_RAISE) {
-                    throw new ArgumentTypeException("clipmode not understood");
-                }
-                return (NPY_CLIPMODE)i;
-            }
-        }
-
     
 
         internal static char ByteorderConverter(string s) {
