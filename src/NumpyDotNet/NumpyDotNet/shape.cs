@@ -58,7 +58,11 @@ namespace NumpyDotNet
                 return iDims[iDims.Length - 1];
             }
         }
-
+        /// <summary>
+        /// returns true of the shapes are equivalent
+        /// </summary>
+        /// <param name="o2"></param>
+        /// <returns></returns>
         public override bool Equals(object o2)
         {
             shape s2 = o2 as shape;
@@ -96,7 +100,10 @@ namespace NumpyDotNet
         {
             return !(s1 == s2);
         }
-
+        /// <summary>
+        /// convert an ndarray of integers into a shape
+        /// </summary>
+        /// <param name="arr"></param>
         public shape(ndarray arr)
         {
             if (arr.TypeNum == NPY_TYPES.NPY_INT32 || arr.TypeNum == NPY_TYPES.NPY_INT64)
@@ -123,7 +130,10 @@ namespace NumpyDotNet
             throw new Exception("Only Int32 or Int64 arrays can be converted to shape objects");
 
         }
-
+        /// <summary>
+        /// convert a collection of Int32 values into a shape
+        /// </summary>
+        /// <param name="dim"></param>
         public shape(IEnumerable<Int32> dim)
         {
             int nd = dim.Count();
@@ -136,6 +146,10 @@ namespace NumpyDotNet
                 i++;
             }
         }
+        /// <summary>
+        /// convert a collection of Int64 values into a shape
+        /// </summary>
+        /// <param name="dim"></param>
         public shape(IEnumerable<Int64> dim)
         {
             int nd = dim.Count();
@@ -148,7 +162,11 @@ namespace NumpyDotNet
                 i++;
             }
         }
-
+        /// <summary>
+        /// convert an array of npy_intp into a shape
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <param name="nd"></param>
         public shape(npy_intp[] dim, int nd)
         {
             iDims = new npy_intp[nd];
@@ -157,36 +175,61 @@ namespace NumpyDotNet
                 iDims[i] = dim[i];
             }
         }
-
+        /// <summary>
+        /// create a new shape, copied from existing shape
+        /// </summary>
+        /// <param name="s"></param>
         public shape(shape s)
         {
             iDims = new npy_intp[s.iDims.Length];
             Array.Copy(s.iDims, iDims, s.iDims.Length);
         }
-
+        /// <summary>
+        /// create a 1D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
         public shape(Int32 Dim1)
         {
             iDims = new npy_intp[1];
             iDims[0] = (npy_intp)Dim1;
         }
+        /// <summary>
+        /// create a 1D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
         public shape(Int64 Dim1)
         {
             iDims = new npy_intp[1];
             iDims[0] = (npy_intp)Dim1;
         }
-
+        /// <summary>
+        /// create a 2D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
         public shape(Int32 Dim1, Int32 Dim2)
         {
             iDims = new npy_intp[2];
             iDims[0] = (npy_intp)Dim1;
             iDims[1] = (npy_intp)Dim2;
         }
+        /// <summary>
+        /// create a 2D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
         public shape(Int64 Dim1, Int64 Dim2)
         {
             iDims = new npy_intp[2];
             iDims[0] = (npy_intp)Dim1;
             iDims[1] = (npy_intp)Dim2;
         }
+        /// <summary>
+        /// create a 3D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
+        /// <param name="Dim3"></param>
         public shape(Int32 Dim1, Int32 Dim2, Int32 Dim3)
         {
             iDims = new npy_intp[3];
@@ -194,6 +237,12 @@ namespace NumpyDotNet
             iDims[1] = (npy_intp)Dim2;
             iDims[2] = (npy_intp)Dim3;
         }
+        /// <summary>
+        /// create a 3D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
+        /// <param name="Dim3"></param>
         public shape(Int64 Dim1, Int64 Dim2, Int64 Dim3)
         {
             iDims = new npy_intp[3];
@@ -201,6 +250,13 @@ namespace NumpyDotNet
             iDims[1] = (npy_intp)Dim2;
             iDims[2] = (npy_intp)Dim3;
         }
+        /// <summary>
+        /// create a 4D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
+        /// <param name="Dim3"></param>
+        /// <param name="Dim4"></param>
         public shape(Int32 Dim1, Int32 Dim2, Int32 Dim3, Int32 Dim4)
         {
             iDims = new npy_intp[4];
@@ -209,6 +265,13 @@ namespace NumpyDotNet
             iDims[2] = (npy_intp)Dim3;
             iDims[3] = (npy_intp)Dim4;
         }
+        /// <summary>
+        /// create a 4D shape
+        /// </summary>
+        /// <param name="Dim1"></param>
+        /// <param name="Dim2"></param>
+        /// <param name="Dim3"></param>
+        /// <param name="Dim4"></param>
         public shape(Int64 Dim1, Int64 Dim2, Int64 Dim3, Int64 Dim4)
         {
             iDims = new npy_intp[4];
@@ -217,7 +280,10 @@ namespace NumpyDotNet
             iDims[2] = (npy_intp)Dim3;
             iDims[3] = (npy_intp)Dim4;
         }
-
+        /// <summary>
+        /// return a string representation of this shape
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();
