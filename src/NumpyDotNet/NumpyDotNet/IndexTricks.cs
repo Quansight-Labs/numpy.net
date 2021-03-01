@@ -49,11 +49,20 @@ namespace NumpyDotNet
     {
         #region mgrid/ogrid
 
+        /// <summary>
+        /// nd_grid instance which returns a dense multi-dimensional “meshgrid”.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>mesh-grid ndarrays all of the same dimensions</returns>
         public static object mgrid(Slice[] key)
         {
             return nd_grid(key, false);
         }
-
+        /// <summary>
+        /// nd_grid instance which returns an open multi-dimensional “meshgrid”.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>ndarrays with only one dimension not equal to 1</returns>
         public static object ogrid(Slice[] key)
         {
             return nd_grid(key, true);
@@ -472,6 +481,12 @@ namespace NumpyDotNet
 
         #region fill_diagonal
 
+        /// <summary>
+        /// Fill the main diagonal of the given array of any dimensionality.
+        /// </summary>
+        /// <param name="a">array, at least 2-D, whose diagonal is to be filled, it gets modified in-place.</param>
+        /// <param name="val">Value(s) to write on the diagonal. </param>
+        /// <param name="wrap">the diagonal “wrapped” after N columns.</param>
         public static void fill_diagonal(ndarray a, object val, bool wrap = false)
         {
             /*
@@ -533,6 +548,12 @@ namespace NumpyDotNet
         #endregion
 
         #region diag_indices
+        /// <summary>
+        /// Return the indices to access the main diagonal of an array.
+        /// </summary>
+        /// <param name="n">The size, along each dimension, of the arrays for which the returned indices can be used.</param>
+        /// <param name="ndim">The number of dimensions.</param>
+        /// <returns></returns>
         public static ndarray[] diag_indices(int n, int ndim = 2)
         {
             //Return the indices to access the main diagonal of an array.
@@ -609,7 +630,11 @@ namespace NumpyDotNet
         #endregion
 
         #region diag_indices_from
-
+        /// <summary>
+        /// Return the indices to access the main diagonal of an n - dimensional array.
+        /// </summary>
+        /// <param name="arr">array, at least 2 - D</param>
+        /// <returns></returns>
         public static ndarray[] diag_indices_from(ndarray arr)
         {
             //Return the indices to access the main diagonal of an n - dimensional array.
