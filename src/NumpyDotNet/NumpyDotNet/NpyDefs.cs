@@ -46,7 +46,7 @@ using NpyArray_UCS4 = System.UInt32;
 #endif
 
 namespace NumpyDotNet {
-    public class NpyDefs {
+    internal class NpyDefs {
         #region ConstantDefs
 
         public const int NPY_VALID_MAGIC = 1234567;
@@ -69,12 +69,12 @@ namespace NumpyDotNet {
 
         #region Type functions
 
-        public static bool IsBool(NPY_TYPES type)
+        internal static bool IsBool(NPY_TYPES type)
         {
             return type == NPY_TYPES.NPY_BOOL;
         }
 
-        public static bool IsUnsigned(NPY_TYPES type)
+        internal static bool IsUnsigned(NPY_TYPES type)
         {
             switch (type)
             {
@@ -88,7 +88,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static bool IsSigned(NPY_TYPES type)
+        internal static bool IsSigned(NPY_TYPES type)
         {
             switch (type)
             {
@@ -103,7 +103,7 @@ namespace NumpyDotNet {
 
         }
 
-        public static bool IsInteger(NPY_TYPES type)
+        internal static bool IsInteger(NPY_TYPES type)
         {
             switch (type)
             {
@@ -123,7 +123,7 @@ namespace NumpyDotNet {
 
         }
 
-        public static bool IsFloat(NPY_TYPES type)
+        internal static bool IsFloat(NPY_TYPES type)
         {
             switch (type)
             {
@@ -137,7 +137,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static bool IsNumber(NPY_TYPES type)
+        internal static bool IsNumber(NPY_TYPES type)
         {
             switch (type)
             {
@@ -159,7 +159,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static bool IsString(NPY_TYPES type)
+        internal static bool IsString(NPY_TYPES type)
         {
             switch (type)
             {
@@ -170,7 +170,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static bool IsComplex(NPY_TYPES type)
+        internal static bool IsComplex(NPY_TYPES type)
         {
             switch (type)
             {
@@ -181,7 +181,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public static bool IsBigInt(NPY_TYPES type)
+        internal static bool IsBigInt(NPY_TYPES type)
         {
             switch (type)
             {
@@ -193,7 +193,7 @@ namespace NumpyDotNet {
         }
 
 
-        public static bool IsDecimal(NPY_TYPES type)
+        internal static bool IsDecimal(NPY_TYPES type)
         {
             switch (type)
             {
@@ -205,7 +205,7 @@ namespace NumpyDotNet {
         }
 
 
-        public static bool IsFlexible(NPY_TYPES type)
+        internal static bool IsFlexible(NPY_TYPES type)
         {
             switch (type)
             {
@@ -217,18 +217,18 @@ namespace NumpyDotNet {
 
         }
 
-        public static bool IsUserDefined(NPY_TYPES type)
+        internal static bool IsUserDefined(NPY_TYPES type)
         {
             return NPY_TYPES.NPY_USERDEF <= type &&
                 (int)type <= (int)NPY_TYPES.NPY_USERDEF + 0; // TODO: Need GetNumUserTypes
         }
 
-        public static bool IsExtended(NPY_TYPES type)
+        internal static bool IsExtended(NPY_TYPES type)
         {
             return IsFlexible(type) || IsUserDefined(type);
         }
 
-        public static bool IsNativeByteOrder(char endian)
+        internal static bool IsNativeByteOrder(char endian)
         {
             return BitConverter.IsLittleEndian;
         }
