@@ -41,9 +41,9 @@ namespace NumpyDotNet
 {
     public partial class numpy
     {
-        public static bool _isNumpyLibraryInitialized = false;
+        internal static bool _isNumpyLibraryInitialized = false;
 
-        public static bool InitializeNumpyLibrary()
+        internal static bool InitializeNumpyLibrary()
         {
             if (_isNumpyLibraryInitialized == true)
                 return true;
