@@ -56,7 +56,6 @@ namespace NumpyDotNet
         sturges,
     }
 
-
     public static partial class np
     {
         #region bin selectors
@@ -261,18 +260,54 @@ namespace NumpyDotNet
         #endregion
 
         #region histogram
+        /// <summary>
+        /// Compute the histogram of a set of data.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the number of equal-width bins in the given range (10, by default).</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray bin_edges) histogram<T>(object a, T[] bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
             return _histogram<T>(a, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the histogram of a set of data.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the number of equal-width bins in the given range (10, by default).</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray bin_edges) histogram(object a, ndarray bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
             return _histogram<Int32>(a, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the histogram of a set of data.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the number of equal-width bins in the given range (10, by default).</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray bin_edges) histogram(object a, int? bins = null, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
             return _histogram<Int32>(a, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the histogram of a set of data.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the number of equal-width bins in the given range (10, by default).</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray bin_edges) histogram(object a, Histogram_BinSelector bins, (float Low, float High)? range = null, object weights = null, bool? density = null)
         {
             return _histogram<Int32>(a, bins, range, weights, density);
@@ -478,15 +513,41 @@ namespace NumpyDotNet
         #endregion
 
         #region histogramdd
-
+        /// <summary>
+        /// Compute the multidimensional histogram of some data.
+        /// </summary>
+        /// <param name="sample">The data to be histogrammed.</param>
+        /// <param name="bins"> number of bins for each dimension</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray[] bin_edges) histogramdd<T>(object sample, T[] bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<T>(sample, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the multidimensional histogram of some data.
+        /// </summary>
+        /// <param name="sample">The data to be histogrammed.</param>
+        /// <param name="bins"> number of bins for each dimension</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray[] bin_edges) histogramdd(object sample, ndarray bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<Int32>(sample, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the multidimensional histogram of some data.
+        /// </summary>
+        /// <param name="sample">The data to be histogrammed.</param>
+        /// <param name="bins"> number of bins for each dimension</param>
+        /// <param name="range">The lower and upper range of the bins</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <param name="density">if true, calculate the probability density function</param>
+        /// <returns></returns>
         public static (ndarray hist, ndarray[] bin_edges) histogramdd(object sample, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogramdd<Int32>(sample, bins, range, weights, density);
@@ -763,15 +824,44 @@ namespace NumpyDotNet
         #endregion
 
         #region histogram2d
-
+        /// <summary>
+        /// Compute the bi-dimensional histogram of two data samples.
+        /// </summary>
+        /// <param name="x">An array containing the x coordinates of the points to be histogrammed.</param>
+        /// <param name="y">An array containing the y coordinates of the points to be histogrammed.</param>
+        /// <param name="bins">the number of bins for the two dimensions </param>
+        /// <param name="range">The leftmost and rightmost edges of the bins along each dimension</param>
+        /// <param name="weights">An array of values w_i weighing each sample (x_i, y_i).</param>
+        /// <param name="density">If True, returns the probability density function at the bin, bin_count / sample_count / bin_area.</param>
+        /// <returns></returns>
         public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, IEnumerable<Int32[]> bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogram2d(x, y, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the bi-dimensional histogram of two data samples.
+        /// </summary>
+        /// <param name="x">An array containing the x coordinates of the points to be histogrammed.</param>
+        /// <param name="y">An array containing the y coordinates of the points to be histogrammed.</param>
+        /// <param name="bins">the number of bins for the two dimensions </param>
+        /// <param name="range">The leftmost and rightmost edges of the bins along each dimension</param>
+        /// <param name="weights">An array of values w_i weighing each sample (x_i, y_i).</param>
+        /// <param name="density">If True, returns the probability density function at the bin, bin_count / sample_count / bin_area.</param>
+        /// <returns></returns>
         public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, int? bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogram2d(x, y, bins, range, weights, density);
         }
+        /// <summary>
+        /// Compute the bi-dimensional histogram of two data samples.
+        /// </summary>
+        /// <param name="x">An array containing the x coordinates of the points to be histogrammed.</param>
+        /// <param name="y">An array containing the y coordinates of the points to be histogrammed.</param>
+        /// <param name="bins">the number of bins for the two dimensions </param>
+        /// <param name="range">The leftmost and rightmost edges of the bins along each dimension</param>
+        /// <param name="weights">An array of values w_i weighing each sample (x_i, y_i).</param>
+        /// <param name="density">If True, returns the probability density function at the bin, bin_count / sample_count / bin_area.</param>
+        /// <returns></returns>
         public static (ndarray H, ndarray xedges, ndarray yedges) histogram2d(object x, object y, IEnumerable<ndarray> bins = null, Tuple<int, int>[] range = null, object weights = null, bool? density = null)
         {
             return _histogram2d(x, y, bins, range, weights, density);
@@ -954,6 +1044,14 @@ namespace NumpyDotNet
         #endregion
 
         #region histogram_bin_edges
+        /// <summary>
+        /// Function to calculate only the edges of the bins used by the histogram function.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the bin edges, including the rightmost edge, allowing for non-uniform bin widths.</param>
+        /// <param name="range">The lower and upper range of the bins.</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <returns></returns>
         public static ndarray histogram_bin_edges<T>(object a, T[] bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
@@ -961,6 +1059,14 @@ namespace NumpyDotNet
             var bin_edges = _get_bin_edges<T>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
+        /// <summary>
+        /// Function to calculate only the edges of the bins used by the histogram function.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the bin edges, including the rightmost edge, allowing for non-uniform bin widths.</param>
+        /// <param name="range">The lower and upper range of the bins.</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <returns></returns>
         public static ndarray histogram_bin_edges(object a, ndarray bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
@@ -968,6 +1074,14 @@ namespace NumpyDotNet
             var bin_edges = _get_bin_edges<Int32>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
+        /// <summary>
+        /// Function to calculate only the edges of the bins used by the histogram function.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">the number of equal-width bins in the given range (10, by default).</param>
+        /// <param name="range">The lower and upper range of the bins.</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <returns></returns>
         public static ndarray histogram_bin_edges(object a, int? bins = null, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
@@ -975,6 +1089,14 @@ namespace NumpyDotNet
             var bin_edges = _get_bin_edges<Int32>(_a, bins, range, _weights);
             return bin_edges.bin_edges;
         }
+        /// <summary>
+        /// Function to calculate only the edges of the bins used by the histogram function.
+        /// </summary>
+        /// <param name="a">Input data. The histogram is computed over the flattened array.</param>
+        /// <param name="bins">Histogram_BinSelector enumeration : choice of which bin selector to use</param>
+        /// <param name="range">The lower and upper range of the bins.</param>
+        /// <param name="weights">An array of weights, of the same shape as a.</param>
+        /// <returns></returns>
         public static ndarray histogram_bin_edges(object a, Histogram_BinSelector bins, (float Low, float High)? range = null, object weights = null)
         {
             ndarray _a = np.asanyarray(a);
@@ -1172,13 +1294,21 @@ namespace NumpyDotNet
         * The third argument, if present, is a minimum length desired for the
         * output array.
         */
+
+        /// <summary>
+        /// Count number of occurrences of each value in array of non-negative ints.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="weights">Weights, array of the same shape as x.</param>
+        /// <param name="minlength">A minimum number of bins for the output array.</param>
+        /// <returns></returns>
         public static ndarray bincount(object x, object weights = null, npy_intp? minlength = null)
         {
             ndarray list = np.asanyarray(x).ravel();
             ndarray weight = weights != null ? np.asanyarray(weights).ravel() : null;
             ndarray ans;
 
-#region validation
+            #region validation
             if (list.ndim != 1)
             {
                 throw new Exception("Histograms only supported on 1d arrays");
@@ -1221,7 +1351,7 @@ namespace NumpyDotNet
                     throw new Exception("Histograms only supported on integer arrays");
 
             }
-#endregion
+            #endregion
 
             // convert input array to intp if not already
             ndarray lst = np.asarray(list, np.intp);
@@ -1298,6 +1428,14 @@ namespace NumpyDotNet
         * i = 0 or i = len(bins) as appropriate. If right == True the comparison
         * is bins [i - 1] < x <= bins[i] or bins [i - 1] >= x > bins[i]
         */
+
+        /// <summary>
+        /// Return the indices of the bins to which each value in input array belongs.
+        /// </summary>
+        /// <param name="x">Input array to be binned.</param>
+        /// <param name="bins">Array of bins. It has to be 1-dimensional and monotonic.</param>
+        /// <param name="right">indicating whether the intervals include the right or the left bin edge.</param>
+        /// <returns></returns>
         public static ndarray digitize(object x, object bins, bool right= false)
         {
             ndarray arr_x = np.asanyarray(x).ravel();
