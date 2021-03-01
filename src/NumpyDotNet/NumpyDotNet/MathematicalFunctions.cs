@@ -268,6 +268,12 @@ namespace NumpyDotNet
 
         #region Trigonometric Functions
 
+        /// <summary>
+        /// Trigonometric sine, element-wise.
+        /// </summary>
+        /// <param name="x">Angle, in radians (2pi rad equals 360 degrees).</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray sin(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -296,6 +302,12 @@ namespace NumpyDotNet
  
         }
 
+        /// <summary>
+        /// Cosine element-wise.
+        /// </summary>
+        /// <param name="x">Input array in radians.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray cos(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -324,6 +336,12 @@ namespace NumpyDotNet
 
         }
 
+        /// <summary>
+        /// Compute tangent element-wise.
+        /// </summary>
+        /// <param name="x">Input array.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray tan(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -352,6 +370,12 @@ namespace NumpyDotNet
  
         }
 
+        /// <summary>
+        /// Inverse sine, element-wise.
+        /// </summary>
+        /// <param name="x">y-coordinate on the unit circle.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arcsin(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -379,7 +403,12 @@ namespace NumpyDotNet
             }
  
         }
-
+        /// <summary>
+        /// Trigonometric inverse cosine, element-wise.
+        /// </summary>
+        /// <param name="x">x-coordinate on the unit circle.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arccos(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -406,7 +435,12 @@ namespace NumpyDotNet
                 return MathFunction(x, where, DNAN, mathfunc);
             }
         }
-
+        /// <summary>
+        /// Trigonometric inverse tangent, element-wise.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arctan(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -434,7 +468,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Given the “legs” of a right triangle, return its hypotenuse.
+        /// </summary>
+        /// <param name="x1">Leg of the triangle(s).</param>
+        /// <param name="x2">Leg of the triangle(s).</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray hypot(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -471,7 +511,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Element-wise arc tangent of x1/x2 choosing the quadrant correctly.
+        /// </summary>
+        /// <param name="x1">y-coordinates.</param>
+        /// <param name="x2">x-coordinates.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray arctan2(object x1, object x2, object where = null)
         {
             var xa = asanyarray(x1);
@@ -499,12 +545,22 @@ namespace NumpyDotNet
             }
 
         }
- 
+        /// <summary>
+        /// Convert angles from radians to degrees.
+        /// </summary>
+        /// <param name="x">Angle in radians.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray rad2deg(object x, object where = null)
         {
             return degrees(x, where);
         }
-
+        /// <summary>
+        /// Convert angles from radians to degrees.
+        /// </summary>
+        /// <param name="x">Angle in radians.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray degrees(object x, object where = null)
         {
             var xa = asanyarray(x);
@@ -532,12 +588,22 @@ namespace NumpyDotNet
             }
  
         }
-  
+        /// <summary>
+        /// Convert angles from degrees to radians.
+        /// </summary>
+        /// <param name="x">Input array in degrees.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray deg2rad(object x, object where = null)
         {
             return radians(x, where);
         }
-
+        /// <summary>
+        /// Convert angles from degrees to radians.
+        /// </summary>
+        /// <param name="x">Input array in degrees.</param>
+        /// <param name="where">This condition is broadcast over the input. At locations where the condition is True, the out array will be set to the ufunc result.</param>
+        /// <returns></returns>
         public static ndarray radians(object x, object where = null)
         {
             var xa = asanyarray(x);
