@@ -354,6 +354,13 @@ namespace NumpyDotNet
 
         #region asarray
 
+        /// <summary>
+        /// Convert the input to an array.
+        /// </summary>
+        /// <param name="a">Input data, in any form that can be converted to an array. </param>
+        /// <param name="dtype">data-type, optional. By default, the data-type is inferred from the input data.</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}, optional</param>
+        /// <returns></returns>
         public static ndarray asarray(object a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
             //    Convert the input to an ndarray, but pass ndarray subclasses through.
@@ -413,7 +420,13 @@ namespace NumpyDotNet
         #endregion
 
         #region asanyarray
-
+        /// <summary>
+        /// Convert the input to an ndarray, but pass ndarray subclasses through.
+        /// </summary>
+        /// <param name="a">Input data, in any form that can be converted to an array.</param>
+        /// <param name="dtype">data-type, optional. By default, the data-type is inferred from the input data.</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}, optional</param>
+        /// <returns></returns>
         public static ndarray asanyarray(object a, dtype dtype = null, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
             //  Convert the input to a masked array, conserving subclasses.
@@ -753,7 +766,12 @@ namespace NumpyDotNet
         #endregion
 
         #region ascontiguousarray
-
+        /// <summary>
+        /// Return a contiguous array (ndim >= 1) in memory (C order).
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="dtype">Data-type of returned array. By default, the data-type is inferred from the input data.</param>
+        /// <returns></returns>
         public static ndarray ascontiguousarray(object a, dtype dtype = null)
         {
             // Return a contiguous array in memory(C order).
@@ -794,7 +812,12 @@ namespace NumpyDotNet
         #endregion
 
         #region asfortranarray
-
+        /// <summary>
+        /// Return an array (ndim >= 1) laid out in Fortran order in memory.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="dtype">Data-type of returned array. By default, the data-type is inferred from the input data.</param>
+        /// <returns></returns>
         public static ndarray asfortranarray(ndarray a, dtype dtype = null)
         {
             // Return an array laid out in Fortran order in memory.
@@ -833,7 +856,12 @@ namespace NumpyDotNet
         #endregion
 
         #region asfarray
-
+        /// <summary>
+        /// Return an array converted to a float type.
+        /// </summary>
+        /// <param name="a">The input array.</param>
+        /// <param name="dtype">Float type code to coerce input array a. If dtype is one of the ‘int’ dtypes, it is replaced with float64.</param>
+        /// <returns></returns>
         public static ndarray asfarray(object a, dtype dtype = null)
         {
             AssertConvertableToFloating(a, dtype);
@@ -856,6 +884,8 @@ namespace NumpyDotNet
 
   
         #endregion
+
+        
 
         #region require
 
