@@ -706,7 +706,7 @@ namespace NumpyDotNet
                         throw new ValueError("distances must be either scalars or 1d");
                     }
 
-                    if (distances.Length != f1.dims[axes[i]])
+                    if (len(distances) != f1.dims[axes[i]])
                     {
                         throw new ValueError("when 1d, distances must match the length of the corresponding dimension");
                     }

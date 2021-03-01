@@ -435,7 +435,7 @@ namespace NumpyDotNet
                 ndarray arr = (ndarray)src;
                 if (dtype == null)
                 {
-                    if (!copy && arr.StridingOk(order))
+                    if (!copy && StridingOk(arr,order))
                     {
                         result = arr;
                     }
@@ -449,7 +449,7 @@ namespace NumpyDotNet
                     dtype oldtype = arr.Dtype;
                     if (NpyCoreApi.EquivTypes(oldtype, dtype))
                     {
-                        if (!copy && arr.StridingOk(order))
+                        if (!copy && StridingOk(arr,order))
                         {
                             result = arr;
                         }
@@ -491,6 +491,14 @@ namespace NumpyDotNet
                 result = np.PrependOnes(result, result.ndim, ndmin);
             }
             return result;
+        }
+
+
+        public static bool StridingOk(ndarray arr, NPY_ORDER order)
+        {
+            return order == NPY_ORDER.NPY_ANYORDER ||
+                order == NPY_ORDER.NPY_CORDER && arr.IsContiguous ||
+                order == NPY_ORDER.NPY_FORTRANORDER && arr.IsFortran;
         }
 
         /// <summary>
