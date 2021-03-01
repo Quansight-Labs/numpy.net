@@ -1787,40 +1787,29 @@ namespace NumpyDotNet
             }
         }
 
-        internal static dtype GetTypeDouble(dtype dtype1, dtype dtype2)
-        {
-            if (dtype2 != null)
-            {
-                return dtype2;
-            }
-            if (dtype1.TypeNum < NPY_TYPES.NPY_FLOAT)
-            {
-                return NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE);
-            }
-            else
-            {
-                return dtype1;
-            }
-        }
 
-        internal ndarray BaseArray {
-            get {
+        internal ndarray BaseArray
+        {
+            get
+            {
                 if (core.base_arr == null)
                     return null;
                 return new ndarray(core.base_arr);
             }
-            set {
-                lock (this) {
-                    core.SetBase(value.core);
-                    NpyCoreApi.Decref(value.core);
-                 }
-            }
+            //set
+            //{
+            //    lock (this)
+            //    {
+            //        core.SetBase(value.core);
+            //        NpyCoreApi.Decref(value.core);
+            //    }
+            //}
         }
-  
+
 
         #endregion
 
-      
+
     }
 
     internal class ndarray_Enumerator : IEnumerator<object>
