@@ -882,13 +882,18 @@ namespace NumpyDotNet
             return asarray(a1, dtype: dtype);
         }
 
-  
+
         #endregion
 
-        
 
         #region require
-
+        /// <summary>
+        /// Return an ndarray of the provided type that satisfies requirements.
+        /// </summary>
+        /// <param name="a">The object to be converted to a type - and - requirement - satisfying array.</param>
+        /// <param name="dtype">The required data - type.If None preserve the current dtype.</param>
+        /// <param name="requirements">str or list of str</param>
+        /// <returns></returns>
         public static ndarray require(ndarray a, dtype dtype = null, char[] requirements = null)
         {
             // Return an ndarray of the provided type that satisfies requirements.
@@ -957,7 +962,11 @@ namespace NumpyDotNet
         #endregion
 
         #region isfortran
-
+        /// <summary>
+        /// Returns True if the array is Fortran contiguous but* not*C contiguous.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <returns></returns>
         public static bool isfortran(ndarray a)
         {
            // Returns True if the array is Fortran contiguous but* not*C contiguous.
@@ -1022,7 +1031,11 @@ namespace NumpyDotNet
         #endregion
 
         #region argwhere
-
+        /// <summary>
+        /// Find the indices of array elements that are non - zero, grouped by element.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <returns></returns>
         public static ndarray argwhere(ndarray a)
         {
             //    Find the indices of array elements that are non - zero, grouped by element.
@@ -1066,7 +1079,11 @@ namespace NumpyDotNet
         #endregion
 
         #region flatnonzero
-
+        /// <summary>
+        /// Return indices that are non - zero in the flattened version of a.
+        /// </summary>
+        /// <param name="a">Input data</param>
+        /// <returns></returns>
         public static ndarray flatnonzero(object a)
         {
             // Return indices that are non - zero in the flattened version of a.
@@ -1109,9 +1126,14 @@ namespace NumpyDotNet
 
         #endregion
 
-   
-        #region outer
 
+        #region outer
+        /// <summary>
+        /// Compute the outer product of two vectors.
+        /// </summary>
+        /// <param name="a">First input vector.</param>
+        /// <param name="b">Second input vector.</param>
+        /// <returns></returns>
         public static ndarray outer(object a, object b)
         {
             // Compute the outer product of two vectors.
@@ -1161,12 +1183,24 @@ namespace NumpyDotNet
         #endregion
 
         #region tensordot
-
+        /// <summary>
+        /// Compute tensor dot product along specified axes.
+        /// </summary>
+        /// <param name="a">Tensor to “dot”.</param>
+        /// <param name="b">Tensor to “dot”.</param>
+        /// <param name="axis">sum over the last N axes of a and the first N axes of b in order.</param>
+        /// <returns></returns>
         public static ndarray tensordot(object a, object b, int axis = 2)
         {
             return tensordot(a, b, (PythonFunction.range(-axis, 0), PythonFunction.range(0, axis)));
         }
-
+        /// <summary>
+        /// Compute tensor dot product along specified axes.
+        /// </summary>
+        /// <param name="a">Tensor to “dot”.</param>
+        /// <param name="b">Tensor to “dot”.</param>
+        /// <param name="axes">a list of axes to be summed over</param>
+        /// <returns></returns>
         public static ndarray tensordot(object a, object b, (npy_intp[], npy_intp[]) axes)
         {
 
@@ -1306,8 +1340,14 @@ namespace NumpyDotNet
         #endregion
 
         #region roll
-
-        public static ndarray roll(ndarray input, int shift, int? axis = null)
+        /// <summary>
+        /// Roll array elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="shift">The number of places by which elements are shifted.</param>
+        /// <param name="axis">Axis along which elements are shifted</param>
+        /// <returns></returns>
+        public static ndarray roll(ndarray a, int shift, int? axis = null)
         {
             // Roll array elements along a given axis.
 
@@ -1345,13 +1385,13 @@ namespace NumpyDotNet
 
             // Supports rolling over multiple dimensions simultaneously.
 
-            ndarray AdjustedArray = input;
+            ndarray AdjustedArray = a;
 
             if (axis.HasValue)
             {
                 if (axis.Value == 0)
                 {
-                    AdjustedArray = input.A(":");
+                    AdjustedArray = a.A(":");
                 }
                 else
                 {
@@ -1363,7 +1403,7 @@ namespace NumpyDotNet
             }
             else
             {
-                var copy = input.Copy();
+                var copy = a.Copy();
                 var rawdatavp = copy.rawdata(0);
                 dynamic RawData = (dynamic)rawdatavp.datap;
                 dynamic LastElement = 0;
@@ -1396,7 +1436,7 @@ namespace NumpyDotNet
                 }
 
 
-                return array(RawData, dtype: input.Dtype);
+                return array(RawData, dtype: a.Dtype);
             }
         }
 
@@ -1482,6 +1522,13 @@ namespace NumpyDotNet
         #endregion
 
         #region rollaxis
+        /// <summary>
+        /// Roll the specified axis backwards, until it lies in a given position.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis">The axis to roll backwards.The positions of the other axes do not change relative to one another.</param>
+        /// <param name="start">The axis is rolled until it lies before this position.</param>
+        /// <returns></returns>
         public static ndarray rollaxis(ndarray a, int axis, int start = 0)
         {
             //  Roll the specified axis backwards, until it lies in a given position.
@@ -1636,6 +1683,13 @@ namespace NumpyDotNet
         #endregion
 
         #region moveaxis
+        /// <summary>
+        /// Move axes of an array to new positions.
+        /// </summary>
+        /// <param name="a">The array whose axes should be reordered.</param>
+        /// <param name="source">Original positions of the axes to move. These must be unique.</param>
+        /// <param name="destination">Destination positions for each of the original axes.These must also be unique.</param>
+        /// <returns></returns>
         public static ndarray moveaxis(ndarray a, object source, object destination)
         {
             // Move axes of an array to new positions.
@@ -1652,7 +1706,6 @@ namespace NumpyDotNet
             //    Original positions of the axes to move. These must be unique.
             // destination: int or sequence of int
             //    Destination positions for each of the original axes.These must also be
-
             //    unique.
 
             //Returns
@@ -1728,12 +1781,19 @@ namespace NumpyDotNet
             return result;
         }
 
-    
-
         #endregion
 
         #region cross
-
+        /// <summary>
+        /// Return the cross product of two (arrays of) vectors.
+        /// </summary>
+        /// <param name="a">Components of the first vector(s)</param>
+        /// <param name="b">Components of the second vector(s)</param>
+        /// <param name="axisa">Axis of `a` that defines the vector(s)</param>
+        /// <param name="axisb">Axis of `b` that defines the vector(s)</param>
+        /// <param name="axisc">Axis of `c` containing the cross product vector(s)</param>
+        /// <param name="axis">If defined, the axis of `a`, `b` and `c` that defines the vector(s) and cross product(s).</param>
+        /// <returns></returns>
         public static ndarray cross(object a, object b, int axisa = -1, int axisb = -1, int axisc = -1, int ?axis = null)
         {
             /*
@@ -1917,12 +1977,15 @@ namespace NumpyDotNet
             return moveaxis(cp, -1, axisc);
         }
 
-   
-
         #endregion
 
         #region indices
-
+        /// <summary>
+        /// Return an array representing the indices of a grid.
+        /// </summary>
+        /// <param name="dimensions">The shape of the grid.</param>
+        /// <param name="dtype">Data type of the result.</param>
+        /// <returns></returns>
         public static ndarray indices(object dimensions, dtype dtype = null)
         {
             /*
@@ -2038,19 +2101,23 @@ namespace NumpyDotNet
         #endregion
 
         #region isscalar
-
-        public static bool isscalar(object source)
+        /// <summary>
+        /// Returns True if the type of element is a scalar type.
+        /// </summary>
+        /// <param name="element">Input argument, can be of any type and shape.</param>
+        /// <returns></returns>
+        public static bool isscalar(object element)
         {
-            if (source.GetType().IsPrimitive)
+            if (element.GetType().IsPrimitive)
                 return true;
 
-            if (source is Decimal)
+            if (element is Decimal)
                 return true;
 
-            if (source is System.Numerics.Complex)
+            if (element is System.Numerics.Complex)
                 return true;
 
-            if (source is System.Numerics.BigInteger)
+            if (element is System.Numerics.BigInteger)
                 return true;
 
             return false;
@@ -2117,11 +2184,19 @@ namespace NumpyDotNet
         #endregion
 
         #region allclose
-
+        /// <summary>
+        /// Returns True if two arrays are element - wise equal within a tolerance.
+        /// </summary>
+        /// <param name="a">Input array to compare.</param>
+        /// <param name="b">Input array to compare.</param>
+        /// <param name="rtol">The relative tolerance parameter.</param>
+        /// <param name="atol">The absolute tolerance parameter.</param>
+        /// <param name="equal_nan">Whether to compare NaN's as equal.</param>
+        /// <returns></returns>
         public static bool allclose(object a, object b, double rtol = 1.0E-5, double atol = 1.0E-8, bool equal_nan=false)
         {
             //  Returns True if two arrays are element - wise equal within a tolerance.
-
+            //
             //  The tolerance values are positive, typically very small numbers.  The
             //  relative difference(`rtol` *abs(`b`)) and the absolute difference
             //  `atol` are added together to compare against the absolute difference
@@ -2130,7 +2205,7 @@ namespace NumpyDotNet
             //  If either array contains one or more NaNs, False is returned.
             //  Infs are treated as equal if they are in the same place and of the same
             //  sign in both arrays.
-
+            //
             //  Parameters
             //  ----------
             //  a, b: array_like
@@ -2191,7 +2266,15 @@ namespace NumpyDotNet
         #endregion
 
         #region isclose
-
+        /// <summary>
+        /// Returns a boolean array where two arrays are element - wise equal within a tolerance.
+        /// </summary>
+        /// <param name="a">Input array to compare</param>
+        /// <param name="b">Input array to compare</param>
+        /// <param name="rtol">The relative tolerance parameter</param>
+        /// <param name="atol">The absolute tolerance parameter</param>
+        /// <param name="equal_nan">Whether to compare NaN's as equal.</param>
+        /// <returns></returns>
         public static ndarray isclose(object a, object b, double rtol = 1.0E-5, double atol = 1.0E-8, bool equal_nan = false)
         {
             // Returns a boolean array where two arrays are element - wise equal within a
@@ -2201,60 +2284,36 @@ namespace NumpyDotNet
             // relative difference(`rtol` *abs(`b`)) and the absolute difference
             // `atol` are added together to compare against the absolute difference
             // between `a` and `b`.
-
             // .. warning::The default `atol` is not appropriate for comparing numbers
-
             //             that are much smaller than one(see Notes).
-
             //Parameters
             //----------
-
             //a, b : array_like
-
             //    Input arrays to compare.
             //rtol : float
-
             //    The relative tolerance parameter(see Notes).
             //atol : float
-
             //    The absolute tolerance parameter(see Notes).
             //equal_nan : bool
-
             //    Whether to compare NaN's as equal.  If True, NaN's in `a` will be
-
             //    considered equal to NaN's in `b` in the output array.
-
-
             //Returns
             //------ -
             //y : array_like
-
             //    Returns a boolean array of where `a` and `b` are equal within the
-
             //    given tolerance.If both `a` and `b` are scalars, returns a single
-
             //    boolean value.
-
-
             //See Also
             //--------
-
             //allclose
-
-
             //Notes
             //---- -
-
             //..versionadded:: 1.7.0
-
-
             //For finite values, isclose uses the following equation to test whether
-
             //two floating point values are equivalent.
-
             // absolute(`a` - `b`) <= (`atol` + `rtol` *absolute(`b`))
-
             //             Unlike the built -in `math.isclose`, the above equation is not symmetric
+            //
             // in `a` and `b` --it assumes `b` is the reference value-- so that
             // `isclose(a, b)` might be different from `isclose(b, a)`. Furthermore,
             // the default value of atol is not zero, and is used to determine what
@@ -2263,7 +2322,7 @@ namespace NumpyDotNet
             // are significantly smaller than one, it can result in false positives.
             // `atol` should be carefully selected for the use case at hand.A zero value
             // for `atol` will result in `False` if either `a` or `b` is zero.
-
+            //
             // Examples
             // --------
             // >>> np.isclose([1e10, 1e-7], [1.00001e10,1e-8])
@@ -2337,11 +2396,16 @@ namespace NumpyDotNet
                 throw new Exception("Exception calculating differences between arrays");
             }
         }
-    
+
         #endregion
 
         #region array_equal
-
+        /// <summary>
+        /// True if two arrays have the same shape and elements, False otherwise.
+        /// </summary>
+        /// <param name="a1">Input array</param>
+        /// <param name="a2">Input array</param>
+        /// <returns></returns>
         public static bool array_equal(object a1, object a2)
         {
             // True if two arrays have the same shape and elements, False otherwise.
@@ -2397,7 +2461,12 @@ namespace NumpyDotNet
         #endregion
 
         #region array_equiv
-
+        /// <summary>
+        /// Returns True if input arrays are shape consistent and all elements equal.
+        /// </summary>
+        /// <param name="a1">Input array</param>
+        /// <param name="a2">Input array</param>
+        /// <returns></returns>
         public static bool array_equiv(object a1, object a2)
         {
             // Returns True if input arrays are shape consistent and all elements equal.
