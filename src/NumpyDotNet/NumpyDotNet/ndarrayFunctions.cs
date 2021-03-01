@@ -59,30 +59,89 @@ namespace NumpyDotNet
         private static readonly bool _init = numpy.InitializeNumpyLibrary();
 
 
-
+        /// <summary>
+        /// Data Type descriptor for bool ndarray
+        /// </summary>
         public static readonly dtype Bool = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BOOL);
+        /// <summary>
+        /// Data Type descriptor for sbyte ndarray
+        /// </summary> 
         public static readonly dtype Int8 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BYTE);
+        /// <summary>
+        /// Data Type descriptor for byte ndarray
+        /// </summary>
         public static readonly dtype UInt8 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UBYTE);
+        /// <summary>
+        /// Data Type descriptor for Int16 ndarray
+        /// </summary>
         public static readonly dtype Int16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT16);
+        /// <summary>
+        /// Data Type descriptor for UInt16 ndarray
+        /// </summary>
         public static readonly dtype UInt16 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT16);
+        /// <summary>
+        /// Data Type descriptor for Int32 ndarray
+        /// </summary>
         public static readonly dtype Int32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT32);
+        /// <summary>
+        /// Data Type descriptor for UInt32 ndarray
+        /// </summary>
         public static readonly dtype UInt32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT32);
+        /// <summary>
+        /// Data Type descriptor for Int64 ndarray
+        /// </summary>
         public static readonly dtype Int64 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
+        /// <summary>
+        /// Data Type descriptor for UInt64 ndarray
+        /// </summary>
         public static readonly dtype UInt64 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_UINT64);
+        /// <summary>
+        ///  Data Type descriptor for System.Single/Float ndarray
+        /// </summary>
         public static readonly dtype Float32 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_FLOAT);
+        /// <summary>
+        ///  Data Type descriptor for System.Double ndarray
+        /// </summary>
         public static readonly dtype Float64 = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DOUBLE);
+        /// <summary>
+        ///  Data Type descriptor for Decimal ndarray
+        /// </summary>
         public static readonly dtype Decimal = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_DECIMAL);
+        /// <summary>
+        ///  Data Type descriptor for System.Numerics.Complex ndarray
+        /// </summary>
         public static readonly dtype Complex = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_COMPLEX);
+        /// <summary>
+        ///  Data Type descriptor for System.Numerics.BigInteger ndarray
+        /// </summary>
         public static readonly dtype BigInt = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_BIGINT);
+        /// <summary>
+        ///  Data Type descriptor for System.Object ndarray
+        /// </summary>
         public static readonly dtype Object = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_OBJECT);
+        /// <summary>
+        ///  Data Type descriptor for System.String ndarray
+        /// </summary>
         public static readonly dtype Strings = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_STRING);
 
 #if NPY_INTP_64
+        /// <summary>
+        ///  Data Type descriptor for INTP ndarray.  Used for indexing.
+        /// </summary>
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT64);
 #else
+        /// <summary>
+        /// Data Type descriptor for INTP ndarray.  Used for indexing.
+        /// </summary>
         public static readonly dtype intp = NpyCoreApi.DescrFromType(NPY_TYPES.NPY_INT32);
 #endif
+        /// <summary>
+        /// special case
+        /// </summary>
         public static readonly dtype None = null;
+        /// <summary>
+        /// special case
+        /// </summary>
         public static readonly object newaxis = null;
 
 
