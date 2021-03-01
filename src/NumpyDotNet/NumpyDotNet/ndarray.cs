@@ -1252,21 +1252,36 @@ namespace NumpyDotNet
         {
             return this.Ravel(order);
         }
-
+        /// <summary>
+        /// Gives a new shape to an array without changing its data.
+        /// </summary>
+        /// <param name="shape">The new shape should be compatible with the original shape.</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’}, optional</param>
+        /// <returns></returns>
         public ndarray reshape(IEnumerable<npy_intp> shape, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
             npy_intp[] newshape = shape.Select(x => (npy_intp)x).ToArray();
 
             return NpyCoreApi.Newshape(this, newshape, order);
         }
-
+        /// <summary>
+        /// Gives a new shape to an array without changing its data.
+        /// </summary>
+        /// <param name="shape">The new shape should be compatible with the original shape.</param>
+        /// <param name="order">{‘C’, ‘F’, ‘A’}, optional</param>
+        /// <returns></returns>
         public ndarray reshape(int shape, NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
             npy_intp[] newshape = new npy_intp[] { shape };
 
             return NpyCoreApi.Newshape(this, newshape, order);
         }
-
+        /// <summary>
+        /// Set array flags WRITEABLE, ALIGNED, (WRITEBACKIFCOPY and UPDATEIFCOPY), respectively.
+        /// </summary>
+        /// <param name="write"></param>
+        /// <param name="align"></param>
+        /// <param name="uic"></param>
         public void setflags(object write = null, object align = null, object uic = null)
         {
             NPYARRAYFLAGS flags = RawFlags;
@@ -1317,8 +1332,13 @@ namespace NumpyDotNet
             RawFlags = flags;
         }
 
-
-        public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER) {
+        /// <summary>
+        /// copies array data into byte[].  Can change the ordering.
+        /// </summary>
+        /// <param name="order">{‘C’, ‘F’, ‘A’}, optional</param>
+        /// <returns></returns>
+        public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
+        {
             return ToString(order);
         }
 
@@ -1327,32 +1347,47 @@ namespace NumpyDotNet
 
         #endregion
 
-
+        /// <summary>
+        /// Number of elements in the array.
+        /// </summary>
         public npy_intp Size {
             get { return NpyCoreApi.ArraySize(this); }
         }
-
+        /// <summary>
+        /// Return the real part of the complex argument.
+        /// </summary>
         public ndarray Real {
             get { return NpyCoreApi.GetReal(this); }
         }
-
+        /// <summary>
+        /// Return the imaginary part of the complex argument.
+        /// </summary>
         public ndarray Imag {
             get { return NpyCoreApi.GetImag(this); }
         }
-
-        public override string ToString() {
+        /// <summary>
+        /// returns printable string representation of ndarray
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
             return StrFunction(this);
         }
-  
 
-        public flatiter Flat {
-            get {
+        /// <summary>
+        /// A 1-D iterator over the array.
+        /// </summary>
+        public flatiter Flat
+        {
+            get
+            {
                 return NpyCoreApi.IterNew(this);
             }
         }
 
 
-        public ndarray NewCopy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+        internal ndarray NewCopy(NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        {
             return NpyCoreApi.NewCopy(this, order);
         }
 
@@ -1453,12 +1488,16 @@ namespace NumpyDotNet
         public bool IsOneSegment {
             get { return ndim == 0 || ChkFlags(NPYARRAYFLAGS.NPY_FORTRAN) || ChkFlags(NPYARRAYFLAGS.NPY_CARRAY); }
         }
-
+        /// <summary>
+        /// true of array is a slice/view into another array.
+        /// </summary>
         public bool IsASlice
         {
             get { return BaseArray != null; }
         }
-
+        /// <summary>
+        /// true if array is a single element array
+        /// </summary>
         public bool IsAScalar
         {
             get { return Array.IsScalar; }
@@ -1470,71 +1509,110 @@ namespace NumpyDotNet
         public bool IsFortran {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_FORTRAN) && ndim > 1; }
         }
-
+        /// <summary>
+        /// true of byte order is not swapped
+        /// </summary>
         public bool IsNotSwapped {
             get { return Dtype.IsNativeByteOrder; }
         }
-
+        /// <summary>
+        /// true if byte order is swapped
+        /// </summary>
         public bool IsByteSwapped {
             get { return !IsNotSwapped; }
         }
-
-        public bool IsCArray {
+        /// <summary>
+        /// true of array is ordered in "C" format
+        /// </summary>
+        public bool IsCArray
+        {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_CARRAY) && IsNotSwapped; }
         }
-
+        /// <summary>
+        /// true if array is ordered in "C" formation and Read Only
+        /// </summary>
         public bool IsCArray_RO {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_CARRAY_RO) && IsNotSwapped; }
         }
-
-        public bool IsFArray {
+        /// <summary>
+        /// returns true of array is ordered in "F"ortran order
+        /// </summary>
+        public bool IsFArray
+        {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_FARRAY) && IsNotSwapped; }
         }
-
-        public bool IsFArray_RO {
+        /// <summary>
+        /// returns true of array is ordered in "F"ortran order and Read Only
+        /// </summary>
+        public bool IsFArray_RO
+        {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_FARRAY_RO) && IsNotSwapped; }
         }
-
-        public bool IsBehaved {
+        /// <summary>
+        /// returns true of data type is aligned, writable and machine byte-order
+        /// </summary>
+        public bool IsBehaved
+        {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_BEHAVED) && IsNotSwapped; }
         }
-
+        /// <summary>
+        /// returns true of data type is aligned and machine byte-order
+        /// </summary>
         public bool IsBehaved_RO {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_ALIGNED) && IsNotSwapped; }
         }
-
-        internal bool IsComplex {
+        /// <summary>
+        /// return true if data type is a complex number
+        /// </summary>
+        internal bool IsComplex
+        {
             get { return NpyDefs.IsComplex(TypeNum); }
         }
-               
+        /// <summary>
+        /// returns true if data type is a "BigInteger"
+        /// </summary>
         internal bool IsBigInt
         {
             get { return NpyDefs.IsBigInt(TypeNum); }
         }
-
+        /// <summary>
+        /// returns true if data type is Decimal
+        /// </summary>
         internal bool IsDecimal
         {
             get { return NpyDefs.IsDecimal(TypeNum); }
         }
-
-        internal bool IsInteger {
+        /// <summary>
+        /// returns true if data type is an integer value
+        /// </summary>
+        internal bool IsInteger
+        {
             get { return NpyDefs.IsInteger(TypeNum); }
         }
-
+        /// <summary>
+        /// returns true if data type is a floating point value
+        /// </summary>
         internal bool IsFloatingPoint
         {
             get { return NpyDefs.IsFloat(TypeNum); }
         }
-
+        /// <summary>
+        /// returns true if data type is inexact (i.e. floating point or complex)
+        /// </summary>
         internal bool IsInexact
         {
             get { return IsFloatingPoint || IsComplex; }
         }
-
-        public bool IsFlexible {
+        /// <summary>
+        /// returns true of data type is string
+        /// </summary>
+        public bool IsFlexible
+        {
             get { return NpyDefs.IsFlexible(TypeNum); }
         }
-
+        /// <summary>
+        /// returns true of internal math functions can be operated on the data type
+        /// </summary>
         public bool IsMathFunctionCapable
         {
             get
@@ -1550,17 +1628,25 @@ namespace NumpyDotNet
             }
         }
 
-
+        /// <summary>
+        /// always false since matrix types obsolete and not supported
+        /// </summary>
         internal bool IsMatrix
         {
             get { return false; }
         }
-
-        public bool IsWriteable {
+        /// <summary>
+        /// true if array is not Read Only
+        /// </summary>
+        public bool IsWriteable
+        {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_WRITEABLE); }
         }
-
-        public bool IsString {
+        /// <summary>
+        /// return true if data type is a string
+        /// </summary>
+        public bool IsString
+        {
             get { return TypeNum == NPY_TYPES.NPY_STRING; }
         }
 
@@ -1568,17 +1654,17 @@ namespace NumpyDotNet
         /// <summary>
         /// TODO: What does this return?
         /// </summary>
-        public int ElementStrides {
+        internal int ElementStrides {
             get { return NpyCoreApi.ElementStrides(this); }
         }
 
-        public bool StridingOk(NPY_ORDER order) {
-            return order == NPY_ORDER.NPY_ANYORDER ||
-                order == NPY_ORDER.NPY_CORDER && IsContiguous ||
-                order == NPY_ORDER.NPY_FORTRANORDER && IsFortran;
-        }
-
-        private bool ChkFlags(NPYARRAYFLAGS flag) {
+        /// <summary>
+        /// check for ndarray flag == true
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        private bool ChkFlags(NPYARRAYFLAGS flag)
+        {
             return ((RawFlags & flag) == flag);
         }
 
@@ -1598,12 +1684,6 @@ namespace NumpyDotNet
         #endregion
 
         #region Internal methods
-
-        internal long Length {
-            get {
-                return Dim(0);
-            }
-        }
 
         private string BuildStringRepr(bool repr)
         {
