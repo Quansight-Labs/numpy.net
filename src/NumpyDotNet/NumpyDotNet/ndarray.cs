@@ -899,7 +899,7 @@ namespace NumpyDotNet
         }
 
         /// <summary>
-        /// returns the shape of the array (AKA array of dimensions)
+        /// the shape of the array
         /// </summary>
         public shape shape
         {
@@ -1446,7 +1446,7 @@ namespace NumpyDotNet
         }
 
         /// <summary>
-        /// Returns an array of the stride of each dimension.
+        /// the strides of the array.
         /// </summary>
 
         public npy_intp[] strides
