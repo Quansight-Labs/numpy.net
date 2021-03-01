@@ -4071,12 +4071,12 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_count_nonzero_1_STRING()
         {
-            var a = np.count_nonzero_i(np.eye(4, dtype: np.Strings));
-            Assert.AreEqual(16, a);
+            var a = np.count_nonzero(np.eye(4, dtype: np.Strings));
+            Assert.AreEqual(16, (int)a);
             print(a);
 
-            var b = np.count_nonzero_i(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } });
-            Assert.AreEqual(5, b);
+            var b = np.count_nonzero(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } });
+            Assert.AreEqual(5, (int)b);
             print(b);
 
             var c = np.count_nonzero(new string[,] { { null, "1", "7", null, null }, { "3", null, null, "2", "19" } }, axis: 0);

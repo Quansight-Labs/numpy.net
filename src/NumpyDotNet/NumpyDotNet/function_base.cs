@@ -3223,7 +3223,7 @@ namespace NumpyDotNet
                 }
    
             }
-            else if (np.count_nonzero_i(n.ravel()) > 0)
+            else if ((int)np.count_nonzero(n.ravel()) > 0)
             {
                 // warnings.warn("Invalid value encountered in median for" + " %d results" % np.count_nonzero(n.ravel()), RuntimeWarning, stacklevel=3)
                 result[n] = np.NaN;
@@ -3545,8 +3545,8 @@ namespace NumpyDotNet
 
         private static bool _quantile_is_valid(ndarray q)
         {
-            int nz1 = np.count_nonzero_i(q < 0.0);
-            int nz2 = np.count_nonzero_i(q > 1.0);
+            int nz1 = (int)np.count_nonzero(q < 0.0);
+            int nz2 = (int)np.count_nonzero(q > 1.0);
             if (nz1 > 0 || nz2 > 0)
             {
                 return false;

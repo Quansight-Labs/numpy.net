@@ -5069,12 +5069,12 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_count_nonzero_1_DECIMAL()
         {
-            var a = np.count_nonzero_i(np.eye(4, dtype: np.Decimal));
-            Assert.AreEqual(4, a);
+            var a = np.count_nonzero(np.eye(4, dtype: np.Decimal));
+            Assert.AreEqual(4, (int)a);
             print(a);
 
-            var b = np.count_nonzero_i(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
-            Assert.AreEqual(5, b);
+            var b = np.count_nonzero(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } });
+            Assert.AreEqual(5, (int)b);
             print(b);
 
             var c = np.count_nonzero(new decimal[,] { { 0, 1, 7, 0, 0 }, { 3, 0, 0, 2, 19 } }, axis: 0);

@@ -49,6 +49,7 @@ using npy_ucs4 = System.Int32;
 
 namespace NumpyDotNet
 {
+ 
     public static partial class np
     {
         #region zeros
@@ -282,15 +283,13 @@ namespace NumpyDotNet
         #endregion
 
         #region count_nonzero
-
-        public static int count_nonzero_i(object a, int? axis = null)
-        {
-            ndarray arr = count_nonzero(a, axis);
-
-            int result = (int)arr.GetItem(0);
-            return result;
-        }
-
+    
+        /// <summary>
+        /// Counts the number of non-zero values in the array a.
+        /// </summary>
+        /// <param name="a">The array for which to count non-zeros.</param>
+        /// <param name="axis">Axis along which to count non-zeros. </param>
+        /// <returns></returns>
         public static ndarray count_nonzero(object a, int? axis = null)
         {
             //  Counts the number of non - zero values in the array ``a``.
