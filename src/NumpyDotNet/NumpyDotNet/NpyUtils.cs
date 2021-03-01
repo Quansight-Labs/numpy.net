@@ -49,8 +49,14 @@ namespace NumpyDotNet {
 
     public static partial class np
     {
-        // todo: big task to reimplement this.
-        public static dtype result_type(object a1, object a2, object type_suggestion = null)
+        /// <summary>
+        /// Returns the type that results from applying the NumPy type promotion rules to the arguments.
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <param name="type_suggestion"></param>
+        /// <returns></returns>
+        internal static dtype result_type(object a1, object a2, object type_suggestion = null)
         {
             var arr1 = asanyarray(a1);
             var arr2 = asanyarray(a2);
@@ -63,8 +69,14 @@ namespace NumpyDotNet {
 
             return np.Float64;
         }
-
-        public static dtype result_type(dtype a1, dtype a2, object type_suggestion = null)
+        /// <summary>
+        /// Returns the type that results from applying the NumPy type promotion rules to the arguments.
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <param name="type_suggestion"></param>
+        /// <returns></returns>
+        internal static dtype result_type(dtype a1, dtype a2, object type_suggestion = null)
         {
             if (a1.IsDecimal || a2.IsDecimal)
                 return np.Decimal;
@@ -74,16 +86,25 @@ namespace NumpyDotNet {
 
             return np.Float64;
         }
-
-        public static dtype result_type(NPY_TYPES type_num)
+        /// <summary>
+        /// Returns the type that results from applying the NumPy type promotion rules to the arguments.
+        /// </summary>
+        /// <param name="type_num"></param>
+        /// <returns></returns>
+        internal static dtype result_type(NPY_TYPES type_num)
         {
             var return_type = DefaultArrayHandlers.GetArrayHandler(type_num).MathOpFloatingType(UFuncOperation.divide);
             dtype result_dtype = NpyCoreApi.DescrFromType(return_type);
             return result_dtype;
         }
 
-        // todo: big task to reimplement this.
-        public static dtype promote_types(dtype type1, dtype type2)
+        /// <summary>
+        /// Returns the data type with the smallest size and smallest scalar kind to which both type1 and type2
+        /// </summary>
+        /// <param name="type1"></param>
+        /// <param name="type2"></param>
+        /// <returns></returns>
+        internal static dtype promote_types(dtype type1, dtype type2)
         {
             if (type1.TypeNum < type2.TypeNum)
                 return type2;
@@ -225,7 +246,7 @@ namespace NumpyDotNet {
 
     internal static class NpyUtil_IndexProcessing
     {
-        public static void IndexConverter(ndarray arr, Object[] indexArgs, NpyIndexes indexes)
+        internal static void IndexConverter(ndarray arr, Object[] indexArgs, NpyIndexes indexes)
         {
             int index = 0;
 
