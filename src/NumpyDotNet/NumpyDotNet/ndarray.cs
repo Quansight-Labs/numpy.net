@@ -220,7 +220,7 @@ namespace NumpyDotNet
         public ndarray() {
         }
 
-        public ndarray(NpyArray a)
+        internal ndarray(NpyArray a)
         {
             if (a == null)
             {
@@ -235,6 +235,9 @@ namespace NumpyDotNet
         private static Func<ndarray, string> reprFunction;
         private static Func<ndarray, string> strFunction;
 
+        /// <summary>
+        /// User assigned name for allocated ndarray
+        /// </summary>
         public string Name
         {
             get
@@ -251,18 +254,18 @@ namespace NumpyDotNet
         /// Sets a function to be triggered for the repr() operator or null to default to the
         /// built-in version.
         /// </summary>
-        public static Func<ndarray, string> ReprFunction {
+        internal static Func<ndarray, string> ReprFunction {
             get { return reprFunction; }
-            internal set { reprFunction = (value != null) ? value : x => x.BuildStringRepr(true); }
+            private set { reprFunction = (value != null) ? value : x => x.BuildStringRepr(true); }
         }
 
         /// <summary>
         /// Sets a function to be triggered on the str() operator or ToString() method. Null defaults to
         /// the built-in version.
         /// </summary>
-        public static Func<ndarray, string> StrFunction {
+        internal static Func<ndarray, string> StrFunction {
             get { return strFunction; }
-            internal set { strFunction = (value != null) ? value : x => x.BuildStringRepr(false); }
+            private set { strFunction = (value != null) ? value : x => x.BuildStringRepr(false); }
         }
 
         static ndarray() {
@@ -653,12 +656,20 @@ namespace NumpyDotNet
                 SetArrayItem(lIndex, value);
             }
         }
-
+        /// <summary>
+        /// slicing/indexing function to set a breakpoint in
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public Object SliceMe(params object[] args)
         {
             return this[args];
         }
-
+        /// <summary>
+        /// sliced/indexed array cast to ndarray.  Throws exception if result is not ndarray. Maybe better than casting to ndarray everwhere.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public ndarray A(params object[] args)
         {
             ndarray ret = this[args] as ndarray;
@@ -888,7 +899,7 @@ namespace NumpyDotNet
         }
 
         /// <summary>
-        /// Returns the size of each dimension as a tuple.
+        /// returns the shape of the array (AKA array of dimensions)
         /// </summary>
         public shape shape
         {
@@ -905,7 +916,11 @@ namespace NumpyDotNet
         public npy_intp size {
             get { return NpyCoreApi.ArraySize(this); }
         }
-
+        /// <summary>
+        /// returns a raw pointer of the ndarray data.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public VoidPtr rawdata(npy_intp index = 0)
         {
             var flattened = this.ravel();
@@ -968,13 +983,9 @@ namespace NumpyDotNet
             }
         }
 
-        public object @base {
-            get {
-                // TODO: Handle non-array bases
-                return BaseArray;
-            }
-        }
-
+        /// <summary>
+        /// size in bytes of the data items stored in this array
+        /// </summary>
         public int ItemSize {
             get {
 
@@ -984,7 +995,9 @@ namespace NumpyDotNet
                 return core.descr.elsize;
             }
         }
-
+        /// <summary>
+        /// value used to  convert data_offset to an index.  "data_offset >> ItemSizeDiv"
+        /// </summary>
         public int ItemSizeDiv
         {
             get
@@ -996,7 +1009,9 @@ namespace NumpyDotNet
                 return core.descr.eldivshift;
             }
         }
-
+        /// <summary>
+        /// The data type of this ndarray
+        /// </summary>
         public NPY_TYPES TypeNum
         {
             get
@@ -1007,13 +1022,17 @@ namespace NumpyDotNet
                 return core.descr.type_num;
             }
         }
-
+        /// <summary>
+        ///  total number of bytes in the ndarray 
+        /// </summary>
         public long nbytes {
             get {
                 return ItemSize * Size;
             }
         }
-
+        /// <summary>
+        /// transpose this array
+        /// </summary>
         public ndarray T {
             get {
                 return this.Transpose();
@@ -1025,10 +1044,15 @@ namespace NumpyDotNet
 
         #region methods
 
-
-        public ndarray astype(dtype dtype = null, string order = "K", string casting = "unsafe", bool subok = true, bool copy = true)
+        /// <summary>
+        /// Copy of the array, cast to a specified type.
+        /// </summary>
+        /// <param name="dtype">data type to cast to</param>
+        /// <param name="copy"></param>
+        /// <returns></returns>
+        public ndarray astype(dtype dtype = null, bool copy = true)
         {
-            if (dtype == this.Dtype && this.@base == null)
+            if (dtype == this.Dtype && this.BaseArray == null)
             {
                 return this;
             }
@@ -1045,27 +1069,50 @@ namespace NumpyDotNet
             }
             return NpyCoreApi.CastToType(this, dtype, this.IsFortran);
         }
-
-        public ndarray byteswap(bool inplace = false) {
+        /// <summary>
+        /// Swap the bytes of the array elements
+        /// </summary>
+        /// <param name="inplace">If True, swap bytes in-place, default is False.</param>
+        /// <returns></returns>
+        public ndarray byteswap(bool inplace = false)
+        {
             return NpyCoreApi.Byteswap(this, inplace);
         }
 
-
-        public ndarray Copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+        /// <summary>
+        /// Return an array copy of the given object.
+        /// </summary>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}, optional</param>
+        /// <returns></returns>
+        public ndarray Copy(NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        {
             return NpyCoreApi.NewCopy(this, order);
         }
 
-
+        /// <summary>
+        /// Dot product of two arrays.
+        /// </summary>
+        /// <param name="other">array to calculate dot product with</param>
+        /// <returns></returns>
         public ndarray dot(object other)
         {
             return np.MatrixProduct(this, other);
         }
-
-        public void fill(object scalar) {
+        /// <summary>
+        /// Fill the array with a scalar value.
+        /// </summary>
+        /// <param name="scalar">value to file array with</param>
+        public void fill(object scalar)
+        {
             FillWithScalar(scalar);
         }
-
-        public ndarray flatten(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+        /// <summary>
+        /// Return a copy of the array collapsed into one dimension.
+        /// </summary>
+        /// <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}, optional</param>
+        /// <returns></returns>
+        public ndarray flatten(NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        {
             return this.Flatten(order);
         }
 
@@ -1174,19 +1221,35 @@ namespace NumpyDotNet
             }
         }
 
-
-        public ndarray newbyteorder(string endian = null) {
-            dtype newtype = NpyCoreApi.DescrNewByteorder(Dtype, NpyUtil_ArgProcessing.ByteorderConverter(endian));
+        /// <summary>
+        /// Return the array with the same data viewed with a different byte order.
+        /// </summary>
+        /// <param name="new_order"></param>
+        /// <returns></returns>
+        public ndarray newbyteorder(string new_order = null)
+        {
+            dtype newtype = NpyCoreApi.DescrNewByteorder(Dtype, NpyUtil_ArgProcessing.ByteorderConverter(new_order));
             return NpyCoreApi.View(this, newtype, null);
         }
 
-
-        public int put(object indices, object values, object mode = null)
+        /// <summary>
+        /// Replaces specified elements of an array with given values.
+        /// </summary>
+        /// <param name="indices">Target indices, interpreted as integers.</param>
+        /// <param name="values">Values to place in a at target indices. </param>
+        /// <param name="mode">{‘raise’, ‘wrap’, ‘clip’}, optional</param>
+        /// <returns></returns>
+        public int put(object indices, object values,  NPY_CLIPMODE mode = NPY_CLIPMODE.NPY_RAISE)
         {
             return np.put(this, indices, values, mode);
         }
-
-        public ndarray ravel(NPY_ORDER order = NPY_ORDER.NPY_CORDER) {
+        /// <summary>
+        /// Return a flattened array.
+        /// </summary>
+        /// <param name="order">{‘C’,’F’, ‘A’, ‘K’}, optional</param>
+        /// <returns></returns>
+        public ndarray ravel(NPY_ORDER order = NPY_ORDER.NPY_CORDER)
+        {
             return this.Ravel(order);
         }
 
