@@ -63,6 +63,11 @@ namespace NumpyDotNet
         }
 
         #region fliplr
+        /// <summary>
+        /// Flip array in the left/right direction.
+        /// </summary>
+        /// <param name="m">Input array</param>
+        /// <returns></returns>
         public static ndarray fliplr(ndarray m)
         {
             /*
@@ -118,6 +123,11 @@ namespace NumpyDotNet
         #endregion
 
         #region flipud
+        /// <summary>
+        /// Flip array in the up/down direction.
+        /// </summary>
+        /// <param name="m">Input array.</param>
+        /// <returns></returns>
         public static ndarray flipud(ndarray m)
         {
             /*
@@ -255,7 +265,12 @@ namespace NumpyDotNet
         #endregion
 
         #region diag
-
+        /// <summary>
+        /// Extract a diagonal or construct a diagonal array.
+        /// </summary>
+        /// <param name="v">input array</param>
+        /// <param name="k">Diagonal in question. The default is 0. Use `k>0` for diagonals above the main diagonal, and `k<0` for diagonals below the main diagonal.</param>
+        /// <returns></returns>
         public static ndarray diag(ndarray v, int k=0)
         {
             /*
@@ -345,7 +360,12 @@ namespace NumpyDotNet
         #endregion
 
         #region diagflat
-
+        /// <summary>
+        /// Create a two-dimensional array with the flattened input as a diagonal.
+        /// </summary>
+        /// <param name="v">Input data</param>
+        /// <param name="k">Diagonal to set; 0, the default, corresponds to the "main" diagonal, a positive(negative) `k` giving the number of the diagonal above (below) the main.</param>
+        /// <returns></returns>
         public static ndarray diagflat(ndarray v, int k = 0)
         {
             /*
@@ -413,7 +433,14 @@ namespace NumpyDotNet
         #endregion
 
         #region tri
-
+        /// <summary>
+        /// An array with ones at and below the given diagonal and zeros elsewhere.
+        /// </summary>
+        /// <param name="N">Number of rows in the array.</param>
+        /// <param name="M">Number of columns in the array.</param>
+        /// <param name="k">The sub-diagonal at and below which the array is filled.'k' = 0 is the main diagonal, while 'k' LT 0 is below it, and 'k' GT 0 is above.The default is 0.</param>
+        /// <param name="dtype">Data type of the returned array.  The default is float.</param>
+        /// <returns></returns>
         public static ndarray tri(int N, int? M = null, int k = 0, dtype dtype=null)
         {
             /*
@@ -471,7 +498,12 @@ namespace NumpyDotNet
         #endregion
 
         #region tril
-
+        /// <summary>
+        /// Lower triangle of an array.
+        /// </summary>
+        /// <param name="m">input array.</param>
+        /// <param name="k">Diagonal above which to zero elements.  `k = 0` (the default) is the main diagonal, 'k LT 0' is below it and 'k GT 0' is above.</param>
+        /// <returns></returns>
         public static ndarray tril(ndarray m, int k=0)
         {
             /*
@@ -516,7 +548,12 @@ namespace NumpyDotNet
         #endregion
 
         #region triu
-
+        /// <summary>
+        /// Upper triangle of an array.
+        /// </summary>
+        /// <param name="m">input array.</param>
+        /// <param name="k">Diagonal below which to zero elements.</param>
+        /// <returns></returns>
         public static ndarray triu(ndarray m, int k = 0)
         {
             /*
@@ -551,7 +588,13 @@ namespace NumpyDotNet
         #endregion
 
         #region vander
-
+        /// <summary>
+        /// Generate a Vandermonde matrix.
+        /// </summary>
+        /// <param name="x">1-D input array</param>
+        /// <param name="N">Number of columns in the output</param>
+        /// <param name="increasing">If True, the powers increase from left to right, if False(the default) they are reversed.</param>
+        /// <returns></returns>
         public static ndarray vander(object x, int? N = null, bool increasing = false)
         {
             /*
@@ -669,7 +712,13 @@ namespace NumpyDotNet
 
         public delegate ndarray mask_indices_delegate(ndarray m, int k = 0);
 
-
+        /// <summary>
+        /// Return the indices to access (n, n) arrays, given a masking function.
+        /// </summary>
+        /// <param name="n">The returned indices will be valid to access arrays of shape (n, n).</param>
+        /// <param name="mask_func">A function whose call signature is similar to that of `triu`, `tril`.</param>
+        /// <param name="k">An optional argument which is passed through to `mask_func`.</param>
+        /// <returns></returns>
         public static ndarray[] mask_indices(int n, mask_indices_delegate mask_func, int k=0)
         {
             /*
@@ -745,7 +794,13 @@ namespace NumpyDotNet
         #endregion
 
         #region tril_indices
-
+        /// <summary>
+        /// Return the indices for the lower-triangle of an (n, m) array.
+        /// </summary>
+        /// <param name="n">The row dimension of the arrays for which the returned indices will be valid.</param>
+        /// <param name="k">Diagonal offset (see 'tril' for details).</param>
+        /// <param name="m">The column dimension of the arrays for which the returned arrays will be valid.</param>
+        /// <returns></returns>
         public static ndarray[] tril_indices(int n, int k=0, int? m = null)
         {
             /*
@@ -830,7 +885,12 @@ namespace NumpyDotNet
         #endregion
 
         #region tril_indices_from
-
+        /// <summary>
+        /// Return the indices for the lower-triangle of arr.
+        /// </summary>
+        /// <param name="arr">input array. The indices will be valid for square arrays whose dimensions are the same as arr.</param>
+        /// <param name="k">Diagonal offset (see 'tril' for details).</param>
+        /// <returns></returns>
         public static ndarray[] tril_indices_from(ndarray arr, int k = 0)
         {
             /*
@@ -865,7 +925,13 @@ namespace NumpyDotNet
         #endregion
 
         #region triu_indices
-
+        /// <summary>
+        ///  Return the indices for the upper-triangle of an (n, m) array.
+        /// </summary>
+        /// <param name="n">The size of the arrays for which the returned indices will be valid.</param>
+        /// <param name="k">Diagonal offset (see 'triu' for details).</param>
+        /// <param name="m">The column dimension of the arrays for which the returned arrays will be valid. By default 'm' is taken equal to 'n'.</param>
+        /// <returns></returns>
         public static ndarray[] triu_indices(int n, int k=0, int? m = null)
         {
             /*
@@ -952,7 +1018,12 @@ namespace NumpyDotNet
         #endregion
 
         #region triu_indices_from
-
+        /// <summary>
+        /// Return the indices for the upper-triangle of arr.
+        /// </summary>
+        /// <param name="arr"> ndarray, shape(N, N) The indices will be valid for square arrays.</param>
+        /// <param name="k">Diagonal offset (see 'triu' for details).</param>
+        /// <returns></returns>
         public static ndarray[] triu_indices_from(ndarray arr, int k = 0)
         {
             /*
