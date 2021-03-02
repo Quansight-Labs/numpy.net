@@ -70,6 +70,15 @@ namespace NumpyDotNet
             return array;
         }
 
+        /// <summary>
+        /// Create a view into the array with the given shape and strides.
+        /// </summary>
+        /// <param name="x">Array to create a new.</param>
+        /// <param name="oshape">The shape of the new array. </param>
+        /// <param name="ostrides">The strides of the new array.</param>
+        /// <param name="subok">If True, subclasses are preserved.</param>
+        /// <param name="writeable">If set to False, the returned array will always be readonly.</param>
+        /// <returns></returns>
         public static ndarray as_strided(ndarray x, object oshape = null, object ostrides = null, bool subok = false, bool writeable = false)
         {
             npy_intp[] shape = null;
@@ -99,7 +108,15 @@ namespace NumpyDotNet
 
         }
 
-
+        /// <summary>
+        /// Create a view into the array with the given shape and strides.
+        /// </summary>
+        /// <param name="x">Array to create a new.</param>
+        /// <param name="oshape">The shape of the new array. </param>
+        /// <param name="ostrides">The strides of the new array.</param>
+        /// <param name="subok">If True, subclasses are preserved.</param>
+        /// <param name="writeable">If set to False, the returned array will always be readonly.</param>
+        /// <returns></returns>
         public static ndarray as_strided(ndarray x, npy_intp[] shape = null, npy_intp[] strides = null, bool subok = false, bool writeable = false)
         {
             var view = np.array(x, copy: false, subok: subok);
@@ -135,22 +152,22 @@ namespace NumpyDotNet
             return broadcastable(ao.dims, ao.ndim, bdims, bnd);
         }
 
-        public static ndarray upscale_to(ndarray a, object oshape)
-        {
-            shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
-            if (newshape == null)
-            {
-                throw new Exception("Unable to convert shape object");
-            }
+        //public static ndarray upscale_to(ndarray a, object oshape)
+        //{
+        //    shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
+        //    if (newshape == null)
+        //    {
+        //        throw new Exception("Unable to convert shape object");
+        //    }
 
-            if (!broadcastable(a, newshape.iDims, newshape.iDims.Length))
-            {
-                throw new Exception(string.Format("operands could not be broadcast together with shapes ({0}),({1})", a.shape.ToString(), newshape.ToString()));
-            }
+        //    if (!broadcastable(a, newshape.iDims, newshape.iDims.Length))
+        //    {
+        //        throw new Exception(string.Format("operands could not be broadcast together with shapes ({0}),({1})", a.shape.ToString(), newshape.ToString()));
+        //    }
 
-            ndarray ret = NpyCoreApi.NpyArray_UpscaleSourceArray(a, newshape);
-            return ret.reshape(newshape);
-        }
+        //    ndarray ret = NpyCoreApi.NpyArray_UpscaleSourceArray(a, newshape);
+        //    return ret.reshape(newshape);
+        //}
 
         private static ndarray _broadcast_to(object oarray, object oshape, bool subok, bool _readonly)
         {
@@ -185,7 +202,13 @@ namespace NumpyDotNet
  
             return result;
         }
-
+        /// <summary>
+        /// Broadcast an array to a new shape.
+        /// </summary>
+        /// <param name="array">The array to broadcast.</param>
+        /// <param name="shape">The shape of the desired array.</param>
+        /// <param name="subok">If True, then sub-classes will be passed-through, otherwise the returned array will be forced to be a base-class array (default).</param>
+        /// <returns></returns>
         public static ndarray broadcast_to(object array, object shape, bool subok = false)
         {
             /*
@@ -248,7 +271,12 @@ namespace NumpyDotNet
             return b1.shape;
         }
 
-  
+        /// <summary>
+        /// Broadcast any number of arrays against each other.
+        /// </summary>
+        /// <param name="subok">If True, then sub-classes will be passed-through</param>
+        /// <param name="args">The arrays to broadcast.</param>
+        /// <returns></returns>
         public static IEnumerable<ndarray> broadcast_arrays(bool subok, IEnumerable<ndarray> args)
         {
             ndarray[] arrays = new ndarray[args.Count()];
