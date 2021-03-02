@@ -109,13 +109,24 @@ namespace NumpyDotNet
         //         0.00000000e+000 +0.00000000e+000j,
         //         0.00000000e+000 +1.79769313e+308j])
 
+        /// <summary>
+        /// Replace NaN with zero and infinity with large finite numbers
+        /// </summary>
+        /// <param name="x">Input data.</param>
+        /// <param name="copy">Whether to create a copy of x (True) or to replace values in-place (False).</param>
+        /// <returns></returns>
         public static object nan_to_num(object x, bool copy=true)
         {
             ndarray xa = asanyarray(x);
             ndarray xn = nan_to_num(xa, copy);
             return xn.GetItem(0);
         }
-
+        /// <summary>
+        /// Replace NaN with zero and infinity with large finite numbers
+        /// </summary>
+        /// <param name="x">Input data.</param>
+        /// <param name="copy">Whether to create a copy of x (True) or to replace values in-place (False).</param>
+        /// <returns></returns>
         public static ndarray nan_to_num(ndarray x, bool copy = true)
         {
             x = array(x, subok: true, copy: copy);
