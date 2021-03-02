@@ -14,7 +14,11 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-
+        /// <summary>
+        /// Convert inputs to arrays with at least one dimension.
+        /// </summary>
+        /// <param name="arys">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_1d(ICollection<object> arys)
         {
             //
@@ -76,11 +80,21 @@ namespace NumpyDotNet
             return res;
         }
 
+        /// <summary>
+        /// Convert inputs to arrays with at least one dimension.
+        /// </summary>
+        /// <param name="array">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_1d(object array)
         {
             return atleast_1d(new object[] { array });
         }
 
+        /// <summary>
+        /// Convert inputs as arrays with at least two dimensions.
+        /// </summary>
+        /// <param name="arys">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_2d(ICollection<object> arys)
         {
             //
@@ -143,12 +157,20 @@ namespace NumpyDotNet
 
             return res;
         }
-
+        /// <summary>
+        /// Convert inputs as arrays with at least two dimensions.
+        /// </summary>
+        /// <param name="arys">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_2d(object array)
         {
             return atleast_2d(new object[] { array });
         }
-
+        /// <summary>
+        /// Convert inputs as arrays with at least three dimensions.
+        /// </summary>
+        /// <param name="arys">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_3d(ICollection<object> arys)
         {
             //
@@ -227,7 +249,11 @@ namespace NumpyDotNet
 
             return res;
         }
-
+        /// <summary>
+        /// Convert inputs as arrays with at least three dimensions.
+        /// </summary>
+        /// <param name="arys">One or more input arrays</param>
+        /// <returns></returns>
         public static ICollection<ndarray> atleast_3d(object array)
         {
             return atleast_3d(new object[] { array });
@@ -239,6 +265,13 @@ namespace NumpyDotNet
         public delegate ndarray apply_along_axis_indices(ndarray a, IList<npy_intp> indices);
         public delegate object apply_along_axis_fn(ndarray a, params object[] args);
 
+        /// <summary>
+        /// Apply a function to 1-D slices along the given axis.
+        /// </summary>
+        /// <param name="fn">This function should accept 1-D arrays. It is applied to 1-D slices of arr along the specified axis.</param>
+        /// <param name="axis">Axis along which arr is sliced.</param>
+        /// <param name="arr">Input array.</param>
+        /// <returns></returns>
         public static ndarray apply_along_axis(apply_along_axis_indices fn, int axis, ndarray arr)
         {
             if (fn == null)
@@ -258,7 +291,13 @@ namespace NumpyDotNet
             }
 
         }
-
+        /// <summary>
+        /// Apply a function to 1-D slices along the given axis.
+        /// </summary>
+        /// <param name="fn">This function should accept 1-D arrays. It is applied to 1-D slices of arr along the specified axis.</param>
+        /// <param name="axis">Axis along which arr is sliced.</param>
+        /// <param name="arr">Input array.</param>
+        /// <returns></returns>
         public static ndarray apply_along_axis(apply_along_axis_view fn, int axis, ndarray arr)
         {
             if (fn == null)
@@ -277,7 +316,13 @@ namespace NumpyDotNet
                 throw;
             }
         }
-
+        /// <summary>
+        /// Apply a function to 1-D slices along the given axis.
+        /// </summary>
+        /// <param name="fn">This function should accept 1-D arrays. It is applied to 1-D slices of arr along the specified axis.</param>
+        /// <param name="axis">Axis along which arr is sliced.</param>
+        /// <param name="arr">Input array.</param>
+        /// <returns></returns>
         public static ndarray apply_along_axis(apply_along_axis_fn func1d, int axis, ndarray arr, params object[] args)
         {
             if (func1d == null)
@@ -387,7 +432,13 @@ namespace NumpyDotNet
         #region apply_over_axis
 
         public delegate ndarray apply_over_axes_fn(ndarray a, params object[] args);
-
+        /// <summary>
+        /// Apply a function repeatedly over multiple axes.
+        /// </summary>
+        /// <param name="func">This function must take two arguments, func(a, axis).</param>
+        /// <param name="a">Input array.</param>
+        /// <param name="axes">Axes over which func is applied; the elements must be integers.</param>
+        /// <returns></returns>
         public static ndarray apply_over_axes(apply_over_axes_fn func, object a, object axes)
         {
             var val = asarray(a);
@@ -443,7 +494,11 @@ namespace NumpyDotNet
         }
 
         #endregion
-
+        /// <summary>
+        /// Stack arrays in sequence vertically(row wise).
+        /// </summary>
+        /// <param name="tup">sequence of ndarrays</param>
+        /// <returns></returns>
         public static ndarray vstack(ICollection<object> tup)
         {
             //
@@ -500,7 +555,11 @@ namespace NumpyDotNet
 
             return np.concatenate(atleast_2d(tup));
         }
-
+        /// <summary>
+        /// Stack arrays in sequence horizontally(column wise).
+        /// </summary>
+        /// <param name="tup">sequence of ndarrays</param>
+        /// <returns></returns>
         public static ndarray hstack(ICollection<object> tup)
         {
             //
@@ -561,8 +620,13 @@ namespace NumpyDotNet
             }
 
         }
-
-        public static ndarray stack(ICollection<object> arrays, int axis = 0, ndarray _out = null)
+        /// <summary>
+        /// Join a sequence of arrays along a new axis.
+        /// </summary>
+        /// <param name="arrays">sequence of arrays</param>
+        /// <param name="axis">The axis in the result array along which the input arrays are stacked.</param>
+        /// <returns></returns>
+        public static ndarray stack(ICollection<object> arrays, int axis = 0)
         {
             //
             //Join a sequence of arrays along a new axis.
@@ -793,7 +857,11 @@ namespace NumpyDotNet
             }
   
         }
-
+        /// <summary>
+        /// Assemble an nd-array from nested lists of blocks.
+        /// </summary>
+        /// <param name="arrays">nested list of array_like or scalars </param>
+        /// <returns></returns>
         public static ndarray block(object[] arrays)
         {
             //Assemble an nd - array from nested lists of blocks.
@@ -946,8 +1014,13 @@ namespace NumpyDotNet
             return _block(arrays, list_ndim.Length, Math.Max(bcdm_return.arr_ndim, list_ndim.Length));
         }
 
-   
 
+        /// <summary>
+        /// Expand the shape of an array.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="axis"> Position in the expanded axes where the new axis is placed.</param>
+        /// <returns></returns>
         public static ndarray expand_dims(ndarray a, int axis)
         {
             // Expand the shape of an array.
@@ -1032,11 +1105,15 @@ namespace NumpyDotNet
 
             return a.reshape(new shape(ExpandedDims));
         }
-
+        /// <summary>
+        /// Stack 1-D arrays as columns into a 2-D array.
+        /// </summary>
+        /// <param name="tup">sequence of 1-D or 2-D arrays.</param>
+        /// <returns></returns>
         public static ndarray column_stack(ICollection<object> tup)
         {
             //
-            // Stack 1 - D arrays as columns into a 2 - D array.
+            // Stack 1-D arrays as columns into a 2-D array.
 
             // Take a sequence of 1 - D arrays and stack them as columns
             // to make a single 2 - D array. 2 - D arrays are stacked as-is,
@@ -1080,12 +1157,20 @@ namespace NumpyDotNet
 
             return np.concatenate(arrays, 1);
         }
-
+        /// <summary>
+        /// Stack arrays in sequence vertically (row wise).
+        /// </summary>
+        /// <param name="tup">sequence of arrays</param>
+        /// <returns></returns>
         public static ndarray row_stack(ICollection<object> tup)
         {
             return vstack(tup);
         }
-
+        /// <summary>
+        /// Stack arrays in sequence depth wise(along third axis).
+        /// </summary>
+        /// <param name="tup">sequence of arrays</param>
+        /// <returns></returns>
         public static ndarray dstack(ICollection<object> tup)
         {
             //
@@ -1140,7 +1225,13 @@ namespace NumpyDotNet
 
             return np.concatenate(atleast_3d(tup), 2);
         }
-
+        /// <summary>
+        /// Split an array into multiple sub-arrays.
+        /// </summary>
+        /// <param name="ary">Array to be divided into sub-arrays.</param>
+        /// <param name="indices_or_sections">integers indicating number and size sections to split into</param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public static ICollection<ndarray> array_split(ndarray ary, object indices_or_sections, int axis = 0)
         {
             //
@@ -1227,7 +1318,13 @@ namespace NumpyDotNet
 
             return sub_arys.ToArray();
         }
-
+        /// <summary>
+        /// Split an array into multiple sub-arrays.
+        /// </summary>
+        /// <param name="ary">Array to be divided into sub-arrays.</param>
+        /// <param name="indices_or_sections">integers indicating number and size sections to split into</param>
+        /// <param name="axis"></param>
+        /// <returns></returns>
         public static ICollection<ndarray> split(ndarray ary, object indices_or_sections, int axis = 0)
         {
             //
@@ -1306,7 +1403,12 @@ namespace NumpyDotNet
             var res = array_split(ary, indices_or_sections, axis);
             return res;
         }
-
+        /// <summary>
+        /// Split an array into multiple sub-arrays horizontally(column - wise).
+        /// </summary>
+        /// <param name="ary">Array to be divided into sub-arrays.</param>
+        /// <param name="indices_or_sections">integers indicating number and size sections to split into</param>
+        /// <returns></returns>
         public static ICollection<ndarray> hsplit(ndarray ary, object indices_or_sections)
         {
             //
@@ -1371,7 +1473,12 @@ namespace NumpyDotNet
             else
                 return split(ary, indices_or_sections, 0);
         }
-
+        /// <summary>
+        /// Split an array into multiple sub-arrays vertically(row - wise).
+        /// </summary>
+        /// <param name="ary">Array to be divided into sub-arrays.</param>
+        /// <param name="indices_or_sections">integers indicating number and size sections to split into</param>
+        /// <returns></returns>
         public static ICollection<ndarray> vsplit(ndarray ary, object indices_or_sections)
         {
             //
@@ -1424,7 +1531,12 @@ namespace NumpyDotNet
 
             return split(ary, indices_or_sections, 0);
         }
-
+        /// <summary>
+        /// Split array into multiple sub - arrays along the 3rd axis(depth)
+        /// </summary>
+        /// <param name="ary">Array to be divided into sub-arrays.</param>
+        /// <param name="indices_or_sections">integers indicating number and size sections to split into</param>
+        /// <returns></returns>
         public static ICollection<ndarray> dsplit(ndarray ary, object indices_or_sections)
         {
             //
@@ -1485,6 +1597,12 @@ namespace NumpyDotNet
         {
             return null;
         }
+        /// <summary>
+        /// Kronecker product of two arrays.
+        /// </summary>
+        /// <param name="a">input array</param>
+        /// <param name="b">input array</param>
+        /// <returns></returns>
         public static ndarray kron(object a, object b)
         {
             //
@@ -1618,8 +1736,13 @@ namespace NumpyDotNet
             return result;
         }
 
-  
 
+        /// <summary>
+        /// Construct an array by repeating A the number of times given by reps.
+        /// </summary>
+        /// <param name="A">The input array.</param>
+        /// <param name="reps">The number of repetitions of `A` along each axis.</param>
+        /// <returns></returns>
         public static ndarray tile(ndarray A, object reps)
         {
             //
