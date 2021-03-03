@@ -115,7 +115,7 @@ namespace NumpyDotNetTests
             MethodInfo.AddRange(GetArrayOfUnitTests<RandomSamplingTests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<RandomUserDefinedTests>());
             MethodInfo.AddRange(GetArrayOfUnitTests<HistogramTests>());
-
+            MethodInfo.AddRange(GetArrayOfUnitTests<FinancialFunctionsTests>());
             return MethodInfo.ToArray();
         }
 
