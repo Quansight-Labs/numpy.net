@@ -380,6 +380,16 @@ class FinancialFunctionsTests(unittest.TestCase):
         res = npf.irr(cashflows);
         print(res)
 
+    def test_irr_2dim(self):
+
+        cashflows = np.array([-150000, 15000, 25000, 35000, 45000, 60000, -150000, 15000, 25000, 35000, 45000, 60000]).reshape(2,-1)
+
+        try:
+            res = npf.irr(cashflows);
+            self.fail("should have thrown exception") 
+        except:
+            print("Exception occured")
+
     def test_irr_gh_6744(self):
 
         cashflows = np.array([-1, -2, -3])

@@ -837,13 +837,196 @@ namespace NumpyDotNetTests
 
         #region npf.irr tests
 
-        [Ignore]   // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
         [TestMethod]
-        public void test_irr_DOUBLE()
+        public void test_irr_basic_values_DOUBLE()
+        {
+            var cashflows = np.array(new double[] { -150000, 15000, 25000, 35000, 45000, 60000 });
+            var res = npf.irr(cashflows);
+            Assert.AreEqual(0.052432888859684834, (double)res);
+            print(res);
+
+            cashflows = np.array(new double[] { -100, 0, 0, 74 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(-0.0954958303502164, (double)res);
+            print(res);
+
+            cashflows = np.array(new double[] { -100, 39, 59, 55, 20 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.28094842115988539, (double)res);
+            print(res);
+
+            cashflows = np.array(new double[] { -100, 100, 0, -7 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(-0.083299666184932869, (double)res);
+            print(res);
+
+            cashflows = np.array(new double[] { -100, 100, 0, 7});
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.06205848562992939, (double)res);
+            print(res);
+
+            cashflows = np.array(new double[] { -5, 10.5, 1, -8, 1 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.088598338524376138, (double)res);
+            print(res);
+
+        }
+
+        [TestMethod]
+        public void test_irr_basic_values_DECIMAL()
+        {
+            var cashflows = np.array(new decimal[] { -150000, 15000, 25000, 35000, 45000, 60000 });
+            var res = npf.irr(cashflows);
+            Assert.AreEqual(0.0524328888596848960853398738m, (decimal)res);
+            print(res);
+
+            cashflows = np.array(new decimal[] { -100, 0, 0, 74 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(-0.0954958303502164492046778255m, (decimal)res);
+            print(res);
+
+            cashflows = np.array(new decimal[] { -100, 39, 59, 55, 20 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.2809484211598854548230841175m, (decimal)res);
+            print(res);
+
+            cashflows = np.array(new decimal[] { -100, 100, 0, -7 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(-0.0832996661849326850317816561m, (decimal)res);
+            print(res);
+
+            cashflows = np.array(new decimal[] { -100, 100, 0, 7 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.0620584856299294607997074641m, (decimal)res);
+            print(res);
+
+            cashflows = np.array(new decimal[] { -5, 10.5m, 1, -8, 1 });
+            res = npf.irr(cashflows);
+            Assert.AreEqual(0.0885983385243761645016418267m, (decimal)res);
+            print(res);
+
+        }
+
+        [TestMethod]
+        public void test_irr_trailing_zeros_DOUBLE()
         {
             var cashflows = np.array(new double[] { -5, 10.5, 1, -8, 1, 0, 0, 0 });
             var res = npf.irr(cashflows);
+            Assert.AreEqual(0.088598338524376138, (double)res);
             print(res);
+        }
+
+        [TestMethod]
+        public void test_irr_trailing_zeros_DECIMAL()
+        {
+            var cashflows = np.array(new decimal[] { -5, 10.5m, 1, -8, 1, 0, 0, 0 });
+            var res = npf.irr(cashflows);
+            Assert.AreEqual(0.0885983385243761645016418267m, (decimal)res);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_irr_2dim()
+        {
+            var cashflows = np.array(new double[] { -150000, 15000, 25000, 35000, 45000, 60000, -150000, 15000, 25000, 35000, 45000, 60000 }).reshape(2,-1);
+
+            try
+            {
+                var res = npf.irr(cashflows);
+                Assert.Fail("This should have thrown rank-1 exception");
+                print(res);
+            }
+            catch
+            {
+
+            }
+ 
+        }
+
+        [TestMethod]
+        public void test_irr_gh_6744()
+        {
+            var cashflows = np.array(new double[] { -1, -2, -3 });
+            var res = npf.irr(cashflows);
+            Assert.AreEqual(double.NaN, (double)res);
+            print(res);
+        }
+
+        [TestMethod]
+        public void test_irr_gh_6744_DECIMAL()
+        {
+            var cashflows = np.array(new decimal[] { -1, -2, -3 });
+
+            try
+            {
+                var res = npf.irr(cashflows);
+                Assert.Fail("This should have thrown an exception");
+                print(res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+   
+        }
+
+
+
+        [TestMethod]
+        public void test_irr_gh_15()
+        {
+            // note: this gets different result than python.  I don't care.
+
+            try
+            {
+
+                double[] v = {
+                     -3000.0,
+                     2.3926932267015667e-07,
+                     4.1672087103345505e-16,
+                     5.3965110036378706e-25,
+                     5.1962551071806174e-34,
+                     3.7202955645436402e-43,
+                     1.9804961711632469e-52,
+                     7.8393517651814181e-62,
+                     2.3072565113911438e-71,
+                     5.0491839233308912e-81,
+                     8.2159177668499263e-91,
+                     9.9403244366963527e-101,
+                     8.942410813633967e-111,
+                     5.9816122646481191e-121,
+                     2.9750309031844241e-131,
+                     1.1002067043497954e-141,
+                     3.0252876563518021e-152,
+                     6.1854121948207909e-163,
+                     9.4032980015353301e-174,
+                     1.0629218520017728e-184,
+                     8.9337141847171845e-196,
+                     5.5830607698467935e-207,
+                     2.5943122036622652e-218,
+                     8.9635842466507006e-230,
+                     2.3027710094332358e-241,
+                     4.3987510596745562e-253,
+                     6.2476630372575209e-265,
+                     6.598046841695288e-277,
+                     5.1811095266842017e-289,
+                     3.0250999925830644e-301,
+                     1.3133070599585015e-313,
+
+                };
+
+
+                var res = npf.irr(v);
+                Assert.Fail("Should have thrown exception here");
+                print(res);
+            }
+            catch
+            {
+
+            }
+
+
         }
 
         #endregion
