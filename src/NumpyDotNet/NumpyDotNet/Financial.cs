@@ -1335,6 +1335,7 @@ namespace NumpyDotNet
 
             _values = _values.A(string.Format("{0}:{1}",(npy_intp)non_zero[0],(npy_intp)non_zero[-1] + 1));
 
+#if HAVE_LINALG_PACKAGE
             var res = _roots(_values.A("::-1"));
 
             ndarray mask;
@@ -1357,9 +1358,26 @@ namespace NumpyDotNet
             // only the solution closest to zero.
             var rate = 1 / res - 1;
             rate = np.array(rate.item((npy_intp)np.argmin(np.absolute(rate))));
-            return rate;
+#else
+            // use MKB.FinancialMethods.Financial instead of linear algebra method which we can't support.
+            if (_values.IsDecimal)
+            {
+                var cashflow = _values.AsDecimalArray();
+                decimal irr = IRR(cashflow);
+                return np.asanyarray(irr);
+            }
+            else
+            {
+                var cashflow = _values.AsDoubleArray();
+                double irr = IRR(cashflow);
+                return np.asanyarray(irr);
+            }
+#endif       
         }
 
+        // this function is part of the python IRR function.  It makes use np.linalg (linear algebra) package which 
+        // we have not ported (and probably won't any time soon) so we have abandoned it in favor of another IRR solution
+        // which seems to produce the exact results with a few edge case/error case differences.
         private static ndarray _roots(ndarray p)
         {
             var t1 = np.frexp(p);
@@ -1382,13 +1400,193 @@ namespace NumpyDotNet
             A[0, ":"] = -p.A("1:");
 
             // todo:  We need to implement np.linalg.eigvals(A) before we can make this work.
-            var eigenvalues = np.array(new double[] { 1.92605857, -0.30194819, 0.22965312, 0.1462365 }); // np.linalg.eigvals(A);
+            ndarray eigenvalues = null; // np.linalg.eigvals(A);
             return eigenvalues / p[0];
         }
 
-        #endregion
+#region MKB.FinancialMethods.Financial
 
-        #region npv
+        // This IRR code if lifted from this excellent package from MADooney. Thank you very much.
+        // https://www.nuget.org/packages/MKB.FinancialMethods/
+
+        private static double IRR(double[] ValueArray, double Guess = 0.1)
+        {
+            int upperBound;
+            try
+            {
+                upperBound = ValueArray.GetUpperBound(0);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(ValueArray));
+            }
+
+            int num1 = checked(upperBound + 1);
+            if (Guess <= -1.0)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(Guess));
+            if (num1 <= 1)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(ValueArray));
+            double num2 = ValueArray[0] <= 0.0 ? -ValueArray[0] : ValueArray[0];
+            int num3 = 0;
+            int num4 = upperBound;
+            int index = num3;
+            while (index <= num4)
+            {
+                if (ValueArray[index] > num2)
+                    num2 = ValueArray[index];
+                else if (-ValueArray[index] > num2)
+                    num2 = -ValueArray[index];
+                checked { ++index; }
+            }
+            double num5 = num2 * 1E-07 * 0.01;
+            double Guess1 = Guess;
+            double num6 = OptPV2(ValueArray, Guess1);
+            double Guess2 = num6 <= 0.0 ? Guess1 - 1E-05 : Guess1 + 1E-05;
+            if (Guess2 <= -1.0)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", "Rate");
+            double num7 = OptPV2(ValueArray, Guess2);
+            int num8 = 0;
+            do
+            {
+                if (num7 == num6)
+                {
+                    if (Guess2 > Guess1)
+                        Guess1 -= 1E-05;
+                    else
+                        Guess1 += 1E-05;
+                    num6 = OptPV2(ValueArray, Guess1);
+                    if (num7 == num6)
+                        return double.NaN;
+                }
+                double Guess3 = Guess2 - (Guess2 - Guess1) * num7 / (num7 - num6);
+                if (Guess3 <= -1.0)
+                    Guess3 = (Guess2 - 1.0) * 0.5;
+                double num9 = OptPV2(ValueArray, Guess3);
+                double num10 = Guess3 <= Guess2 ? Guess2 - Guess3 : Guess3 - Guess2;
+                if ((num9 <= 0.0 ? -num9 : num9) < num5 && num10 < 1E-07)
+                    return Guess3;
+                double num11 = num9;
+                num6 = num7;
+                num7 = num11;
+                double num12 = Guess3;
+                Guess1 = Guess2;
+                Guess2 = num12;
+                checked { ++num8; }
+            }
+            while (num8 <= 39);
+            throw new ArgumentException("Invalid Value");
+        }
+
+        private static decimal IRR(decimal[] ValueArray, decimal Guess = 0.1m)
+        {
+            int upperBound;
+            try
+            {
+                upperBound = ValueArray.GetUpperBound(0);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(ValueArray));
+            }
+
+            int num1 = checked(upperBound + 1);
+            if (Guess <= -1.0m)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(Guess));
+            if (num1 <= 1)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", nameof(ValueArray));
+            decimal num2 = ValueArray[0] <= 0.0m ? -ValueArray[0] : ValueArray[0];
+            int num3 = 0;
+            int num4 = upperBound;
+            int index = num3;
+            while (index <= num4)
+            {
+                if (ValueArray[index] > num2)
+                    num2 = ValueArray[index];
+                else if (-ValueArray[index] > num2)
+                    num2 = -ValueArray[index];
+                checked { ++index; }
+            }
+            decimal num5 = num2 * 1E-07m * 0.01m;
+            decimal Guess1 = Guess;
+            decimal num6 = OptPV2(ValueArray, Guess1);
+            decimal Guess2 = num6 <= 0.0m ? Guess1 - 1E-05m : Guess1 + 1E-05m;
+            if (Guess2 <= -1.0m)
+                throw new ArgumentException("Argument '{0}' is not a valid value.", "Rate");
+            decimal num7 = OptPV2(ValueArray, Guess2);
+            int num8 = 0;
+            do
+            {
+                if (num7 == num6)
+                {
+                    if (Guess2 > Guess1)
+                        Guess1 -= 1E-05m;
+                    else
+                        Guess1 += 1E-05m;
+                    num6 = OptPV2(ValueArray, Guess1);
+                    if (num7 == num6)
+                        throw new ArgumentException("Invalid Value");
+                }
+                decimal Guess3 = Guess2 - (Guess2 - Guess1) * num7 / (num7 - num6);
+                if (Guess3 <= -1.0m)
+                    Guess3 = (Guess2 - 1.0m) * 0.5m;
+                decimal num9 = OptPV2(ValueArray, Guess3);
+                decimal num10 = Guess3 <= Guess2 ? Guess2 - Guess3 : Guess3 - Guess2;
+                if ((num9 <= 0.0m ? -num9 : num9) < num5 && num10 < 1E-07m)
+                    return Guess3;
+                decimal num11 = num9;
+                num6 = num7;
+                num7 = num11;
+                decimal num12 = Guess3;
+                Guess1 = Guess2;
+                Guess2 = num12;
+                checked { ++num8; }
+            }
+            while (num8 <= 39);
+            throw new ArgumentException("Invalid Value");
+        }
+
+        private static double OptPV2(double[] ValueArray, double Guess = 0.1)
+        {
+            int index1 = 0;
+            int upperBound = ValueArray.GetUpperBound(0);
+            double num1 = 0.0;
+            double num2 = 1.0 + Guess;
+            while (index1 <= upperBound && ValueArray[index1] == 0.0)
+                checked { ++index1; }
+            int num3 = upperBound;
+            int num4 = index1;
+            int index2 = num3;
+            while (index2 >= num4)
+            {
+                num1 = num1 / num2 + ValueArray[index2];
+                checked { index2 += -1; }
+            }
+            return num1;
+        }
+
+        private static decimal OptPV2(decimal[] ValueArray, decimal Guess = 0.1m)
+        {
+            int index1 = 0;
+            int upperBound = ValueArray.GetUpperBound(0);
+            decimal num1 = 0.0m;
+            decimal num2 = 1.0m + Guess;
+            while (index1 <= upperBound && ValueArray[index1] == 0.0m)
+                checked { ++index1; }
+            int num3 = upperBound;
+            int num4 = index1;
+            int index2 = num3;
+            while (index2 >= num4)
+            {
+                num1 = num1 / num2 + ValueArray[index2];
+                checked { index2 += -1; }
+            }
+            return num1;
+        }
+#endregion
+
+#endregion
+
+#region npv
 
         /*
         Returns the NPV(Net Present Value) of a cash flow series.
@@ -1477,9 +1675,9 @@ namespace NumpyDotNet
             return np.atleast_1d(npvValue).ElementAt(0);
         }
 
-        #endregion
+#endregion
 
-        #region mirr
+#region mirr
 
         /*
         Modified internal rate of return.
@@ -1529,6 +1727,6 @@ namespace NumpyDotNet
             return np.power((ndarray)(numer / denom), (1 / (n - 1))) * (1 + _reinvest_rate) - 1;
         }
 
-        #endregion
+#endregion
     }
 }
