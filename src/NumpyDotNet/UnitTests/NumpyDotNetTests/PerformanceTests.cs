@@ -97,7 +97,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Float64).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -448,7 +448,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Float32).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -776,7 +776,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Int64).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -1104,7 +1104,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.UInt64).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -1432,7 +1432,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Decimal).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -1761,7 +1761,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Int32).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -2089,7 +2089,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.UInt32).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as double[];
+            var src = matrix.AsDoubleArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
@@ -2417,7 +2417,7 @@ namespace NumpyDotNetTests
 
             var matrix = np.arange(1600000).astype(np.Complex).reshape((40, -1));
 
-            var src = matrix.Array.data.datap as Complex[];
+            var src = matrix.AsComplexArray();
 
             for (int i = 0; i < LoopCount; i++)
             {
