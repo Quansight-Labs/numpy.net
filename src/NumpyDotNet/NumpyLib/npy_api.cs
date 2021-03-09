@@ -294,7 +294,7 @@ namespace NumpyLib
     }
 
 
-    public class NpyArrayIterObject : NpyObject_HEAD
+    internal class NpyArrayIterObject : NpyObject_HEAD
     {
         public int nd_m1;                                                   /* number of dimensions - 1 */
         public npy_intp index, size;
@@ -354,7 +354,7 @@ namespace NumpyLib
      * Any object passed to NpyArray_Broadcast must be binary compatible
      * with this structure.
      */
-    public class NpyArrayMultiIterObject : NpyObject_HEAD
+    internal class NpyArrayMultiIterObject : NpyObject_HEAD
     {
         public int numiter;                                                                    /* number of iters */
         public npy_intp size;                                                                  /* broadcasted size */
@@ -364,7 +364,7 @@ namespace NumpyLib
         public NpyArrayIterObject[] iters = new NpyArrayIterObject[npy_defs.NPY_MAXARGS];      /* iterators */
     };
 
-    public class NpyArrayMapIterObject : NpyArrayMultiIterObject
+    internal class NpyArrayMapIterObject : NpyArrayMultiIterObject
     {
         public NpyArrayMapIterObject()
         {
@@ -397,7 +397,7 @@ namespace NumpyLib
         public VoidPtr dataptr = new VoidPtr();
     }
 
-    public class NpyArrayNeighborhoodIterObject
+    internal class NpyArrayNeighborhoodIterObject
     {
         internal NpyObject_HEAD Head = new NpyObject_HEAD();
 
@@ -462,18 +462,18 @@ namespace NumpyLib
         NpyExc_OverflowError,
     };
 
-    public delegate bool npy_interface_array_new_wrapper(NpyArray newArray, bool ensureArray, bool customStrides, object subtype, object interfaceData, ref object interfaceRet);
-    public delegate bool npy_interface_iter_new_wrapper(NpyArrayIterObject iter, ref object interfaceRet);
-    public delegate bool npy_interface_multi_iter_new_wrapper(NpyArrayMultiIterObject iter, ref object interfaceRet);
-    public delegate bool npy_interface_neighbor_iter_new_wrapper(NpyArrayNeighborhoodIterObject iter, ref object interfaceRet);
-    public delegate bool npy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet);
-    public delegate bool npy_interface_descr_new_from_wrapper(object _base, NpyArray_Descr descr, ref object interfaceRet);
+    internal delegate bool npy_interface_array_new_wrapper(NpyArray newArray, bool ensureArray, bool customStrides, object subtype, object interfaceData, ref object interfaceRet);
+    internal delegate bool npy_interface_iter_new_wrapper(NpyArrayIterObject iter, ref object interfaceRet);
+    internal delegate bool npy_interface_multi_iter_new_wrapper(NpyArrayMultiIterObject iter, ref object interfaceRet);
+    internal delegate bool npy_interface_neighbor_iter_new_wrapper(NpyArrayNeighborhoodIterObject iter, ref object interfaceRet);
+    internal delegate bool npy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet);
+    internal delegate bool npy_interface_descr_new_from_wrapper(object _base, NpyArray_Descr descr, ref object interfaceRet);
 
-    public delegate void npy_free_func(object o1);
-    public delegate void npy_tp_error_set(string FunctionName, npyexc_type et, string error);
-    public delegate bool npy_tp_error_occurred(string FunctionName);
-    public delegate void npy_tp_error_clear(string FunctionName);
-    public delegate int npy_tp_cmp_priority(object o1, object o2);
+    internal delegate void npy_free_func(object o1);
+    internal delegate void npy_tp_error_set(string FunctionName, npyexc_type et, string error);
+    internal delegate bool npy_tp_error_occurred(string FunctionName);
+    internal delegate void npy_tp_error_clear(string FunctionName);
+    internal delegate int npy_tp_cmp_priority(object o1, object o2);
 
     /*
      * Interface-provided reference management.  Note that even though these
@@ -486,14 +486,14 @@ namespace NumpyLib
      * the interface pointer.  This is done instead of using the return value
      * to ensure that the switch is atomic.
      */
-    public delegate object npy_interface_incref(object o1, ref object o2);
-    public delegate object npy_interface_decref(object o1, ref object o2);
+    internal delegate object npy_interface_incref(object o1, ref object o2);
+    internal delegate object npy_interface_decref(object o1, ref object o2);
 
-    public delegate object enable_threads();
-    public delegate object disable_threads(object o1);
+    internal delegate object enable_threads();
+    internal delegate object disable_threads(object o1);
 
 
-    public class NpyInterface_WrapperFuncs
+    internal class NpyInterface_WrapperFuncs
     {
         public npy_interface_array_new_wrapper array_new_wrapper;
         public npy_interface_iter_new_wrapper iter_new_wrapper;

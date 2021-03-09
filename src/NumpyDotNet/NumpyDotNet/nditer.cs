@@ -96,7 +96,7 @@ namespace NumpyDotNet
             creationCount = core.numiter;
         }
 
-        public NpyArrayMultiIterObject iter
+        internal NpyArrayMultiIterObject iter
         {
             get { return core; }
         }

@@ -44,7 +44,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyLib
 {
-    public class MemCopy
+    internal class MemCopy
     {
 
         static int ItemDivInt16 = numpyinternal.GetDivSize(sizeof(Int16));
@@ -3066,7 +3066,7 @@ namespace NumpyLib
 
         #endregion
 
-        public static ICopyHelper GetMemcopyHelper(VoidPtr dst)
+        internal static ICopyHelper GetMemcopyHelper(VoidPtr dst)
         {
             switch (dst.type_num)
             {
@@ -3578,7 +3578,7 @@ namespace NumpyLib
     }
 
 
-    public interface ICopyHelper
+    internal interface ICopyHelper
     {
         bool IsSingleElementCopy();
         void copyswap(VoidPtr _dst, VoidPtr _src, bool swap);

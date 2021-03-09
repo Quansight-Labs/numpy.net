@@ -13,7 +13,7 @@ using npy_ucs4 = System.Int32;
 
 namespace NumpyLib
 {
-    public interface IArrayHandlers
+    internal interface IArrayHandlers
     {
         NumericOperation AddOperation { get; set; }
         NumericOperation SubtractOperation { get; set; }
@@ -89,10 +89,10 @@ namespace NumpyLib
         int SetItemDifferentType(VoidPtr vp, npy_intp index, object value);
     }
 
-    public delegate object NumericOperation(object bValue, object operand);
-    public delegate object NumericConversion(object operand);
+    internal delegate object NumericOperation(object bValue, object operand);
+    internal delegate object NumericConversion(object operand);
 
-    public class DefaultArrayHandlers
+    internal class DefaultArrayHandlers
     {
         public static void Initialize()
         {

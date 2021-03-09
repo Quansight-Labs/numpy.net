@@ -51,9 +51,9 @@ namespace NumpyLib
 {
     #region Data Structures
 
-    public delegate void NpyUFuncGenericFunction(GenericReductionOp op, VoidPtr[] s1, npy_intp i1, npy_intp[] i2, UFuncOperation ufop);
+    internal delegate void NpyUFuncGenericFunction(GenericReductionOp op, VoidPtr[] s1, npy_intp i1, npy_intp[] i2, UFuncOperation ufop);
 
-    public class NpyUFuncObject : NpyObject_HEAD
+    internal class NpyUFuncObject : NpyObject_HEAD
     {
         public NpyUFuncObject(NpyUFuncGenericFunction f)
         {
@@ -297,14 +297,14 @@ namespace NumpyLib
         no_operation
     };
 
-    public enum NpyUFuncIdentity
+    internal enum NpyUFuncIdentity
     {
         NpyUFunc_One = 1,
         NpyUFunc_Zero = 0,
         NpyUFunc_None = -1,
     }
 
-    public enum GenericReductionOp
+    internal enum GenericReductionOp
     {
         NPY_UFUNC_REDUCE = 1,
         NPY_UFUNC_ACCUMULATE,
@@ -312,7 +312,7 @@ namespace NumpyLib
         NPY_UFUNC_OUTER,
     }
 
-    public enum UFuncErrors
+    internal enum UFuncErrors
     {
         NPY_UFUNC_FPE_DIVIDEBYZERO = 1,
         NPY_UFUNC_FPE_OVERFLOW = 2,
@@ -321,7 +321,7 @@ namespace NumpyLib
         NPY_UFUNC_ERR_DEFAULT = 0,      /* Error mode that avoids look-up (no checking) */
     }
 
-    public enum UFuncLoopMethod
+    internal enum UFuncLoopMethod
     {
         NO_UFUNCLOOP = 0,
         ZERO_EL_REDUCELOOP = 0,
@@ -335,7 +335,7 @@ namespace NumpyLib
     }
 
 
-    public enum UFuncsOptions
+    internal enum UFuncsOptions
     {
         /* Could make this more clever someday */
         NPY_UFUNC_MAXIDENTITY = 32,

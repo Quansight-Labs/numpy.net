@@ -45,7 +45,7 @@ using npy_intp = System.Int32;
 
 namespace NumpyLib
 {
-    public enum NpyIndexType
+    internal enum NpyIndexType
     {
         NPY_INDEX_INTP,
         NPY_INDEX_BOOL,
@@ -61,7 +61,7 @@ namespace NumpyLib
     /*
     * Structure for describing a slice without a stop.
     */
-    public class NpyIndexSliceNoStop
+    internal class NpyIndexSliceNoStop
     {
         public npy_intp start;
         public npy_intp step;
@@ -71,14 +71,14 @@ namespace NumpyLib
     /*
     * Structure for describing a slice.
     */
-    public class NpyIndexSlice
+    internal class NpyIndexSlice
     {
         public npy_intp start;
         public npy_intp step;
         public npy_intp stop;
     }
 
-    public class NpyIndex
+    internal class NpyIndex
     {
         public NpyIndex()
         {

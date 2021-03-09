@@ -111,18 +111,18 @@ namespace NumpyDotNetTests
         {
             return true;
         }
-        static bool numpy_interface_iter_new_wrapper(NpyArrayIterObject iter, ref object interfaceRet)
-        {
-            return true;
-        }
-        static bool numpy_interface_multi_iter_new_wrapper(NpyArrayMultiIterObject iter, ref object interfaceRet)
-        {
-            return true;
-        }
-        static bool numpy_interface_neighbor_iter_new_wrapper(NpyArrayNeighborhoodIterObject iter, ref object interfaceRet)
-        {
-            return true;
-        }
+        //static bool numpy_interface_iter_new_wrapper(NpyArrayIterObject iter, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
+        //static bool numpy_interface_multi_iter_new_wrapper(NpyArrayMultiIterObject iter, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
+        //static bool numpy_interface_neighbor_iter_new_wrapper(NpyArrayNeighborhoodIterObject iter, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
         static bool numpy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet)
         {
             return true;
