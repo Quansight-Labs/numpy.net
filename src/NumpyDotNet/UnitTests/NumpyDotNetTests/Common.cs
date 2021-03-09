@@ -53,28 +53,28 @@ namespace NumpyDotNetTests
 
         public static void CommonInit()
         {
-            NpyArray_FunctionDefs functionDefs = null;
+            //NpyArray_FunctionDefs functionDefs = null;
 
-            NpyInterface_WrapperFuncs wrapperFuncs = new NpyInterface_WrapperFuncs()
-            {
-                array_new_wrapper = numpy_interface_array_new_wrapper,
-                iter_new_wrapper = numpy_interface_iter_new_wrapper,
-                multi_iter_new_wrapper = numpy_interface_multi_iter_new_wrapper,
-                neighbor_iter_new_wrapper = numpy_interface_neighbor_iter_new_wrapper,
-                descr_new_from_type = numpy_interface_descr_new_from_type,
-                descr_new_from_wrapper = numpy_interface_descr_new_from_wrapper,
-            };
+            //NpyInterface_WrapperFuncs wrapperFuncs = new NpyInterface_WrapperFuncs()
+            //{
+            //    array_new_wrapper = numpy_interface_array_new_wrapper,
+            //    iter_new_wrapper = numpy_interface_iter_new_wrapper,
+            //    multi_iter_new_wrapper = numpy_interface_multi_iter_new_wrapper,
+            //    neighbor_iter_new_wrapper = numpy_interface_neighbor_iter_new_wrapper,
+            //    descr_new_from_type = numpy_interface_descr_new_from_type,
+            //    descr_new_from_wrapper = numpy_interface_descr_new_from_wrapper,
+            //};
 
-            npy_tp_error_set error_set = ErrorSet_handler;
-            npy_tp_error_occurred error_occurred = ErrorOccurred_handler;
-            npy_tp_error_clear error_clear = ErrorClear_handler;
-            npy_tp_cmp_priority cmp_priority = numpy_tp_cmp_priority;
-            npy_interface_incref incref = numpy_interface_incref;
-            npy_interface_decref decref = numpy_interface_decref;
-            enable_threads et = enable_threads;
-            disable_threads dt = disable_threads;
+            //npy_tp_error_set error_set = ErrorSet_handler;
+            //npy_tp_error_occurred error_occurred = ErrorOccurred_handler;
+            //npy_tp_error_clear error_clear = ErrorClear_handler;
+            //npy_tp_cmp_priority cmp_priority = numpy_tp_cmp_priority;
+            //npy_interface_incref incref = numpy_interface_incref;
+            //npy_interface_decref decref = numpy_interface_decref;
+            //enable_threads et = enable_threads;
+            //disable_threads dt = disable_threads;
 
-            numpyAPI.npy_initlib(functionDefs, wrapperFuncs, error_set, error_occurred, error_clear, cmp_priority, incref, decref, et, dt);
+            //numpyAPI.npy_initlib(functionDefs, wrapperFuncs, error_set, error_occurred, error_clear, cmp_priority, incref, decref, et, dt);
         }
 
         public class NumpyExceptionInfo
@@ -157,12 +157,7 @@ namespace NumpyDotNetTests
         {
             return null;
         }
-
-        public static void DefaultCastFunction(VoidPtr Src, VoidPtr Dest, int srclen, NpyArray srcArray, NpyArray destArray)
-        {
-            numpyAPI.DefaultCastFunction(Src, Dest, srclen, srcArray, destArray);
-            return;
-        }
+        
 
 
         public static bool MatchError(string ErrorText)
@@ -252,115 +247,7 @@ namespace NumpyDotNetTests
             return true;
         }
 
-
-        public static NpyArray GetSimpleArray(NPY_TYPES npy_type, ref int DataSize, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = GeneratedArrayLength;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] { dataLen };
-
-
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
-        public static NpyArray GetOneSegmentArray(NPY_TYPES npy_type, ref int DataSize, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = GeneratedArrayLength;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] { dataLen };
-
-
-            var npArray = numpyAPI.NpyArray_New(subtype, 0, null, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
-
-        public static NpyArray GetComplexArray2D(NPY_TYPES npy_type, ref int DataSize, int a, int b, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = a * b;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] {a, b};
-            
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
-        public static NpyArray GetComplexArray3D(NPY_TYPES npy_type, ref int DataSize, int a, int b, int c,  UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = a * b * c;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] { a, b, c };
-
-
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
-        public static NpyArray GetComplexArray4D(NPY_TYPES npy_type, ref int DataSize, int a, int b, int c, int d, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = a * b * c * d;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] { a, b, c, d };
-
-
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
-        public static NpyArray GetComplexArray5D(NPY_TYPES npy_type, ref int DataSize, int a, int b, int c, int d, int e, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
-        {
-            int dataLen = a * b * c * d * e;
-            int itemsize = GetDefaultItemSize(npy_type);
-
-            var data = GetArrayOfData(npy_type, dataLen, FillData, UseFillData, UseMaxValue);
-
-            int subtype = 1;
-
-            npy_intp[] dimensions = new npy_intp[] { a, b, c, d, e };
-
-
-            var npArray = numpyAPI.NpyArray_New(subtype, dimensions.Length, dimensions, npy_type, null, data, itemsize, NPYARRAYFLAGS.NPY_DEFAULT, null);
-
-            DataSize = dataLen;
-            return npArray;
-        }
-
+      
         public static int ArrayDataAdjust = 0;
         public static VoidPtr GetArrayOfData(NPY_TYPES item_type, int dataLen, UInt64 FillData = 0, bool UseFillData = false, bool UseMaxValue = false)
         {
