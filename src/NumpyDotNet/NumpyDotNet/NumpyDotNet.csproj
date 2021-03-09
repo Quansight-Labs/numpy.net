@@ -33,16 +33,81 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\NumpyLib\ArrayConversions.cs" Link="NumpyLib\ArrayConversions.cs" />
+    <Compile Include="..\NumpyLib\ArrayHandlers.cs" Link="NumpyLib\ArrayHandlers.cs" />
+    <Compile Include="..\NumpyLib\CastFunctions.cs" Link="NumpyLib\CastFunctions.cs" />
+    <Compile Include="..\NumpyLib\DefaultArrayHandlers.cs" Link="NumpyLib\DefaultArrayHandlers.cs" />
+    <Compile Include="..\NumpyLib\lowlevel_strided_loops.cs" Link="NumpyLib\lowlevel_strided_loops.cs" />
+    <Compile Include="..\NumpyLib\MemCopy.cs" Link="NumpyLib\MemCopy.cs" />
+    <Compile Include="..\NumpyLib\MemoryAccessHelpers.cs" Link="NumpyLib\MemoryAccessHelpers.cs" />
+    <Compile Include="..\NumpyLib\MemUtilities.cs" Link="NumpyLib\MemUtilities.cs" />
+    <Compile Include="..\NumpyLib\npy_api.cs" Link="NumpyLib\npy_api.cs" />
+    <Compile Include="..\NumpyLib\npy_arrayobject.cs" Link="NumpyLib\npy_arrayobject.cs" />
+    <Compile Include="..\NumpyLib\npy_arraytypes.cs" Link="NumpyLib\npy_arraytypes.cs" />
+    <Compile Include="..\NumpyLib\Npy_Array_Access.cs" Link="NumpyLib\Npy_Array_Access.cs" />
+    <Compile Include="..\NumpyLib\npy_array_assign.cs" Link="NumpyLib\npy_array_assign.cs" />
+    <Compile Include="..\NumpyLib\npy_array_assign_array.cs" Link="NumpyLib\npy_array_assign_array.cs" />
+    <Compile Include="..\NumpyLib\npy_array_assign_scalar.cs" Link="NumpyLib\npy_array_assign_scalar.cs" />
+    <Compile Include="..\NumpyLib\npy_ArrFuncs.cs" Link="NumpyLib\npy_ArrFuncs.cs" />
+    <Compile Include="..\NumpyLib\npy_buffer.cs" Link="NumpyLib\npy_buffer.cs" />
+    <Compile Include="..\NumpyLib\npy_calculations.cs" Link="NumpyLib\npy_calculations.cs" />
+    <Compile Include="..\NumpyLib\npy_common.cs" Link="NumpyLib\npy_common.cs" />
+    <Compile Include="..\NumpyLib\npy_conversion_utils.cs" Link="NumpyLib\npy_conversion_utils.cs" />
+    <Compile Include="..\NumpyLib\npy_convert.cs" Link="NumpyLib\npy_convert.cs" />
+    <Compile Include="..\NumpyLib\npy_convert_datatype.cs" Link="NumpyLib\npy_convert_datatype.cs" />
+    <Compile Include="..\NumpyLib\npy_ctors.cs" Link="NumpyLib\npy_ctors.cs" />
+    <Compile Include="..\NumpyLib\npy_defs.cs" Link="NumpyLib\npy_defs.cs" />
+    <Compile Include="..\NumpyLib\npy_descriptor.cs" Link="NumpyLib\npy_descriptor.cs" />
+    <Compile Include="..\NumpyLib\npy_dict.cs" Link="NumpyLib\npy_dict.cs" />
+    <Compile Include="..\NumpyLib\npy_dtype_transfer.cs" Link="NumpyLib\npy_dtype_transfer.cs" />
+    <Compile Include="..\NumpyLib\npy_flagsobject.cs" Link="NumpyLib\npy_flagsobject.cs" />
+    <Compile Include="..\NumpyLib\npy_getset.cs" Link="NumpyLib\npy_getset.cs" />
+    <Compile Include="..\NumpyLib\npy_index.cs" Link="NumpyLib\npy_index.cs" />
+    <Compile Include="..\NumpyLib\npy_interators.cs" Link="NumpyLib\npy_interators.cs" />
+    <Compile Include="..\NumpyLib\npy_item_selection.cs" Link="NumpyLib\npy_item_selection.cs" />
+    <Compile Include="..\NumpyLib\npy_mapping.cs" Link="NumpyLib\npy_mapping.cs" />
+    <Compile Include="..\NumpyLib\npy_methods.cs" Link="NumpyLib\npy_methods.cs" />
+    <Compile Include="..\NumpyLib\npy_multiarray.cs" Link="NumpyLib\npy_multiarray.cs" />
+    <Compile Include="..\NumpyLib\npy_number.cs" Link="NumpyLib\npy_number.cs" />
+    <Compile Include="..\NumpyLib\npy_object.cs" Link="NumpyLib\npy_object.cs" />
+    <Compile Include="..\NumpyLib\npy_refcount.cs" Link="NumpyLib\npy_refcount.cs" />
+    <Compile Include="..\NumpyLib\npy_shape.cs" Link="NumpyLib\npy_shape.cs" />
+    <Compile Include="..\NumpyLib\npy_sortfunctions.cs" Link="NumpyLib\npy_sortfunctions.cs" />
+    <Compile Include="..\NumpyLib\npy_usertypes.cs" Link="NumpyLib\npy_usertypes.cs" />
+    <Compile Include="..\NumpyLib\publicAPI.cs" Link="NumpyLib\publicAPI.cs" />
+    <Compile Include="..\NumpyLib\selection.cs" Link="NumpyLib\selection.cs" />
+    <Compile Include="..\NumpyLib\tuningVariables.cs" Link="NumpyLib\tuningVariables.cs" />
+    <Compile Include="..\NumpyLib\UFunc\npy_ufuncs_defs.cs" Link="NumpyLib\UFUNC\npy_ufuncs_defs.cs" />
+    <Compile Include="..\NumpyLib\UFunc\npy_ufuncs_object.cs" Link="NumpyLib\UFUNC\npy_ufuncs_object.cs" />
+    <Compile Include="..\NumpyLib\UFunc\npy_ufuncs_outer.cs" Link="NumpyLib\UFUNC\npy_ufuncs_outer.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_accelerators.cs" Link="NumpyLib\UFUNC\ufunc_accelerators.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_bigint.cs" Link="NumpyLib\UFUNC\ufunc_bigint.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_bool.cs" Link="NumpyLib\UFUNC\ufunc_bool.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_common.cs" Link="NumpyLib\UFUNC\ufunc_common.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_complex.cs" Link="NumpyLib\UFUNC\ufunc_complex.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_decimal.cs" Link="NumpyLib\UFUNC\ufunc_decimal.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_double.cs" Link="NumpyLib\UFUNC\ufunc_double.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_float.cs" Link="NumpyLib\UFUNC\ufunc_float.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_int16.cs" Link="NumpyLib\UFUNC\ufunc_int16.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_int32.cs" Link="NumpyLib\UFUNC\ufunc_int32.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_int64.cs" Link="NumpyLib\UFUNC\ufunc_int64.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_object.cs" Link="NumpyLib\UFUNC\ufunc_object.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_sbyte.cs" Link="NumpyLib\UFUNC\ufunc_sbyte.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_string.cs" Link="NumpyLib\UFUNC\ufunc_string.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_ubyte.cs" Link="NumpyLib\UFUNC\ufunc_ubyte.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_uint16.cs" Link="NumpyLib\UFUNC\ufunc_uint16.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_uint32.cs" Link="NumpyLib\UFUNC\ufunc_uint32.cs" />
+    <Compile Include="..\NumpyLib\UFunc\ufunc_uint64.cs" Link="NumpyLib\UFUNC\ufunc_uint64.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NumpyLib\UFUNC\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\NumpyLib\NumpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

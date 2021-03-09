@@ -56,10 +56,6 @@
       <Project>{9d8fa516-085c-40b2-93ca-f3a419b2fced}</Project>
       <Name>NumpyDotNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NumpyLib\NumpyLib.csproj">
-      <Project>{ba8706a0-3efb-4c81-bc2d-e6bf25283d03}</Project>
-      <Name>NumpyLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
