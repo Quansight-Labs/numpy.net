@@ -38,7 +38,7 @@ using System.Threading.Tasks;
 
 namespace NumpyLib
 {
-    public class NpyObject_HEAD
+    internal class NpyObject_HEAD
     {
         public NpyObject_HEAD()
         {
