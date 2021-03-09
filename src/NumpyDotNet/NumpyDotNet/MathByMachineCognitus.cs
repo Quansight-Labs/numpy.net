@@ -20,7 +20,7 @@ namespace MachineCognitus
     /// </para>
     /// </remarks>
     /// <author email="robert.baron@videotron.ca">Robert Baron</author>
-    public sealed class math
+    internal sealed class math
     {
 
         /// <summary>

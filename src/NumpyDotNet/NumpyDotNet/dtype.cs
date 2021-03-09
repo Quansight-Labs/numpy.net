@@ -190,7 +190,7 @@ namespace NumpyDotNet {
         /// <summary>
         /// A tuple describing the size of each dimension of the array.
         /// </summary>
-        public PythonTuple shape
+        internal PythonTuple shape
         {
             get
             {

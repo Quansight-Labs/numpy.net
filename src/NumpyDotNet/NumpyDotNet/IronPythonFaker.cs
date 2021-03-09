@@ -52,7 +52,7 @@ namespace NumpyDotNet
     /// <summary>
     /// public class to get optimized
     /// </summary>
-    public sealed class TupleEnumerator : IEnumerable, IEnumerator, IEnumerator<object>
+    internal sealed class TupleEnumerator : IEnumerable, IEnumerator, IEnumerator<object>
     {
         private int _curIndex;
         private PythonTuple _tuple;
@@ -115,7 +115,7 @@ namespace NumpyDotNet
         #endregion
     }
 
-    public class PythonTuple  : IReadOnlyList<object>
+    internal class PythonTuple  : IReadOnlyList<object>
     {
         internal readonly object[] _data;
 
@@ -318,7 +318,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class PythonOps
+    internal class PythonOps
     {
         internal static int Length(object src)
         {
@@ -327,7 +327,7 @@ namespace NumpyDotNet
 
     }
 
-    public class ArgumentTypeException : Exception
+    internal class ArgumentTypeException : Exception
     {
         public ArgumentTypeException(string message) : base(message)
         {
@@ -335,7 +335,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class TypeErrorException : Exception
+    internal class TypeErrorException : Exception
     {
         public TypeErrorException(string message) : base(message)
         {
@@ -344,7 +344,7 @@ namespace NumpyDotNet
     }
 
 
-    public class FloatingPointException : Exception
+    internal class FloatingPointException : Exception
     {
         public FloatingPointException(string message) : base(message)
         {
@@ -352,7 +352,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class RuntimeException : Exception
+    internal class RuntimeException : Exception
     {
         public RuntimeException(string message) : base(message)
         {
@@ -360,7 +360,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class ValueError : Exception
+    internal class ValueError : Exception
     {
         public ValueError(string message) : base(message)
         {
@@ -368,7 +368,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class ZeroDivisionError : Exception
+    internal class ZeroDivisionError : Exception
     {
         public ZeroDivisionError(string message) : base(message)
         {
@@ -376,8 +376,8 @@ namespace NumpyDotNet
         }
     }
 
-    
-    public class TypeError : Exception
+
+    internal class TypeError : Exception
     {
         public TypeError(string message) : base(message)
         {
@@ -385,7 +385,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class AxisError : Exception
+    internal class AxisError : Exception
     {
         public AxisError(string message) : base(message)
         {
@@ -393,7 +393,7 @@ namespace NumpyDotNet
         }
     }
 
-    public class RuntimeError : Exception
+    internal class RuntimeError : Exception
     {
         public RuntimeError(string message) : base(message)
         {
@@ -401,8 +401,8 @@ namespace NumpyDotNet
         }
     }
 
-    
-    public static class PythonFunction
+
+    internal static class PythonFunction
     {
 
         public static npy_intp[] range(int start, int end)
