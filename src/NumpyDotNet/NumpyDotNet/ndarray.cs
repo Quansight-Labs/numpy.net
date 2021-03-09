@@ -216,7 +216,7 @@ namespace NumpyDotNet
 
         #endregion
 
-        public NpyArray core;
+        internal NpyArray core;
         public ndarray() {
         }
 
@@ -1422,7 +1422,7 @@ namespace NumpyDotNet
         /// <summary>
         /// Handle to the core representation.
         /// </summary>
-        public NpyArray Array {
+        internal NpyArray Array {
             get { return core; }
         }
 

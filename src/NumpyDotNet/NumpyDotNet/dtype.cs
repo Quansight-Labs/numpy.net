@@ -290,7 +290,7 @@ namespace NumpyDotNet {
 
         public int alignment { get { return this.Alignment; } }
 
-        public NpyArray_Descr_Flags flags { get { return this.Flags; } }
+        internal NpyArray_Descr_Flags flags { get { return this.Flags; } }
 
         public dtype newbyteorder(string endian = null) {
             return NpyCoreApi.DescrNewByteorder(this, NpyUtil_ArgProcessing.ByteorderConverter(endian));
@@ -347,7 +347,7 @@ namespace NumpyDotNet {
 
         #region .NET Properties
 
-        public NpyArray_Descr Descr {
+        internal NpyArray_Descr Descr {
             get { return core; }
         }
 
@@ -370,9 +370,9 @@ namespace NumpyDotNet {
             set { core.byteorder = value; }
         }
 
-        public NpyArray_Descr_Flags Flags {
+        internal NpyArray_Descr_Flags Flags {
             get { return core.flags; }
-            internal set { core.flags = value; }
+            private set { core.flags = value; }
         }
 
         internal bool ChkFlags(NpyArray_Descr_Flags flags) {
@@ -404,13 +404,13 @@ namespace NumpyDotNet {
         }
 
 
-        public List<string> Names {
+        internal List<string> Names {
             get {
                 return core.names;
             }
         }
 
-        public bool HasSubarray {
+        internal bool HasSubarray {
             get { return core.subarray != null; }
         }
 
@@ -422,7 +422,7 @@ namespace NumpyDotNet {
             }
         }
 
-        public NpyArray_ArrFuncs f {
+        internal NpyArray_ArrFuncs f {
             get { return funcs; }
         }
 

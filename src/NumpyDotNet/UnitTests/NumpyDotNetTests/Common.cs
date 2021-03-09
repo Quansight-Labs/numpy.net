@@ -107,10 +107,10 @@ namespace NumpyDotNetTests
 
         }
 
-        static bool numpy_interface_array_new_wrapper(NpyArray newArray, bool ensureArray, bool customStrides, object subtype, object interfaceData, ref object interfaceRet)
-        {
-            return true;
-        }
+        //static bool numpy_interface_array_new_wrapper(NpyArray newArray, bool ensureArray, bool customStrides, object subtype, object interfaceData, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
         //static bool numpy_interface_iter_new_wrapper(NpyArrayIterObject iter, ref object interfaceRet)
         //{
         //    return true;
@@ -123,18 +123,18 @@ namespace NumpyDotNetTests
         //{
         //    return true;
         //}
-        static bool numpy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet)
-        {
-            return true;
-        }
-        static bool numpy_interface_descr_new_from_wrapper(object _base, NpyArray_Descr descr, ref object interfaceRet)
-        {
-            return true;
-        }
-        static bool numpy_interface_ufunc_new_wrapper(object _base, ref object interfaceRet)
-        {
-            return true;
-        }
+        //static bool numpy_interface_descr_new_from_type(int type, NpyArray_Descr descr, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
+        //static bool numpy_interface_descr_new_from_wrapper(object _base, NpyArray_Descr descr, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
+        //static bool numpy_interface_ufunc_new_wrapper(object _base, ref object interfaceRet)
+        //{
+        //    return true;
+        //}
 
         static int numpy_tp_cmp_priority(object o1, object o2)
         {
@@ -170,10 +170,10 @@ namespace NumpyDotNetTests
             return NumpyErrors.Any(t => t.exctype == et && t.error.Contains(ErrorText));
         }
 
-        public static bool CompareArrays(NpyArray T1, NpyArray T2)
-        {
-            return CompareArrays(T1.data, T2.data);
-        }
+        //public static bool CompareArrays(NpyArray T1, NpyArray T2)
+        //{
+        //    return CompareArrays(T1.data, T2.data);
+        //}
         public static bool CompareArrays(VoidPtr T1, VoidPtr T2)
         {
             if (T1.type_num == NPY_TYPES.NPY_BOOL && T2.type_num == NPY_TYPES.NPY_BOOL)

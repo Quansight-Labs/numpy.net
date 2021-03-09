@@ -44,7 +44,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
  
-    public  class NpyArray_Descr : NpyObject_HEAD
+    internal  class NpyArray_Descr : NpyObject_HEAD
     {
    
         public NpyArray_Descr(NPY_TYPES type_num)
@@ -109,7 +109,7 @@ namespace NumpyLib
 
     }
     [Flags]
-    public enum NpyArray_Descr_Flags: int
+    internal enum NpyArray_Descr_Flags: int
     {
    
 
@@ -611,7 +611,7 @@ namespace NumpyLib
 
 
 
-    public class NpyArray_ArrFuncs
+    internal class NpyArray_ArrFuncs
     {
         /* The next four functions *cannot* be null */
 
@@ -713,7 +713,7 @@ namespace NumpyLib
         public NpyArray_VectorUnaryFunc[] cast = new NpyArray_VectorUnaryFunc[(int)NPY_TYPES.NPY_NTYPES];
     }
 
-    public class NpyArray_ArrayDescr
+    internal class NpyArray_ArrayDescr
     {
         public NpyArray_Descr _base;
         public int shape_num_dims;    /* shape_num_dims and shape_dims essentially
@@ -726,20 +726,20 @@ namespace NumpyLib
 
     /* Used as the value of an NpyDict to record the fields in an
    NpyArray_Descr object*/
-    public class NpyArray_DescrField
+    internal class NpyArray_DescrField
     {
         public NpyArray_Descr descr;
         public int offset;
         public string title;                /* String owned/managed by each instance */
     };
 
-    public class NpyArray_CastFuncsItem
+    internal class NpyArray_CastFuncsItem
     {
         public NPY_TYPES totype;
         public NpyArray_VectorUnaryFunc castfunc;
     };
 
-    public class NpyArray_FunctionDefs
+    internal class NpyArray_FunctionDefs
     {
         /* Get-set methods per type. */
         public NpyArray_GetItemFunc BOOL_getitem;

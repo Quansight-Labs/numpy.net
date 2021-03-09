@@ -55,7 +55,7 @@ namespace NumpyLib
 {
     #region definitions
     
-    public class NpyArray : NpyObject_HEAD
+    internal class NpyArray : NpyObject_HEAD
     {
         ~NpyArray()
         {

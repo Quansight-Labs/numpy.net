@@ -74,13 +74,13 @@ namespace NumpyLib
             type_num = typenum;
             SetSpecificDataType();
         }
-        public VoidPtr(NpyArray array) : this(array.data)
+        internal VoidPtr(NpyArray array) : this(array.data)
         {
         }
-        public VoidPtr(NpyArray array, Int32 offset) : this(array.data, offset)
+        internal VoidPtr(NpyArray array, Int32 offset) : this(array.data, offset)
         {
         }
-        public VoidPtr(NpyArray array, Int64 offset) : this(array.data, offset)
+        internal VoidPtr(NpyArray array, Int64 offset) : this(array.data, offset)
         {
         }
         public VoidPtr(VoidPtr vp)

@@ -48,7 +48,7 @@ using npy_intp = System.Int32;
 namespace NumpyLib
 {
   
-    public class NpyArray_Dims
+    internal class NpyArray_Dims
     {
         public npy_intp[] ptr;
         public int len;
@@ -512,42 +512,42 @@ namespace NumpyLib
 
 
     /* These must deal with unaligned and swapped data if necessary */
-    public delegate object NpyArray_GetItemFunc(npy_intp index, NpyArray npa);
-    public delegate int NpyArray_SetItemFunc(npy_intp index, object value, NpyArray a);
+    internal delegate object NpyArray_GetItemFunc(npy_intp index, NpyArray npa);
+    internal delegate int NpyArray_SetItemFunc(npy_intp index, object value, NpyArray a);
 
-    public delegate void NpyArray_CopySwapNFunc(VoidPtr Dest, npy_intp dstrides, VoidPtr Src, npy_intp sstrides, npy_intp len, bool swap, NpyArray npa);
+    internal delegate void NpyArray_CopySwapNFunc(VoidPtr Dest, npy_intp dstrides, VoidPtr Src, npy_intp sstrides, npy_intp len, bool swap, NpyArray npa);
 
-    public delegate bool NpyArray_NonzeroFunc(VoidPtr vp, npy_intp index);
+    internal delegate bool NpyArray_NonzeroFunc(VoidPtr vp, npy_intp index);
 
     /*
     * These assume aligned and notswapped data -- a buffer will be used
     * before or contiguous data will be obtained
     */
 
-    public delegate int NpyArray_CompareFunc(VoidPtr parrdp, VoidPtr pkeydp, int elSize, NpyArray npa);
-    public delegate npy_intp NpyArray_ArgFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex);
+    internal delegate int NpyArray_CompareFunc(VoidPtr parrdp, VoidPtr pkeydp, int elSize, NpyArray npa);
+    internal delegate npy_intp NpyArray_ArgFunc(VoidPtr ip, npy_intp startIndex, npy_intp endIndex);
 
-    public delegate void NpyArray_DotFunc(VoidPtr o1, npy_intp i1, VoidPtr o2, npy_intp i2, VoidPtr o3, npy_intp i3, NpyArray npa);
-    public delegate void NpyArray_VectorUnaryFunc(VoidPtr Src, VoidPtr Dest, npy_intp srclen, NpyArray srcArray, NpyArray destArray);
+    internal delegate void NpyArray_DotFunc(VoidPtr o1, npy_intp i1, VoidPtr o2, npy_intp i2, VoidPtr o3, npy_intp i3, NpyArray npa);
+    internal delegate void NpyArray_VectorUnaryFunc(VoidPtr Src, VoidPtr Dest, npy_intp srclen, NpyArray srcArray, NpyArray destArray);
 
     /*
     * XXX the ignore argument should be removed next time the API version
     * is bumped. It used to be the separator.
     */
-    public delegate int NpyArray_ScanFunc(FileInfo fp, object dptr, string ignore, NpyArray_Descr a);
-    public delegate int NpyArray_FromStrFunc(string s, object dptr, object[] endptr, NpyArray_Descr a);
+    internal delegate int NpyArray_ScanFunc(FileInfo fp, object dptr, string ignore, NpyArray_Descr a);
+    internal delegate int NpyArray_FromStrFunc(string s, object dptr, object[] endptr, NpyArray_Descr a);
 
-    public delegate int NpyArray_FillFunc(VoidPtr dest, npy_intp length, NpyArray arr);
+    internal delegate int NpyArray_FillFunc(VoidPtr dest, npy_intp length, NpyArray arr);
 
-    public delegate int NpyArray_SortFunc(object o1, npy_intp i1, NpyArray a, NPY_SORTKIND kind);
-    public delegate int NpyArray_ArgSortFunc(object o1, VoidPtr i1, npy_intp i2, NpyArray a, NPY_SORTKIND kind);
-    public delegate int NpyArray_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
-    public delegate int NpyArray_ArgPartitionFunc(VoidPtr v, VoidPtr tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
+    internal delegate int NpyArray_SortFunc(object o1, npy_intp i1, NpyArray a, NPY_SORTKIND kind);
+    internal delegate int NpyArray_ArgSortFunc(object o1, VoidPtr i1, npy_intp i2, NpyArray a, NPY_SORTKIND kind);
+    internal delegate int NpyArray_PartitionFunc(VoidPtr v, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
+    internal delegate int NpyArray_ArgPartitionFunc(VoidPtr v, VoidPtr tosort, npy_intp num, npy_intp kth, npy_intp[] pivots, ref npy_intp? npiv, object not_used);
 
 
-    public delegate int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray a);
+    internal delegate int NpyArray_FillWithScalarFunc(VoidPtr dest, npy_intp length, VoidPtr scalar, NpyArray a);
 
-    public delegate NPY_SCALARKIND NpyArray_ScalarKindFunc(NpyArray a);
+    internal delegate NPY_SCALARKIND NpyArray_ScalarKindFunc(NpyArray a);
 
     public delegate void NpyArray_FastClipFunc( VoidPtr _in, npy_intp n_in, VoidPtr min, VoidPtr max, VoidPtr _out);
     public delegate int  NpyArray_FastTakeFunc(VoidPtr dest, VoidPtr src, npy_intp[] indarray, npy_intp nindarray, npy_intp n_outer, npy_intp m_middle, npy_intp nelem, NPY_CLIPMODE clipmode);
