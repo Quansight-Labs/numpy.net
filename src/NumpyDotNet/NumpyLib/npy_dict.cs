@@ -38,7 +38,7 @@ using System.Threading.Tasks;
 
 namespace NumpyLib
 {
-    public class NpyDict
+    internal class NpyDict
     {
         public NpyDict()
         {
@@ -51,13 +51,13 @@ namespace NumpyLib
         public Dictionary<object,object> bucketArray;
     };
 
-    public class NpyDict_Iter
+    internal class NpyDict_Iter
     {
         internal long bucket;
         internal NpyDict_KVPair element;
     };
 
-    public class NpyDict_KVPair
+    internal class NpyDict_KVPair
     {
         public object key;
         public object value;

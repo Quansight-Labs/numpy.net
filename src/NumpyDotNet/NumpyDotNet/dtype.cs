@@ -361,8 +361,8 @@ namespace NumpyDotNet {
             }
         }
 
-        public NPY_TYPECHAR Type {
-            get { return (NPY_TYPECHAR)core.type; }
+        public char Type {
+            get { return (char)core.type; }
         }
 
         public char ByteOrder {

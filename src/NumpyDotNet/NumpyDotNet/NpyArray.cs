@@ -440,7 +440,7 @@ namespace NumpyDotNet {
             bool checkIt = true;
             bool stopAtString =
                 type != NPY_TYPES.NPY_STRING ||
-                descr.Type == NPY_TYPECHAR.NPY_STRINGLTR;
+                descr.Type == (char)NPY_TYPECHAR.NPY_STRINGLTR;
             bool stopAtTuple = false;
   
             int numDim = DiscoverDepth(src, NpyDefs.NPY_MAXDIMS + 1, stopAtString, stopAtTuple);
