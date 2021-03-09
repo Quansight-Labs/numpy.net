@@ -66,7 +66,7 @@ namespace NumpyDotNet {
     /// multiple files.
     /// </summary>
     [SuppressUnmanagedCodeSecurity]
-    public static class NpyCoreApi {
+    internal static class NpyCoreApi {
 
         /// <summary>
         /// Stupid hack to allow us to pass an already-allocated wrapper instance

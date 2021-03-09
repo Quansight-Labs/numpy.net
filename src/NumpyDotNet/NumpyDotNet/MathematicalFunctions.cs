@@ -2529,7 +2529,7 @@ namespace NumpyDotNet
     #region MathHelper
     // special thanks to David Relihan
     // derived from here: https://stackoverflow.com/posts/5790661/edit
-    public static class MathHelper
+    internal static class MathHelper
     {
         // Secant 
         public static double Sec(double x)

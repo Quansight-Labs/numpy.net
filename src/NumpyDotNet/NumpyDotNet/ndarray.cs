@@ -1881,7 +1881,7 @@ namespace NumpyDotNet
         int LocalCacheIndex = 0;
     }
 
-    public class CSharpTuple
+    internal class CSharpTuple
     {
         public long? index1 = null;
         public long? index2 = null;
