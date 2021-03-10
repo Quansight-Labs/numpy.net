@@ -1,5 +1,4 @@
 ﻿using NumpyDotNet;
-using NumpyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;

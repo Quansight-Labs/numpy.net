@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NumpyDotNet;
-using NumpyLib;
+
 
 
 namespace WPFApp1
