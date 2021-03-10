@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.63	</version>
+    <version>0.9.70		</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</description>
-    <releaseNotes>Another 10-20% performance increase.  Also numpy histogram API implementation (see associated unit tests)</releaseNotes>
+    <releaseNotes>Numpy financial API implementation (see associated unit tests).   A few bug fixes.  Intellisense documentation of public methods.  Merged numpylib.dll into numpydotnet.dll to reduce public API.</releaseNotes>
     <copyright>Copyright 2021, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
@@ -23,6 +23,5 @@
   
    <files>
     <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyDotNet.dll" target="lib\netstandard2.0" />
-    <file src="D:\GitHub\Baseline Software\numpy.net\src\NumpyDotNet\NumpyDotNet\bin\Release\netstandard2.0\NumpyLib.dll" target="lib\netstandard2.0" />
   </files>
 </package>
