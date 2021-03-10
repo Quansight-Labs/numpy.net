@@ -31,9 +31,8 @@ https://www.nuget.org/packages/NumpyDotNet.SampleApps/
 The underlying technology uses 100% .NET data types.   If you are working with doubles, then an array of doubles are allocated.  There is no worry about mismatching Python allocated C pointers to the .NET data type.  There is no worry about interop 'marshalling' of data and the complexities and problems that can cause.
 
 ## High performance calculations
-We recently reworked our calculation engine to take advantage of the .NET Parallel libraries and we inlined as much as we could.
 
-This has caused a massive improvement in performance/reduced calculation times. We are comparable to the "C" based NumPy in performance now.  In a few cases, we seem to be faster.  We hope to continue to fine tune the performance in future releases.
+We make use of .NET parallelization technologies as much as possible, and have optimized common code paths as much as possible.  The result is a library that performs as well or better than the Python/C based NumPy in most cases.  Coupled with our ability to multi-thread, we may be the fastest and most efficent NumPy in the industry.
 
 To take full advantage of the optimizations, try to do calculations with same type arrays.  For example, adding 2 large Float64/double arrays will typically be faster than adding 1 large double array and 1 large integer array.  We are able to follow highly optimized paths if the data is the same type.  
 
@@ -72,6 +71,13 @@ We have ported the original "RandomState" random number generator and most of th
 Our version is implemented as an instantiable class, each with independent random engines so it can be used in multi-threaded applications.
 
 NEW FEATURE!  We now support user defined random number generators.  Implement a interface class with your generator and pass that to the random constructor and use that to generate random numbers in all of the supported distributions.
+
+##### Numpy Histogram API:
+We have implemented the numpy histogram API.  https://numpy.org/doc/stable/reference/routines.statistics.html
+
+##### Numpy Financial API:
+We have implemented the latest numpy financial API with full support of decimal data types.  https://numpy.org/numpy-financial/latest/
+
 
 ##### Future plans include support for:
 
