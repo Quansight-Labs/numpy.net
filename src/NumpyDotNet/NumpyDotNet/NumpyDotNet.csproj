@@ -8,13 +8,13 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2021, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.70</Version>
+    <Version>0.9.71</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>Numpy financial API implementation.  A few bug fixes.  Intellisense documentation of public methods.  Merged numpylib.dll into numpydotnet.dll to reduce public API.</PackageReleaseNotes>
+    <PackageReleaseNotes>np.tensordot bug fix</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
