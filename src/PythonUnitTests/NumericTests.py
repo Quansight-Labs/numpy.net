@@ -437,6 +437,18 @@ class NumericTests(unittest.TestCase):
 
         return
 
+    def test_tensordot_asiamartini_bugreport(self):  
+        
+        alpha_0 = np.array([ 1.0, 1.0, 1.0 ]);
+        temp = np.array([ [ [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ] ], 
+                         [ [ -18.0, 12.0, 12.0, -10.0 ], [ 12.0, 10.0, 18.0, 12.0 ], [ 12.0, 18.0, -10.0, -12.0 ], [ -10.0, 12.0, -12.0, 18.0 ] ], 
+                         [ [ -3.5, 21.5, 5.5, -2.5 ], [ 21.5, 2.5, 5.5, 3.5 ], [ 5.5, 5.5, -20.5, -5.5 ], [ -2.5, 3.5, -5.5, 21.5 ] ] ])
+
+
+        matrix = nptest.tensordot(alpha_0, temp, axes=([0],[0]))
+        print(matrix)
+        return
+
 
     def test_dot_1(self):
 
