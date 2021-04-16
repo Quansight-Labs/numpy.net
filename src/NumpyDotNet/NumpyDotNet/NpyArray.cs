@@ -908,8 +908,8 @@ namespace NumpyDotNet {
             }
 
             //If the first argument is 1-D, it is promoted to a matrix by prepending a 1 to its dimensions. After matrix multiplication the prepended 1 is removed.
-            if (a1.ndim == 1 && a2.ndim == 2)
-                throw new Exception(string.Format("shapes {0} and {1} not aligned!", a1.shape.ToString(), a2.shape.ToString()));
+            //if (a1.ndim == 1 && a2.ndim == 2)
+            //    throw new Exception(string.Format("shapes {0} and {1} not aligned!", a1.shape.ToString(), a2.shape.ToString()));
 
             dtype d = FindArrayType(a1, null);
             d = FindArrayType(a2, d);

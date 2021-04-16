@@ -5,6 +5,14 @@ from nptest import nptest
 
 class NANFunctionsTests(unittest.TestCase):
 
+    def test_matmul_asiamartini_bugreport(self):
+
+        rq = np.array([0.5,0.5,0.5,0.5]);
+        am = np.array([[-21.5, 33.5, 17.5, -12.5], [33.5, 12.5, 23.5, 15.5], [17.5,23.5,-30.5,-17.5], [-12.5, 15.5, -17.5, 39.5] ]);
+   
+        temp1 = np.matmul(rq.T, am);
+        print(temp1)
+
  
     def test_matmul_1(self):
 
