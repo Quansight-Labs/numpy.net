@@ -177,6 +177,20 @@ namespace NumpyLib
 
             return 0;
         }
+
+        public int ICompareTo(T invalue, T comparevalue)
+        {
+            if (invalue is IComparable && comparevalue is IComparable)
+            {
+                IComparable _invalue = invalue as IComparable;
+                IComparable _comparevalue = comparevalue as IComparable;
+
+                return _invalue.CompareTo(_comparevalue);
+            }
+            return 0;
+
+        }
+
         public virtual npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
         {
             T[] ip = oip as T[];
@@ -761,6 +775,16 @@ namespace NumpyLib
             return 1;
         }
 
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is bool && comparevalue is bool)
+            {
+                return ICompareTo((bool)invalue, (bool)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             bool[] bp = vp.datap as bool[];
@@ -915,6 +939,17 @@ namespace NumpyLib
             var dsbyte = data.datap as sbyte[];
             dsbyte[index] = Convert.ToSByte(value);
             return 1;
+        }
+
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is sbyte && comparevalue is sbyte)
+            {
+                return ICompareTo((sbyte)invalue, (sbyte)comparevalue);
+            }
+
+            return 0;
         }
 
         public override bool NonZero(VoidPtr vp, npy_intp index)
@@ -1091,6 +1126,17 @@ namespace NumpyLib
             Fill(adata, Convert.ToByte(FillValue), 0, adata.Length);
             return;
         }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is byte && comparevalue is byte)
+            {
+                return ICompareTo((byte)invalue, (byte)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -1275,6 +1321,17 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt16(FillValue), 0, adata.Length);
             return;
         }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is Int16 && comparevalue is Int16)
+            {
+                return ICompareTo((Int16)invalue, (Int16)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -1458,6 +1515,18 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt16(FillValue), 0, adata.Length);
             return;
         }
+
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is UInt16 && comparevalue is UInt16)
+            {
+                return ICompareTo((UInt16)invalue, (UInt16)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -1640,6 +1709,18 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt32(FillValue), 0, adata.Length);
             return;
         }
+
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is Int32 && comparevalue is Int32)
+            {
+                return ICompareTo((Int32)invalue, (Int32)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -1823,6 +1904,17 @@ namespace NumpyLib
             Fill(adata, Convert.ToUInt32(FillValue), 0, adata.Length);
             return;
         }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is UInt32 && comparevalue is UInt32)
+            {
+                return ICompareTo((UInt32)invalue, (UInt32)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -2005,6 +2097,7 @@ namespace NumpyLib
             Fill(adata, Convert.ToInt64(FillValue), 0, adata.Length);
             return;
         }
+
         public override int SetIndex(VoidPtr data, npy_intp index, object value)
         {
             index = AdjustNegativeIndex(data, index);
@@ -2012,6 +2105,16 @@ namespace NumpyLib
             var dint64 = data.datap as Int64[];
             dint64[index] = Convert.ToInt64(value);
             return 1;
+        }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is Int64 && comparevalue is Int64)
+            {
+                return ICompareTo((Int64)invalue, (Int64)comparevalue);
+            }
+
+            return 0;
         }
 
         public override bool NonZero(VoidPtr vp, npy_intp index)
@@ -2196,6 +2299,17 @@ namespace NumpyLib
             return 1;
         }
 
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is UInt64 && comparevalue is UInt64)
+            {
+                return ICompareTo((UInt64)invalue, (UInt64)comparevalue);
+            }
+
+            return 0;
+        }
+
+
         public override bool NonZero(VoidPtr vp, npy_intp index)
         {
             UInt64[] bp = vp.datap as UInt64[];
@@ -2375,6 +2489,16 @@ namespace NumpyLib
             var float1 = data.datap as float[];
             float1[index] = Convert.ToSingle(value);
             return 1;
+        }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is float && comparevalue is float)
+            {
+                return ICompareTo((float)invalue, (float)comparevalue);
+            }
+
+            return 0;
         }
 
         public override object GetArgSortMinValue()
@@ -2652,6 +2776,16 @@ namespace NumpyLib
             return 1;
         }
 
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is double && comparevalue is double)
+            {
+                return ICompareTo((double)invalue, (double)comparevalue);
+            }
+
+            return 0;
+        }
+
         public override object GetArgSortMinValue()
         {
             return double.MinValue;
@@ -2918,6 +3052,16 @@ namespace NumpyLib
             var decimal1 = data.datap as decimal[];
             decimal1[index] = Convert.ToDecimal(value);
             return 1;
+        }
+
+        public override int CompareTo(object invalue, object comparevalue)
+        {
+            if (invalue is decimal && comparevalue is decimal)
+            {
+                return ICompareTo((decimal)invalue, (decimal)comparevalue);
+            }
+
+            return 0;
         }
 
         public override object GetArgSortMinValue()

@@ -512,11 +512,12 @@ namespace NumpyDotNet {
 
             if (src.GetType().IsArray)
             {
-                dynamic arr1 = src;
-                if (arr1[0] is ndarray)
+                if (src is ndarray[])
                 {
+                    ndarray[] arr1 = src as ndarray[];
                     src = arr1[0];
                 }
+   
             }
 
             if (src is ndarray)

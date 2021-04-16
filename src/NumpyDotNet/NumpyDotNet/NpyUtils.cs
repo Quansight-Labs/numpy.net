@@ -354,14 +354,25 @@ namespace NumpyDotNet {
 
                 if (arg.GetType().IsArray)
                 {
-                    dynamic arr1 = arg;
-                    if (arr1[0] is ndarray)
+                    if (arg is ndarray[])
                     {
 
                     }
                     else
                     {
-                        array_arg = np.array(new VoidPtr(arr1), null);
+                        if (arg is Int64[])
+                        {
+                            array_arg = np.array(new VoidPtr(arg as Int64[]), null);
+                        }
+                        else
+                        if (arg is Int32[])
+                        {
+                            array_arg = np.array(new VoidPtr(arg as Int32[]), null);
+                        }
+                        else
+                        {
+                            throw new Exception("Unexpected index type");
+                        }
                     }
                 }
                 else
