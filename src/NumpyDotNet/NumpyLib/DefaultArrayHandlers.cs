@@ -2541,10 +2541,10 @@ namespace NumpyLib
         {
             switch (Operation)
             {
-                case UFuncOperation.power:
-                    return NPY_TYPES.NPY_DOUBLE;
-                case UFuncOperation.true_divide:
-                    return NPY_TYPES.NPY_DOUBLE;
+                //case UFuncOperation.power:
+                //    return NPY_TYPES.NPY_DOUBLE;
+                //case UFuncOperation.true_divide:
+                //    return NPY_TYPES.NPY_DOUBLE;
                 //case UFuncOperation.special_operand_is_float:
                 //    return NPY_TYPES.NPY_DOUBLE;
             }
