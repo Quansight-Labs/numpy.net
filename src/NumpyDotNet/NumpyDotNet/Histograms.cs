@@ -464,13 +464,13 @@ namespace NumpyDotNet
 
             if (density == true)
             {
-                var db = np.array(np.diff(bin_edges), dtype: np.Float32);
+                var db = np.array(np.diff(bin_edges), dtype: np.Float64);
                 return (n / db / np.sum(n), bin_edges);
             }
             else if (normed)
             {
                 // deprecated, buggy behavior. Remove for NumPy 2.0.0
-                var db = np.array(np.diff(bin_edges), dtype: np.Float32);
+                var db = np.array(np.diff(bin_edges), dtype: np.Float64);
                 return ((ndarray)(n / np.sum(n * db)), bin_edges);
             }
             else

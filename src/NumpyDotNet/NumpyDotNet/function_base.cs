@@ -1755,7 +1755,7 @@ namespace NumpyDotNet
 
             if (fweights != null)
             {
-                afweights = np.asarray(fweights, dtype: np.Float32);
+                afweights = np.asarray(fweights, dtype: np.Float64);
                 if ((bool)np.all(afweights.Equals(np.around(afweights))).GetItem(0) == false)
                 {
                     throw new TypeError("fweights must be integer");
@@ -1781,7 +1781,7 @@ namespace NumpyDotNet
 
             if (aweights != null)
             {
-                aaweights = np.asarray(aweights, dtype : np.Float32);
+                aaweights = np.asarray(aweights, dtype : np.Float64);
                 if (aaweights.ndim > 1)
                 {
                     throw new RuntimeError("cannot handle multidimensional aweights");
@@ -2601,7 +2601,7 @@ namespace NumpyDotNet
         /// <param name="M">Number of points in the output window. If zero or less, an empty array is returned.</param>
         /// <param name="beta">Shape parameter for window.</param>
         /// <returns></returns>
-        public static ndarray kaiser(int M, float beta)
+        public static ndarray kaiser(int M, double beta)
         {
             /*
             Return the Kaiser window.
