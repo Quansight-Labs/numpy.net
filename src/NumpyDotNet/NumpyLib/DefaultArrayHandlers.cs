@@ -380,6 +380,7 @@ namespace NumpyLib
             dynamic dValue = bValue;
             return dValue + operand;
         }
+     
         protected virtual object Subtract(dynamic bValue, dynamic operand)
         {
             dynamic dValue = bValue;
@@ -2544,9 +2545,8 @@ namespace NumpyLib
                     return NPY_TYPES.NPY_DOUBLE;
                 case UFuncOperation.true_divide:
                     return NPY_TYPES.NPY_DOUBLE;
-                case UFuncOperation.special_operand_is_float:
-                    return NPY_TYPES.NPY_DOUBLE;
-
+                //case UFuncOperation.special_operand_is_float:
+                //    return NPY_TYPES.NPY_DOUBLE;
             }
 
             return NPY_TYPES.NPY_FLOAT;
@@ -2568,6 +2568,7 @@ namespace NumpyLib
             float dValue = (float)bValue;
             return dValue + (dynamic)operand;
         }
+   
         protected override object Subtract(object bValue, object operand)
         {
             float dValue = (float)bValue;

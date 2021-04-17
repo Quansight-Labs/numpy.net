@@ -88,346 +88,174 @@ namespace NumpyLib
 
             //Console.WriteLine("Getting calculation handler {0} for array type {1}", operationType, srcArray.ItemType);
 
-            if (operArray != null && destArray != null && srcArray.type_num == operArray.type_num  && destArray.type_num != NPY_TYPES.NPY_BOOL )
+
+            switch (operationType)
             {
+                case UFuncOperation.add:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).AddOperation;
+                    }
+                case UFuncOperation.subtract:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).SubtractOperation;
+                    }
+                case UFuncOperation.multiply:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).MultiplyOperation;
+                    }
+                case UFuncOperation.divide:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).DivideOperation;
+                    }
+                case UFuncOperation.remainder:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).RemainderOperation;
+                    }
 
-                switch (operationType)
-                {
-                    case UFuncOperation.add:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).AddOperation;
-                        }
-                    case UFuncOperation.subtract:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SubtractOperation;
-                        }
-                    case UFuncOperation.multiply:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MultiplyOperation;
-                        }
-                    case UFuncOperation.divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).DivideOperation;
-                        }
-                    case UFuncOperation.remainder:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RemainderOperation;
-                        }
+                case UFuncOperation.fmod:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).FModOperation;
+                    }
 
-                    case UFuncOperation.fmod:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FModOperation;
-                        }
+                case UFuncOperation.power:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).PowerOperation;
+                    }
+                case UFuncOperation.square:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).SquareOperation;
+                    }
+                case UFuncOperation.reciprocal:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
+                    }
+                case UFuncOperation.ones_like:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
+                    }
+                case UFuncOperation.sqrt:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
+                    }
+                case UFuncOperation.negative:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
+                    }
+                case UFuncOperation.absolute:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
+                    }
+                case UFuncOperation.invert:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
+                    }
+                case UFuncOperation.left_shift:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).LeftShiftOperation;
+                    }
+                case UFuncOperation.right_shift:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).RightShiftOperation;
+                    }
+                case UFuncOperation.bitwise_and:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseAndOperation;
+                    }
+                case UFuncOperation.bitwise_xor:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseXorOperation;
+                    }
+                case UFuncOperation.bitwise_or:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseOrOperation;
+                    }
+                case UFuncOperation.less:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).LessOperation;
+                    }
+                case UFuncOperation.less_equal:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).LessEqualOperation;
+                    }
+                case UFuncOperation.equal:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).EqualOperation;
+                    }
+                case UFuncOperation.not_equal:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
+                    }
+                case UFuncOperation.greater:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterOperation;
+                    }
+                case UFuncOperation.greater_equal:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterEqualOperation;
+                    }
+                case UFuncOperation.isnan:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
+                    }
+                case UFuncOperation.floor_divide:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorDivideOperation;
+                    }
+                case UFuncOperation.true_divide:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).TrueDivideOperation;
+                    }
+                case UFuncOperation.logical_or:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalOrOperation;
+                    }
+                case UFuncOperation.logical_and:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
+                    }
+                case UFuncOperation.floor:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorOperation;
+                    }
+                case UFuncOperation.ceil:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
+                    }
+                case UFuncOperation.maximum:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).MaximumOperation;
+                    }
+                case UFuncOperation.fmax:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
+                    }
+                case UFuncOperation.minimum:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).MinimumOperation;
+                    }
+                case UFuncOperation.fmin:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).FMinOperation;
+                    }
 
-                    case UFuncOperation.power:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).PowerOperation;
-                        }
-                    case UFuncOperation.square:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SquareOperation;
-                        }
-                    case UFuncOperation.reciprocal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
-                        }
-                    case UFuncOperation.ones_like:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
-                        }
-                    case UFuncOperation.sqrt:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
-                        }
-                    case UFuncOperation.negative:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
-                        }
-                    case UFuncOperation.absolute:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
-                        }
-                    case UFuncOperation.invert:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
-                        }
-                    case UFuncOperation.left_shift:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LeftShiftOperation;
-                        }
-                    case UFuncOperation.right_shift:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RightShiftOperation;
-                        }
-                    case UFuncOperation.bitwise_and:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseAndOperation;
-                        }
-                    case UFuncOperation.bitwise_xor:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseXorOperation;
-                        }
-                    case UFuncOperation.bitwise_or:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseOrOperation;
-                        }
-                    case UFuncOperation.less:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LessOperation;
-                        }
-                    case UFuncOperation.less_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LessEqualOperation;
-                        }
-                    case UFuncOperation.equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).EqualOperation;
-                        }
-                    case UFuncOperation.not_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
-                        }
-                    case UFuncOperation.greater:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterOperation;
-                        }
-                    case UFuncOperation.greater_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterEqualOperation;
-                        }
-                    case UFuncOperation.isnan:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
-                        }
-                    case UFuncOperation.floor_divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorDivideOperation;
-                        }
-                    case UFuncOperation.true_divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).TrueDivideOperation;
-                        }
-                    case UFuncOperation.logical_or:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalOrOperation;
-                        }
-                    case UFuncOperation.logical_and:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
-                        }
-                    case UFuncOperation.floor:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorOperation;
-                        }
-                    case UFuncOperation.ceil:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
-                        }
-                    case UFuncOperation.maximum:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MaximumOperation;
-                        }
-                    case UFuncOperation.fmax:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
-                        }
-                    case UFuncOperation.minimum:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MinimumOperation;
-                        }
-                    case UFuncOperation.fmin:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FMinOperation;
-                        }
+                case UFuncOperation.heaviside:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).HeavisideOperation;
+                    }
 
-                    case UFuncOperation.heaviside:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).HeavisideOperation;
-                        }
+                case UFuncOperation.rint:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).RintOperation;
+                    }
+                case UFuncOperation.conjugate:
+                    {
+                        return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
+                    }
 
-                    case UFuncOperation.rint:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RintOperation;
-                        }
-                    case UFuncOperation.conjugate:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
-                        }
-
-                    default:
-                        return null;
-                }
+                default:
+                    return null;
             }
-            else
-            {
-                switch (operationType)
-                {
-                    case UFuncOperation.add:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).AddOperation;
-                        }
-                    case UFuncOperation.subtract:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SubtractOperation;
-                        }
-                    case UFuncOperation.multiply:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MultiplyOperation;
-                        }
-                    case UFuncOperation.divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).DivideOperation;
-                        }
-                    case UFuncOperation.remainder:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RemainderOperation;
-                        }
 
-                    case UFuncOperation.fmod:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FModOperation;
-                        }
-
-                    case UFuncOperation.power:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).PowerOperation;
-                        }
-                    case UFuncOperation.square:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SquareOperation;
-                        }
-                    case UFuncOperation.reciprocal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).ReciprocalOperation;
-                        }
-                    case UFuncOperation.ones_like:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).OnesLikeOperation;
-                        }
-                    case UFuncOperation.sqrt:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).SqrtOperation;
-                        }
-                    case UFuncOperation.negative:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).NegativeOperation;
-                        }
-                    case UFuncOperation.absolute:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).AbsoluteOperation;
-                        }
-                    case UFuncOperation.invert:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).InvertOperation;
-                        }
-                    case UFuncOperation.left_shift:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LeftShiftOperation;
-                        }
-                    case UFuncOperation.right_shift:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RightShiftOperation;
-                        }
-                    case UFuncOperation.bitwise_and:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseAndOperation;
-                        }
-                    case UFuncOperation.bitwise_xor:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseXorOperation;
-                        }
-                    case UFuncOperation.bitwise_or:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).BitWiseOrOperation;
-                        }
-                    case UFuncOperation.less:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LessOperation;
-                        }
-                    case UFuncOperation.less_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LessEqualOperation;
-                        }
-                    case UFuncOperation.equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).EqualOperation;
-                        }
-                    case UFuncOperation.not_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).NotEqualOperation;
-                        }
-                    case UFuncOperation.greater:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterOperation;
-                        }
-                    case UFuncOperation.greater_equal:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).GreaterEqualOperation;
-                        }
-                    case UFuncOperation.isnan:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).IsNANOperation;
-                        }
-                    case UFuncOperation.floor_divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorDivideOperation;
-                        }
-                    case UFuncOperation.true_divide:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).TrueDivideOperation;
-                        }
-                    case UFuncOperation.logical_or:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalOrOperation;
-                        }
-                    case UFuncOperation.logical_and:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).LogicalAndOperation;
-                        }
-                    case UFuncOperation.floor:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FloorOperation;
-                        }
-                    case UFuncOperation.ceil:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).CeilingOperation;
-                        }
-                    case UFuncOperation.maximum:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MaximumOperation;
-                        }
-                    case UFuncOperation.fmax:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FMaxOperation;
-                        }
-                    case UFuncOperation.minimum:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).MinimumOperation;
-                        }
-                    case UFuncOperation.fmin:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).FMinOperation;
-                        }
-
-                    case UFuncOperation.heaviside:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).HeavisideOperation;
-                        }
-
-                    case UFuncOperation.rint:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).RintOperation;
-                        }
-                    case UFuncOperation.conjugate:
-                        {
-                            return DefaultArrayHandlers.GetArrayHandler(ItemType).ConjugateOperation;
-                        }
-
-                    default:
-                        return null;
-                }
-            }
-   
         }
 
 
@@ -451,17 +279,14 @@ namespace NumpyLib
 
             var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(srcArray.ItemType);
 
-            if (!NpyArray_ISCOMPLEX(srcArray) && !NpyArray_ISOBJECT(srcArray) && !NpyArray_ISSTRING(srcArray))
+            if (operandArray != null && NpyArray_ISFLOAT(operandArray))
             {
-                if (operandArray != null)
+                if (!NpyArray_ISCOMPLEX(srcArray) && !NpyArray_ISOBJECT(srcArray) && !NpyArray_ISSTRING(srcArray))
                 {
-                    if (NpyArray_ISFLOAT(operandArray))
-                    {
-                        newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(UFuncOperation.special_operand_is_float));
-                    }
+                    //newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(UFuncOperation.special_operand_is_float));
+                    newtype = NpyArray_DescrFromType(DefaultArrayHandlers.GetArrayHandler(operandArray.descr.type_num).MathOpReturnType(operationType));
                 }
             }
-
 
             switch (operationType)
             {
