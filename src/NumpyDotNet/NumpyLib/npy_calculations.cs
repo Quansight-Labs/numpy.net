@@ -58,7 +58,7 @@ namespace NumpyLib
         const int NUMERICOPS_SMALL_TASKSIZE = 100;  // size of data to small to use parallel library
 
 
-        internal static NumericOperation GetOperation(NpyArray srcArray, NpyArray operArray, UFuncOperation operationType)
+        internal static NumericOperation GetOperation(NpyArray srcArray, NpyArray operArray, NpyArray destArray, UFuncOperation operationType)
         {
             switch (operationType)
             {
@@ -77,18 +77,18 @@ namespace NumpyLib
                     break;
             }
 
-            return GetOperation(srcArray.data, operArray != null ? operArray.data : null, operationType);
+            return GetOperation(srcArray.data, operArray != null ? operArray.data : null, destArray != null ? destArray.data : null, operationType);
         }
 
 
 
-        internal static NumericOperation GetOperation(VoidPtr srcArray, VoidPtr operArray, UFuncOperation operationType)
+        internal static NumericOperation GetOperation(VoidPtr srcArray, VoidPtr operArray, VoidPtr destArray, UFuncOperation operationType)
         {
             NPY_TYPES ItemType = srcArray.type_num;
 
             //Console.WriteLine("Getting calculation handler {0} for array type {1}", operationType, srcArray.ItemType);
 
-            if (operArray != null && srcArray.type_num == operArray.type_num)
+            if (operArray != null && destArray != null && srcArray.type_num == operArray.type_num  && destArray.type_num != NPY_TYPES.NPY_BOOL )
             {
 
                 switch (operationType)
@@ -2890,7 +2890,7 @@ namespace NumpyLib
             if (handled)
                 return;
 
-            NumericOperation operation = GetOperation(srcArray, operArray, operationType);
+            NumericOperation operation = GetOperation(srcArray, operArray, destArray, operationType);
             NumericOperations operations = NumericOperations.GetOperations(operationType, operation, srcArray, destArray, operArray);
 
             var SrcIter = NpyArray_BroadcastToShape(srcArray, destArray.dimensions, destArray.nd);
@@ -2915,7 +2915,7 @@ namespace NumpyLib
 
         public static NpyArray PerformOuterOpArray(NpyArray srcArray,  NpyArray operandArray, NpyArray destArray, UFuncOperation operationType)
         {
-            NumericOperation operation = GetOperation(srcArray, operandArray, operationType);
+            NumericOperation operation = GetOperation(srcArray, operandArray, destArray, operationType);
 
             NumericOperations operations = NumericOperations.GetOperations(operationType,operation, srcArray, destArray, operandArray);
   
@@ -3319,7 +3319,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_Floor(NpyArray srcArray, NpyArray outPtr)
         {
-            NumericOperation operation = GetOperation(srcArray, null, UFuncOperation.floor);
+            NumericOperation operation = GetOperation(srcArray, null, null, UFuncOperation.floor);
 
             if (outPtr == null)
             {
@@ -3342,7 +3342,7 @@ namespace NumpyLib
 
         internal static NpyArray NpyArray_IsNaN(NpyArray srcArray)
         {
-            NumericOperation operation = GetOperation(srcArray, null, UFuncOperation.isnan);
+            NumericOperation operation = GetOperation(srcArray, null, null, UFuncOperation.isnan);
 
             NpyArray outPtr = NpyArray_FromArray(srcArray, NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL), NPYARRAYFLAGS.NPY_CONTIGUOUS | NPYARRAYFLAGS.NPY_FORCECAST);
 
