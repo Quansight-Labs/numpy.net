@@ -311,11 +311,13 @@ class ArrayCreationTests(unittest.TestCase):
 
     def test_F2C_1(self):
        fvalues = [0, 12, 45.21, 34, 99.91]
-       F = np.array(fvalues)
+       F = np.array(fvalues, dtype=np.float32)
        print("Values in Fahrenheit degrees:")
        print(F)
        print("Values in  Centigrade degrees:") 
-       print(5*F/9 - 5*32/9)
+
+       C = 5*F/9 - 5*32/9;
+       print(C)
 
 
     def test_RealImage_float_1(self):
@@ -1118,7 +1120,7 @@ class ArrayCreationTests(unittest.TestCase):
 
     def test_newaxis_ufunc_2(self):
 
-        x = np.arange(0, 4, 1, float).reshape(2,2);
+        x = np.arange(0, 4, 1, dtype=np.float32).reshape(2,2);
         y = x.reshape(2,2,1) * 4
         z = x + y
         print(z.shape)

@@ -567,7 +567,7 @@ namespace NumpyDotNetTests
             ndarray C = 5 * F / 9 - 5 * 32 / 9;
             print(C);
 
-            AssertArray(C, new double[] { -17.0, -10.3333333333333, 8.11666615804036, 1.88888888888889, 38.5055575900608 });
+            AssertArray(C, new float[] { -17.0f, -10.333334f, 8.116665f, 1.88888931f, 38.505558f });
 
         }
 
@@ -2321,7 +2321,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_newaxis_ufunc_1()
         {
-            var x = np.arange(0, 4, 1, dtype: np.Float32);
+            var x = np.arange(0, 4, 1, dtype: np.Float64);
             var y = x.reshape((4, 1)) * 4;
             var z = x + y;
             print(z.shape);
@@ -2372,35 +2372,35 @@ namespace NumpyDotNetTests
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,] { { { 0, 1, }, { 6, 7, } }, { { 8, 9, }, { 14, 15, } } });
+            AssertArray(z, new float[,,] { { { 0, 1, }, { 6, 7, } }, { { 8, 9, }, { 14, 15, } } });
 
             y = x.reshape((2, 2, 1, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,,] { { { { 0, 1, }, { 2, 3, } }, { { 4, 5, }, { 6, 7, } } }, { { { 8, 9, }, { 10, 11, } }, { { 12, 13, }, { 14, 15, } } } });
+            AssertArray(z, new float[,,,] { { { { 0, 1, }, { 2, 3, } }, { { 4, 5, }, { 6, 7, } } }, { { { 8, 9, }, { 10, 11, } }, { { 12, 13, }, { 14, 15, } } } });
 
             y = x.reshape((2, 2, 1, 1, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,,,] { { { { { 0, 1, }, { 2, 3, } } }, { { { 4, 5, }, { 6, 7, } } } }, { { { { 8, 9, }, { 10, 11, } } }, { { { 12, 13, }, { 14, 15, } } } } });
+            AssertArray(z, new float[,,,,] { { { { { 0, 1, }, { 2, 3, } } }, { { { 4, 5, }, { 6, 7, } } } }, { { { { 8, 9, }, { 10, 11, } } }, { { { 12, 13, }, { 14, 15, } } } } });
 
             y = x.reshape((1, 2, 2, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,,] { { { { 0, 1, }, { 6, 7, } }, { { 8, 9, }, { 14, 15, } } } });
+            AssertArray(z, new float[,,,] { { { { 0, 1, }, { 6, 7, } }, { { 8, 9, }, { 14, 15, } } } });
 
             y = x.reshape((1, 2, 2, 1, 1)) * 4;
             z = x + y;
             print(z.shape);
             print(z);
             print("*************");
-            AssertArray(z, new double[,,,,] { { { { { 0, 1, }, { 2, 3, } }, { { 4, 5, }, { 6, 7, } } }, { { { 8, 9, }, { 10, 11, } }, { { 12, 13, }, { 14, 15, } } } } });
+            AssertArray(z, new float[,,,,] { { { { { 0, 1, }, { 2, 3, } }, { { 4, 5, }, { 6, 7, } } }, { { { 8, 9, }, { 10, 11, } }, { { 12, 13, }, { 14, 15, } } } } });
 
         }
 

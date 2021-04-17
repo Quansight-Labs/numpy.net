@@ -1395,7 +1395,7 @@ namespace NumpyDotNetTests
 
             // Or a non uniform one:
 
-            x = np.array(new float[] { 0.0f, 1.0f, 1.5f, 3.5f, 4.0f, 6.0f }, dtype: np.Float32);
+            x = np.array(new double[] { 0.0f, 1.0f, 1.5f, 3.5f, 4.0f, 6.0f }, dtype: np.Float64);
             var d = np.gradient(f, new object[] { x });
             AssertArray(d[0], new double[] { 1.0,  3.0,  3.5, 6.7, 6.9, 2.5 });
             print(d[0]);
@@ -1420,7 +1420,7 @@ namespace NumpyDotNetTests
             // uniform for axis=0 and non uniform for axis=1
 
             var dx = 2.0;
-            var y = new float[] { 1.0f, 1.5f, 3.5f };
+            var y = new double[] { 1.0, 1.5, 3.5 };
             var b = np.gradient(np.array(new int[,] { { 1, 2, 6 }, { 3, 4, 5 } }, dtype: np.Float64), new object[] { dx, y });
             AssertArray(b[0], new double[,] { { 1.0, 1.0, -0.5 }, { 1.0, 1.0, -0.5 } });
             AssertArray(b[1], new double[,] { { 2.0, 2.0, 2.0 }, { 2.0, 1.6999999999999993, 0.5 } });
@@ -2034,7 +2034,7 @@ namespace NumpyDotNetTests
             var b = np.arange(9.0).reshape((3, 3));
             var c = np.arange(3.0);
             var d = np.add(b, c);
-            AssertArray(d, new double[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
+            AssertArray(d, new float[,] { { 0, 2, 4 }, { 3, 5, 7 }, { 6, 8, 10 } });
             print(d);
 
         }
@@ -2110,8 +2110,8 @@ namespace NumpyDotNetTests
             Assert.AreEqual(8.0, a.GetItem(0));
             print(a);
 
-            var b = np.arange(9.0).reshape((3, 3));
-            var c = np.arange(3.0);
+            var b = np.arange(9.0, dtype: np.Float64).reshape((3, 3));
+            var c = np.arange(3.0, dtype: np.Float64);
             var d = np.multiply(b, c);
             AssertArray(d, new double[,] { { 0, 1, 4 }, { 0, 4, 10 }, { 0, 7, 16 } });
             print(d);
@@ -2209,8 +2209,8 @@ namespace NumpyDotNetTests
             Assert.AreEqual(-3.0, a.GetItem(0));
             print(a);
 
-            var b = np.arange(9.0).reshape((3, 3));
-            var c = np.arange(3.0);
+            var b = np.arange(9.0, dtype: np.Float64).reshape((3, 3));
+            var c = np.arange(3.0, dtype: np.Float64);
             var d = np.subtract(b, c);
             AssertArray(d, new double[,] { { 0, 0, 0 }, { 3, 3, 3 }, { 6, 6, 6 } });
             print(d);
@@ -2575,7 +2575,7 @@ namespace NumpyDotNetTests
         public void test_heaviside_1()
         {
             var a = np.heaviside(new float[] { -1.5f, 0.0f, 2.0f }, 0.5f);
-            AssertArray(a, new double[] {0.0f, 0.5f, 1.0f });
+            AssertArray(a, new float[] {0.0f, 0.5f, 1.0f });
             print(a);
 
             var b = np.heaviside(new double[] { -1.5, 0, 2.0 }, 1);
@@ -2600,7 +2600,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.maximum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { double.NaN, double.NaN, double.NaN });
+            AssertArray(c, new float[] { float.NaN, float.NaN, float.NaN });
             print(c);
 
             var d = np.maximum(double.PositiveInfinity, 1);
@@ -2620,7 +2620,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.minimum(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { float.NaN, float.NaN, float.NaN });
+            AssertArray(c, new float[] { float.NaN, float.NaN, float.NaN });
             print(c);
 
             var d = np.minimum(double.PositiveInfinity, 1);
@@ -2640,7 +2640,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmax(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
+            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
             print(c);
 
             var d = np.fmax(double.PositiveInfinity, 1);
@@ -2660,7 +2660,7 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.fmin(new float[] { float.NaN, 0, float.NaN }, new float[] { 0, float.NaN, float.NaN });
-            AssertArray(c, new double[] { 0.0, 0.0, double.NaN });
+            AssertArray(c, new float[] { 0.0f, 0.0f, float.NaN });
             print(c);
 
             var d = np.fmin(double.PositiveInfinity, 1);

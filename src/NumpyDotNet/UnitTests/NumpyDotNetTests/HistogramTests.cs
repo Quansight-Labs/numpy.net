@@ -284,7 +284,7 @@ namespace NumpyDotNetTests
             print(x);
 
             x = np.histogram(np.arange(4), bins: 5, density: true);
-            AssertArray(x.hist, new double[] { 0.416666650109822, 0.416666650109822, 0.0, 0.416666650109822, 0.416666650109822 });
+            AssertArray(x.hist, new double[] { 0.41666666666666669, 0.41666666666666669, 0.0, 0.41666666666666663, 0.41666666666666663 });
             AssertArray(x.bin_edges, new double[] { 0.0, 0.6, 1.2, 1.8, 2.4, 3.0 });
             print(x);
 
