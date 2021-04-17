@@ -294,20 +294,20 @@ namespace NumpyDotNetTests
             print(b);
 
             var c = np.nanmedian(a);
-            Assert.AreEqual((double)3.0, c.GetItem(0));
+            Assert.AreEqual((float)3.0, c.GetItem(0));
             print(c);
 
             var d = np.nanmedian(a, axis: 0);
-            AssertArray(d, new double[] { 6.5, 2.0, 2.5 });
+            AssertArray(d, new float[] { 6.5f, 2.0f, 2.5f });
             print(d);
 
             var e = np.median(a, axis: 1);
-            AssertArray(e, new double[] { double.NaN, 2.0f });
+            AssertArray(e, new float[] { float.NaN, 2.0f });
             print(e);
 
             var f = a.Copy();
             var g = np.nanmedian(f, axis: 1);
-            AssertArray(g, new double[] { 7.0, 2.0 });
+            AssertArray(g, new float[] { 7.0f, 2.0f });
             print(g);
 
             //Assert.IsFalse(np.allb(a == f));
@@ -325,7 +325,7 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new float[,] { { 1, float.NaN }, { 3, 4 } });
             var b = np.mean(a);
-            Assert.AreEqual(double.NaN, b.GetItem(0));
+            Assert.AreEqual(float.NaN, b.GetItem(0));
             print(b);
 
             var c = np.nanmean(a);

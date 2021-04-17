@@ -34,8 +34,8 @@ namespace NumpyDotNetTests
         public void test_fv_float_FLOAT()
         {
             var x = npf.fv(0.075f, 20, -2000, 0, 0);
-            AssertArray(x, new float[] { 86609.46f });
-            Assert.AreEqual(86609.46f, (float)x);
+            AssertArray(x, new float[] { 86609.45f });
+            Assert.AreEqual(86609.45f, (float)x);
             print(x);
         }
 
@@ -105,7 +105,7 @@ namespace NumpyDotNetTests
         public void test_fv_broadcast_FLOAT()
         {
             var result = npf.fv(new float[,] { { 0.1f }, { 0.2f } }, 5, 100, 0, new int[] { 0, 1 });
-            AssertArray(result, new float[,] { { -610.5102f, -671.5612f }, { -744.1602f, -892.9923f } });
+            AssertArray(result, new float[,] { { -610.510254f, -671.5613f }, { -744.1603f, -892.9924f } });
             print(result);
         }
 
@@ -198,8 +198,8 @@ namespace NumpyDotNetTests
         public void test_pmt_1_FLOAT()
         {
             var res = npf.pmt(0.08f / 12f, 5 * 12, 15000);
-            AssertArray(res, new double[] { -304.14613573331445 });
-            Assert.AreEqual(-304.14613573331445, (double)res);
+            AssertArray(res, new double[] { -304.14613557314783 });
+            Assert.AreEqual(-304.14613557314783, (double)res);
             print(res);
 
             res = npf.pmt(0.0f, 5 * 12, 15000);
@@ -208,7 +208,7 @@ namespace NumpyDotNetTests
             print(res);
 
             res = npf.pmt(new float[,] { { 0.0f, 0.8f }, { 0.3f, 0.8f } }, new int[] { 12, 3 }, new int[] { 2000, 20000 });
-            AssertArray(res, new double[,] { { -166.66666666666666, -19311.258883521979 }, { -626.90817745614572, -19311.258883521979 } });
+            AssertArray(res, new double[,] { { -166.66666666666666, -19311.258768925054 }, { -626.90816408223657, -19311.258768925054 } });
             print(res);
         }
 

@@ -583,7 +583,7 @@ namespace NumpyDotNetTests
             a[1, ":"] = 0.1;
             ndarray b = np.mean(a);
             print(b);
-            Assert.AreEqual(0.546875f, (double)b.GetItem(0), 0.0000001);
+            Assert.AreEqual(0.546875f, (float)b.GetItem(0), 0.0000001);
 
             ndarray c = np.mean(a, dtype: np.Float64);
             print(c);
@@ -628,7 +628,7 @@ namespace NumpyDotNetTests
             a[1, ":"] = 0.1;
             b = np.std(a);
             print(b);
-            Assert.AreEqual(0.45172946707416706, (double)b.GetItem(0), 0.0000001);
+            Assert.AreEqual(0.451729476, (float)b.GetItem(0), 0.0000001);
             // Computing the standard deviation in float64 is more accurate:
             c = np.std(a, dtype: np.Float64);
             print(c);

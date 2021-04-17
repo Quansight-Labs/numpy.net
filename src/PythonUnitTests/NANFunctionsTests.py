@@ -210,7 +210,7 @@ class NANFunctionsTests(unittest.TestCase):
 
     def test_nanmean_1(self):
 
-        a = np.array([[1, np.nan], [3, 4]])
+        a = np.array([[1, np.nan], [3, 4]], dtype=np.float32)
         b = np.mean(a)
         print(b)
 

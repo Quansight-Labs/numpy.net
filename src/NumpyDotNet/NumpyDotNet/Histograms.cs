@@ -224,7 +224,7 @@ namespace NumpyDotNet
         {
             var x = np.asanyarray(_x);
 
-            var bins = np.percentile(x, new float[] { 75, 25 });
+            var bins = np.percentile(x, new int[] { 75, 25 });
             var iqr = (double)bins.GetItem(0) - (double)bins.GetItem(1);
             return 2.0 * iqr * Math.Pow(x.size, (-1.0 / 3.0));
         }
