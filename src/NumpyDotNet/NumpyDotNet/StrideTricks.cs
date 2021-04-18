@@ -189,7 +189,7 @@ namespace NumpyDotNet
                 throw new ValueError("cannot broadcast a non-scalar to a scalar array");
             }
 
-            if (np.anyb(np.array(newshape.iDims) < 0))
+            if (np.anyb(np.array(newshape.iDims) < (npy_intp)0))
             {
                 throw new ValueError("all elements of broadcast shape must be non-negative");
             }
