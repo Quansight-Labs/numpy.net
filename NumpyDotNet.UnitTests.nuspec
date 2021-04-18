@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet.UnitTests</id>
-    <version>0.9.70</version>
+    <version>0.9.73</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package provides the unit tests for the NumpyDotNet library. Multi-threaded, fast and accurate.</description>
-    <releaseNotes>Numpy financial API with unit tests.</releaseNotes>
+    <releaseNotes>Fixed float operations that previously returned doubles incorrectly</releaseNotes>
     <copyright>Copyright 2021, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
