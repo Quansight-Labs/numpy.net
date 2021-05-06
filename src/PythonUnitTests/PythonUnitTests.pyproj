@@ -83,6 +83,9 @@
     <Compile Include="FinancialFunctionsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EinsumFuncTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>

@@ -701,12 +701,6 @@ namespace NumpyDotNetTests
 
         }
 
-        [Ignore] // not implemented yet
-        [TestMethod]
-        public void xxx_test_einsum_1()
-        {
-
-        }
 
         [TestMethod]
         public void test_roll_forward()
