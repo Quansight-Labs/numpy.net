@@ -141,6 +141,7 @@ namespace NumpyDotNet
 
             private ndarray _randbool(Int64 low, UInt64? high, shape newdims)
             {
+                newdims = ConvertToSingleElementIfNull(newdims);
                 bool[] randomData = new bool[CountTotalElements(newdims)];
 
      
@@ -160,6 +161,7 @@ namespace NumpyDotNet
                 if (high != null && high.Value > (UInt64)System.SByte.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for Int8"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 SByte[] randomData = new SByte[CountTotalElements(newdims)];
 
                 SByte _low = Convert.ToSByte(low);
@@ -193,6 +195,7 @@ namespace NumpyDotNet
                 if (high != null && high.Value > (UInt64)System.Byte.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for UInt8"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 Byte[] randomData = new Byte[CountTotalElements(newdims)];
 
                 Byte _low = Convert.ToByte(low);
@@ -226,6 +229,7 @@ namespace NumpyDotNet
                 if (high != null && high.Value > (UInt64)System.Int16.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for Int16"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 Int16[] randomData = new Int16[CountTotalElements(newdims)];
 
                 Int16 _low = Convert.ToInt16(low);
@@ -259,6 +263,7 @@ namespace NumpyDotNet
                 if (high != null && high.Value > System.UInt16.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for UInt16"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 UInt16[] randomData = new UInt16[CountTotalElements(newdims)];
 
                 UInt16 _low = Convert.ToUInt16(low);
@@ -323,6 +328,7 @@ namespace NumpyDotNet
                 if (high > System.Int32.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for Int32"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 Int32[] randomData = new Int32[CountTotalElements(newdims)];
 
                 Int32 _low = Convert.ToInt32(low);
@@ -355,6 +361,7 @@ namespace NumpyDotNet
                 if (high > System.UInt32.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for UInt32"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 UInt32[] randomData = new UInt32[CountTotalElements(newdims)];
 
                 UInt32 _low = Convert.ToUInt32(low);
@@ -388,6 +395,7 @@ namespace NumpyDotNet
                 if (high > System.Int64.MaxValue)
                     throw new ValueError(string.Format("high is out of bounds for Int64"));
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 Int64[] randomData = new Int64[CountTotalElements(newdims)];
 
                 Int64 _low = Convert.ToInt64(low);
@@ -423,6 +431,7 @@ namespace NumpyDotNet
                     throw new ValueError(string.Format("high is out of bounds for UInt64"));
 
 
+                newdims = ConvertToSingleElementIfNull(newdims);
                 UInt64[] randomData = new UInt64[CountTotalElements(newdims)];
 
                 UInt64 _low = Convert.ToUInt64(low);
@@ -1798,7 +1807,14 @@ namespace NumpyDotNet
                 return TotalElements;
             }
 
-
+            private shape ConvertToSingleElementIfNull(shape _shape)
+            {
+                if (_shape == null)
+                {
+                    return new shape(1);
+                }
+                return _shape;
+            }
             private npy_intp CountTotalElements(shape _shape)
             {
                 npy_intp TotalElements = 1;
