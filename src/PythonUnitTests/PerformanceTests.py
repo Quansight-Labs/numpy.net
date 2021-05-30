@@ -1220,6 +1220,18 @@ class PerformanceTests(unittest.TestCase):
         rs, cs = valid.nonzero()
         output[rs, cs, :] = [255, 255, 255]
         print(output)
+
+    def test_goodgood_test_2(self):
+
+        imgnd = np.arange(1,301).reshape(10,10,3)
+        R = imgnd[:, :, 0]
+        G = imgnd[:, :, 1]
+        B = imgnd[:, :, 2]
+        print(R.shape,G.shape,B.shape)
+        print(R)
+        print(G)
+        print(B)
+
         
 
 if __name__ == '__main__':

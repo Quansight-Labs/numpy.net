@@ -2793,6 +2793,29 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_customer_goodgood_reported_issue_2()
+        {
+            var imgnd = np.arange(1,301).reshape(new shape(10, 10, 3));
+ 
+
+            var r = (ndarray)imgnd[":", ":", "0"];
+            var g = (ndarray)imgnd[":", ":", 1];
+            var b = (ndarray)imgnd[":", ":", 2];
+
+            r = imgnd.A(":", ":", "0");
+            g = imgnd.A(":", ":", 1);
+            b = imgnd.A(":", ":", 2);
+
+            print(r.shape);
+            print(g.shape);
+            print(b.shape);
+            print(r);
+            print(g);
+            print(b);
+
+        }
+
 
     }
 }
