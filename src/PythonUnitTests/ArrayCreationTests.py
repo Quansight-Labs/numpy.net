@@ -9,6 +9,12 @@ class ArrayCreationTests(unittest.TestCase):
     def test_PrintVersionString(self):
         print(np.__version__)
 
+    def test_simpleShape_1(self):
+
+        a=np.array([1,2,3])
+        x=a.shape[0]
+
+        print(x)
 
     def test_Slice3x2x2_1(self):
 

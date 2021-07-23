@@ -63,6 +63,37 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_simpleShape_1()
+        {
+            var a = np.array(new int[] { 1, 2, 3 });
+
+            var x = a.shape.iDims[0];
+            Assert.AreEqual(x, 3);
+            print(x);
+
+            var y = a.shape[0];
+            Assert.AreEqual(y, 3);
+            print(y);
+
+            var b = np.arange(0,100).reshape(4,-1);
+
+            var x1 = b.shape.iDims[0];
+            var x2 = b.shape.iDims[1];
+
+            Assert.AreEqual(x1, 4);
+            Assert.AreEqual(x2, 25);
+
+            var y1 = b.shape[0];
+            var y2 = b.shape[1];
+
+            Assert.AreEqual(y1, 4);
+            Assert.AreEqual(y2, 25);
+
+            return;
+        }
+
+
+        [TestMethod]
         public void test_asfarray_1()
         {
             var a = np.asfarray(new int[] { 2, 3 });

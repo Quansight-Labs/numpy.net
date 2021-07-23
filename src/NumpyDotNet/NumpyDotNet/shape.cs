@@ -48,6 +48,18 @@ namespace NumpyDotNet
     {
         public npy_intp[] iDims = null;
 
+        public npy_intp this[npy_intp index]
+        {
+            get
+            {
+                if (index < 0 || index > iDims.Length - 1)
+                    throw new Exception("attempting to access shape dimension outside range");
+
+                return this.iDims[index];
+            }
+
+        }
+
         public npy_intp lastDim
         {
             get
