@@ -1938,6 +1938,65 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_append_msever_1()
+        {
+            ndarray a = np.array(new int[,] { {1,2,3 }, {4,5,6} }, dtype: np.Int32);
+            ndarray b = np.array(new int[] { 7, 8, 9 }, dtype: np.Int32);
+
+
+            //b = b[np.newaxis, "..."] as ndarray;
+            b = np.expand_dims(b, axis: 0);
+          
+
+            ndarray c = np.append(a, b, axis: 0);
+
+            print(c);
+            print(c.shape);
+
+            var ExpectedDataC = new Int32[,]
+            {
+                { 1,2,3 },
+                { 4,5,6 },
+                { 7,8,9 },
+            };
+
+            AssertArray(c, ExpectedDataC);
+
+        }
+
+        [TestMethod]
+        public void test_append_msever_2()
+        {
+            var empty_array = np.empty((0, 4), dtype: np.Int32);
+            print("Empty 2D Numpy array:");
+            print(empty_array);
+
+            // Append a row to the 2D numpy array
+            empty_array = np.append(empty_array, np.array(new Int32[,] { { 11, 21, 31, 41 } }), axis: 0);
+            // Append 2nd rows to the 2D Numpy array
+            empty_array = np.append(empty_array, np.array(new Int32[,] { { 15, 25, 35, 45 } }), axis: 0);
+            print("2D Numpy array:");
+            print(empty_array);
+
+            // Append multiple rows i.e 2 rows to the 2D Numpy array
+            empty_array = np.append(empty_array, np.array(new Int32[,] { { 16, 26, 36, 46 }, { 17, 27, 37, 47 } }), axis: 0);
+            print("2D Numpy array:");
+            print(empty_array);
+
+            var ExpectedDataC = new Int32[,]
+            {
+                { 11,21,31,41 },
+                { 15,25,35,45 },
+                { 16,26,36,46 },
+                { 17,27,37,47 },
+            };
+
+            AssertArray(empty_array, ExpectedDataC);
+
+
+        }
+
+        [TestMethod]
         public void test_flat_1()
         {
             var x = np.arange(10, 16).reshape(new shape(2, 3));
