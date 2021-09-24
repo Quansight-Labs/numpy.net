@@ -882,6 +882,24 @@ class ArrayCreationTests(unittest.TestCase):
         print(c.strides)
         print("")
 
+    def test_append_msever_1(self):
+
+        arr = np.array([[1,2,3],[4,5,6]])
+        row = np.array([7,8,9])
+        arr = np.append(arr,[row],axis= 0)
+        print(arr)
+
+    def test_tuple_msever_2(self):
+
+        a = np.array((1,2,3))
+        print(a)
+        b = np.array((2,3,4))
+        print(b)
+          
+        c = np.column_stack((a,b))
+        print(c)
+
+
 
 
     def test_flat_1(self):
