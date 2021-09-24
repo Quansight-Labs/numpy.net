@@ -1997,6 +1997,27 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_tuple_msever_1()
+        {
+            var a = np.array(new int[] { 1, 2, 3 });
+            print(a);
+            var b = np.array(new int[] { 2, 3, 4 });
+            print(b);
+
+            var c = np.column_stack(new object[] { a, b });
+            print(c);
+
+            var ExpectedDataC = new Int32[,]
+            {
+                {1,2},
+                {2,3},
+                {3,4},
+            };
+
+            AssertArray(c, ExpectedDataC);
+        }
+
+        [TestMethod]
         public void test_flat_1()
         {
             var x = np.arange(10, 16).reshape(new shape(2, 3));
