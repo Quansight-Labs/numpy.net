@@ -899,8 +899,26 @@ class ArrayCreationTests(unittest.TestCase):
         c = np.column_stack((a,b))
         print(c)
 
+    def test_slice_msever_1(self):
 
+        a=np.array([[1,3,0],[0,0,5]])
 
+        col1 = a[:,0] 
+        col2 = a[:,1]
+        col3 = a[:,2]
+
+        print(col1)
+        print(col2)
+        print(col3)
+
+    def test_hsplit_msever_1(self):
+
+        a=np.array([[1,3,0],[0,0,5]])
+
+        row, col = np.hsplit(np.argwhere(a),2)
+
+        print(row)
+        print(col)
 
     def test_flat_1(self):
 

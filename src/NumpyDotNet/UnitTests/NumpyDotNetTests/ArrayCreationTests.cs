@@ -2017,6 +2017,45 @@ namespace NumpyDotNetTests
             AssertArray(c, ExpectedDataC);
         }
 
+
+        [TestMethod]
+        public void test_slice_msever_1()
+        {
+            var a = np.array(new int[,] { { 1, 3, 0 }, { 0, 0, 5 } });
+
+            var col0 = (ndarray)a[":", 0];
+            var col1 = (ndarray)a[":", 1];
+            var col2 = (ndarray)a[":", 2];
+
+            print(col0);
+            AssertArray(col0, new Int32[] { 1, 0 });
+
+            print(col1);
+            AssertArray(col1, new Int32[] { 3, 0 });
+
+            print(col2);
+            AssertArray(col2, new Int32[] { 0, 5 });
+
+        }
+
+        [TestMethod]
+        public void test_hsplit_msever_1()
+        {
+            var a = np.array(new int[,] { { 1, 3, 0 }, { 0, 0, 5 } });
+
+            var hsplitret = np.hsplit(np.argwhere(a), 2);
+
+            var rowcol = hsplitret.ToArray();
+
+            print(rowcol[0]);
+            AssertArray(rowcol[0], new Int64[,] { { 0 }, { 0 }, { 1 } });
+
+            print(rowcol[1]);
+            AssertArray(rowcol[1], new Int64[,] { { 0 }, { 1 }, { 2 } });
+
+
+        }
+
         [TestMethod]
         public void test_flat_1()
         {
