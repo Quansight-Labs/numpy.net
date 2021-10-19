@@ -920,6 +920,33 @@ class ArrayCreationTests(unittest.TestCase):
         print(row)
         print(col)
 
+    def test_take_msever_1(self):
+
+        testVector = np.array([ 1.011163, 1.01644999999999, 1.01220500000001, 1.01843699999999, 1.00985100000001, 1.018964, 1.005825, 1.016707, 8.11556899999999, 1.010744, 1.01700600000001, 1.01323099999999, 1.010389, 1.015216, 1.015418, 1.01704600000001, 1.01191, 1.01164299999999, 1.01062400000001, 1.014199, 1.012952, 1.017645, 1.01591999999999, 1.018655, 1.00942400000001, 1.012852, 1.010543, 1.02000700000001, 1.008196, 1.01396099999999 ]);
+        testVector2 = testVector.reshape(15, 2);
+        testDataMode1 = np.array([ 1, 2, 2, 3, 4, 7, 9 ]);
+
+        print(testVector2);
+        print(testDataMode1);
+
+        print("np.take()");
+        testTake = np.take(testVector2, testDataMode1.astype(np.intp), axis=0);
+        print(testTake);
+
+        testVector3 = np.arange(0.0, 30000.0, 0.5, dtype= np.float64);
+        testVector4 = testVector3.reshape(30000, 2);
+        testIndex = np.arange(0, 30000, 100, dtype= np.intp);
+
+        print("test BIG np.take()");
+        # testBigTake = np.take(testVector4, testIndex, axis: 0);
+        testBigTake = np.zeros((300, 2), dtype= np.float64);
+        testBigTake = np.take(testVector4, testIndex, axis= 0);
+        print(testIndex);
+        print(testBigTake);
+        print(np.diff(testIndex));
+        print(np.diff(testBigTake, axis= 0));
+
+
     def test_flat_1(self):
 
         x = np.arange(10, 16).reshape(2,3);

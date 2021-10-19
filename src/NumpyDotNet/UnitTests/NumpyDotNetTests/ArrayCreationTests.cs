@@ -2057,6 +2057,80 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_take_msever_1()
+        {
+            ndarray testVector = np.array(new System.Double[] { 1.011163, 1.01644999999999, 1.01220500000001, 1.01843699999999, 1.00985100000001, 1.018964, 1.005825, 1.016707, 8.11556899999999, 1.010744, 1.01700600000001, 1.01323099999999, 1.010389, 1.015216, 1.015418, 1.01704600000001, 1.01191, 1.01164299999999, 1.01062400000001, 1.014199, 1.012952, 1.017645, 1.01591999999999, 1.018655, 1.00942400000001, 1.012852, 1.010543, 1.02000700000001, 1.008196, 1.01396099999999 });
+            ndarray testVector2 = testVector.reshape(15, 2);
+            ndarray testDataMode1 = np.array(new System.Double[] { 1, 2, 2, 3, 4, 7, 9 });
+
+            print(testVector2);
+            print(testDataMode1);
+
+            print("np.take()");
+            ndarray testTake = np.take(testVector2, testDataMode1.astype(np.intp), axis: 0);
+            print(testTake);
+
+            ndarray testVector3 = np.arange(0.0, 30000.0, 0.5, dtype: np.Float64);
+            ndarray testVector4 = testVector3.reshape(30000, 2);
+            ndarray testIndex = np.arange(0, 30000, 100, dtype: np.intp);
+
+            print("test BIG np.take()");
+
+            for (int i = 0; i < 99; i++)
+            {
+                ndarray testBigTake = np.take(testVector4, testIndex, axis: 0);
+                VerifyIndexByOffset(testIndex, 100);
+                VerifyTakeByOffset(testBigTake, 100);
+            }
+
+        }
+
+        private void VerifyTakeByOffset(ndarray testBigTake, int offset)
+        {
+            Int64 arrayLength = testBigTake.Size/2;
+
+            double LastRowCol0 = (double)testBigTake[0, 0];
+            double LastRowCol1 = (double)testBigTake[0, 1];
+
+            for (Int64 i = 1; i < arrayLength; i++)
+            {
+                double CurrentRowCol0 = (double)testBigTake[i, 0];
+                double CurrentRowCol1 = (double)testBigTake[i, 1];
+
+                if ((CurrentRowCol0 - LastRowCol0) != offset)
+                {
+                    throw new Exception("bad take");
+                }
+                if ((CurrentRowCol1 - LastRowCol1) != offset)
+                {
+                    throw new Exception("bad take");
+                }
+
+                LastRowCol0 = CurrentRowCol0;
+                LastRowCol1 = CurrentRowCol1;
+            }
+
+        }
+
+        private void VerifyIndexByOffset(ndarray testIndex, int offset)
+        {
+            Int64 arrayLength = testIndex.Size;
+
+            Int64 LastIndex = (Int64)testIndex[0];
+            for (Int64 i = 1; i < arrayLength; i++)
+            {
+                Int64 CurrentIndex = (Int64)testIndex[i];
+
+                if ((CurrentIndex - LastIndex) != offset)
+                {
+                    throw new Exception("bad index");
+                }
+
+                LastIndex = CurrentIndex;
+            }
+        }
+
+        [TestMethod]
         public void test_flat_1()
         {
             var x = np.arange(10, 16).reshape(new shape(2, 3));
