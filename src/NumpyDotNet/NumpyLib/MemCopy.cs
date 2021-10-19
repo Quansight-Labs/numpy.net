@@ -5480,13 +5480,17 @@ namespace NumpyLib
                 }
                 else
                 {
-                    if (Temp == null || Temp.Length < ElementCount)
+                    lock(this)
                     {
-                        Temp = new T[ElementCount];
-                    }
+                        if (Temp == null || Temp.Length < ElementCount)
+                        {
+                            Temp = new T[ElementCount];
+                        }
 
-                    Array.Copy(sa, sOffset, Temp, 0, ElementCount);
-                    Array.Copy(Temp, 0, da, dOffset, ElementCount);
+                        Array.Copy(sa, sOffset, Temp, 0, ElementCount);
+                        Array.Copy(Temp, 0, da, dOffset, ElementCount);
+                    }
+    
                 }
             }
             else
