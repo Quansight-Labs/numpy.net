@@ -3,7 +3,7 @@
 
 This is a 100% pure .NET implementation of the Numpy API.  This library is ported from the real Numpy source code. The C and the Python code of Numpy have been ported to C#.  This approach allows us to capture all of the nuances that are in the original Numpy libraries.
 
-We have near 100% of the API ported and unit tested.  The one notable missing function is np.einsum (volunteers welcome).
+We have near 100% of the API ported and unit tested.  
 
 The result is a .NET library that is 100% compatible with the Numpy API.  It can be run anywhere that .NET can run. There are no dependencies on having Python installed.  There are no performance issues related to interoping with Python. 
 
@@ -81,6 +81,8 @@ We have implemented the latest numpy financial API with full support of decimal 
 
 ##### Future plans include support for:
 
+* np.einsum
+* no.linalg (linear algebra package)
 * np.pad ??
 * masked arrays??
 
@@ -146,7 +148,20 @@ NumpyDotNet supports the slicing syntax  like this:
 
 or like this:  
 
-    var A1 = A[new Slice(1,4,2), new Slice(10,2,-2)];  
+    var A1 = A[new Slice(1,4,2), new Slice(10,0,-2)];  
+
+
+In the example of python slicing array with index like this:  
+
+    A1 = A[1:4:2, 2]    
+
+NumpyDotNet supports the slicing syntax like this:  
+
+    var A1 = A["1:4:2", 2];  
+
+or like this:  
+
+    var A1 = A[new Slice(1,4,2), 2];  
 
 We also support Ellipsis slicing:  
 
