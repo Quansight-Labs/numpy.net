@@ -2713,21 +2713,34 @@ namespace NumpyDotNetTests
             //print(g);
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void test_interp_1()
         {
             var xp = new float[] { 1, 2, 3 };
             var fp = new float[] { 3, 2, 0 };
-            var a = np.interp(2.5, xp, fp);
-            print(a);
+  
 
-            var b = np.interp(new double[] { 0, 1, 1.5, 2.72, 3.14 }, xp, fp);
-            print(b);
+            try
+            {
+                var a = np.interp(2.5, xp, fp);
+                print(a);
 
-            float UNDEF = -99.0f;
-            var c = np.interp(3.14, xp, fp, right : UNDEF);
-            print(c);
+                var b = np.interp(new double[] { 0, 1, 1.5, 2.72, 3.14 }, xp, fp);
+                print(b);
+
+                float UNDEF = -99.0f;
+                var c = np.interp(3.14, xp, fp, right: UNDEF);
+                print(c);
+            }
+            catch (NotImplementedException nie)
+            {
+                Console.WriteLine(nie.Message);
+                return;
+            }
+
+            Assert.Fail("This should have thrown an exception");
+ 
         }
 
 

@@ -1160,7 +1160,7 @@ namespace NumpyDotNet
             array([ 0.+1.j ,  1.+1.5j])
              */
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("use https://numerics.mathdotnet.com/ instead");
         }
         #endregion
 
