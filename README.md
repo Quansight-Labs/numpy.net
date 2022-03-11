@@ -82,7 +82,7 @@ We have implemented the latest numpy financial API with full support of decimal 
 ##### Future plans include support for:
 
 * np.einsum
-* no.linalg (linear algebra package) try https://numerics.mathdotnet.com/ as a substitue
+* no.linalg (linear algebra package) try https://numerics.mathdotnet.com/ as a substitute
 * np.pad ??
 * masked arrays??
 
