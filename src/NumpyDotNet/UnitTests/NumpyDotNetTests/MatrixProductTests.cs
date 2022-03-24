@@ -17,17 +17,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class MatrixProductTests : TestBaseClass
     {
-        [TestMethod]
-        public void test_matmul_asiamartini_bugreport()
-        {
-            var rq = np.array(new double[] { 0.5, 0.5, 0.5, 0.5 });
-            var am = np.array(new double[,] { { -21.5, 33.5, 17.5, -12.5 }, { 33.5, 12.5, 23.5, 15.5 }, { 17.5, 23.5, -30.5, -17.5 }, { -12.5, 15.5, -17.5, 39.5 } });
-   
-            var temp1 = np.matmul(rq.T, am);
-
-            AssertArray(temp1, new double[] { 8.5, 42.5, -3.5, 12.5 });
-            print(temp1);
-        }
+  
 
         [TestMethod]
         public void test_matmul_1()

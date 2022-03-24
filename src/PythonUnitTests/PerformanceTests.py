@@ -1209,28 +1209,7 @@ class PerformanceTests(unittest.TestCase):
         results = (255.0*results.reshape(nrows, ncols, results.shape[-1])).astype(np.uint8)
         print(results.shape)
 
-    def test_goodgood_test(self):
-
-        img = np.fromfile('test.dat',sep=',')
-        img = img.reshape(10,10,3)
-        print(img)
-        output = img.copy()
-
-        valid = np.all(img == [ 255, 255, 240], axis = -1)
-        rs, cs = valid.nonzero()
-        output[rs, cs, :] = [255, 255, 255]
-        print(output)
-
-    def test_goodgood_test_2(self):
-
-        imgnd = np.arange(1,301).reshape(10,10,3)
-        R = imgnd[:, :, 0]
-        G = imgnd[:, :, 1]
-        B = imgnd[:, :, 2]
-        print(R.shape,G.shape,B.shape)
-        print(R)
-        print(G)
-        print(B)
+ 
 
         
 

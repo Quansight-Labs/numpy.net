@@ -335,21 +335,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_randint_bitstormGER_bugreport()
-        {
-            var random = new np.random();
-            random.seed(8357);
-
-            var r1 = random.randint(0, 4242, dtype: np.UInt32);
-            AssertArray(r1, new UInt32[] { 2193 });
-
-            random.seed(8357);
-            var r2 = random.randint(0, 4242, new shape(1), dtype: np.UInt32);
-            AssertArray(r2, new UInt32[] { 2193 });
-
-        }
-
-        [TestMethod]
         public void test_randuint_1()
         {
             var random = new np.random();

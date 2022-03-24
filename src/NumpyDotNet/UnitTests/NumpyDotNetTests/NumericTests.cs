@@ -660,22 +660,6 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
-        public void test_tensordot_asiamartini_bugreport()
-        {
-            var alpha_0 = np.array(new double[] { 1.0, 1.0, 1.0 });
-            var temp = np.array(new double[,,] { { { 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 } }, 
-                                                 { { -18.0, 12.0, 12.0, -10.0 }, { 12.0, 10.0, 18.0, 12.0 }, { 12.0, 18.0, -10.0, -12.0 }, { -10.0, 12.0, -12.0, 18.0 } }, 
-                                                 { { -3.5, 21.5, 5.5, -2.5 }, { 21.5, 2.5, 5.5, 3.5 }, { 5.5, 5.5, -20.5, -5.5 }, { -2.5, 3.5, -5.5, 21.5 } }
-                                               });
-
-            var matrix = np.tensordot(alpha_0, temp, axes: (new long[] { 0 }, new long[] { 0 }));
-
-            AssertArray(matrix, new double[,] { { -21.5, 33.5, 17.5, -12.5 }, { 33.5, 12.5, 23.5, 15.5 }, { 17.5, 23.5, -30.5, -17.5 }, { -12.5, 15.5, -17.5, 39.5 } });
-
-            print(matrix);
-        }
-
-        [TestMethod]
         public void test_dot_1()
         {
             var a = new int[,] { { 1, 0 }, { 0, 1 } };
