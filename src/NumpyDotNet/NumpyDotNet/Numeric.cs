@@ -516,8 +516,70 @@ namespace NumpyDotNet
 
                 try
                 {
-                    object nonnull = FindFirstNonNullValue(ssrc);
-                    type_num = Get_NPYType(nonnull);
+         
+                    if (ssrc.Length == 0)
+                    {
+                        string typeName = ssrc.GetType().ToString();
+                        switch (typeName)
+                        {
+                            case "System.Boolean[]":
+                                type_num = NPY_TYPES.NPY_BOOL;
+                                break;
+                            case "System.Byte[]":
+                                type_num = NPY_TYPES.NPY_UBYTE;
+                                break;
+                            case "System.SByte[]":
+                                type_num = NPY_TYPES.NPY_BYTE;
+                                break;
+                            case "System.Int16[]":
+                                type_num = NPY_TYPES.NPY_INT16;
+                                break;
+                            case "System.UInt16[]":
+                                type_num = NPY_TYPES.NPY_UINT16;
+                                break;
+                            case "System.Int32[]":
+                                type_num = NPY_TYPES.NPY_INT32;
+                                break;
+                            case "System.UInt32[]":
+                                type_num = NPY_TYPES.NPY_UINT32;
+                                break;
+                            case "System.Int64[]":
+                                type_num = NPY_TYPES.NPY_INT64;
+                                break;
+                            case "System.UInt64[]":
+                                type_num = NPY_TYPES.NPY_UINT64;
+                                break;
+                            case "System.Single[]":
+                                type_num = NPY_TYPES.NPY_FLOAT;
+                                break;
+                            case "System.Double[]":
+                                type_num = NPY_TYPES.NPY_DOUBLE;
+                                break;
+                            case "System.Decimal[]":
+                                type_num = NPY_TYPES.NPY_DECIMAL;
+                                break;
+                            case "System.Numerics.Complex[]":
+                                type_num = NPY_TYPES.NPY_COMPLEX;
+                                break;
+                            case "System.Numerics.BigInteger[]":
+                                type_num = NPY_TYPES.NPY_BIGINT;
+                                break;
+                            case "System.Object[]":
+                                type_num = NPY_TYPES.NPY_OBJECT;
+                                break;
+                            case "System.String[]":
+                                type_num = NPY_TYPES.NPY_STRING;
+                                break;
+                                        
+                            default:
+                                throw new Exception("Unable to recognize array type:" + typeName);
+                        }
+                    }
+                    else
+                    {
+                        object nonnull = FindFirstNonNullValue(ssrc);
+                        type_num = Get_NPYType(nonnull);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2465,7 +2527,8 @@ namespace NumpyDotNet
                 return false;
             }
 
-            return np.allb(arr1.Equals(arr2));
+            var kevin = arr1.Equals(arr2);
+            return np.allb(kevin);
         }
         #endregion
 
