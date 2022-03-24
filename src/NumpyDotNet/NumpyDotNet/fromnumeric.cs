@@ -2469,6 +2469,12 @@ namespace NumpyDotNet
             */
 
             ndarray aa = np.FromAny(a, null, 0, 0, 0, null);
+            if (aa.Size == 0)
+            {
+                return np.array(new bool[] { false });
+            }
+
+
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
             return NpyCoreApi.ArrayAny(aa, iAxis, @out);
         }
@@ -2581,6 +2587,10 @@ namespace NumpyDotNet
             */
 
             ndarray aa = np.FromAny(a, null, 0, 0, 0, null);
+            if (aa.Size == 0)
+            {
+                return np.array(new bool[]{true});
+            }
 
             int iAxis = NpyUtil_ArgProcessing.AxisConverter(axis);
 

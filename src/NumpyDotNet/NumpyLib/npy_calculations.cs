@@ -2705,6 +2705,19 @@ namespace NumpyLib
         #region array to array numeric functions
         public static void PerformNumericOpArray(NpyArray srcArray, NpyArray destArray, NpyArray operArray, UFuncOperation operationType)
         {
+            if (NpyArray_SIZE(operArray) == 0 && NpyArray_SIZE(srcArray) == 0)
+            {
+                switch (operationType)
+                {
+                    case UFuncOperation.equal:
+                        NpyArray_Resize(destArray, new NpyArray_Dims() { len = 1, ptr = new npy_intp[] { 1 } }, false, NPY_ORDER.NPY_ANYORDER);
+                        bool[] bdata = destArray.data.datap as bool[];
+                        bdata[0] = true;
+                        return;
+                }
+
+            }
+            else
             if (NpyArray_SIZE(operArray) == 0 || NpyArray_SIZE(srcArray) == 0)
             {
                 NpyArray_Resize(destArray, new NpyArray_Dims() { len = 0, ptr = new npy_intp[] { } }, false, NPY_ORDER.NPY_ANYORDER);
