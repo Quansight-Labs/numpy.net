@@ -173,7 +173,7 @@ namespace NumpyLib
         public int outsize;
         public npy_intp index;
         public npy_intp size;
-        public VoidPtr idptr = new VoidPtr(new char[(int)UFuncsOptions.NPY_UFUNC_MAXIDENTITY], NPY_TYPES.NPY_BYTE);
+        public VoidPtr idptr = new VoidPtr(new sbyte[(int)UFuncsOptions.NPY_UFUNC_MAXIDENTITY], NPY_TYPES.NPY_BYTE);
 
         /* The ufunc */
         public NpyUFuncObject ufunc;
