@@ -431,5 +431,22 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_7()
+        {
+
+            var x = np.array(new Int32[0]);
+            print(x);
+
+            x = np.multiply(x, 5);
+            print(x);
+
+            x = x + 5;
+            print(x);
+         
+
+            return;
+        }
+
     }
 }

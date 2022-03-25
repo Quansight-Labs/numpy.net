@@ -160,5 +160,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         x = np.stack(([],[]))
         print(x)
 
+    def test_HadrianTang_7(self):
+
+        x = np.array([])
+        x = x * 5
+        print(x)
+        x = x + 5
+        print(x)
+
+     
+
 if __name__ == '__main__':
     unittest.main()
