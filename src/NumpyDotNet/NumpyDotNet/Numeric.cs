@@ -2533,8 +2533,7 @@ namespace NumpyDotNet
                 return false;
             }
 
-            var kevin = arr1.Equals(arr2);
-            return np.allb(kevin);
+            return np.allb(arr1.Equals(arr2));
         }
         #endregion
 
