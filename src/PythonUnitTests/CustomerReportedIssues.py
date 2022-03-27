@@ -168,6 +168,21 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         x = x + 5
         print(x)
 
+
+    def test_HadrianTang_8(self):
+
+        x = np.array([["0","1"],["0","0"]]).astype(np.float);
+     
+        print(x)
+    
+
+    def test_HadrianTang_9(self):
+
+        x = np.delete(np.array([["0", "1", "@"],["1", "0", "@"]]), 1, 1);
+     
+        print(x)
+    
+
      
 
 if __name__ == '__main__':

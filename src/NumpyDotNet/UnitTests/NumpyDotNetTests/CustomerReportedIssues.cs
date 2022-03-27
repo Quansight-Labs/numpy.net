@@ -448,5 +448,34 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_8()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Float64);
+
+
+            AssertArray(x, new double[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_HadrianTang_9()
+        {
+
+            var x = np.delete(np.array(new[,]{{"0", "1", "@"},{"1", "0", "@"},}), 1, 1);
+
+            AssertArray(x, new string[,] { { "0", "@" }, { "1", "@" } });
+
+            print(x);
+
+            return;
+        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace NumpyDotNetTests
         public void test_asfarray_STRING()
         {
             var a = np.asfarray(new string[] { "2", "3" });
-            AssertArray(a, new double[] { 0, 0 });
+            AssertArray(a, new double[] { 2, 3 });
             print(a);
 
             try
@@ -2058,11 +2058,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_gradient_1_STRING()
         {
-            // note: This function requires that all values be cast to doubles.
-            // since strings get cast to 0 in this case, effectively this function does not work with strings
+       
             var f = np.array(new string[] { "1", "2", "4", "7", "11", "16" }, dtype: np.Strings);
             var a = np.gradient(f);
-            AssertArray(a[0], new double[] { 0, 0, 0, 0, 0, 0 });
+            AssertArray(a[0], new double[] { 1, 1.5, 2.5, 3.5, 4.5, 5 });
             print(a[0]);
             print("***********");
         }
@@ -4886,7 +4885,7 @@ namespace NumpyDotNetTests
 
 
             var a = np.corrcoef(x1);
-            AssertArray(a, new double[,] { { double.PositiveInfinity, double.PositiveInfinity }, { double.PositiveInfinity, double.PositiveInfinity } });
+            AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
             print(a);
   
 
@@ -4919,10 +4918,8 @@ namespace NumpyDotNetTests
             var x1 = np.array(new string[,] { { "0", "2" }, { "1", "1" }, { "2", "0" } }).T;
             print(x1);
 
-            // strings cast to doubles == 0s
-
             var a = np.cov(x1);
-            AssertArray(a, new double[,] { { 0, 0 }, { 0, 0 } });
+            AssertArray(a, new double[,] { { 1, -1 }, { -1, 1 } });
             print(a);
             return;
         }

@@ -936,6 +936,13 @@ class MathematicalFunctionsTests(unittest.TestCase):
         d = nptest.gradient(f, x)
         print(d)
 
+    def test_gradient_STRING_1(self):
+        f = np.array(["1", "2", "4", "7", "11", "16"])
+        a = nptest.gradient(f)
+        print(a)
+  
+   
+
     def test_gradient_2(self):
 
         #For two dimensional arrays, the return will be two arrays ordered by
