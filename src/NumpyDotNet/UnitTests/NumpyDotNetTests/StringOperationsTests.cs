@@ -6025,6 +6025,222 @@ namespace NumpyDotNetTests
 
         #endregion
 
+        #region conversion functions
+
+        [TestMethod]
+        public void test_convertString_to_Bool()
+        {
+
+            var x = np.array(new[,]{
+                    {null, "1"},
+                    {"1", null},
+                }).astype(np.Bool);
+
+
+            AssertArray(x, new bool[,] { { false, true }, { true, false } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Byte()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.UInt8);
+
+
+            AssertArray(x, new byte[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_SByte()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Int8);
+
+
+            AssertArray(x, new sbyte[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Int16()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Int16);
+
+
+            AssertArray(x, new Int16[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_UInt16()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.UInt16);
+
+
+            AssertArray(x, new UInt16[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Int32()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Int32);
+
+
+            AssertArray(x, new Int32[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_UInt32()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.UInt32);
+
+
+            AssertArray(x, new UInt32[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Int64()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Int64);
+
+
+            AssertArray(x, new Int64[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_UInt64()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.UInt64);
+
+
+            AssertArray(x, new UInt64[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Float()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Float32);
+
+
+            AssertArray(x, new float[,] { { 0f, 1f }, { 1f, 0f } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Double()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Float64);
+
+
+            AssertArray(x, new double[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Decimal()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Decimal);
+
+
+            AssertArray(x, new decimal[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_Complex()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.Complex);
+
+
+            AssertArray(x, new Complex[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+        [TestMethod]
+        public void test_convertString_to_BigInt()
+        {
+
+            var x = np.array(new[,]{
+                    {"0", "1"},
+                    {"1", "0"},
+                }).astype(np.BigInt);
+
+
+            AssertArray(x, new BigInteger[,] { { 0, 1 }, { 1, 0 } });
+            print(x);
+
+            return;
+        }
+
+        #endregion
+
+
 
         #region STRING specific unit tests
 
