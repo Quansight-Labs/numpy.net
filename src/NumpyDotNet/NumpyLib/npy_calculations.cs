@@ -375,6 +375,8 @@ namespace NumpyLib
                 case UFuncOperation.greater:
                 case UFuncOperation.greater_equal:
                 case UFuncOperation.isnan:
+                case UFuncOperation.logical_or:
+                case UFuncOperation.logical_and:
                 {
                     newtype = NpyArray_DescrFromType(NPY_TYPES.NPY_BOOL);
                     break;
@@ -389,14 +391,7 @@ namespace NumpyLib
                     newtype = NpyArray_DescrFromType(ArrayHandler.MathOpReturnType(operationType));
                     break;
                 }
-                case UFuncOperation.logical_or:
-                {
-                    break;
-                }
-                case UFuncOperation.logical_and:
-                {
-                    break;
-                }
+
                 case UFuncOperation.floor:
                 {
                     break;

@@ -477,5 +477,20 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_10()
+        {
+
+            var x = np.logical_and(np.array(new[] { 0, 1, 2 }), np.array(new[] { 1, 0, 2 }));
+            AssertArray(x, new bool[] { false, false, true });
+            print(x);
+
+            x = np.logical_or(np.array(new[] { 1, 0, 2 }), np.array(new[] { 1, 0, 0 }));
+            AssertArray(x, new bool[] { true, false, true });
+            print(x);
+
+            return;
+        }
+
     }
 }

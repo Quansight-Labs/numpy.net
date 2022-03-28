@@ -182,8 +182,14 @@ class Test_CustomerReportedIssues(unittest.TestCase):
      
         print(x)
     
+    def test_HadrianTang_10(self):
 
-     
+        x = np.logical_and(np.array([0, 1, 2]), np.array([1, 0, 2]))
+        print(x)
+
+        x = np.logical_or(np.array([1, 0, 2]), np.array([1, 0, 0]))
+        print(x)
+    
 
 if __name__ == '__main__':
     unittest.main()
