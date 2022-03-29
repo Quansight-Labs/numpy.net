@@ -492,5 +492,18 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_11()
+        {
+            var a = (Int64)np.argmax(np.arange(5));
+            Assert.AreEqual(a, 4);
+            print(a);
+            var b = np.arange(7)[a];
+            print(b);
+            Assert.AreEqual(b, 4);
+
+            return;
+        }
+
     }
 }

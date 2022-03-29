@@ -189,7 +189,13 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         x = np.logical_or(np.array([1, 0, 2]), np.array([1, 0, 0]))
         print(x)
-    
 
+    def test_HadrianTang_11(self):
+
+        a = np.argmax(np.arange(5))
+        print(a)
+        b = np.arange(7)[a]
+        print(b)
+      
 if __name__ == '__main__':
     unittest.main()
