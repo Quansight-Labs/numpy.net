@@ -1734,6 +1734,10 @@ namespace NumpyDotNet
                 }
                 return numpyAPI.GetItem(this.Array, index);
             }
+            else if (ndim == 0)
+            {
+                return numpyAPI.GetItem(this.Array, 0);
+            }
             else
             {
                 return NpyCoreApi.ArrayItem(this, index);

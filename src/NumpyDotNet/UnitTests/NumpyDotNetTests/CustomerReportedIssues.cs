@@ -505,5 +505,19 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_12()
+        {
+            var a = np.array(4).shape;
+            //AssertShape(a, 0);
+
+            var index = np.array(4);
+            var x = (Int32)np.arange(7)[index];
+            Assert.AreEqual(x, 4);
+            print(x);
+
+            return;
+        }
+
     }
 }

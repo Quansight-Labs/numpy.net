@@ -196,6 +196,11 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(a)
         b = np.arange(7)[a]
         print(b)
+
+    def test_HadrianTang_12(self):
+
+        print(np.array(4).shape)
+        print(np.arange(7)[np.array(4)])
       
 if __name__ == '__main__':
     unittest.main()
