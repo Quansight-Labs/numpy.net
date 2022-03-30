@@ -201,6 +201,20 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         print(np.array(4).shape)
         print(np.arange(7)[np.array(4)])
+
+    def test_HadrianTang_13(self):
+
+       objecta = 9.234
+       objectb = 33
+
+       a = np.min(objecta)
+       b = np.max(objectb)
+       #c =  ndarray.this[objectb]
+
+       print(a)
+       print(b)
+       #print(c)
+
       
 if __name__ == '__main__':
     unittest.main()

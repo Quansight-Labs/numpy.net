@@ -519,5 +519,19 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_13()
+        {
+            var objecta = 9.234;
+            var objectb = 33;
+
+            var a = np.min(objecta);
+            var b = np.max(objectb);
+           // var c = ndarray.this[object];
+
+            return;
+        }
+
+
     }
 }
