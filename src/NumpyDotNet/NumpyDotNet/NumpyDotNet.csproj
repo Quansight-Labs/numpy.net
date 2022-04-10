@@ -8,13 +8,13 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2022, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.76</Version>
+    <Version>0.9.77</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>fixes related to zero element/empty arrays
+    <PackageReleaseNotes>fixes related to zero element/empty arrays, np.logical_and and np.logical_or return bool arrays for all datatypes, implement conversions of strings to numeric types.
 </PackageReleaseNotes>
   </PropertyGroup>
 
