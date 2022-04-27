@@ -991,7 +991,7 @@ namespace NumpyDotNetTests
             print(x);
             print(y);
 
-            Assert.AreEqual(-1.7f, y);
+            Assert.AreEqual(-1.7f, (float)y);
         }
 
         [TestMethod]
@@ -1004,7 +1004,7 @@ namespace NumpyDotNetTests
             print(x);
             print(y);
 
-            Assert.AreEqual(2.5f, y);
+            Assert.AreEqual(2.5f, (float)y);
         }
 
         [TestMethod]
