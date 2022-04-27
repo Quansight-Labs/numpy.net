@@ -738,7 +738,7 @@ namespace NumpyDotNet
             for (int i = 0; i < D; i++)
             {
                 // Rounding precision
-                dynamic mindiff = np.min(dedges[i]);
+                dynamic mindiff = np._min(dedges[i]);
                 if (!np.isinf(mindiff).GetItem(0))
                 {
                     var log10 = -np.log10(mindiff).GetItem(0);
@@ -1258,8 +1258,8 @@ namespace NumpyDotNet
             }
             else
             {
-                first_edge = Convert.ToSingle(np.min(a));
-                last_edge = Convert.ToSingle(np.max(a));
+                first_edge = Convert.ToSingle(np._min(a));
+                last_edge = Convert.ToSingle(np._max(a));
 
                 if (!((bool)np.isfinite(first_edge) && (bool)np.isfinite(last_edge)))
                 {

@@ -2883,13 +2883,7 @@ namespace NumpyDotNet
             return np.amax(a, axis, @out, keepdims);
         }
 
-
-        /// <summary>
-        /// Return the maximum of an array
-        /// </summary>
-        /// <param name="arr">Input data.</param>
-        /// <returns></returns>
-        public static object max(object arr)
+        private static object _max(object arr)
         {
             var resultArray = np.amax(arr);
             return DefaultArrayHandlers.GetArrayHandler(resultArray.TypeNum).ConvertToUpgradedValue(resultArray.GetItem(0));
@@ -3018,12 +3012,7 @@ namespace NumpyDotNet
             return np.amin(a, axis, @out, keepdims);
         }
 
-        /// <summary>
-        /// Return the minimum of an array
-        /// </summary>
-        /// <param name="arr">Input data.</param>
-        /// <returns></returns>
-        public static object min(object arr)
+        private static object _min(object arr)
         {
             var resultArray = np.amin(arr);
             return DefaultArrayHandlers.GetArrayHandler(resultArray.TypeNum).ConvertToUpgradedValue(resultArray.GetItem(0));

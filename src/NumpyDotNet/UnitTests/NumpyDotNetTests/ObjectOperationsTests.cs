@@ -1179,12 +1179,12 @@ namespace NumpyDotNetTests
         {
             Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
             var x = np.array(TestData);
-            Object y = (Object)np.min(x);
+            var y = np.min(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual((Object)(-17), y);
+            Assert.AreEqual((Object)(-17), y.GetItem(0));
         }
 
         [TestMethod]
@@ -1192,12 +1192,12 @@ namespace NumpyDotNetTests
         {
             Object[] TestData = new Object[] { 25, -17, -15, -02, 02, 15, 17, 20 };
             var x = np.array(TestData);
-            Object y = (Object)np.max(x);
+            var y = np.max(x);
 
             print(x);
             print(y);
 
-            Assert.AreEqual((Object)25, y);
+            Assert.AreEqual((Object)25, y.GetItem(0));
         }
 
 

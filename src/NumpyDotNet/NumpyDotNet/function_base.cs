@@ -559,7 +559,7 @@ namespace NumpyDotNet
 
             // handle special case of a 1-element condition but
             // a multi-element choice
-            if (S.size == 1 || ConvertToIntp(np.max(asanyarray(S.shape.iDims))) == 1)
+            if (S.size == 1 || ConvertToIntp(np._max(asanyarray(S.shape.iDims))) == 1)
             {
                 pfac = asarray(1);
                 for (int k = 0; k < n2 + 1; k++)
