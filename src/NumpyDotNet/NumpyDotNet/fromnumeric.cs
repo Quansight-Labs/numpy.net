@@ -2871,6 +2871,20 @@ namespace NumpyDotNet
         }
 
         /// <summary>
+        /// Return the maximum of an array or maximum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
+        public static ndarray max(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
+        {
+            return np.amax(a, axis, @out, keepdims);
+        }
+
+
+        /// <summary>
         /// Return the maximum of an array
         /// </summary>
         /// <param name="arr">Input data.</param>
@@ -2990,6 +3004,20 @@ namespace NumpyDotNet
             var resultArray = NpyCoreApi.ArrayMin(arr, axis.Value, @out, keepdims);
             return resultArray;
         }
+
+        /// <summary>
+        /// Return the minimum of an array or minimum along an axis.
+        /// </summary>
+        /// <param name="a">Input data.</param>
+        /// <param name="axis">Axis or axes along which to operate.</param>
+        /// <param name="out">Alternative output array in which to place the result.</param>
+        /// <param name="keepdims">If this is set to True, the axes which are reduced are left in the result as dimensions with size one.</param>
+        /// <returns></returns>
+        public static ndarray min(object a, int? axis = null, ndarray @out = null, bool keepdims = false)
+        {
+            return np.amin(a, axis, @out, keepdims);
+        }
+
         /// <summary>
         /// Return the minimum of an array
         /// </summary>
