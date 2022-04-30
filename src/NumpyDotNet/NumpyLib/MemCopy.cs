@@ -4346,9 +4346,10 @@ namespace NumpyLib
                 }
                 else
                 {
+                    destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
+
                     while (numIndexes > 0)
                     {
-                        destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
                         while (offsetsIndex < offsetsLength)
                         {
                             d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex]];
@@ -4397,10 +4398,10 @@ namespace NumpyLib
                 }
                 else
                 {
+                    destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
+
                     while (numIndexes > 0)
                     {
-                        destIter = numpyinternal.NpyArray_ITER_ConvertToIndex(destIter, divsize);
-
                         while (offsetsIndex < offsetsLength)
                         {
                             d[destIter.dataptr.data_offset] = s[offsets[offsetsIndex++]];
