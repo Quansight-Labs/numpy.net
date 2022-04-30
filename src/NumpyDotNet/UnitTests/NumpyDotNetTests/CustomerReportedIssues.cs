@@ -532,6 +532,28 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_HadrianTang_14()
+        {
+            ndarray a = np.array(2);
+            ndarray b = np.array(2, np.Int32);
+
+            print(a.ndim);
+            print(b.ndim);
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_HadrianTang_15()
+        {
+            var A = (ndarray)np.stack(new[] { np.arange(1, 1100) }, 1)[":", np.array(new[] { 0 })];
+            AssertArray(A[1001] as ndarray, new int[1] { 1002 });
+
+            return;
+        }
+
+
 
     }
 }

@@ -215,6 +215,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
        print(b)
        #print(c)
 
+    def test_HadrianTang_14(self):
+
+        a = np.array(2);
+        b = np.array(2, np.int32);
+
+        print(a.ndim)
+        print(b.ndim)
+
+ 
       
 if __name__ == '__main__':
     unittest.main()
