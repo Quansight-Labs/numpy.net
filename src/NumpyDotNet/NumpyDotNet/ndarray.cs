@@ -1707,6 +1707,7 @@ namespace NumpyDotNet
             }
 
             StringBuilder sb1 = new StringBuilder();
+            sb1.Append(string.Format("shape={0}, ", this.shape.ToString()));
             foreach (var s in sb)
             {
                 sb1.Append(s);
