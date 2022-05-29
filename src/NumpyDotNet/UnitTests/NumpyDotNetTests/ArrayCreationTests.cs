@@ -2794,10 +2794,10 @@ namespace NumpyDotNetTests
         public void test_othertypes_custom()
         {
             // 1d
-            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" } }, { new Custom { s = "b" } })).Flat[0]).s);
-            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" } }, { new Custom { s = "b" } }, np.Object)).Flat[0]).s);
-            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" } }, { new Custom { s = "b" } }, np.Object, false)).Flat[0]).s);
-            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" } }, { new Custom { s = "b" } }, np.Object, true)).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" }, new Custom { s = "b" } })).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" }, new Custom { s = "b" } }, np.Object)).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" }, new Custom { s = "b" } }, np.Object, false)).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[] { new Custom { s = "a" }, new Custom { s = "b" } }, np.Object, true)).Flat[0]).s);
             // 2d
             Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } })).Flat[0]).s);
             Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object)).Flat[0]).s);
