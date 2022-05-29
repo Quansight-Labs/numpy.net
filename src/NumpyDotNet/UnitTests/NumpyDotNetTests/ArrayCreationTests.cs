@@ -2777,7 +2777,26 @@ namespace NumpyDotNetTests
             return;
 
         }
-
-
+        [TestMethod]
+        public void test_othertypes_char()
+        {
+            // copy: false
+            Assert.AreEqual('2', (char)np.max(np.array(new[] { '1', '2' })).Flat[0]);
+            Assert.AreEqual('2', (char)np.array(new[] { '1', '2', '3' }, np.Object, false).Flat[1]);
+            Assert.AreEqual('3', (char)np.array(new[,] { { '1', '2' }, { '3', '4' } }, np.Object, false).Flat[2]);
+            // copy: true
+            Assert.AreEqual('2', (char)np.max(np.array(new[] { '1', '2' }, copy:true)).Flat[0]);
+            Assert.AreEqual('2', (char)np.array(new[] { '1', '2', '3' }, np.Object, true).Flat[1]);
+            Assert.AreEqual('3', (char)np.array(new[,] { { '1', '2' }, { '3', '4' } }, np.Object, true).Flat[2]);
+        }
+        public class Custom { public string s; public static Custom operator *(Custom a, Custom b) => new Custom { s = a.s + "*" + b.s }; }
+        [TestMethod]
+        public void test_othertypes_custom()
+        {
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } })).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object)).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object, false)).Flat[0]).s);
+            Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object, true)).Flat[0]).s);
+        }
     }
 }

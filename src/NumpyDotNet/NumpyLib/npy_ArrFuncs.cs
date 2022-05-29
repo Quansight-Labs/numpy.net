@@ -466,9 +466,9 @@ namespace NumpyLib
         {
             if (npa.ItemType == npa.data.type_num)
             {
-                Object[] dp = npa.data.datap as Object[];
+                var dp = npa.data.datap as System.Array;
                 long AdjustedIndex = AdjustedIndex_GetItemFunction(index, npa, dp.Length);
-                return dp[AdjustedIndex];
+                return dp.GetValue(AdjustedIndex);
             }
 
             return null;
