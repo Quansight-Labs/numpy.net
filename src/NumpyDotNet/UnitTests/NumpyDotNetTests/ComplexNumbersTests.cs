@@ -375,7 +375,7 @@ namespace NumpyDotNetTests
             AssertArray(x, ExpectedDataX);
             AssertShape(x, 8, 4);
 
-            var y = np.delete(x, new Slice(null), 0).reshape(new shape(8, 3));
+            var y = np.delete(x, 0, axis: 1);
             y[1] = 99;
             print("Y");
             print(y);
