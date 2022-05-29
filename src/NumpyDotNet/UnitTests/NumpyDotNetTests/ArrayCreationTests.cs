@@ -2781,7 +2781,7 @@ namespace NumpyDotNetTests
         public void test_othertypes_char()
         {
             // copy: false
-            Assert.AreEqual('2', (char)np.max(np.array(new[] { '1', '2' })).Flat[0]);
+            Assert.AreEqual('2', (char)np.max(np.array(new[] { '1', '2' }, copy:false)).Flat[0]);
             Assert.AreEqual('2', (char)np.array(new[] { '1', '2', '3' }, np.Object, false).Flat[1]);
             Assert.AreEqual('3', (char)np.array(new[,] { { '1', '2' }, { '3', '4' } }, np.Object, false).Flat[2]);
             // copy: true
