@@ -580,6 +580,7 @@ namespace NumpyDotNetTests
                 { { { 12, 13 },
                     { 14, 15 } } }
             });
+            AssertShape(np.delete(np.arange(9).reshape(3, 3), new Slice(0, 3), 0), 0, 3);
         }
     }
 }
