@@ -514,85 +514,72 @@ namespace NumpyDotNet
                 System.Array ssrc = a as System.Array;
                 NPY_TYPES type_num;
 
-                try
-                {
-         
-                    if (ssrc.Length == 0)
-                    {
-                        string typeName = ssrc.GetType().ToString();
-                        int arrayMarkerIndex = typeName.IndexOf("[");
-                        if (arrayMarkerIndex >= 0)
-                        {
-                            typeName = typeName.Substring(0, arrayMarkerIndex);
-                        }
+                foreach (var o in ssrc)
+                    if (o != null)
+                        return ndArrayFromMD(ssrc, Get_NPYType(o), ssrc.Rank);
 
-                        switch (typeName)
-                        {
-                            case "System.Boolean":
-                                type_num = NPY_TYPES.NPY_BOOL;
-                                break;
-                            case "System.Byte":
-                                type_num = NPY_TYPES.NPY_UBYTE;
-                                break;
-                            case "System.SByte":
-                                type_num = NPY_TYPES.NPY_BYTE;
-                                break;
-                            case "System.Int16":
-                                type_num = NPY_TYPES.NPY_INT16;
-                                break;
-                            case "System.UInt16":
-                                type_num = NPY_TYPES.NPY_UINT16;
-                                break;
-                            case "System.Int32":
-                                type_num = NPY_TYPES.NPY_INT32;
-                                break;
-                            case "System.UInt32":
-                                type_num = NPY_TYPES.NPY_UINT32;
-                                break;
-                            case "System.Int64":
-                                type_num = NPY_TYPES.NPY_INT64;
-                                break;
-                            case "System.UInt64":
-                                type_num = NPY_TYPES.NPY_UINT64;
-                                break;
-                            case "System.Single":
-                                type_num = NPY_TYPES.NPY_FLOAT;
-                                break;
-                            case "System.Double":
-                                type_num = NPY_TYPES.NPY_DOUBLE;
-                                break;
-                            case "System.Decimal":
-                                type_num = NPY_TYPES.NPY_DECIMAL;
-                                break;
-                            case "System.Numerics.Complex":
-                                type_num = NPY_TYPES.NPY_COMPLEX;
-                                break;
-                            case "System.Numerics.BigInteger":
-                                type_num = NPY_TYPES.NPY_BIGINT;
-                                break;
-                            case "System.Object":
-                                type_num = NPY_TYPES.NPY_OBJECT;
-                                break;
-                            case "System.String":
-                                type_num = NPY_TYPES.NPY_STRING;
-                                break;
-                                        
-                            default:
-                                throw new Exception("Unable to recognize array type:" + typeName);
-                        }
-                    }
-                    else
-                    {
-                        object nonnull = FindFirstNonNullValue(ssrc);
-                        type_num = Get_NPYType(nonnull);
-                    }
-                }
-                catch (Exception ex)
+                string typeName = ssrc.GetType().ToString();
+                int arrayMarkerIndex = typeName.IndexOf("[");
+                if (arrayMarkerIndex >= 0)
                 {
-                    throw;
+                    typeName = typeName.Substring(0, arrayMarkerIndex);
                 }
-    
 
+                switch (typeName)
+                {
+                    case "System.Boolean":
+                        type_num = NPY_TYPES.NPY_BOOL;
+                        break;
+                    case "System.Byte":
+                        type_num = NPY_TYPES.NPY_UBYTE;
+                        break;
+                    case "System.SByte":
+                        type_num = NPY_TYPES.NPY_BYTE;
+                        break;
+                    case "System.Int16":
+                        type_num = NPY_TYPES.NPY_INT16;
+                        break;
+                    case "System.UInt16":
+                        type_num = NPY_TYPES.NPY_UINT16;
+                        break;
+                    case "System.Int32":
+                        type_num = NPY_TYPES.NPY_INT32;
+                        break;
+                    case "System.UInt32":
+                        type_num = NPY_TYPES.NPY_UINT32;
+                        break;
+                    case "System.Int64":
+                        type_num = NPY_TYPES.NPY_INT64;
+                        break;
+                    case "System.UInt64":
+                        type_num = NPY_TYPES.NPY_UINT64;
+                        break;
+                    case "System.Single":
+                        type_num = NPY_TYPES.NPY_FLOAT;
+                        break;
+                    case "System.Double":
+                        type_num = NPY_TYPES.NPY_DOUBLE;
+                        break;
+                    case "System.Decimal":
+                        type_num = NPY_TYPES.NPY_DECIMAL;
+                        break;
+                    case "System.Numerics.Complex":
+                        type_num = NPY_TYPES.NPY_COMPLEX;
+                        break;
+                    case "System.Numerics.BigInteger":
+                        type_num = NPY_TYPES.NPY_BIGINT;
+                        break;
+                    case "System.Object":
+                        type_num = NPY_TYPES.NPY_OBJECT;
+                        break;
+                    case "System.String":
+                        type_num = NPY_TYPES.NPY_STRING;
+                        break;  
+                    default:
+                        // throw new Exception("Unable to recognize array type:" + typeName);
+                        type_num = NPY_TYPES.NPY_OBJECT;
+                        break;
+                }
                 return ndArrayFromMD(ssrc, type_num, ssrc.Rank);
             }
 
@@ -651,6 +638,7 @@ namespace NumpyDotNet
             return true;
 
         }
+
 
 
         private static object FindFirstNonNullValue(Array ssrc)
@@ -837,6 +825,7 @@ namespace NumpyDotNet
 
             throw new Exception("Unable to determine array type. Could not find any non-null entries. Please specify dtype");
         }
+
         #endregion
 
         #region ascontiguousarray
