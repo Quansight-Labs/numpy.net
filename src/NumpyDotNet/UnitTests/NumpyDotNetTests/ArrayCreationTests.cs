@@ -2804,5 +2804,24 @@ namespace NumpyDotNetTests
             Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object, false)).Flat[0]).s);
             Assert.AreEqual("a*b", ((Custom)np.prod(np.array(new[,] { { new Custom { s = "a" } }, { new Custom { s = "b" } } }, np.Object, true)).Flat[0]).s);
         }
+        [TestMethod]
+        public void test_allnull()
+        {
+            var a = np.array(new string[,] { { null, null }, { null, null } });
+            Assert.AreEqual(np.Strings, a.Dtype);
+            Assert.AreEqual(null, (string)a[0,0]);
+            a[0, 0] = "a";
+            Assert.AreEqual("a", (string)a[0,0]);
+            var b = np.array(new object[,] { { null, null }, { null, null } });
+            Assert.AreEqual(np.Object, b.Dtype);
+            Assert.AreEqual(null, b[0,0]);
+            b[0, 0] = "b";
+            Assert.AreEqual("b", (string)b[0,0]);
+            var c = np.array(new System.Text.StringBuilder[,] { { null, null }, { null, null } });
+            Assert.AreEqual(np.Object, c.Dtype);
+            Assert.AreEqual(null, c[0,0]);
+            c[0, 0] = new System.Text.StringBuilder();
+            Assert.IsNotNull(c[0,0]);
+        }
     }
 }
