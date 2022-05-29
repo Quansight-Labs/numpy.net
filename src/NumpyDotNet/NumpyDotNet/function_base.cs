@@ -4129,11 +4129,16 @@ namespace NumpyDotNet
 
             // create a bool mask to indicate which of the fields to delete (false == delete)
             var mask = np.ones_like(arr, dtype: np.Bool);
-            mask[slice, axis] = false;
 
+            var maskIndex = new object[mask.ndim];
+            for (int i = 0; i < maskIndex.Length; i++)
+                maskIndex[i] = i == axis ? (object)slice : ":";
+            mask[maskIndex] = false;
+
+            var reshapeDims = arr.dims;
+            reshapeDims[axis] = -1; // Unknown dimension to be resolved by reshape
             // use the "fancy index" feature to get only the data items marked true
-            var retArray = arr.A(mask);
-            return retArray;
+            return arr.A(mask).reshape(reshapeDims);
         }
         /// <summary>
         /// Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by 'arr[obj]'
@@ -4203,30 +4208,15 @@ namespace NumpyDotNet
             // create a bool mask to indicate which of the fields to delete (false == delete)
             var mask = np.ones_like(arr, dtype: np.Bool);
 
-            if (mask.ndim == 1)
-            {
-                mask[index] = false;
-            }
-            else if (mask.ndim == 2)
-            {
-                if (axis == 0)
-                {
-                    mask[new Slice(index, index + 1, null), ":"] = false;
-                }
-                if (axis == 1)
-                {
-                    mask[":", new Slice(index, index + 1, null)] = false;
-                }
-            }
-            else
-            {
+            var maskIndex = new object[mask.ndim];
+            for (int i = 0; i < maskIndex.Length; i++)
+                maskIndex[i] = i == axis ? (object)index : ":";
+            mask[maskIndex] = false;
 
-            }
-
-
+            var reshapeDims = arr.dims;
+            reshapeDims[axis]--;
             // use the "fancy index" feature to get only the data items marked true
-            var retArray = arr.A(mask);
-            return retArray;
+            return arr.A(mask).reshape(reshapeDims);
         }
 
         #endregion

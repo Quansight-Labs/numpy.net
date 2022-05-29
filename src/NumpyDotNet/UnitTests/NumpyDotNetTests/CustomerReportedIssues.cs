@@ -553,7 +553,33 @@ namespace NumpyDotNetTests
             return;
         }
 
-
-
+        [TestMethod]
+        public void test_HadrianTang_16()
+        {
+            AssertArray(np.delete(np.arange(16).reshape(4, 4), 1, 0), new int[,] {
+                { 0, 1, 2, 3 },
+                { 8, 9, 10, 11 },
+                { 12, 13, 14, 15 }
+            });
+            AssertArray(np.delete(np.arange(16).reshape(4, 4), new Slice(1, 3), 0), new int[,] {
+                { 0, 1, 2, 3 },
+                { 12, 13, 14, 15 }
+            });
+            AssertArray(np.delete(np.arange(16).reshape(1, 16), new Slice(0, 11, 2), 1), new int[,] {
+                { 1, 3, 5, 7, 9, 11, 12, 13, 14, 15 }
+            });
+            AssertArray(np.delete(np.arange(16).reshape(2, 2, 2, 2), 0, 1), new int[,,,] {
+                { { { 4, 5 },
+                    { 6, 7 } } },
+                { { { 12, 13 },
+                    { 14, 15 } } }
+            });
+            AssertArray(np.delete(np.arange(16).reshape(2, 2, 2, 2), new Slice(0, 1), 1), new int[,,,] {
+                { { { 4, 5 },
+                    { 6, 7 } } },
+                { { { 12, 13 },
+                    { 14, 15 } } }
+            });
+        }
     }
 }
