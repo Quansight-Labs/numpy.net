@@ -283,7 +283,7 @@ namespace NumpyLib
         }
         public virtual VoidPtr GetArrayCopy(VoidPtr vp)
         {
-            var src = vp.datap as T[];
+            var src = vp.datap as System.Array;
 
             var copy = new T[src.Length];
             Array.Copy(src, copy, src.Length);

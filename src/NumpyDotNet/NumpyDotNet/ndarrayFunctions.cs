@@ -3670,7 +3670,7 @@ namespace NumpyDotNet
             {
                 return NumType;
             }
-
+            return NPY_TYPES.NPY_OBJECT; // Our data type registration system is internal anyways, inextensible from outside. We can default to using object
             throw new Exception("This data type is not registered with the numpy system");
         }
 
