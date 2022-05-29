@@ -829,6 +829,12 @@ namespace NumpyDotNet
                     throw new Exception("Number of dimensions is not supported");
             }
 
+            string ssrcType = ssrc.GetType().ToString();
+            if (ssrcType.StartsWith("System.String"))
+                return "";
+            if (ssrcType.StartsWith("System.Object"))
+                return new object();
+
             throw new Exception("Unable to determine array type. Could not find any non-null entries. Please specify dtype");
         }
         #endregion

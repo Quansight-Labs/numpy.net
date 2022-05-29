@@ -581,5 +581,22 @@ namespace NumpyDotNetTests
                     { 14, 15 } } }
             });
         }
+
+        [TestMethod]
+        public void test_HadrianTang_17()
+        {
+            var A1 = np.array(new string[,] { { null, null }, { null, null } });
+            AssertArray(A1, new string[,] { { null, null }, { null, null } });
+
+            var A2 = np.array(new object[,] { { null, null }, { null, null } });
+            AssertArray(A2, new object[,] { { null, null }, { null, null } });
+
+            var A3 = np.array(new string[,] { { null, null }, { null, null } }, dtype: np.Strings);
+            AssertArray(A3, new string[,] { { null, null }, { null, null } });
+
+            var A4 = np.array(new object[,] { { null, null }, { null, null } }, dtype: np.Object);
+            AssertArray(A4, new object[,] { { null, null }, { null, null } });
+
+        }
     }
 }
