@@ -233,7 +233,8 @@ namespace NumpyDotNet
         {
             if (current == null)
             {
-                current = core.dataptr;
+                if ((core.dataptr.datap as Array).Length > 0)
+                    current = core.dataptr;
             }
             else
             {

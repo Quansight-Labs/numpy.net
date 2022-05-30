@@ -3647,6 +3647,53 @@ namespace NumpyDotNet
             return DefaultArrayHandlers.GetArrayHandler(data.type_num).GetArrayCopy(data);
         }
 
+        private static NPY_TYPES Get_NPYTypeFromEmptyArray(System.Array ssrc)
+        {
+            string typeName = ssrc.GetType().ToString();
+            int arrayMarkerIndex = typeName.IndexOf("[");
+            if (arrayMarkerIndex >= 0)
+            {
+                typeName = typeName.Substring(0, arrayMarkerIndex);
+            }
+
+            switch (typeName)
+            {
+                case "System.Boolean":
+                    return NPY_TYPES.NPY_BOOL;
+                case "System.Byte":
+                    return NPY_TYPES.NPY_UBYTE;
+                case "System.SByte":
+                    return NPY_TYPES.NPY_BYTE;
+                case "System.Int16":
+                    return NPY_TYPES.NPY_INT16;
+                case "System.UInt16":
+                    return NPY_TYPES.NPY_UINT16;
+                case "System.Int32":
+                    return NPY_TYPES.NPY_INT32;
+                case "System.UInt32":
+                    return NPY_TYPES.NPY_UINT32;
+                case "System.Int64":
+                    return NPY_TYPES.NPY_INT64;
+                case "System.UInt64":
+                    return NPY_TYPES.NPY_UINT64;
+                case "System.Single":
+                    return NPY_TYPES.NPY_FLOAT;
+                case "System.Double":
+                    return NPY_TYPES.NPY_DOUBLE;
+                case "System.Decimal":
+                    return NPY_TYPES.NPY_DECIMAL;
+                case "System.Numerics.Complex":
+                    return NPY_TYPES.NPY_COMPLEX;
+                case "System.Numerics.BigInteger":
+                    return NPY_TYPES.NPY_BIGINT;
+                case "System.Object":
+                    return NPY_TYPES.NPY_OBJECT;
+                case "System.String":
+                    return NPY_TYPES.NPY_STRING;
+                default:
+                    return NPY_TYPES.NPY_OBJECT;
+            }
+        }
         private static NPY_TYPES Get_NPYType<T>(T[] _Array)
         {
             if (typeof(T) == typeof(Object))
@@ -3656,8 +3703,7 @@ namespace NumpyDotNet
 
             if (_Array.Length == 0)
             {
-                T[] tt = new T[1];
-                return Get_NPYType(tt[0]);
+                return Get_NPYTypeFromEmptyArray(_Array);
             }
 
             return Get_NPYType(_Array[0]);

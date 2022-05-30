@@ -598,5 +598,17 @@ namespace NumpyDotNetTests
             AssertArray(A4, new object[,] { { null, null }, { null, null } });
 
         }
+        [TestMethod]
+        public void test_HadrianTang_18()
+        {
+            foreach (var x in np.array(new System.Exception[0]).Flat)
+                throw new System.Exception("Failed.");
+            foreach (var x in np.array(new string[0]).Flat)
+                throw new System.Exception("Failed.");
+            foreach (var x in np.array(new System.ConsoleKey[0]).Flat)
+                throw new System.Exception("Failed.");
+            foreach (var x in np.array(new int[0]).Flat)
+                throw new System.Exception("Failed.");
+        }
     }
 }
