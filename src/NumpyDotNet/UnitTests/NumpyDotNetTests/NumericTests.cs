@@ -1034,6 +1034,73 @@ namespace NumpyDotNetTests
             print(e);
         }
 
+        [TestMethod]
+        public void test_array_dtype_checks()
+        {
+            var a = np.array(new int[] { 1, 2 });
+            Assert.AreEqual(NPY_TYPES.NPY_INT32, a.Dtype.TypeNum);
+            Assert.AreEqual(true,a.IsInteger);
+            Assert.AreEqual(true, a.IsNumber);
+            Assert.AreEqual(true, a.IsSignedInteger);
+            Assert.AreEqual(false, a.IsUnsignedInteger);
+            Assert.AreEqual(false, a.IsComplex);
+            Assert.AreEqual(false, a.IsFloatingPoint);
+            Assert.AreEqual(false, a.IsInexact);
+            Assert.AreEqual(false, a.IsDecimal);
+
+            a = np.array(new double[] { 1, 2 });
+            Assert.AreEqual(NPY_TYPES.NPY_DOUBLE, a.Dtype.TypeNum);
+            Assert.AreEqual(false, a.IsInteger);
+            Assert.AreEqual(true, a.IsNumber);
+            Assert.AreEqual(false, a.IsSignedInteger);
+            Assert.AreEqual(false, a.IsUnsignedInteger);
+            Assert.AreEqual(false, a.IsComplex);
+            Assert.AreEqual(true, a.IsFloatingPoint);
+            Assert.AreEqual(true, a.IsInexact);
+            Assert.AreEqual(false, a.IsDecimal);
+
+            a = np.array(new Complex[] { 1, 2 });
+            Assert.AreEqual(NPY_TYPES.NPY_COMPLEX, a.Dtype.TypeNum);
+            Assert.AreEqual(false, a.IsInteger);
+            Assert.AreEqual(true, a.IsNumber);
+            Assert.AreEqual(false, a.IsSignedInteger);
+            Assert.AreEqual(false, a.IsUnsignedInteger);
+            Assert.AreEqual(true, a.IsComplex);
+            Assert.AreEqual(true, a.IsFloatingPoint);
+            Assert.AreEqual(true, a.IsInexact);
+            Assert.AreEqual(false, a.IsDecimal);
+
+            a = np.array(new Decimal[] { 1, 2 });
+            Assert.AreEqual(NPY_TYPES.NPY_DECIMAL, a.Dtype.TypeNum);
+            Assert.AreEqual(false, a.IsInteger);
+            Assert.AreEqual(true, a.IsNumber);
+            Assert.AreEqual(false, a.IsSignedInteger);
+            Assert.AreEqual(false, a.IsUnsignedInteger);
+            Assert.AreEqual(false, a.IsComplex);
+            Assert.AreEqual(true, a.IsFloatingPoint);
+            Assert.AreEqual(true, a.IsInexact);
+            Assert.AreEqual(true, a.IsDecimal);
+
+            a = np.array(new BigInteger[] { -1, 2 });
+            Assert.AreEqual(NPY_TYPES.NPY_BIGINT, a.Dtype.TypeNum);
+            Assert.AreEqual(true, a.IsInteger);
+            Assert.AreEqual(true, a.IsNumber);
+            Assert.AreEqual(true, a.IsSignedInteger);
+            Assert.AreEqual(false, a.IsUnsignedInteger);
+            Assert.AreEqual(false, a.IsComplex);
+            Assert.AreEqual(false, a.IsFloatingPoint);
+            Assert.AreEqual(false, a.IsInexact);
+            Assert.AreEqual(false, a.IsDecimal);
+
+
+            a = np.array(new bool[] { true, false });
+            Assert.AreEqual(NPY_TYPES.NPY_BOOL, a.Dtype.TypeNum);
+            Assert.AreEqual(true, a.IsBool);
+            Assert.AreEqual(false, a.IsInteger);
+            Assert.AreEqual(false, a.IsNumber);
+        }
+
+
 #if NOT_PLANNING_TODO
 
         [Ignore]

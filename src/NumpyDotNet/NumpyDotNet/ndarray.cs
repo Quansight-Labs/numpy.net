@@ -1561,45 +1561,79 @@ namespace NumpyDotNet
         public bool IsBehaved_RO {
             get { return ChkFlags(NPYARRAYFLAGS.NPY_ALIGNED) && IsNotSwapped; }
         }
+
         /// <summary>
         /// return true if data type is a complex number
         /// </summary>
-        internal bool IsComplex
+        public bool IsBool
+        {
+            get { return NpyDefs.IsBool(TypeNum); }
+        }
+
+        /// <summary>
+        /// return true if data type is a complex number
+        /// </summary>
+        public bool IsComplex
         {
             get { return NpyDefs.IsComplex(TypeNum); }
         }
         /// <summary>
         /// returns true if data type is a "BigInteger"
         /// </summary>
-        internal bool IsBigInt
+        public bool IsBigInt
         {
             get { return NpyDefs.IsBigInt(TypeNum); }
         }
         /// <summary>
         /// returns true if data type is Decimal
         /// </summary>
-        internal bool IsDecimal
+        public bool IsDecimal
         {
             get { return NpyDefs.IsDecimal(TypeNum); }
         }
         /// <summary>
         /// returns true if data type is an integer value
         /// </summary>
-        internal bool IsInteger
+        public bool IsInteger
         {
             get { return NpyDefs.IsInteger(TypeNum); }
         }
         /// <summary>
+        /// returns true if data type is a signed integer value
+        /// </summary>
+        public bool IsSignedInteger
+        {
+            get { return NpyDefs.IsSigned(TypeNum); }
+        }
+
+        /// <summary>
+        /// returns true if data type is a signed integer value
+        /// </summary>
+        public bool IsUnsignedInteger
+        {
+            get { return NpyDefs.IsUnsigned(TypeNum); }
+        }
+
+        /// <summary>
         /// returns true if data type is a floating point value
         /// </summary>
-        internal bool IsFloatingPoint
+        public bool IsFloatingPoint
         {
             get { return NpyDefs.IsFloat(TypeNum); }
         }
+
+        /// <summary>
+        /// returns true if data type is numeric value
+        /// </summary>
+        public bool IsNumber
+        {
+            get { return NpyDefs.IsNumber(TypeNum); }
+        }
+
         /// <summary>
         /// returns true if data type is inexact (i.e. floating point or complex)
         /// </summary>
-        internal bool IsInexact
+        public bool IsInexact
         {
             get { return IsFloatingPoint || IsComplex; }
         }

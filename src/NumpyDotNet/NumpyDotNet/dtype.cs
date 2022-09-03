@@ -235,6 +235,16 @@ namespace NumpyDotNet {
             get { return NpyDefs.IsInteger(this.TypeNum); }
         }
 
+        internal bool IsSignedInt
+        {
+            get { return NpyDefs.IsSigned(this.TypeNum); }
+        }
+
+        internal bool IsUnsignedInt
+        {
+            get { return NpyDefs.IsUnsigned(this.TypeNum); }
+        }
+
         internal bool IsFloatingPoint
         {
             get { return NpyDefs.IsFloat(this.TypeNum); }

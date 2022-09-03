@@ -4043,6 +4043,11 @@
             returns true of data type is aligned and machine byte-order
             </summary>
         </member>
+        <member name="P:NumpyDotNet.ndarray.IsBool">
+            <summary>
+            return true if data type is a complex number
+            </summary>
+        </member>
         <member name="P:NumpyDotNet.ndarray.IsComplex">
             <summary>
             return true if data type is a complex number
@@ -4063,9 +4068,24 @@
             returns true if data type is an integer value
             </summary>
         </member>
+        <member name="P:NumpyDotNet.ndarray.IsSignedInteger">
+            <summary>
+            returns true if data type is a signed integer value
+            </summary>
+        </member>
+        <member name="P:NumpyDotNet.ndarray.IsUnsignedInteger">
+            <summary>
+            returns true if data type is a signed integer value
+            </summary>
+        </member>
         <member name="P:NumpyDotNet.ndarray.IsFloatingPoint">
             <summary>
             returns true if data type is a floating point value
+            </summary>
+        </member>
+        <member name="P:NumpyDotNet.ndarray.IsNumber">
+            <summary>
+            returns true if data type is numeric value
             </summary>
         </member>
         <member name="P:NumpyDotNet.ndarray.IsInexact">

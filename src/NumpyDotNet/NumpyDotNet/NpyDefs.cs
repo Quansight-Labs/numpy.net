@@ -96,6 +96,7 @@ namespace NumpyDotNet {
                 case NPY_TYPES.NPY_INT16:
                 case NPY_TYPES.NPY_INT32:
                 case NPY_TYPES.NPY_INT64:
+                case NPY_TYPES.NPY_BIGINT:
                     return true;
                 default:
                     return false;
@@ -151,6 +152,7 @@ namespace NumpyDotNet {
                 case NPY_TYPES.NPY_UINT64:
                 case NPY_TYPES.NPY_FLOAT:
                 case NPY_TYPES.NPY_DOUBLE:
+                case NPY_TYPES.NPY_DECIMAL:
                 case NPY_TYPES.NPY_COMPLEX:
                 case NPY_TYPES.NPY_BIGINT:
                     return true;
