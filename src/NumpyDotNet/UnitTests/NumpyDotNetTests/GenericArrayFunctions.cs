@@ -25,25 +25,35 @@ namespace NumpyDotNetTests
         }
 
         private ndarray arr;
+
+        public ndarray()
+        {
+
+        }
+        public ndarray(ndarray arr)
+        {
+            this.arr = arr;
+        }
+
         public static ndarray<T> array(T[] data)
         {
             ndarray arr = np.array(data);
-            ndarray<T> tarr = new ndarray<T>();
-            tarr.arr = arr;
+            ndarray<T> tarr = new ndarray<T>(arr);
             return tarr;
         }
         public static ndarray<T> array(T[,] data)
         {
             ndarray arr = np.array(data);
-            ndarray<T> tarr = new ndarray<T>();
-            tarr.arr = arr;
+            ndarray<T> tarr = new ndarray<T>(arr);
             return tarr;
         }
 
-        public T[] Sum(int? axis = null)
+        public ndarray<T> Sum(int? axis = null)
         {
             var x = arr.Sum(axis);
-            return x.ToArray<T>();
+
+            ndarray<T> ret = new ndarray<T>(x);
+            return ret;
         }
     }
 
