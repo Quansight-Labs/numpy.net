@@ -32,10 +32,17 @@ namespace NumpyDotNetTests
             tarr.arr = arr;
             return tarr;
         }
-
-        public T[] Sum()
+        public static ndarray<T> array(T[,] data)
         {
-            var x = arr.Sum();
+            ndarray arr = np.array(data);
+            ndarray<T> tarr = new ndarray<T>();
+            tarr.arr = arr;
+            return tarr;
+        }
+
+        public T[] Sum(int? axis = null)
+        {
+            var x = arr.Sum(axis);
             return x.ToArray<T>();
         }
     }
@@ -50,8 +57,16 @@ namespace NumpyDotNetTests
 
             var data = ta.data;
             var sum = ta.Sum();
+        }
 
+        [TestMethod]
+        public void test_generic_array_2()
+        {
+            var ta = ndarray<Int32>.array(new Int32[,] { { 1, 2, 3 }, { 1, 2, 3 } });
 
+            var data = ta.data;
+            var sum0 = ta.Sum(0);
+            var sum1 = ta.Sum(1);
         }
     }
 }
