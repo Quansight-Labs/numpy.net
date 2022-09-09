@@ -744,7 +744,7 @@ namespace NumpyDotNet
                     var log10 = -np.log10(mindiff).GetItem(0);
                     int _decimal = (int)log10 +6;
                     //Find which points are on the rightmost edge.
-                    ndarray not_smaller_than_edge = (sample.A(":", i) >= edges[i].A("-1"));
+                    ndarray not_smaller_than_edge = (np.greater_equal(sample.A(":", i),edges[i].A("-1")));
                     ndarray on_edge = (np.around(sample.A(":", i), _decimal).Equals(np.around(edges[i].A("-1"), _decimal)));
                     //# Shift these points one bin to the left.
 
@@ -1208,7 +1208,7 @@ namespace NumpyDotNet
             else if (bins is T[] || bins is ndarray)
             {
                 bin_edges = np.asarray(bins);
-                if (np.anyb((ndarray)bin_edges[":-1"] > (ndarray)bin_edges["1:"]))
+                if (np.anyb(np.greater((ndarray)bin_edges[":-1"],(ndarray)bin_edges["1:"])))
                 {
                     throw new Exception("'bins' must increase monotonically");
                 }

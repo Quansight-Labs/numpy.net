@@ -620,10 +620,15 @@ namespace NumpyDotNetTests
             AssertArray(b, new bool[] { true, true, true });
             print(b);
 
+            b = double.NegativeInfinity < a;
+            AssertArray(b, new bool[] { true, true, true });
+            print(b);
+
             var c = a > double.NegativeInfinity;
             AssertArray(c, new bool[] { true, true, true });
             print(c);
         }
+
 
     }
 }
