@@ -877,6 +877,21 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_uniform_2(self):
+
+        np.random.seed(5461);
+        low = np.array([9.0, 8.0, 7.0, 1.0])
+        high = np.array([30.0, 22.0, 10.0, 3.0])
+        shape = (4,)
+        arr = np.random.uniform(low, high, shape)
+      
+        print(np.amax(arr));
+        print(np.amin(arr));
+        print(np.average(arr));
+
+        first10 = arr[0:10:1]
+        print(first10)
+
     def test_rand_vonmises_1(self):
 
         np.random.seed(909)

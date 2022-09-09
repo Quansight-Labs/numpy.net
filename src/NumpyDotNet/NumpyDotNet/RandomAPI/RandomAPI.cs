@@ -1626,8 +1626,15 @@ namespace NumpyDotNet
             #endregion
 
             #region uniform
+            public ndarray uniform(double low = 0.0, double high = 1.0, shape newdims = null)
+            {
+                ndarray lowarr = np.array(new double[] { low });
+                ndarray higharr = np.array(new double[] { high });
 
-            public ndarray uniform(int low = 0, int high = 1, shape newdims = null)
+                return uniform(lowarr, higharr, newdims);
+            }
+
+            public ndarray uniform(object low, object high, shape newdims = null)
             {
                 ndarray olow = np.asanyarray(low).astype(np.Float64);
                 ndarray ohigh = np.asanyarray(high).astype(np.Float64);
@@ -1637,8 +1644,8 @@ namespace NumpyDotNet
 
                 if (olow.size == 1 && ohigh.size == 1)
                 {
-                    double flow = Convert.ToDouble(low);
-                    double fhigh = Convert.ToDouble(high);
+                    double flow = (double)olow;
+                    double fhigh = (double)ohigh;
                     double fscale = fhigh - flow;
 
                     if (double.IsInfinity(fscale))

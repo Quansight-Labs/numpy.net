@@ -2562,6 +2562,37 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_rand_uniform_2()
+        {
+            var random = new np.random();
+
+            random.seed(5461);
+
+            var low = np.array(new double[] { 9.0, 8.0, 7.0, 1.0 });
+            var high = np.array(new double[] { 30.0, 22.0, 10.0, 3.0 });
+            ndarray arr = random.uniform(low, high, new shape(4));
+
+            var amax = np.amax(arr);
+            print(amax);
+            Assert.AreEqual(18.594950452027874, amax.GetItem(0));
+
+            var amin = np.amin(arr);
+            print(amin);
+            Assert.AreEqual(1.803431063349904, amin.GetItem(0));
+
+            var avg = np.average(arr);
+            print(avg);
+            Assert.AreEqual(9.7381078582861171, avg.GetItem(0));
+
+
+            var first10 = arr["0:10:1"] as ndarray;
+            print(first10);
+
+            AssertArray(first10, new double[] { 18.594950452027874, 8.5855197415637328, 9.9685301762029539, 1.803431063349904 });
+       
+        }
+
+        [TestMethod]
         public void test_rand_vonmises_1()
         {
             var random = new np.random();
