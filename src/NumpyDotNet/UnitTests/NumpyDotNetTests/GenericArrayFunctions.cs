@@ -58,7 +58,7 @@ namespace NumpyDotNetTests
     }
 
     [TestClass]
-    public class GenericArrayFunctions
+    public class GenericArrayFunctions : TestBaseClass
     {
         [TestMethod]
         public void test_generic_array_1()
@@ -78,5 +78,21 @@ namespace NumpyDotNetTests
             var sum0 = ta.Sum(0);
             var sum1 = ta.Sum(1);
         }
+
+        [TestMethod]
+        public void test_generic_array_3()
+        {
+            ndarray objectarray = np.array(new int[][] { new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 } });
+            print(objectarray);
+            //objectarray = objectarray + 1;
+            //print(objectarray);
+
+            var multidim_intarray = np.array(new Int32[,] { { 1, 2, 3 }, { 1, 2, 3 } });
+            print(multidim_intarray);
+            multidim_intarray = multidim_intarray + 1;
+            print(multidim_intarray);
+      
+        }
+
     }
 }

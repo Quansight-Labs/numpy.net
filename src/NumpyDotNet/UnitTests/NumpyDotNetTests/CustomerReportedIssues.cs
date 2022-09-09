@@ -610,5 +610,20 @@ namespace NumpyDotNetTests
             foreach (var x in np.array(new int[0]).Flat)
                 throw new System.Exception("Failed.");
         }
+
+        [TestMethod]
+        public void test_ChengYenTang_1()
+        {
+            var a = np.array(new int[] { 1, 2, 3 });
+
+            var b = np.less(double.NegativeInfinity, a);
+            AssertArray(b, new bool[] { true, true, true });
+            print(b);
+
+            var c = a > double.NegativeInfinity;
+            AssertArray(c, new bool[] { true, true, true });
+            print(c);
+        }
+
     }
 }
