@@ -629,6 +629,31 @@ namespace NumpyDotNetTests
             print(c);
         }
 
+        [TestMethod]
+        public void test_ChengYenTang_2()
+        {
+            var low = np.array(new double[2, 3] { { 30, 8, 7 }, { 2, double.NegativeInfinity, 3 } });
+            var high = np.array(new double[2, 3] { { 30, 22, 10 }, { double.PositiveInfinity, 5, 3 } });
+
+            var a = low < high;
+            AssertArray(a, new bool[,] { { false, true, true }, { true, true, false } });
+            print(a);
+
+            var b = low > high;
+            AssertArray(b, new bool[,] { { false, false, false }, { false, false, false } });
+            print(b);
+
+            var c = low <= high;
+            AssertArray(c, new bool[,] { { true, true, true }, { true, true, true } });
+            print(c);
+
+            var d = low >= high;
+            AssertArray(d, new bool[,] { { true, false, false }, { false, false, true } });
+            print(d);
+
+ 
+        }
+
 
     }
 }

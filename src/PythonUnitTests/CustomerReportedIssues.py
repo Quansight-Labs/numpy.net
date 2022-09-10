@@ -223,6 +223,36 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(a.ndim)
         print(b.ndim)
 
+    def test_ChengYenTang_1(self):
+
+        a = np.array([1,2,3]);
+        b = np.less(-np.Inf, a)
+        print(b)
+
+        b = -np.Inf < a
+        print(b)
+        
+
+        c = a > -np.Inf
+        print(c)
+
+    def test_ChengYenTang_2(self):
+
+        low = np.array([[30,8,7],[2, -np.Inf, 3]]);
+        high = np.array([[30,22,10],[np.Inf, 5, 3]]);
+
+        a = low < high
+        print(a)
+
+        b = low > high
+        print(b)
+
+        c = low <= high
+        print(c)
+
+        d = low >= high
+        print(d)
+   
  
       
 if __name__ == '__main__':

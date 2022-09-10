@@ -503,7 +503,15 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.less, operand);
         }
+        public static ndarray operator <(ndarray a, ndarray operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.less, operand);
+        }
         public static ndarray operator <=(ndarray a, object operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.less_equal, operand);
+        }
+        public static ndarray operator <=(ndarray a, ndarray operand)
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.less_equal, operand);
         }
@@ -511,7 +519,10 @@ namespace NumpyDotNet
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.greater, operand);
         }
-
+        public static ndarray operator >(ndarray a, ndarray operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.greater, operand);
+        }
         public static ndarray operator < (object operand, ndarray a)
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.greater, operand);
@@ -533,6 +544,11 @@ namespace NumpyDotNet
         }
 
         public static ndarray operator >=(ndarray a, object operand)
+        {
+            return NpyCoreApi.PerformNumericOp(a, UFuncOperation.greater_equal, operand);
+        }
+
+        public static ndarray operator >=(ndarray a, ndarray operand)
         {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.greater_equal, operand);
         }
