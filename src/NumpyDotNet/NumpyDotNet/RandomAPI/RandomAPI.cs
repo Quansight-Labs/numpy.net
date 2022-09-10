@@ -803,6 +803,11 @@ namespace NumpyDotNet
 
             #region exponential
 
+            public ndarray exponential(double scale = 1.0, shape newdims = null)
+            {
+                return exponential((object)scale, newdims);
+            }
+
             public ndarray exponential(object scale, shape newdims = null)
             {
                 npy_intp[] size = null;

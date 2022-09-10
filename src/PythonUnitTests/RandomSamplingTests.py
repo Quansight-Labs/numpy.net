@@ -308,6 +308,15 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_exponential_2(self):
+
+        np.random.seed(914)
+
+        arr = np.random.exponential();
+ 
+        print(arr)
+
+
     def test_rand_f_1(self):
 
         np.random.seed(94)

@@ -792,6 +792,18 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_rand_exponential_2()
+        {
+            var random = new np.random();
+
+            random.seed(914);
+
+            var arr = random.exponential();
+            Assert.AreEqual(0.37376054576568468, arr.GetItem(0));
+            print(arr);
+        }
+
 
         [TestMethod]
         public void test_rand_f_1()
