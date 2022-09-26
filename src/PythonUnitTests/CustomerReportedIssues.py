@@ -264,6 +264,9 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         d = np.reshape(a, (2,2)+(2,4))
         print(d.shape)
+
+        g = np.reshape(a, (2,2)+(2,4)+(1,1))
+        print(g.shape)
     
    
  

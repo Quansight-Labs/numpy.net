@@ -5332,11 +5332,41 @@
             </summary>
             <param name="dim"></param>
         </member>
+        <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            add two arrays into one and create a shape with results
+            </summary>
+            <param name="dim"></param>
+            <param name="dim2"></param>
+        </member>
+        <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            add three arrays into one and create a shape with results
+            </summary>
+            <param name="dim"></param>
+            <param name="dim2"></param>
+            <param name="dim3"></param>
+        </member>
         <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int64})">
             <summary>
             convert a collection of Int64 values into a shape
             </summary>
             <param name="dim"></param>
+        </member>
+        <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            add two arrays into one and create a shape with results
+            </summary>
+            <param name="dim"></param>
+            <param name="dim2"></param>
+        </member>
+        <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            add three arrays into one and create a shape with results
+            </summary>
+            <param name="dim"></param>
+            <param name="dim2"></param>
+            <param name="dim3"></param>
         </member>
         <member name="M:NumpyDotNet.shape.#ctor(System.Int64[],System.Int32)">
             <summary>

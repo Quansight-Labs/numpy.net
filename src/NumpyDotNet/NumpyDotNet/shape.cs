@@ -159,6 +159,60 @@ namespace NumpyDotNet
             }
         }
         /// <summary>
+        /// add two arrays into one and create a shape with results
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <param name="dim2"></param>
+        public shape(IEnumerable<Int32> dim, IEnumerable<Int32> dim2)
+        {
+            int nd = dim.Count() + dim2.Count();
+            iDims = new npy_intp[nd];
+
+            int i = 0;
+            foreach (var d in dim)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+ 
+            foreach (var d in dim2)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+        }
+        /// <summary>
+        /// add three arrays into one and create a shape with results
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <param name="dim2"></param>
+        /// <param name="dim3"></param>
+        public shape(IEnumerable<Int32> dim, IEnumerable<Int32> dim2, IEnumerable<Int32> dim3)
+        {
+            int nd = dim.Count() + dim2.Count() + dim3.Count();
+            iDims = new npy_intp[nd];
+
+            int i = 0;
+            foreach (var d in dim)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+
+            foreach (var d in dim2)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+
+            foreach (var d in dim3)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+        }
+
+        /// <summary>
         /// convert a collection of Int64 values into a shape
         /// </summary>
         /// <param name="dim"></param>
@@ -174,6 +228,60 @@ namespace NumpyDotNet
                 i++;
             }
         }
+        /// <summary>
+        /// add two arrays into one and create a shape with results
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <param name="dim2"></param>
+        public shape(IEnumerable<Int64> dim, IEnumerable<Int64> dim2)
+        {
+            int nd = dim.Count() + dim2.Count();
+            iDims = new npy_intp[nd];
+
+            int i = 0;
+            foreach (var d in dim)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+
+            foreach (var d in dim2)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+        }
+        /// <summary>
+        /// add three arrays into one and create a shape with results
+        /// </summary>
+        /// <param name="dim"></param>
+        /// <param name="dim2"></param>
+        /// <param name="dim3"></param>
+        public shape(IEnumerable<Int64> dim, IEnumerable<Int64> dim2, IEnumerable<Int64> dim3)
+        {
+            int nd = dim.Count() + dim2.Count() + dim3.Count();
+            iDims = new npy_intp[nd];
+
+            int i = 0;
+            foreach (var d in dim)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+
+            foreach (var d in dim2)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+
+            foreach (var d in dim3)
+            {
+                iDims[i] = (npy_intp)d;
+                i++;
+            }
+        }
+
         /// <summary>
         /// convert an array of npy_intp into a shape
         /// </summary>

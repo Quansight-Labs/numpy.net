@@ -668,6 +668,19 @@ namespace NumpyDotNetTests
             var d = np.reshape(a, new shape(2, 2) + new shape(2,4));
             print(d.shape);
 
+            var e = np.reshape(a, new shape(new int[] { 2, 2 }, new int[] { 2, 4 }));
+            print(e.shape);
+
+            var f = np.reshape(a, new shape(new long[] { 2, 2 }, new long[] { 2, 4 }));
+            print(f.shape);
+
+            var g = np.reshape(a, new shape(new int[] { 2, 2 }, new int[] { 2, 4 }, new int[] { 1, 1 }));
+            print(g.shape);
+
+            var h = np.reshape(a, new shape(new long[] { 2, 2 }, new long[] { 2, 4 }, new long[] { 1, 1 }));
+            print(h.shape);
+
+
         }
 
 
