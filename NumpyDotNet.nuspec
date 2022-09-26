@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.80.3</version>
+    <version>0.9.80.4</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</description>
-    <releaseNotes>add new LT, LE for ndarray/ndarray comparison.</releaseNotes>
+    <releaseNotes>add support for adding two numpydotnet shape objects together.  similiar behavior to python adding two arrays together.</releaseNotes>
     <copyright>Copyright 2022, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
