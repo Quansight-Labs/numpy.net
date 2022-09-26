@@ -252,6 +252,19 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         d = low >= high
         print(d)
+
+    def test_ChengYenTang_3(self):
+
+        a = np.arange(0,32);
+        b = np.reshape(a, (2,)+(16,))
+        print(b.shape)
+
+        c = np.reshape(a, (2,2)+(8,))
+        print(c.shape)
+
+        d = np.reshape(a, (2,2)+(2,4))
+        print(d.shape)
+    
    
  
       

@@ -655,5 +655,21 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_ChengYenTang_3()
+        {
+            var a = np.arange(0,32);
+            var b = np.reshape(a, new shape(2) + new shape(16));
+            print(b.shape);
+
+            var c = np.reshape(a, new shape(2,2) + new shape(8));
+            print(c.shape);
+
+            var d = np.reshape(a, new shape(2, 2) + new shape(2,4));
+            print(d.shape);
+
+        }
+
+
     }
 }

@@ -310,6 +310,22 @@ namespace NumpyDotNet
             return buf.ToString();
         }
 
+        /// <summary>
+        /// add two shapes together
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static shape operator +(shape a, shape b)
+        {
+            npy_intp[] newdims = new npy_intp[a.iDims.Length + b.iDims.Length];
+
+            Array.Copy(a.iDims, 0, newdims, 0, a.iDims.Length);
+            Array.Copy(b.iDims, 0, newdims, a.iDims.Length, b.iDims.Length);
+
+            return new shape(newdims);
+        }
+
     }
  
 }

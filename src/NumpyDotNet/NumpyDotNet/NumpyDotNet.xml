@@ -5417,6 +5417,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:NumpyDotNet.shape.op_Addition(NumpyDotNet.shape,NumpyDotNet.shape)">
+            <summary>
+            add two shapes together
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
         <member name="T:MachineCognitus.math">
             <summary>
             Implements several <a href="http://en.cppreference.com/w/c/numeric/math">C Standard</a> mathematical functions that are missing from the .NET framework.
