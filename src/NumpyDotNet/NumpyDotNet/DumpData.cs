@@ -112,7 +112,7 @@ namespace NumpyDotNet
                         case NPY_TYPES.NPY_FLOAT:
                             float fValue = (float)value;
                             strValue = fValue.ToString();
-                            if (!strValue.Contains("."))
+                            if (!strValue.Contains(".") && !float.IsInfinity(fValue))
                             {
                                 strValue += ".0";
                             }
@@ -122,7 +122,7 @@ namespace NumpyDotNet
                         case NPY_TYPES.NPY_DOUBLE:
                             double dValue = (double)value;
                             strValue = dValue.ToString();
-                            if (!strValue.Contains("."))
+                            if (!strValue.Contains(".") && !double.IsInfinity(dValue))
                             {
                                 strValue += ".0";
                             }
