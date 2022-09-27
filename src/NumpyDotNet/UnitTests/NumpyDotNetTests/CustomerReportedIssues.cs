@@ -684,5 +684,27 @@ namespace NumpyDotNetTests
         }
 
 
+        [TestMethod]
+        public void test_ChengYenTang_4()
+        {
+            ndarray low = np.array(new double[2, 3] { { 9, 8, 7 }, { 2, double.NegativeInfinity, 1 } });
+            print(low);
+
+            ndarray stack_low = np.repeat(low, 3, axis: 0);
+            print(stack_low);
+
+            ndarray observation = np.array(new double[2, 2, 3] { { { 9, 8, 7 }, { 2, double.NegativeInfinity, 1 } }, { { 30, 22, 10 }, { double.PositiveInfinity, 5, 3 } } });
+            print(observation);
+
+            ndarray stackedobs = np.zeros(new shape(2) + stack_low.shape);
+            print(stackedobs);
+
+
+            stackedobs[":", $"-{observation.shape[1]}:", "..."] = observation;
+            print(stackedobs);
+
+        }
+
+
     }
 }

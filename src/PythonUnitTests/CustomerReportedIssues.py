@@ -267,7 +267,24 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         g = np.reshape(a, (2,2)+(2,4)+(1,1))
         print(g.shape)
-    
+
+    def test_ChengYenTang_4(self):
+
+        low = np.array([[9, 8, 7], [2, -np.inf, 1]])
+        print(low)
+
+        stack_low = np.repeat(low, 3, axis=0)
+        print(stack_low)
+
+        observation = np.array([[[9, 8, 7], [2, -np.inf, 1]], [[30, 22, 10], [np.inf, 5, 3]]])
+        print(observation)
+
+        stackedobs = np.zeros((2,) + stack_low.shape);
+        print(stackedobs)
+
+        stackedobs[:, -observation.shape[1] :, ...] = observation
+        print(stackedobs)
+
    
  
       
