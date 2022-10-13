@@ -415,7 +415,7 @@ class nptest3(object):
                 subscript_list.append(tmp_operands.pop(0))
 
             output_list = tmp_operands[-1] if len(tmp_operands) else None
-            operands = [asanyarray(v) for v in operand_list]
+            operands = [np.asanyarray(v) for v in operand_list]
             subscripts = ""
             last = len(subscript_list) - 1
             for num, sub in enumerate(subscript_list):
