@@ -47,10 +47,70 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
-        public static ndarray einsum_path()
+        public static (IEnumerable<object> path, string string_repr) einsum_path(string subscripts, IEnumerable<object> operands, object optimize)
         {
-            throw new NotImplementedException();
-            return null;
+            string path_type;
+            int? memory_limit = null;
+
+            if (optimize is bool)
+            {
+                bool boptimize = (bool)optimize;
+
+                if (boptimize == false)
+                {
+                    path_type = "None";
+                }
+                else
+                {
+                    path_type = "greedy";
+                }
+            }
+            else if (optimize is IEnumerable<string>)
+            {
+                IEnumerable<string> enumerable_optimize = optimize as IEnumerable<string>;
+                if (enumerable_optimize != null && enumerable_optimize.Count() > 0)
+                {
+                    string FirstString = enumerable_optimize.ElementAt(0);
+                    if (FirstString == "einsum_path")
+                    {
+                        path_type = "einsum_path";
+                    }
+                    else
+                    {
+                        path_type = "None";
+                    }
+                }
+
+            }
+            else if (optimize is IEnumerable<object>)
+            {
+                IEnumerable<object> enumerable_optimize = optimize as IEnumerable<object>;
+                if (enumerable_optimize != null && enumerable_optimize.Count() > 0)
+                {
+                    string FirstString = enumerable_optimize.ElementAt(0).ToString();
+                    if (FirstString == "einsum_path")
+                    {
+                        path_type = "einsum_path";
+                    }
+                    else
+                    {
+                        path_type = "None";
+                    }
+                }
+            }
+            if (optimize is ValueTuple<string,int>)
+            {
+                ValueTuple<string,int> toptimize = (ValueTuple<string, int>)optimize;
+                path_type = toptimize.Item1;
+                memory_limit = toptimize.Item2;
+            }
+            if (optimize is string)
+            {
+                string soptimize = optimize.ToString();
+                path_type = soptimize;
+            }
+
+            return (null, "123");
         }
 
         public static ndarray einsum()
