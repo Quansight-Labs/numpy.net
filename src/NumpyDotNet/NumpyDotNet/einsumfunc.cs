@@ -49,7 +49,7 @@ namespace NumpyDotNet
     {
         public static (IEnumerable<object> path, string string_repr) einsum_path(string subscripts, IEnumerable<object> operands, object optimize)
         {
-            string path_type;
+            string path_type = null;
             int? memory_limit = null;
 
             if (optimize is bool)
@@ -65,7 +65,7 @@ namespace NumpyDotNet
                     path_type = "greedy";
                 }
             }
-            else if (optimize is IEnumerable<string>)
+            if (optimize is IEnumerable<string>)
             {
                 IEnumerable<string> enumerable_optimize = optimize as IEnumerable<string>;
                 if (enumerable_optimize != null && enumerable_optimize.Count() > 0)
@@ -82,7 +82,7 @@ namespace NumpyDotNet
                 }
 
             }
-            else if (optimize is IEnumerable<object>)
+            if (optimize is IEnumerable<object>)
             {
                 IEnumerable<object> enumerable_optimize = optimize as IEnumerable<object>;
                 if (enumerable_optimize != null && enumerable_optimize.Count() > 0)
@@ -108,6 +108,22 @@ namespace NumpyDotNet
             {
                 string soptimize = optimize.ToString();
                 path_type = soptimize;
+            }
+
+            if (path_type == null)
+            {
+                throw new Exception(string.Format("Did not understand the path"));
+            }
+
+            switch (path_type)
+            {
+                case "einsum_path":
+                case "None":
+                case "optimize":
+                case "greedy":
+                    break;
+                default:
+                    throw new Exception(string.Format("Did not understand the path: {0}", path_type));
             }
 
             return (null, "123");
