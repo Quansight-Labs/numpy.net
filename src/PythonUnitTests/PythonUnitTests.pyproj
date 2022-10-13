@@ -25,6 +25,9 @@
     <Compile Include="CustomerReportedIssues.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nptest3.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MatrixProductTests.py" />
     <Compile Include="ObjectOperationsTests.py" />
     <Compile Include="nptest2.py" />
