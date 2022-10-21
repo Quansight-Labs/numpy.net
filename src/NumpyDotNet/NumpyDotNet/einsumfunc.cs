@@ -112,7 +112,7 @@ namespace NumpyDotNet
 
             if (path_type == null)
             {
-                throw new Exception(string.Format("Did not understand the path"));
+                throw new ValueError(string.Format("Did not understand the path"));
             }
 
             switch (path_type)
@@ -123,10 +123,22 @@ namespace NumpyDotNet
                 case "greedy":
                     break;
                 default:
-                    throw new Exception(string.Format("Did not understand the path: {0}", path_type));
+                    throw new ValueError(string.Format("Did not understand the path: {0}", path_type));
             }
 
+            parse_einsum_input(subscripts, operands);
+
             return (null, "123");
+        }
+
+        private static (string input_string, string output_string, IEnumerable<object> operands) parse_einsum_input(string subscripts, IEnumerable<object> operands)
+        {
+            if (operands == null || operands.Count() == 0)
+            {
+                throw new ValueError("No input operands");
+            }
+
+            throw new NotImplementedException();
         }
 
         public static ndarray einsum()
