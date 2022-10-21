@@ -713,6 +713,7 @@ namespace NumpyDotNetTests
             print(a.shape[-1]);
 
             Assert.AreEqual(1, a.shape[-1]);
+            Assert.AreEqual(3, a.shape[-2]);
         }
 
 
