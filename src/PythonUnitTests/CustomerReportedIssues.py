@@ -285,8 +285,12 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         stackedobs[:, -observation.shape[1] :, ...] = observation
         print(stackedobs)
 
-   
- 
+    def test_ChengYenTang_5(self):
+
+        a = np.array([[0], [0], [0]])
+        print(a.shape)
+        print(a.shape[-1])
+
       
 if __name__ == '__main__':
     unittest.main()

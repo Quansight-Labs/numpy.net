@@ -52,9 +52,14 @@ namespace NumpyDotNet
         {
             get
             {
-                if (index < 0 || index > iDims.Length - 1)
-                    throw new Exception("attempting to access shape dimension outside range");
+                if (index < 0)
+                {
+                    index = iDims.Length + index;
+                }
 
+                if (index > iDims.Length - 1)
+                    throw new Exception("attempting to access shape dimension outside range");
+   
                 return this.iDims[index];
             }
 

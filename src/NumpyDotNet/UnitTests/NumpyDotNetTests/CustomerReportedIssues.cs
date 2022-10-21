@@ -704,7 +704,17 @@ namespace NumpyDotNetTests
             print(stackedobs);
 
         }
+        
+        [TestMethod]
+        public void test_ChengYenTang_5()
+        {
+            var a = np.array(new int[,] { { 0 }, { 0 }, { 0 } });
+            print(a.shape);
+            print(a.shape[-1]);
+
+            Assert.AreEqual(1, a.shape[-1]);
+        }
 
 
-    }
+        }
 }
