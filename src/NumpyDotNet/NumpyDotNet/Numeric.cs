@@ -1536,11 +1536,108 @@ namespace NumpyDotNet
 
                 ndarray result = np.empty_like(arr);
 
+                foreach (var kevin in products(new string[] { "ABCD", "xy", "12"}, 3))
+                {
+                    var tina = kevin;
+                    Console.WriteLine(tina);
+                }
+
+                foreach (var kevin in products(rolls))
+                {
+                    var tina = kevin;
+                    Console.WriteLine(tina);
+                }
+
+                foreach (object[] indices in products(rolls))
+                {
+
+                }
+
                 //var rolls = BuildSliceArray()
                 return null;
             }
 
             return null;
+        }
+
+
+        private static IEnumerable<object[]> products(object[] args, int repeat = 1)
+        {
+            // product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
+            // product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
+
+            List<object> pools = new List<object>();
+
+            for (int i = 0; i < repeat; i++)
+            {
+                foreach (var arg in args)
+                {
+                
+                    if (arg is Enumerable)
+                    {
+                        IEnumerable<object> earg = arg as IEnumerable<object>;
+                        foreach (var e in earg)
+                        {
+                            Console.WriteLine(e.ToString());
+                        }
+                    }
+                    if (arg is string)
+                    {
+                        List<string> s = new List<string>();
+                        string sarg = arg as string;
+                        foreach (var e in sarg)
+                        {
+                            s.Add(e.ToString());
+                        }
+
+                        pools.Add(s);
+                    }
+
+
+                }
+            }
+
+            List<List<object>> result = new List<List<object>>();
+
+            int totalPools = CountPools(pools);
+            for (int i = 0; i < totalPools; i++)
+            {
+                List<object> newpool = new List<object>();
+
+                foreach (var p in pools)
+                {
+                    if (p is IEnumerable<string>)
+                    {
+                        IEnumerable<string> epool = p as IEnumerable<string>;
+                        int pindex = i % epool.Count();
+                        newpool.Add(epool.ElementAt(pindex));
+                    }
+
+                }
+
+                result.Add(newpool);
+            }
+
+            foreach (var prod1 in result)
+            {
+                yield return prod1.ToArray();
+            }
+
+    
+        }
+
+        private static int CountPools(List<object> pools)
+        {
+            int totalPools = 1;
+
+            foreach (var pool in pools)
+            {
+                IEnumerable<object> epool = pool as IEnumerable<object>;
+
+                totalPools *= epool.Count();
+            }
+
+            return totalPools;
         }
 
 
