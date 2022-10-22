@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import itertools
 from nptest import nptest
 
 class NumericTests(unittest.TestCase):
@@ -466,13 +467,27 @@ class NumericTests(unittest.TestCase):
         print(a.strides)
 
         b = np.roll(a, 2)
-        print("B")
+        print("B1")
         print(b)
         print(b.shape)
         print(b.strides)
 
+        b = nptest.roll(a, 2)
+        print("B2")
+        print(b)
+        print(b.shape)
+        print(b.strides)
+
+        #########################
+
         c = np.roll(b, 2)
-        print("C")
+        print("C1")
+        print(c)
+        print(c.shape)
+        print(c.strides)
+
+        c = nptest.roll(b, 2)
+        print("C2")
         print(c)
         print(c.shape)
         print(c.strides)
@@ -485,16 +500,58 @@ class NumericTests(unittest.TestCase):
         print(a.strides)
 
         b = np.roll(a, -2)
-        print("B")
+        print("B1")
         print(b)
         print(b.shape)
         print(b.strides)
 
+        b = nptest.roll(a, -2)
+        print("B2")
+        print(b)
+        print(b.shape)
+        print(b.strides)
+
+        ###################
+
         c = np.roll(b, -6)
-        print("C")
+        print("C1")
         print(c)
         print(c.shape)
         print(c.strides)
+
+        c = nptest.roll(b, -6)
+        print("C2")
+        print(c)
+        print(c.shape)
+        print(c.strides)
+
+    def test_roll_with_axis(self):
+
+        x = np.arange(10)
+        A = np.roll(x, 2)
+        print(A)
+        A = nptest.roll(x, 2)
+        print(A)
+        print("---------------")
+
+        x2 = np.reshape(x, (2,5))
+        B = np.roll(x2, 1)
+        print(B)
+        B = nptest.roll(x2, 1)
+        print(B)
+        print("---------------")
+
+        C = np.roll(x2, 1, axis=0)
+        print(C)
+        C = nptest.roll(x2, 1, axis=0)
+        print(C)
+        print("---------------")
+
+        D = np.roll(x2, 1, axis=1)
+        print(D)
+        D = nptest.roll(x2, 1, axis=1)
+        print(D)
+ 
 
     def test_ndarray_rollaxis(self):
 
