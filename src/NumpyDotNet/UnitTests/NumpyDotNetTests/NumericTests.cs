@@ -741,32 +741,25 @@ namespace NumpyDotNetTests
             AssertShape(c, 10);
         }
   
-        [Ignore] // waiting for broadcast to be implemented
+        //[Ignore] // waiting for broadcast to be implemented
         [TestMethod]
-        public void test_roll_backward_1()
+        public void test_roll_with_axis()
         {
-            var a = np.arange(10, dtype: np.UInt16).reshape((4,4));
+            var x = np.arange(10);
+            //var A = np.roll(x, 2);
+            //print("A");
+            //print(A);
 
-            print("A");
-            print(a);
-            print(a.shape);
-            print(a.strides);
+            var x2 = np.reshape(x, new shape(2, 5));
+            //var B = np.roll(x2, 1);
+            //print(B);
 
-            var b = np.roll(a, -2, axis:0);
-            print("B");
-            print(b);
-            print(b.shape);
-            print(b.strides);
-            AssertArray(b, new UInt16[] { 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 });
-            AssertShape(b, 10);
+            var C = np.roll_needs_work(x2, 1, axis: 0);
+            print(C);
 
-            var c = np.roll(b, -6, axis: 1);
-            print("C");
-            print(c);
-            print(c.shape);
-            print(c.strides);
-            AssertArray(c, new UInt16[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
-            AssertShape(c, 10);
+            var D = np.roll_needs_work(x2, 1, axis: 1);
+            print(D);
+
         }
 
         [TestMethod]

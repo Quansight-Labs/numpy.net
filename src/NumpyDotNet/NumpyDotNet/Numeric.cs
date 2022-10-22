@@ -1449,7 +1449,7 @@ namespace NumpyDotNet
             }
         }
 
-        private static ndarray roll_needs_work(object a, int shift, object axis = null)
+        public static ndarray roll_needs_work(object a, int shift, object axis = null)
         {
             // Roll array elements along a given axis.
 
@@ -1508,17 +1508,33 @@ namespace NumpyDotNet
                 {
                     shifts.Add(i, 0);
                 }
+
                 foreach (var _b in broadcasted)
                 {
                     ndarray[] ss = _b as ndarray[];
                     shifts[(int)ss[1].GetItem(0)] = (int)ss[0].GetItem(0);
                 }
 
-                //object[] rolls = new object[arr.ndim];
-                //for (int i = 0; i < arr.ndim; i++)
-                //{
-                //    rolls[i] = new Slice()
-                //}
+                object[] rolls = new object[arr.ndim];
+                for (int i = 0; i < arr.ndim; i++)
+                {
+                    rolls[i] = new Slice[] { new Slice(null), new Slice(null) };
+                }
+
+                foreach (var key in shifts.Keys)
+                {
+                    var ax = key;
+                    var offset = shifts[key];
+
+                    offset %= (int)arr.shape[ax] | 1;
+                    if (offset != 0)
+                    {
+                        rolls[ax] = new Slice[] {new Slice(null, -offset), new Slice(offset, null),
+                                                 new Slice(-offset, null), new Slice(null, offset)};
+                    }
+                }
+
+                ndarray result = np.empty_like(arr);
 
                 //var rolls = BuildSliceArray()
                 return null;
