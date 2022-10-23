@@ -740,7 +740,26 @@ namespace NumpyDotNetTests
             AssertArray(c, new UInt16[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
             AssertShape(c, 10);
         }
-  
+
+        [TestMethod]
+        public void test_roll_backward_1()
+        {
+            var a = np.arange(16, dtype: np.UInt16).reshape((4, 4));
+
+            print("A");
+            print(a);
+
+            var b = np.roll(a, -2, axis: 0);
+            print("B");
+            print(b);
+            AssertArray(b, new UInt16[,] { { 8, 9, 10, 11 }, { 12, 13, 14, 15 }, { 0, 1, 2, 3 }, { 4, 5, 6, 7 } });
+
+            var c = np.roll(b, -2, axis: 1);
+            print("C");
+            print(c);
+            AssertArray(c, new UInt16[,] { { 10, 11, 8, 9 }, { 14, 15, 12, 13 }, { 2, 3, 0, 1 }, { 6, 7, 4, 5 } });
+        }
+
         [TestMethod]
         public void test_roll_with_axis()
         {

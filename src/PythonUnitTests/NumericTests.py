@@ -525,6 +525,21 @@ class NumericTests(unittest.TestCase):
         print(c.shape)
         print(c.strides)
 
+    def test_roll_backward_1(self):
+        a =  np.arange(16, dtype=np.uint16).reshape(4,4);
+        print("A")
+        print(a)
+
+        b = np.roll(a, -2, axis=0)
+        print("B1")
+        print(b)
+
+        b = nptest.roll(b, -2, axis=1)
+        print("B2")
+        print(b)
+
+      
+
     def test_roll_with_axis(self):
 
         x = np.arange(10)
