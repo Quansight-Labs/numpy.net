@@ -530,14 +530,14 @@ class NumericTests(unittest.TestCase):
         x = np.arange(10)
         A = np.roll(x, 2)
         print(A)
-        A = nptest.roll(x, 2)
+        #A = nptest.roll(x, 2)
         print(A)
         print("---------------")
 
         x2 = np.reshape(x, (2,5))
         B = np.roll(x2, 1)
         print(B)
-        B = nptest.roll(x2, 1)
+        #B = nptest.roll(x2, 1)
         print(B)
         print("---------------")
 
@@ -551,6 +551,58 @@ class NumericTests(unittest.TestCase):
         print(D)
         D = nptest.roll(x2, 1, axis=1)
         print(D)
+
+    def test_roll_with_axis_2(self):
+ 
+        x = np.arange(12)
+        A = np.roll(x, 2)
+        print("A")
+        print(A)
+ 
+        x2 = np.reshape(x, (2,2,3))
+        B = np.roll(x2, 1)
+        print("B")
+        print(B)
+   
+        C = np.roll(x2, 1, axis=0)
+        print("C")
+        print(C)
+  
+        D = np.roll(x2, 1, axis=1)
+        print("D")
+        print(D)
+
+        print("E")
+        E = nptest.roll(x2, 1, axis=2)
+        print(E)
+
+    def test_roll_with_axis_3(self):
+ 
+        x = np.arange(16)
+        A = np.roll(x, 2)
+        print("A")
+        print(A)
+ 
+        x2 = np.reshape(x, (2,2,2,2))
+        B = np.roll(x2, 1)
+        print("B")
+        print(B)
+   
+        C = np.roll(x2, 1, axis=0)
+        print("C")
+        print(C)
+  
+        D = np.roll(x2, 1, axis=1)
+        print("D")
+        print(D)
+
+        print("E")
+        E = nptest.roll(x2, 1, axis=2)
+        print(E)
+
+        print("F")
+        F = nptest.roll(x2, 1, axis=3)
+        print(F)
  
 
     def test_ndarray_rollaxis(self):

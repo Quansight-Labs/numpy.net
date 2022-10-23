@@ -741,24 +741,88 @@ namespace NumpyDotNetTests
             AssertShape(c, 10);
         }
   
-        //[Ignore] // waiting for broadcast to be implemented
         [TestMethod]
         public void test_roll_with_axis()
         {
             var x = np.arange(10);
-            //var A = np.roll(x, 2);
-            //print("A");
-            //print(A);
+            var A = np.roll(x, 2);
+            AssertArray(A, new int[] { 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 });
+            print("A");
+            print(A);
 
             var x2 = np.reshape(x, new shape(2, 5));
-            //var B = np.roll(x2, 1);
-            //print(B);
+            var B = np.roll(x2, 1);
+            AssertArray(B, new int[,] { { 9, 0, 1, 2, 3 }, { 4, 5, 6, 7, 8 } });
+            print(B);
 
-            var C = np.roll_needs_work(x2, 1, axis: 0);
+            var C = np.roll(x2, 1, axis: 0);
+            AssertArray(C, new int[,] { { 5, 6, 7, 8, 9 },  { 0, 1, 2, 3, 4 } });
             print(C);
 
-            var D = np.roll_needs_work(x2, 1, axis: 1);
+            var D = np.roll(x2, 1, axis: 1);
+            AssertArray(D, new int[,] { { 4, 0, 1, 2, 3 }, { 9, 5, 6, 7, 8 } });
             print(D);
+
+        }
+
+        [TestMethod]
+        public void test_roll_with_axis_2()
+        {
+            var x = np.arange(12);
+            var A = np.roll(x, 2);
+            AssertArray(A, new int[] { 10,11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            print("A");
+            print(A);
+
+            var x2 = np.reshape(x, new shape(2,2,3));
+            var B = np.roll(x2, 1);
+            AssertArray(B, new int[,,] { { { 11, 0, 1 }, { 2, 3, 4 } },{ { 5, 6, 7 }, { 8, 9, 10 } } });
+            print(B);
+
+            var C = np.roll(x2, 1, axis: 0);
+            AssertArray(C, new int[,,] { { { 6, 7, 8 }, { 9, 10, 11 } },{ { 0, 1, 2 }, { 3, 4, 5 } } });
+            print(C);
+
+            var D = np.roll(x2, 1, axis: 1);
+            AssertArray(D, new int[,,] { { { 3, 4, 5 }, { 0, 1, 2 } }, { { 9, 10, 11 }, { 6, 7, 8 } } });
+            print(D);
+
+            var E = np.roll(x2, 1, axis: 2);
+            AssertArray(E, new int[,,] { { { 2, 0, 1 }, { 5, 3, 4 } }, { { 8, 6, 7 }, { 11, 9, 10 } } });
+            print(E);
+
+        }
+
+        [TestMethod]
+        public void test_roll_with_axis_3()
+        {
+            var x = np.arange(16);
+            var A = np.roll(x, 2);
+            AssertArray(A, new int[] { 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 });
+            print("A");
+            print(A);
+
+            var x2 = np.reshape(x, new shape(2, 2, 2, 2));
+            var B = np.roll(x2, 1);
+            AssertArray(B, new int[,,,] { { { { 15, 0 },{ 1, 2 }},{ { 3, 4 },{ 5, 6 } } },{ { { 7, 8 },{ 9, 10 } },{ { 11, 12 }, { 13, 14 } } } });
+            print(B);
+
+            var C = np.roll(x2, 1, axis: 0);
+            AssertArray(C, new int[,,,] { { { { 8, 9 },{ 10, 11 } },{ { 12, 13 },{ 14, 15 } } },{ { { 0, 1 },{ 2, 3 } },{ { 4, 5 },{ 6, 7 } } } });
+            print(C);
+
+            var D = np.roll(x2, 1, axis: 1);
+            AssertArray(D, new int[,,,] { { { { 4, 5 },{ 6, 7 } },{ { 0, 1 },{ 2, 3 } } },{ { { 12, 13 },{ 14, 15 } },{ { 8, 9 },{ 10, 11 } } } });
+            print(D);
+
+            var E = np.roll(x2, 1, axis: 2);
+            AssertArray(E, new int[,,,] { { { { 2, 3 }, { 0, 1 } }, { { 6, 7 },{ 4, 5 } } },{ { { 10, 11 },{ 8, 9 } },{ { 14, 15 }, { 12, 13 } } } });
+            print(E);
+
+            var F = np.roll(x2, 1, axis: 3);
+            AssertArray(F, new int[,,,] { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } });
+            print(F);
+
 
         }
 
