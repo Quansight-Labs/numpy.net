@@ -1349,13 +1349,7 @@ namespace NumpyDotNet
         #endregion
 
         #region roll
-        /// <summary>
-        /// Roll array elements along a given axis.
-        /// </summary>
-        /// <param name="a">Input array.</param>
-        /// <param name="shift">The number of places by which elements are shifted.</param>
-        /// <param name="axis">Axis along which elements are shifted</param>
-        /// <returns></returns>
+  
         private static ndarray roll_does_not_support_axis(ndarray a, int shift, int? axis = null)
         {
             // Roll array elements along a given axis.
