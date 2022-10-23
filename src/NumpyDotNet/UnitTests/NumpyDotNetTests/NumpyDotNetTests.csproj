@@ -102,6 +102,7 @@
     <Compile Include="EinsumFuncTests.cs" />
     <Compile Include="CustomerReportedIssues.cs" />
     <Compile Include="GenericArrayFunctions.cs" />
+    <Compile Include="IterToolsTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
