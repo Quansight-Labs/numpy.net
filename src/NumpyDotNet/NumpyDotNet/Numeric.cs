@@ -1356,7 +1356,7 @@ namespace NumpyDotNet
         /// <param name="shift">The number of places by which elements are shifted.</param>
         /// <param name="axis">Axis along which elements are shifted</param>
         /// <returns></returns>
-        public static ndarray roll(ndarray a, int shift, int? axis = null)
+        private static ndarray roll_does_not_support_axis(ndarray a, int shift, int? axis = null)
         {
             // Roll array elements along a given axis.
 
@@ -1449,7 +1449,14 @@ namespace NumpyDotNet
             }
         }
 
-        public static ndarray roll_needs_work(object a, int shift, object axis = null)
+        /// <summary>
+        /// Roll array elements along a given axis.
+        /// </summary>
+        /// <param name="a">Input array.</param>
+        /// <param name="shift">The number of places by which elements are shifted.</param>
+        /// <param name="axis">Axis along which elements are shifted</param>
+        /// <returns></returns>
+        public static ndarray roll(object a, int shift, object axis = null)
         {
             // Roll array elements along a given axis.
 
@@ -1518,7 +1525,8 @@ namespace NumpyDotNet
                 object[] rolls = new object[arr.ndim];
                 for (int i = 0; i < arr.ndim; i++)
                 {
-                    rolls[i] = new Slice[] { new Slice(null), new Slice(null) };
+                    var Slice1 = new Slice[] { new Slice(null), new Slice(null) };
+                    rolls[i] = new object[] { Slice1 };
                 }
 
                 foreach (var key in shifts.Keys)
@@ -1529,8 +1537,9 @@ namespace NumpyDotNet
                     offset %= (int)arr.shape[ax] | 1;
                     if (offset != 0)
                     {
-                        rolls[ax] = new Slice[] {new Slice(null, -offset), new Slice(offset, null),
-                                                 new Slice(-offset, null), new Slice(null, offset)};
+                        var Slice1 = new Slice[] { new Slice(null, -offset), new Slice(offset, null) };
+                        var Slice2 = new Slice[] { new Slice(-offset, null), new Slice(null, offset) };
+                        rolls[ax] = new object[] { Slice1, Slice2 };
                     }
                 }
 
@@ -1538,15 +1547,109 @@ namespace NumpyDotNet
 
                 foreach (object[] indices in _IterTools.products(rolls))
                 {
-
+                    var zipReturn = RollZip(indices);
+                    result[zipReturn.Item2] = arr[zipReturn.Item1];
                 }
 
-                //var rolls = BuildSliceArray()
-                return null;
+                return result;
             }
 
-            return null;
         }
+
+        private static (IEnumerable<Slice>, IEnumerable<Slice>) RollZip(object[] indices)
+        {
+            if (indices == null)
+            {
+                throw new Exception("RollZip got an null indices");
+            }
+            if (indices.Length == 0)
+            {
+                throw new Exception("RollZip got an empty indices");
+            }
+
+            var t1e = new List<Slice>();
+            var t2e = new List<Slice>();
+
+            if (indices.Length == 1)
+            {
+                var x = (IEnumerable<Slice>)indices[0];
+                t1e.Add(x.ElementAt(0));
+                t2e.Add(x.ElementAt(1));
+            }
+            else
+            {
+                var t1 = (IEnumerable<Slice>)indices[0];
+                var t2 = (IEnumerable<Slice>)indices[1];
+
+                if (t1.Count() != t2.Count())
+                {
+                    throw new Exception("Arrays to RollZip are different sizes");
+                }
+
+                t1e.Add(t1.ElementAt(0));
+                t1e.Add(t2.ElementAt(0));
+
+                t2e.Add(t1.ElementAt(1));
+                t2e.Add(t2.ElementAt(1));
+
+                if (indices.Length > 2)
+                {
+                    var t3 = (IEnumerable<Slice>)indices[2];
+
+                    if (t1.Count() != t3.Count())
+                    {
+                        throw new Exception("Arrays to RollZip are different sizes");
+                    }
+
+                    t1e.Add(t3.ElementAt(0));
+                    t2e.Add(t3.ElementAt(1));
+                }
+
+                if (indices.Length > 3)
+                {
+                    var t4 = (IEnumerable<Slice>)indices[3];
+
+                    if (t1.Count() != t4.Count())
+                    {
+                        throw new Exception("Arrays to RollZip are different sizes");
+                    }
+
+                    t1e.Add(t4.ElementAt(0));
+                    t2e.Add(t4.ElementAt(1));
+                }
+
+                if (indices.Length > 4)
+                {
+                    var t5 = (IEnumerable<Slice>)indices[4];
+
+                    if (t1.Count() != t5.Count())
+                    {
+                        throw new Exception("Arrays to RollZip are different sizes");
+                    }
+
+                    t1e.Add(t5.ElementAt(0));
+                    t2e.Add(t5.ElementAt(1));
+                }
+
+                if (indices.Length > 5)
+                {
+                    var t6 = (IEnumerable<Slice>)indices[5];
+
+                    if (t1.Count() != t6.Count())
+                    {
+                        throw new Exception("Arrays to RollZip are different sizes");
+                    }
+
+                    t1e.Add(t6.ElementAt(0));
+                    t2e.Add(t6.ElementAt(1));
+                }
+            }
+     
+
+            return (t1e, t2e);
+        }
+
+
 
         #endregion
 

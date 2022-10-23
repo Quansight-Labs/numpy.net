@@ -82,6 +82,17 @@ namespace NumpyDotNet
                             pools.Add(s);
                             saveToPools = false;
                         }
+                        else if (e is IEnumerable<object>)
+                        {
+                            s = new List<object>();
+                            var se = e as IEnumerable<object>;
+                            foreach (var _se in se)
+                            {
+                                s.Add(_se);
+                            }
+                            pools.Add(s);
+                            saveToPools = false;
+                        }
                         else
                         {
                             s.Add(e);
