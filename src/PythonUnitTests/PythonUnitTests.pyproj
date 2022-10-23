@@ -25,6 +25,9 @@
     <Compile Include="CustomerReportedIssues.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IterTools.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nptest3.py">
       <SubType>Code</SubType>
     </Compile>
@@ -90,6 +93,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EinsumFuncTests.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IterToolsTests.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
