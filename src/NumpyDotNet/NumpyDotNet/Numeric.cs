@@ -1570,81 +1570,22 @@ namespace NumpyDotNet
             var t1e = new List<Slice>();
             var t2e = new List<Slice>();
 
-            if (indices.Length == 1)
-            {
-                var x = (IEnumerable<Slice>)indices[0];
-                t1e.Add(x.ElementAt(0));
-                t2e.Add(x.ElementAt(1));
-            }
-            else
-            {
-                var t1 = (IEnumerable<Slice>)indices[0];
-                var t2 = (IEnumerable<Slice>)indices[1];
+            var t1 = (IEnumerable<Slice>)indices[0];
+            t1e.Add(t1.ElementAt(0));
+            t2e.Add(t1.ElementAt(1));
 
-                if (t1.Count() != t2.Count())
+            for (int i = 1; i < indices.Length; i++)
+            {
+                var tt = (IEnumerable<Slice>)indices[i];
+
+                if (t1.Count() != tt.Count())
                 {
                     throw new Exception("Arrays to RollZip are different sizes");
                 }
 
-                t1e.Add(t1.ElementAt(0));
-                t1e.Add(t2.ElementAt(0));
-
-                t2e.Add(t1.ElementAt(1));
-                t2e.Add(t2.ElementAt(1));
-
-                if (indices.Length > 2)
-                {
-                    var t3 = (IEnumerable<Slice>)indices[2];
-
-                    if (t1.Count() != t3.Count())
-                    {
-                        throw new Exception("Arrays to RollZip are different sizes");
-                    }
-
-                    t1e.Add(t3.ElementAt(0));
-                    t2e.Add(t3.ElementAt(1));
-                }
-
-                if (indices.Length > 3)
-                {
-                    var t4 = (IEnumerable<Slice>)indices[3];
-
-                    if (t1.Count() != t4.Count())
-                    {
-                        throw new Exception("Arrays to RollZip are different sizes");
-                    }
-
-                    t1e.Add(t4.ElementAt(0));
-                    t2e.Add(t4.ElementAt(1));
-                }
-
-                if (indices.Length > 4)
-                {
-                    var t5 = (IEnumerable<Slice>)indices[4];
-
-                    if (t1.Count() != t5.Count())
-                    {
-                        throw new Exception("Arrays to RollZip are different sizes");
-                    }
-
-                    t1e.Add(t5.ElementAt(0));
-                    t2e.Add(t5.ElementAt(1));
-                }
-
-                if (indices.Length > 5)
-                {
-                    var t6 = (IEnumerable<Slice>)indices[5];
-
-                    if (t1.Count() != t6.Count())
-                    {
-                        throw new Exception("Arrays to RollZip are different sizes");
-                    }
-
-                    t1e.Add(t6.ElementAt(0));
-                    t2e.Add(t6.ElementAt(1));
-                }
+                t1e.Add(tt.ElementAt(0));
+                t2e.Add(tt.ElementAt(1));
             }
-     
 
             return (t1e, t2e);
         }
