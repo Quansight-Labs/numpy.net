@@ -291,6 +291,17 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(a.shape)
         print(a.shape[-1])
 
+    def test_ChengYenTang_6(self):
+
+        a = np.array([[1,2],[3,4],[5,6]])
+        print(a.shape)
+
+        b = a[0, ...]
+        print(b)
+
+        b = a[0, ..., :-1]
+        print(b)
+
       
 if __name__ == '__main__':
     unittest.main()

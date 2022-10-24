@@ -716,6 +716,26 @@ namespace NumpyDotNetTests
             Assert.AreEqual(3, a.shape[-2]);
         }
 
+        [TestMethod]
+        public void test_ChengYenTang_6()
+        {
+            var a = np.array(new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
+            print(a.shape);
+
+            var b = (ndarray)a[0, "..."];
+            AssertArray(b, new int[] { 1, 2 });
+            print(b);
+
+            var c = (ndarray)a[0, "...", ":-1"];
+            AssertArray(c, new int[] { 1 });
+            print(c);
+
+            var d = (ndarray)a[0, "...", new Slice(0,-1,1)];
+            AssertArray(d, new int[] { 1 });
+            print(d);
 
         }
+
+
+    }
 }
