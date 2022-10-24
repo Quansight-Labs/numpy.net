@@ -352,6 +352,8 @@ namespace NumpyDotNet
             else
             if (s is string)
             {
+                index = Math.Min(arr.ndim - 1, index);
+
                 string ss = s as String;
                 npy_intp i = 0;
                 npy_intp j = arr.Dim(index);
