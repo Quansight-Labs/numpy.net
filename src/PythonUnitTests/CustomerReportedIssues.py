@@ -299,8 +299,23 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         b = a[0, ...]
         print(b)
 
-        b = a[0, ..., :-1]
-        print(b)
+        c = a[0, ..., :-1]
+        print(c)
+
+    def test_ChengYenTang_7(self):
+
+        stackedobs = np.arange(0, 3*2*2*4).reshape(3, 2, 2, 4)
+        A = stackedobs[..., -2:]
+        print("A")
+        print(A.shape)
+        print(A)
+
+
+        B = stackedobs[..., 1, -2:]
+        print("----------------")
+        print("B")
+        print(B.shape)
+        print(B)
 
       
 if __name__ == '__main__':

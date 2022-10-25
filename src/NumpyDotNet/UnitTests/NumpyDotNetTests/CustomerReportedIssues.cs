@@ -736,6 +736,54 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_ChengYenTang_7()
+        {
+            var stackedobs = np.arange(0, 3*2*2*4).reshape(3, 2, 2, 4);
+
+            var ExpectedData = new int[,,,] { { { { 2, 3 }, { 6, 7 } },
+                                            { { 10, 11 }, { 14, 15 } } },
+                                            { { { 18, 19 }, { 22, 23 } },
+                                            { { 26, 27 }, { 30, 31 } } },
+                                          { { { 34, 35 }, { 38, 39 } },
+                                            { { 42, 43 }, { 46, 47 } } } };
+
+
+            var A = (ndarray)stackedobs["...", "-2:"];
+            AssertArray(A, ExpectedData);
+            print("A");
+            print(A);
+
+            var A1 = (ndarray)stackedobs["...", new Slice(-2, null, null)];
+            AssertArray(A1, ExpectedData);
+            print("A1");
+            print(A1);
+
+            var B = (ndarray)stackedobs["...", 1, "-2:"];
+            AssertArray(B, new int[,,] {{{ 6, 7 },{ 14, 15 }},{{ 22, 23 },{ 30, 31 }},{{ 38, 39 },{ 46, 47 }}});
+            print("B");
+            print(B);
+
+            var C = (ndarray)stackedobs[":", ":", ":", "-2:"];
+            AssertArray(C, ExpectedData);
+            print("C");
+            print(C);
+
+
+            bool GotException = false;
+            try
+            {
+                var expectException = stackedobs["...", "...", "...", "-3:"];
+                GotException = false;
+            }
+            catch (Exception ex)
+            {
+                GotException = true;
+            }
+            Assert.IsTrue(GotException);
+
+        }
+
 
     }
 }
