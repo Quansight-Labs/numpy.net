@@ -483,7 +483,7 @@ namespace NumpyDotNet
 
 
             // Find the stop
-            if (slice.Stop == null)
+            if (slice.Stop == null || num_ellipsis > 0)
             {
                 hasStop = false;
                 stop = 0;
@@ -561,8 +561,13 @@ namespace NumpyDotNet
 
         internal void AddEllipsis()
         {
+            if (num_ellipsis > 0)
+            {
+                throw new Exception("An index can only have a single ellipsis ('...')");
+            }
             indexes[num_indexes].type = NpyIndexType.NPY_INDEX_ELLIPSIS;
             ++num_indexes;
+            ++num_ellipsis;
         }
 
         internal NpyIndexType IndexType(int n)
@@ -583,6 +588,8 @@ namespace NumpyDotNet
         internal bool IsAdvancedIndexing = false;
         private int num_indexes;
         private int num_newindexes = 0;
+        private int num_ellipsis = 0;
+
         private NpyIndex[]indexes;
         private List<string> strings;
     }
