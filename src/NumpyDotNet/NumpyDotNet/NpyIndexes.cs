@@ -264,7 +264,8 @@ namespace NumpyDotNet
             index -= num_newindexes;
             if (arr != null)
             {
-                Slice Slice = ParseIndexString(arr, index, s, false);
+                //Slice Slice = ParseIndexString(arr, index, s, false);
+                Slice Slice = ParseIndexString(s);
                 if (Slice != null)
                 {
                     AddIndex(Slice);
@@ -321,6 +322,61 @@ namespace NumpyDotNet
             catch { }
 
             return null;
+        }
+
+        private Slice ParseIndexString(string s)
+        {
+            //System.IO.File.AppendAllText(@"c:\temp\parsestrings.txt", s + "\r\n");
+
+            string ss = s;
+
+            // check if this is a CSharpTuple 
+            if (ss.StartsWith("[") && ss.EndsWith("]"))
+            {
+                return null;
+            }
+
+            if (ss == ":" || ss == "::")
+            {
+                return new Slice(null, null, null);
+            }
+
+            int? start = null;
+            int? stop = null;
+            int? step = null;
+
+            string[] Parts = ss.Split(':');
+            if (Parts.Length == 3)
+            {
+                int temp = 0;
+                if (int.TryParse(Parts[2], out temp))
+                {
+                    step = temp;
+                }
+
+            }
+
+            if (Parts.Length >= 2)
+            {
+                int temp = 0;
+                if (int.TryParse(Parts[1], out temp))
+                {
+                    stop = temp;
+                }
+
+            }
+
+            if (Parts.Length >= 1)
+            {
+                int temp = 0;
+                if (int.TryParse(Parts[0], out temp))
+                {
+                    start = temp;
+                }
+
+            }
+
+            return new Slice(start, stop, step);
         }
 
         private Slice ParseIndexString(ndarray arr, int index, object s, bool UseLiteralRanges)
@@ -483,7 +539,7 @@ namespace NumpyDotNet
 
 
             // Find the stop
-            if (slice.Stop == null || num_ellipsis > 0)
+            if (slice.Stop == null)
             {
                 hasStop = false;
                 stop = 0;
