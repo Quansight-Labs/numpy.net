@@ -2727,7 +2727,7 @@ namespace NumpyDotNetTests
             print(b);
             AssertArray(b, asstring(new Int32[,] { { 3, 4, 2, 3 }, { 4, 5, 6, 7 }, { 8, 8, 10, 11 }, { 3, 4, 14, 15 } }));
 
-            a["...", "..."] = "X";
+            a[":", ":"] = "X";
             print(a);
             try
             {
