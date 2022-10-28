@@ -5327,6 +5327,13 @@
             <param name="slice"></param>
             <returns></returns>
         </member>
+        <member name="P:NumpyDotNet.shape.Item(NumpyDotNet.Slice)">
+            <summary>
+            get shape indices via slice
+            </summary>
+            <param name="slice"></param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.shape.Equals(System.Object)">
             <summary>
             returns true of the shapes are equivalent

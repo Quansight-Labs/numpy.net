@@ -808,5 +808,31 @@ namespace NumpyDotNetTests
 
 
         }
+
+        [TestMethod]
+        public void test_ChengYenTang_8A()
+        {
+            var A = np.arange(0, 3 * 2 * 2 * 4).reshape(3, 2, 2, 4);
+            var i = A.shape[new Slice(1)];
+            AssertArray(np.array(i.ToArray()), new npy_intp[] { 2, 2, 4 });
+
+            var j = A.shape[new Slice(1,2)];
+            AssertArray(np.array(j.ToArray()), new npy_intp[] { 2 });
+
+            var k = A.shape[new Slice(0, 2)];
+            AssertArray(np.array(k.ToArray()), new npy_intp[] { 3, 2 });
+
+            var l = A.shape[new Slice(1, null, 2)];
+            AssertArray(np.array(l.ToArray()), new npy_intp[] { 2, 4 });
+
+            var m = A.shape[new Slice(null, null)];
+            AssertArray(np.array(m.ToArray()), new npy_intp[] { 3, 2, 2, 4 });
+
+            var n = A.shape[new Slice(null, null)];
+            AssertArray(np.array(n.ToArray()), new npy_intp[] { 3, 2, 2, 4 });
+
+
+        }
+
     }
 }

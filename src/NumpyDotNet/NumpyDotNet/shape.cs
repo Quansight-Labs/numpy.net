@@ -100,6 +100,36 @@ namespace NumpyDotNet
             }
 
         }
+        /// <summary>
+        /// get shape indices via slice
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <returns></returns>
+        public IEnumerable<npy_intp> this[Slice slice]
+        {
+            get
+            {
+                try
+                {
+                    var A = np.array(iDims);
+                    var B = (ndarray)A[slice];
+
+                    var C = new List<npy_intp>();
+
+                    foreach (var b in B)
+                    {
+                        C.Add((npy_intp)b);
+                    }
+                    return C;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Failure to convert shape array via the slice string");
+                }
+
+            }
+
+        }
 
         public npy_intp lastDim
         {
