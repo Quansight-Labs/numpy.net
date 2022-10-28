@@ -317,6 +317,28 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(B.shape)
         print(B)
 
+    def test_ChengYenTang_8(self):
+
+        A = np.arange(0, 3*2*2*4).reshape(3, 2, 2, 4)
+        i = A.shape[1:]
+        print(i)
+
+        j = A.shape[1:2]
+        print(j)
+
+        k = A.shape[0::2]
+        print(k)
+
+        
+        l = A.shape[1::2]
+        print(l)
+
+        m = A.shape[:]
+        print(m)
+
+        n = A.shape[::]
+        print(n)
+
       
 if __name__ == '__main__':
     unittest.main()

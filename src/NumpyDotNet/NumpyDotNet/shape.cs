@@ -48,6 +48,11 @@ namespace NumpyDotNet
     {
         public npy_intp[] iDims = null;
 
+        /// <summary>
+        /// get shape index by position
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public npy_intp this[npy_intp index]
         {
             get
@@ -61,6 +66,37 @@ namespace NumpyDotNet
                     throw new Exception("attempting to access shape dimension outside range");
    
                 return this.iDims[index];
+            }
+
+        }
+
+        /// <summary>
+        /// get shape indices by slice string
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <returns></returns>
+        public IEnumerable<npy_intp> this[string slice]
+        {
+            get
+            {
+                try
+                {
+                    var A = np.array(iDims);
+                    var B = (ndarray)A[slice];
+
+                    var C = new List<npy_intp>();
+
+                    foreach (var b in B)
+                    {
+                        C.Add((npy_intp)b);
+                    }
+                    return C;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Failure to convert shape array via the slice string");
+                }
+     
             }
 
         }

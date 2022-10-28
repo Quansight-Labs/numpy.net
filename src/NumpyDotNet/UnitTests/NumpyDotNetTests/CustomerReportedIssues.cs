@@ -373,7 +373,7 @@ namespace NumpyDotNetTests
 
             var y = np.prod(np.array(new Int32[0]));
 
-      
+
             return;
         }
 
@@ -426,7 +426,7 @@ namespace NumpyDotNetTests
             x = np.stack(new[] { new Int32[0], new Int32[0] });
             Assert.IsTrue(x.Size == 0);
             print(x);
-       
+
 
             return;
         }
@@ -443,7 +443,7 @@ namespace NumpyDotNetTests
 
             x = x + 5;
             print(x);
-         
+
 
             return;
         }
@@ -468,7 +468,7 @@ namespace NumpyDotNetTests
         public void test_HadrianTang_9()
         {
 
-            var x = np.delete(np.array(new[,]{{"0", "1", "@"},{"1", "0", "@"},}), 1, 1);
+            var x = np.delete(np.array(new[,] { { "0", "1", "@" }, { "1", "0", "@" }, }), 1, 1);
 
             //AssertArray(x, new string[,] { { "0", "@" }, { "1", "@" } });
 
@@ -527,7 +527,7 @@ namespace NumpyDotNetTests
 
             var a = np.min(objecta);
             var b = np.max(objectb);
-           // var c = ndarray.this[object];
+            // var c = ndarray.this[object];
 
             return;
         }
@@ -651,21 +651,21 @@ namespace NumpyDotNetTests
             AssertArray(d, new bool[,] { { true, false, false }, { false, false, true } });
             print(d);
 
- 
+
         }
 
 
         [TestMethod]
         public void test_ChengYenTang_3()
         {
-            var a = np.arange(0,32);
+            var a = np.arange(0, 32);
             var b = np.reshape(a, new shape(2) + new shape(16));
             print(b.shape);
 
-            var c = np.reshape(a, new shape(2,2) + new shape(8));
+            var c = np.reshape(a, new shape(2, 2) + new shape(8));
             print(c.shape);
 
-            var d = np.reshape(a, new shape(2, 2) + new shape(2,4));
+            var d = np.reshape(a, new shape(2, 2) + new shape(2, 4));
             print(d.shape);
 
             var e = np.reshape(a, new shape(new int[] { 2, 2 }, new int[] { 2, 4 }));
@@ -704,7 +704,7 @@ namespace NumpyDotNetTests
             print(stackedobs);
 
         }
-        
+
         [TestMethod]
         public void test_ChengYenTang_5()
         {
@@ -730,7 +730,7 @@ namespace NumpyDotNetTests
             AssertArray(c, new int[] { 1 });
             print(c);
 
-            var d = (ndarray)a[0, "...", new Slice(0,-1,1)];
+            var d = (ndarray)a[0, "...", new Slice(0, -1, 1)];
             AssertArray(d, new int[] { 1 });
             print(d);
 
@@ -739,7 +739,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ChengYenTang_7()
         {
-            var stackedobs = np.arange(0, 3*2*2*4).reshape(3, 2, 2, 4);
+            var stackedobs = np.arange(0, 3 * 2 * 2 * 4).reshape(3, 2, 2, 4);
 
             var ExpectedData = new int[,,,] { { { { 2, 3 }, { 6, 7 } },
                                             { { 10, 11 }, { 14, 15 } } },
@@ -760,7 +760,7 @@ namespace NumpyDotNetTests
             print(A1);
 
             var B = (ndarray)stackedobs["...", 1, "-2:"];
-            AssertArray(B, new int[,,] {{{ 6, 7 },{ 14, 15 }},{{ 22, 23 },{ 30, 31 }},{{ 38, 39 },{ 46, 47 }}});
+            AssertArray(B, new int[,,] { { { 6, 7 }, { 14, 15 } }, { { 22, 23 }, { 30, 31 } }, { { 38, 39 }, { 46, 47 } } });
             print("B");
             print(B);
 
@@ -784,6 +784,29 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_ChengYenTang_8()
+        {
+            var A = np.arange(0, 3 * 2 * 2 * 4).reshape(3, 2, 2, 4);
+            var i = A.shape["1:"];
+            AssertArray(np.array(i.ToArray()), new npy_intp[] { 2, 2, 4 });
 
+            var j = A.shape["1:2"];
+            AssertArray(np.array(j.ToArray()), new npy_intp[] { 2 });
+
+            var k = A.shape["0:2"];
+            AssertArray(np.array(k.ToArray()), new npy_intp[] { 3, 2 });
+
+            var l = A.shape["1::2"];
+            AssertArray(np.array(l.ToArray()), new npy_intp[] { 2, 4 });
+
+            var m = A.shape[":"];
+            AssertArray(np.array(m.ToArray()), new npy_intp[] {3, 2, 2, 4 });
+
+            var n = A.shape["::"];
+            AssertArray(np.array(n.ToArray()), new npy_intp[] { 3, 2, 2, 4 });
+
+
+        }
     }
 }
