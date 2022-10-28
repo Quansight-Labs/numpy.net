@@ -2497,6 +2497,16 @@
             <param name="sep">>Optional separator for text elements</param>
             <param name="format">Optional output format specifier</param>
         </member>
+        <member name="M:NumpyDotNet.np.frombuffer(System.Byte[],NumpyDotNet.dtype,System.Int32,System.Int32)">
+            <summary>
+            converts a byte buffer of data into the specified data type.
+            </summary>
+            <param name="buffer">buffer of data to convert</param>
+            <param name="dtype">type of data to output.  if null, Float64 will be returned</param>
+            <param name="count">number of bytes to copy</param>
+            <param name="offset">offset into buffer to start copying.</param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.np.view(NumpyDotNet.ndarray,NumpyDotNet.dtype,System.Object)">
             <summary>
             New view of array with the same data.
