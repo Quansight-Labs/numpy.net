@@ -5313,6 +5313,20 @@
         <member name="F:NumpyDotNet.rk_state.has_binomial">
             * The rk_state structure has been extended to store the following
         </member>
+        <member name="P:NumpyDotNet.shape.Item(System.Int64)">
+            <summary>
+            get shape index by position
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:NumpyDotNet.shape.Item(System.String)">
+            <summary>
+            get shape indices by slice string
+            </summary>
+            <param name="slice"></param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.shape.Equals(System.Object)">
             <summary>
             returns true of the shapes are equivalent
