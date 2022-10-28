@@ -2555,6 +2555,83 @@ namespace NumpyDotNet
         }
         #endregion
 
+        #region frombuffer
+
+        /// <summary>
+        /// converts a byte buffer of data into the specified data type.
+        /// </summary>
+        /// <param name="buffer">buffer of data to convert</param>
+        /// <param name="dtype">type of data to output.  if null, Float64 will be returned</param>
+        /// <param name="count">number of bytes to copy</param>
+        /// <param name="offset">offset into buffer to start copying.</param>
+        /// <returns></returns>
+        public static ndarray frombuffer(byte []buffer, dtype dtype = null, int count = -1, int offset = 0)
+        {
+            if (dtype == null)
+                dtype = np.Float64;
+
+            int bytesToCopy = count >= 0 ? count : buffer.Length;
+
+            Array tempBuffer = null;
+
+            switch (dtype.TypeNum)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    tempBuffer = new bool[bytesToCopy / sizeof(bool)];
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    tempBuffer = new sbyte[bytesToCopy / sizeof(sbyte)];
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    tempBuffer = new byte[bytesToCopy / sizeof(byte)];
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    tempBuffer = new Int16[bytesToCopy / sizeof(Int16)];
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    tempBuffer = new UInt16[bytesToCopy / sizeof(UInt16)];
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    tempBuffer = new Int32[bytesToCopy / sizeof(Int32)];
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    tempBuffer = new UInt32[bytesToCopy / sizeof(UInt32)];
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    tempBuffer = new Int64[bytesToCopy / sizeof(Int64)];
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    tempBuffer = new UInt64[bytesToCopy / sizeof(UInt64)];
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    tempBuffer = new float[bytesToCopy / sizeof(float)];
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    tempBuffer = new double[bytesToCopy / sizeof(double)];
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    throw new Exception("np.frombuffer does not support Decimal data types");
+                case NPY_TYPES.NPY_COMPLEX:
+                    throw new Exception("np.frombuffer does not support Complex data types");
+                case NPY_TYPES.NPY_BIGINT:
+                    throw new Exception("np.frombuffer does not support BigInt data types");
+                case NPY_TYPES.NPY_OBJECT:
+                    throw new Exception("np.frombuffer does not support Object data types");
+                case NPY_TYPES.NPY_STRING:
+                    throw new Exception("np.frombuffer does not support string data types");
+            }
+
+            if (tempBuffer != null)
+            {
+                Buffer.BlockCopy(buffer, offset, tempBuffer, 0, bytesToCopy);
+                ndarray c = np.array(tempBuffer, dtype: dtype, order: NumpyLib.NPY_ORDER.NPY_CORDER, copy: true);
+                return c;
+            }
+
+            return null;
+        }
+        #endregion
+
         #region view
 
         /// <summary>

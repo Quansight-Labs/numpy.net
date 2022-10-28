@@ -834,5 +834,68 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_SimonCraenen_1()
+        {
+            ndarray a = np.arange(0,4, dtype: np.Float32);
+            var abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            ndarray b = np.frombuffer(abytes, dtype : np.Float32);
+            AssertArray(b, new float[] { 0, 1, 2, 3 });
+
+            /////////////
+            a = np.arange(0, 4, dtype: np.Float64);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.Float64);
+            AssertArray(b, new double[] { 0, 1, 2, 3 });
+
+            /////////////
+            a = np.arange(0, 4, dtype: np.Int8);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.Int8);
+            AssertArray(b, new sbyte[] { 0, 1, 2, 3 });
+
+            /////////////
+            a = np.arange(0, 8, dtype: np.UInt16).reshape(4,2);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.UInt16);
+            AssertArray(b, new UInt16[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+            /////////////
+            a = np.arange(0, 8, dtype: np.UInt32).reshape(4, 2);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.UInt32);
+            AssertArray(b, new UInt32[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+            /////////////
+            a = np.arange(0, 8, dtype: np.Int64).reshape(4, 2);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.Int64);
+            AssertArray(b, new Int64[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+            /////////////
+            a = np.arange(0, 8, dtype: np.Decimal).reshape(4, 2);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            bool GotException = false;
+            try
+            {
+                b = np.frombuffer(abytes, dtype: np.Decimal);
+            }
+            catch (Exception ex)
+            {
+                GotException = true;
+            }
+            Assert.IsTrue(GotException);
+
+
+            return;
+        }
+
     }
 }

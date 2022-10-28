@@ -339,6 +339,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         n = A.shape[::]
         print(n)
 
+    def test_SimonCraenen_1(self):
+
+         a = np.arange(0,4, dtype=np.float32);
+         b = np.getbuffer(a)
+         print(len(b))
+         c = np.frombuffer(b, dtype=np.float32);
+         print(c)
+
+
       
 if __name__ == '__main__':
     unittest.main()
