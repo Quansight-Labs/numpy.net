@@ -878,6 +878,19 @@ namespace NumpyDotNetTests
             b = np.frombuffer(abytes, dtype: np.Int64);
             AssertArray(b, new Int64[] { 0, 1, 2, 3, 4, 5, 6, 7 });
 
+            b = np.frombuffer(abytes, dtype: np.Int64, count: 32, offset: 8);
+            AssertArray(b, new Int64[] { 1, 2, 3, 4 });
+
+            /////////////
+            a = np.arange(0, 8, dtype: np.Float64).reshape(4, 2);
+            abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
+
+            b = np.frombuffer(abytes, dtype: np.Float64);
+            AssertArray(b, new double[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+            b = np.frombuffer(abytes, dtype: null, count:32, offset: 8);
+            AssertArray(b, new double[] { 1, 2, 3, 4 });
+
             /////////////
             a = np.arange(0, 8, dtype: np.Decimal).reshape(4, 2);
             abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
