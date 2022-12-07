@@ -208,7 +208,7 @@ namespace NumpyDotNet
 
             shape newshape = NumpyExtensions.ConvertTupleToShape(oshape);
 
-            var x = np.as_strided(np.zeros(1), shape: newshape.iDims, strides: np.zeros_like(newshape.iDims, dtype:np.intp).ToArray<npy_intp>());
+            var x = np.as_strided(np.zeros(1), shape: newshape.iDims, strides: (npy_intp[])np.zeros_like(newshape.iDims, dtype:np.intp).ToArray<npy_intp>());
 
             core = new nditer(x);
         }
