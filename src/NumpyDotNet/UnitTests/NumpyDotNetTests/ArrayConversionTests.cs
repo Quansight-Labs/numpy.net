@@ -1278,5 +1278,42 @@ namespace NumpyDotNetTests
             print(aobject);
 
         }
+
+        [TestMethod]
+        public void test_ToArray()
+        {
+            // 2D array tests
+            var adata = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            ndarray a = np.array(adata);
+
+            var a1 = (int[,])a.ToArray<int[,]>();
+            AssertArray(a, adata);
+            AssertArray(a, a1);
+
+            // 3D array test
+            var bdata = new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
+            ndarray b = np.array(bdata);
+
+            var b1 = (int[,,])b.ToArray<int[,,]>();
+            AssertArray(b, bdata);
+            AssertArray(b, b1);
+
+            // 4D array test
+            var cdata = new int[,,,] { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } };
+            ndarray c = np.array(cdata);
+
+            var c1 = (int[,,,])c.ToArray<int[,,,]>();
+            AssertArray(c, cdata);
+            AssertArray(c, c1);
+
+            // 5D array test
+            var ddata = new int[,,,,] { { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } } };
+            ndarray d = np.array(ddata);
+
+            var d1 = (int[,,,,])d.ToArray<int[,,,,]>();
+            AssertArray(d, ddata);
+            AssertArray(d, d1);
+
+        }
     }
 }
