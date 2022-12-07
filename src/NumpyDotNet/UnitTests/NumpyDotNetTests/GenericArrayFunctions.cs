@@ -20,7 +20,7 @@ namespace NumpyDotNetTests
         {
             get
             {
-                return arr.ToArray<T>();
+                return (T[])arr.ToArray<T>();
             }
         }
 
@@ -69,6 +69,7 @@ namespace NumpyDotNetTests
             var sum = ta.Sum();
         }
 
+        [Ignore]
         [TestMethod]
         public void test_generic_array_2()
         {

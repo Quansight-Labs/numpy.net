@@ -30,6 +30,7 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [Ignore]
         [TestMethod]
         public void test_memory_contraints()
         {
