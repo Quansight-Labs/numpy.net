@@ -4581,6 +4581,13 @@
             <param name="a"></param>
             <returns></returns>
         </member>
+        <member name="M:NumpyDotNet.NumpyExtensions.ToSystemArray(NumpyDotNet.ndarray)">
+            <summary>
+            Converts ndarray data items into a raw data array
+            </summary>
+            <param name="a"></param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.NumpyExtensions.Mean``1(NumpyDotNet.ndarray)">
             <summary>
             Compute the arithmetic mean

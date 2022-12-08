@@ -660,6 +660,8 @@ namespace NumpyDotNet
             }
 
         }
+
+
         /// <summary>
         /// Converts ndarray data items into a raw data array
         /// </summary>
@@ -670,8 +672,38 @@ namespace NumpyDotNet
         {
             string typeString = typeof(T).ToString();
 
-
             if (a.ndim == 1 /* && typeString.Contains("[]")*/)
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 2 && typeString.Contains("[,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 3 && typeString.Contains("[,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 4 && typeString.Contains("[,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 5 && typeString.Contains("[,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+
+            throw new Exception(string.Format("Can't convert {0}D array with {1} as template type", a.ndim, typeString));
+
+        }
+        /// <summary>
+        /// Converts ndarray data items into a raw data array
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static System.Array ToSystemArray(this ndarray a)
+        {
+            if (a.ndim == 1)
             {
                 if (!a.IsASlice)
                 {
@@ -733,7 +765,7 @@ namespace NumpyDotNet
                         throw new Exception("unable to convert ndarray of this type to 2D .NET array");
                 }
             }
-            if (a.ndim == 2 && typeString.Contains("[,]"))
+            if (a.ndim == 2)
             {
                 switch (a.TypeNum)
                 {
@@ -789,7 +821,7 @@ namespace NumpyDotNet
                         throw new Exception("unable to convert ndarray of this type to 2D .NET array");
                 }
             }
-            if (a.ndim == 3 && typeString.Contains("[,,]"))
+            if (a.ndim == 3)
             {
                 switch (a.TypeNum)
                 {
@@ -845,7 +877,7 @@ namespace NumpyDotNet
                         throw new Exception("unable to convert ndarray of this type to 3D .NET array");
                 }
             }
-            if (a.ndim == 4 && typeString.Contains("[,,,]"))
+            if (a.ndim == 4)
             {
                 switch (a.TypeNum)
                 {
@@ -901,7 +933,7 @@ namespace NumpyDotNet
                         throw new Exception("unable to convert ndarray of this type to 4D .NET array");
                 }
             }
-            if (a.ndim == 5 && typeString.Contains("[,,,,]"))
+            if (a.ndim == 5)
             {
                 switch (a.TypeNum)
                 {
@@ -958,8 +990,7 @@ namespace NumpyDotNet
                 }
             }
 
-            throw new Exception(string.Format("Can't convert {0}D array with {1} as template type", a.ndim, typeString));
-
+            throw new Exception(string.Format("Can't convert {0}D array.  Max dims supported is 5", a.ndim));
         }
 
         private static System.Array ConvertTo1dArray<T>(ndarray nd)
