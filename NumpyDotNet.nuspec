@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.83.00</version>
+    <version>0.9.83.01</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</description>
-    <releaseNotes>rework ndarray.ToArray() to support returning multi-dimensional arrays. Slight API change.</releaseNotes>
+    <releaseNotes>Adding ndarray.ToSystemArray() to support cases where we don't know the type and dimensions of the array.</releaseNotes>
     <copyright>Copyright 2022, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>

@@ -8,13 +8,13 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2022, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.83.00</Version>
+    <Version>0.9.83.01</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>rework ndarray.ToArray&lt;T&gt; to support returning multi-dimensional arrays</PackageReleaseNotes>
+    <PackageReleaseNotes>Adding ndarray.ToSystemArray() to support cases where we don't know the type and dimensions of the array</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
