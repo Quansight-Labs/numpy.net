@@ -726,52 +726,52 @@ namespace NumpyDotNet
             switch (a.TypeNum)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    return ConvertToMultiDimArray<bool>(a);
+                    return ConvertToNdArray<bool>(a);
 
                 case NPY_TYPES.NPY_BYTE:
-                    return ConvertToMultiDimArray<sbyte>(a);
+                    return ConvertToNdArray<sbyte>(a);
 
                 case NPY_TYPES.NPY_UBYTE:
-                    return ConvertToMultiDimArray<byte>(a);
+                    return ConvertToNdArray<byte>(a);
 
                 case NPY_TYPES.NPY_INT16:
-                    return ConvertToMultiDimArray<Int16>(a);
+                    return ConvertToNdArray<Int16>(a);
 
                 case NPY_TYPES.NPY_UINT16:
-                    return ConvertToMultiDimArray<UInt16>(a);
+                    return ConvertToNdArray<UInt16>(a);
 
                 case NPY_TYPES.NPY_INT32:
-                    return ConvertToMultiDimArray<Int32>(a);
+                    return ConvertToNdArray<Int32>(a);
 
                 case NPY_TYPES.NPY_UINT32:
-                    return ConvertToMultiDimArray<UInt32>(a);
+                    return ConvertToNdArray<UInt32>(a);
 
                 case NPY_TYPES.NPY_INT64:
-                    return ConvertToMultiDimArray<Int64>(a);
+                    return ConvertToNdArray<Int64>(a);
 
                 case NPY_TYPES.NPY_UINT64:
-                    return ConvertToMultiDimArray<UInt64>(a);
+                    return ConvertToNdArray<UInt64>(a);
 
                 case NPY_TYPES.NPY_FLOAT:
-                    return ConvertToMultiDimArray<float>(a);
+                    return ConvertToNdArray<float>(a);
 
                 case NPY_TYPES.NPY_DOUBLE:
-                    return ConvertToMultiDimArray<double>(a);
+                    return ConvertToNdArray<double>(a);
 
                 case NPY_TYPES.NPY_DECIMAL:
-                    return ConvertToMultiDimArray<decimal>(a);
+                    return ConvertToNdArray<decimal>(a);
 
                 case NPY_TYPES.NPY_COMPLEX:
-                    return ConvertToMultiDimArray<System.Numerics.Complex>(a);
+                    return ConvertToNdArray<System.Numerics.Complex>(a);
 
                 case NPY_TYPES.NPY_BIGINT:
-                    return ConvertToMultiDimArray<System.Numerics.BigInteger>(a);
+                    return ConvertToNdArray<System.Numerics.BigInteger>(a);
 
                 case NPY_TYPES.NPY_OBJECT:
-                    return ConvertToMultiDimArray<System.Object>(a);
+                    return ConvertToNdArray<System.Object>(a);
 
                 case NPY_TYPES.NPY_STRING:
-                    return ConvertToMultiDimArray<System.String>(a);
+                    return ConvertToNdArray<System.String>(a);
 
                 default:
                     throw new Exception("unable to convert ndarray of this type to MultiDim .NET array");
@@ -855,6 +855,49 @@ namespace NumpyDotNet
             }
 
             throw new Exception(string.Format("Can't convert {0}D array.  Max dims supported is 18", a.ndim));
+        }
+
+        private static System.Array ConvertToNdArray<T>(ndarray nd)
+        {
+            if (nd.shape.iDims.Length == 1 && !nd.IsASlice)
+            {
+                System.Array data = (System.Array)nd.rawdata(0).datap;
+                return data;
+            }
+
+            Array array = Array.CreateInstance(typeof(int), nd.shape.iDims);
+            int[] indexes = new int[array.Rank];
+            object[] args = new object[array.Rank];
+
+            for (int i = 0; i < array.Rank; i++)
+            {
+                indexes[i] = 0;
+                args[i] = 0;
+            }
+
+            while (true)
+            {
+                array.SetValue((T)nd[args], indexes);
+
+                for (int i = array.Rank - 1; i >= 0; i--)
+                {
+                    if (indexes[i] < array.GetLength(i) - 1)
+                    {
+                        indexes[i]++;
+                        args[i] = indexes[i];
+                        break;
+                    }
+                    else
+                    {
+                        indexes[i] = 0;
+                        args[i] = 0;
+                        if (i == 0)
+                        {
+                            return array;
+                        }
+                    }
+                }
+            }
         }
 
         private static System.Array ConvertTo1dArray<T>(ndarray nd)
