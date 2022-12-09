@@ -1322,6 +1322,18 @@ namespace NumpyDotNetTests
             AssertArray(d, d1);
             AssertArray(d, d2);
 
+
+            // crazy array dims
+
+            var e = np.arange(0, 20, dtype: np.Int32);
+            for (int x = 0; x < 17; x++)
+            {
+                e = np.expand_dims(e, 0);
+                var e1 = e.ToSystemArray();
+                Assert.AreEqual(e.ndim, e1.Rank);
+            }
+        
+
         }
     }
 }
