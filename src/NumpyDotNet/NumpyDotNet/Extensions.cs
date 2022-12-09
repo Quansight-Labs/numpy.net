@@ -703,298 +703,116 @@ namespace NumpyDotNet
         /// <returns></returns>
         public static System.Array ToSystemArray(this ndarray a)
         {
+            switch (a.TypeNum)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    return ConvertToMultiDimArray<bool>(a);
+
+                case NPY_TYPES.NPY_BYTE:
+                    return ConvertToMultiDimArray<sbyte>(a);
+
+                case NPY_TYPES.NPY_UBYTE:
+                    return ConvertToMultiDimArray<byte>(a);
+
+                case NPY_TYPES.NPY_INT16:
+                    return ConvertToMultiDimArray<Int16>(a);
+
+                case NPY_TYPES.NPY_UINT16:
+                    return ConvertToMultiDimArray<UInt16>(a);
+
+                case NPY_TYPES.NPY_INT32:
+                    return ConvertToMultiDimArray<Int32>(a);
+
+                case NPY_TYPES.NPY_UINT32:
+                    return ConvertToMultiDimArray<UInt32>(a);
+
+                case NPY_TYPES.NPY_INT64:
+                    return ConvertToMultiDimArray<Int64>(a);
+
+                case NPY_TYPES.NPY_UINT64:
+                    return ConvertToMultiDimArray<UInt64>(a);
+
+                case NPY_TYPES.NPY_FLOAT:
+                    return ConvertToMultiDimArray<float>(a);
+
+                case NPY_TYPES.NPY_DOUBLE:
+                    return ConvertToMultiDimArray<double>(a);
+
+                case NPY_TYPES.NPY_DECIMAL:
+                    return ConvertToMultiDimArray<decimal>(a);
+
+                case NPY_TYPES.NPY_COMPLEX:
+                    return ConvertToMultiDimArray<System.Numerics.Complex>(a);
+
+                case NPY_TYPES.NPY_BIGINT:
+                    return ConvertToMultiDimArray<System.Numerics.BigInteger>(a);
+
+                case NPY_TYPES.NPY_OBJECT:
+                    return ConvertToMultiDimArray<System.Object>(a);
+
+                case NPY_TYPES.NPY_STRING:
+                    return ConvertToMultiDimArray<System.String>(a);
+
+                default:
+                    throw new Exception("unable to convert ndarray of this type to MultiDim .NET array");
+            }
+
+        }
+
+        private static Array ConvertToMultiDimArray<T>(ndarray a)
+        {
             if (a.ndim == 1)
             {
-                if (!a.IsASlice)
-                {
-                    System.Array data = (System.Array)a.rawdata(0).datap;
-                    return (System.Array)data;
-                }
-
-                switch (a.TypeNum)
-                {
-                    case NPY_TYPES.NPY_BOOL:
-                        return ConvertTo1dArray<bool>(a);
-
-                    case NPY_TYPES.NPY_BYTE:
-                        return ConvertTo1dArray<sbyte>(a);
-
-                    case NPY_TYPES.NPY_UBYTE:
-                        return ConvertTo1dArray<byte>(a);
-
-                    case NPY_TYPES.NPY_INT16:
-                        return ConvertTo1dArray<Int16>(a);
-
-                    case NPY_TYPES.NPY_UINT16:
-                        return ConvertTo1dArray<UInt16>(a);
-
-                    case NPY_TYPES.NPY_INT32:
-                        return ConvertTo1dArray<Int32>(a);
-
-                    case NPY_TYPES.NPY_UINT32:
-                        return ConvertTo1dArray<UInt32>(a);
-
-                    case NPY_TYPES.NPY_INT64:
-                        return ConvertTo1dArray<Int64>(a);
-
-                    case NPY_TYPES.NPY_UINT64:
-                        return ConvertTo1dArray<UInt64>(a);
-
-                    case NPY_TYPES.NPY_FLOAT:
-                        return ConvertTo1dArray<float>(a);
-
-                    case NPY_TYPES.NPY_DOUBLE:
-                        return ConvertTo1dArray<double>(a);
-
-                    case NPY_TYPES.NPY_DECIMAL:
-                        return ConvertTo1dArray<decimal>(a);
-
-                    case NPY_TYPES.NPY_COMPLEX:
-                        return ConvertTo1dArray<System.Numerics.Complex>(a);
-
-                    case NPY_TYPES.NPY_BIGINT:
-                        return ConvertTo1dArray<System.Numerics.BigInteger>(a);
-
-                    case NPY_TYPES.NPY_OBJECT:
-                        return ConvertTo1dArray<System.Object>(a);
-
-                    case NPY_TYPES.NPY_STRING:
-                        return ConvertTo1dArray<System.String>(a);
-
-                    default:
-                        throw new Exception("unable to convert ndarray of this type to 2D .NET array");
-                }
+                return ConvertTo1dArray<T>(a);
             }
             if (a.ndim == 2)
             {
-                switch (a.TypeNum)
-                {
-                    case NPY_TYPES.NPY_BOOL:
-                        return ConvertTo2dArray<bool>(a);
-
-                    case NPY_TYPES.NPY_BYTE:
-                        return ConvertTo2dArray<sbyte>(a);
-
-                    case NPY_TYPES.NPY_UBYTE:
-                        return ConvertTo2dArray<byte>(a);
-
-                    case NPY_TYPES.NPY_INT16:
-                        return ConvertTo2dArray<Int16>(a);
-
-                    case NPY_TYPES.NPY_UINT16:
-                        return ConvertTo2dArray<UInt16>(a);
-
-                    case NPY_TYPES.NPY_INT32:
-                        return ConvertTo2dArray<Int32>(a);
-
-                    case NPY_TYPES.NPY_UINT32:
-                        return ConvertTo2dArray<UInt32>(a);
-
-                    case NPY_TYPES.NPY_INT64:
-                        return ConvertTo2dArray<Int64>(a);
-
-                    case NPY_TYPES.NPY_UINT64:
-                        return ConvertTo2dArray<UInt64>(a);
-
-                    case NPY_TYPES.NPY_FLOAT:
-                        return ConvertTo2dArray<float>(a);
-
-                    case NPY_TYPES.NPY_DOUBLE:
-                        return ConvertTo2dArray<double>(a);
-
-                    case NPY_TYPES.NPY_DECIMAL:
-                        return ConvertTo2dArray<decimal>(a);
-
-                    case NPY_TYPES.NPY_COMPLEX:
-                        return ConvertTo2dArray<System.Numerics.Complex>(a);
-
-                    case NPY_TYPES.NPY_BIGINT:
-                        return ConvertTo2dArray<System.Numerics.BigInteger>(a);
-
-                    case NPY_TYPES.NPY_OBJECT:
-                        return ConvertTo2dArray<System.Object>(a);
-
-                    case NPY_TYPES.NPY_STRING:
-                        return ConvertTo2dArray<System.String>(a);
-
-                    default:
-                        throw new Exception("unable to convert ndarray of this type to 2D .NET array");
-                }
+                return ConvertTo2dArray<T>(a);
             }
             if (a.ndim == 3)
             {
-                switch (a.TypeNum)
-                {
-                    case NPY_TYPES.NPY_BOOL:
-                        return ConvertTo3dArray<bool>(a);
-
-                    case NPY_TYPES.NPY_BYTE:
-                        return ConvertTo3dArray<sbyte>(a);
-
-                    case NPY_TYPES.NPY_UBYTE:
-                        return ConvertTo3dArray<byte>(a);
-
-                    case NPY_TYPES.NPY_INT16:
-                        return ConvertTo3dArray<Int16>(a);
-
-                    case NPY_TYPES.NPY_UINT16:
-                        return ConvertTo3dArray<UInt16>(a);
-
-                    case NPY_TYPES.NPY_INT32:
-                        return ConvertTo3dArray<Int32>(a);
-
-                    case NPY_TYPES.NPY_UINT32:
-                        return ConvertTo3dArray<UInt32>(a);
-
-                    case NPY_TYPES.NPY_INT64:
-                        return ConvertTo3dArray<Int64>(a);
-
-                    case NPY_TYPES.NPY_UINT64:
-                        return ConvertTo3dArray<UInt64>(a);
-
-                    case NPY_TYPES.NPY_FLOAT:
-                        return ConvertTo3dArray<float>(a);
-
-                    case NPY_TYPES.NPY_DOUBLE:
-                        return ConvertTo3dArray<double>(a);
-
-                    case NPY_TYPES.NPY_DECIMAL:
-                        return ConvertTo3dArray<decimal>(a);
-
-                    case NPY_TYPES.NPY_COMPLEX:
-                        return ConvertTo3dArray<System.Numerics.Complex>(a);
-
-                    case NPY_TYPES.NPY_BIGINT:
-                        return ConvertTo3dArray<System.Numerics.BigInteger>(a);
-
-                    case NPY_TYPES.NPY_OBJECT:
-                        return ConvertTo3dArray<System.Object>(a);
-
-                    case NPY_TYPES.NPY_STRING:
-                        return ConvertTo3dArray<System.String>(a);
-
-                    default:
-                        throw new Exception("unable to convert ndarray of this type to 3D .NET array");
-                }
+                return ConvertTo3dArray<T>(a);
             }
             if (a.ndim == 4)
             {
-                switch (a.TypeNum)
-                {
-                    case NPY_TYPES.NPY_BOOL:
-                        return ConvertTo4dArray<bool>(a);
-
-                    case NPY_TYPES.NPY_BYTE:
-                        return ConvertTo4dArray<sbyte>(a);
-
-                    case NPY_TYPES.NPY_UBYTE:
-                        return ConvertTo4dArray<byte>(a);
-
-                    case NPY_TYPES.NPY_INT16:
-                        return ConvertTo4dArray<Int16>(a);
-
-                    case NPY_TYPES.NPY_UINT16:
-                        return ConvertTo4dArray<UInt16>(a);
-
-                    case NPY_TYPES.NPY_INT32:
-                        return ConvertTo4dArray<Int32>(a);
-
-                    case NPY_TYPES.NPY_UINT32:
-                        return ConvertTo4dArray<UInt32>(a);
-
-                    case NPY_TYPES.NPY_INT64:
-                        return ConvertTo4dArray<Int64>(a);
-
-                    case NPY_TYPES.NPY_UINT64:
-                        return ConvertTo4dArray<UInt64>(a);
-
-                    case NPY_TYPES.NPY_FLOAT:
-                        return ConvertTo4dArray<float>(a);
-
-                    case NPY_TYPES.NPY_DOUBLE:
-                        return ConvertTo4dArray<double>(a);
-
-                    case NPY_TYPES.NPY_DECIMAL:
-                        return ConvertTo4dArray<decimal>(a);
-
-                    case NPY_TYPES.NPY_COMPLEX:
-                        return ConvertTo4dArray<System.Numerics.Complex>(a);
-
-                    case NPY_TYPES.NPY_BIGINT:
-                        return ConvertTo4dArray<System.Numerics.BigInteger>(a);
-
-                    case NPY_TYPES.NPY_OBJECT:
-                        return ConvertTo4dArray<System.Object>(a);
-
-                    case NPY_TYPES.NPY_STRING:
-                        return ConvertTo4dArray<System.String>(a);
-
-                    default:
-                        throw new Exception("unable to convert ndarray of this type to 4D .NET array");
-                }
+                return ConvertTo4dArray<T>(a);
             }
             if (a.ndim == 5)
             {
-                switch (a.TypeNum)
-                {
-                    case NPY_TYPES.NPY_BOOL:
-                        return ConvertTo5dArray<bool>(a);
-
-                    case NPY_TYPES.NPY_BYTE:
-                        return ConvertTo5dArray<sbyte>(a);
-
-                    case NPY_TYPES.NPY_UBYTE:
-                        return ConvertTo5dArray<byte>(a);
-
-                    case NPY_TYPES.NPY_INT16:
-                        return ConvertTo5dArray<Int16>(a);
-
-                    case NPY_TYPES.NPY_UINT16:
-                        return ConvertTo5dArray<UInt16>(a);
-
-                    case NPY_TYPES.NPY_INT32:
-                        return ConvertTo5dArray<Int32>(a);
-
-                    case NPY_TYPES.NPY_UINT32:
-                        return ConvertTo5dArray<UInt32>(a);
-
-                    case NPY_TYPES.NPY_INT64:
-                        return ConvertTo5dArray<Int64>(a);
-
-                    case NPY_TYPES.NPY_UINT64:
-                        return ConvertTo5dArray<UInt64>(a);
-
-                    case NPY_TYPES.NPY_FLOAT:
-                        return ConvertTo5dArray<float>(a);
-
-                    case NPY_TYPES.NPY_DOUBLE:
-                        return ConvertTo5dArray<double>(a);
-
-                    case NPY_TYPES.NPY_DECIMAL:
-                        return ConvertTo5dArray<decimal>(a);
-
-                    case NPY_TYPES.NPY_COMPLEX:
-                        return ConvertTo5dArray<System.Numerics.Complex>(a);
-
-                    case NPY_TYPES.NPY_BIGINT:
-                        return ConvertTo5dArray<System.Numerics.BigInteger>(a);
-
-                    case NPY_TYPES.NPY_OBJECT:
-                        return ConvertTo5dArray<System.Object>(a);
-
-                    case NPY_TYPES.NPY_STRING:
-                        return ConvertTo5dArray<System.String>(a);
-
-                    default:
-                        throw new Exception("unable to convert ndarray of this type to 5D .NET array");
-                }
+                return ConvertTo5dArray<T>(a);
+            }
+            if (a.ndim == 6)
+            {
+                return ConvertTo6dArray<T>(a);
+            }
+            if (a.ndim == 7)
+            {
+                return ConvertTo7dArray<T>(a);
+            }
+            if (a.ndim == 8)
+            {
+                return ConvertTo8dArray<T>(a);
+            }
+            if (a.ndim == 9)
+            {
+                return ConvertTo9dArray<T>(a);
+            }
+            if (a.ndim == 10)
+            {
+                return ConvertTo10dArray<T>(a);
             }
 
-            throw new Exception(string.Format("Can't convert {0}D array.  Max dims supported is 5", a.ndim));
+            throw new Exception(string.Format("Can't convert {0}D array.  Max dims supported is 10", a.ndim));
         }
 
         private static System.Array ConvertTo1dArray<T>(ndarray nd)
         {
+            if (!nd.IsASlice)
+            {
+                System.Array data = (System.Array)nd.rawdata(0).datap;
+                return (System.Array)data;
+            }
+
             T[] output = new T[nd.dims[0]];
 
             for (int i = 0; i < nd.dims[0]; i++)
