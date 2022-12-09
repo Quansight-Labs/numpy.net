@@ -692,6 +692,26 @@ namespace NumpyDotNet
             {
                 return a.ToSystemArray();
             }
+            if (a.ndim == 6 && typeString.Contains("[,,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 7 && typeString.Contains("[,,,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 8 && typeString.Contains("[,,,,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 9 && typeString.Contains("[,,,,,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
+            if (a.ndim == 10 && typeString.Contains("[,,,,,,,,,]"))
+            {
+                return a.ToSystemArray();
+            }
 
             throw new Exception(string.Format("Can't convert {0}D array with {1} as template type", a.ndim, typeString));
 
@@ -896,7 +916,6 @@ namespace NumpyDotNet
 
             return output;
         }
-
         private static System.Array ConvertTo6dArray<T>(ndarray nd)
         {
             T[,,,,,] output = new T[nd.dims[0], nd.dims[1], nd.dims[2], nd.dims[3], nd.dims[4], nd.dims[5]];
@@ -923,7 +942,6 @@ namespace NumpyDotNet
 
             return output;
         }
-
         private static System.Array ConvertTo7dArray<T>(ndarray nd)
         {
             T[,,,,,,] output = new T[nd.dims[0], nd.dims[1], nd.dims[2], nd.dims[3], nd.dims[4], nd.dims[5], nd.dims[6]];
@@ -985,7 +1003,6 @@ namespace NumpyDotNet
 
             return output;
         }
-
         private static System.Array ConvertTo9dArray<T>(ndarray nd)
         {
             T[,,,,,,,,] output = new T[nd.dims[0], nd.dims[1], nd.dims[2], nd.dims[3], nd.dims[4], nd.dims[5], nd.dims[6], nd.dims[7], nd.dims[8]];
@@ -1021,7 +1038,6 @@ namespace NumpyDotNet
 
             return output;
         }
-
         private static System.Array ConvertTo10dArray<T>(ndarray nd)
         {
             T[,,,,,,,,,] output = new T[nd.dims[0], nd.dims[1], nd.dims[2], nd.dims[3], nd.dims[4], nd.dims[5], nd.dims[6], nd.dims[7], nd.dims[8], nd.dims[9]];
