@@ -787,7 +787,7 @@ namespace NumpyDotNet
             int count = 0;
             while (true)
             {
-                array.SetValue((T)a.getitem_byindex(indexes), indexes);
+                array.SetValue((T)a.item_byindex(indexes), indexes);
                 count++;
 
                 for (int i = array.Rank - 1; i >= 0; i--)

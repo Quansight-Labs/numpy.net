@@ -1153,15 +1153,27 @@ namespace NumpyDotNet
             return this.Flatten(order);
         }
 
-        public object getitem_byindex(Int32[] args)
+        /// <summary>
+        /// This function will allow specifying index with an array.
+        /// Instead of specifying and item like a[1,2,3] can use a[new int[] {1,2,3}];
+        /// </summary>
+        /// <param name="args">an array with index values to select specific items</param>
+        /// <returns></returns>
+        public object item_byindex(Int32[] args)
         {
             Int64[] args64 = new Int64[args.Length];
             for (int i = 0; i < args.Length; i++)
                 args64[i] = args[i];
-            return getitem_byindex(args64);
+            return item_byindex(args64);
         }
 
-        public object getitem_byindex(Int64[] args)
+        /// <summary>
+        /// This function will allow specifying index with an array.
+        /// Instead of specifying and item like a[1,2,3] can use a[new int[] {1,2,3}];
+        /// </summary>
+        /// <param name="args">an array with index values to select specific items</param>
+        /// <returns></returns>
+        public object item_byindex(Int64[] args)
         {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("invalid index specified.  Must be not null and greater than 0 length");
@@ -1193,6 +1205,12 @@ namespace NumpyDotNet
             }
         }
 
+
+        /// <summary>
+        /// This function will allow specifying items via collection of index types.
+        /// </summary>
+        /// <param name="args">a collection if index items</param>
+        /// <returns></returns>
         public object item(params object[] args)
         {
             if (args != null && args.Length == 1 && args[0] is PythonTuple)
@@ -1241,6 +1259,12 @@ namespace NumpyDotNet
             }
         }
 
+
+        /// <summary>
+        /// This function will allow specifying items via collection of index types.
+        /// </summary>
+        /// <param name="args">a collection if index items</param>
+        /// <returns></returns>
         public void itemset(params object[] args)
         {
             // Convert args to value and args
