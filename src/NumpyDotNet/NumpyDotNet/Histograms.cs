@@ -1475,14 +1475,12 @@ namespace NumpyDotNet
             /* If bins is decreasing, ret has bins from end, not start */
             if (monotonic == -1)
             {
-                npy_intp[] ret_data = (npy_intp[])ret.ToArray<npy_intp>();
                 npy_intp len_ret = ret.Size;
-
 
                 npy_intp index = 0;
                 while (len_ret-- > 0)
                 {
-                    ret_data[index] = len_bins - ret_data[index];
+                    ret[index] = len_bins - (npy_intp)ret[index];
                     index++;
                 }
     
