@@ -1153,6 +1153,45 @@ namespace NumpyDotNet
             return this.Flatten(order);
         }
 
+        public object getitem_byindex(Int32[] args)
+        {
+            Int64[] args64 = new Int64[args.Length];
+            for (int i = 0; i < args.Length; i++)
+                args64[i] = args[i];
+            return getitem_byindex(args64);
+        }
+
+        public object getitem_byindex(Int64[] args)
+        {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("invalid index specified.  Must be not null and greater than 0 length");
+
+            NpyIndexes indexes = new NpyIndexes();
+            {
+                NpyUtil_IndexProcessing.PureIndexConverter(this, args, indexes);
+                if (args.Length == 1)
+                {
+                    if (indexes.IndexType(0) != NpyIndexType.NPY_INDEX_INTP)
+                    {
+                        throw new ArgumentException("invalid integer");
+                    }
+                    // Do flat indexing
+                    return Flat.Get(indexes.GetIntP(0));
+                }
+                else
+                {
+                    if (indexes.IsSingleItem(ndim))
+                    {
+                        npy_intp offset = indexes.SingleAssignOffset(this);
+                        return GetItem(offset >> this.ItemSizeDiv);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Incorrect number of indices for the array");
+                    }
+                }
+            }
+        }
 
         public object item(params object[] args)
         {

@@ -781,6 +781,37 @@ namespace NumpyDotNet
 
         private static Array ConvertToMultiDimArray<T>(ndarray a)
         {
+            Array array = Array.CreateInstance(typeof(T), a.dims);
+            npy_intp[] indexes = new npy_intp[array.Rank];
+
+            int count = 0;
+            while (true)
+            {
+                array.SetValue((T)a.getitem_byindex(indexes), indexes);
+                count++;
+
+                for (int i = array.Rank - 1; i >= 0; i--)
+                {
+                    if (indexes[i] < array.GetLength(i) - 1)
+                    {
+                        indexes[i]++;
+                        break;
+                    }
+                    else
+                    {
+                        indexes[i] = 0;
+                        if (i == 0)
+                        {
+                            return array;
+                        }
+                    }
+                }
+            }
+        }
+
+#if Not_used // replaced by ConvertToMultiDimArray above
+        private static Array ConvertToMultiDimArrayx<T>(ndarray a)
+        {
             if (a.ndim == 1)
             {
                 return ConvertTo1dArray<T>(a);
@@ -856,7 +887,6 @@ namespace NumpyDotNet
 
             throw new Exception(string.Format("Can't convert {0}D array.  Max dims supported is 18", a.ndim));
         }
-
         private static System.Array ConvertTo1dArray<T>(ndarray nd)
         {
             if (!nd.IsASlice)
@@ -1520,6 +1550,8 @@ namespace NumpyDotNet
 
             return output;
         }
+#endif
+
         /// <summary>
         /// Compute the arithmetic mean
         /// </summary>
@@ -1922,7 +1954,7 @@ namespace NumpyDotNet
 
     public static partial class np
     {
-        #region as(.NET System.Array)
+#region as(.NET System.Array)
 
         /// <summary>
         /// Returns bool array.  Converts if necessary
@@ -2202,7 +2234,7 @@ namespace NumpyDotNet
 
             return arr;
         }
-        #endregion
+#endregion
     }
 
 }

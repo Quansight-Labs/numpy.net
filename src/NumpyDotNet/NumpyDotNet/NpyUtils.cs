@@ -246,6 +246,20 @@ namespace NumpyDotNet {
 
     internal static class NpyUtil_IndexProcessing
     {
+        internal static void PureIndexConverter(ndarray arr, Int64[] indexArgs, NpyIndexes indexes)
+        {
+            int index = 0;
+            // This is the simple case. Just convert each arg.
+            if (indexArgs.Length > NpyDefs.NPY_MAXDIMS)
+            {
+                throw new IndexOutOfRangeException("Too many indices");
+            }
+            foreach (object arg in indexArgs)
+            {
+                ConvertSingleIndex(arr, arg, indexes, index++);
+            }
+        }
+
         internal static void IndexConverter(ndarray arr, Object[] indexArgs, NpyIndexes indexes)
         {
             int index = 0;
@@ -333,6 +347,10 @@ namespace NumpyDotNet {
             else if (arg is int)
             {
                 indexes.AddIndex((int)arg);
+            }
+            else if (arg is Int64)
+            {
+                indexes.AddIndex((Int64)arg);
             }
             else if (arg is BigInteger)
             {

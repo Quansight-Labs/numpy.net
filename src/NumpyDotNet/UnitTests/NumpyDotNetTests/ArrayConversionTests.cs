@@ -1324,9 +1324,8 @@ namespace NumpyDotNetTests
 
 
             // crazy array dims
-
             var e = np.arange(0, 20, dtype: np.Int32);
-            for (int x = 0; x < 17; x++)
+            for (int x = 0; x < 31; x++)
             {
                 e = np.expand_dims(e, 0);
                 var e1 = e.ToSystemArray();
@@ -1335,5 +1334,7 @@ namespace NumpyDotNetTests
         
 
         }
+
+  
     }
 }
