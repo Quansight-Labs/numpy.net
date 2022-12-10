@@ -49,7 +49,11 @@ namespace NumpyDotNet
         flagsobj flags { get; }
         object flat { get; set; }
         ndarray flatten(NumpyLib.NPY_ORDER order = NumpyLib.NPY_ORDER.NPY_CORDER);
+        object item_byindex(Int32[] args);
+        object item_byindex(Int64[] args);
         object item(params object[] args);
+        void itemset_byindex(Int32[] args, object value);
+        void itemset_byindex(Int64[] args, object value);
         void itemset(params object[] args);
         int ndim { get; }
         ndarray newbyteorder(string endian = null);

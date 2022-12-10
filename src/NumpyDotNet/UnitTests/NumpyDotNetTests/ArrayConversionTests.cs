@@ -1335,6 +1335,29 @@ namespace NumpyDotNetTests
 
         }
 
-  
+        [TestMethod]
+        public void test_setitem_byIndex()
+        {
+            var bdata = new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
+            ndarray b = np.array(bdata);
+
+            int OriginalValue = (int)b[2, 2, 0];
+            Assert.AreEqual(20, OriginalValue);
+
+            b.itemset(2, 2, 0, 99);
+            int UpdatedValue = (int)b[2, 2, 0];
+            Assert.AreEqual(99, UpdatedValue);
+
+            b.itemset_byindex(new int[] { 2, 2, 0 }, 88);
+            UpdatedValue = (int)b[2, 2, 0];
+            Assert.AreEqual(88, UpdatedValue);
+
+
+
+
+        }
+
+
+
     }
 }

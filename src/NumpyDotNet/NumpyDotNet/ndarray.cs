@@ -1259,6 +1259,45 @@ namespace NumpyDotNet
             }
         }
 
+        public void itemset_byindex(Int32 [] args, object value)
+        {
+            Int64[] args64 = new Int64[args.Length];
+            for (int i = 0; i < args.Length; i++)
+                args64[i] = args[i];
+            itemset_byindex(args64, value);
+        }
+
+        public void itemset_byindex(Int64[] args, object value)
+        {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("invalid index specified.  Must be not null and greater than 0 length");
+
+            NpyIndexes indexes = new NpyIndexes();
+            {
+                NpyUtil_IndexProcessing.PureIndexConverter(this, args, indexes);
+                if (args.Length == 1)
+                {
+                    if (indexes.IndexType(0) != NpyIndexType.NPY_INDEX_INTP)
+                    {
+                        throw new ArgumentException("invalid integer");
+                    }
+                    // Do flat indexing
+                    Flat.SingleAssign(indexes.GetIntP(0), value);
+                }
+                else
+                {
+                    if (indexes.IsSingleItem(ndim))
+                    {
+                        npy_intp offset = indexes.SingleAssignOffset(this);
+                        SetItem(value, offset >> this.ItemSizeDiv);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Incorrect number of indices for the array");
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// This function will allow specifying items via collection of index types.

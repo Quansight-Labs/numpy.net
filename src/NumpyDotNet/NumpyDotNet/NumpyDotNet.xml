@@ -3856,6 +3856,36 @@
             <param name="order">{‘C’, ‘F’, ‘A’, ‘K’}, optional</param>
             <returns></returns>
         </member>
+        <member name="M:NumpyDotNet.ndarray.item_byindex(System.Int32[])">
+            <summary>
+            This function will allow specifying index with an array.
+            Instead of specifying and item like a[1,2,3] can use a[new int[] {1,2,3}];
+            </summary>
+            <param name="args">an array with index values to select specific items</param>
+            <returns></returns>
+        </member>
+        <member name="M:NumpyDotNet.ndarray.item_byindex(System.Int64[])">
+            <summary>
+            This function will allow specifying index with an array.
+            Instead of specifying and item like a[1,2,3] can use a[new int[] {1,2,3}];
+            </summary>
+            <param name="args">an array with index values to select specific items</param>
+            <returns></returns>
+        </member>
+        <member name="M:NumpyDotNet.ndarray.item(System.Object[])">
+            <summary>
+            This function will allow specifying items via collection of index types.
+            </summary>
+            <param name="args">a collection if index items</param>
+            <returns></returns>
+        </member>
+        <member name="M:NumpyDotNet.ndarray.itemset(System.Object[])">
+            <summary>
+            This function will allow specifying items via collection of index types.
+            </summary>
+            <param name="args">a collection if index items</param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.ndarray.newbyteorder(System.String)">
             <summary>
             Return the array with the same data viewed with a different byte order.
