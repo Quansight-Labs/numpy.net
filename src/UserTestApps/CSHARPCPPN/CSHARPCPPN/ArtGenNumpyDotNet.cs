@@ -224,7 +224,7 @@ namespace CSHARPCPPN
                 imgData = np.array(imgData.reshape((height, width)) * 255.0);
             }
 
-            return (double[])imgData.ToArray<double>();
+            return (double[])imgData.ToArray();
         }
     }
 }

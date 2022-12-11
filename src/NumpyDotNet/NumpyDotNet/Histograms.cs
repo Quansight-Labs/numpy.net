@@ -807,7 +807,7 @@ namespace NumpyDotNet
                 {
                     var shape = np.ones(D, np.Int32);
                     shape[i] = np.subtract(nbin[i],2);
-                    hist = np.divide(hist, dedges[i].reshape(new shape((Int32[])shape.ToArray<Int32>())));
+                    hist = np.divide(hist, dedges[i].reshape(new shape((Int32[])shape.ToArray())));
                 }
 
                 hist = np.divide(hist, s);
@@ -1403,7 +1403,7 @@ namespace NumpyDotNet
             else
             {
                 ndarray wts = np.asarray(weight, dtype: np.Float64);
-                double[] _weights = (double[])wts.ToArray<double>();
+                double[] _weights = (double[])wts.ToArray();
 
                 double[] dans = new double[ans_size];
 
@@ -1450,7 +1450,7 @@ namespace NumpyDotNet
                 throw new Exception("bins must have non-zero length");
             }
 
-            double[] arr_bins_data = (double[])arr_bins.ToArray<double>();
+            double[] arr_bins_data = (double[])arr_bins.ToArray();
 
             int monotonic = check_array_monotonic(arr_bins_data, len_bins);
 

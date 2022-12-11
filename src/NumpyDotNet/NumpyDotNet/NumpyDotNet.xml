@@ -4603,7 +4603,7 @@
             <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:NumpyDotNet.NumpyExtensions.ToList``1(NumpyDotNet.ndarray)" -->
-        <member name="M:NumpyDotNet.NumpyExtensions.ToArray``1(NumpyDotNet.ndarray)">
+        <member name="M:NumpyDotNet.NumpyExtensions.ToArray(NumpyDotNet.ndarray)">
             <summary>
             Converts ndarray data items into a raw data array
             </summary>

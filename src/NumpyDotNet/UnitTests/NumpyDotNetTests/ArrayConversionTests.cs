@@ -1286,52 +1286,77 @@ namespace NumpyDotNetTests
             var adata = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
             ndarray a = np.array(adata);
 
-            var a1 = (int[,])a.ToArray<int[,]>();
-            var a2 = (int[,])a.ToSystemArray();
-            AssertArray(a, adata);
-            AssertArray(a, a1);
-            AssertArray(a, a2);
+            var a1 = (int[])a.ToArray();
+            AssertArray(np.array(a1), new int[] { 1, 2, 3, 4, 5, 6 });
 
             // 3D array test
-            var bdata = new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
+            var bdata = new float[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
             ndarray b = np.array(bdata);
 
-            var b1 = (int[,,])b.ToArray<int[,,]>();
-            var b2 = (int[,,])b.ToSystemArray();
-            AssertArray(b, bdata);
-            AssertArray(b, b1);
-            AssertArray(b, b2);
+            var b1 = (float[])b.ToArray();
+            AssertArray(np.array(b1), new float[] { 14,13,12,11,18,17,16,15,22,21,20,19 });
 
             // 4D array test
-            var cdata = new int[,,,] { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } };
+            var cdata = new double[,,,] { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } };
             ndarray c = np.array(cdata);
 
-            var c1 = (int[,,,])c.ToArray<int[,,,]>();
-            var c2 = (int[,,,])c.ToSystemArray();
-            AssertArray(c, cdata);
-            AssertArray(c, c1);
-            AssertArray(c, c2);
+            var c1 = (double[])c.ToArray();
+            AssertArray(np.array(c1), new double[] {1,0,3,2,5,4,7,6,9,8,11,10,13,12,15,14 });
 
             // 5D array test
-            var ddata = new int[,,,,] { { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } } };
+            var ddata = new System.Numerics.Complex[,,,,] { { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } } };
             ndarray d = np.array(ddata);
 
-            var d1 = (int[,,,,])d.ToArray<int[,,,,]>();
-            var d2 = (int[,,,,])d.ToSystemArray();
+            var d1 = (System.Numerics.Complex[])d.ToArray();
+            AssertArray(np.array(d1), new System.Numerics.Complex[] { 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14 });
+
+        }
+
+        [TestMethod]
+        public void test_ToSystemArray()
+        {
+            // 2D array tests
+            var adata = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            ndarray a = np.array(adata);
+
+            var a1 = (int[,])a.ToSystemArray();
+            AssertArray(a, adata);
+            AssertArray(a, a1);
+
+            // 3D array test
+            var bdata = new float[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
+            ndarray b = np.array(bdata);
+
+            var b1 = (float[,,])b.ToSystemArray();
+            AssertArray(b, bdata);
+            AssertArray(b, b1);
+
+            // 4D array test
+            var cdata = new double[,,,] { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } };
+            ndarray c = np.array(cdata);
+
+            var c1 = (double[,,,])c.ToSystemArray();
+            AssertArray(c, cdata);
+            AssertArray(c, c1);
+
+            // 5D array test
+            var ddata = new System.Numerics.Complex[,,,,] { { { { { 1, 0 }, { 3, 2 } }, { { 5, 4 }, { 7, 6 } } }, { { { 9, 8 }, { 11, 10 } }, { { 13, 12 }, { 15, 14 } } } } };
+            ndarray d = np.array(ddata);
+
+            var d1 = (System.Numerics.Complex[,,,,])d.ToSystemArray();
             AssertArray(d, ddata);
             AssertArray(d, d1);
-            AssertArray(d, d2);
 
 
             // crazy array dims
-            var e = np.arange(0, 20, dtype: np.Int32);
+            var e = np.arange(0, 20, dtype: np.BigInt);
             for (int x = 0; x < 31; x++)
             {
                 e = np.expand_dims(e, 0);
                 var e1 = e.ToSystemArray();
                 Assert.AreEqual(e.ndim, e1.Rank);
             }
-        
+
 
         }
 

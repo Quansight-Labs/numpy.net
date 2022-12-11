@@ -668,53 +668,10 @@ namespace NumpyDotNet
         /// <typeparam name="T"></typeparam>
         /// <param name="a"></param>
         /// <returns></returns>
-        public static System.Array ToArray<T>(this ndarray a)
+        public static System.Array ToArray(this ndarray a)
         {
-            string typeString = typeof(T).ToString();
-
-            if (a.ndim == 1 /* && typeString.Contains("[]")*/)
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 2 && typeString.Contains("[,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 3 && typeString.Contains("[,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 4 && typeString.Contains("[,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 5 && typeString.Contains("[,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 6 && typeString.Contains("[,,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 7 && typeString.Contains("[,,,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 8 && typeString.Contains("[,,,,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 9 && typeString.Contains("[,,,,,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-            if (a.ndim == 10 && typeString.Contains("[,,,,,,,,,]"))
-            {
-                return a.ToSystemArray();
-            }
-
-            throw new Exception(string.Format("Can't convert {0}D array with {1} as template type", a.ndim, typeString));
-
+            ndarray b = a.ravel();
+            return b.ToSystemArray();
         }
         /// <summary>
         /// Converts ndarray data items into a raw data array

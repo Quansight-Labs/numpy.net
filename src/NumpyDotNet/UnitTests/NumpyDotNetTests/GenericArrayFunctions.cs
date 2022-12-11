@@ -20,7 +20,7 @@ namespace NumpyDotNetTests
         {
             get
             {
-                return (T[])arr.ToArray<T>();
+                return (T[])arr.ToArray();
             }
         }
 
