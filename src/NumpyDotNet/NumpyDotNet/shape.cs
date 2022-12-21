@@ -149,6 +149,8 @@ namespace NumpyDotNet
         public override bool Equals(object o2)
         {
             shape s2 = o2 as shape;
+            if (s2 == null)
+                return false;
 
             if (this.iDims.Length == s2.iDims.Length)
             {
@@ -213,6 +215,15 @@ namespace NumpyDotNet
             throw new Exception("Only Int32 or Int64 arrays can be converted to shape objects");
 
         }
+
+        /// <summary>
+        /// default constructor needed for serialization
+        /// </summary>
+        public shape()
+        {
+
+        }
+
         /// <summary>
         /// convert a collection of Int32 values into a shape
         /// </summary>
