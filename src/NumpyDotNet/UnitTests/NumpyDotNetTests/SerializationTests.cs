@@ -60,18 +60,18 @@ namespace NumpyDotNetTests
             var a = np.arange(9).reshape(3, 3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            var DtypeInSerializedFormat = a.Dtype.ToSerializable();
+            var A_DtypeSerializedFormat = a.Dtype.ToSerializable();
 
-            var adtypeSerialized = SerializationHelper.SerializeNewtonsoftJSON(DtypeInSerializedFormat);
-            var newDtypeSerializedFormat = SerializationHelper.DeSerializeNewtonsoftJSON<dtype_serializable>(adtypeSerialized);
+            var A_Serialized = SerializationHelper.SerializeNewtonsoftJSON(A_DtypeSerializedFormat);
+            var A_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<dtype_serializable>(A_Serialized);
 
-            dtype newDtype = new dtype(newDtypeSerializedFormat);
+            dtype b = new dtype(A_Deserialized);
 
-            Assert.AreEqual(a.Dtype.TypeNum, newDtype.TypeNum);
-            Assert.AreEqual(a.Dtype.str, newDtype.str);
-            Assert.AreEqual(a.Dtype.alignment, newDtype.alignment);
-            Assert.AreEqual(a.Dtype.ElementSize, newDtype.ElementSize);
-            Assert.AreEqual(a.Dtype.Kind, newDtype.Kind);
+            Assert.AreEqual(a.Dtype.TypeNum, b.TypeNum);
+            Assert.AreEqual(a.Dtype.str, b.str);
+            Assert.AreEqual(a.Dtype.alignment, b.alignment);
+            Assert.AreEqual(a.Dtype.ElementSize, b.ElementSize);
+            Assert.AreEqual(a.Dtype.Kind, b.Kind);
 
         }
 
@@ -81,43 +81,43 @@ namespace NumpyDotNetTests
             var a = np.arange(9).reshape(3, 3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            dtype_serializable DtypeInSerializedFormat = np.ToSerializable(a.Dtype);
+            dtype_serializable A_DtypeSerializedFormat = np.ToSerializable(a.Dtype);
 
-            var adtypeSerialized = SerializationHelper.SerializeXml(DtypeInSerializedFormat);
-            var newDtypeSerializedFormat = SerializationHelper.DeserializeXml<dtype_serializable>(adtypeSerialized);
+            var A_Serialized = SerializationHelper.SerializeXml(A_DtypeSerializedFormat);
+            var A_Deserialized = SerializationHelper.DeserializeXml<dtype_serializable>(A_Serialized);
 
-            dtype newDtype = np.FromSerializable(newDtypeSerializedFormat);
+            dtype b = np.FromSerializable(A_Deserialized);
 
-            Assert.AreEqual(a.Dtype.TypeNum, newDtype.TypeNum);
-            Assert.AreEqual(a.Dtype.str, newDtype.str);
-            Assert.AreEqual(a.Dtype.alignment, newDtype.alignment);
-            Assert.AreEqual(a.Dtype.ElementSize, newDtype.ElementSize);
-            Assert.AreEqual(a.Dtype.Kind, newDtype.Kind);
+            Assert.AreEqual(a.Dtype.TypeNum, b.TypeNum);
+            Assert.AreEqual(a.Dtype.str, b.str);
+            Assert.AreEqual(a.Dtype.alignment, b.alignment);
+            Assert.AreEqual(a.Dtype.ElementSize, b.ElementSize);
+            Assert.AreEqual(a.Dtype.Kind, b.Kind);
 
         }
 
         [TestMethod]
         public void test_ndarray_serialization_newtonsoft()
         {
-            var a = np.arange(9).reshape(3,3);
+            var a = np.array(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }).reshape(3,3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            var ndArraySerializedFormat = a.ToSerializable();
-            var adtypeSerialized = SerializationHelper.SerializeNewtonsoftJSON(ndArraySerializedFormat);
-            var newDtypeSerializedFormat = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(adtypeSerialized);
+            var A_ArraySerializedFormat = a.ToSerializable();
+            var A_Serialized = SerializationHelper.SerializeNewtonsoftJSON(A_ArraySerializedFormat);
+            var A_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(A_Serialized);
 
             Console.WriteLine("AA");
-            print(adtypeSerialized);
+            print(A_Serialized);
 
-            var b = new ndarray(newDtypeSerializedFormat);
+            var b = new ndarray(A_Deserialized);
 
-            var ndArraySerializedFormatB = b.ToSerializable();
-            var adtypeSerializedB = SerializationHelper.SerializeNewtonsoftJSON(ndArraySerializedFormatB);
-            var newDtypeSerializedFormatB = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(adtypeSerializedB);
+            var B_ArraySerializedFormat = b.ToSerializable();
+            var B_Serialized = SerializationHelper.SerializeNewtonsoftJSON(B_ArraySerializedFormat);
+            var B_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(B_Serialized);
             Console.WriteLine("\n\nBB");
-            print(adtypeSerializedB);
+            print(B_Serialized);
 
-
+            Assert.AreEqual(0, string.Compare(A_Serialized, B_Serialized));
             Assert.AreEqual(a.Dtype.TypeNum, b.Dtype.TypeNum);
             Assert.AreEqual(a.Dtype.str, b.Dtype.str);
             Assert.AreEqual(a.Dtype.alignment, b.Dtype.alignment);
@@ -129,17 +129,25 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_serialization_XML()
         {
-            var a = np.arange(9).reshape(3, 3);
+            var a = np.array(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }).reshape(3, 3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            ndarray_serializable ndArraySerializedFormat = np.ToSerializable(a);
+            var A_ArraySerializedFormat = a.ToSerializable();
+            var A_Serialized = SerializationHelper.SerializeXml(A_ArraySerializedFormat);
+            var A_Deserialized = SerializationHelper.DeserializeXml<ndarray_serializable>(A_Serialized);
 
-            var adtypeSerialized = SerializationHelper.SerializeXml(ndArraySerializedFormat);
-            var newDtypeSerializedFormat = SerializationHelper.DeserializeXml<ndarray_serializable>(adtypeSerialized);
+            Console.WriteLine("AA");
+            print(A_Serialized);
 
-            ndarray b = np.FromSerializable(newDtypeSerializedFormat);
+            var b = new ndarray(A_Deserialized);
 
+            var B_ArraySerializedFormat = b.ToSerializable();
+            var B_Serialized = SerializationHelper.SerializeXml(B_ArraySerializedFormat);
+            var B_Deserialized = SerializationHelper.DeserializeXml<ndarray_serializable>(B_Serialized);
+            Console.WriteLine("\n\nBB");
+            print(B_Serialized);
 
+            //Assert.AreEqual(0, string.Compare(A_Serialized, B_Serialized));
             Assert.AreEqual(a.Dtype.TypeNum, b.Dtype.TypeNum);
             Assert.AreEqual(a.Dtype.str, b.Dtype.str);
             Assert.AreEqual(a.Dtype.alignment, b.Dtype.alignment);
