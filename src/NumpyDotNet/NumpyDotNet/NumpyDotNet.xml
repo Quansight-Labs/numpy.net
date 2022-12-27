@@ -5394,6 +5394,11 @@
             </summary>
             <param name="arr"></param>
         </member>
+        <member name="M:NumpyDotNet.shape.#ctor">
+            <summary>
+            default constructor needed for serialization
+            </summary>
+        </member>
         <member name="M:NumpyDotNet.shape.#ctor(System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
             convert a collection of Int32 values into a shape
