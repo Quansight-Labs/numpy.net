@@ -43,7 +43,40 @@ using npy_intp = System.Int32;
 #endif
 namespace NumpyLib
 {
- 
+
+    public class NpyArray_Descr_serializable
+    {
+        public char kind;      /* kind for this type */
+        public byte type;              /* unique-character representing this type */
+        public char byteorder;         /*
+                                        * '>' (big), '<' (little), '|'
+                                        * (not-applicable), or '=' (native).
+                                        */
+        public int flags;  /* flag describing data type */
+        public NPY_TYPES type_num;      /* number representing this type */
+
+
+        public int elsize;     /* element size for this type */
+
+        public int eldivshift;
+        public int alignment;          /* alignment needed for this type */
+                                       //public NpyArray_ArrayDescr subarray;          /*
+                                       //                        * Non-null if this type is
+                                       //                        * is an array (C-contiguous)
+                                       //                        * of some other type
+                                       //                        */
+
+        public NpyArray_Descr_serializable subarray;
+        public int subarray_shape_num_dims;  
+        public npy_intp[] subarray_shape_dims;      
+
+
+        public List<string> names;      /* Array of char *, null indicates end of array.
+                                * char* lifetime is exactly lifetime of array
+                                * itself. */
+    }
+
+
     internal  class NpyArray_Descr : NpyObject_HEAD
     {
    
@@ -57,6 +90,49 @@ namespace NumpyLib
 
             this.f.nonzero = DefaultArrayHandlers.GetArrayHandler(type_num).NonZero;
 
+        }
+
+        public static NpyArray_Descr FromSerializable(NpyArray_Descr_serializable serializable)
+        {
+            NpyArray_Descr descr = new NpyArray_Descr(serializable.type_num);
+            descr.kind = (NPY_TYPECHAR)serializable.kind;
+            descr.type = serializable.type;
+            descr.byteorder = serializable.byteorder;
+            descr.flags = (NpyArray_Descr_Flags)serializable.flags;
+            descr.alignment = serializable.alignment;
+            descr.names = serializable.names;
+
+            return descr;
+        }
+
+        public NpyArray_Descr_serializable ToSerializable()
+        {
+            var serializable = new NpyArray_Descr_serializable()
+            {
+                kind = (char)this.kind,
+                type = this.type,
+                byteorder = this.byteorder,
+                flags = (int)this.flags,
+                type_num = this.type_num,
+                elsize = this.elsize,
+                alignment = this.alignment,
+                names = this.names,
+            };
+
+            if (this.subarray != null)
+            {
+                serializable.subarray = this.subarray._base.ToSerializable();
+                serializable.subarray_shape_dims = this.subarray.shape_dims;
+                serializable.subarray_shape_num_dims = this.subarray.shape_num_dims;
+            }
+            else
+            {
+                serializable.subarray = null;
+                serializable.subarray_shape_dims = null;
+                serializable.subarray_shape_num_dims = 0;
+            }
+
+            return serializable;
         }
 
         public NPY_TYPECHAR kind;              /* kind for this type */

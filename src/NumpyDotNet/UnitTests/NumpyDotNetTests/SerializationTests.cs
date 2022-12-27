@@ -54,6 +54,48 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_dtype_serialization_newtonsoft()
+        {
+            var a = np.arange(9).reshape(3, 3);
+            AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
+
+            var DtypeInSerializedFormat = a.Dtype.ToSerializable();
+
+            var adtypeSerialized = SerializationHelper.SerializeNewtonsoftJSON(DtypeInSerializedFormat);
+            var newDtypeSerializedFormat = SerializationHelper.DeSerializeNewtonsoftJSON<dtype_serializable>(adtypeSerialized);
+
+            dtype newDtype = new dtype(newDtypeSerializedFormat);
+
+            Assert.AreEqual(a.Dtype.TypeNum, newDtype.TypeNum);
+            Assert.AreEqual(a.Dtype.str, newDtype.str);
+            Assert.AreEqual(a.Dtype.alignment, newDtype.alignment);
+            Assert.AreEqual(a.Dtype.ElementSize, newDtype.ElementSize);
+            Assert.AreEqual(a.Dtype.Kind, newDtype.Kind);
+
+        }
+
+        [TestMethod]
+        public void test_dtype_serialization_XML()
+        {
+            var a = np.arange(9).reshape(3, 3);
+            AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
+
+            var DtypeInSerializedFormat = a.Dtype.ToSerializable();
+
+            var adtypeSerialized = SerializationHelper.SerializeXml(DtypeInSerializedFormat);
+            var newDtypeSerializedFormat = SerializationHelper.DeserializeXml<dtype_serializable>(adtypeSerialized);
+
+            dtype newDtype = new dtype(newDtypeSerializedFormat);
+
+            Assert.AreEqual(a.Dtype.TypeNum, newDtype.TypeNum);
+            Assert.AreEqual(a.Dtype.str, newDtype.str);
+            Assert.AreEqual(a.Dtype.alignment, newDtype.alignment);
+            Assert.AreEqual(a.Dtype.ElementSize, newDtype.ElementSize);
+            Assert.AreEqual(a.Dtype.Kind, newDtype.Kind);
+
+        }
+
 
     }
 

@@ -48,12 +48,32 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet {
 
+    public class dtype_serializable
+    {
+        public NpyArray_Descr_serializable core;
+    }
+
 
     public class dtype  {
 
         NpyArray_Descr core;
 
- 
+
+        public dtype_serializable ToSerializable()
+        {
+            return new dtype_serializable()
+            {
+                core = this.core.ToSerializable(),
+            };
+        }
+
+
+        public dtype(dtype_serializable dtype_Serializable)
+        {
+            core = NpyArray_Descr.FromSerializable(dtype_Serializable.core);
+            funcs = core.f;
+        }
+
         /// <summary>
         /// Constructs a new NpyArray_Descr objet matching the passed one.
         /// Equivalent to NpyAray_DescrNew.
