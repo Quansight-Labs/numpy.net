@@ -3621,6 +3621,24 @@ namespace NumpyDotNet
         }
 
 
+        public static ndarray_serializable ToSerializable(ndarray a)
+        {
+            return a.ToSerializable();
+        }
+        public static ndarray FromSerializable(ndarray_serializable sa)
+        {
+            return new ndarray(sa);
+        }
+        public static dtype_serializable ToSerializable(dtype a)
+        {
+            return a.ToSerializable();
+        }
+        public static dtype FromSerializable(dtype_serializable sa)
+        {
+            return new dtype(sa);
+        }
+
+
         private static long CalculateNewShapeSize(shape shape)
         {
             if (shape.iDims != null)

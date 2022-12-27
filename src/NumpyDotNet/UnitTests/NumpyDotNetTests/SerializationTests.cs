@@ -81,12 +81,12 @@ namespace NumpyDotNetTests
             var a = np.arange(9).reshape(3, 3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            var DtypeInSerializedFormat = a.Dtype.ToSerializable();
+            dtype_serializable DtypeInSerializedFormat = np.ToSerializable(a.Dtype);
 
             var adtypeSerialized = SerializationHelper.SerializeXml(DtypeInSerializedFormat);
             var newDtypeSerializedFormat = SerializationHelper.DeserializeXml<dtype_serializable>(adtypeSerialized);
 
-            dtype newDtype = new dtype(newDtypeSerializedFormat);
+            dtype newDtype = np.FromSerializable(newDtypeSerializedFormat);
 
             Assert.AreEqual(a.Dtype.TypeNum, newDtype.TypeNum);
             Assert.AreEqual(a.Dtype.str, newDtype.str);
@@ -124,12 +124,12 @@ namespace NumpyDotNetTests
             var a = np.arange(9).reshape(3, 3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
-            var ndArraySerializedFormat = a.ToSerializable();
+            ndarray_serializable ndArraySerializedFormat = np.ToSerializable(a);
 
             var adtypeSerialized = SerializationHelper.SerializeXml(ndArraySerializedFormat);
             var newDtypeSerializedFormat = SerializationHelper.DeserializeXml<ndarray_serializable>(adtypeSerialized);
 
-            var b = new ndarray(newDtypeSerializedFormat);
+            ndarray b = np.FromSerializable(newDtypeSerializedFormat);
 
 
             Assert.AreEqual(a.Dtype.TypeNum, b.Dtype.TypeNum);
