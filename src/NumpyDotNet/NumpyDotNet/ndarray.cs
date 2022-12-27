@@ -296,71 +296,76 @@ namespace NumpyDotNet
             switch (FirstArray.descr.type_num)
             {
                 case NPY_TYPES.NPY_BOOL:
-                    First = np.array(serializable.bool_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.bool_array);
                     break;
 
                 case NPY_TYPES.NPY_BYTE:
-                    First = np.array(serializable.sbyte_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.sbyte_array);
                     break;
 
                 case NPY_TYPES.NPY_UBYTE:
-                    First = np.array(serializable.byte_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.byte_array);
                     break;
 
                 case NPY_TYPES.NPY_INT16:
-                    First = np.array(serializable.int16_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.int16_array);
                     break;
 
                 case NPY_TYPES.NPY_UINT16:
-                    First = np.array(serializable.uint16_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.uint16_array);
                     break;
 
                 case NPY_TYPES.NPY_INT32:
-                    First = np.array(serializable.int32_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.int32_array);
                     break;
 
                 case NPY_TYPES.NPY_UINT32:
-                    First = np.array(serializable.uint32_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.uint32_array);
                     break;
 
                 case NPY_TYPES.NPY_INT64:
-                    First = np.array(serializable.int64_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.int64_array);
                     break;
 
                 case NPY_TYPES.NPY_UINT64:
-                    First = np.array(serializable.uint64_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.uint64_array);
                     break;
 
                 case NPY_TYPES.NPY_FLOAT:
-                    First = np.array(serializable.float_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.float_array);
                     break;
 
                 case NPY_TYPES.NPY_DOUBLE:
-                    First = np.array(serializable.double_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.double_array);
                     break;
 
                 case NPY_TYPES.NPY_DECIMAL:
-                    First = np.array(serializable.decimal_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.decimal_array);
                     break;
 
                 case NPY_TYPES.NPY_COMPLEX:
-                    First = np.array(serializable.complex_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.complex_array);
                     break;
 
                 case NPY_TYPES.NPY_BIGINT:
-                    First = np.array(serializable.bigint_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.bigint_array);
                     break;
 
                 case NPY_TYPES.NPY_OBJECT:
-                    First = np.array(serializable.object_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.object_array);
                     break;
 
                 case NPY_TYPES.NPY_STRING:
-                    First = np.array(serializable.string_array).reshape(FirstArray.dimensions);
+                    First = np.array(serializable.string_array);
                     break;
 
                 default:
                     throw new Exception("Attempt to deserialize unrecognized data type");
+            }
+
+            if (FirstArray.nd > 1)
+            {
+                First = First.reshape(FirstArray.dimensions);
             }
 
             First.Name = FirstArray.Name;

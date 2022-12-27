@@ -99,15 +99,23 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_ndarray_serialization_newtonsoft()
         {
-            var a = np.arange(9).reshape(3, 3);
+            var a = np.arange(9).reshape(3,3);
             AssertArray(a, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
 
             var ndArraySerializedFormat = a.ToSerializable();
-
             var adtypeSerialized = SerializationHelper.SerializeNewtonsoftJSON(ndArraySerializedFormat);
             var newDtypeSerializedFormat = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(adtypeSerialized);
 
+            Console.WriteLine("AA");
+            print(adtypeSerialized);
+
             var b = new ndarray(newDtypeSerializedFormat);
+
+            var ndArraySerializedFormatB = b.ToSerializable();
+            var adtypeSerializedB = SerializationHelper.SerializeNewtonsoftJSON(ndArraySerializedFormatB);
+            var newDtypeSerializedFormatB = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(adtypeSerializedB);
+            Console.WriteLine("\n\nBB");
+            print(adtypeSerializedB);
 
 
             Assert.AreEqual(a.Dtype.TypeNum, b.Dtype.TypeNum);
