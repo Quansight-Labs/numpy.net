@@ -49,6 +49,46 @@ using npy_intp = System.Int32;
 
 namespace NumpyDotNet
 {
+    public class ndarray_serializable
+    {
+        public string Name
+        {
+            get; set;
+        }
+
+        public bool[] bool_array;
+        public byte[] byte_array;
+        public sbyte[] sbyte_array;
+        public Int16[] int16_array;
+        public UInt16[] uint16_array;
+        public Int32[] int32_array;
+        public UInt32[] uint32_array;
+        public Int64[] int64_array;
+        public UInt64[] uint64_array;
+        public float[] float_array;
+        public double[] double_array;
+        public decimal[] decimal_array;
+        public System.Numerics.Complex[] complex_array;
+        public System.Numerics.BigInteger[] bigint_array;
+        public System.String[] string_array;
+        public System.Object[] object_array;
+
+        public npy_intp data_offset;
+
+        public int nd;                /* number of dimensions, also called ndim */
+
+        public npy_intp[] dimensions; /* size in each dimension */
+        public npy_intp[] strides;    /* bytes to jump to get to next element in each dimension */
+
+        public ndarray_serializable base_array;
+
+        public NpyArray_Descr_serializable descr;  /* Pointer to type structure */
+        public NPYARRAYFLAGS flags;   /* Flags describing array -- see below */
+
+        public bool IsScalar = false;
+    }
+
+
     /// <summary>
     /// Implements the Numpy python 'ndarray' class
     /// </summary>
@@ -229,6 +269,212 @@ namespace NumpyDotNet
             core = a;
         }
 
+        public ndarray(ndarray_serializable serializable)
+        {
+            List<ndarray_serializable> NestedArrays = new List<ndarray_serializable>();
+
+            NestedArrays.Add(serializable);
+
+            ndarray_serializable temp = serializable;
+            while (true)
+            {
+                if (temp.base_array != null)
+                {
+                    NestedArrays.Add(temp.base_array);
+                    temp = temp.base_array;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            ndarray_serializable FirstArray = NestedArrays[NestedArrays.Count - 1];
+            ndarray First;
+
+
+            switch (FirstArray.descr.type_num)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    First = np.array(serializable.bool_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_BYTE:
+                    First = np.array(serializable.sbyte_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_UBYTE:
+                    First = np.array(serializable.byte_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_INT16:
+                    First = np.array(serializable.int16_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_UINT16:
+                    First = np.array(serializable.uint16_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_INT32:
+                    First = np.array(serializable.int32_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_UINT32:
+                    First = np.array(serializable.uint32_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_INT64:
+                    First = np.array(serializable.int64_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_UINT64:
+                    First = np.array(serializable.uint64_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_FLOAT:
+                    First = np.array(serializable.float_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_DOUBLE:
+                    First = np.array(serializable.double_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_DECIMAL:
+                    First = np.array(serializable.decimal_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_COMPLEX:
+                    First = np.array(serializable.complex_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_BIGINT:
+                    First = np.array(serializable.bigint_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_OBJECT:
+                    First = np.array(serializable.object_array).reshape(FirstArray.dimensions);
+                    break;
+
+                case NPY_TYPES.NPY_STRING:
+                    First = np.array(serializable.string_array).reshape(FirstArray.dimensions);
+                    break;
+
+                default:
+                    throw new Exception("Attempt to deserialize unrecognized data type");
+            }
+
+            First.Name = FirstArray.Name;
+            First.core.descr = NpyArray_Descr.FromSerializable(FirstArray.descr);
+
+            if (NestedArrays.Count > 1)
+            {
+                for (int i = NestedArrays.Count - 2; i >=0; i--)
+                {
+                    First = First.reshape(NestedArrays[i].dimensions);
+                    First.Name = NestedArrays[i].Name;
+                    First.core.descr = NpyArray_Descr.FromSerializable(NestedArrays[i].descr);
+                }
+            }
+
+            core = First.core;
+            return;
+        }
+
+        public ndarray_serializable ToSerializable(bool SerializeDataArray = true)
+        {
+            ndarray_serializable serializable = new ndarray_serializable();
+            serializable.Name = this.Name;
+
+            serializable.data_offset = this.DataAddress.data_offset;
+
+            if (SerializeDataArray)
+            {
+                switch (this.TypeNum)
+                {
+                    case NPY_TYPES.NPY_BOOL:
+                        serializable.bool_array = this.DataAddress.datap as bool[];
+                        break;
+
+                    case NPY_TYPES.NPY_BYTE:
+                        serializable.sbyte_array = this.DataAddress.datap as sbyte[];
+                        break;
+
+                    case NPY_TYPES.NPY_UBYTE:
+                        serializable.byte_array = this.DataAddress.datap as byte[];
+                        break;
+
+                    case NPY_TYPES.NPY_INT16:
+                        serializable.int16_array = this.DataAddress.datap as Int16[];
+                        break;
+
+                    case NPY_TYPES.NPY_UINT16:
+                        serializable.uint16_array = this.DataAddress.datap as UInt16[];
+                        break;
+
+                    case NPY_TYPES.NPY_INT32:
+                        serializable.int32_array = this.DataAddress.datap as Int32[];
+                        break;
+
+                    case NPY_TYPES.NPY_UINT32:
+                        serializable.uint32_array = this.DataAddress.datap as UInt32[];
+                        break;
+
+                    case NPY_TYPES.NPY_INT64:
+                        serializable.int64_array = this.DataAddress.datap as Int64[];
+                        break;
+
+                    case NPY_TYPES.NPY_UINT64:
+                        serializable.uint64_array = this.DataAddress.datap as UInt64[];
+                        break;
+
+                    case NPY_TYPES.NPY_FLOAT:
+                        serializable.float_array = this.DataAddress.datap as float[];
+                        break;
+
+                    case NPY_TYPES.NPY_DOUBLE:
+                        serializable.double_array = this.DataAddress.datap as double[];
+                        break;
+
+                    case NPY_TYPES.NPY_DECIMAL:
+                        serializable.decimal_array = this.DataAddress.datap as decimal[];
+                        break;
+
+                    case NPY_TYPES.NPY_COMPLEX:
+                        serializable.complex_array = this.DataAddress.datap as System.Numerics.Complex[];
+                        break;
+
+                    case NPY_TYPES.NPY_BIGINT:
+                        serializable.bigint_array = this.DataAddress.datap as System.Numerics.BigInteger[];
+                        break;
+
+                    case NPY_TYPES.NPY_OBJECT:
+                        serializable.object_array = this.DataAddress.datap as System.Object[];
+                        break;
+
+                    case NPY_TYPES.NPY_STRING:
+                        serializable.string_array = this.DataAddress.datap as System.String[];
+                        break;
+
+                    default:
+                        throw new Exception("Attempt to serialize unrecognized data type");
+                }
+            }
+   
+            serializable.nd = this.ndim;
+            serializable.dimensions = this.dims;
+            serializable.strides = this.strides;
+
+            if (this.BaseArray != null)
+            {
+                serializable.base_array = this.BaseArray.ToSerializable(SerializeDataArray=false);
+            }
+
+            serializable.descr = this.core.descr.ToSerializable();
+            serializable.flags = this.core.flags;
+            serializable.IsScalar = this.core.IsScalar;
+
+            return serializable;
+        }
 
         #region Public interfaces (must match CPython)
 
