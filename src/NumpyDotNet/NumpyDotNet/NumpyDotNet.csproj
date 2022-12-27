@@ -8,7 +8,7 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2022, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.83.04</Version>
+    <Version>0.9.83.05</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
