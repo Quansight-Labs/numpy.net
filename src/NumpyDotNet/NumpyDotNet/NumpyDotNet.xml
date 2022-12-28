@@ -3352,6 +3352,9 @@
             <param name="a2">Input array</param>
             <returns></returns>
         </member>
+        <member name="F:NumpyDotNet.np.random_serializable.has_binomial">
+            * The rk_state structure has been extended to store the following
+        </member>
         <member name="M:NumpyDotNet.np.atleast_1d(System.Collections.Generic.ICollection{System.Object})">
             <summary>
             Convert inputs to arrays with at least one dimension.
