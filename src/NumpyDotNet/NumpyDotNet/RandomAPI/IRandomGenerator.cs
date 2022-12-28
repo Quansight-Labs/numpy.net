@@ -47,5 +47,7 @@ namespace NumpyDotNet.RandomAPI
         UInt64 getNextUInt64(rk_state state);
         double getNextDouble(rk_state state);
 
+        string ToSerialization();
+        void FromSerialization(string SerializedFormat);
     }
 }

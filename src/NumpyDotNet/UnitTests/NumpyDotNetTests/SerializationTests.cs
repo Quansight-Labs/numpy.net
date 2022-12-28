@@ -207,6 +207,45 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_nprandom_serialization_newtonsoft()
+        {
+            var random = new np.random();
+            random.seed(1234);
+
+            var A1 = SerializationHelper.SerializeNewtonsoftJSON(random);
+            print(A1);
+
+            double fr = random.randn();
+            print(fr);
+            Assert.AreEqual(0.47143516373249306, fr);
+            fr = random.randn();
+            print(fr);
+            Assert.AreEqual(-1.1909756947064645, fr);
+
+            var A2 = SerializationHelper.SerializeNewtonsoftJSON(random);
+            print(A2);
+
+
+            random.seed(1234);
+
+            var A3 = SerializationHelper.SerializeNewtonsoftJSON(random);
+            print(A3);
+
+
+            fr = random.randn();
+            print(fr);
+            Assert.AreEqual(0.47143516373249306, fr);
+            fr = random.randn();
+            print(fr);
+            Assert.AreEqual(-1.1909756947064645, fr);
+
+            var A4 = SerializationHelper.SerializeNewtonsoftJSON(random);
+            print(A4);
+
+
+        }
+
 
     }
 

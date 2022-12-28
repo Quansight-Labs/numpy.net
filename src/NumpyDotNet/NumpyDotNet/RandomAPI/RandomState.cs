@@ -33,6 +33,7 @@
 using NumpyLib;
 using System;
 using System.Collections.Generic;
+using System.Text;
 #if NPY_INTP_64
 using npy_intp = System.Int64;
 #else
@@ -130,6 +131,38 @@ namespace NumpyDotNet.RandomAPI
             ulong a = getNextUInt64(state) >> 5;
             ulong b = getNextUInt64(state) >> 6;
             return (a * 67108864.0 + b) / 9007199254740992.0;
+        }
+
+        public string ToSerialization()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (UInt64 k in key)
+            {
+                sb.Append(k.ToString());
+                sb.Append(",");
+            }
+
+            // make it into a string.  Strip off last comma.
+            string SerializationString = sb.ToString();
+            SerializationString = SerializationString.Substring(0, SerializationString.Length - 1);
+
+            return SerializationString;
+
+        }
+
+        public void FromSerialization(string SerializedFormat)
+        {
+            string[] keyParts = SerializedFormat.Split(',');
+            if (keyParts == null || keyParts.Length != RK_STATE_LEN)
+            {
+                throw new Exception("Serialized data does not contain RK_STATE_LEN parts");
+            }
+
+            for (int i = 0; i < RK_STATE_LEN; i++)
+            {
+                key[i] = UInt64.Parse(keyParts[i]);
+            }
         }
     }
 }

@@ -18,6 +18,8 @@ namespace NumpyDotNetTests
     {
         private System.Random rnd = null;
 
+ 
+
         public double getNextDouble(rk_state state)
         {
             return rnd.NextDouble();
@@ -36,6 +38,16 @@ namespace NumpyDotNetTests
             else
                 rnd = new Random();
             return;
+        }
+
+        public string ToSerialization()
+        {
+            throw new NotImplementedException("This random number generator does not support serialization");
+        }
+
+        public void FromSerialization(string SerializedFormat)
+        {
+            throw new NotImplementedException("This random number generator does not support serialization");
         }
     }
 
