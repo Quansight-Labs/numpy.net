@@ -46,8 +46,41 @@ namespace NumpyDotNet
 {
     public static partial class np
     {
+        public class random_serializable
+        {
+            public string randomGeneratorSerializationData;
+
+            public int pos;
+            public bool has_gauss; /* !=0: gauss contains a gaussian deviate */
+            public double gauss;
+
+            ///* The rk_state structure has been extended to store the following
+            // * information for the binomial generator. If the input values of n or p
+            // * are different than nsave and psave, then the other parameters will be
+            // * recomputed. RTK 2005-09-02 */
+
+            public bool has_binomial; /* !=0: following parameters initialized for binomial */
+            public double psave;
+            public long nsave;
+            public double r;
+            public double q;
+            public double fm;
+            public long m;
+            public double p1;
+            public double xm;
+            public double xl;
+            public double xr;
+            public double c;
+            public double laml;
+            public double lamr;
+            public double p2;
+            public double p3;
+            public double p4;
+        }
+
         public class random
         {
+            IRandomGenerator _rndGenerator;
             private rk_state internal_state = null;
 
             private object rk_lock = new object();
@@ -104,7 +137,66 @@ namespace NumpyDotNet
                 }
                 internal_state = new rk_state(rndGenerator);
                 seed(null);
+                _rndGenerator = rndGenerator;
             }
+
+            public random_serializable ToSerialization()
+            {
+                random_serializable serializationData = new random_serializable();
+                serializationData.randomGeneratorSerializationData = _rndGenerator.ToSerialization();
+
+                serializationData.pos = internal_state.pos;
+                serializationData.has_gauss = internal_state.has_gauss;
+                serializationData.gauss = internal_state.gauss;
+
+                serializationData.has_binomial = internal_state.has_binomial;
+                serializationData.psave = internal_state.psave;
+                serializationData.nsave = internal_state.nsave;
+                serializationData.r = internal_state.r;
+                serializationData.q = internal_state.q;
+                serializationData.fm = internal_state.fm;
+                serializationData.m = internal_state.m;
+                serializationData.p1 = internal_state.p1;
+                serializationData.xm = internal_state.xm;
+                serializationData.xl = internal_state.xl;
+                serializationData.xr = internal_state.xr;
+                serializationData.c = internal_state.c;
+                serializationData.laml = internal_state.laml;
+                serializationData.lamr = internal_state.lamr;
+                serializationData.p2 = internal_state.p2;
+                serializationData.p3 = internal_state.p3;
+                serializationData.p4 = internal_state.p4;
+
+                return serializationData;
+            }
+
+            public void FromSerialization(random_serializable serializationData)
+            {
+                internal_state.pos = serializationData.pos;
+                internal_state.has_gauss = serializationData.has_gauss;
+                internal_state.gauss = serializationData.gauss;
+
+                internal_state.has_binomial = serializationData.has_binomial;
+                internal_state.psave = serializationData.psave;
+                internal_state.nsave = serializationData.nsave;
+                internal_state.r = serializationData.r;
+                internal_state.q = serializationData.q;
+                internal_state.fm = serializationData.fm;
+                internal_state.m = serializationData.m;
+                internal_state.p1 = serializationData.p1;
+                internal_state.xm = serializationData.xm;
+                internal_state.xl = serializationData.xl;
+                internal_state.xr = serializationData.xr;
+                internal_state.c = serializationData.c;
+                internal_state.laml = serializationData.laml;
+                internal_state.lamr = serializationData.lamr;
+                internal_state.p2 = serializationData.p2;
+                internal_state.p3 = serializationData.p3;
+                internal_state.p4 = serializationData.p4;
+
+                _rndGenerator.FromSerialization(serializationData.randomGeneratorSerializationData);
+            }
+
 
             #endregion
 

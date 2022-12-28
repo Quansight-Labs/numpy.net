@@ -210,39 +210,107 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_nprandom_serialization_newtonsoft()
         {
-            var random = new np.random();
-            random.seed(1234);
+            var Rand1 = new np.random();
+            Rand1.seed(1234);
 
-            var A1 = SerializationHelper.SerializeNewtonsoftJSON(random);
-            print(A1);
+            var Rand1Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand1.ToSerialization());
+            print(Rand1Serialized);
 
-            double fr = random.randn();
+            double fr = Rand1.randn();
             print(fr);
             Assert.AreEqual(0.47143516373249306, fr);
-            fr = random.randn();
+            fr = Rand1.randn();
             print(fr);
             Assert.AreEqual(-1.1909756947064645, fr);
 
-            var A2 = SerializationHelper.SerializeNewtonsoftJSON(random);
-            print(A2);
-
-
-            random.seed(1234);
-
-            var A3 = SerializationHelper.SerializeNewtonsoftJSON(random);
-            print(A3);
-
-
-            fr = random.randn();
+            var Rand1Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<np.random_serializable>(Rand1Serialized);
+            var Rand2 = new np.random();
+            Rand2.FromSerialization(Rand1Deserialized);
+            fr = Rand2.randn();
             print(fr);
             Assert.AreEqual(0.47143516373249306, fr);
-            fr = random.randn();
+            fr = Rand2.randn();
             print(fr);
             Assert.AreEqual(-1.1909756947064645, fr);
 
-            var A4 = SerializationHelper.SerializeNewtonsoftJSON(random);
-            print(A4);
 
+            Rand1Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand1.ToSerialization());
+            print(Rand1Serialized);
+
+            var Rand2Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand2.ToSerialization());
+            print(Rand2Serialized);
+
+            Assert.AreEqual(0, string.Compare(Rand1Serialized, Rand2Serialized));
+
+        }
+
+        [TestMethod]
+        public void test_nprandom_serialization_xml()
+        {
+            var Rand1 = new np.random();
+            Rand1.seed(1234);
+
+            var Rand1Serialized = SerializationHelper.SerializeXml(Rand1.ToSerialization());
+            print(Rand1Serialized);
+
+            double fr = Rand1.randn();
+            print(fr);
+            Assert.AreEqual(0.47143516373249306, fr);
+            fr = Rand1.randn();
+            print(fr);
+            Assert.AreEqual(-1.1909756947064645, fr);
+
+            var Rand1Deserialized = SerializationHelper.DeserializeXml<np.random_serializable>(Rand1Serialized);
+            var Rand2 = new np.random();
+            Rand2.FromSerialization(Rand1Deserialized);
+            fr = Rand2.randn();
+            print(fr);
+            Assert.AreEqual(0.47143516373249306, fr);
+            fr = Rand2.randn();
+            print(fr);
+            Assert.AreEqual(-1.1909756947064645, fr);
+
+
+            Rand1Serialized = SerializationHelper.SerializeXml(Rand1.ToSerialization());
+            print(Rand1Serialized);
+
+            var Rand2Serialized = SerializationHelper.SerializeXml(Rand2.ToSerialization());
+            print(Rand2Serialized);
+
+            Assert.AreEqual(0, string.Compare(Rand1Serialized, Rand2Serialized));
+
+        }
+
+        [TestMethod]
+        public void test_nprandom_serialization_newtonsoft_2()
+        {
+            var Rand1 = new np.random();
+            Rand1.seed(701);
+            ndarray arr1 = Rand1.randint(2, 3, new shape(4), dtype: np.Int32);
+
+            var Rand1Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand1.ToSerialization());
+            var Rand1Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<np.random_serializable>(Rand1Serialized);
+            var Rand2 = new np.random();
+            Rand2.FromSerialization(Rand1Deserialized);
+
+
+            ndarray arr = Rand1.randint(9, 128000, new shape(5000000), dtype: np.Int32);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
+            var amax = np.amax(arr);
+            Assert.AreEqual((Int32)127999, amax.GetItem(0));
+
+            arr = Rand2.randint(9, 128000, new shape(5000000), dtype: np.Int32);
+            Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_INT32);
+            amax = np.amax(arr);
+            Assert.AreEqual((Int32)127999, amax.GetItem(0));
+
+            Rand1Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand1.ToSerialization());
+            print(Rand1Serialized);
+
+            var Rand2Serialized = SerializationHelper.SerializeNewtonsoftJSON(Rand2.ToSerialization());
+            print(Rand2Serialized);
+
+            Assert.AreEqual(0, string.Compare(Rand1Serialized, Rand2Serialized));
 
         }
 
