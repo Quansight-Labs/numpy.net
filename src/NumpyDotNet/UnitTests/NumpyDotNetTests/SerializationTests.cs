@@ -156,6 +156,57 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_ndarray_serialization_newtonsoft_3layer()
+        {
+            var a = np.array(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }).reshape(3, 3);
+
+            var A_ArraySerializedFormat = a.ToSerializable();
+            var A_Serialized = SerializationHelper.SerializeNewtonsoftJSON(A_ArraySerializedFormat);
+            var A_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(A_Serialized);
+
+            Console.WriteLine("AA");
+            print(A_Serialized);
+
+            var b = new ndarray(A_Deserialized);
+            AssertArray(b, new int[,] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 } });
+            b = b.reshape(9, 1);
+            //print(b);
+            AssertArray(b, new int[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 }, { 8 } });
+
+            var B_ArraySerializedFormat = b.ToSerializable();
+            var B_Serialized = SerializationHelper.SerializeNewtonsoftJSON(B_ArraySerializedFormat);
+            var B_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(B_Serialized);
+            Console.WriteLine("\n\nBB");
+            print(B_Serialized);
+
+            var c = np.FromSerializable(B_Deserialized);
+            AssertArray(c, new int[,] { { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 }, { 6 }, { 7 }, { 8 } });
+            c = c.reshape(1, 9);
+            //print(c);
+            AssertArray(c, new int[,] { { 0, 1, 2, 3, 4, 5, 6, 7, 8 } });
+
+            var C_ArraySerializedFormat = c.ToSerializable();
+            var C_Serialized = SerializationHelper.SerializeNewtonsoftJSON(C_ArraySerializedFormat);
+            var C_Deserialized = SerializationHelper.DeSerializeNewtonsoftJSON<ndarray_serializable>(C_Serialized);
+            Console.WriteLine("\n\nCC");
+            print(C_Serialized);
+            var d = np.FromSerializable(C_Deserialized);
+            AssertArray(d, new int[,] { { 0, 1, 2, 3, 4, 5, 6, 7, 8 } });
+
+            var D_ArraySerializedFormat = d.ToSerializable();
+            var D_Serialized = SerializationHelper.SerializeNewtonsoftJSON(D_ArraySerializedFormat);
+
+            Assert.AreEqual(0, string.Compare(C_Serialized, D_Serialized));
+
+            Assert.AreEqual(a.Dtype.TypeNum, c.Dtype.TypeNum);
+            Assert.AreEqual(a.Dtype.str, c.Dtype.str);
+            Assert.AreEqual(a.Dtype.alignment, c.Dtype.alignment);
+            Assert.AreEqual(a.Dtype.ElementSize, c.Dtype.ElementSize);
+            Assert.AreEqual(a.Dtype.Kind, c.Dtype.Kind);
+
+        }
+
 
     }
 
