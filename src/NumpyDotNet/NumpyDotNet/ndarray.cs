@@ -532,7 +532,7 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, UFunc.ops, np.asanyarray(b), false);
         }
 
-        internal static object BinaryOpInPlace(ndarray a, object b, NpyUFuncObject UFunc, ndarray ret)
+        internal static ndarray BinaryOpInPlace(ndarray a, object b, NpyUFuncObject UFunc, ndarray ret)
         {
             ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, UFunc.ops, np.asanyarray(b), true);
             if (numericOpResult != null && ret != null)
@@ -549,19 +549,19 @@ namespace NumpyDotNet
             return BinaryOp(a, b, f);
         }
 
-        public static object BinaryOpInPlace(ndarray a, object b, UFuncOperation op, ndarray ret)
+        public static ndarray BinaryOpInPlace(ndarray a, object b, UFuncOperation op, ndarray ret)
         {
             var f = NpyCoreApi.GetNumericOp(op);
             return BinaryOpInPlace(a, b, f, ret);
         }
 
-        internal static object UnaryOp(ndarray a, UFuncOperation op)
+        internal static ndarray UnaryOp(ndarray a, UFuncOperation op)
         {
             return NpyCoreApi.PerformNumericOp(a, op, 0, false);
         }
 
 
-        internal static object UnaryOpInPlace(ndarray a, UFuncOperation op, ndarray ret)
+        internal static ndarray UnaryOpInPlace(ndarray a, UFuncOperation op, ndarray ret)
         {
             ndarray numericOpResult = NpyCoreApi.PerformNumericOp(a, op, 0, true);
 
@@ -575,7 +575,7 @@ namespace NumpyDotNet
 
 
 
-        public static object operator +(ndarray a) {
+        public static ndarray operator +(ndarray a) {
             return a;
         }
 
@@ -654,7 +654,7 @@ namespace NumpyDotNet
         }
 
 
-        public static object operator /(ndarray a, ndarray b) {
+        public static ndarray operator /(ndarray a, ndarray b) {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.divide, b);
         }
 
@@ -738,7 +738,7 @@ namespace NumpyDotNet
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.bitwise_xor, operand);
         }
 
-        public static object operator ^(ndarray a, ndarray b) {
+        public static ndarray operator ^(ndarray a, ndarray b) {
             return NpyCoreApi.PerformNumericOp(a, UFuncOperation.bitwise_xor, b);
         }
 
