@@ -98,6 +98,9 @@
     <Compile Include="IterToolsTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NpyIOTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>
