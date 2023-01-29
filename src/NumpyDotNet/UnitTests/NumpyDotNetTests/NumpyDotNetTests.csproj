@@ -106,6 +106,7 @@
     <Compile Include="CustomerReportedIssues.cs" />
     <Compile Include="GenericArrayFunctions.cs" />
     <Compile Include="IterToolsTests.cs" />
+    <Compile Include="NpyIOTests.cs" />
     <Compile Include="WindowFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
