@@ -41,7 +41,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class NpyIOTests
     {
-
+        [Ignore]
         [TestMethod]
         public void test_load_1()
         {

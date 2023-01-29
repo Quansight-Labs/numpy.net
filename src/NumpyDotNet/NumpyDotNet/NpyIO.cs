@@ -57,6 +57,8 @@ namespace NumpyDotNet
 
         public static ndarray load(string PathName)
         {
+            throw new Exception("This function is under consideration for development");
+
             if (string.IsNullOrEmpty(PathName))
             {
                 throw new Exception("Pathname null or empty");
