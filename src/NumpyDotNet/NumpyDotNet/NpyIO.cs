@@ -105,6 +105,25 @@ namespace NumpyDotNet
 
         private static object _read_array_header(FileStream fp, (int major, int minor) version)
         {
+            int struct_calcsize = -1;
+            if (version.major == 1 && version.minor == 0)
+            {
+                struct_calcsize = 2;
+            }
+            else if (version.major == 2 && version.minor == 0)
+            {
+                struct_calcsize = 4;
+            }
+            else
+            {
+                throw new ValueError(string.Format("Invalid version ({0},{1})" + version.major, version.minor));
+            }
+
+
+            var hlength_str = _read_bytes(fp, struct_calcsize, "array header length");
+
+            var header = _read_bytes(fp, hlength_str[0], "array_header");
+
             throw new NotImplementedException();
         }
 
