@@ -2071,14 +2071,14 @@ namespace NumpyLib
             {
                 VoidPtr valbuffer, indbuffer;
 
-                valbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_BYTE, (ulong)(N * elsize));
+                valbuffer = NpyDataMem_NEW(op.ItemType, (ulong)(N * elsize));
                 indbuffer = NpyDataMem_NEW(NPY_TYPES.NPY_INTP, (ulong)(N * sizeof(npy_intp)));
 
                 var helper1 = MemCopy.GetMemcopyHelper(valbuffer);
                 helper1.strided_byte_copy_init(valbuffer, elsize, it.dataptr, astride, elsize, eldiv);
 
                 var helper2 = MemCopy.GetMemcopyHelper(rit.dataptr);
-                helper2.strided_byte_copy_init(rit.dataptr, rstride, indbuffer, sizeof(npy_intp), sizeof(npy_intp), eldiv);
+                helper2.strided_byte_copy_init(rit.dataptr, rstride, indbuffer, sizeof(npy_intp), sizeof(npy_intp), GetDivSize(sizeof(npy_intp)));
 
                 while (size-- > 0)
                 {
