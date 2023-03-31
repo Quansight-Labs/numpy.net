@@ -10,6 +10,9 @@
             class has functionality corresponding to functions in arrayobject.c,
             ctors.c, and multiarraymodule.c
             </summary>
+            <summary>
+            implements functions similar to npyio.py
+            </summary>
         </member>
         <member name="M:NumpyDotNet.np.ediff1d(NumpyDotNet.ndarray,NumpyDotNet.ndarray,NumpyDotNet.ndarray)">
             <summary>
