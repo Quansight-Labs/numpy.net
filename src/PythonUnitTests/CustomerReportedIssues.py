@@ -348,6 +348,55 @@ class Test_CustomerReportedIssues(unittest.TestCase):
          print(c)
 
 
+    def test_Rainyl_1a(self):
+
+         arr = np.array([ -9, 7, 5, 3, 1, -1, -3, -5,-11,13,17,21 ]).reshape(4, 3);
+         idx2 = np.argsort(arr)
+         print(arr)
+         print(idx2)
+
+         x = arr.T[0, :]
+         y = arr.T[1, :]
+
+         idx = np.argsort(x)
+         print(x);
+         print(idx);
+
+         idx = np.argsort(y)
+         print(y);
+         print(idx);
+
+    def test_Rainyl_1b(self):
+
+         arr = np.array([ -9, 7, 5, 3, 1, -1, -3, -5,-11,13,17,21 ], dtype=np.int16).reshape(4, 3);
+         idx2 = np.argsort(arr)
+         print(arr)
+         print(idx2)
+
+         x = arr.T[0, :]
+         y = arr.T[1, :]
+
+         idx = np.argsort(x)
+         print(x);
+         print(idx);
+
+    def test_Rainyl_2a(self):
+
+         arr = np.array([ 7, -9, -5, -3, 1, -1, 33, 5,-11,13,17,-21 ]).reshape(4, 3);
+         idx2 = np.argsort(arr)
+         print(arr)
+         print(idx2)
+
+         x = arr.T[:, 0]
+         y = arr.T[:, 1]
+
+         idx = np.argsort(x)
+         print(x);
+         print(idx);
+
+         idx = np.argsort(y)
+         print(y);
+         print(idx);
       
 if __name__ == '__main__':
     unittest.main()

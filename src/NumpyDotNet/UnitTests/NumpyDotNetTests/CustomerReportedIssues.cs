@@ -801,7 +801,7 @@ namespace NumpyDotNetTests
             AssertArray(np.array(l.ToArray()), new npy_intp[] { 2, 4 });
 
             var m = A.shape[":"];
-            AssertArray(np.array(m.ToArray()), new npy_intp[] {3, 2, 2, 4 });
+            AssertArray(np.array(m.ToArray()), new npy_intp[] { 3, 2, 2, 4 });
 
             var n = A.shape["::"];
             AssertArray(np.array(n.ToArray()), new npy_intp[] { 3, 2, 2, 4 });
@@ -816,7 +816,7 @@ namespace NumpyDotNetTests
             var i = A.shape[new Slice(1)];
             AssertArray(np.array(i.ToArray()), new npy_intp[] { 2, 2, 4 });
 
-            var j = A.shape[new Slice(1,2)];
+            var j = A.shape[new Slice(1, 2)];
             AssertArray(np.array(j.ToArray()), new npy_intp[] { 2 });
 
             var k = A.shape[new Slice(0, 2)];
@@ -837,10 +837,10 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_SimonCraenen_1()
         {
-            ndarray a = np.arange(0,4, dtype: np.Float32);
+            ndarray a = np.arange(0, 4, dtype: np.Float32);
             var abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
 
-            ndarray b = np.frombuffer(abytes, dtype : np.Float32);
+            ndarray b = np.frombuffer(abytes, dtype: np.Float32);
             AssertArray(b, new float[] { 0, 1, 2, 3 });
 
             /////////////
@@ -858,7 +858,7 @@ namespace NumpyDotNetTests
             AssertArray(b, new sbyte[] { 0, 1, 2, 3 });
 
             /////////////
-            a = np.arange(0, 8, dtype: np.UInt16).reshape(4,2);
+            a = np.arange(0, 8, dtype: np.UInt16).reshape(4, 2);
             abytes = a.tobytes(NumpyLib.NPY_ORDER.NPY_CORDER);
 
             b = np.frombuffer(abytes, dtype: np.UInt16);
@@ -888,7 +888,7 @@ namespace NumpyDotNetTests
             b = np.frombuffer(abytes, dtype: np.Float64);
             AssertArray(b, new double[] { 0, 1, 2, 3, 4, 5, 6, 7 });
 
-            b = np.frombuffer(abytes, dtype: null, count:32, offset: 8);
+            b = np.frombuffer(abytes, dtype: null, count: 32, offset: 8);
             AssertArray(b, new double[] { 1, 2, 3, 4 });
 
             /////////////
@@ -910,5 +910,181 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_Rainyl_1a()
+        {
+            var arr = np.array(new Int32[] { -9, 7, 5, 3, 1, -1, -3, -5, -11, 13, 17, 21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[0, ":"] as ndarray;
+            var y = arr.T[1, ":"] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1, 3 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 2, 1, 0, 3 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_1b()
+        {
+            var arr = np.array(new Int16[] { -9, 7, 5, 3, 1, -1, -3, -5, -11, 13, 17, 21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[0, ":"] as ndarray;
+            var y = arr.T[1, ":"] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1, 3 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 2, 1, 0, 3 });
+            print(y);
+            print(idx);
+        }
+
+
+        [TestMethod]
+        public void test_Rainyl_1c()
+        {
+            var arr = np.array(new Int64[] { -9, 7, 5, 3, 1, -1, -3, -5, -11, 13, 17, 21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[0, ":"] as ndarray;
+            var y = arr.T[1, ":"] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1, 3 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 2, 1, 0, 3 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_1d()
+        {
+            var arr = np.array(new BigInteger[] { -9, 7, 5, 3, 1, -1, -3, -5, -11, 13, 17, 21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[0, ":"] as ndarray;
+            var y = arr.T[1, ":"] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1, 3 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 2, 1, 0, 3 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_2a()
+        {
+            var arr = np.array(new Int32[] { 7, -9, -5, -3, 1, -1, 33, 5, -11, 13, 17, -21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[":", 0] as ndarray;
+            var y = arr.T[":", 1] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 1, 2, 0 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_2b()
+        {
+            var arr = np.array(new Int16[] { 7, -9, -5, -3, 1, -1, 33, 5, -11, 13, 17, -21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[":", 0] as ndarray;
+            var y = arr.T[":", 1] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 1, 2, 0 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_2c()
+        {
+            var arr = np.array(new Int64[] { 7, -9, -5, -3, 1, -1, 33, 5, -11, 13, 17, -21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[":", 0] as ndarray;
+            var y = arr.T[":", 1] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 1, 2, 0 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1 });
+            print(y);
+            print(idx);
+        }
+
+        [TestMethod]
+        public void test_Rainyl_2d()
+        {
+            var arr = np.array(new Complex[] { 7, -9, -5, -3, 1, -1, 33, 5, -11, 13, 17, -21 }).reshape(4, 3);
+            var idx2 = np.argsort(arr);
+            print(arr);
+            print(idx2);
+
+            var x = arr.T[":", 0] as ndarray;
+            var y = arr.T[":", 1] as ndarray;
+
+            var idx = np.argsort(x);
+            AssertArray(idx, new npy_intp[] { 1, 2, 0 });
+            print(x);
+            print(idx);
+
+            idx = np.argsort(y);
+            AssertArray(idx, new npy_intp[] { 0, 2, 1 });
+            print(y);
+            print(idx);
+        }
     }
 }
