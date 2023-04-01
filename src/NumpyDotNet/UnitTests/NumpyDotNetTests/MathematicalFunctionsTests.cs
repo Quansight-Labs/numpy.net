@@ -2719,28 +2719,40 @@ namespace NumpyDotNetTests
         {
             var xp = new float[] { 1, 2, 3 };
             var fp = new float[] { 3, 2, 0 };
-  
 
-            try
-            {
-                var a = np.interp(2.5, xp, fp);
-                print(a);
+            var a = np.interp(2.5, xp, fp);
+            print("a: ", a);  // 1.0
 
-                var b = np.interp(new double[] { 0, 1, 1.5, 2.72, 3.14 }, xp, fp);
-                print(b);
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
+            var b_real = np.array(new double[] { 3.0, 3.0, 2.5, 0.56, 0.0 });
+            var b = np.interp(xb, xp, fp);
+            // mathnet
+            var intp = MathNet.Numerics.Interpolate.Linear(
+                Array.ConvertAll<float, double>(xp, (x)=>(double)x),
+                Array.ConvertAll<float, double>(fp, (x)=>(double)x));
+            var b2 = new double[xb.Length];
+            for (int i = 0; i < xb.Length; i++)
+                b2[i] = intp.Interpolate(xb[i]);
+            //print
+            print("b (np.interp): ", b);
+            print("b (mathnet): ", b2);
+            b = np.round(b, 2);
+            Assert.IsTrue(b.Equals(b_real).All().AsBoolArray().First());
 
-                float UNDEF = -99.0f;
-                var c = np.interp(3.14, xp, fp, right: UNDEF);
-                print(c);
-            }
-            catch (NotImplementedException nie)
-            {
-                Console.WriteLine(nie.Message);
-                return;
-            }
+            float UNDEF = -99.0f;
+            var c = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            print("c (left, right): ", c);  // -99.0, -99.0
 
-            Assert.Fail("This should have thrown an exception");
- 
+            // with period
+            var xd = new float[] { -180, -170, -185, 185, -10, -5, 0, 365 };
+            var xpp = new float[] { 190, -190, 350, -350 };
+            var fpp = new float[] { 5, 10, 3, 4 };
+            // [7.5, 5., 8.75, 6.25, 3., 3.25, 3.5, 3.75]
+            var d_real = np.array(new double[] { 7.5, 5.0, 8.75, 6.25, 3.0, 3.25, 3.5, 3.75 });
+            var d = np.interp(xd, xpp, fpp, period: 360);
+            Assert.IsTrue(d.Equals(d_real).All().AsBoolArray().First());
+            print("d (period): ", d);
         }
 
 

@@ -1054,6 +1054,60 @@ namespace NumpyDotNet
         #endregion
 
         #region interp
+        public static int binary_search_with_guess(double key, double[] arr, int guess)
+        {
+            int imin = 0, imax = arr.Length, len = arr.Length;
+            int LIKELY_IN_CACHE_SIZE = 8;
+            if (key > arr[len - 1]) return len;
+            if (key < arr[0]) return -1;
+            /*
+             * If len <= 4 use linear search.
+             * From above we know key >= arr[0] when we start.
+             */
+            if (len <= 4)
+            {
+                int i = 1;
+                for (; i < len && key >= arr[i]; i++) ;
+                return i - 1;
+            }
+            guess = guess > len - 3 ? len - 3 : ((guess < 1) ? 1 : guess);
+
+            /* check most likely values: guess - 1, guess, guess + 1 */
+            if (key < arr[guess])
+            {
+                if (key < arr[guess - 1])
+                {
+                    imax = guess - 1;
+                    /* last attempt to restrict search to items in cache */
+                    if (guess > LIKELY_IN_CACHE_SIZE && key >= arr[guess - LIKELY_IN_CACHE_SIZE])
+                        imin = guess - LIKELY_IN_CACHE_SIZE;
+                }
+                else
+                    /* key >= arr[guess - 1] */
+                    return guess - 1;
+            }
+            else
+            {
+                /* key >= arr[guess] */
+                if (key < arr[guess + 1]) return guess;
+                /* key >= arr[guess + 1] */
+                if (key < arr[guess + 2]) return guess + 1;
+                /* key >= arr[guess + 2] */
+                imin = guess + 2;
+                /* last attempt to restrict search to items in cache */
+                if (guess < len - LIKELY_IN_CACHE_SIZE - 1 && key < arr[guess + LIKELY_IN_CACHE_SIZE])
+                    imax = guess + LIKELY_IN_CACHE_SIZE;
+            }
+
+            /* finally, find index by bisection */
+            while (imin < imax)
+            {
+                int imid = imin + ((imax - imin) >> 1);
+                if (key >= arr[imid]) imin = imid + 1;
+                else imax = imid;
+            }
+            return imin - 1;
+        }
         /// <summary>
         /// One-dimensional linear interpolation.
         /// </summary>
@@ -1159,8 +1213,92 @@ namespace NumpyDotNet
             >>> np.interp(x, xp, fp)
             array([ 0.+1.j ,  1.+1.5j])
              */
+            var dzz = asarray(x) ?? throw new ArgumentNullException("x");
+            var dxx = asarray(xp) ?? throw new ArgumentNullException("xp");
+            var dyy = asarray(fp) ?? throw new ArgumentNullException("fp");
+            if (dzz.ndim > 1 || dxx.ndim != 1 || dyy.ndim != 1) throw new ArgumentException("x, xp, fp must be 1-D array");
+            if (dzz.size == 0 || dxx.size == 0 || dyy.size == 0) throw new ArgumentException("x, xp, fp can't be empty array");
+            if (dxx.size != dyy.size) throw new ArgumentException("xp and fp must have equal size");
+            if (period != null)
+            {
+                if (period == 0) throw new ArgumentException("period must be a non-zero value");
+                period = period < 0 ? -period : period;
+                dzz %= period;
+                dxx %= period;
+                var asort_xp = np.argsort(dxx);
+                dxx = dxx[asort_xp] as ndarray;
+                dyy = dyy[asort_xp] as ndarray;
+                dxx = np.concatenate((dxx["-1:"] as ndarray - period, dxx, dxx["0:1"] as ndarray + period));
+                dyy = np.concatenate((dyy["-1:"], dyy, dyy["0:1"]));
+            }
+            
+            return interp_func(x: dzz, xp: dxx, fp: dyy, left: left, right: right);
+        }
 
-            throw new NotImplementedException("use https://numerics.mathdotnet.com/ instead");
+        public static ndarray interp_func(ndarray x, ndarray xp, ndarray fp, float? left = null, float? right = null)
+        {
+            var dx = xp.AsDoubleArray();
+            var dy = fp.AsDoubleArray();
+            var dz = x.AsDoubleArray();
+            int lenxp = dx.Length; int lenx = dz.Length;
+            var lval = left is null ? dy[0] : (double)left;
+            var rval = right is null ? dy[lenxp - 1] : (double)right;
+            var dres = new double[lenx];
+            double[] slopes = null;
+
+            if (lenxp == 1)
+            {
+                var xp_val = dx[0];
+                var fp_val = dy[0];
+                for (int i = 0; i < lenx; i++)
+                {
+                    var x_val = dz[i];
+                    dres[i] = (x_val < xp_val) ? lval : ((x_val > xp_val) ? rval : fp_val);
+                }
+            }
+            else
+            {
+                int j = 0;
+                if (lenxp <= lenx)
+                {
+                    slopes = new double[lenxp - 1];
+                    for (int i = 0; i < lenxp - 1; i++)
+                        slopes[i] = (dy[i + 1] - dy[i]) / (dx[i + 1] - dx[i]);
+                }
+
+                for (int i = 0; i < lenx; i++)
+                {
+                    var x_val = dz[i];
+                    if (x_val == double.NaN)
+                    {
+                        dres[i] = x_val;
+                        continue;
+                    }
+
+                    j = binary_search_with_guess(x_val, dx, j);
+                    if (j == -1) dres[i] = lval;
+                    else if (j == lenxp) dres[i] = rval;
+                    else if (j == lenxp - 1) dres[i] = dy[j];
+                    else if (dx[j] == x_val) dres[i] = dy[j];
+                    else
+                    {
+                        var slope = (slopes != null) ? slopes[j] : (dy[j + 1] - dy[j]) / (dx[j + 1] - dx[j]);
+                        /* If we get nan in one direction, try the other */
+                        dres[i] = slope * (x_val - dx[j]) + dy[j];
+                        /* NPY_UNLIKELY() seems to be used to tell the compiler 
+                         * the condition not likely to go, ignored here
+                         * 2023.4.1
+                         */
+                        if (double.IsNaN(dres[i]))
+                        {
+                            dres[i] = slope * (x_val - dx[j + 1]) + dy[j + 1];
+                            if (double.IsNaN(dres[i]))
+                                dres[i] = dy[j];
+                        }
+                    }
+                }
+            }
+            return asarray(dres, np.Float64);
         }
         #endregion
 
