@@ -1241,7 +1241,7 @@ namespace NumpyDotNet
                 for (int i = 0; i < lenx; i++)
                 {
                     var x_val = dz[i];
-                    if (x_val == double.NaN)
+                    if (double.IsNaN(x_val))
                     {
                         dres[i] = x_val;
                         continue;
@@ -1309,7 +1309,7 @@ namespace NumpyDotNet
                 for (int i = 0; i < lenx; i++)
                 {
                     var x_val = dz[i];
-                    if (x_val == double.NaN)
+                    if (double.IsNaN(x_val))
                     {
                         dres[i] = new System.Numerics.Complex(x_val, 0.0);
                         continue;

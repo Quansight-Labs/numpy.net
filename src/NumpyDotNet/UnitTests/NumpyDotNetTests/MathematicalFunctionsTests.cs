@@ -2806,6 +2806,61 @@ namespace NumpyDotNetTests
             print(a);
         }
 
+        [TestMethod]
+        public void test_interp_NAN_1()
+        {
+            var xp = new float[] { 1, 2, 3 };
+            var fp = new float[] { 3, 2, 0 };
+
+            var a = np.interp(float.NaN, xp, fp);
+            AssertArray(a, new double[] { double.NaN });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] {double.NaN , 1, 1.5, double.NaN, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { double.NaN, 3.0, 2.5, double.NaN, 0.0 });
+            print(b);
+
+
+            float UNDEF = float.NaN;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { double.NaN });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { double.NaN, double.NaN });
+
+        }
+
+        [TestMethod]
+        public void test_interp_NAN_2()
+        {
+            var xp = new float[] { float.NaN, 2, 3 };
+            var fp = new float[] { 3, 2, float.NaN };
+
+            var a = np.interp(2.5, xp, fp);
+            AssertArray(a, new double[] { double.NaN });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN });
+            print(b);
+
+
+            float UNDEF = -99.0f;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { -99 });
+            print(c);
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { -99, double.NaN });
+            print(d);
+
+        }
 
         #endregion
 
