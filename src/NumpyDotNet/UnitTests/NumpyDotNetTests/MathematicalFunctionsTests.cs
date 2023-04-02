@@ -2862,6 +2862,59 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_interp_INF_1()
+        {
+            var xp = new float[] { 1, 2, 3 };
+            var fp = new float[] { 3, 2, 0 };
+
+            var a = np.interp(float.PositiveInfinity, xp, fp);
+            AssertArray(a, new double[] { 0.0 });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { double.PositiveInfinity, 1, 1.5, double.PositiveInfinity, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { 0.0, 3.0, 2.5, 0.0, 0.0 });
+            print(b);
+
+
+            float UNDEF = float.PositiveInfinity;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { double.PositiveInfinity });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { double.PositiveInfinity, double.PositiveInfinity });
+
+        }
+        [TestMethod]
+        public void test_interp_INF_1a()
+        {
+            var xp = new float[] { 1, 2, 3 };
+            var fp = new float[] { 3, 2, 0 };
+
+            var a = np.interp(float.NegativeInfinity, xp, fp);
+            AssertArray(a, new double[] { 3.0 });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { double.NegativeInfinity, 1, 1.5, double.NegativeInfinity, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { 3.0, 3.0, 2.5, 3.0, 0.0 });
+            print(b);
+
+
+            float UNDEF = float.NegativeInfinity;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { double.NegativeInfinity });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { double.NegativeInfinity, double.NegativeInfinity });
+
+        }
+
         #endregion
 
         #region UFunc Special Calls

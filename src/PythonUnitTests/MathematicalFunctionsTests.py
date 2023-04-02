@@ -1801,6 +1801,40 @@ class MathematicalFunctionsTests(unittest.TestCase):
         d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
         print(d)
 
+    def test_interp_INF_1(self):
+
+        xp = xp = [1, 2, 3]
+        fp = [3, 2, 0]
+        a = np.interp(np.Inf, xp, fp)
+        print(a)
+
+        b = np.interp([np.Inf, 1, 1.5, np.Inf, 3.14], xp, fp)
+        print(b)
+
+        UNDEF = np.Inf
+        c = np.interp(3.14, xp, fp, right=UNDEF)
+        print(c)
+
+        d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
+        print(d)
+
+    def test_interp_INF_1a(self):
+
+        xp = xp = [1, 2, 3]
+        fp = [3, 2, 0]
+        a = np.interp(-np.Inf, xp, fp)
+        print(a)
+
+        b = np.interp([-np.Inf, 1, 1.5, -np.Inf, 3.14], xp, fp)
+        print(b)
+
+        UNDEF = -np.Inf
+        c = np.interp(3.14, xp, fp, right=UNDEF)
+        print(c)
+
+        d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
+        print(d)
+
     def test_interp_2(self):
 
         x = [-180, -170, -185, 185, -10, -5, 0, 365]
