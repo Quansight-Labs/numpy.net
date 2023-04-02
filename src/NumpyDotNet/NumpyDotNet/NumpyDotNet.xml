@@ -872,7 +872,18 @@
             <param name="axis">The axis along which the difference is taken, default is the last axis.</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:NumpyDotNet.np.interp(System.Object,System.Single[],System.Single[],System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Single})" -->
+        <member name="M:NumpyDotNet.np.interp(System.Object,System.Object,System.Object,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">
+            <summary>
+            One-dimensional linear interpolation.
+            </summary>
+            <param name="x">The x-coordinates of the interpolated values.</param>
+            <param name="xp">1-D sequence of floats, the x-coordinates of the data points</param>
+            <param name="fp">1-D sequence of float or complex, the y-coordinates of the data points</param>
+            <param name="left"> optional float or complex corresponding to fp value to return for "x LT xp[0]"</param>
+            <param name="right">optional float or complex corresponding to fp value to return for "x GT xp[-1]"</param>
+            <param name="period">A period for the x-coordinates. This parameter allows the proper interpolation of angular x-coordinates.</param>
+            <returns></returns>
+        </member>
         <member name="M:NumpyDotNet.np.angle(System.Object,System.Boolean)">
             <summary>
             Return the angle of the complex argument.
