@@ -1869,6 +1869,14 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(d)
 
 
+    def test_interp_COMPLEX_2(self):
+
+        x = [-180, -170, -185, 185, -10, -5, 0, 365]
+        xp = [190, -190, 350, -350]
+        fp = [5+0j, 10+0j, 3+0j, 4+0j]
+        a = np.interp(x, xp, fp, period=360)
+        print(a)
+
     #endregion
 
 if __name__ == '__main__':

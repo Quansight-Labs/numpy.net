@@ -2955,6 +2955,18 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_interp_COMPLEX_2()
+        {
+            //// with period
+            var x = new Complex[] { -180, -170, -185, 185, -10, -5, 0, 365 };
+            var xp = new Complex[] { 190, -190, 350, -350 };
+            var fp = new Complex[] { 5, 10, 3, 4 };
+            var a = np.interp(x, xp, fp, period: 360);
+            AssertArray(a, new Complex[] { 7.5, 5.0, 8.75, 6.25, 3.0, 3.25, 3.5, 3.75 });
+            print(a);
+        }
+
         #endregion
 
         #region UFunc Special Calls
