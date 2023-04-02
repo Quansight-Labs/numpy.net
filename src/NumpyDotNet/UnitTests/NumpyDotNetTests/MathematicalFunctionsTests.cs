@@ -2915,6 +2915,46 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_interp_COMPLEX_1()
+        {
+            var xp = new float[] { 1, 2, 3 };
+            var fp = new Complex[] { new Complex(0,1), new Complex(0,0), new Complex(2,3) };
+
+            var a = np.interp(2.5, xp, fp);
+            AssertArray(a, new Complex[] { new Complex( 1.0, 1.5) });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new Complex[] { new Complex(0, 1), new Complex(0, 1), new Complex(0, 0.5), new Complex(1.44, 2.16), new Complex(2, 3) });
+            print(b);
+
+
+            Complex UNDEF =  new Complex(-99.0, 88);
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new Complex[] { new Complex(-99, 88) });
+            print(c);
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new Complex[] { new Complex(-99, 88), new Complex(-99, 88) });
+            print(d);
+
+
+            float UNDEF2 = 66;
+
+            c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF2);
+            AssertArray(c, new Complex[] { new Complex(66, 0) });
+            print(c);
+
+            d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF2, right: UNDEF2);
+            AssertArray(d, new Complex[] { new Complex(66, 0), new Complex(66, 0) });
+            print(d);
+
+        }
+
         #endregion
 
         #region UFunc Special Calls

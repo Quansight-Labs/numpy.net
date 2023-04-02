@@ -1844,6 +1844,30 @@ class MathematicalFunctionsTests(unittest.TestCase):
         print(a)
 
 
+    def test_interp_COMPLEX_1(self):
+
+        xp = xp = [1, 2, 3]
+        fp = [1.0j, 0, 2+3j]
+        a = np.interp(2.5, xp, fp)
+        print(a)
+
+        b = np.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)
+        print(b)
+
+        UNDEF = -99+88j
+        c = np.interp(3.14, xp, fp, right=UNDEF)
+        print(c)
+
+        d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
+        print(d)
+
+        UNDEF = 66
+        c = np.interp(3.14, xp, fp, right=UNDEF)
+        print(c)
+
+        d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
+        print(d)
+
 
     #endregion
 

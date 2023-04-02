@@ -1065,7 +1065,7 @@ namespace NumpyDotNet
         /// <param name="right">optional float or complex corresponding to fp value to return for "x GT xp[-1]"</param>
         /// <param name="period">A period for the x-coordinates. This parameter allows the proper interpolation of angular x-coordinates.</param>
         /// <returns></returns>
-        public static ndarray interp(object x, object xp, object fp, double? left = null, double? right = null, double? period = null)
+        public static ndarray interp(object x, object xp, object fp, object left = null, object right = null, double? period = null)
         {
             /*
             One-dimensional linear interpolation.
@@ -1205,16 +1205,16 @@ namespace NumpyDotNet
             throw new Exception("Unable to determine float or complex type");
         }
 
-        private delegate ndarray interp_func(ndarray x, ndarray xp, ndarray fp, double? left = null, double? right = null);
+        private delegate ndarray interp_func(ndarray x, ndarray xp, ndarray fp, object left = null, object right = null);
 
-        private static ndarray interp_func_double(ndarray x, ndarray xp, ndarray fp, double? left = null, double? right = null)
+        private static ndarray interp_func_double(ndarray x, ndarray xp, ndarray fp, object left = null, object right = null)
         {
             var dx = xp.AsDoubleArray();
             var dy = fp.AsDoubleArray();
             var dz = x.AsDoubleArray();
             int lenxp = dx.Length; int lenx = dz.Length;
-            var lval = left is null ? dy[0] : (double)left;
-            var rval = right is null ? dy[lenxp - 1] : (double)right;
+            var lval = left is null ? dy[0] : Convert.ToDouble(left);
+            var rval = right is null ? dy[lenxp - 1] : Convert.ToDouble(right);
             var dres = new double[lenx];
             double[] slopes = null;
 
@@ -1222,7 +1222,7 @@ namespace NumpyDotNet
             {
                 var xp_val = dx[0];
                 var fp_val = dy[0];
-                for (int i = 0; i < lenx; i++)
+                for (int i = 0; i < lenx; ++i)
                 {
                     var x_val = dz[i];
                     dres[i] = (x_val < xp_val) ? lval : ((x_val > xp_val) ? rval : fp_val);
@@ -1234,11 +1234,11 @@ namespace NumpyDotNet
                 if (lenxp <= lenx)
                 {
                     slopes = new double[lenxp - 1];
-                    for (int i = 0; i < lenxp - 1; i++)
+                    for (int i = 0; i < lenxp - 1; ++i)
                         slopes[i] = (dy[i + 1] - dy[i]) / (dx[i + 1] - dx[i]);
                 }
 
-                for (int i = 0; i < lenx; i++)
+                for (int i = 0; i < lenx; ++i)
                 {
                     var x_val = dz[i];
                     if (double.IsNaN(x_val))
@@ -1269,17 +1269,31 @@ namespace NumpyDotNet
             return asarray(dres, np.Float64);
         }
 
-        private static ndarray interp_func_complex(ndarray x, ndarray xp, ndarray fp, double? left = null, double? right = null)
+        private static ndarray interp_func_complex(ndarray x, ndarray xp, ndarray fp, object left = null, object right = null)
         {
 
             var dx = xp.AsDoubleArray();
             var dy = fp.AsComplexArray();
             var dz = x.AsDoubleArray();
             int lenxp = dx.Length; int lenx = dz.Length;
-            var lval = left is null ? dy[0] : (System.Numerics.Complex)left;
-            var rval = right is null ? dy[lenxp - 1] : (System.Numerics.Complex)right;
+            System.Numerics.Complex lval;
+            System.Numerics.Complex rval;
             var dres = new System.Numerics.Complex[lenx];
             System.Numerics.Complex[] slopes = null;
+
+            if (left is null)
+                lval = dy[0];
+            else if (left is System.Numerics.Complex)
+                lval = (System.Numerics.Complex)left;
+            else
+                lval = new System.Numerics.Complex(Convert.ToDouble(left), 0);
+
+            if (right is null)
+                rval = dy[lenxp-1];
+            else if (right is System.Numerics.Complex)
+                rval = (System.Numerics.Complex)right;
+            else
+                rval = new System.Numerics.Complex(Convert.ToDouble(right), 0);
 
             if (lenxp == 1)
             {
@@ -1297,7 +1311,7 @@ namespace NumpyDotNet
                 if (lenxp <= lenx)
                 {
                     slopes = new System.Numerics.Complex[lenxp - 1];
-                    for (int i = 0; i < lenxp - 1; i++)
+                    for (int i = 0; i < lenxp - 1; ++i)
                     {
                         double inv_dx = 1.0 / (dx[i + 1] - dx[i]);
                         double _real = (dy[i + 1].Real - dy[i].Real) * inv_dx;
@@ -1306,7 +1320,7 @@ namespace NumpyDotNet
                     }
                 }
 
-                for (int i = 0; i < lenx; i++)
+                for (int i = 0; i < lenx; ++i)
                 {
                     var x_val = dz[i];
                     if (double.IsNaN(x_val))
@@ -1326,7 +1340,7 @@ namespace NumpyDotNet
 
                         if (slopes != null)
                         {
-                            slope = slopes[0];
+                            slope = slopes[j];
                         }
                         else
                         {
