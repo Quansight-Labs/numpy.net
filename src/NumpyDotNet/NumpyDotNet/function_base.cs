@@ -1054,71 +1054,18 @@ namespace NumpyDotNet
         #endregion
 
         #region interp
-        public static int binary_search_with_guess(double key, double[] arr, int guess)
-        {
-            int imin = 0, imax = arr.Length, len = arr.Length;
-            int LIKELY_IN_CACHE_SIZE = 8;
-            if (key > arr[len - 1]) return len;
-            if (key < arr[0]) return -1;
-            /*
-             * If len <= 4 use linear search.
-             * From above we know key >= arr[0] when we start.
-             */
-            if (len <= 4)
-            {
-                int i = 1;
-                for (; i < len && key >= arr[i]; i++) ;
-                return i - 1;
-            }
-            guess = guess > len - 3 ? len - 3 : ((guess < 1) ? 1 : guess);
-
-            /* check most likely values: guess - 1, guess, guess + 1 */
-            if (key < arr[guess])
-            {
-                if (key < arr[guess - 1])
-                {
-                    imax = guess - 1;
-                    /* last attempt to restrict search to items in cache */
-                    if (guess > LIKELY_IN_CACHE_SIZE && key >= arr[guess - LIKELY_IN_CACHE_SIZE])
-                        imin = guess - LIKELY_IN_CACHE_SIZE;
-                }
-                else
-                    /* key >= arr[guess - 1] */
-                    return guess - 1;
-            }
-            else
-            {
-                /* key >= arr[guess] */
-                if (key < arr[guess + 1]) return guess;
-                /* key >= arr[guess + 1] */
-                if (key < arr[guess + 2]) return guess + 1;
-                /* key >= arr[guess + 2] */
-                imin = guess + 2;
-                /* last attempt to restrict search to items in cache */
-                if (guess < len - LIKELY_IN_CACHE_SIZE - 1 && key < arr[guess + LIKELY_IN_CACHE_SIZE])
-                    imax = guess + LIKELY_IN_CACHE_SIZE;
-            }
-
-            /* finally, find index by bisection */
-            while (imin < imax)
-            {
-                int imid = imin + ((imax - imin) >> 1);
-                if (key >= arr[imid]) imin = imid + 1;
-                else imax = imid;
-            }
-            return imin - 1;
-        }
+   
         /// <summary>
         /// One-dimensional linear interpolation.
         /// </summary>
         /// <param name="x">The x-coordinates of the interpolated values.</param>
         /// <param name="xp">1-D sequence of floats, the x-coordinates of the data points</param>
         /// <param name="fp">1-D sequence of float or complex, the y-coordinates of the data points</param>
-        /// <param name="left"> optional float or complex corresponding to fp value to return for `x < xp[0]`</param>
-        /// <param name="right">optional float or complex corresponding to fp value to return for `x > xp[-1]</param>
+        /// <param name="left"> optional float or complex corresponding to fp value to return for "x LT xp[0]"</param>
+        /// <param name="right">optional float or complex corresponding to fp value to return for "x GT xp[-1]"</param>
         /// <param name="period">A period for the x-coordinates. This parameter allows the proper interpolation of angular x-coordinates.</param>
         /// <returns></returns>
-        public static ndarray interp(object x, float[] xp, float[] fp, float? left = null, float? right = null, float? period = null)
+        public static ndarray interp(object x, object xp, object fp, double? left = null, double? right = null, double? period = null)
         {
             /*
             One-dimensional linear interpolation.
@@ -1231,11 +1178,16 @@ namespace NumpyDotNet
                 dxx = np.concatenate((dxx["-1:"] as ndarray - period, dxx, dxx["0:1"] as ndarray + period));
                 dyy = np.concatenate((dyy["-1:"], dyy, dyy["0:1"]));
             }
+
+            if (dzz.IsComplex || dxx.IsComplex || dyy.IsComplex)
+            {
+                throw new Exception("This function does not currently support complex numbers");
+            }
             
             return interp_func(x: dzz, xp: dxx, fp: dyy, left: left, right: right);
         }
 
-        public static ndarray interp_func(ndarray x, ndarray xp, ndarray fp, float? left = null, float? right = null)
+        private static ndarray interp_func(ndarray x, ndarray xp, ndarray fp, double? left = null, double? right = null)
         {
             var dx = xp.AsDoubleArray();
             var dy = fp.AsDoubleArray();
@@ -1299,6 +1251,61 @@ namespace NumpyDotNet
                 }
             }
             return asarray(dres, np.Float64);
+        }
+
+        private static int binary_search_with_guess(double key, double[] arr, int guess)
+        {
+            int imin = 0, imax = arr.Length, len = arr.Length;
+            int LIKELY_IN_CACHE_SIZE = 8;
+            if (key > arr[len - 1]) return len;
+            if (key < arr[0]) return -1;
+            /*
+             * If len <= 4 use linear search.
+             * From above we know key >= arr[0] when we start.
+             */
+            if (len <= 4)
+            {
+                int i = 1;
+                for (; i < len && key >= arr[i]; i++) ;
+                return i - 1;
+            }
+            guess = guess > len - 3 ? len - 3 : ((guess < 1) ? 1 : guess);
+
+            /* check most likely values: guess - 1, guess, guess + 1 */
+            if (key < arr[guess])
+            {
+                if (key < arr[guess - 1])
+                {
+                    imax = guess - 1;
+                    /* last attempt to restrict search to items in cache */
+                    if (guess > LIKELY_IN_CACHE_SIZE && key >= arr[guess - LIKELY_IN_CACHE_SIZE])
+                        imin = guess - LIKELY_IN_CACHE_SIZE;
+                }
+                else
+                    /* key >= arr[guess - 1] */
+                    return guess - 1;
+            }
+            else
+            {
+                /* key >= arr[guess] */
+                if (key < arr[guess + 1]) return guess;
+                /* key >= arr[guess + 1] */
+                if (key < arr[guess + 2]) return guess + 1;
+                /* key >= arr[guess + 2] */
+                imin = guess + 2;
+                /* last attempt to restrict search to items in cache */
+                if (guess < len - LIKELY_IN_CACHE_SIZE - 1 && key < arr[guess + LIKELY_IN_CACHE_SIZE])
+                    imax = guess + LIKELY_IN_CACHE_SIZE;
+            }
+
+            /* finally, find index by bisection */
+            while (imin < imax)
+            {
+                int imid = imin + ((imax - imin) >> 1);
+                if (key >= arr[imid]) imin = imid + 1;
+                else imax = imid;
+            }
+            return imin - 1;
         }
         #endregion
 
