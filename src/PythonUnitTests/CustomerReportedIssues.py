@@ -397,6 +397,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
          idx = np.argsort(y)
          print(y);
          print(idx);
+
+    def test_Rainyl_2a(self):
+
+            xp = new float[] { 1, 2, 3 };
+            var fp = new float[] { 3, 2, 0 };
+
+            var a = np.interp(2.5, xp, fp);
+
+
       
 if __name__ == '__main__':
     unittest.main()

@@ -1764,6 +1764,18 @@ class MathematicalFunctionsTests(unittest.TestCase):
         c = np.interp(3.14, xp, fp, right=UNDEF)
         print(c)
 
+        d = np.interp([3.14, -1], xp, fp, left=UNDEF, right=UNDEF)
+        print(d)
+
+    def test_interp_2(self):
+
+        x = [-180, -170, -185, 185, -10, -5, 0, 365]
+        xp = [190, -190, 350, -350]
+        fp = [5, 10, 3, 4]
+        a = np.interp(x, xp, fp, period=360)
+        print(a)
+
+
 
     #endregion
 

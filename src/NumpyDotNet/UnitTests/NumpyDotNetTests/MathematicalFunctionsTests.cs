@@ -2713,7 +2713,6 @@ namespace NumpyDotNetTests
             //print(g);
         }
 
-        //[Ignore]
         [TestMethod]
         public void test_interp_1()
         {
@@ -2721,38 +2720,90 @@ namespace NumpyDotNetTests
             var fp = new float[] { 3, 2, 0 };
 
             var a = np.interp(2.5, xp, fp);
+            AssertArray(a, new double[] { 1.0 });
             print("a: ", a);  // 1.0
 
             // 3.0, 3.0, 2.5, 0.56, 0.0
             var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
-            var b_real = np.array(new double[] { 3.0, 3.0, 2.5, 0.56, 0.0 });
             var b = np.interp(xb, xp, fp);
-            // mathnet
-            var intp = MathNet.Numerics.Interpolate.Linear(
-                Array.ConvertAll<float, double>(xp, (x)=>(double)x),
-                Array.ConvertAll<float, double>(fp, (x)=>(double)x));
-            var b2 = new double[xb.Length];
-            for (int i = 0; i < xb.Length; i++)
-                b2[i] = intp.Interpolate(xb[i]);
-            //print
-            print("b (np.interp): ", b);
-            print("b (mathnet): ", b2);
-            b = np.round(b, 2);
-            Assert.IsTrue(b.Equals(b_real).All().AsBoolArray().First());
+            AssertArray(b, new double[] { 3.0  , 3.0 , 2.5, 0.56, 0.0 });
+            print(b);
+   
 
             float UNDEF = -99.0f;
-            var c = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
-            print("c (left, right): ", c);  // -99.0, -99.0
 
-            // with period
-            var xd = new float[] { -180, -170, -185, 185, -10, -5, 0, 365 };
-            var xpp = new float[] { 190, -190, 350, -350 };
-            var fpp = new float[] { 5, 10, 3, 4 };
-            // [7.5, 5., 8.75, 6.25, 3., 3.25, 3.5, 3.75]
-            var d_real = np.array(new double[] { 7.5, 5.0, 8.75, 6.25, 3.0, 3.25, 3.5, 3.75 });
-            var d = np.interp(xd, xpp, fpp, period: 360);
-            Assert.IsTrue(d.Equals(d_real).All().AsBoolArray().First());
-            print("d (period): ", d);
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { -99 });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { -99, -99 });
+
+        }
+
+        [TestMethod]
+        public void test_interp_1a()
+        {
+            var xp = new double[] { 1, 2, 3 };
+            var fp = new double[] { 3, 2, 0 };
+
+            var a = np.interp(2.5, xp, fp);
+            AssertArray(a, new double[] { 1.0 });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { 3.0, 3.0, 2.5, 0.56, 0.0 });
+            print(b);
+
+
+            float UNDEF = -99.0f;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { -99 });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { -99, -99 });
+
+        }
+
+        [TestMethod]
+        public void test_interp_1b()
+        {
+            var xp = new int[] { 1, 2, 3 };
+            var fp = new int[] { 3, 2, 0 };
+
+            var a = np.interp(2.5, xp, fp);
+            AssertArray(a, new double[] { 1.0 });
+            print("a: ", a);  // 1.0
+
+            // 3.0, 3.0, 2.5, 0.56, 0.0
+            var xb = new double[] { 0, 1, 1.5, 2.72, 3.14 };
+            var b = np.interp(xb, xp, fp);
+            AssertArray(b, new double[] { 3.0, 3.0, 2.5, 0.56, 0.0 });
+            print(b);
+
+
+            float UNDEF = -99.0f;
+
+            var c = np.interp(new float[] { 3.14f }, xp, fp, right: UNDEF);
+            AssertArray(c, new double[] { -99 });
+
+            var d = np.interp(new float[] { 3.14f, -1f }, xp, fp, left: UNDEF, right: UNDEF);
+            AssertArray(d, new double[] { -99, -99 });
+
+        }
+
+        [TestMethod]
+        public void test_interp_2()
+        {
+            //// with period
+            var x = new float[] { -180, -170, -185, 185, -10, -5, 0, 365 };
+            var xp = new float[] { 190, -190, 350, -350 };
+            var fp = new float[] { 5, 10, 3, 4 };
+            var a = np.interp(x, xp, fp, period: 360);
+            AssertArray(a, new double[] { 7.5, 5.0, 8.75, 6.25, 3.0, 3.25, 3.5, 3.75 });
+            print(a);
         }
 
 
