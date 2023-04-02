@@ -872,7 +872,7 @@
             <param name="axis">The axis along which the difference is taken, default is the last axis.</param>
             <returns></returns>
         </member>
-        <member name="M:NumpyDotNet.np.interp(System.Object,System.Object,System.Object,System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">
+        <member name="M:NumpyDotNet.np.interp(System.Object,System.Object,System.Object,System.Object,System.Object,System.Nullable{System.Double})">
             <summary>
             One-dimensional linear interpolation.
             </summary>
