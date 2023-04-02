@@ -1196,11 +1196,6 @@ namespace NumpyDotNet
                 _xp = np.concatenate((_xp["-1:"] as ndarray - period, _xp, _xp["0:1"] as ndarray + period));
                 _fp = np.concatenate((_fp["-1:"], _fp, _fp["0:1"]));
             }
-
-            if (_x.IsComplex || _xp.IsComplex || _fp.IsComplex)
-            {
-                throw new Exception("This function does not currently support complex numbers");
-            }
             
             if (interp_func != null)
             {
@@ -1262,14 +1257,10 @@ namespace NumpyDotNet
                         var slope = (slopes != null) ? slopes[j] : (dy[j + 1] - dy[j]) / (dx[j + 1] - dx[j]);
                         /* If we get nan in one direction, try the other */
                         dres[i] = slope * (x_val - dx[j]) + dy[j];
-                        /* NPY_UNLIKELY() seems to be used to tell the compiler 
-                         * the condition not likely to go, ignored here
-                         * 2023.4.1
-                         */
-                        if (double.IsNaN(dres[i]))
+                        if (Unlikely(double.IsNaN(dres[i])))
                         {
                             dres[i] = slope * (x_val - dx[j + 1]) + dy[j + 1];
-                            if (double.IsNaN(dres[i]))
+                            if (Unlikely(double.IsNaN(dres[i])) && dy[j] == dy[j+1])
                                 dres[i] = dy[j];
                         }
                     }
@@ -1280,14 +1271,15 @@ namespace NumpyDotNet
 
         private static ndarray interp_func_complex(ndarray x, ndarray xp, ndarray fp, double? left = null, double? right = null)
         {
+
             var dx = xp.AsDoubleArray();
-            var dy = fp.AsDoubleArray();
+            var dy = fp.AsComplexArray();
             var dz = x.AsDoubleArray();
             int lenxp = dx.Length; int lenx = dz.Length;
-            var lval = left is null ? dy[0] : (double)left;
-            var rval = right is null ? dy[lenxp - 1] : (double)right;
-            var dres = new double[lenx];
-            double[] slopes = null;
+            var lval = left is null ? dy[0] : (System.Numerics.Complex)left;
+            var rval = right is null ? dy[lenxp - 1] : (System.Numerics.Complex)right;
+            var dres = new System.Numerics.Complex[lenx];
+            System.Numerics.Complex[] slopes = null;
 
             if (lenxp == 1)
             {
@@ -1304,9 +1296,14 @@ namespace NumpyDotNet
                 int j = 0;
                 if (lenxp <= lenx)
                 {
-                    slopes = new double[lenxp - 1];
+                    slopes = new System.Numerics.Complex[lenxp - 1];
                     for (int i = 0; i < lenxp - 1; i++)
-                        slopes[i] = (dy[i + 1] - dy[i]) / (dx[i + 1] - dx[i]);
+                    {
+                        double inv_dx = 1.0 / (dx[i + 1] - dx[i]);
+                        double _real = (dy[i + 1].Real - dy[i].Real) * inv_dx;
+                        double _imaginary = (dy[i + 1].Imaginary - dy[i].Imaginary) * inv_dx;
+                        slopes[i] = new System.Numerics.Complex(_real, _imaginary);
+                    }
                 }
 
                 for (int i = 0; i < lenx; i++)
@@ -1314,7 +1311,7 @@ namespace NumpyDotNet
                     var x_val = dz[i];
                     if (x_val == double.NaN)
                     {
-                        dres[i] = x_val;
+                        dres[i] = new System.Numerics.Complex(x_val, 0.0);
                         continue;
                     }
 
@@ -1325,25 +1322,46 @@ namespace NumpyDotNet
                     else if (dx[j] == x_val) dres[i] = dy[j];
                     else
                     {
-                        var slope = (slopes != null) ? slopes[j] : (dy[j + 1] - dy[j]) / (dx[j + 1] - dx[j]);
-                        /* If we get nan in one direction, try the other */
-                        dres[i] = slope * (x_val - dx[j]) + dy[j];
-                        /* NPY_UNLIKELY() seems to be used to tell the compiler 
-                         * the condition not likely to go, ignored here
-                         * 2023.4.1
-                         */
-                        if (double.IsNaN(dres[i]))
+                        System.Numerics.Complex slope;
+
+                        if (slopes != null)
                         {
-                            dres[i] = slope * (x_val - dx[j + 1]) + dy[j + 1];
-                            if (double.IsNaN(dres[i]))
-                                dres[i] = dy[j];
+                            slope = slopes[0];
                         }
+                        else
+                        {
+                            double inv_dx = 1.0 / (dx[j + 1] - dx[j]);
+                            double _real = (dy[j + 1].Real - dy[j].Real) * inv_dx;
+                            double _imaginary = (dy[j + 1].Imaginary - dy[j].Imaginary) * inv_dx;
+                            slope = new System.Numerics.Complex(_real, _imaginary);
+                        }
+                        /* If we get nan in one direction, try the other */
+                        dres[i]  = new System.Numerics.Complex(slope.Real * (x_val - dx[j]) + dy[j].Real, dres[i].Imaginary);
+                        if (Unlikely(double.IsNaN(dres[i].Real)))
+                        {
+                            dres[i] = new System.Numerics.Complex(slope.Real * (x_val - dx[j + 1]) + dy[j + 1].Real, dres[i].Imaginary);
+                            if (Unlikely(double.IsNaN(dres[i].Real)) && dy[j].Real == dy[j + 1].Real)
+                                dres[i] = new System.Numerics.Complex(dy[j].Real, dres[i].Imaginary);
+                        }
+
+                        dres[i] = new System.Numerics.Complex(dres[i].Real, slope.Imaginary * (x_val - dx[j]) + dy[j].Imaginary);
+                        if (Unlikely(double.IsNaN(dres[i].Imaginary)))
+                        {
+                            dres[i] = new System.Numerics.Complex(dres[i].Real, slope.Imaginary * (x_val - dx[j + 1]) + dy[j + 1].Imaginary);
+                            if (Unlikely(double.IsNaN(dres[i].Imaginary)) && dy[j].Imaginary == dy[j + 1].Imaginary)
+                                dres[i] = new System.Numerics.Complex(dres[i].Real, dy[j].Imaginary );
+                        }
+
                     }
                 }
             }
-            return asarray(dres, np.Float64);
+            return asarray(dres, np.Complex);
         }
 
+        private static bool Unlikely(bool v)
+        {
+            return v;
+        }
 
         private static int binary_search_with_guess(double key, double[] arr, int guess)
         {
