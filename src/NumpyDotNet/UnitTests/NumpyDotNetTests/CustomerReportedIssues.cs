@@ -1140,7 +1140,7 @@ namespace NumpyDotNetTests
             print(Line2Output);
             Assert.AreEqual(0, string.Compare("output: 88, 77, 66", Line2Output));
 
-            AssertArray(a, new int[,] { { 1, 2, 3, 4, 5 }, { 10, 11, 12, 13, 14 } });
+            AssertArray(a, new int[,] { { 1, 2, 3, 4, 5 }, { 66, 11, 77, 13, 88 } });
 
             return;
 
