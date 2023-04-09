@@ -1086,5 +1086,63 @@ namespace NumpyDotNetTests
             print(y);
             print(idx);
         }
+
+        [TestMethod]
+        public void test_Rainyl_3()
+        {
+            var a = np.asarray(new int[,] { { 1, 2, 3, 4, 5 }, { 10, 11, 12, 13, 14 } });
+            //a = a.flatten();
+            var b = a[":", "::-1"] as ndarray;
+     
+            string Line1Output = string.Format($"output: {b[0, 0]}, {b[0, 1]}, {b[0, 2]}, {b[0, 3]}, {b[0, 4]}");
+            Assert.AreEqual(0, string.Compare("output: 5, 4, 3, 2, 1", Line1Output));
+
+            string Line2Output = string.Format($"output: {b[1, 0]}, {b[1, 1]}, {b[1, 2]}, {b[1, 3]}, {b[1, 4]}");
+            Assert.AreEqual(0, string.Compare("output: 14, 13, 12, 11, 10", Line2Output));
+
+        }
+
+        [TestMethod]
+        public void test_Rainyl_3a()
+        {
+            var a = np.asarray(new int[,] { { 1, 2, 3, 4, 5 }, { 10, 11, 12, 13, 14 } });
+            //a = a.flatten();
+            var b = a["::-1", "::-1"] as ndarray;
+
+
+
+            string Line1Output = string.Format($"output: {b[0, 0]}, {b[0, 1]}, {b[0, 2]}, {b[0, 3]}, {b[0, 4]}");
+            Assert.AreEqual(0, string.Compare("output: 14, 13, 12, 11, 10", Line1Output));
+
+            string Line2Output = string.Format($"output: {b[1, 0]}, {b[1, 1]}, {b[1, 2]}, {b[1, 3]}, {b[1, 4]}");
+            Assert.AreEqual(0, string.Compare("output: 5, 4, 3, 2, 1", Line2Output));
+
+        }
+
+        [TestMethod]
+        public void test_Rainyl_3b()
+        {
+            var a = np.asarray(new int[,] { { 1, 2, 3, 4, 5 }, { 10, 11, 12, 13, 14 } });
+            //a = a.flatten();
+            var b = a["::-2", "::-2"] as ndarray;
+            print(b);
+
+
+            string Line1Output = string.Format($"output: {b[0, 0]}, {b[0, 1]}, {b[0, 2]}");
+            print(Line1Output);
+            Assert.AreEqual(0, string.Compare("output: 14, 12, 10", Line1Output));
+
+            b[0, 0] = 88;
+            b[0, 1] = 77;
+            b[0, 2] = 66;
+
+            string Line2Output = string.Format($"output: {b[0, 0]}, {b[0, 1]}, {b[0, 2]}");
+            print(Line2Output);
+            //Assert.AreEqual(0, string.Compare("output: 14, 12, 10", Line1Output));
+
+            return;
+
+        }
+
     }
 }
