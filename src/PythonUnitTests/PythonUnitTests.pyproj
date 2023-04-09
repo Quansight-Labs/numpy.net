@@ -101,6 +101,9 @@
     <Compile Include="NpyIOTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SerializationTests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UFUNCTests\UFUNCTests.py">
       <SubType>Code</SubType>
     </Compile>

@@ -1361,6 +1361,66 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_ToSystemArray_Reverse()
+        {
+            // 2D array tests
+            var adata = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
+            var adata_revers = new int[,] { { 2, 1 }, { 4, 3 }, { 6, 5 } };
+            ndarray a = np.array(adata);
+            ndarray ar = a[":", "::-1"] as ndarray;
+
+            var a1 = (int[,])ar.ToSystemArray();
+            AssertArray(ar, adata_revers);
+
+            // 3D array test
+            var bdata = new float[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
+            var bdata_revers = new float[,,] { { { 11 }, { 12 }, { 13 }, { 14 } }, { { 15 }, { 16 }, { 17 }, { 18 } }, { { 19 }, { 20 }, { 21 }, { 22 } } };
+            ndarray b = np.array(bdata);
+
+            ndarray br = b[":", "::-1", "::-1"] as ndarray;
+            var b1 = (float[,,])br.ToSystemArray();
+            AssertArray(br, bdata_revers);
+
+            var bdata_revers2 = new float[,,] { { { 22 }, { 21 }, { 20 }, { 19 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 14 }, { 13 }, { 12 }, { 11 } } };
+            br = b["::-1", ":", "::-1"] as ndarray;
+            b1 = (float[,,])br.ToSystemArray();
+            AssertArray(br, bdata_revers2);
+
+            var c = np.arange(0, 256, dtype: np.Int16).reshape(4, 4, 4, 4);
+            var cr = c["::-2", "::-1", "::-2", "::-1"] as ndarray;
+            //print(cr);
+
+            var crr = cr["::-1", "::-2", "::-1", "::-2"] as ndarray;
+            print(crr);
+
+            var crr_revers = new Int16[,,,] {{{{ 68, 70 },{ 76, 78 }},
+                                              {{ 100, 102 },{ 108, 110 }}},
+                                              {{{ 196, 198 },{ 204, 206 }},
+                                              {{ 228, 230 },{ 236, 238 }}}};
+
+            AssertArray(crr, crr_revers);
+
+
+            crr[0, 1, 0, 1] = -55;
+            crr[1, 1, 1, 1] = -77;
+            crr[1, 0, 0, 1] = -88;
+
+            crr_revers = new Int16[,,,] {{{{ 68, 70 },{ 76, 78 }},
+                                              {{ 100, -55 },{ 108, 110 }}},
+                                              {{{ 196, -88 },{ 204, 206 }},
+                                              {{ 228, 230 },{ 236, -77 }}}};
+
+            AssertArray(crr, crr_revers);
+
+            Assert.AreEqual((Int16)(-55), c[1, 2, 1, 2]);
+            Assert.AreEqual((Int16)(-77), c[3, 2, 3, 2]);
+            Assert.AreEqual((Int16)(-88), c[3, 0, 1, 2]);
+
+        }
+
+
+
+        [TestMethod]
         public void test_setitem_byIndex()
         {
             var bdata = new int[,,] { { { 14 }, { 13 }, { 12 }, { 11 } }, { { 18 }, { 17 }, { 16 }, { 15 } }, { { 22 }, { 21 }, { 20 }, { 19 } } };
