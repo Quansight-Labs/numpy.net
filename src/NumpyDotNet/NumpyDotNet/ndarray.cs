@@ -985,24 +985,8 @@ namespace NumpyDotNet
                     NpyUtil_IndexProcessing.IndexConverter(this, args, indexes);
                     if (indexes.IsSingleItem(ndim))
                     {
-                        // Optimization for single item index.
-                        npy_intp offset = this.DataAddress.data_offset;
-                        npy_intp[] dims = this.dims;
-                        npy_intp[] s = strides;
-                        for (int i = 0; i < ndim; i++)
-                        {
-                            npy_intp d = dims[i];
-                            npy_intp val = indexes.GetIntP(i);
-                            if (val < 0)
-                            {
-                                val += d;
-                            }
-                            if (val < 0 || val >= d)
-                            {
-                                throw new IndexOutOfRangeException();
-                            }
-                            offset += val * s[i];
-                        }
+                        npy_intp offset = indexes.SingleAssignOffset(this);
+                        offset += this.DataAddress.data_offset;
                         return numpyAPI.GetItem(RootArray(this.Array), offset >> this.ItemSizeDiv);
                     }
                     else if (indexes.IsMultiField)
@@ -1116,7 +1100,8 @@ namespace NumpyDotNet
                     if (single_offset >= 0 && np.IsNumericType(value))
                     {
                         // This is a single item assignment. Use SetItem.
-                        SetItem(value, single_offset >> this.ItemSizeDiv);
+                        single_offset += this.DataAddress.data_offset;
+                        numpyAPI.SetItem(RootArray(this.Array), single_offset >> this.ItemSizeDiv, value);
                         return;
                     }
 
@@ -1459,7 +1444,8 @@ namespace NumpyDotNet
                     if (indexes.IsSingleItem(ndim))
                     {
                         npy_intp offset = indexes.SingleAssignOffset(this);
-                        return GetItem(offset >> this.ItemSizeDiv);
+                        offset += this.DataAddress.data_offset;
+                        return numpyAPI.GetItem(RootArray(this.Array), offset >> this.ItemSizeDiv);
                     }
                     else
                     {
@@ -1512,7 +1498,8 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             npy_intp offset = indexes.SingleAssignOffset(this);
-                            return GetItem(offset >> this.ItemSizeDiv);
+                            offset += this.DataAddress.data_offset;
+                            return numpyAPI.GetItem(RootArray(this.Array), offset >> this.ItemSizeDiv);
                         }
                         else
                         {
@@ -1553,7 +1540,8 @@ namespace NumpyDotNet
                     if (indexes.IsSingleItem(ndim))
                     {
                         npy_intp offset = indexes.SingleAssignOffset(this);
-                        SetItem(value, offset >> this.ItemSizeDiv);
+                        offset += this.DataAddress.data_offset;
+                        numpyAPI.SetItem(RootArray(this.Array), offset >> this.ItemSizeDiv, value);
                     }
                     else
                     {
@@ -1613,7 +1601,8 @@ namespace NumpyDotNet
                         if (indexes.IsSingleItem(ndim))
                         {
                             npy_intp offset = indexes.SingleAssignOffset(this);
-                            SetItem(value, offset >> this.ItemSizeDiv);
+                            offset += this.DataAddress.data_offset;
+                            numpyAPI.SetItem(RootArray(this.Array), offset >> this.ItemSizeDiv, value);
                         }
                         else
                         {
