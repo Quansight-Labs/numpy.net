@@ -1138,7 +1138,9 @@ namespace NumpyDotNetTests
 
             string Line2Output = string.Format($"output: {b[0, 0]}, {b[0, 1]}, {b[0, 2]}");
             print(Line2Output);
-            //Assert.AreEqual(0, string.Compare("output: 14, 12, 10", Line1Output));
+            Assert.AreEqual(0, string.Compare("output: 88, 77, 66", Line2Output));
+
+            AssertArray(a, new int[,] { { 1, 2, 3, 4, 5 }, { 10, 11, 12, 13, 14 } });
 
             return;
 

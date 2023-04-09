@@ -423,9 +423,14 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         a = np.asarray([[1, 2, 3, 4, 5], [10, 11, 12, 13, 14]]);
         b = a[::-2, ::-2]
         print(b);
-      
-        
+       
         print("output:");print(b[0, 0]);print(b[0, 1]);print(b[0, 2]);
+
+        b[0, 0] = 88;
+        b[0, 1] = 77;
+        b[0, 2] = 66;
+
+        print(a)
       
 if __name__ == '__main__':
     unittest.main()
