@@ -1146,5 +1146,74 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_Taz145_1()
+        {
+            ndarray arr1 = np.array(new int[] { 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0 }).reshape((2, 3, 4));
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            print(arr2);
+            arr2 = np.rot90(arr2, k: 2, axes: new int[] { 0, 2 });
+
+            print(arr2);
+            //arr2 = arr2.Copy();
+            arr2[arr1 > 0] = 0;
+            print(arr2);
+
+            AssertArray(arr2, new int[,,] { { { 15, 0, 0, 12 }, { 0, 0, 0, 16 }, { 23, 22, 0, 0 } }, { { 3, 2, 1, 0 }, { 0, 0, 0, 0 }, { 0, 10, 0, 8 } } });
+
+        }
+
+        [TestMethod]
+        public void test_Taz145_1a()
+        {
+            ndarray arr1 = np.array(new int[] { 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0 }).reshape((2, 3, 4));
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            print(arr2);
+            arr2 = arr2["::-1"] as ndarray;
+
+            print(arr2);
+            //arr2 = arr2.Copy();
+            arr2[arr1 > 0] = 0;
+            print(arr2);
+
+            AssertArray(arr2, new int[,,] { { { 12, 0, 0, 15 }, { 0, 0, 0, 19 }, { 20, 21, 0, 0 } }, { { 0, 1, 2, 3 }, { 0, 0, 0, 0 }, { 0, 9, 0, 11 } } });
+        }
+
+        [TestMethod]
+        public void test_Taz145_2()
+        {
+            ndarray arr1 = np.array(new int[] { 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0 }).reshape((2, 3, 4));
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            print(arr2);
+            arr2 = np.rot90(arr2, k: 2, axes: new int[] { 0, 2 });
+
+            print(arr2);
+            ndarray arr3 = arr2[arr1 > 0] as ndarray;
+            print(arr3);
+
+            AssertArray(arr3, new int[] { 14, 13, 19, 18, 17, 21, 20, 7, 6, 5, 4, 11, 9 });
+
+        }
+
+        [TestMethod]
+        public void test_Taz145_2a()
+        {
+            ndarray arr1 = np.array(new int[] { 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0 }).reshape((2, 3, 4));
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            print(arr2);
+            arr2 = arr2["::-1"] as ndarray;
+
+            print(arr2);
+            ndarray arr3 = arr2[arr1 > 0] as ndarray;
+            print(arr3);
+
+            AssertArray(arr3, new int[] { 13, 14, 16, 17, 18, 22, 23, 4, 5, 6, 7, 8, 10 });
+
+        }
+
     }
 }

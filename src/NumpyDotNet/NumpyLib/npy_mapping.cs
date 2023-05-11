@@ -556,8 +556,26 @@ namespace NumpyLib
             bool swap = (NpyArray_ISNOTSWAPPED(temp) != NpyArray_ISNOTSWAPPED(ret));
             NpyArray_MapIterReset(mit);
 
-            var helper = MemCopy.GetMemcopyHelper(it.dataptr);
-            helper.GetMap(it, mit, swap);
+            bool EnableGetMapHelper = false;
+            if (EnableGetMapHelper)
+            {
+                var helper = MemCopy.GetMemcopyHelper(it.dataptr);
+                helper.GetMap(it, mit, swap);
+            }
+            else
+            {
+                var helper = MemCopy.GetMemcopyHelper(it.dataptr);
+                npy_intp index = it.size;
+
+                while (index-- > 0)
+                {
+                    helper.copyswap(it.dataptr, mit.dataptr, swap);
+                    NpyArray_MapIterNext(mit);
+                    NpyArray_ITER_NEXT(it);
+                }
+            }
+  
+
 
             Npy_DECREF(it);
 
@@ -606,9 +624,29 @@ namespace NumpyLib
             bool swap = (NpyArray_ISNOTSWAPPED(mit.ait.ao) != NpyArray_ISNOTSWAPPED(arr));
             NpyArray_MapIterReset(mit);
 
-            var helper = MemCopy.GetMemcopyHelper(mit.dataptr);
-            helper.SetMap(mit, it, swap);
-    
+            bool EnableSetMapHelper = false;
+            if (EnableSetMapHelper)
+            {
+                var helper = MemCopy.GetMemcopyHelper(mit.dataptr);
+                helper.SetMap(mit, it, swap);
+            }
+            else
+            {
+                npy_intp index = mit.size;
+                var helper = MemCopy.GetMemcopyHelper(mit.dataptr);
+                helper.memmove_init(mit.dataptr, it.dataptr);
+                while (index-- > 0)
+                {
+                    helper.memmove(mit.dataptr.data_offset, it.dataptr.data_offset, NpyArray_ITEMSIZE(arr));
+                    if (swap)
+                    {
+                        helper.copyswap(mit.dataptr, null, swap);
+                    }
+                    NpyArray_MapIterNext(mit);
+                    NpyArray_ITER_NEXT(it);
+                }
+            }
+
             Npy_DECREF(arr);
             Npy_DECREF(it);
             return 0;

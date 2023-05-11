@@ -4302,6 +4302,8 @@ namespace NumpyLib
         }
         public void GetMap(NpyArrayIterObject destIter, NpyArrayMapIterObject srcIter, bool swap)
         {
+            // see test_Taz145_2 for unit test that fails if this code is used.
+            throw new Exception("Do not use. Defective for negative stride values");
 
             int elsize = GetTypeSize(destIter.dataptr);
             int divsize = GetDivSize(elsize);
@@ -4424,6 +4426,9 @@ namespace NumpyLib
 
         public void SetMap(NpyArrayMapIterObject destIter, NpyArrayIterObject srcIter, bool swap)
         {
+            // see test_Taz145_1 for unit test that fails if this code is used.
+            throw new Exception("Do not use. Defective for negative stride values");
+
             int divsize = GetDivSize(destIter.dataptr);
 
             var numIndexes = destIter.size;
