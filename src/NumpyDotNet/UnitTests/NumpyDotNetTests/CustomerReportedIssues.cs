@@ -1215,5 +1215,52 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_Taz145_3()
+        {
+            ndarray arr1 = np.array(new int[] { 2,4,6 });
+            ndarray arr2 = np.arange(24);
+
+            arr2 = arr2["::-1"] as ndarray;
+
+            print(arr2);
+            ndarray arr3 = arr2[arr1] as ndarray;
+            print(arr3);
+
+            AssertArray(arr3, new int[] { 21,19,17 });
+
+        }
+
+        [TestMethod]
+        public void test_Taz145_3a()
+        {
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            print(arr2);
+            arr2 = np.rot90(arr2, k: 2, axes: new int[] { 0, 2 });
+
+            print(arr2);
+            ndarray arr3 = arr2[np.array(new Int64[] { 0, 1, -1, -2 })] as ndarray;
+            print(arr3);
+
+            var ExpectedResult = new int[,,]
+                { { { 15, 14, 13, 12 },
+                    { 19, 18, 17, 16 },
+                    { 23, 22, 21, 20 } },
+                  { { 3, 2, 1, 0 },
+                    { 7, 6, 5, 4 },
+                    { 11, 10, 9, 8 } },
+                  { { 3, 2, 1, 0 },
+                    { 7, 6, 5, 4 },
+                    { 11, 10, 9, 8 } },
+                  { { 15, 14, 13, 12 },
+                    { 19, 18, 17, 16 },
+                  { 23, 22, 21, 20 } }
+               };
+
+            AssertArray(arr3, ExpectedResult);
+
+        }
+
     }
 }
