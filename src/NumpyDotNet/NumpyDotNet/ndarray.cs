@@ -1731,6 +1731,16 @@ namespace NumpyDotNet
         /// <returns></returns>
         public byte[] tobytes(NPY_ORDER order = NPY_ORDER.NPY_ANYORDER)
         {
+            switch (order)
+            {
+                case NPY_ORDER.NPY_CORDER:
+                case NPY_ORDER.NPY_FORTRANORDER:
+                case NPY_ORDER.NPY_ANYORDER:
+                    break;
+                default:
+                    throw new Exception("order parameter must be 'C', 'F' or 'A'");
+            }
+
             return ToString(order);
         }
 

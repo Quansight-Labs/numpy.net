@@ -1262,5 +1262,54 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_Taz145_4()
+        {
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+
+            arr2 = np.rot90(arr2, k: 2, axes: new int[] { 0, 2 });
+            print(arr2);
+
+            var arr3 = np.array(arr2.tobytes());
+            print(arr3);
+
+            var arr4 = np.array(arr2.tobytes(order:NPY_ORDER.NPY_FORTRANORDER));
+            print(arr4);
+
+        }
+
+        [TestMethod]
+        public void test_Taz145_4a()
+        {
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            arr2 = np.rot90(arr2, k: 2, axes: new int[] { 0, 2 });
+            print(arr2);
+
+            var arr3 = np.array(arr2.tobytes());
+            print(arr3);
+
+            var arr4 = np.array(arr2.tobytes(order: NPY_ORDER.NPY_FORTRANORDER));
+            print(arr4);
+
+        }
+
+        [TestMethod]
+        public void test_Taz145_4b()
+        {
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            arr2 = arr2["::-1"] as ndarray;
+            print(arr2);
+
+            var arr3 = np.array(arr2.tobytes());
+            print(arr3);
+
+            var arr4 = np.array(arr2.tobytes(order: NPY_ORDER.NPY_FORTRANORDER));
+            print(arr4);
+
+        }
+
     }
 }

@@ -501,6 +501,28 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         arr3 = arr2[np.array([0, 1, -1, -2])];
         print("arr3");
         print(arr3)
+
+    def test_Taz145_4(self):
+
+        arr2 = np.arange(24).reshape((2, 3, 4));
+        arr2 = np.rot90(arr2, k=2, axes= (0, 2));
+
+        arr3 = np.array(arr2.tobytes());
+        print(arr3)
+
+        arr4 = np.array(arr2.tobytes(order='F'));
+        print(arr4)
+
+    def test_Taz145_4b(self):
+
+        arr2 = np.arange(24).reshape((2, 3, 4));
+        arr2 = arr2[::-1];
+
+        arr3 = np.array(arr2.tobytes());
+        print(arr3)
+
+        arr4 = np.array(arr2.tobytes(order='F'));
+        print(arr4)
       
 if __name__ == '__main__':
     unittest.main()

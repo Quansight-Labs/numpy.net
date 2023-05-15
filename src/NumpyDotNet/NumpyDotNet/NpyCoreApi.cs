@@ -832,7 +832,17 @@ namespace NumpyDotNet {
             lock (GlobalIterpLock)
 #endif
             {
-                numpyAPI.MemCpy(new VoidPtr(bytes), 0, arr.Array.data, 0, bytes.LongLength);
+
+                if (arr.IsCArray && (order == NPY_ORDER.NPY_CORDER || order == NPY_ORDER.NPY_ANYORDER))
+                {
+                    numpyAPI.MemCpy(new VoidPtr(bytes), 0, arr.Array.data, 0, bytes.LongLength);
+                }
+                else
+                {
+                    ndarray arrcopy = arr.Copy(order);
+                    numpyAPI.MemCpy(new VoidPtr(bytes), 0, arrcopy.Array.data, 0, bytes.LongLength);
+                }
+
             }
         }
 
