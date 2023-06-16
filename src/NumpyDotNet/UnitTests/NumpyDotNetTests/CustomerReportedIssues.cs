@@ -1311,5 +1311,21 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_Taz145_4c()
+        {
+            ndarray arr2 = np.arange(24).reshape((2, 3, 4));
+
+            arr2 = arr2["1::"] as ndarray;
+            print(arr2);
+
+            var arr3 = np.array(arr2.tobytes());
+            print(arr3);
+
+            var arr4 = np.array(arr2.tobytes(order: NPY_ORDER.NPY_FORTRANORDER));
+            print(arr4);
+
+        }
+
     }
 }
