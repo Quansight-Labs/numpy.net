@@ -1035,31 +1035,65 @@ namespace NumpyLib
 
         private static void NpyUFunc_PerformUFunc(NpyArray srcArray, NpyArray destArray, ref object cumsum, npy_intp[] dimensions, int dimIdx, npy_intp src_offset, npy_intp dest_offset, NumericOperations operation)
         {
-            if (dimIdx == destArray.nd)
+            if (numpyinternal.getEnableTryCatchOnCalculations)
             {
-                var srcValue = operation.srcGetItem(src_offset+srcArray.data.data_offset);
-
-                cumsum = operation.operation(srcValue, operation.ConvertOperand(cumsum));
-
-                try
+                if (dimIdx == destArray.nd)
                 {
-                    operation.destSetItem(dest_offset+destArray.data.data_offset, cumsum);
+                    var srcValue = operation.srcGetItem(src_offset + srcArray.data.data_offset);
+
+                    cumsum = operation.operation(srcValue, operation.ConvertOperand(cumsum));
+
+                    try
+                    {
+                        operation.destSetItem(dest_offset + destArray.data.data_offset, cumsum);
+                    }
+                    catch
+                    {
+                        operation.destSetItem(dest_offset + destArray.data.data_offset, 0);
+                    }
                 }
-                catch
+                else
                 {
-                    operation.destSetItem(dest_offset + destArray.data.data_offset, 0);
+                    for (int i = 0; i < dimensions[dimIdx]; i++)
+                    {
+                        npy_intp lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
+                        npy_intp ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
+
+                        NpyUFunc_PerformUFunc(srcArray, destArray, ref cumsum, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
+                    }
                 }
             }
             else
             {
-                for (int i = 0; i < dimensions[dimIdx]; i++)
+                try
                 {
-                    npy_intp lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
-                    npy_intp ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
+                    if (dimIdx == destArray.nd)
+                    {
+                        var srcValue = operation.srcGetItem(src_offset + srcArray.data.data_offset);
 
-                    NpyUFunc_PerformUFunc(srcArray, destArray, ref cumsum, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
+                        cumsum = operation.operation(srcValue, operation.ConvertOperand(cumsum));
+                        operation.destSetItem(dest_offset + destArray.data.data_offset, cumsum);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < dimensions[dimIdx]; i++)
+                        {
+                            npy_intp lsrc_offset = src_offset + srcArray.strides[dimIdx] * i;
+                            npy_intp ldest_offset = dest_offset + destArray.strides[dimIdx] * i;
+
+                            NpyUFunc_PerformUFunc(srcArray, destArray, ref cumsum, dimensions, dimIdx + 1, lsrc_offset, ldest_offset, operation);
+                        }
+                    }
                 }
+                catch (Exception ex)
+                {
+                    string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                    throw new Exception(Message);
+                }
+
             }
+
+   
         }
 
 
