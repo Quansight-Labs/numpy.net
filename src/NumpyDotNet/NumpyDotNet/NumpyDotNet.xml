@@ -2917,6 +2917,12 @@
             <param name="aobjects">Input parameters.</param>
             <returns></returns>
         </member>
+        <member name="P:NumpyDotNet.np.tuning.EnableTryCatchOnCalculations">
+            <summary>
+            enable/disable try catch around calculations.  
+            Disabling will likely increase performance but crash the application if exception taken during calculation
+            </summary>
+        </member>
         <member name="M:NumpyDotNet.np.CopyObject(NumpyDotNet.ndarray,System.Object)">
             <summary>
             Copies the source object into the destination array.  src can be

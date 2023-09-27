@@ -52,5 +52,8 @@ namespace NumpyLib
         private static npy_intp maxNumericOpParallelSize = 1000;
         private static npy_intp maxCopyFieldParallelSize = 1000;
         private static npy_intp maxSortOperationParallelSize = 1000;
+
+        [ThreadStatic]
+        public static bool enableTryCatchOnCalculations = false;
     }
 }
