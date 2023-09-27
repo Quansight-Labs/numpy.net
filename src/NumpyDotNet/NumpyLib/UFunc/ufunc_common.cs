@@ -1071,24 +1071,53 @@ namespace NumpyLib
                 T[] oper, npy_intp[] operOffsets,
                 T[] dest, npy_intp[] destOffsets, npy_intp offsetsLen)
             {
-                for (npy_intp i = 0; i < offsetsLen; i++)
+
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    T srcValue, operand;
-                    npy_intp destIndex;
-
-                    srcValue = src[srcOffsets[i]];
-                    operand = oper[operOffsets[i]];
-                    destIndex = destOffsets[i];
-
-                    try
+                    for (npy_intp i = 0; i < offsetsLen; i++)
                     {
-                        dest[destIndex] = UFuncOperation(srcValue, operand);
-                    }
-                    catch
-                    {
-                        dest[destIndex] = default(T);
+                        T srcValue, operand;
+                        npy_intp destIndex;
+
+                        srcValue = src[srcOffsets[i]];
+                        operand = oper[operOffsets[i]];
+                        destIndex = destOffsets[i];
+
+                        try
+                        {
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+                        }
+                        catch
+                        {
+                            dest[destIndex] = default(T);
+                        }
+
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        for (npy_intp i = 0; i < offsetsLen; i++)
+                        {
+                            T srcValue, operand;
+                            npy_intp destIndex;
+
+                            srcValue = src[srcOffsets[i]];
+                            operand = oper[operOffsets[i]];
+                            destIndex = destOffsets[i];
+ 
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
+                    }
+                }
+
+  
             }
 
 
@@ -1097,24 +1126,53 @@ namespace NumpyLib
                 T[] oper, npy_intp[] operOffsets,
                 T[] dest, npy_intp destOffset, npy_intp offsetsLen)
             {
-                for (npy_intp i = 0; i < offsetsLen; i++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    T srcValue, operand;
-                    npy_intp destIndex;
+                    for (npy_intp i = 0; i < offsetsLen; i++)
+                    {
+                        T srcValue, operand;
+                        npy_intp destIndex;
 
-                    srcValue = src[srcOffsets[i]];
-                    operand = oper[operOffsets[i]];
-                    destIndex = destOffset + i;
+                        srcValue = src[srcOffsets[i]];
+                        operand = oper[operOffsets[i]];
+                        destIndex = destOffset + i;
 
+                        try
+                        {
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+                        }
+                        catch
+                        {
+                            dest[destIndex] = default(T);
+                        }
+                    }
+
+                }
+                else
+                {
                     try
                     {
-                        dest[destIndex] = UFuncOperation(srcValue, operand);
+                        for (npy_intp i = 0; i < offsetsLen; i++)
+                        {
+                            T srcValue, operand;
+                            npy_intp destIndex;
+
+                            srcValue = src[srcOffsets[i]];
+                            operand = oper[operOffsets[i]];
+                            destIndex = destOffset + i;
+               
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        dest[destIndex] = default(T);
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
                     }
+     
                 }
+
+     
             }
 
 
@@ -1124,23 +1182,49 @@ namespace NumpyLib
                 T operValue,
                 T[] dest, npy_intp[] destOffsets, npy_intp offsetsLen)
             {
-                for (npy_intp i = 0; i < offsetsLen; i++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    T srcValue;
-                    npy_intp destIndex;
-
-                    srcValue = src[srcOffsets[i]];
-                    destIndex = destOffsets[i];
-
-                    try
+                    for (npy_intp i = 0; i < offsetsLen; i++)
                     {
-                        dest[destIndex] = UFuncOperation(srcValue, operValue);
-                    }
-                    catch
-                    {
-                        dest[destIndex] = default(T);
+                        T srcValue;
+                        npy_intp destIndex;
+
+                        srcValue = src[srcOffsets[i]];
+                        destIndex = destOffsets[i];
+
+                        try
+                        {
+                            dest[destIndex] = UFuncOperation(srcValue, operValue);
+                        }
+                        catch
+                        {
+                            dest[destIndex] = default(T);
+                        }
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        for (npy_intp i = 0; i < offsetsLen; i++)
+                        {
+                            T srcValue;
+                            npy_intp destIndex;
+
+                            srcValue = src[srcOffsets[i]];
+                            destIndex = destOffsets[i];
+     
+                            dest[destIndex] = UFuncOperation(srcValue, operValue);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
+                    }
+                }
+
+     
             }
 
             protected void UFuncScalerIterTemplate(opFunction UFuncOperation,
@@ -1148,23 +1232,49 @@ namespace NumpyLib
                 T operValue,
                 T[] dest, npy_intp destOffset, npy_intp offsetsLen)
             {
-                for (npy_intp i = 0; i < offsetsLen; i++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    T srcValue;
-                    npy_intp destIndex;
-
-                    srcValue = src[srcOffsets[i]];
-                    destIndex = destOffset + i;
-
-                    try
+                    for (npy_intp i = 0; i < offsetsLen; i++)
                     {
-                        dest[destIndex] = UFuncOperation(srcValue, operValue);
-                    }
-                    catch
-                    {
-                        dest[destIndex] = default(T);
+                        T srcValue;
+                        npy_intp destIndex;
+
+                        srcValue = src[srcOffsets[i]];
+                        destIndex = destOffset + i;
+
+                        try
+                        {
+                            dest[destIndex] = UFuncOperation(srcValue, operValue);
+                        }
+                        catch
+                        {
+                            dest[destIndex] = default(T);
+                        }
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        for (npy_intp i = 0; i < offsetsLen; i++)
+                        {
+                            T srcValue;
+                            npy_intp destIndex;
+
+                            srcValue = src[srcOffsets[i]];
+                            destIndex = destOffset + i;
+
+                            dest[destIndex] = UFuncOperation(srcValue, operValue);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
+                    }
+                }
+
+  
             }
 
 
@@ -1197,33 +1307,67 @@ namespace NumpyLib
 
                     var segments = NpyArray_SEGMENT_ParallelSplit(loopCount, numpyinternal.maxNumericOpParallelSize);
 
-                    Parallel.For(0, segments.Count(), seg_index =>
-                    //for (npy_intp index = 0; index < loopCount; index++)
+                    if (numpyinternal.getEnableTryCatchOnCalculations)
                     {
-                        var segment = segments.ElementAt(seg_index);
+                        Parallel.For(0, segments.Count(), seg_index =>
+                        //for (npy_intp index = 0; index < loopCount; index++)
+                        {
+                            var segment = segments.ElementAt(seg_index);
 
+                            try
+                            {
+                                if (ScalarIterContiguousNoIterAccelerator != null)
+                                {
+                                    ScalarIterContiguousNoIterAccelerator(src, dest, operand,
+                                            segment.start, segment.end, srcAdjustment, destAdjustment,
+                                            op);
+                                }
+                                else
+                                {
+                                    PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
+                                            segment.start, segment.end, srcAdjustment, destAdjustment,
+                                            UFuncOperation);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                exceptions.Enqueue(ex);
+                            }
+
+                        });
+                    }
+                    else
+                    {
                         try
                         {
-                            if (ScalarIterContiguousNoIterAccelerator != null)
+                            Parallel.For(0, segments.Count(), seg_index =>
+                            //for (npy_intp index = 0; index < loopCount; index++)
                             {
-                                ScalarIterContiguousNoIterAccelerator(src, dest, operand,
-                                        segment.start, segment.end, srcAdjustment, destAdjustment,
-                                        op);
-                            }
-                            else
-                            {
-                                PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
-                                        segment.start, segment.end, srcAdjustment, destAdjustment,
-                                        UFuncOperation);
-                            }
-   
+                                var segment = segments.ElementAt(seg_index);
+
+                                if (ScalarIterContiguousNoIterAccelerator != null)
+                                {
+                                    ScalarIterContiguousNoIterAccelerator(src, dest, operand,
+                                            segment.start, segment.end, srcAdjustment, destAdjustment,
+                                            op);
+                                }
+                                else
+                                {
+                                    PerformNumericOpScalarIterContiguousNoIter(src, dest, operand,
+                                            segment.start, segment.end, srcAdjustment, destAdjustment,
+                                            UFuncOperation);
+                                }
+
+                            });
                         }
                         catch (Exception ex)
                         {
-                            exceptions.Enqueue(ex);
+                            string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                            throw new Exception(Message);
                         }
- 
-                    } );
+                    }
+
                 }
                 else
                 {
@@ -1232,27 +1376,56 @@ namespace NumpyLib
 
                     var ParallelIters = NpyArray_ITER_ParallelSplit(operIter, numpyinternal.maxNumericOpParallelSize);
 
-                    Parallel.For(0, ParallelIters.Count(), index =>
+                    if (numpyinternal.getEnableTryCatchOnCalculations)
                     {
-                        var Iter = ParallelIters.ElementAt(index);
+                        Parallel.For(0, ParallelIters.Count(), index =>
+                        {
+                            var Iter = ParallelIters.ElementAt(index);
 
+                            try
+                            {
+                                if (ScalarIterContiguousIterAccelerator != null)
+                                {
+                                    ScalarIterContiguousIterAccelerator(Iter, src, dest, oper, srcAdjustment, destAdjustment, op);
+                                }
+                                else
+                                {
+                                    PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                exceptions.Enqueue(ex);
+                            }
+
+                        });
+                    }
+                    else
+                    {
                         try
                         {
-                            if (ScalarIterContiguousIterAccelerator != null)
+                            Parallel.For(0, ParallelIters.Count(), index =>
                             {
-                                ScalarIterContiguousIterAccelerator(Iter, src, dest, oper, srcAdjustment, destAdjustment, op);
-                            }
-                            else
-                            {
-                                PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
-                            }
+                                var Iter = ParallelIters.ElementAt(index);
+
+                                if (ScalarIterContiguousIterAccelerator != null)
+                                {
+                                    ScalarIterContiguousIterAccelerator(Iter, src, dest, oper, srcAdjustment, destAdjustment, op);
+                                }
+                                else
+                                {
+                                    PerformNumericOpScalarIterContiguousIter(Iter, src, dest, oper, srcAdjustment, destAdjustment, UFuncOperation);
+                                }
+                            });
                         }
                         catch (Exception ex)
                         {
-                            exceptions.Enqueue(ex);
+                            string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                            throw new Exception(Message);
                         }
+                    }
 
-                    } );
+ 
                 }
 
                 if (exceptions.Count > 0)
@@ -1264,23 +1437,50 @@ namespace NumpyLib
 
             private void PerformNumericOpScalarIterContiguousIter(NpyArrayIterObject Iter, T[] src, T[] dest, T[]oper, npy_intp srcAdjustment, npy_intp destAdjustment, opFunction UFuncOperation)
             {
-                while (Iter.index < Iter.size)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
+                {
+                    while (Iter.index < Iter.size)
+                    {
+                        try
+                        {
+                            T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
+                            T srcValue = src[Iter.index - srcAdjustment];
+
+                            T retValue = retValue = UFuncOperation(srcValue, operand);
+                            dest[Iter.index - destAdjustment] = retValue;
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[Iter.index - destAdjustment] = default(T);
+                        }
+
+                        NpyArray_ITER_NEXT(Iter);
+                    }
+                }
+                else
                 {
                     try
                     {
-                        T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
-                        T srcValue = src[Iter.index - srcAdjustment];
+                        while (Iter.index < Iter.size)
+                        {
 
-                        T retValue = retValue = UFuncOperation(srcValue, operand);
-                        dest[Iter.index - destAdjustment] = retValue;
+                            T operand = oper[Iter.dataptr.data_offset >> ItemDiv];
+                            T srcValue = src[Iter.index - srcAdjustment];
+
+                            T retValue = retValue = UFuncOperation(srcValue, operand);
+                            dest[Iter.index - destAdjustment] = retValue;
+
+                            NpyArray_ITER_NEXT(Iter);
+                        }
                     }
-                    catch (System.OverflowException of)
+                    catch (Exception ex)
                     {
-                        dest[Iter.index - destAdjustment] = default(T);
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
                     }
- 
-                    NpyArray_ITER_NEXT(Iter);
                 }
+
+ 
             }
 
             private void PerformNumericOpScalarIterContiguousNoIter(T []src, T []dest, T operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, opFunction UFuncOperation)
@@ -1288,28 +1488,48 @@ namespace NumpyLib
                 npy_intp srcIndex = start - srcAdjustment;
                 npy_intp destIndex = start - destAdjustment;
 
-                for (npy_intp index = start; index < end; index++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
+                {
+                    for (npy_intp index = start; index < end; index++)
+                    {
+                        try
+                        {
+                            T srcValue = src[srcIndex];
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+                        }
+                        catch (System.OverflowException of)
+                        {
+                            dest[destIndex] = default(T);
+                        }
+
+                        srcIndex++;
+                        destIndex++;
+                    }
+                }
+                else
                 {
                     try
                     {
-                        T srcValue = src[srcIndex];
-                        dest[destIndex] = UFuncOperation(srcValue, operand);
+                        for (npy_intp index = start; index < end; index++)
+                        {
+                            T srcValue = src[srcIndex];
+                            dest[destIndex] = UFuncOperation(srcValue, operand);
+
+                            srcIndex++;
+                            destIndex++;
+                        }
                     }
-                    catch (System.OverflowException of)
+                    catch (Exception ex)
                     {
-                        dest[destIndex] = default(T);
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
                     }
-    
-
-                    srcIndex++;
-                    destIndex++;
-
                 }
 
             }
 
             #endregion
-
+            // kevin
             #region UFUNC Outer
             public void PerformOuterOpArrayIter(NpyArray a, NpyArray b, NpyArray destArray, NumericOperations operations, UFuncOperation op)
             {
@@ -1432,41 +1652,89 @@ namespace NumpyLib
 
             void PerformOuterOp(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T []dp, npy_intp destIndex, NpyArray destArray, opFunction UFuncOperation)
             {
-                for (npy_intp j = 0; j < bSize; j++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    var bValue = bValues[j];
+                    for (npy_intp j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
 
+                        try
+                        {
+                            dp[destIndex] = UFuncOperation(aValue, bValue);
+                        }
+                        catch
+                        {
+                            operations.destSetItem(destIndex, 0);
+                        }
+                        destIndex++;
+                    }
+                }
+                else
+                {
                     try
                     {
-                        dp[destIndex] = UFuncOperation(aValue, bValue);
+                        for (npy_intp j = 0; j < bSize; j++)
+                        {
+                            var bValue = bValues[j];
+                            dp[destIndex] = UFuncOperation(aValue, bValue);
+                            destIndex++;
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        operations.destSetItem(destIndex, 0);
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
                     }
-                    destIndex++;
                 }
+
+   
             }
 
             void PerformOuterOp(NumericOperations operations, T aValue, T[] bValues, npy_intp bSize, T[] dp, NpyArrayIterObject DestIter, NpyArray destArray, opFunction UFuncOperation)
             {
-                for (npy_intp j = 0; j < bSize; j++)
+                if (numpyinternal.getEnableTryCatchOnCalculations)
                 {
-                    var bValue = bValues[j];
+                    for (npy_intp j = 0; j < bSize; j++)
+                    {
+                        var bValue = bValues[j];
 
-                    T destValue = UFuncOperation(aValue, bValue);
-                    npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
+                        T destValue = UFuncOperation(aValue, bValue);
+                        npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
 
+                        try
+                        {
+                            dp[AdjustedIndex] = destValue;
+                        }
+                        catch
+                        {
+                            operations.destSetItem(AdjustedIndex, 0);
+                        }
+                        NpyArray_ITER_NEXT(DestIter);
+                    }
+                }
+                else
+                {
                     try
                     {
-                        dp[AdjustedIndex] = destValue;
+                        for (npy_intp j = 0; j < bSize; j++)
+                        {
+                            var bValue = bValues[j];
+
+                            T destValue = UFuncOperation(aValue, bValue);
+                            npy_intp AdjustedIndex = DestIter.dataptr.data_offset >> ItemDiv;
+                            dp[AdjustedIndex] = destValue;
+                 
+                            NpyArray_ITER_NEXT(DestIter);
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        operations.destSetItem(AdjustedIndex, 0);
+                        string Message = numpyinternal.GenerateTryCatchExceptionMessage(ex.Message);
+                        throw new Exception(Message);
                     }
-                    NpyArray_ITER_NEXT(DestIter);
                 }
+
+  
             }
 
             #endregion
