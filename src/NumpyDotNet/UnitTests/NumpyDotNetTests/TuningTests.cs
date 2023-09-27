@@ -32,19 +32,25 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_EnableTryCatch_2()
         {
-            np.tuning.EnableTryCatchOnCalculations = true;
+           // np.tuning.EnableTryCatchOnCalculations = true;
 
-            bool TaskTryCatchOnCalculationsSetting = true;
+            bool ?TaskTryCatchOnCalculationsStart = null;
+            bool ?TaskTryCatchOnCalculationsSetting = null;
 
             var t = Task.Run(() =>
             {
+                TaskTryCatchOnCalculationsStart = np.tuning.EnableTryCatchOnCalculations;
                 np.tuning.EnableTryCatchOnCalculations = false;
                 TaskTryCatchOnCalculationsSetting = np.tuning.EnableTryCatchOnCalculations;
             });
             t.Wait();
 
+
+
             Assert.AreEqual(true, np.tuning.EnableTryCatchOnCalculations);
-            Assert.AreEqual(false, TaskTryCatchOnCalculationsSetting);
+            Assert.AreEqual(false, TaskTryCatchOnCalculationsSetting.Value);
+            Assert.AreEqual(true, TaskTryCatchOnCalculationsStart.Value);
+
 
         }
 

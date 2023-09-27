@@ -59,8 +59,11 @@ namespace NumpyDotNet {
             /// </summary>
             public static bool EnableTryCatchOnCalculations
             {
-                get { return numpyinternal.enableTryCatchOnCalculations; }
-                set { numpyinternal.enableTryCatchOnCalculations = value; }
+                get { return numpyinternal.getEnableTryCatchOnCalculations; }
+                set
+                {
+                    numpyinternal.enableTryCatchOnCalculations = value;
+                }
             }
         }
    
