@@ -54,6 +54,98 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_largearray_matmul_INT64_1_tuning()
+        {
+
+            var largeTests = new LargeArrayTests();
+            largeTests.test_largearray_matmul_INT64_1();
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            sw.Restart();
+            largeTests.test_largearray_matmul_INT64_1();
+            sw.Stop();
+
+            var EnabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            sw.Restart();
+            largeTests.test_largearray_matmul_INT64_1();
+            sw.Stop();
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            var DisabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            Console.WriteLine(string.Format("Enabled tryCatch calculations took {0} milliseconds\n", EnabledTryCatchMS));
+            Console.WriteLine(string.Format("Disabled tryCatch calculations took {0} milliseconds\n", DisabledTryCatchMS));
+        }
+
+        [TestMethod]
+        public void test_largearray_matmul_INT64_2_tuning()
+        {
+
+            var largeTests = new LargeArrayTests();
+            largeTests.test_largearray_matmul_INT64_2();
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            sw.Restart();
+            largeTests.test_largearray_matmul_INT64_2();
+            sw.Stop();
+
+            var EnabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            sw.Restart();
+            largeTests.test_largearray_matmul_INT64_2();
+            sw.Stop();
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            var DisabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            Console.WriteLine(string.Format("Enabled tryCatch calculations took {0} milliseconds\n", EnabledTryCatchMS));
+            Console.WriteLine(string.Format("Disabled tryCatch calculations took {0} milliseconds\n", DisabledTryCatchMS));
+        }
+
+        [TestMethod]
+        public void test_LargeArrayAdd_1()
+        {
+
+            var largeTests = new LargeArrayTests();
+            largeTests.test_largearray_add_INT64_1();
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            sw.Restart();
+            largeTests.test_largearray_add_INT64_1();
+            sw.Stop();
+
+            var EnabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            sw.Restart();
+            largeTests.test_largearray_add_INT64_1();
+            sw.Stop();
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            var DisabledTryCatchMS = sw.ElapsedMilliseconds;
+
+            Console.WriteLine(string.Format("Enabled tryCatch calculations took {0} milliseconds\n", EnabledTryCatchMS));
+            Console.WriteLine(string.Format("Disabled tryCatch calculations took {0} milliseconds\n", DisabledTryCatchMS));
+        }
+
+
+
 
 
     }
