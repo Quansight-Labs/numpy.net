@@ -3855,7 +3855,7 @@ namespace NumpyDotNet
             }
 
             // Compute the mean.
-            var arrmean = np.sum(arr, axis, dtype, keepdims: keep_dims);
+            var arrmean = np.sum(arr, axis, dtype, keepdims: true);
             arrmean = np.true_divide(arrmean, rcount);
 
             // Compute sum of squared deviations from mean

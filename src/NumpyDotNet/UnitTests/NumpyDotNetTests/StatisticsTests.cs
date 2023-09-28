@@ -620,7 +620,7 @@ namespace NumpyDotNetTests
 
             ndarray d = np.std(a, axis: 1);
             print(d);
-            AssertArray(d, new double[] { 1.1180339887498949, 1.1180339887498949 }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new double[] { 0.5, 0.5 });
 
             // In single precision, std() can be inaccurate:
             a = np.zeros(new shape(2, 512 * 512), dtype: np.Float32);
@@ -649,7 +649,7 @@ namespace NumpyDotNetTests
             print(c);
 
             ndarray d = np.var(a, axis: 1);
-            AssertArray(d, new double[] { 1.25, 1.25 }); // NOTES: TODO: slightly different than python. keepdims issue
+            AssertArray(d, new double[] { 0.25, 0.25 });
             print(d);
 
             // In single precision, std() can be inaccurate:
