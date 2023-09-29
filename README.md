@@ -38,6 +38,23 @@ To take full advantage of the optimizations, try to do calculations with same ty
 
 We do try to upscale smaller arrays internally before doing the calculations so that we can take advantage of the higher performance.
 
+## Performance tuning
+
+### EnableTryCatchOnCalculations
+
+We have added a tuning parameter to the library to disable try/catch around various calculation engines.
+ np.tuning.EnableTryCatchOnCalculations = true (default) follows code with try/catch on every computation
+ np.tuning.EnableTryCatchOnCalculations = false; follows code with try/catch once around the entire array of calculations.
+
+* The original Numpy has a try/catch around every computation and fills in a default value for an array element if a calculation results in an error (divideByZero, overflow, etc).  However, try/catch is very CPU intensive.  If you are confident that your data set calculation will not result in an exception, then set the tuning parameter to false.  Testing indicates a 20% performance improvement.
+* If this tuning parameter is set to false and the operation results in an exception, the operation is stopped and an exception is thrown.
+* If this tuning parameter is set to true and the operation results in an exception, only the affected index of the result array will set with default value.
+* If you are confident your data can't throw an exception, why pay the performance price?
+* This parameter is local to each thread.  If you have a multi-threaded application and you modify the parameter on one thread, the other thread will not get the modified value.
+* This parameter can be set once at the beginning of an application or it can be turned on and off throughout the code as needed.
+
+
+
 ## Full multi-threading support
 Unlike most NumPy implementations, our library does not require the GIL (Global Interpreter Lock).  This allows us to offer a fully multi-threaded library.  You are free to launch as many threads as you want to manipulate our ndarray objects. If your application can take advantage of that, you may be able to achieve much higher overall performance.
 
