@@ -1021,12 +1021,14 @@ namespace NumpyLib
             var s = Src.datap as bool[];
             var d = Dest.datap as bool[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (bool)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (bool)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastBytesToBools(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -1229,12 +1231,14 @@ namespace NumpyLib
             var s = Src.datap as sbyte[];
             var d = Dest.datap as sbyte[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (sbyte)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (sbyte)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastUBytesToBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -1457,12 +1461,14 @@ namespace NumpyLib
             var s = Src.datap as byte[];
             var d = Dest.datap as byte[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (byte)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (byte)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastInt16sToUBytes(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -1684,12 +1690,14 @@ namespace NumpyLib
             var s = Src.datap as Int16[];
             var d = Dest.datap as Int16[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (Int16)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (Int16)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastUInt16sToInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -1907,12 +1915,14 @@ namespace NumpyLib
             var s = Src.datap as Int16[];
             var d = Dest.datap as UInt16[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (UInt16)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (UInt16)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastInt32sToUInt16s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -2131,12 +2141,14 @@ namespace NumpyLib
             var s = Src.datap as Int32[];
             var d = Dest.datap as Int32[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (Int32)s[index + src_offset];
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (Int32)s[index + src_offset];
+            //    index++;
+            //}
         }
         static void CastUInt32sToInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -2306,6 +2318,7 @@ namespace NumpyLib
             var s = Src.datap as byte[];
             var d = Dest.datap as UInt32[];
 
+
             npy_intp index = 0;
             while (srclen-- > 0)
             {
@@ -2354,12 +2367,14 @@ namespace NumpyLib
             var s = Src.datap as UInt32[];
             var d = Dest.datap as UInt32[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (UInt32)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (UInt32)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastInt64sToUInt32s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -2577,12 +2592,14 @@ namespace NumpyLib
             var s = Src.datap as Int64[];
             var d = Dest.datap as Int64[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (Int64)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (Int64)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastUInt64sToInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -2801,12 +2818,14 @@ namespace NumpyLib
             var s = Src.datap as UInt64[];
             var d = Dest.datap as UInt64[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (UInt64)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (UInt64)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastFloatsToUInt64s(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3028,12 +3047,14 @@ namespace NumpyLib
             var s = Src.datap as float[];
             var d = Dest.datap as float[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (float)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (float)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastDoublesToFloats(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3255,12 +3276,14 @@ namespace NumpyLib
             var s = Src.datap as double[];
             var d = Dest.datap as double[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (double)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (double)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastDecimalsToDoubles(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3496,12 +3519,14 @@ namespace NumpyLib
             var s = Src.datap as decimal[];
             var d = Dest.datap as decimal[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (decimal)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (decimal)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastComplexToDecimals(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3705,12 +3730,14 @@ namespace NumpyLib
             var s = Src.datap as System.Numerics.Complex[];
             var d = Dest.datap as System.Numerics.Complex[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (System.Numerics.Complex)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastBigIntToComplex(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
@@ -3940,12 +3967,14 @@ namespace NumpyLib
             var s = Src.datap as System.Numerics.BigInteger[];
             var d = Dest.datap as System.Numerics.BigInteger[];
 
-            npy_intp index = 0;
-            while (srclen-- > 0)
-            {
-                d[index + dest_offset] = (System.Numerics.BigInteger)(s[index + src_offset]);
-                index++;
-            }
+            Array.Copy(s, src_offset, d, dest_offset, srclen);
+
+            //npy_intp index = 0;
+            //while (srclen-- > 0)
+            //{
+            //    d[index + dest_offset] = (System.Numerics.BigInteger)(s[index + src_offset]);
+            //    index++;
+            //}
         }
         static void CastStringToBigInt(VoidPtr Src, npy_intp src_offset, VoidPtr Dest, npy_intp dest_offset, npy_intp srclen)
         {
