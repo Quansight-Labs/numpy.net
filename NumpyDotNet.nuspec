@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NumpyDotNet</id>
-    <version>0.9.85.01</version>
+    <version>0.9.86.0</version>
     <authors>Kevin McKenna</authors>
     <owners>Baseline Software Solutions, Inc.</owners>
     <licenseUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/LICENSE.txt</licenseUrl>
@@ -10,7 +10,9 @@
     <iconUrl>https://github.com/Quansight-Labs/numpy.net/blob/master/Database.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</description>
-    <releaseNotes>correct handling of tobytes() of negative slice views</releaseNotes>
+    <releaseNotes>fixes keepdims issue in np.var and np.std.
+implement faster version of np.partition for Int32, Int64, float and double data types.
+small speedups.</releaseNotes>
     <copyright>Copyright 2023, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
