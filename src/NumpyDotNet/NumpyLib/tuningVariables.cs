@@ -54,9 +54,9 @@ namespace NumpyLib
         private static npy_intp maxSortOperationParallelSize = 1000;
 
         [ThreadStatic]
-        public static bool ?enableTryCatchOnCalculations = null;
+        internal static bool ?enableTryCatchOnCalculations = null;
 
-        public static bool getEnableTryCatchOnCalculations
+        internal static bool getEnableTryCatchOnCalculations
         {
             get
             {
@@ -67,7 +67,7 @@ namespace NumpyLib
             }
         }
 
-        public static string GenerateTryCatchExceptionMessage(string ExMessage)
+        internal static string GenerateTryCatchExceptionMessage(string ExMessage)
         {
             string Message = string.Format("This operation caused exception: {0}. Set np.tuning.EnableTryCatchOnCalculations = true to handle this exception cleanly.", ExMessage);
             return Message;
