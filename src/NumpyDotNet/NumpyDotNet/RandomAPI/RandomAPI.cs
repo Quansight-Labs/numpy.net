@@ -579,9 +579,170 @@ namespace NumpyDotNet
 
             #region choice
 
-            public ndarray choice(object a, Int32 size, bool replace = true, object p = null)
+            public ndarray choice(Int64 a, shape size = null, bool replace = true, double [] p = null)
             {
-                throw new NotImplementedException("This function is not implemented in NumpyDotNet");
+                return choice((object)a, size, replace, p);
+            }
+
+            public ndarray choice(object a, shape size = null, bool replace = true, double [] p = null)
+            {
+                Int64 pop_size = 0;
+
+                // Format and Verify input
+                ndarray aa = np.array(a, copy : false);
+                if (aa.ndim == 0)
+                {
+                    if (aa.TypeNum != NPY_TYPES.NPY_INT64)
+                    {
+                        throw new ValueError("a must be a 1-dimensional or an integer");
+                    }
+
+                    pop_size = (Int64)aa;
+                    if (pop_size <= 0)
+                    {
+                        throw new ValueError("a must be greater than 0");
+                    }
+                }
+                else if (aa.ndim != 1)
+                {
+                    throw new ValueError("a must be 1 dimensional");
+                }
+                else
+                {
+                    pop_size = aa.shape[0];
+                    if (pop_size == 0)
+                    {
+                        throw new ValueError("a must be non-empty");
+                    }
+                }
+
+                ndarray _p = null;
+                if (p != null)
+                {
+                    //int d = p.Length;
+
+                    _p = np.array(p);
+
+                    if (_p.ndim != 1)
+                        throw new ValueError("p must be 1 dimensional");
+                    if (_p.size != pop_size)
+                        throw new ValueError("a and p must have same size");
+                    if (np.anyb(_p < 0))
+                        throw new ValueError("probabilities are not non-negative");
+                    //if abs(kahan_sum(pix, d) - 1.) > atol:
+                        //raise ValueError("probabilities do not sum to 1")
+
+                }
+
+                Int64 _size = 0;
+                shape shape = size;
+                if (size != null)
+                {
+                    _size = (Int64)np.prod(np.asanyarray(size.iDims));
+                }
+                else
+                {
+                    _size = 1;
+                }
+
+                // Actual sampling
+                ndarray idx = null;
+                if (replace)
+                {
+                    if (_p != null)
+                    {
+                        var cdf = _p.cumsum();
+                        cdf /= cdf[-1];
+                        var uniform_samples = random_sample(shape);
+                        idx = cdf.searchsorted(uniform_samples, side: NPY_SEARCHSIDE.NPY_SEARCHRIGHT);
+                        idx = np.array(idx, copy: false);
+                    }
+                    else
+                    {
+                        idx = randint(0, (ulong)pop_size, newshape: shape);
+                    }
+                }
+                else
+                {
+                    if (_size > pop_size)
+                    {
+                        throw new ValueError("Cannot take a larger sample than population when 'replace=False'");
+                    }
+
+                    if (_p != null)
+                    {
+                        if (Convert.ToInt64(np.count_nonzero(_p > 0).GetItem(0)) < _size)
+                        {
+                            throw new ValueError("Fewer non-zero entries in p than size");
+                        }
+
+                        npy_intp n_uniq = 0;
+                        _p = _p.Copy();
+                        var found = np.zeros(shape, dtype: np.Int32);
+                        var flat_found = found.ravel();
+
+                        while (n_uniq < _size)
+                        {
+                            var x = rand(new shape(_size - n_uniq));
+                            if (n_uniq > 0)
+                            {
+                                _p[flat_found["0:" + n_uniq.ToString()]] = 0;
+                            }
+                            var cdf = np.cumsum(_p);
+                            cdf /= cdf[-1];
+
+                            var _new = cdf.searchsorted(x, side: NPY_SEARCHSIDE.NPY_SEARCHRIGHT);
+                            var unique_retval = np.unique(_new, return_index : true);
+                            unique_retval.indices.Sort();
+                            _new = np.take(_new, unique_retval.indices);
+                            flat_found[n_uniq.ToString() +  ":" + (n_uniq + _new.size).ToString()] = _new;
+                            n_uniq += _new.size;
+                        }
+                        idx = found;
+                    }
+                    else
+                    {
+                        ndarray t1 = permutation(pop_size);
+                        idx = t1[":" + size.ToString()] as ndarray;
+                        if (shape != null)
+                        {
+                            NpyCoreApi.SetArrayDimsOrStrides(idx, shape.iDims, shape.iDims.Length, true);
+                        }
+                    }
+                }
+
+       
+                // Use samples as indices for a if a is array-like
+                if (aa.ndim == 0)
+                {
+                    // In most cases a scalar will have been made an array
+                    if (shape == null)
+                    {
+                        Int32 _idx = (Int32)idx;
+                        return np.array(_idx);
+                    }
+                    else
+                    {
+                        return idx;
+                    }
+                }
+
+                if (shape != null && idx.ndim == 0)
+                {
+                    throw new Exception("don't currently handle this specific value case");
+
+                    //# If size == () then the user requested a 0-d array as opposed to
+                    //# a scalar object when size is None. However a[idx] is always a
+                    //# scalar and not an array. So this makes sure the result is an
+                    //# array, taking into account that np.array(item) may not work
+                    //# for object arrays.
+                    //res = np.empty((), dtype = a.dtype)
+                    //res[()] = a[idx]
+                    //return res
+                }
+
+                return np.array(aa[idx]);
+
             }
 
             #endregion

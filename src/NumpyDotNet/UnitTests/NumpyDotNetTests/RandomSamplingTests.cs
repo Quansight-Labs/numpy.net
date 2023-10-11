@@ -244,7 +244,7 @@ namespace NumpyDotNetTests
 
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
-            AssertArray(first10, new Int16[] {-1761, -1165, 2645, -1210, 1741, -1692, -1042, -354, 2637, -706 });
+            AssertArray(first10, new Int16[] { -1761, -1165, 2645, -1210, 1741, -1692, -1042, -354, 2637, -706 });
         }
 
 
@@ -467,7 +467,7 @@ namespace NumpyDotNetTests
             Assert.AreEqual(bytes.Length, 24);
 
             br = random.getbyte();
-            var arr = np.array(random.bytes(24)).reshape(2,3,4);
+            var arr = np.array(random.bytes(24)).reshape(2, 3, 4);
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_UBYTE);
             AssertShape(arr, 2, 3, 4);
 
@@ -500,7 +500,7 @@ namespace NumpyDotNetTests
             print(arr);
             AssertArray(arr, new Int32[] { 2, 9, 3, 6, 1, 7, 5, 0, 4, 8 });
 
-            arr = np.arange(10).reshape((-1,1));
+            arr = np.arange(10).reshape((-1, 1));
             print(arr);
 
             random.shuffle(arr);
@@ -532,8 +532,8 @@ namespace NumpyDotNetTests
             var random = new np.random();
             random.seed(5566);
 
-            var a = np.arange(1,11, dtype: np.Float64);
-            var b = np.arange(1,11, dtype: np.Float64);
+            var a = np.arange(1, 11, dtype: np.Float64);
+            var b = np.arange(1, 11, dtype: np.Float64);
 
             ndarray arr = random.beta(b, b, new shape(10));
             Assert.AreEqual(arr.TypeNum, NPY_TYPES.NPY_DOUBLE);
@@ -610,7 +610,7 @@ namespace NumpyDotNetTests
 
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
-            AssertArray(first10, new double[] 
+            AssertArray(first10, new double[]
             { 0.449839203939145, 1.92402228590093, 3.34447894813104, 5.34660224752626, 1.15307500835178,
               3.7142340997291, 0.137140658434128, 1.69505253573874, 1.5675310912308, 3.1550000636764 });
 
@@ -677,8 +677,8 @@ namespace NumpyDotNetTests
             AssertArray(first10, ExpectedData);
 
             //////////////
-            
-            arr = random.dirichlet(new int[] { 25,1,25 }, 25*25);
+
+            arr = random.dirichlet(new int[] { 25, 1, 25 }, 25 * 25);
 
             amax = np.amax(arr);
             print(amax);
@@ -707,7 +707,7 @@ namespace NumpyDotNetTests
                   { 0.464374656943362, 0.0130023049255488, 0.522623038131089 },
                   { 0.45310574844845, 0.00503512489512577, 0.541859126656425 } };
 
-           AssertArray(first10, ExpectedData);
+            AssertArray(first10, ExpectedData);
 
         }
 
@@ -742,7 +742,7 @@ namespace NumpyDotNetTests
 
             AssertArray(first10, ExpectedData);
 
-             //////////////
+            //////////////
 
             arr = random.exponential(new double[] { 1.75, 2.25, 3.5, 4.1 }, new shape(4));
 
@@ -787,7 +787,7 @@ namespace NumpyDotNetTests
             ExpectedData = new double[]
             { 1.36762201783298, 2.8658070450868, 0.624351703816035, 0.968550532587695, 4.27788701329609,
               0.366187067053844, 1.8701491040941, 0.322938134269804, 1.77904860176968, 0.311565039308104 };
-  
+
             AssertArray(first10, ExpectedData);
 
         }
@@ -1015,7 +1015,7 @@ namespace NumpyDotNetTests
 
             AssertArray(first10, ExpectedData2);
 
-                //////////////
+            //////////////
 
             arr = random.geometric(.75, new shape(200000));
 
@@ -1087,7 +1087,7 @@ namespace NumpyDotNetTests
             print(first10);
 
             var ExpectedData2 = new double[] { 4.79769794330828, -2.48113529309385, 3.33696461612712, 7.62559311437917 };
-         
+
             AssertArray(first10, ExpectedData2);
 
             //////////////
@@ -1109,7 +1109,7 @@ namespace NumpyDotNetTests
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            ExpectedData = new double[] 
+            ExpectedData = new double[]
             { 1.21622910498044, 3.00226498101696, 0.475407027157304, 1.65190860500953, 1.57140421867578,
               0.93864144637321, -0.200732799247397, 0.242196470741022, 0.0803181023284516, 1.52710248786222 };
             AssertArray(first10, ExpectedData);
@@ -1145,7 +1145,7 @@ namespace NumpyDotNetTests
 
             //////////////
 
-            arr = random.hypergeometric(new long[] {75, 25, 5, 1 }, new long[] { 5 }, new long[] { 80, 30, 10, 6});
+            arr = random.hypergeometric(new long[] { 75, 25, 5, 1 }, new long[] { 5 }, new long[] { 80, 30, 10, 6 });
 
             amax = np.amax(arr);
             print(amax);
@@ -1162,7 +1162,7 @@ namespace NumpyDotNetTests
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            var ExpectedData2 = new long[] { 75, 25,  5,  1 };
+            var ExpectedData2 = new long[] { 75, 25, 5, 1 };
 
             AssertArray(first10, ExpectedData2);
 
@@ -1185,7 +1185,7 @@ namespace NumpyDotNetTests
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            ExpectedData = new long[] { 7, 10,  7,  7,  6,  9,  9,  8,  7,  8 };
+            ExpectedData = new long[] { 7, 10, 7, 7, 6, 9, 9, 8, 7, 8 };
             AssertArray(first10, ExpectedData);
         }
 
@@ -1442,7 +1442,7 @@ namespace NumpyDotNetTests
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            var ExpectedData = new long[,] { { 1, 26 }, { 1, 3 }, { 1, 26 }, { 1, 23 }, { 1, 3 }, 
+            var ExpectedData = new long[,] { { 1, 26 }, { 1, 3 }, { 1, 26 }, { 1, 23 }, { 1, 3 },
                                                  { 1, 2 }, { 1, 29 }, { 1, 3 }, { 1, 7 }, { 1, 174 } };
 
             AssertArray(first10, ExpectedData);
@@ -1491,7 +1491,7 @@ namespace NumpyDotNetTests
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            var ExpectedData2 = new long[] {  1, 2, 1, 1, 1, 1, 2, 1, 1, 1 };
+            var ExpectedData2 = new long[] { 1, 2, 1, 1, 1, 1, 2, 1, 1, 1 };
 
             AssertArray(first10, ExpectedData2);
         }
@@ -1504,7 +1504,7 @@ namespace NumpyDotNetTests
             random.seed(9909);
 
             double dv = 1.0 / 6.0;
-            var arr = random.multinomial(20, new double[] { dv,dv,dv,dv,dv,dv }, size : new shape(1000));
+            var arr = random.multinomial(20, new double[] { dv, dv, dv, dv, dv, dv }, size: new shape(1000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1529,7 +1529,7 @@ namespace NumpyDotNetTests
 
             //////////////
             dv = 1.0 / 7.0;
-            arr = random.multinomial(100, new double[] { dv, dv, dv, dv, dv, 2/7 });
+            arr = random.multinomial(100, new double[] { dv, dv, dv, dv, dv, 2 / 7 });
 
             amax = np.amax(arr);
             print(amax);
@@ -1547,7 +1547,7 @@ namespace NumpyDotNetTests
             print(first10);
 
             var ExpectedData2 = new long[] { 17, 12, 12, 12, 14, 33 };
-   
+
 
             AssertArray(first10, ExpectedData2);
 
@@ -1573,8 +1573,8 @@ namespace NumpyDotNetTests
             ExpectedData = new long[,]
                 { { 4, 3, 4, 0, 1, 8 }, { 5, 1, 1, 4, 5, 4 }, { 2, 5, 4, 3, 5, 1 }, { 3, 4, 2, 5, 4, 2 }, { 3, 1, 5, 3, 3, 5 },
                   { 8, 0, 3, 2, 6, 1 }, { 1, 3, 3, 4, 2, 7 }, { 4, 3, 3, 4, 2, 4 }, { 4, 2, 7, 2, 0, 5 }, { 5, 3, 1, 1, 7, 3 } };
-                
-                AssertArray(first10, ExpectedData);
+
+            AssertArray(first10, ExpectedData);
         }
 
         [Ignore]
@@ -1583,13 +1583,7 @@ namespace NumpyDotNetTests
         {
 
         }
-
-        [Ignore]
-        [TestMethod]
-        public void test_rand_choice_1()
-        {
-
-        }
+  
 
         [TestMethod]
         public void test_rand_noncentral_chisquare_1()
@@ -1647,7 +1641,7 @@ namespace NumpyDotNetTests
 
             random.seed(95);
 
-            var arr = random.noncentral_f(1,20, 48, new shape(1000));
+            var arr = random.noncentral_f(1, 20, 48, new shape(1000));
 
             var amax = np.amax(arr);
             print(amax);
@@ -1979,7 +1973,7 @@ namespace NumpyDotNetTests
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            var ExpectedData = new double[] 
+            var ExpectedData = new double[]
                 { 0.860761589057571, 0.555711431358782, 0.647865885680754, 0.805516152993246, 0.994108927361731,
                   0.291749587351287, 0.491236160654437, 0.91187220874109, 0.895559077755727, 0.512379748843543 };
 
@@ -2027,7 +2021,7 @@ namespace NumpyDotNetTests
             first10 = arr["0:10:1"] as ndarray;
             print(first10);
 
-            ExpectedData = new double[] 
+            ExpectedData = new double[]
                 { 0.957438465302022, 0.656302195683223, 0.870285272269396, 0.65563575104881, 0.382317153477581,
                   0.473016685638606, 0.269503426405144, 0.618646989401598, 0.689636449821986, 0.968887821301467 };
             AssertArray(first10, ExpectedData);
@@ -2563,7 +2557,7 @@ namespace NumpyDotNetTests
             var avg = np.average(arr);
             print(avg);
             Assert.AreEqual(6.643562403733275E-05, avg.GetItem(0));
-                            
+
 
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
@@ -2601,7 +2595,7 @@ namespace NumpyDotNetTests
             print(first10);
 
             AssertArray(first10, new double[] { 18.594950452027874, 8.5855197415637328, 9.9685301762029539, 1.803431063349904 });
-       
+
         }
 
         [TestMethod]
@@ -2777,7 +2771,7 @@ namespace NumpyDotNetTests
 
             var first10 = arr["0:10:1"] as ndarray;
             print(first10);
-            AssertArray(first10, new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  });
+            AssertArray(first10, new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
 
 
             arr = random.zipf(np.arange(2, (25 * 25) + 2), new shape(25 * 25));
@@ -2800,6 +2794,146 @@ namespace NumpyDotNetTests
 
 
         }
+
+        [TestMethod]
+        public void test_rand_choice_1()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var a = random.choice(2);
+            Assert.AreEqual((Int32)a, 1);
+            print(a);
+
+            var b = random.choice(65);
+            Assert.AreEqual((Int32)b, 52);
+            print(b);
+
+            var b1 = random.choice(65, size : new shape(3,4,5));
+            print(b1);
+
+            var ExpectedData = new int[,,]
+                 { { { 13, 19, 56, 38, 42 },
+                     { 4, 43, 50, 60, 7 },
+                     { 62, 46, 37, 13, 37 },
+                     { 19, 29, 2, 63, 3 } },
+                   { { 56, 19, 32, 0, 30 },
+                     { 21, 55, 22, 62, 0 },
+                     { 6, 9, 34, 34, 16 },
+                     { 55, 5, 64, 27, 28 } },
+                   { { 4, 60, 49, 61, 13 },
+                     { 54, 32, 30, 14, 36 },
+                     { 7, 13, 36, 49, 33 },
+                   { 14, 11, 15, 4, 21 } } };
+
+
+            AssertArray(b1, ExpectedData);
+
+            bool caughtException = false;
+            try
+            {
+                var c = random.choice(-1);
+                print(c);
+            }
+            catch (Exception ex)
+            {
+                caughtException = true;
+            }
+
+            Assert.IsTrue(caughtException);
+
+        }
+
+        [TestMethod]
+        public void test_rand_choice_2()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var a = random.choice(new int[] { 22, 33, 44 });
+            Assert.AreEqual((Int32)a, 33);
+            print(a);
+        }
+
+        [TestMethod]
+        public void test_rand_choice_3()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var a = random.choice(5, new shape(3));
+            AssertArray(a, new Int32[] { 0,4, 1 });
+            print(a);
+
+            var b = random.choice(5, new shape(3), p: new double[] { 0.1, 0, 0.3, 0.6, 0 });
+            AssertArray(b, new Int64[] { 2, 2, 3 });
+            print(b);
+
+
+        }
+
+        [TestMethod]
+        public void test_rand_choice_4()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var x = np.arange(1, 9);
+
+            var a = random.choice(x, new shape(3));
+            AssertArray(a, new Int32[] { 6, 1, 5 });
+            print(a);
+
+            var b = random.choice(x, new shape(3), p: new double[] { 0.1, 0, 0.3, 0.2, 0.1, 0.2, 0.0, 0.1 });
+            AssertArray(b, new Int32[] { 3, 1, 6 });
+            print(b);
+
+
+        }
+
+
+        [TestMethod]
+        public void test_rand_choice_5()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var x = np.array(new string[] { "pooh", "rabbit", "piglet", "Christopher" });
+
+            var a = random.choice(x, new shape(5));
+            AssertArray(a, new string[] { "rabbit", "pooh", "pooh", "rabbit", "piglet"});
+            print(a);
+
+            var b = random.choice(x, new shape(5), p: new double[] { 0.5, 0.1, 0.1, 0.3 });
+            AssertArray(b, new string[] { "pooh", "Christopher", "Christopher", "Christopher", "piglet" });
+            print(b);
+        }
+
+
+        [TestMethod]
+        public void test_rand_choice_6()
+        {
+            var random = new np.random();
+
+            random.seed(979);
+
+            var x = np.arange(1, 9);
+
+            var a = random.choice(x, new shape(3), replace:false);
+            AssertArray(a, new Int32[] { 8, 7, 4 });
+            print(a);
+
+            var b = random.choice(x, new shape(3), replace: false, p: new double[] { 0.1, 0, 0.3, 0.2, 0.1, 0.2, 0.0, 0.1 });
+            AssertArray(b, new Int32[] { 6, 8, 4 });
+            print(b);
+        }
+
+
 
     }
 }

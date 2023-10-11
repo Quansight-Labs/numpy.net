@@ -975,6 +975,81 @@ class Test_test1(unittest.TestCase):
         first10 = arr[0:10:1]
         print(first10)
 
+    def test_rand_choice_1(self):
+
+
+        np.random.seed(979)
+
+        a = np.random.choice(2)
+        print(a)
+
+        b = np.random.choice(65)
+        print(b)
+
+        b1 = np.random.choice(65, size = [3,4,5] )
+        print(b1)
+
+        #c = np.random.choice(-1)
+        #print(c)
+
+    def test_rand_choice_2(self):
+
+
+        np.random.seed(979)
+
+        a = np.random.choice([22,33,44])
+        print(a)
+
+
+
+    def test_rand_choice_3(self):
+
+
+        np.random.seed(979)
+
+        a = np.random.choice(5,3)
+        print(a)
+
+        b = np.random.choice(5,3, p=[0.1, 0, 0.3, 0.6, 0])
+        print(b)
+    
+    def test_rand_choice_4(self):
+
+
+        np.random.seed(979)
+
+        x = np.arange(1,9)
+
+        a = np.random.choice(x,3)
+        print(a)
+
+        b = np.random.choice(x,3, p=[0.1, 0, 0.3, 0.2, 0.1, 0.2, 0.0, 0.1])
+        print(b)
+
+    def test_rand_choice_5(self):
+
+        np.random.seed(979)
+
+        x = aa_milne_arr = ['pooh', 'rabbit', 'piglet', 'Christopher']
+
+        a = np.random.choice(x,5)
+        print(a)
+
+        b = np.random.choice(x,5, p=[0.5, 0.1, 0.1, 0.3])
+        print(b)
+
+    def test_rand_choice_6(self):
+
+
+        np.random.seed(979)
+
+        x = np.arange(1,9)
+
+        a = np.random.choice(x,3, replace=False)
+        print(a)
+
+        b = np.random.choice(x,3, replace = False, p=[0.1, 0, 0.3, 0.2, 0.1, 0.2, 0.0, 0.1])
+        print(b)
 
 if __name__ == '__main__':
     unittest.main()
