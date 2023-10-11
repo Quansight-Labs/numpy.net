@@ -8,15 +8,13 @@
     <Company>Baseline Software Solutions</Company>
     <Description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</Description>
     <Copyright>Copyright 2023, Baseline Software Solutions, Inc.</Copyright>
-    <Version>0.9.86.0</Version>
+    <Version>0.9.86.1</Version>
     <PackageLicenseUrl>BSD</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Quansight-Labs/numpy.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Quansight-Labs/numpy.net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>NumPy, .NET, C#, Financial, Machine Learning</PackageTags>
-    <PackageReleaseNotes>fixes keepdims issue in np.var and np.std.
-implement faster version of np.partition for Int32, Int64, float and double data types.
-small speedups.</PackageReleaseNotes>
+    <PackageReleaseNotes>implement np.random.choice API</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
