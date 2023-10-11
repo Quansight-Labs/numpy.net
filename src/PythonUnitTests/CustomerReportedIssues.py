@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import time as tm
 from nptest import nptest
 
 class Test_CustomerReportedIssues(unittest.TestCase):
@@ -523,6 +524,79 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         arr4 = np.array(arr2.tobytes(order='F'));
         print(arr4)
+
+    def test_Sundarrajan06295_DifferentTypes(self):
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.uint32).reshape(-1, 4000);
+        y = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
+
+        start = tm.time()
+   
+        z = np.multiply(x, y)
+
+        end = tm.time()
+
+        diff = end-start
+        print("DifferentTypes calculations took %f milliseconds" %(diff))
+
+    def test_Sundarrajan06295_SameTypes(self):
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
+        y = np.arange(0, 4000 * 10 * 4000, dtype=np.float64).reshape(-1, 4000);
+
+        start = tm.time()
+   
+        z = np.multiply(x, y)
+
+        end = tm.time()
+
+        diff = end-start
+        print("SameTypes calculations took %f milliseconds" %(diff))
+
+    def test_Sundarrajan06295_SameTypes_2(self):
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.float64);
+        y = np.arange(0, 4000 * 10 * 4000, dtype=np.float64);
+
+        start = tm.time()
+   
+        z = np.multiply(x, y)
+
+        end = tm.time()
+
+        diff = end-start
+        print("SameTypes calculations took %f milliseconds" %(diff))
+
+    def test_Sundarrajan06295_Quantile_1(self):
+
+        x = np.arange(0, 4000 * 10 * 4000, dtype=np.float64);
+
+        start = tm.time()
+   
+        z = np.quantile(x, 0.5)
+
+        end = tm.time()
+
+        diff = end-start
+        print("SameTypes calculations took %f milliseconds" %(diff))
+
+    def test_Sundarrajan06295_var_1(self):
+
+        data = np.arange(3815 * 2800, dtype = np.float32).reshape(3815,2800);
+   
+        start = tm.time()
+   
+        variance = np.var(data, axis=1)
+        #print(variance)
+
+        variance = np.var(data, axis=0)
+        #print(variance)
+
+
+        end = tm.time()
+
+        diff = end-start
+        print("var calculations took %f milliseconds" %(diff))
       
 if __name__ == '__main__':
     unittest.main()

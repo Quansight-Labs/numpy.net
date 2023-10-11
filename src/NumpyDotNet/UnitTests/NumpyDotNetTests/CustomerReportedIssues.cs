@@ -1327,5 +1327,168 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void test_Sundarrajan06295_DifferentTypes()
+        {
+
+            var x = np.arange(0, 4000 * 10 * 4000, dtype: np.UInt32).reshape(-1, 4000);
+            var y = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+         
+            ndarray z = np.multiply(x, y);
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("DifferentTypes calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [TestMethod]
+        public void test_Sundarrajan06295_SameTypes()
+        {
+
+            var x = np.zeros(new shape(4000 * 10, 4000), dtype: np.Float64).reshape(-1, 4000);
+            var y = np.zeros(new shape(4000 * 10, 4000), dtype: np.Float64).reshape(-1, 4000);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            double x1 = double.MaxValue;
+            double x2 = double.MaxValue;
+            double x3 = x1 * x2;
+
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            
+            ndarray z = np.divide(x, y);
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+            sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            z = np.divide(x, y);
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+
+        }
+
+        [TestMethod]
+        public void test_Sundarrajan06295_SameTypes_2()
+        {
+
+            var x = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64);
+            var y = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            ndarray z = np.divide(x, y);
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            z = np.divide(x, y);
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+        }
+
+        [TestMethod]
+        public void test_Sundarrajan06295_Quantile_1()
+        {
+            var x = np.arange(0, 4000 * 10 * 4000, dtype: np.Float64);
+
+            ndarray z1 = np.quantile(x, 0.5);
+
+            //return;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            ndarray z = np.quantile(x, 0.5);
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            z = np.quantile(x, 0.5);
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+            sw.Stop();
+
+            Console.WriteLine(string.Format("SameType calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            Console.WriteLine("************\n");
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_Sundarrajan06295_var_1()
+        {
+            ndarray data = np.arange(3815 * 2800, dtype: np.Float32).reshape(3815,2800);
+            var variancex = np.var(data, axis: 1);
+
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+            np.tuning.EnableTryCatchOnCalculations = true;
+            var variance = np.var(data, axis:1);
+            //print(variance);
+
+
+            variance = np.var(data, axis: 0);
+            //print(variance);
+
+            sw.Stop();
+            Console.WriteLine(string.Format("np.var calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+
+            np.tuning.EnableTryCatchOnCalculations = false;
+            variance = np.var(data, axis: 1);
+            //print(variance);
+
+
+            variance = np.var(data, axis: 0);
+            //print(variance);
+
+            sw.Stop();
+            Console.WriteLine(string.Format("np.var calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
+            np.tuning.EnableTryCatchOnCalculations = true;
+
+        }
+
+     
+
+
     }
 }
