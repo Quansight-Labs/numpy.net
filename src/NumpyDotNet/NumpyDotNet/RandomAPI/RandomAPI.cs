@@ -619,7 +619,9 @@ namespace NumpyDotNet
                 ndarray _p = null;
                 if (p != null)
                 {
-                    //int d = p.Length;
+
+                    //double atol = np.sqrt(np.finfo(np.float64).eps)
+                    double atol = 0.0001;
 
                     _p = np.array(p);
 
@@ -629,8 +631,8 @@ namespace NumpyDotNet
                         throw new ValueError("a and p must have same size");
                     if (np.anyb(_p < 0))
                         throw new ValueError("probabilities are not non-negative");
-                    //if abs(kahan_sum(pix, d) - 1.) > atol:
-                        //raise ValueError("probabilities do not sum to 1")
+                    if (Math.Abs(kahan_sum(p) - 1.0) > atol)
+                        throw new ValueError("probabilities do not sum to 1");
 
                 }
 
@@ -743,6 +745,26 @@ namespace NumpyDotNet
 
                 return np.array(aa[idx]);
 
+            }
+
+            private double kahan_sum(double[] darr)
+            {
+                double c, y, t, sum;
+                npy_intp i;
+
+                sum = darr[0];
+                c = 0.0;
+
+                int n = darr.Length;
+                for (i = 1; i < n; i++)
+                {
+                    y = darr[i] - c;
+                    t = sum + y;
+                    c = (t - sum) - y;
+                    sum = t;
+                }
+
+                return sum;
             }
 
             #endregion
