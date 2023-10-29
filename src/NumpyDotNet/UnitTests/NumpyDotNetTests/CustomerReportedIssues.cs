@@ -1487,8 +1487,103 @@ namespace NumpyDotNetTests
 
         }
 
-     
+        [TestMethod]
+        public void test_OleksiiMatiash_1()
+        {
+            string fileName = "xyz.bin";
+
+            int size = 2500000;
+
+            ndarray x = np.array(new Int16[size]);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
+
+    
+
+                   
+            tofile(x, fileName);
+
+            int length = size - 10;
+            int offset = 10;
+
+            ndarray y = fromfile(fileName, length, offset);
+
+            sw.Stop();
+
+            Console.WriteLine("elapsed time in ms: " + sw.ElapsedMilliseconds.ToString());
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_OleksiiMatiash_2()
+        {
+            string fileName = "xyz.bin";
+
+            int size = 2500000;
+
+            ndarray x = np.array(new Int16[size]);
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Restart();
 
 
+
+
+            x.tofile(fileName);
+
+        
+
+            ndarray y = np.fromfile(fileName, dtype: np.Int16);
+
+            sw.Stop();
+
+            Console.WriteLine("elapsed time in ms: " + sw.ElapsedMilliseconds.ToString());
+
+            return;
+        }
+
+        private void tofile(ndarray x, string fileName)
+        {
+            System.IO.FileInfo fp = new System.IO.FileInfo(fileName);
+
+            byte[] b = x.tobytes();
+
+
+            using (var fs = fp.Create())
+            {
+        
+                using (var binaryWriter = new System.IO.BinaryWriter(fs))
+                {
+                    binaryWriter.Write(b);
+                }
+            }
+
+
+        }
+
+        private ndarray fromfile(string fileName, int length, int offset)
+        {
+            System.IO.FileInfo fp = new System.IO.FileInfo(fileName);
+
+            byte[] data = null;
+
+            using (var fs = fp.OpenRead())
+            {
+                fs.Seek(offset * sizeof(Int16), System.IO.SeekOrigin.Begin);
+
+                using (System.IO.BinaryReader sr = new System.IO.BinaryReader(fs))
+                {
+                    data = sr.ReadBytes((length - offset) * sizeof(Int16));
+                }
+       
+            }
+
+            return np.frombuffer(data, dtype: np.Int16);
+
+          
+
+        }
     }
 }
