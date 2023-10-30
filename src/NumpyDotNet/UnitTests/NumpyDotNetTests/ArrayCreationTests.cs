@@ -666,6 +666,38 @@ namespace NumpyDotNetTests
 
 
         [TestMethod]
+        public void test_tofile_fromfile_binary_2()
+        {
+            var x = np.arange(2, 27, dtype: np.UInt8).reshape(new shape(5, 5));
+
+            var filename = "numpyDOTNETToFileTest.bin";
+            x.tofile(filename);
+            var y = np.fromfile(filename, dtype: np.UInt8);
+            print(y);
+
+            x.tofile("numpyDotNetToFileTest.bin");
+
+            AssertArray(y, new byte[] {  2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26});
+        }
+
+        [TestMethod]
+        public void test_tofile_fromfile_binary_3()
+        {
+            var x = np.array(new System.Numerics.Complex[] { new Complex(1, 2), new Complex(3, 4), new Complex(5, 6) });
+
+            var filename = "numpyDOTNETToFileTest.bin";
+            x.tofile(filename);
+            var y = np.fromfile(filename, dtype: np.Complex);
+            print(y);
+
+            x.tofile("numpyDotNetToFileTest.bin");
+
+            AssertArray(y, new System.Numerics.Complex[] { new Complex(1, 2), new Complex(3, 4), new Complex(5, 6) });
+        }
+
+   
+
+        [TestMethod]
         public void test_ndarray_fill()
         {
             var x = np.arange(0, 9, dtype: np.Float64).reshape(new shape(3, 3));

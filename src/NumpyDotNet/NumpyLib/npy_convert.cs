@@ -383,11 +383,14 @@ namespace NumpyLib
                         }
                     case NPY_TYPES.NPY_UBYTE:
                         {
+
                             byte[] bdata = vp.datap as byte[];
-                            for (npy_intp i = dataOffset; i < dataLen; i++)
-                            {
-                                binaryWriter.Write(bdata[i]);
-                            }
+
+                            binaryWriter.Write(bdata, (int)dataOffset, (int)(dataLen - dataOffset));
+                            //for (npy_intp i = dataOffset; i < dataLen; i++)
+                            //{
+                            //    binaryWriter.Write(bdata[i]);
+                            //}
                             break;
                         }
                     case NPY_TYPES.NPY_INT16:
@@ -472,14 +475,17 @@ namespace NumpyLib
                             break;
                         }
                     case NPY_TYPES.NPY_COMPLEX:
-                    {
-                        //var bdata = vp.datap as System.Numerics.Complex[];
-                        //for (npy_intp i = dataOffset; i < dataLen; i++)
-                        //{
-                        //    binaryWriter.Write(bdata[i]);
-                        //}
-                        break;
-                    }
+                        {
+                            var bdata = vp.datap as System.Numerics.Complex[];
+                            for (npy_intp i = dataOffset; i < dataLen; i++)
+                            {
+                                binaryWriter.Write(bdata[i].Real);
+                                binaryWriter.Write(bdata[i].Imaginary);
+                            }
+                            break;
+                        }   
+
+              
 
 
                 }
@@ -871,6 +877,22 @@ namespace NumpyLib
                                     bdata[index] = sr.ReadDecimal();
                                     index++;
                                     break;
+                                }
+
+                            case NPY_TYPES.NPY_COMPLEX:
+                                {
+                                    System.Numerics.Complex[] bdata = data.datap as System.Numerics.Complex[];
+                                    bdata[index] = new System.Numerics.Complex(sr.ReadDouble(),sr.ReadDouble());
+                                    index++;
+                                    break;
+                                }
+
+                            default:
+                            case NPY_TYPES.NPY_BIGINT:
+                            case NPY_TYPES.NPY_STRING:
+                            case NPY_TYPES.NPY_OBJECT:
+                                {
+                                    throw new Exception("This function does not support this dtype");
                                 }
 
                         }
