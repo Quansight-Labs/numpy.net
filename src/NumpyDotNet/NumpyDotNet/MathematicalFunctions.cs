@@ -2474,8 +2474,8 @@ namespace NumpyDotNet
             if (len(v_arr) > len(a_arr))
             {
                 var temp = a_arr;
-                v_arr = a_arr;
                 a_arr = v_arr;
+                v_arr = temp;
             }
 
             if (len(v_arr) == 0)

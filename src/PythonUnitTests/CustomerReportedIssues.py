@@ -597,6 +597,16 @@ class Test_CustomerReportedIssues(unittest.TestCase):
 
         diff = end-start
         print("var calculations took %f milliseconds" %(diff))
+
+    def test_DeanZhuo_convolve_1(self):
+
+        hlpf = np.arange(27, dtype = np.int64);
+        hhpf = np.arange(35, dtype = np.int64);
+
+        a = np.convolve(hlpf, hhpf, "full")
+        print(a.size)
+        print(a)
+   
       
 if __name__ == '__main__':
     unittest.main()

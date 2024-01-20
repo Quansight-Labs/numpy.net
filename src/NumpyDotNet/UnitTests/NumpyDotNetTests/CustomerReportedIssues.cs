@@ -1585,5 +1585,28 @@ namespace NumpyDotNetTests
           //
 
         }
+
+        [TestMethod]
+        public void test_DeanZhuo_convolve_1()
+        {
+            ndarray hlpf = np.arange(27, dtype : np.Int64);
+            ndarray hhpf = np.arange(35, dtype : np.Int64);
+
+            ndarray a = np.convolve(hlpf, hhpf, NPY_CONVOLE_MODE.NPY_CONVOLVE_FULL);
+            print(a);
+
+            var ExpectedData = new Int64[]
+            {
+                0, 0, 1, 4, 10, 20, 35, 56, 84, 120, 165, 220, 286, 364,
+                455, 560, 680, 816, 969, 1140, 1330, 1540, 1771, 2024, 2300, 2600, 2925, 3276,
+                3627, 3978, 4329, 4680, 5031, 5382, 5733, 6084, 6400, 6680, 6923, 7128, 7294, 7420,
+                7505, 7548, 7548, 7504, 7415, 7280, 7098, 6868, 6589, 6260, 5880, 5448, 4963, 4424,
+                3830, 3180, 2473, 1708, 884
+            };
+
+            AssertArray(a, ExpectedData);
+      
+
+        }
     }
 }
