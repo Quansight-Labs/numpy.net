@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NumpyLib;
+using System.Collections;
+using System.Runtime.InteropServices;
 #if NPY_INTP_64
 using npy_intp = System.Int64;
 #else
@@ -1608,5 +1610,94 @@ namespace NumpyDotNetTests
       
 
         }
+
+        [TestMethod]
+        public void test_lintao185_1()
+        {
+            var gn = np.ones((100, 1000, 1000)).astype(np.Float32);
+
+            System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
+            sw1.Restart();
+
+            var bytes1 = gn.tobytes();
+            var gn1 = np.array(bytes1);
+
+            sw1.Stop();
+
+            //var gnLs = GetList<float>(gn);
+
+            System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+            sw2.Restart();
+
+            var bytes2 = MemoryMarshal.Cast<float, byte>(gn.AsFloatArray());
+            var gn2 = np.array(bytes2.ToArray());
+
+            sw2.Stop();
+
+            Console.WriteLine(sw1.ElapsedMilliseconds);
+            Console.WriteLine(sw2.ElapsedMilliseconds);
+
+            bytes1[0] = 99;
+            bytes2[0] = 99;
+
+            return;
+
+
+        }
+
+        [TestMethod]
+        public void test_lintao185_2()
+        {
+            var gn = np.ones((10, 10, 10)).astype(np.Int32);
+
+            var bytes1 = gn.tobytes();
+            bytes1[0] = 99;
+
+
+            var gn2 = np.ones((10, 10, 10)).astype(np.Int32);
+            var bytes2 = MemoryMarshal.Cast<int, byte>(gn2.AsInt32Array());
+            bytes2[0] = 99;
+
+            return;
+
+
+        }
+
+        public static IList GetList<T>(ndarray ndarray) where T : struct
+        {
+            var values = MemoryMarshal.Cast<byte, T>(ndarray.tobytes());
+            var list = GetList(values, 0, values.Length, ndarray.shape.iDims);
+            return list;
+        }
+        private static IList GetList<T>(Span<T> values, int start, int end, long[] shapeIDims)
+        {
+            if (shapeIDims.Length == 1)
+            {
+                var listr = new List<T>(end - start);
+                listr.AddRange(values.Slice(start,end-start).ToArray());
+                return listr;
+            }
+            var genericType = typeof(List<>);
+            var argType = typeof(T);
+            for (int i = 0; i < shapeIDims.Length; i++)
+            {
+                argType = genericType.MakeGenericType(argType);
+            }
+
+            var list = (IList)Activator.CreateInstance(argType);
+            var valueLength = end - start;
+            var length = (int)(valueLength / shapeIDims[0]);
+            for (int i = 0; i < shapeIDims[0]; i++)
+            {
+                var newStart = start + (i * length);
+                var newEnd = start + ((i + 1) * length);
+                newEnd = newEnd >= values.Length ? values.Length : newEnd;
+                list.Add(GetList(values, newStart, newEnd, shapeIDims.Skip(1).ToArray()));
+            }
+
+            return list;
+        }
+
+
     }
 }

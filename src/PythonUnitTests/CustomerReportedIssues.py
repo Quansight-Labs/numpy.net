@@ -606,7 +606,16 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         a = np.convolve(hlpf, hhpf, "full")
         print(a.size)
         print(a)
-   
+
+
+    def test_lintao185_2(self):
+
+        gn = np.ones((10, 10, 10)).astype(np.int);
+        bytes1 = gn.tobytes();
+        bytes1[0] = 99;
+
+ 
+        print(gn)   
       
 if __name__ == '__main__':
     unittest.main()

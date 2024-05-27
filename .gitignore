@@ -302,3 +302,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.pyc
+/src/NumpyDotNet/.visuallint
