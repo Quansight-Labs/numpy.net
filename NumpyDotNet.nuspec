@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This library provides a 100% pure .NET implementation of the NumPy API.  Multi-threaded, fast and accurate.</description>
     <releaseNotes>fix customer reported bug in np.convolve</releaseNotes>
-    <copyright>Copyright 2024, Baseline Software Solutions, Inc.</copyright>
+    <copyright>Copyright 2025, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />

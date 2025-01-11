@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package provides the unit tests for the NumpyDotNet library. Multi-threaded, fast and accurate.</description>
     <releaseNotes>Fixed float operations that previously returned doubles incorrectly</releaseNotes>
-    <copyright>Copyright 2021, Baseline Software Solutions, Inc.</copyright>
+    <copyright>Copyright 2025, Baseline Software Solutions, Inc.</copyright>
     <tags>NumPy, .NET, C#, Financial, Machine Learning</tags>
     <dependencies>
       <dependency id="Microsoft.CSharp" version="4.5.0" />
