@@ -2828,37 +2828,167 @@ namespace NumpyDotNet
 
             ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
             ndarray ret = np.ndarray(aCondition1.shape, _x.Dtype);
-
-            Parallel.For(0, aCondition1.Size, i =>
+      
+            bool[] bCondition = aCondition1.rawdata(0).datap as bool[];
+ 
+            if (_x.TypeNum == _y.TypeNum)
             {
-                bool c = (bool)_GetWhereItem(aCondition1, i);
+                if (_x.TypeNum == NPY_TYPES.NPY_BOOL)
+                {
+                    processWhereSameDataTypes<bool>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_BYTE)
+                {
+                    processWhereSameDataTypes<sbyte>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_UBYTE)
+                {
+                    processWhereSameDataTypes<byte>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_INT16)
+                {
+                    processWhereSameDataTypes<Int16>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_UINT16)
+                {
+                    processWhereSameDataTypes<UInt16>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_INT32)
+                {
+                    processWhereSameDataTypes<Int32>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_UINT32)
+                {
+                    processWhereSameDataTypes<UInt32>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_INT64)
+                {
+                    processWhereSameDataTypes<Int64>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_UINT64)
+                {
+                    processWhereSameDataTypes<UInt64>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_FLOAT)
+                {
+                    processWhereSameDataTypes<float>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_DOUBLE)
+                {
+                    processWhereSameDataTypes<double>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_DECIMAL)
+                {
+                    processWhereSameDataTypes<decimal>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_COMPLEX)
+                {
+                    processWhereSameDataTypes<System.Numerics.Complex>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_BIGINT)
+                {
+                    processWhereSameDataTypes<System.Numerics.BigInteger>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_OBJECT)
+                {
+                    processWhereSameDataTypes<object>(bCondition, _x, _y, ret);
+                }
+                if (_x.TypeNum == NPY_TYPES.NPY_STRING)
+                {
+                    processWhereSameDataTypes<string>(bCondition, _x, _y, ret);
+                }
+
+                return ret;
+            }
+            else
+            {
+                long conditionSize = bCondition.Length;
+                long xSize = _x.Size;
+                long ySize = _y.Size;
+                long retSize = ret.Size;
+
+                Parallel.For(0, conditionSize, i =>
+                {
+                    bool c = bCondition[i];
+                    if (c)
+                    {
+                        _SetWhereItem(ret, retSize, i, _GetWhereItem(_x, xSize, i));
+                    }
+                    else
+                    {
+                        _SetWhereItem(ret, retSize, i, _GetWhereItem(_y, ySize, i));
+                    }
+                });
+
+
+                return ret;
+            }
+     
+        }
+
+        private static void processWhereSameDataTypes<T>(bool[] bCondition, ndarray x, ndarray y, ndarray ret)
+        {
+            var _xRaw = x.rawdata(0).datap as T[];
+            var _yRaw = y.rawdata(0).datap as T[];
+            var _retRaw = ret.rawdata(0).datap as T[];
+
+            long xSize = x.Size;
+            long ySize = y.Size;
+            long retSize = ret.Size;
+
+            Parallel.For(0, bCondition.Length, i =>
+            {
+                bool c = bCondition[i];
                 if (c)
                 {
-                    _SetWhereItem(ret, i, _GetWhereItem(_x, i));
+                    _retRaw[i] = _xRaw[xSize == 1 ? 0 : _SanitizeIndex(xSize, i)];
                 }
                 else
                 {
-                    _SetWhereItem(ret, i, _GetWhereItem(_y, i));
+                    _retRaw[i] = _yRaw[ySize == 1 ? 0 : _SanitizeIndex(ySize, i)];
+                }
+            });
+        }
+
+        private static void processWhereDifferentDataTypes<T>(bool[] bCondition, ndarray x, ndarray y, ndarray ret)
+        {
+            long conditionSize = bCondition.Length;
+            long xSize = x.Size;
+            long ySize = y.Size;
+            long retSize = ret.Size;
+
+
+            Parallel.For(0, conditionSize, i =>
+            {
+                bool c = bCondition[i];
+                if (c)
+                {
+                    _SetWhereItem(ret, retSize, i, _GetWhereItem(x, xSize, i));
+                }
+                else
+                {
+                    _SetWhereItem(ret, retSize, i, _GetWhereItem(y, ySize, i));
                 }
             });
 
-            return ret;
         }
 
-        private static void _SetWhereItem(ndarray a, npy_intp index, object v)
+
+
+        private static void _SetWhereItem(ndarray a, long aSize, npy_intp index, object v)
         {
-            a.SetItem(v, _SanitizeIndex(a, index));
+            a.SetItem(v, aSize == 1 ? 0 : _SanitizeIndex(aSize, index));
+        }
+        private static object _GetWhereItem(ndarray a, long aSize, npy_intp index)
+        {
+            return a.GetItem(aSize == 1 ? 0 : _SanitizeIndex(aSize, index));
         }
 
-        private static object _GetWhereItem(ndarray a, npy_intp index)
+ 
+        private static npy_intp _SanitizeIndex(long aSize, npy_intp index)
         {
-            return a.GetItem(_SanitizeIndex(a, index));
-        }
-
-        private static npy_intp _SanitizeIndex(ndarray a, npy_intp index)
-        {
-            if (a.Size <= index)
-                return index % a.Size;
+            if (aSize <= index)
+                return index % aSize;
             return index;
         }
 

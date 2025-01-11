@@ -1698,6 +1698,26 @@ namespace NumpyDotNetTests
             return list;
         }
 
+        [TestMethod]
+        public void test_GregTheDev_1()
+        {
+            np.random random = new np.random();
+
+            ndarray sampleData = random.rand(new shape(496, 682));
+            ndarray filter = sampleData > 0.5;
+
+           // ndarray filteredData = (ndarray)np.where(filter, 0, sampleData);
+            ndarray filteredData2 = (ndarray)np.where(filter, 0d, sampleData);
+            ndarray filteredData3 = (ndarray)np.where(filter, sampleData, sampleData);
+
+            var kevin = filteredData3.Equals(sampleData);
+            Assert.IsTrue((bool)np.all(filteredData3.Equals(sampleData)));
+
+            return;
+
+
+        }
+
 
     }
 }

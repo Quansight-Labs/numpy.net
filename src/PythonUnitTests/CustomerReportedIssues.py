@@ -617,5 +617,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
  
         print(gn)   
       
+
+    def test_GregTheDev_1(self):
+
+       sampleData = np.random.rand(496, 682);
+       filter = sampleData > 0.5;
+
+       filteredData = np.where(filter, 0, sampleData);
+       # filteredData2 = np.where(filter, 0d, sampleData);
+       filteredData3 = np.where(filter, sampleData, sampleData);
+
 if __name__ == '__main__':
     unittest.main()
