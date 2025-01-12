@@ -3475,16 +3475,42 @@ namespace NumpyDotNet
             var output = new bool[input.size];
 
             int oindex = 0;
-            foreach (var i in input.Flat)
-            {
-                float f = Convert.ToSingle(i);
-                if (float.IsInfinity(f))
-                    output[oindex] = true;
-                else
-                    output[oindex] = false;
-                oindex++;
-            }
 
+            if (input.TypeNum == NPY_TYPES.NPY_DOUBLE)
+            {
+                var inputFlat = input.rawdata(0).datap as double[];
+
+                foreach (var d in inputFlat)
+                {
+                    if (double.IsInfinity(d))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+
+            }
+            else if (input.TypeNum == NPY_TYPES.NPY_FLOAT)
+            {
+                var inputFlat = input.rawdata(0).datap as float[];
+
+                foreach (var f in inputFlat)
+                {
+                    if (float.IsInfinity(f))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < output.Length; i++)
+                {
+                    output[i] = false;
+                }
+            }
+                
             return array(output).reshape(input.shape);
         }
         /// <summary>
@@ -3498,14 +3524,40 @@ namespace NumpyDotNet
             var output = new bool[input.size];
 
             int oindex = 0;
-            foreach (var i in input.Flat)
+
+            if (input.TypeNum == NPY_TYPES.NPY_DOUBLE)
             {
-                float f = Convert.ToSingle(i);
-                if (float.IsNegativeInfinity(f))
-                    output[oindex] = true;
-                else
-                    output[oindex] = false;
-                oindex++;
+                var inputFlat = input.rawdata(0).datap as double[];
+
+                foreach (var d in inputFlat)
+                {
+                    if (double.IsNegativeInfinity(d))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+
+            }
+            else if (input.TypeNum == NPY_TYPES.NPY_FLOAT)
+            {
+                var inputFlat = input.rawdata(0).datap as float[];
+
+                foreach (var f in inputFlat)
+                {
+                    if (float.IsNegativeInfinity(f))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < output.Length; i++)
+                {
+                    output[i] = false;
+                }
             }
 
             return array(output).reshape(input.shape);
@@ -3521,17 +3573,44 @@ namespace NumpyDotNet
             var output = new bool[input.size];
 
             int oindex = 0;
-            foreach (var i in input.Flat)
+
+            if (input.TypeNum == NPY_TYPES.NPY_DOUBLE)
             {
-                float f = Convert.ToSingle(i);
-                if (float.IsPositiveInfinity(f))
-                    output[oindex] = true;
-                else
-                    output[oindex] = false;
-                oindex++;
+                var inputFlat = input.rawdata(0).datap as double[];
+
+                foreach (var d in inputFlat)
+                {
+                    if (double.IsPositiveInfinity(d))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+
+            }
+            else if (input.TypeNum == NPY_TYPES.NPY_FLOAT)
+            {
+                var inputFlat = input.rawdata(0).datap as float[];
+
+                foreach (var f in inputFlat)
+                {
+                    if (float.IsPositiveInfinity(f))
+                        output[oindex] = true;
+                    else
+                        output[oindex] = false;
+                    oindex++;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < output.Length; i++)
+                {
+                    output[i] = false;
+                }
             }
 
             return array(output).reshape(input.shape);
+
         }
         #endregion
 
