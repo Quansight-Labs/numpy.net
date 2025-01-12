@@ -3422,20 +3422,47 @@ namespace NumpyDotNet
         {
             var input = asanyarray(o);
             var output = new bool[input.size];
-
-            var ArrayHandler = DefaultArrayHandlers.GetArrayHandler(input.TypeNum);
-
             int oindex = 0;
-            foreach (var i in input.Flat)
+
+
+            if (input.TypeNum == NPY_TYPES.NPY_DOUBLE)
             {
-                 if (ArrayHandler.IsNan(i) || ArrayHandler.IsInfinity(i))
-                    output[oindex] = false;
-                else
-                    output[oindex] = true;
-                oindex++;
+                var inputFlat = input.rawdata(0).datap as double[];
+
+                foreach (var i in inputFlat)
+                {
+                    if (double.IsNaN(i) || double.IsInfinity(i))
+                        output[oindex] = false;
+                    else
+                        output[oindex] = true;
+                    oindex++;
+                }
+
+                return array(output).reshape(input.shape);
             }
 
+            if (input.TypeNum == NPY_TYPES.NPY_FLOAT)
+            {
+                var inputFlat = input.rawdata(0).datap as float[];
+
+                foreach (var i in inputFlat)
+                {
+                    if (float.IsNaN(i) || float.IsInfinity(i))
+                        output[oindex] = false;
+                    else
+                        output[oindex] = true;
+                    oindex++;
+                }
+
+                return array(output).reshape(input.shape);
+            }
+
+            for (int i = 0; i < output.Length; i++)
+            {
+                output[i] = true;
+            }
             return array(output).reshape(input.shape);
+
         }
         /// <summary>
         /// Test element-wise for positive or negative infinity.
