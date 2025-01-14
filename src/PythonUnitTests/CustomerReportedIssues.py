@@ -627,5 +627,15 @@ class Test_CustomerReportedIssues(unittest.TestCase):
        # filteredData2 = np.where(filter, 0d, sampleData);
        filteredData3 = np.where(filter, sampleData, sampleData);
 
+    def test_ByteSwap_ReturnsCorrectValues_ForFloat32(self):
+        A = np.array([1.0, 256.0, 8755.0], dtype=np.float32)
+        B = A.byteswap(False)
+        print(B)    # B = array([4.6006030e-41, 4.6011635e-41, 1.8737409e-38], dtype=float32)
+
+    def test_ByteSwap_ReturnsCorrectValues_ForFloat64(self):
+        A = np.array([1.0, 256.0, 8755.0], dtype=np.float64)
+        B = A.byteswap(False)
+        print(B)    # B = array([3.03865194e-319 1.41974704e-319 1.06183182e-314], dtype=float64)
+
 if __name__ == '__main__':
     unittest.main()

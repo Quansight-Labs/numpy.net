@@ -941,6 +941,27 @@ namespace NumpyLib
 
                     }
 
+                case NPY_TYPES.NPY_FLOAT:
+                    {
+                        float[] bdata = dest.datap as float[];
+
+                        byte[] bytes = BitConverter.GetBytes(bdata[item_offset]);
+                        Array.Reverse(bytes);
+                        bdata[item_offset] = BitConverter.ToSingle(bytes, 0);
+                        break;
+
+                    }
+
+                case NPY_TYPES.NPY_DOUBLE:
+                    {
+                        double[] bdata = dest.datap as double[];
+
+                        byte[] bytes = BitConverter.GetBytes(bdata[item_offset]);
+                        Array.Reverse(bytes);
+                        bdata[item_offset] = BitConverter.ToDouble(bytes, 0);
+                        break;
+                    }
+
                 // these data types can't be swapped
                 case NPY_TYPES.NPY_DECIMAL:
                 case NPY_TYPES.NPY_COMPLEX:

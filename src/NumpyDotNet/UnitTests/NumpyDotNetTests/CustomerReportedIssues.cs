@@ -1719,5 +1719,40 @@ namespace NumpyDotNetTests
         }
 
 
+        // from GregTheDev
+        [TestMethod]
+        public void ByteSwap_ReturnsCorrectValues_ForFloat32()
+        {
+            // Python:
+            // A = np.array([1.0, 256.0, 8755.0], dtype=np.float32)
+            // B = A.byteswap(False)
+            // # B = array([4.6006030e-41, 4.6011635e-41, 1.8737409e-38], dtype=float32)
+
+            ndarray sample = np.array(new float[] { 1.0f, 256.0f, 8755.0f }, np.Float32);
+            ndarray swapped = sample.byteswap();
+
+            // At this point swapped contains the original values of A, not the swapped values.
+            AssertArray(swapped, new float[] { 4.6006030e-41f, 4.6011635e-41f, 1.8737409e-38f });
+       
+        }
+
+        // from GregTheDev
+        [TestMethod]
+        public void ByteSwap_ReturnsCorrectValues_ForFloat64()
+        {
+            // Python:
+            // A = np.array([1.0, 256.0, 8755.0], dtype=np.float64)
+            // B = A.byteswap(False)
+            // # B = array([3.03865194e-319, 1.41974704e-319, 1.06183182e-314], dtype=float64)
+
+            ndarray sample = np.array(new double[] { 1.0, 256.0, 8755.0 }, np.Float64);
+            ndarray swapped = sample.byteswap();
+
+            // At this point swapped contains the original values of A, not the swapped values.
+            AssertArray(swapped, new double[] { 3.03865194e-319, 1.41974704e-319, 1.06183182e-314 });
+
+        }
+
+
     }
 }
