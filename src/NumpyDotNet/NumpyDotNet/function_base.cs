@@ -3097,7 +3097,7 @@ namespace NumpyDotNet
             }
             else
             {
-                y = asanyarray(Math.PI) * (ndarray)np.where(xa == 0, 1.0e-20, xa);
+                y = asanyarray(Math.PI) * (ndarray)np.where(xa == 0, 1.0e-20, xa.astype(np.Float64));
             }
             return sin(y) / y as ndarray;
 
