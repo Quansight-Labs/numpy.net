@@ -303,3 +303,4 @@ $RECYCLE.BIN/
 *.lnk
 *.pyc
 /src/NumpyDotNet/.visuallint
+/src/PythonUnitTests/.visuallint
