@@ -2824,11 +2824,20 @@ namespace NumpyDotNet
             }
 
             var _x = asanyarray(x);
+            if (_x.IsASlice)
+                _x = np.copy(_x);
+
             var _y = asanyarray(y);
+            if (_y.IsASlice)
+                _y = np.copy(_y);
 
             ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
-            ndarray ret = np.ndarray(aCondition1.shape, _x.Dtype);
-      
+            ndarray ret = null;
+            if (_x.Size >= _y.Size)
+                ret = np.ndarray(_x.shape, promote_types(_x.Dtype, _y.Dtype));
+            else
+                ret = np.ndarray(_y.shape, promote_types(_x.Dtype, _y.Dtype));
+
             bool[] bCondition = aCondition1.rawdata(0).datap as bool[];
  
             if (_x.TypeNum == _y.TypeNum)
@@ -2907,9 +2916,9 @@ namespace NumpyDotNet
                 long ySize = _y.Size;
                 long retSize = ret.Size;
 
-                Parallel.For(0, conditionSize, i =>
+                Parallel.For(0, retSize, i =>
                 {
-                    bool c = bCondition[i];
+                    bool c = bCondition[_SanitizeIndex(conditionSize, i)];
                     if (c)
                     {
                         _SetWhereItem(ret, retSize, i, _GetWhereItem(_x, xSize, i));
@@ -2936,9 +2945,9 @@ namespace NumpyDotNet
             long ySize = y.Size;
             long retSize = ret.Size;
 
-            Parallel.For(0, bCondition.Length, i =>
+            Parallel.For(0, _retRaw.Length, i =>
             {
-                bool c = bCondition[i];
+                bool c = bCondition[_SanitizeIndex(bCondition.LongLength, i)];
                 if (c)
                 {
                     _retRaw[i] = _xRaw[xSize == 1 ? 0 : _SanitizeIndex(xSize, i)];
@@ -2949,31 +2958,6 @@ namespace NumpyDotNet
                 }
             });
         }
-
-        private static void processWhereDifferentDataTypes<T>(bool[] bCondition, ndarray x, ndarray y, ndarray ret)
-        {
-            long conditionSize = bCondition.Length;
-            long xSize = x.Size;
-            long ySize = y.Size;
-            long retSize = ret.Size;
-
-
-            Parallel.For(0, conditionSize, i =>
-            {
-                bool c = bCondition[i];
-                if (c)
-                {
-                    _SetWhereItem(ret, retSize, i, _GetWhereItem(x, xSize, i));
-                }
-                else
-                {
-                    _SetWhereItem(ret, retSize, i, _GetWhereItem(y, ySize, i));
-                }
-            });
-
-        }
-
-
 
         private static void _SetWhereItem(ndarray a, long aSize, npy_intp index, object v)
         {

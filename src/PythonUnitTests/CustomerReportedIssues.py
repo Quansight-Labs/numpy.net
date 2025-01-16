@@ -637,5 +637,58 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         B = A.byteswap(False)
         print(B)    # B = array([3.03865194e-319 1.41974704e-319 1.06183182e-314], dtype=float64)
 
+
+    def test_Where_MaintainsOriginalDimensions(self):
+    
+        # This is testing whether different shapes for x & y arguments affect the outcome (answer: they don't)
+        np.random.seed(5555);
+
+        sampleData = np.random.rand(3, 4, 6);
+        sampleData2 = np.random.rand(3, 4, 6);
+        filter = sampleData > 0.5;
+        #print(sampleData)
+        #print(sampleData2)
+        #print(filter)
+
+        # scalar vs multi dimensional
+        filteredData = np.where(filter, 0, sampleData);
+        # Assert.That(filteredData.shape.iDims.Length, Is.EqualTo(3)); // filter.shape = (3, 496, 682), filteredData.shape = (3, 496, 682)
+        #print(filter)
+        #print(filteredData)
+
+        # multi dimensional vs multi dimensional
+        filteredData2 = np.where(filter, sampleData, sampleData2);
+        #print(filteredData2)
+        #Assert.That(filteredData2.shape.iDims.Length, Is.EqualTo(3)); // filter.shape = (3, 496, 682), filteredData2.shape = (3, 496, 682)
+
+        #single dimensional vs multi dimensional (fails - shape of result drops a dimension)
+        filter = np.max(sampleData, axis= 0) > 0.5; # shape = 496, 682
+        print(filter)
+        filteredData3 = np.where(filter, 0, sampleData2);
+        print(filteredData3)
+
+        filteredData4 = np.where(filter, sampleData2, 0);
+        print(filteredData4)
+        #Assert.That(filteredData3.shape.iDims.Length, Is.EqualTo(3)); // filter.shape = (496, 682), filteredData3.shape = (496, 682)
+
+    def test_Where_DoesNotDuplicateResults(self):
+        sampleData = np.array([ 1, 2, 3, 4, 5, 6, 7, 8 ]).reshape(2, 2, 2);
+        filter = np.array([ True, False, True, False ]).reshape(2, 2);
+
+        # 'split' the layers of sampleData into two seperate arrays of 2*2
+        # dimA & dimB reflect expected values (1,2,3,4) & (5,6,7,8)
+        dimA = sampleData[0];
+        #print(dimA);
+        dimB = sampleData[1];
+        #print(dimB);
+
+        # Use the same filter, but on each seperate array
+        # In this case 'b' ends up with the same values as 'a'
+        a = np.where(filter, dimA, dimA);
+        print(a);
+        b = np.where(filter, dimB, dimB);
+        print(b);
+
+
 if __name__ == '__main__':
     unittest.main()

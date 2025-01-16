@@ -1753,6 +1753,73 @@ namespace NumpyDotNetTests
 
         }
 
+        // from GregTheDev
+        [TestMethod]
+        public void Where_MaintainsOriginalDimensions()
+        {
+            // This is testing whether different shapes for x & y arguments affect the outcome (answer: they don't)
+            np.random random = new np.random();
+            random.seed(5555);
+
+            ndarray sampleData = random.rand(new shape(3, 4, 6));
+            ndarray sampleData2 = random.rand(new shape(3, 4, 6));
+            ndarray filter = sampleData > 0.5;
+
+            // scalar vs multi dimensional
+            ndarray filteredData = (ndarray)np.where(filter, 0, sampleData);
+            print(filter.shape);
+            print(filteredData.shape);
+
+            // multi dimensional vs multi dimensional
+            ndarray filteredData2 = (ndarray)np.where(filter, sampleData, sampleData2);
+            print(filteredData2.shape);
+
+            // single dimensional vs multi dimensional (fails - shape of result drops a dimension)
+            filter = np.max(sampleData, axis: 0) > 0.5; // shape = 496, 682
+            print(filter);
+            ndarray filteredData3 = (ndarray)np.where(filter, 0.0, sampleData2);
+            print(filteredData3);
+
+            ndarray filteredData4 = (ndarray)np.where(filter, sampleData2, 0.0);
+            print(filteredData4);
+            //Assert.That(filteredData3.shape.iDims.Length, Is.EqualTo(3)); // filter.shape = (496, 682), filteredData3.shape = (496, 682)
+        }
+
+        // from GregTheDev
+        [TestMethod]
+        public void Where_DoesNotDuplicateResults()
+        {
+            ndarray sampleData = np.array(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }).reshape(2, 2, 2);
+            ndarray filter = np.array(new bool[] { true, false, true, false }).reshape(2, 2);
+
+            // 'split' the layers of sampleData into two seperate arrays of 2*2
+            // dimA & dimB reflect expected values (1,2,3,4) & (5,6,7,8)
+            ndarray dimA = (ndarray)sampleData[0];
+            //print(dimA);
+            ndarray dimB = (ndarray)sampleData[1];
+            //print(dimB);
+
+            // Use the same filter, but on each seperate array
+            // In this case 'b' ends up with the same values as 'a'
+            ndarray a = (ndarray)np.where(filter, dimA, dimA);
+            print(a);
+            ndarray b = (ndarray)np.where(filter, dimB, dimB);
+            print(b);
+
+            // Making a copy of each 'layer' returns the expected values
+            //ndarray dimX = np.copy((ndarray)sampleData[0]);
+            //print(dimX);
+            //ndarray dimY = np.copy((ndarray)sampleData[1]);
+            //print(dimY);
+
+            //ndarray xx = (ndarray)np.where(filter, dimX, dimX);
+            //print(xx);
+            //ndarray yy = (ndarray)np.where(filter, dimY, dimY);
+            //print(yy);
+
+        }
+
+
 
     }
 }
