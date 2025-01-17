@@ -2824,12 +2824,7 @@ namespace NumpyDotNet
             }
 
             var _x = asanyarray(x);
-            if (_x.IsASlice)
-                _x = np.copy(_x);
-
             var _y = asanyarray(y);
-            if (_y.IsASlice)
-                _y = np.copy(_y);
 
             ndarray aCondition1 = np.FromAny(_condition, null, 0, 0, 0, null);
             ndarray ret = null;
@@ -2911,10 +2906,10 @@ namespace NumpyDotNet
             }
             else
             {
-                long conditionSize = bCondition.Length;
-                long xSize = _x.Size;
-                long ySize = _y.Size;
-                long retSize = ret.Size;
+                npy_intp conditionSize = bCondition.Length;
+                npy_intp xSize = _x.Size;
+                npy_intp ySize = _y.Size;
+                npy_intp retSize = ret.Size;
 
                 Parallel.For(0, retSize, i =>
                 {
@@ -2941,35 +2936,72 @@ namespace NumpyDotNet
             var _yRaw = y.rawdata(0).datap as T[];
             var _retRaw = ret.rawdata(0).datap as T[];
 
-            long xSize = x.Size;
-            long ySize = y.Size;
-            long retSize = ret.Size;
+            npy_intp xSize = x.Size;
+            npy_intp ySize = y.Size;
+            npy_intp retSize = ret.Size;
 
-            Parallel.For(0, _retRaw.Length, i =>
+
+            if (x.IsASlice || y.IsASlice)
             {
-                bool c = bCondition[_SanitizeIndex(bCondition.LongLength, i)];
-                if (c)
+                NpyArrayIterObject it_x = numpyinternal.NpyArray_IterNew(x.core);
+                it_x = numpyinternal.NpyArray_ITER_ConvertToIndex(it_x, it_x.ao.ItemDiv);
+
+                NpyArrayIterObject it_y = numpyinternal.NpyArray_IterNew(y.core);
+                it_y = numpyinternal.NpyArray_ITER_ConvertToIndex(it_y, it_y.ao.ItemDiv);
+
+
+                for (int i = 0; i <_retRaw.Length; i++)
                 {
-                    _retRaw[i] = _xRaw[xSize == 1 ? 0 : _SanitizeIndex(xSize, i)];
+                    bool c = bCondition[_SanitizeIndex(bCondition.LongLength, i)];
+                    if (c)
+                    {
+                        _retRaw[i] = _xRaw[it_x.dataptr.data_offset];
+                    }
+                    else
+                    {
+                        _retRaw[i] = _yRaw[it_y.dataptr.data_offset];
+                    }
+
+                    numpyinternal.NpyArray_ITER_NEXT(it_x);
+                    if (it_x.index >= it_x.size)
+                        numpyinternal.NpyArray_ITER_RESET(it_x, it_x.ao.ItemDiv);
+
+                    numpyinternal.NpyArray_ITER_NEXT(it_y);
+                    if (it_y.index >= it_y.size)
+                        numpyinternal.NpyArray_ITER_RESET(it_y, it_y.ao.ItemDiv);
+
                 }
-                else
+            }
+            else
+            {
+                Parallel.For(0, _retRaw.Length, i =>
                 {
-                    _retRaw[i] = _yRaw[ySize == 1 ? 0 : _SanitizeIndex(ySize, i)];
-                }
-            });
+                    bool c = bCondition[_SanitizeIndex(bCondition.LongLength, i)];
+                    if (c)
+                    {
+                        _retRaw[i] = _xRaw[xSize == 1 ? 0 : _SanitizeIndex(xSize, i)];
+                    }
+                    else
+                    {
+                        _retRaw[i] = _yRaw[ySize == 1 ? 0 : _SanitizeIndex(ySize, i)];
+                    }
+                });
+            }
+
+    
         }
 
-        private static void _SetWhereItem(ndarray a, long aSize, npy_intp index, object v)
+        private static void _SetWhereItem(ndarray a, npy_intp aSize, npy_intp index, object v)
         {
             a.SetItem(v, aSize == 1 ? 0 : _SanitizeIndex(aSize, index));
         }
-        private static object _GetWhereItem(ndarray a, long aSize, npy_intp index)
+        private static object _GetWhereItem(ndarray a, npy_intp aSize, npy_intp index)
         {
             return a.GetItem(aSize == 1 ? 0 : _SanitizeIndex(aSize, index));
         }
 
  
-        private static npy_intp _SanitizeIndex(long aSize, npy_intp index)
+        private static npy_intp _SanitizeIndex(npy_intp aSize, npy_intp index)
         {
             if (aSize <= index)
                 return index % aSize;
