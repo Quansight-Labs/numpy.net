@@ -1761,28 +1761,42 @@ namespace NumpyDotNetTests
             np.random random = new np.random();
             random.seed(5555);
 
-            ndarray sampleData = random.rand(new shape(3, 4, 6));
-            ndarray sampleData2 = random.rand(new shape(3, 4, 6));
+            ndarray sampleData = random.rand(new shape(2, 3, 4));
+            ndarray sampleData2 = random.rand(new shape(2, 3, 4));
             ndarray filter = sampleData > 0.5;
 
             // scalar vs multi dimensional
             ndarray filteredData = (ndarray)np.where(filter, 0, sampleData);
-            print(filter.shape);
-            print(filteredData.shape);
+            //print(filter.shape);
+            //print(filteredData.shape);
 
             // multi dimensional vs multi dimensional
             ndarray filteredData2 = (ndarray)np.where(filter, sampleData, sampleData2);
-            print(filteredData2.shape);
+            //print(filteredData2.shape);
 
             // single dimensional vs multi dimensional (fails - shape of result drops a dimension)
-            filter = np.max(sampleData, axis: 0) > 0.5; // shape = 496, 682
-            print(filter);
+            filter = np.max(sampleData, axis: 0) > 0.5; // shape = 3, 4
+            //print(filter);
             ndarray filteredData3 = (ndarray)np.where(filter, 0.0, sampleData2);
             print(filteredData3);
+            AssertArray(filteredData3, new double[,,]
+                { { { 0.0, 0.0, 0.0, 0.0 },
+                    { 0.0, 0.0, 0.0, 0.0 },
+                    { 0.0, 0.0, 0.0, 0.936059957727913 } },
+                  { { 0.0, 0.0, 0.0, 0.0 },
+                    { 0.0, 0.0, 0.0, 0.0 },
+                    { 0.0, 0.0, 0.0, 0.628241917355486 } } });
+
 
             ndarray filteredData4 = (ndarray)np.where(filter, sampleData2, 0.0);
             print(filteredData4);
-            //Assert.That(filteredData3.shape.iDims.Length, Is.EqualTo(3)); // filter.shape = (496, 682), filteredData3.shape = (496, 682)
+            AssertArray(filteredData4, new double[,,]
+                { { { 0.86671946460087, 0.799685371878261, 0.749274651781426, 0.538878445572928 },
+                    { 0.596671427432204, 0.763442245824756, 0.726566632545635, 0.748254621076444 },
+                    { 0.558515908557008, 0.797420815006913, 0.351944232125868, 0.0 } },
+                  { { 0.945293610994165, 0.87817128897484, 0.337125793744528, 0.972479721948033 },
+                    { 0.786620559777921, 0.0443489006281095, 0.0655006028445762, 0.90661894830297 },
+                    { 0.810355888252037, 0.063118769953511, 0.435778480384016, 0.0 } } });
         }
 
         // from GregTheDev
@@ -1803,19 +1817,10 @@ namespace NumpyDotNetTests
             // In this case 'b' ends up with the same values as 'a'
             ndarray a = (ndarray)np.where(filter, dimA, dimA);
             print(a);
+            AssertArray(a, new int[,] { { 1, 2 }, { 3, 4 } });
             ndarray b = (ndarray)np.where(filter, dimB, dimB);
             print(b);
-
-            // Making a copy of each 'layer' returns the expected values
-            //ndarray dimX = np.copy((ndarray)sampleData[0]);
-            //print(dimX);
-            //ndarray dimY = np.copy((ndarray)sampleData[1]);
-            //print(dimY);
-
-            //ndarray xx = (ndarray)np.where(filter, dimX, dimX);
-            //print(xx);
-            //ndarray yy = (ndarray)np.where(filter, dimY, dimY);
-            //print(yy);
+            AssertArray(b, new int[,] { { 5, 6 }, { 7, 8 } });
 
         }
 
