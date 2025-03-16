@@ -123,6 +123,10 @@ namespace NumpyDotNet
                 (array_info.byteorder == '>' && BitConverter.IsLittleEndian))
                 throw new NotSupportedException("Byte order doesn't match system endianness");
 
+            if (array_info.fortran_order == true)
+                throw new NotSupportedException("Fortran Order not supported");
+
+
             // calculate the number of elements from the embedded shape
             int length = (int)CalculateNewShapeSize(array_info.shape);
 
