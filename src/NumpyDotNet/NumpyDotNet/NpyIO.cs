@@ -441,7 +441,7 @@ namespace NumpyDotNet
                     break;
                 case "bi":
                     dataType = NPY_TYPES.NPY_BIGINT;
-                    itemsize = 0;
+                    itemsize = 128; // pick some crazy large number.
                     break;
                 default:
                     success = false;
