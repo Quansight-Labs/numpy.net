@@ -213,6 +213,24 @@ namespace NumpyDotNet
                         return np.array((double[])array).reshape(array_info.shape, order: NpyOrder);
                     }
 
+                case NPY_TYPES.NPY_DECIMAL:
+                    {
+                        int[] bits = new int[4];
+
+                        int Length = buffer.Length / sizeof(decimal);
+                        decimal[] arr = new decimal[Length];
+                        for (int i = 0; i < Length; i++)
+                        {
+                            int j = i * sizeof(decimal);
+
+                            bits[0] = BitConverter.ToInt32(buffer, i * sizeof(decimal));
+
+                            arr[i] = new decimal(bits);
+                        }
+
+                        return np.array(arr).reshape(array_info.shape, order: NpyOrder);
+                    }
+
                 default:
                     throw new Exception("unsupported data type");
             }
@@ -371,6 +389,10 @@ namespace NumpyDotNet
                     dataType = NPY_TYPES.NPY_DOUBLE;
                     itemsize = 8;
                     break;
+                case "d8":
+                    dataType = NPY_TYPES.NPY_DECIMAL;
+                    itemsize = sizeof(decimal);
+                    break;
                 default:
                     success = false;
                     dataType = NPY_TYPES.NPY_OBJECT;
@@ -523,9 +545,21 @@ namespace NumpyDotNet
             writer.Write((short)headerbytes.Length);
             writer.Write(headerbytes); // header
 
-            byte[] rawData = array.tobytes();
 
-            writer.Write(rawData);
+            if (array.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            {
+                decimal[] darray = array.rawdata(0).datap as decimal[];
+                foreach (decimal d in darray)
+                {
+                    writer.Write(d);
+                }
+            }
+            else
+            {
+                byte[] rawData = array.tobytes();
+                writer.Write(rawData);
+            }
+   
 
 
             writer.Close();
@@ -573,6 +607,9 @@ namespace NumpyDotNet
                     break;
                 case NPY_TYPES.NPY_DOUBLE:
                     TypeIndicator = "f8";
+                    break;
+                case NPY_TYPES.NPY_DECIMAL:
+                    TypeIndicator = "d8";
                     break;
                 default:
                     throw new Exception("Unsupported data type for this operation");

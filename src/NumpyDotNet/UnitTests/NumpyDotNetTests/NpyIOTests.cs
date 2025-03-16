@@ -63,6 +63,24 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_load_decimal_1()
+        {
+
+            ndarray d1 = np.arange(0, 32, dtype: np.Decimal).reshape(4,8);
+            print(d1);
+
+            np.save("c:/temp/d1.npy", d1);
+
+            ndarray r1 = np.load("c:/temp/d1.npy");
+            print(r1);
+
+            ndarray v1 = np.equal(d1,r1);
+            Assert.IsTrue((bool)d1.Equals(r1));
+
+            return;
+        }
+
+        [TestMethod]
         public void test_load_1_fortran()
         {
 
@@ -72,8 +90,6 @@ namespace NumpyDotNetTests
 
             print(tf);
             print(tc);
-
-
 
 
             return;
