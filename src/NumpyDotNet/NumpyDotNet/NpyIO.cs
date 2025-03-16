@@ -230,6 +230,25 @@ namespace NumpyDotNet
 
                         return np.array(arr).reshape(array_info.shape, order: NpyOrder);
                     }
+                case NPY_TYPES.NPY_COMPLEX:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Double), length*2);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        double[] darray = (double[])array;
+
+                        int Length = buffer.Length / (sizeof(double) * 2);
+                        Complex[] arr = new Complex[Length];
+
+                        for (int i = 0, j = 0; i < darray.Length; i+= 2, j++)
+                        {
+                            double Real = darray[i];
+                            double Imag = darray[i + 1];
+
+                            arr[j] = new Complex(Real, Imag);
+                        }
+
+                        return np.array(arr).reshape(array_info.shape, order: NpyOrder);
+                    }
 
                 default:
                     throw new Exception("unsupported data type");
@@ -393,6 +412,10 @@ namespace NumpyDotNet
                     dataType = NPY_TYPES.NPY_DECIMAL;
                     itemsize = sizeof(decimal);
                     break;
+                case "cc":
+                    dataType = NPY_TYPES.NPY_COMPLEX;
+                    itemsize = sizeof(double)*2;
+                    break;
                 default:
                     success = false;
                     dataType = NPY_TYPES.NPY_OBJECT;
@@ -555,6 +578,16 @@ namespace NumpyDotNet
                 }
             }
             else
+            if (array.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            {
+                Complex[] carray = array.rawdata(0).datap as Complex[];
+                foreach (Complex d in carray)
+                {
+                    writer.Write(d.Real);
+                    writer.Write(d.Imaginary);
+                }
+            }
+            else
             {
                 byte[] rawData = array.tobytes();
                 writer.Write(rawData);
@@ -610,6 +643,9 @@ namespace NumpyDotNet
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
                     TypeIndicator = "d8";
+                    break;
+                case NPY_TYPES.NPY_COMPLEX:
+                    TypeIndicator = "cc";
                     break;
                 default:
                     throw new Exception("Unsupported data type for this operation");

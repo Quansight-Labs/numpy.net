@@ -75,10 +75,29 @@ namespace NumpyDotNetTests
             print(r1);
 
             ndarray v1 = np.equal(d1,r1);
-            Assert.IsTrue((bool)d1.Equals(r1));
+            Assert.IsTrue(np.allb(v1));
 
             return;
         }
+
+        [TestMethod]
+        public void test_load_complex_1()
+        {
+
+            ndarray d1 = np.arange(0, 32, dtype: np.Complex).reshape(4, 8);
+            print(d1);
+
+            np.save("c:/temp/c1.npy", d1);
+
+            ndarray r1 = np.load("c:/temp/c1.npy");
+            print(r1);
+
+            ndarray v1 = np.equal(d1, r1);
+            Assert.IsTrue(np.allb(v1));
+
+            return;
+        }
+
 
         [TestMethod]
         public void test_load_1_fortran()
