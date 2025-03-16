@@ -26,6 +26,22 @@ class NpyIOTests(unittest.TestCase):
         t3 = np.load('c:/temp/t3.npy')
         print(t3)
 
+    def test_save_and_load_fortran_1(self):
+
+        t1 = np.arange(1,7);
+
+        tf = t1.reshape((2,3),order = 'F');
+        tc = t1.reshape((2,3),order = 'C');
+
+        print(tf)
+        print(tc)
+
+        np.save('c:/temp/tf.npy', tf)
+        np.save('c:/temp/tc.npy', tc)
+
+
+    
+
     def test_save_and_load_2(self):
 
         t1 = np.arange(1,7, dtype=np.float);

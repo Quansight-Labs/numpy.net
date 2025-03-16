@@ -41,7 +41,7 @@ namespace NumpyDotNetTests
     [TestClass]
     public class NpyIOTests : TestBaseClass
     {
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void test_load_1()
         {
@@ -49,11 +49,32 @@ namespace NumpyDotNetTests
             ndarray t1 = np.load("c:/temp/t1.npy");
             print(t1);
 
+            ndarray tf = t1.reshape((2, 3), NumpyLib.NPY_ORDER.NPY_FORTRANORDER);
+            ndarray tc = t1.reshape((2, 3), NumpyLib.NPY_ORDER.NPY_CORDER);
+
             ndarray t2 = np.load("c:/temp/t2.npy");
             print(t2);
 
             ndarray t3 = np.load("c:/temp/t3.npy");
             print(t3);
+
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_load_1_fortran()
+        {
+
+            ndarray tf = np.load("c:/temp/tf.npy");
+            ndarray tc = np.load("c:/temp/tc.npy");
+
+
+            print(tf);
+            print(tc);
+
+
+
 
             return;
         }
