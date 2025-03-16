@@ -3055,6 +3055,20 @@
             <param name="o2"></param>
             <returns></returns>
         </member>
+        <member name="M:NumpyDotNet.np.load(System.String)">
+            <summary>
+            Load arrays or pickled objects from .npy files
+            </summary>
+            <param name="PathName">complete file name to load into an ndarray</param>
+            <returns></returns>
+        </member>
+        <member name="M:NumpyDotNet.np.save(System.String,NumpyDotNet.ndarray)">
+            <summary>
+            Save an array to a binary file in NumPy .npy format.
+            </summary>
+            <param name="PathName">pathname to save file</param>
+            <param name="array">array to save as binary file</param>
+        </member>
         <member name="M:NumpyDotNet.np.result_type(System.Object,System.Object,System.Object)">
             <summary>
             Returns the type that results from applying the NumPy type promotion rules to the arguments.

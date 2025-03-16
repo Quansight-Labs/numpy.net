@@ -67,6 +67,12 @@ namespace NumpyDotNet
         static int MAGIC_LEN = MAGIC_PREFIX.Length + 2;
 
         #region np.load
+
+        /// <summary>
+        /// Load arrays or pickled objects from .npy files
+        /// </summary>
+        /// <param name="PathName">complete file name to load into an ndarray</param>
+        /// <returns></returns>
         public static ndarray load(string PathName)
         {
             if (string.IsNullOrEmpty(PathName))
@@ -214,12 +220,8 @@ namespace NumpyDotNet
 
         }
 
-        /// <summary>
-        /// read the header information in the specified file
-        /// </summary>
-        /// <param name="fp"></param>
-        /// <param name="version"></param>
-        /// <returns></returns>
+    
+        // read the header information in the specified file
         private static FileLoadHeader _read_array_header(BinaryReader fp, (int major, int minor) version)
         {
             int struct_calcsize = -1;
@@ -264,14 +266,8 @@ namespace NumpyDotNet
             return headerInfo;
         }
 
-   
-        /// <summary>
-        /// gets the substring from the startingString to the endingString
-        /// </summary>
-        /// <param name="headerStr"></param>
-        /// <param name="startingString"></param>
-        /// <param name="endingString"></param>
-        /// <returns></returns>
+
+        // gets the substring from the startingString to the endingString
         private static string HeaderSegment(string headerStr, string startingString, string endingString)
         {
             int startIndex = headerStr.IndexOf(startingString);
@@ -282,12 +278,8 @@ namespace NumpyDotNet
             return segment;
         }
 
- 
-        /// <summary>
-        /// parse the array information from the description string
-        /// </summary>
-        /// <param name="descr"></param>
-        /// <returns></returns>
+     
+        //parse the array information from the description string
         private static (bool, NPY_TYPES, char, int) ParseDescrString(string descr)
         {
             string[] descrParts = descr.Split(':');
@@ -388,11 +380,7 @@ namespace NumpyDotNet
 
         }
 
-        /// <summary>
-        /// parse the shape embedded in the file header
-        /// </summary>
-        /// <param name="shapeString"></param>
-        /// <returns></returns>
+        //parse the shape embedded in the file header
         private static shape ParseShape(string shapeString)
         {
             string[] shapeParts = shapeString.Split(':');
@@ -412,11 +400,7 @@ namespace NumpyDotNet
             return new NumpyDotNet.shape(ishape);
         }
 
-        /// <summary>
-        /// parse the fortran_order embedded in the file header
-        /// </summary>
-        /// <param name="fortranOrder"></param>
-        /// <returns></returns>
+        //parse the fortran_order embedded in the file header
         private static bool ParseFortranOrder(string fortranOrder)
         {
             string[] fortranParts = fortranOrder.Split(':');
@@ -429,11 +413,7 @@ namespace NumpyDotNet
                 return false;
         }
 
-        /// <summary>
-        /// converts the header shape field into a numeric shape
-        /// </summary>
-        /// <param name="shapeParts"></param>
-        /// <returns></returns>
+        // converts the header shape field into a numeric shape
         private static int[] ConvertStringToInt(string[] shapeParts)
         {
             List<int> intParts = new List<int>();
@@ -521,6 +501,11 @@ namespace NumpyDotNet
 
         #region np.save
 
+        /// <summary>
+        /// Save an array to a binary file in NumPy .npy format.
+        /// </summary>
+        /// <param name="PathName">pathname to save file</param>
+        /// <param name="array">array to save as binary file</param>
         public static void save(string PathName, ndarray array)
         {
             var fp = System.IO.File.Open(PathName, System.IO.FileMode.Create);
