@@ -29,7 +29,7 @@ class NpyIOTests(unittest.TestCase):
     def test_save_and_load_2(self):
 
         t1 = np.arange(1,7, dtype=np.float);
-        np.save('c:/temp/t1', t1)
+        s1 = np.save('c:/temp/t1', t1)
         t1 = np.load('c:/temp/t1.npy')
         print(t1)
 
@@ -110,6 +110,14 @@ class NpyIOTests(unittest.TestCase):
         np.save('c:/temp/t3', t3)
         t3 = np.load('c:/temp/t3.npy')
         print(t3)
+
+    def test_load_1(self):
+
+        t1 = np.load('c:/temp/tx.npy')
+        print(t1)
+
+  
+
 
     def test_load_struct_test(self):
 

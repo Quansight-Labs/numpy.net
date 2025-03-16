@@ -45,6 +45,7 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void test_load_1()
         {
+
             ndarray t1 = np.load("c:/temp/t1.npy");
             print(t1);
 
@@ -57,6 +58,27 @@ namespace NumpyDotNetTests
             return;
         }
 
+        [TestMethod]
+        public void test_save_1()
+        {
+            ndarray sb = np.arange(0,120, dtype: np.Float64).reshape(6, 2, 10);
+
+
+            ndarray s1 = (ndarray)sb["2::", "1::", "5::"];
+
+            s1["..."] = s1 * 10.0;
+
+            print(sb);
+            print(s1);
+
+            np.save("c:/temp/tx.npy", s1);
+
+            ndarray t1 = np.load("c:/temp/tx.npy");
+            print(t1);
+
+     
+            return;
+        }
 
     }
 }

@@ -66,6 +66,7 @@ namespace NumpyDotNet
         static byte[] MAGIC_PREFIX = new byte[] { 0x93, 0x4e, 0x55, 0x4d, 0x50, 0x59 }; // b'\x93NUMPY';
         static int MAGIC_LEN = MAGIC_PREFIX.Length + 2;
 
+        #region np.load
         public static ndarray load(string PathName)
         {
             if (string.IsNullOrEmpty(PathName))
@@ -516,8 +517,99 @@ namespace NumpyDotNet
             return true;
         }
 
-   
+        #endregion
 
+        #region np.save
+
+        public static void save(string PathName, ndarray array)
+        {
+            var fp = System.IO.File.Open(PathName, System.IO.FileMode.Create);
+            BinaryWriter writer = new BinaryWriter(fp, Encoding.Default, false);
+
+            writer.Write(MAGIC_PREFIX);
+            writer.Write((byte)1);  // major version
+            writer.Write((byte)0);  // minor version
+
+            string Header = CreateHeader(array);
+            byte[] headerbytes = Encoding.ASCII.GetBytes(Header);
+
+            writer.Write((short)headerbytes.Length);
+            writer.Write(headerbytes); // header
+
+            byte[] rawData = array.tobytes();
+
+            writer.Write(rawData);
+
+
+            writer.Close();
+            fp.Close();
+
+
+        }
+
+        private static string CreateHeader(ndarray array)
+        {
+            string byteorder = BitConverter.IsLittleEndian ? "<" : ">";
+            string TypeIndicator = "";
+
+            switch (array.TypeNum)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    TypeIndicator = "b1";
+                    break;
+                case NPY_TYPES.NPY_BYTE:
+                    TypeIndicator = "i1";
+                    break;
+                case NPY_TYPES.NPY_INT16:
+                    TypeIndicator = "i2";
+                    break;
+                case NPY_TYPES.NPY_INT32:
+                    TypeIndicator = "i4";
+                    break;
+                case NPY_TYPES.NPY_INT64:
+                    TypeIndicator = "i8";
+                    break;
+                case NPY_TYPES.NPY_UBYTE:
+                    TypeIndicator = "u1";
+                    break;
+                case NPY_TYPES.NPY_UINT16:
+                    TypeIndicator = "u2";
+                    break;
+                case NPY_TYPES.NPY_UINT32:
+                    TypeIndicator = "u4";
+                    break;
+                case NPY_TYPES.NPY_UINT64:
+                    TypeIndicator = "u8";
+                    break;
+                case NPY_TYPES.NPY_FLOAT:
+                    TypeIndicator = "f4";
+                    break;
+                case NPY_TYPES.NPY_DOUBLE:
+                    TypeIndicator = "f8";
+                    break;
+                default:
+                    throw new Exception("Unsupported data type for this operation");
+            }
+
+
+            string descr = byteorder + TypeIndicator;
+            string shapestr = CreateShapeString(array.shape);
+
+            return $@"{{'descr': '{descr}', 'fortran_order': False, 'shape':({shapestr}),}}";
+
+        }
+
+        private static string CreateShapeString(shape shape)
+        {
+            string shapeString = "";
+            foreach (var x in shape.iDims)
+            {
+                shapeString += x.ToString() + "L,";
+            }
+
+            return shapeString;
+        }
+        #endregion
     }
 }
 
