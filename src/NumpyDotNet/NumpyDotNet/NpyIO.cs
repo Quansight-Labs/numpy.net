@@ -250,6 +250,22 @@ namespace NumpyDotNet
                         return np.array(arr).reshape(array_info.shape, order: NpyOrder);
                     }
 
+                case NPY_TYPES.NPY_BIGINT:
+                    {
+                        List<BigInteger> bi = new List<BigInteger>();
+                        for (int i = 0; i < buffer.Length;)
+                        {
+                            byte size = buffer[i];
+                            byte[] biValue = GetBIValue(buffer, i, size);
+
+                            bi.Add(new BigInteger(biValue));
+
+                            i = i + (size + 1);
+                        }
+
+                        return np.array(bi.ToArray()).reshape(array_info.shape, order: NpyOrder);
+                    }
+
                 default:
                     throw new Exception("unsupported data type");
             }
@@ -259,7 +275,14 @@ namespace NumpyDotNet
 
         }
 
-    
+        private static byte[] GetBIValue(byte[] buffer, int i, byte size)
+        {
+            byte[] biValue = new byte[size];
+            Array.Copy(buffer, i + 1, biValue, 0, size);
+            return biValue;
+        }
+
+
         // read the header information in the specified file
         private static FileLoadHeader _read_array_header(BinaryReader fp, (int major, int minor) version)
         {
@@ -415,6 +438,10 @@ namespace NumpyDotNet
                 case "cc":
                     dataType = NPY_TYPES.NPY_COMPLEX;
                     itemsize = sizeof(double)*2;
+                    break;
+                case "bi":
+                    dataType = NPY_TYPES.NPY_BIGINT;
+                    itemsize = 0;
                     break;
                 default:
                     success = false;
@@ -587,6 +614,16 @@ namespace NumpyDotNet
                     writer.Write(d.Imaginary);
                 }
             }
+            if (array.TypeNum == NPY_TYPES.NPY_BIGINT)
+            {
+                BigInteger [] carray = array.rawdata(0).datap as BigInteger[];
+                foreach (BigInteger d in carray)
+                {
+                    var biData = d.ToByteArray();
+                    writer.Write((byte)biData.Length);
+                    writer.Write(biData);
+                }
+            }
             else
             {
                 byte[] rawData = array.tobytes();
@@ -646,6 +683,9 @@ namespace NumpyDotNet
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     TypeIndicator = "cc";
+                    break;
+                case NPY_TYPES.NPY_BIGINT:
+                    TypeIndicator = "bi";
                     break;
                 default:
                     throw new Exception("Unsupported data type for this operation");

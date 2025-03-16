@@ -87,6 +87,7 @@ namespace NumpyDotNetTests
             ndarray d1 = np.arange(0, 32, dtype: np.Complex).reshape(4, 8);
             print(d1);
 
+
             np.save("c:/temp/c1.npy", d1);
 
             ndarray r1 = np.load("c:/temp/c1.npy");
@@ -97,6 +98,27 @@ namespace NumpyDotNetTests
 
             return;
         }
+
+
+        [TestMethod]
+        public void test_load_bigint_1()
+        {
+
+            ndarray b1 = np.arange(0, 32, dtype: np.BigInt).reshape(4, 8);
+            b1 = b1 * 0xFFFFFFFF;
+            print(b1);
+
+            np.save("c:/temp/b1.npy", b1);
+
+            ndarray r1 = np.load("c:/temp/b1.npy");
+            print(r1);
+
+            ndarray v1 = np.equal(b1, r1);
+            Assert.IsTrue(np.allb(v1));
+
+            return;
+        }
+
 
 
         [TestMethod]
