@@ -9,21 +9,107 @@ ZIP_PREFIX = b'PK\x03\x04'
 
 class NpyIOTests(unittest.TestCase):
 
-    def test_save_and_load(self):
+    def test_save_and_load_1(self):
 
         t1 = np.arange(1,7);
         np.save('c:/temp/t1', t1)
-        kev = np.load('c:/temp/t1.npy')
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
 
         t2 = t1.reshape(2,3)
         np.save('c:/temp/t2', t2)
-        kev = np.load('c:/temp/t2.npy')
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
 
         t3 = t2.reshape(3,2)
         np.save('c:/temp/t3', t3)
-        kev = np.load('c:/temp/t3.npy')
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
 
- 
+    def test_save_and_load_2(self):
+
+        t1 = np.arange(1,7, dtype=np.float);
+        np.save('c:/temp/t1', t1)
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
+
+        t2 = t1.reshape(2,3)
+        np.save('c:/temp/t2', t2)
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
+
+        t3 = t2.reshape(3,2,1,1)
+        np.save('c:/temp/t3', t3)
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
+
+    def test_save_and_load_3(self):
+
+        t1 = np.arange(1,7, dtype=np.float32);
+        np.save('c:/temp/t1', t1)
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
+
+        t2 = t1.reshape(2,3)
+        np.save('c:/temp/t2', t2)
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
+
+        t3 = t2.reshape(3,2,1,1)
+        np.save('c:/temp/t3', t3)
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
+
+    def test_save_and_load_4(self):
+
+        t1 = np.arange(1,7, dtype=np.uint8);
+        np.save('c:/temp/t1', t1)
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
+
+        t2 = t1.reshape(2,3)
+        np.save('c:/temp/t2', t2)
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
+
+        t3 = t2.reshape(3,2,1,1)
+        np.save('c:/temp/t3', t3)
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
+
+    def test_save_and_load_5(self):
+
+        t1 = np.arange(1,7, dtype=np.uint16);
+        np.save('c:/temp/t1', t1)
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
+
+        t2 = t1.reshape(2,3)
+        np.save('c:/temp/t2', t2)
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
+
+        t3 = t2.reshape(3,2,1,1)
+        np.save('c:/temp/t3', t3)
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
+
+    def test_save_and_load_6(self):
+
+        t1 = np.arange(1,7, dtype=np.uint64);
+        np.save('c:/temp/t1', t1)
+        t1 = np.load('c:/temp/t1.npy')
+        print(t1)
+
+        t2 = t1.reshape(2,3)
+        np.save('c:/temp/t2', t2)
+        t2 = np.load('c:/temp/t2.npy')
+        print(t2)
+
+        t3 = t2.reshape(3,2,1,1)
+        np.save('c:/temp/t3', t3)
+        t3 = np.load('c:/temp/t3.npy')
+        print(t3)
 
     def test_load_struct_test(self):
 

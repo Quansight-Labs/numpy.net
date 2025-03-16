@@ -39,13 +39,22 @@ using MathNet.Numerics;
 namespace NumpyDotNetTests
 {
     [TestClass]
-    public class NpyIOTests
+    public class NpyIOTests : TestBaseClass
     {
         [Ignore]
         [TestMethod]
         public void test_load_1()
         {
-            ndarray x = np.load("c:/temp/t3.npy");
+            ndarray t1 = np.load("c:/temp/t1.npy");
+            print(t1);
+
+            ndarray t2 = np.load("c:/temp/t2.npy");
+            print(t2);
+
+            ndarray t3 = np.load("c:/temp/t3.npy");
+            print(t3);
+
+            return;
         }
 
 
