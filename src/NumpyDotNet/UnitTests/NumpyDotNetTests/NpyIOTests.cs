@@ -63,15 +63,34 @@ namespace NumpyDotNetTests
         }
 
         [TestMethod]
+        public void test_load_double_1()
+        {
+
+            ndarray d1 = np.arange(0, 32, dtype: np.Float64).reshape(4, 8);
+            print(d1);
+
+            np.save("c:/temp/double1.npy", d1);
+
+            ndarray r1 = np.load("c:/temp/double1.npy");
+            print(r1);
+
+            ndarray v1 = np.equal(d1, r1);
+            Assert.IsTrue(np.allb(v1));
+
+            return;
+        }
+
+
+        [TestMethod]
         public void test_load_decimal_1()
         {
 
             ndarray d1 = np.arange(0, 32, dtype: np.Decimal).reshape(4,8);
             print(d1);
 
-            np.save("c:/temp/d1.npy", d1);
+            np.save("c:/temp/decimal1.npy", d1);
 
-            ndarray r1 = np.load("c:/temp/d1.npy");
+            ndarray r1 = np.load("c:/temp/decimal1.npy");
             print(r1);
 
             ndarray v1 = np.equal(d1,r1);
@@ -88,9 +107,9 @@ namespace NumpyDotNetTests
             print(d1);
 
 
-            np.save("c:/temp/c1.npy", d1);
+            np.save("c:/temp/complex1.npy", d1);
 
-            ndarray r1 = np.load("c:/temp/c1.npy");
+            ndarray r1 = np.load("c:/temp/complex1.npy");
             print(r1);
 
             ndarray v1 = np.equal(d1, r1);
@@ -105,12 +124,16 @@ namespace NumpyDotNetTests
         {
 
             ndarray b1 = np.arange(0, 32, dtype: np.BigInt).reshape(4, 8);
-            b1 = b1 * 0xFFFFFFFF;
+            b1 = b1 * 0xFFFFFFFFFFFFFFFF;
+            b1 = b1 * 0xFFFFFFFFFFFFFFFF;
+            b1 = b1 * 0xFFFFFFFFFFFFFFFF;
+            b1 = b1 * 0xFFFFFFFFFFFFFFFF;
+
             print(b1);
 
-            np.save("c:/temp/b1.npy", b1);
+            np.save("c:/temp/bigint1.npy", b1);
 
-            ndarray r1 = np.load("c:/temp/b1.npy");
+            ndarray r1 = np.load("c:/temp/bigint1.npy");
             print(r1);
 
             ndarray v1 = np.equal(b1, r1);
