@@ -104,8 +104,10 @@ namespace NumpyDotNetTests
         {
 
             ndarray d1 = np.arange(0, 32, dtype: np.Complex).reshape(4, 8);
-            print(d1);
+            d1[0] = new Complex(99, 77);
+            d1[1] = new Complex(66, 55);
 
+            print(d1);
 
             np.save("c:/temp/complex1.npy", d1);
 
@@ -114,6 +116,17 @@ namespace NumpyDotNetTests
 
             ndarray v1 = np.equal(d1, r1);
             Assert.IsTrue(np.allb(v1));
+
+            return;
+        }
+
+        [TestMethod]
+        public void test_load_c16_1()
+        {
+
+            ndarray r1 = np.load("c:/temp/cc1.npy");
+            print(r1);
+
 
             return;
         }

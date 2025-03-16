@@ -127,6 +127,18 @@ class NpyIOTests(unittest.TestCase):
         t3 = np.load('c:/temp/t3.npy')
         print(t3)
 
+    def test_save_and_load_Complex_1(self):
+
+        t1 = np.load('c:/temp/complex1.npy')
+        print(t1)
+
+        t1 = np.arange(1,7, dtype=np.complex).reshape(2,3);
+        t1[0] = 99 + 88j;
+        
+        np.save('c:/temp/cc1', t1)
+        t1 = np.load('c:/temp/cc1.npy')
+        print(t1)
+
     def test_load_1(self):
 
         t1 = np.load('c:/temp/tx.npy')
