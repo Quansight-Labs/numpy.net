@@ -51,14 +51,23 @@ namespace NumpyDotNet
     /// </summary>
     public static partial class np
     {
+        private class FileLoadHeader
+        {
+            public bool success;
+            public NPY_TYPES NpyType;
+            public int itemsize;
+            public char byteorder;
+            public bool fortran_order;
+            public shape shape;
+        }
+
+
         static byte[] _ZIP_PREFIX = new byte[] { 0x50, 0x4B, 0x03, 0x04 }; // b'PK\x03\x04';
         static byte[] MAGIC_PREFIX = new byte[] { 0x93, 0x4e, 0x55, 0x4d, 0x50, 0x59 }; // b'\x93NUMPY';
         static int MAGIC_LEN = MAGIC_PREFIX.Length + 2;
 
         public static ndarray load(string PathName)
         {
-            throw new Exception("This function is under consideration for development");
-
             if (string.IsNullOrEmpty(PathName))
             {
                 throw new Exception("Pathname null or empty");
@@ -69,41 +78,144 @@ namespace NumpyDotNet
                 throw new Exception("Specified file does not exist!");
             }
 
+            // open the specified file
             var fp = System.IO.File.Open(PathName, System.IO.FileMode.Open);
-
+            BinaryReader reader = new BinaryReader(fp, Encoding.Default, false);
 
             int N = MAGIC_PREFIX.Length;
 
             byte[] magic = new byte[N + 200];
 
-            var magic_read = fp.Read(magic, 0, N);
+            // read in enough to get the magic header
+            var magic_read =  reader.Read(magic, 0, N);
 
+            // reset the stream pointer to after magic header
             fp.Seek(-Math.Min(N, magic_read), System.IO.SeekOrigin.Current);
 
+            // if the header indicates zip file, throw exceptipn
             if (IsPrefixMatch(magic, _ZIP_PREFIX))
             {
                 throw new Exception("Zipped files are not supported");
             }
+
+            // if the header matches the expected, ready the array.
             if (IsPrefixMatch(magic, MAGIC_PREFIX))
             {
-                return read_array(fp);
+                return read_array(reader);
             }
             return null;
         }
 
-        private static ndarray read_array(FileStream fp)
+        private static ndarray read_array(BinaryReader br)
         {
-            var version = read_magic(fp);
+            // read the magic header and check the version number
+            var version = read_magic(br);
             _check_version(version);
 
-            var array_info = _read_array_header(fp, version);
+            // read and parse the embedded header
+            var array_info = _read_array_header(br, version);
+            if (array_info.success == false)
+            {
+                throw new Exception("unable to read the file format");
+            }
+
+            if ((array_info.byteorder == '<' && !BitConverter.IsLittleEndian) ||
+                (array_info.byteorder == '>' && BitConverter.IsLittleEndian))
+                throw new NotSupportedException("Byte order doesn't match system endianness");
+
+            // calculate the number of elements from the embedded shape
+            int length = (int)CalculateNewShapeSize(array_info.shape);
+
+            // read the rest of the file as bytes.
+            byte[] buffer = br.ReadBytes(array_info.itemsize * length);
 
 
-            throw new NotImplementedException();
+            // recreate the original array with the information embedded in the header
+            switch (array_info.NpyType)
+            {
+                case NPY_TYPES.NPY_BOOL:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Boolean), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((bool[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_BYTE:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.SByte), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((sbyte[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_UBYTE:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Byte), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((byte[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_INT16:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Int16), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((Int16[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_UINT16:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.UInt16), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((UInt16[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_INT32:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Int32), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((Int32[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_UINT32:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.UInt32), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((UInt32[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_INT64:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Int64), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((Int64[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_UINT64:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.UInt64), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((UInt64[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_FLOAT:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Single), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((Single[])array).reshape(array_info.shape);
+                    }
+                case NPY_TYPES.NPY_DOUBLE:
+                    {
+                        Array array = Array.CreateInstance(typeof(System.Double), length);
+                        Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
+                        return np.array((double[])array).reshape(array_info.shape);
+                    }
+
+                default:
+                    throw new Exception("unsupported data type");
+            }
+
+
+            throw new Exception("unable to read the file format");
+
         }
 
-
-        private static object _read_array_header(FileStream fp, (int major, int minor) version)
+        /// <summary>
+        /// read the header information in the specified file
+        /// </summary>
+        /// <param name="fp"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        private static FileLoadHeader _read_array_header(BinaryReader fp, (int major, int minor) version)
         {
             int struct_calcsize = -1;
             if (version.major == 1 && version.minor == 0)
@@ -119,14 +231,224 @@ namespace NumpyDotNet
                 throw new ValueError(string.Format("Invalid version ({0},{1})" + version.major, version.minor));
             }
 
-
+            // skip over the version information.  We already have it.
             var hlength_str = _read_bytes(fp, struct_calcsize, "array header length");
 
+            // read the array header in and convert it to ASCII string
             var header = _read_bytes(fp, hlength_str[0], "array_header");
+            string headerStr = Encoding.ASCII.GetString(header);
 
-            throw new NotImplementedException();
+            // seperate each of the array header segments.
+            string descrString = HeaderSegment(headerStr, "descr", ",");
+            string fortranOrderString = HeaderSegment(headerStr, "fortran_order", ",");
+            string shapeString = HeaderSegment(headerStr, "shape", ")");
+
+
+            // decode each of the seperated header segments.
+            FileLoadHeader headerInfo = new FileLoadHeader();
+
+            (headerInfo.success, headerInfo.NpyType, headerInfo.byteorder, headerInfo.itemsize) = ParseDescrString(descrString);
+            headerInfo.fortran_order = ParseFortranOrder(fortranOrderString);
+            headerInfo.shape = ParseShape(shapeString);
+
+            // if shape is null, this is a bad parse.
+            if (headerInfo.shape == null)
+                headerInfo.success = false;
+
+
+            return headerInfo;
         }
 
+   
+        /// <summary>
+        /// gets the substring from the startingString to the endingString
+        /// </summary>
+        /// <param name="headerStr"></param>
+        /// <param name="startingString"></param>
+        /// <param name="endingString"></param>
+        /// <returns></returns>
+        private static string HeaderSegment(string headerStr, string startingString, string endingString)
+        {
+            int startIndex = headerStr.IndexOf(startingString);
+            int endIndex = headerStr.IndexOf(endingString, startIndex);
+
+            string segment = headerStr.Substring(startIndex, endIndex - startIndex+1);
+
+            return segment;
+        }
+
+ 
+        /// <summary>
+        /// parse the array information from the description string
+        /// </summary>
+        /// <param name="descr"></param>
+        /// <returns></returns>
+        private static (bool, NPY_TYPES, char, int) ParseDescrString(string descr)
+        {
+            string[] descrParts = descr.Split(':');
+            if (descrParts.Length != 2)
+                return (false, NPY_TYPES.NPY_NOTSET, '\0', 0);
+
+            string typestr = descrParts[1];
+            typestr = typestr.Replace("'", "").Trim();
+            typestr = typestr.Replace(",", "").Trim();
+
+            if (typestr is null)
+                return (false, NPY_TYPES.NPY_NOTSET, '\0', 0);
+
+            if (typestr.Length == 0)
+                return (false, NPY_TYPES.NPY_NOTSET, '\0', 0);
+
+            char byteorder;
+
+            switch (typestr[0])
+            {
+                case '>':
+                case '<':
+                case '=':
+                    byteorder = typestr[0];
+                    typestr = skip1char(typestr);
+                    break;
+                case '|':
+                    byteorder = '=';
+                    typestr = skip1char(typestr);
+                    break;
+                default:
+                    byteorder = '=';
+                    break;
+            }
+
+            if (typestr.Length == 0)
+                return (false, NPY_TYPES.NPY_NOTSET, '\0', 0);
+
+
+            bool success = true;
+            NPY_TYPES dataType = NPY_TYPES.NPY_OBJECT;
+            int itemsize = 0;
+
+            switch (typestr)
+            {
+                case "b1":
+                    dataType = NPY_TYPES.NPY_BOOL;
+                    itemsize = 1;
+                    break;
+                case "i1":
+                    dataType = NPY_TYPES.NPY_BYTE;
+                    itemsize = 1;
+                    break;
+                case "i2":
+                    dataType = NPY_TYPES.NPY_INT16;
+                    itemsize = 2;
+                    break;
+                case "i4":
+                    dataType = NPY_TYPES.NPY_INT32;
+                    itemsize = 4;
+                    break;
+                case "i8":
+                    dataType = NPY_TYPES.NPY_INT64;
+                    itemsize = 8;
+                    break;
+                case "u1":
+                    dataType = NPY_TYPES.NPY_UBYTE;
+                    itemsize = 1;
+                    break;
+                case "u2":
+                    dataType = NPY_TYPES.NPY_UINT16;
+                    itemsize = 2;
+                    break;
+                case "u4":
+                    dataType = NPY_TYPES.NPY_UINT32;
+                    itemsize = 4;
+                    break;
+                case "u8":
+                    dataType = NPY_TYPES.NPY_UINT64;
+                    itemsize = 8;
+                    break;
+                case "f4":
+                    dataType = NPY_TYPES.NPY_FLOAT;
+                    itemsize = 4;
+                    break;
+                case "f8":
+                    dataType = NPY_TYPES.NPY_DOUBLE;
+                    itemsize = 8;
+                    break;
+                default:
+                    success = false;
+                    dataType = NPY_TYPES.NPY_OBJECT;
+                    break;
+
+            }
+
+            return (success, dataType, byteorder, itemsize);
+
+        }
+
+        /// <summary>
+        /// parse the shape embedded in the file header
+        /// </summary>
+        /// <param name="shapeString"></param>
+        /// <returns></returns>
+        private static shape ParseShape(string shapeString)
+        {
+            string[] shapeParts = shapeString.Split(':');
+            if (shapeParts.Length != 2)
+                return null;
+
+            string shapeStr = shapeParts[1];
+
+            shapeStr = shapeStr.Replace("(", "");
+            shapeStr = shapeStr.Replace(")", "");
+            shapeStr = shapeStr.Replace("L", "");
+
+            shapeParts = shapeStr.Split(',');
+
+            int[] ishape = ConvertStringToInt(shapeParts);
+
+            return new NumpyDotNet.shape(ishape);
+        }
+
+        /// <summary>
+        /// parse the fortran_order embedded in the file header
+        /// </summary>
+        /// <param name="fortranOrder"></param>
+        /// <returns></returns>
+        private static bool ParseFortranOrder(string fortranOrder)
+        {
+            string[] fortranParts = fortranOrder.Split(':');
+            if (fortranParts.Length != 2)
+                return false;
+
+            if (fortranParts[1].ToLower().Contains("true"))
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// converts the header shape field into a numeric shape
+        /// </summary>
+        /// <param name="shapeParts"></param>
+        /// <returns></returns>
+        private static int[] ConvertStringToInt(string[] shapeParts)
+        {
+            List<int> intParts = new List<int>();
+
+            for (int i = 0; i < shapeParts.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(shapeParts[i]))
+                    intParts.Add(int.Parse(shapeParts[i]));
+            }
+
+            return intParts.ToArray();
+        }
+
+        // skips the input string ahead by 1 char
+        private static string skip1char(string typestr)
+        {
+            return typestr.Substring(1);
+        }
+
+        // validates the version information from the file
         private static void _check_version((int major, int minor) version)
         {
             if (version.major == 1 && version.minor == 0)
@@ -137,7 +459,8 @@ namespace NumpyDotNet
             throw new Exception(string.Format("we only support version (1,0) and (2,0), not ({0},{1})", version.major, version.minor));
         }
 
-        private static (int major, int minor) read_magic(FileStream fp)
+        // reads the magic header field
+        private static (int major, int minor) read_magic(BinaryReader fp)
         {
             byte[] magic_str = _read_bytes(fp, MAGIC_LEN, "magic string");
             if (IsPrefixMatch(magic_str, MAGIC_PREFIX) == false)
@@ -151,7 +474,8 @@ namespace NumpyDotNet
             return (major, minor);
         }
 
-        private static byte[] _read_bytes(FileStream fp, int size, string error_template)
+        // reads the specified number of bytes
+        private static byte[] _read_bytes(BinaryReader fp, int size, string error_template)
         {
 
             byte[] data = new byte[size];
@@ -176,6 +500,7 @@ namespace NumpyDotNet
             return data;
         }
 
+        // compares the header prefix with expected sequence
         private static bool IsPrefixMatch(byte[] magic, byte[] Prefix)
         {
             for (int i = 0; i < Prefix.Length; i++)
@@ -186,6 +511,8 @@ namespace NumpyDotNet
 
             return true;
         }
+
+   
 
     }
 }
