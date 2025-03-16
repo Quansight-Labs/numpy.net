@@ -130,8 +130,10 @@ namespace NumpyDotNet
                 (array_info.byteorder == '>' && BitConverter.IsLittleEndian))
                 throw new NotSupportedException("Byte order doesn't match system endianness");
 
+
+            NPY_ORDER NpyOrder = NPY_ORDER.NPY_CORDER;
             if (array_info.fortran_order == true)
-                throw new NotSupportedException("Fortran Order not supported");
+                NpyOrder = NPY_ORDER.NPY_FORTRANORDER;
 
 
             // calculate the number of elements from the embedded shape
@@ -148,67 +150,67 @@ namespace NumpyDotNet
                     {
                         Array array = Array.CreateInstance(typeof(System.Boolean), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((bool[])array).reshape(array_info.shape);
+                        return np.array((bool[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_BYTE:
                     {
                         Array array = Array.CreateInstance(typeof(System.SByte), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((sbyte[])array).reshape(array_info.shape);
+                        return np.array((sbyte[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_UBYTE:
                     {
                         Array array = Array.CreateInstance(typeof(System.Byte), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((byte[])array).reshape(array_info.shape);
+                        return np.array((byte[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_INT16:
                     {
                         Array array = Array.CreateInstance(typeof(System.Int16), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((Int16[])array).reshape(array_info.shape);
+                        return np.array((Int16[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_UINT16:
                     {
                         Array array = Array.CreateInstance(typeof(System.UInt16), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((UInt16[])array).reshape(array_info.shape);
+                        return np.array((UInt16[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_INT32:
                     {
                         Array array = Array.CreateInstance(typeof(System.Int32), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((Int32[])array).reshape(array_info.shape);
+                        return np.array((Int32[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_UINT32:
                     {
                         Array array = Array.CreateInstance(typeof(System.UInt32), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((UInt32[])array).reshape(array_info.shape);
+                        return np.array((UInt32[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_INT64:
                     {
                         Array array = Array.CreateInstance(typeof(System.Int64), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((Int64[])array).reshape(array_info.shape);
+                        return np.array((Int64[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_UINT64:
                     {
                         Array array = Array.CreateInstance(typeof(System.UInt64), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((UInt64[])array).reshape(array_info.shape);
+                        return np.array((UInt64[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_FLOAT:
                     {
                         Array array = Array.CreateInstance(typeof(System.Single), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((Single[])array).reshape(array_info.shape);
+                        return np.array((Single[])array).reshape(array_info.shape, order: NpyOrder);
                     }
                 case NPY_TYPES.NPY_DOUBLE:
                     {
                         Array array = Array.CreateInstance(typeof(System.Double), length);
                         Buffer.BlockCopy(buffer, 0, array, 0, buffer.Length);
-                        return np.array((double[])array).reshape(array_info.shape);
+                        return np.array((double[])array).reshape(array_info.shape, order: NpyOrder);
                     }
 
                 default:
