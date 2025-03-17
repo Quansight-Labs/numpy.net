@@ -431,7 +431,7 @@ namespace NumpyDotNet
                     dataType = NPY_TYPES.NPY_DOUBLE;
                     itemsize = 8;
                     break;
-                case "d8":
+                case "d16":
                     dataType = NPY_TYPES.NPY_DECIMAL;
                     itemsize = sizeof(decimal);
                     break;
@@ -679,7 +679,7 @@ namespace NumpyDotNet
                     TypeIndicator = "f8";
                     break;
                 case NPY_TYPES.NPY_DECIMAL:
-                    TypeIndicator = "d8";
+                    TypeIndicator = "d16";
                     break;
                 case NPY_TYPES.NPY_COMPLEX:
                     TypeIndicator = "c16";
