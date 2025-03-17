@@ -193,6 +193,8 @@ namespace NumpyLib
 
         public virtual npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
         {
+
+
             T[] ip = oip as T[];
             T mp = ip[0 + startIndex];
 
@@ -1108,6 +1110,41 @@ namespace NumpyLib
             sbyte dValue = (sbyte)bValue;
             return dValue >= (dynamic)operand;
         }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            sbyte[] ip = oip as sbyte[];
+            sbyte mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            sbyte[] ip = oip as sbyte[];
+            sbyte mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
     }
 
     internal class UByteHandlers : ArrayHandlerBase<byte>, IArrayHandlers
@@ -1302,7 +1339,42 @@ namespace NumpyLib
             byte dValue = (byte)bValue;
             return dValue >= (dynamic)operand;
         }
-  
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            byte[] ip = oip as byte[];
+            byte mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            byte[] ip = oip as byte[];
+            byte mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
+
     }
 
     internal class Int16Handlers : ArrayHandlerBase<Int16>, IArrayHandlers
@@ -1496,6 +1568,41 @@ namespace NumpyLib
         {
             Int16 dValue = (Int16)bValue;
             return dValue >= (dynamic)operand;
+        }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int16[] ip = oip as Int16[];
+            Int16 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int16[] ip = oip as Int16[];
+            Int16 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
     }
 
@@ -1692,6 +1799,41 @@ namespace NumpyLib
             UInt16 dValue = (UInt16)bValue;
             return dValue >= (dynamic)operand;
         }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt16[] ip = oip as UInt16[];
+            UInt16 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt16[] ip = oip as UInt16[];
+            UInt16 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
     }
 
     internal class Int32Handlers : ArrayHandlerBase<Int32>, IArrayHandlers
@@ -1885,6 +2027,41 @@ namespace NumpyLib
         {
             Int32 dValue = (Int32)bValue;
             return dValue >= (dynamic)operand;
+        }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int32[] ip = oip as Int32[];
+            Int32 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int32[] ip = oip as Int32[];
+            Int32 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
     }
 
@@ -2080,6 +2257,41 @@ namespace NumpyLib
             UInt32 dValue = (UInt32)bValue;
             return dValue >= (dynamic)operand;
         }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt32[] ip = oip as UInt32[];
+            UInt32 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt32[] ip = oip as UInt32[];
+            UInt32 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
     }
 
     internal class Int64Handlers : ArrayHandlerBase<Int64>, IArrayHandlers
@@ -2273,6 +2485,42 @@ namespace NumpyLib
             Int64 dValue = (Int64)bValue;
             return dValue >= (dynamic)operand;
         }
+
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int64[] ip = oip as Int64[];
+            Int64 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            Int64[] ip = oip as Int64[];
+            Int64 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
     }
 
     internal class UInt64Handlers : ArrayHandlerBase<UInt64>, IArrayHandlers
@@ -2464,6 +2712,41 @@ namespace NumpyLib
         {
             UInt64 dValue = (UInt64)bValue;
             return dValue >= (dynamic)operand;
+        }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt64[] ip = oip as UInt64[];
+            UInt64 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            UInt64[] ip = oip as UInt64[];
+            UInt64 mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
     }
 
@@ -2750,6 +3033,42 @@ namespace NumpyLib
 
             return 1.0f;
         }
+
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            float[] ip = oip as float[];
+            float mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            float[] ip = oip as float[];
+            float mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
+        }
     }
 
     internal class DoubleHandlers : ArrayHandlerBase<double>, IArrayHandlers
@@ -3025,6 +3344,42 @@ namespace NumpyLib
 
             return 1.0;
 
+        }
+
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            double[] ip = oip as double[];
+            double mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            double[] ip = oip as double[];
+            double mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
 
     }
@@ -3306,6 +3661,41 @@ namespace NumpyLib
         protected override object Rint(dynamic bValue, dynamic operand)
         {
             return Math.Round(Convert.ToDecimal(bValue));
+        }
+
+        public override npy_intp ArgMax(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            decimal[] ip = oip as decimal[];
+            decimal mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] > mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+
+            }
+            return max_ind;
+        }
+
+        public override npy_intp ArgMin(object oip, npy_intp startIndex, npy_intp endIndex)
+        {
+            decimal[] ip = oip as decimal[];
+            decimal mp = ip[0 + startIndex];
+
+            npy_intp max_ind = 0;
+            for (npy_intp i = 1 + startIndex; i < endIndex + startIndex; i++)
+            {
+                if (ip[i] < mp)
+                {
+                    mp = ip[i];
+                    max_ind = i - startIndex;
+                }
+            }
+            return max_ind;
         }
     }
 
@@ -3805,6 +4195,7 @@ namespace NumpyLib
 
             return lowIndex + 1;
         }
+
 
         public override int CompareTo(object invalue, object comparevalue)
         {
