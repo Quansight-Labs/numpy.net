@@ -566,7 +566,7 @@ namespace NumpyDotNetTests
         {
             var a = np.array(new double[,] { { double.NaN, 4 }, { 2, 3 } });
             var b = np.argmax(a);
-            Assert.AreEqual((npy_intp)1, b.GetItem(0));  // note: different result than python due to how .NET compares NaN numbers
+            Assert.AreEqual((npy_intp)0, b.GetItem(0));  // note: different result than python due to how .NET compares NaN numbers
             print(b);
 
             var c = np.nanargmax(a);
@@ -574,7 +574,7 @@ namespace NumpyDotNetTests
             print(c);
 
             var d = np.argmax(a, axis: 0);          
-            AssertArray(d, new npy_intp[] { 1, 0 });    // note: different result than python due to how .NET compares NaN numbers
+            AssertArray(d, new npy_intp[] { 0, 0 });    // note: different result than python due to how .NET compares NaN numbers
             print(d);
 
             var e = np.nanargmax(a, axis: 0);
@@ -582,7 +582,7 @@ namespace NumpyDotNetTests
             print(e);
 
             var f = np.argmax(a, axis: 1);          // note: different result than python due to how .NET compares NaN numbers
-            AssertArray(f, new npy_intp[] { 1, 1 });
+            AssertArray(f, new npy_intp[] { 0, 1 });
             print(f);
 
             var g = np.nanargmax(a, axis: 1);

@@ -690,5 +690,21 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(b);
 
 
+    def test_williamlzw(self):
+
+        arr = np.zeros(134)
+        bb = np.array([True])
+        print(bb)
+        print("")
+
+
+        xx = arr[1:] != arr[:-1]
+        print(xx)
+        print("")
+
+        mask = np.append(bb, xx)
+        print(mask)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1824,7 +1824,60 @@ namespace NumpyDotNetTests
 
         }
 
+        [TestMethod]
+        public void williamlzw_1()
+        {
+            ndarray s1 = np.array(new string[] { "1.1", "2.2", "3.3" });
 
+            ndarray s2 = s1.astype(np.Float64);
+
+        }
+
+        [TestMethod]
+        public void williamlzw_2()
+        {
+            ndarray s1 = np.array(new string[] { "1.1", "2.2", "3.3" });
+
+            ndarray s2 = (ndarray)s1[(new long[] { 1 })];
+            // s2 = ndarray("2.2");
+
+            string s3 = (string)s1[ 1 ];
+            // s3 = string == "2.2"
+
+        }
+
+        [TestMethod]
+        public void williamlzw_3()
+        {
+            ndarray argmaxArr = np.zeros(134);
+            ndarray bb = np.array(new bool[] { true });
+            print(bb);
+            print("");
+
+            ndarray x1 = (ndarray)argmaxArr["1:"];
+            ndarray x2 = (ndarray)argmaxArr[":-1"];
+
+            ndarray mask = np.append(bb, x1.NotEquals(x2));
+            print(mask);
+
+        }
+
+
+        [TestMethod]
+        public void williamlzw_4()
+        {
+            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            ndarray argmaxArr = np.arange(1, 3500000);
+
+            stopWatch.Start();
+            ndarray x = argmaxArr.ArgMax(-1);
+            stopWatch.Stop();
+
+            Console.WriteLine(stopWatch.ElapsedMilliseconds);
+
+
+
+        }
 
     }
 }
