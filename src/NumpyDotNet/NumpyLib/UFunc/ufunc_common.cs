@@ -1923,6 +1923,16 @@ namespace NumpyLib
                 return index;
             }
 
+            protected npy_intp AdjustNegativeIndex(VoidPtr vp, npy_intp index)
+            {
+                if (index < 0)
+                {
+                    T[] data = vp.datap as T[];
+                    index = data.Length - -index;
+                }
+                return index;
+            }
+
             protected opFunction GetUFuncOperation(UFuncOperation ops)
             {
                 switch (ops)

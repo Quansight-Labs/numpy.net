@@ -2972,31 +2972,21 @@ namespace NumpyLib
                 helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
                 loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
-                VoidPtr Operand1 = loop.bufptr[0];
                 VoidPtr Operand2 = loop.bufptr[1];
                 VoidPtr Result = loop.bufptr[2];
 
-                double[] Op1Array = Operand1.datap as double[];
-                double[] OperandArray = Operand2.datap as double[];
-                double[] retArray = Result.datap as double[];
-
-
-                npy_intp O1_Offset = Operand1.data_offset;
-                npy_intp O2_Offset = Operand2.data_offset;
-                npy_intp R_Offset = Result.data_offset;
-
-                npy_intp R_Index = AdjustNegativeIndex(retArray, R_Offset >> ItemDiv);
-                npy_intp O1_Index = AdjustNegativeIndex(Op1Array, O1_Offset >> ItemDiv);
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
 
                 npy_intp OperStep = (O2_Step >> ItemDiv);
-                npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
 
+ 
+                /* Adjust input pointer */
+                double[] OperandArray = loop.it.dataptr.datap as double[];
+                double[] retArray = Result.datap as double[];
                 double result = retArray[R_Index];
                 npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
 
-
-                /* Adjust input pointer */
-                OperandArray = loop.it.dataptr.datap as double[];
                 npy_intp N = loop.N;
 
                 switch (op)
