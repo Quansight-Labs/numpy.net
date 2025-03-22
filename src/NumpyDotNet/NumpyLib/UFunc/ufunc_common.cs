@@ -287,6 +287,26 @@ namespace NumpyLib
             return null;
         }
 
+        internal static UFuncGeneralReductionHandler_XXX GetGeneralReductionUFuncHandler_XXX(NpyUFuncReduceObject loop)
+        {
+            VoidPtr Result = loop.bufptr[2];
+            if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
+            {
+                if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                {
+                    IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                    if (UFunc != null)
+                    {
+                        return UFunc.PerformReduceOpArrayIter_XXX;
+                    }
+                }
+     
+            }
+
+            return null;
+        }
+
+
         internal static void UFuncCommon(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, UFuncOperation Ops)
         {
             VoidPtr Result = bufPtr[2];
@@ -888,6 +908,10 @@ namespace NumpyLib
             protected int ItemSize;
             protected int ItemDiv;
 
+            public virtual void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+            {
+                throw new NotImplementedException();
+            }
 
             #region SCALAR CALCULATIONS
             public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)

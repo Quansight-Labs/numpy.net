@@ -1157,8 +1157,15 @@ namespace NumpyLib
 
                     helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
-                    var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
+                    var UFuncHandler_XXX = GetGeneralReductionUFuncHandler_XXX(loop);
+                    if (UFuncHandler_XXX != null)
+                    {
+                        UFuncHandler_XXX(self.ops, loop);
+                        return loop.ret;
+                    }
 
+
+                    var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
                     var loopcnt = loop.size - loop.index;
                     if (loopcnt <= 1 || UFuncHandler == null)
                     {

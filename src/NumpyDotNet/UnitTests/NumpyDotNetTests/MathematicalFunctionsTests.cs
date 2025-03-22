@@ -992,6 +992,8 @@ namespace NumpyDotNetTests
             var x = np.array(TestData, dtype: np.Float64).reshape(new shape(3, 2, -1));
             x = x * 3.456;
 
+            var k = np.sum(x);
+
             var y = np.sum(x, axis: 0);
             print(y);
             AssertArray(y, new double[,] { { 390.528, 518.4 }, { 390.528, 518.4 } });
@@ -1007,6 +1009,28 @@ namespace NumpyDotNetTests
             AssertArray(y, new double[,] { { 86.4, 241.92 }, { 580.608, 86.4 }, { 241.92, 580.608 } });
 
             print("*****");
+
+        }
+
+        [TestMethod]
+        public void test_sum_XXX()
+        {
+            double[] TestData = new double[] { 1, 2, 3, 4 };
+            var x = np.array(TestData, dtype: np.Float64);
+
+            //var k = np.sum(x);
+            //print(k);
+            //Assert.AreEqual(10.0, k.GetItem(0));
+
+            x = x.reshape(2, 2);
+            var k2 = np.sum(x, axis: 0);
+            AssertArray(k2, new double[] { 4 , 6 });
+            print(k2);
+
+            x = x.reshape(2, 2);
+            var k3 = np.sum(x, axis: 1);
+            AssertArray(k3, new double[] { 3, 7 });
+            print(k3);
 
         }
 

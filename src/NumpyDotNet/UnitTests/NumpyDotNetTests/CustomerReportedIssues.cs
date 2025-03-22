@@ -1874,10 +1874,25 @@ namespace NumpyDotNetTests
             stopWatch.Stop();
 
             Console.WriteLine(stopWatch.ElapsedMilliseconds);
+        }
+
+        [TestMethod]
+        public void williamlzw_5()
+        {
+            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            ndarray waveform = np.arange(0, 249238, dtype: np.Float64);
+
+            int channels = 2;
+            ndarray x = waveform.reshape(-1, channels).T;
+            stopWatch.Reset();
+            stopWatch.Start();
+            x = x.Sum(0);
+            stopWatch.Stop();
+            x = x.reshape(-1);
+            Console.WriteLine(stopWatch.ElapsedMilliseconds);
 
 
 
         }
-
     }
 }

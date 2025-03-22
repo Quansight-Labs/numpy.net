@@ -44,12 +44,14 @@ using npy_intp = System.Int32;
 
 namespace NumpyLib
 {
+
     internal partial class numpyinternal
     {
         internal const int UFUNC_PARALLEL_DEST_MINSIZE = 1000;
         internal const int UFUNC_PARALLEL_DEST_ASIZE = 100;
 
         internal delegate void UFuncGeneralReductionHandler(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N);
+        internal delegate void UFuncGeneralReductionHandler_XXX(UFuncOperation op, NpyUFuncReduceObject loop);
 
         internal interface IUFUNC_Operations
         {
@@ -58,6 +60,8 @@ namespace NumpyLib
             void PerformAccumulateOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N);
             void PerformReduceAtOpArrayIter(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N);
             void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op);
+
+            void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop);
 
 
         }
