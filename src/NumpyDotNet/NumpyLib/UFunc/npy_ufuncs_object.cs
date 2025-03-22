@@ -1154,9 +1154,6 @@ namespace NumpyLib
                     break;
                 case UFuncLoopMethod.NOBUFFER_UFUNCLOOP:
                     /*fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
-
-                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
-
                     var UFuncHandler_XXX = GetGeneralReductionUFuncHandler_XXX(loop);
                     if (UFuncHandler_XXX != null)
                     {
@@ -1164,6 +1161,7 @@ namespace NumpyLib
                         return loop.ret;
                     }
 
+                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
                     var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
                     var loopcnt = loop.size - loop.index;
