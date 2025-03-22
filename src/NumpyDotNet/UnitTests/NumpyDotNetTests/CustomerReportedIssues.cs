@@ -1879,6 +1879,9 @@ namespace NumpyDotNetTests
         [TestMethod]
         public void williamlzw_5()
         {
+            ndarray kk = np.array(new sbyte[10]);
+            kk.Sum();
+
             System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
             ndarray waveform = np.arange(0, 249238, dtype: np.Float64);
 

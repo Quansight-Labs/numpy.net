@@ -292,13 +292,26 @@ namespace NumpyLib
             VoidPtr Result = loop.bufptr[2];
             if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
             {
-                if (Result.type_num == NPY_TYPES.NPY_DOUBLE)
+                switch (Result.type_num)
                 {
-                    IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
-                    if (UFunc != null)
-                    {
-                        return UFunc.PerformReduceOpArrayIter_XXX;
-                    }
+                    case NPY_TYPES.NPY_INT16:
+                    case NPY_TYPES.NPY_UINT16:
+                    case NPY_TYPES.NPY_INT32:
+                    case NPY_TYPES.NPY_UINT32:
+                    case NPY_TYPES.NPY_INT64:
+                    case NPY_TYPES.NPY_UINT64:
+                    case NPY_TYPES.NPY_FLOAT:
+                    case NPY_TYPES.NPY_DOUBLE:
+                    case NPY_TYPES.NPY_DECIMAL:
+                    case NPY_TYPES.NPY_COMPLEX:
+                    case NPY_TYPES.NPY_BIGINT:
+
+                        IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                        if (UFunc != null)
+                        {
+                            return UFunc.PerformReduceOpArrayIter_XXX;
+                        }
+                        break;
                 }
      
             }
@@ -908,10 +921,7 @@ namespace NumpyLib
             protected int ItemSize;
             protected int ItemDiv;
 
-            public virtual void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
-            {
-                throw new NotImplementedException();
-            }
+
 
             #region SCALAR CALCULATIONS
             public void PerformScalarOpArrayIter(NpyArray destArray, NpyArray srcArray, NpyArray operArray, UFuncOperation op)

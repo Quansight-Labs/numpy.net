@@ -49,6 +49,14 @@ namespace NumpyLib
     internal partial class UFUNC_Bool : UFUNC_BASE<bool>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -133,6 +141,14 @@ namespace NumpyLib
     internal partial class UFUNC_SByte : UFUNC_BASE<sbyte>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -209,6 +225,14 @@ namespace NumpyLib
     internal partial class UFUNC_UByte : UFUNC_BASE<byte>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -284,6 +308,114 @@ namespace NumpyLib
     internal partial class UFUNC_Int16 : UFUNC_BASE<Int16>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                Int16[] OperandArray = loop.it.dataptr.datap as Int16[];
+                Int16[] retArray = Result.datap as Int16[];
+                Int16 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -664,6 +796,114 @@ namespace NumpyLib
     internal partial class UFUNC_UInt16 : UFUNC_BASE<UInt16>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                UInt16[] OperandArray = loop.it.dataptr.datap as UInt16[];
+                UInt16[] retArray = Result.datap as UInt16[];
+                UInt16 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -1047,6 +1287,114 @@ namespace NumpyLib
     internal partial class UFUNC_Int32 : UFUNC_BASE<Int32>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                Int32[] OperandArray = loop.it.dataptr.datap as Int32[];
+                Int32[] retArray = Result.datap as Int32[];
+                Int32 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -1430,6 +1778,114 @@ namespace NumpyLib
     internal partial class UFUNC_UInt32 : UFUNC_BASE<UInt32>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                UInt32[] OperandArray = loop.it.dataptr.datap as UInt32[];
+                UInt32[] retArray = Result.datap as UInt32[];
+                UInt32 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -1813,6 +2269,114 @@ namespace NumpyLib
     internal partial class UFUNC_Int64 : UFUNC_BASE<Int64>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                Int64[] OperandArray = loop.it.dataptr.datap as Int64[];
+                Int64[] retArray = Result.datap as Int64[];
+                Int64 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -2194,6 +2758,114 @@ namespace NumpyLib
     internal partial class UFUNC_UInt64 : UFUNC_BASE<UInt64>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                UInt64[] OperandArray = loop.it.dataptr.datap as UInt64[];
+                UInt64[] retArray = Result.datap as UInt64[];
+                UInt64 result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -2577,6 +3249,114 @@ namespace NumpyLib
     internal partial class UFUNC_Float : UFUNC_BASE<float>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                float[] OperandArray = loop.it.dataptr.datap as float[];
+                float[] retArray = Result.datap as float[];
+                float result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -2958,7 +3738,7 @@ namespace NumpyLib
     internal partial class UFUNC_Double : UFUNC_BASE<double>, IUFUNC_Operations
     {
   
-        public override void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
             ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
             helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
@@ -3562,7 +4342,116 @@ namespace NumpyLib
 
     internal partial class UFUNC_Decimal : UFUNC_BASE<decimal>, IUFUNC_Operations
     {
+
         #region Accelerator Handlers
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                decimal[] OperandArray = loop.it.dataptr.datap as decimal[];
+                decimal[] retArray = Result.datap as decimal[];
+                decimal result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -3945,6 +4834,114 @@ namespace NumpyLib
     internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                System.Numerics.Complex[] OperandArray = loop.it.dataptr.datap as System.Numerics.Complex[];
+                System.Numerics.Complex[] retArray = Result.datap as System.Numerics.Complex[];
+                System.Numerics.Complex result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -4328,6 +5325,114 @@ namespace NumpyLib
     internal partial class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public  void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                /* Adjust input pointer */
+                System.Numerics.BigInteger [] OperandArray = loop.it.dataptr.datap as System.Numerics.BigInteger[];
+                System.Numerics.BigInteger[] retArray = Result.datap as System.Numerics.BigInteger[];
+                System.Numerics.BigInteger result = retArray[R_Index];
+                npy_intp OperIndex = ((0 * OperStep) + O2_CalculatedOffset);
+
+                npy_intp N = loop.N;
+
+                switch (op)
+                {
+                    case UFuncOperation.add:
+                        {
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.subtract:
+                        {
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.multiply:
+                        {
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.divide:
+                        {
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_or:
+                        {
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.logical_and:
+                        {
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.maximum:
+                        {
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+                    case UFuncOperation.minimum:
+                        {
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            break;
+                        }
+
+                    default:
+
+                        var _UFuncOperation = GetUFuncOperation(op);
+                        if (_UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", op.ToString()));
+                        }
+
+                        // note: these can't be parallelized.
+                        for (npy_intp i = 0; i < N; i++)
+                        {
+                            var Op1Value = result;
+                            var Op2Value = OperandArray[OperIndex];
+
+                            result = _UFuncOperation(Op1Value, Op2Value);
+
+                            OperIndex += OperStep;
+                        }
+
+                        retArray[R_Index] = result;
+                        break;
+
+                }
+
+
+                //loop.function(operation, loop.bufptr, loop.N, loop.steps, self.ops);
+                //if (!NPY_UFUNC_CHECK_ERROR(loop))
+                //    goto fail;
+
+                NpyArray_ITER_NEXT(loop.it);
+                loop.bufptr[0] += loop.outsize;
+                loop.bufptr[2] = loop.bufptr[0];
+                loop.index++;
+            }
+
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -4549,6 +5654,13 @@ namespace NumpyLib
     internal partial class UFUNC_Object : UFUNC_BASE<System.Object>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -4769,6 +5881,13 @@ namespace NumpyLib
     internal partial class UFUNC_String : UFUNC_BASE<System.String>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+        public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+        {
+            throw new NotImplementedException();
+        }
+
+
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             return null;
