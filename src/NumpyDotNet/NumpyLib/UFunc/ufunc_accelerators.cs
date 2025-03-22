@@ -2963,6 +2963,10 @@ namespace NumpyLib
             ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
             helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
+            npy_intp O1_Step = loop.steps[0];
+            npy_intp O2_Step = loop.steps[1];
+            npy_intp R_Step = loop.steps[2];
+
             while (loop.index < loop.size)
             {
                 helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -2976,9 +2980,6 @@ namespace NumpyLib
                 double[] OperandArray = Operand2.datap as double[];
                 double[] retArray = Result.datap as double[];
 
-                npy_intp O1_Step = loop.steps[0];
-                npy_intp O2_Step = loop.steps[1];
-                npy_intp R_Step = loop.steps[2];
 
                 npy_intp O1_Offset = Operand1.data_offset;
                 npy_intp O2_Offset = Operand2.data_offset;
