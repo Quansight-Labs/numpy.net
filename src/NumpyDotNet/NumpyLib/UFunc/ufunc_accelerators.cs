@@ -2960,8 +2960,6 @@ namespace NumpyLib
   
         public override void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
-            int ItemDiv = 3;
-
             ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
             helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
@@ -3004,42 +3002,42 @@ namespace NumpyLib
                 {
                     case UFuncOperation.add:
                         {
-                            AddReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = AddReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.subtract:
                         {
-                            SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = SubtractReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.multiply:
                         {
-                            MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = MultiplyReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.divide:
                         {
-                            DivideReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = DivideReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.logical_or:
                         {
-                            LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = LogicalOrReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.logical_and:
                         {
-                            LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = LogicalAndReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.maximum:
                         {
-                            MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = MaximumReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
                     case UFuncOperation.minimum:
                         {
-                            MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
+                            retArray[R_Index] = MinimumReduce(result, OperandArray, OperIndex, OperStep, N);
                             break;
                         }
 
