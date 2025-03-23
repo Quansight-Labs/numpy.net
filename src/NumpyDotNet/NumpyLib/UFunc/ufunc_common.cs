@@ -292,35 +292,12 @@ namespace NumpyLib
             VoidPtr Result = loop.bufptr[2];
             if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
             {
-                switch (Result.type_num)
+                IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                if (UFunc != null)
                 {
-                    case NPY_TYPES.NPY_BOOL:
-                    case NPY_TYPES.NPY_BYTE:
-                    case NPY_TYPES.NPY_UBYTE:
-                    case NPY_TYPES.NPY_INT16:
-                    case NPY_TYPES.NPY_UINT16:
-                    case NPY_TYPES.NPY_INT32:
-                    case NPY_TYPES.NPY_UINT32:
-                    case NPY_TYPES.NPY_INT64:
-                    case NPY_TYPES.NPY_UINT64:
-                    case NPY_TYPES.NPY_FLOAT:
-                    case NPY_TYPES.NPY_DOUBLE:
-                    case NPY_TYPES.NPY_DECIMAL:
-                    case NPY_TYPES.NPY_COMPLEX:
-                    case NPY_TYPES.NPY_BIGINT:
-                    case NPY_TYPES.NPY_OBJECT:
-                        {
-                            IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
-                            if (UFunc != null)
-                            {
-                                return UFunc.PerformReduceOpArrayIter_XXX;
-                            }
-                            break;
-                        }
-
-                    default:
-                        break;
+                    return UFunc.PerformReduceOpArrayIter_XXX;
                 }
+                throw new Exception(string.Format("Unexpected UFUNC Type : {0}", Result.type_num.ToString()));
     
             }
 
@@ -332,36 +309,12 @@ namespace NumpyLib
             VoidPtr Result = loop.bufptr[2];
             if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
             {
-                switch (Result.type_num)
+                IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                if (UFunc != null)
                 {
-                    //case NPY_TYPES.NPY_BOOL:
-                   // case NPY_TYPES.NPY_BYTE:
-                    //case NPY_TYPES.NPY_UBYTE:
-                    //case NPY_TYPES.NPY_INT16:
-                    //case NPY_TYPES.NPY_UINT16:
-                    case NPY_TYPES.NPY_INT32:
-                    //case NPY_TYPES.NPY_UINT32:
-                    //case NPY_TYPES.NPY_INT64:
-                    //case NPY_TYPES.NPY_UINT64:
-                    //case NPY_TYPES.NPY_FLOAT:
-                    //case NPY_TYPES.NPY_DOUBLE:
-                    //case NPY_TYPES.NPY_DECIMAL:
-                    //case NPY_TYPES.NPY_COMPLEX:
-                    //case NPY_TYPES.NPY_BIGINT:
-                    //case NPY_TYPES.NPY_OBJECT:
-                        {
-                            IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
-                            if (UFunc != null)
-                            {
-                                return UFunc.PerformAccumulateOpArrayIter_XXX;
-                            }
-                            break;
-                        }
-
-                    default:
-                        break;
+                    return UFunc.PerformAccumulateOpArrayIter_XXX;
                 }
-
+                throw new Exception(string.Format("Unexpected UFUNC Type : {0}", Result.type_num.ToString()));
             }
 
             return null;
