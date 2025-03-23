@@ -320,6 +320,21 @@ namespace NumpyLib
             return null;
         }
 
+        internal static UFuncGeneralReduceAtHandler_XXX GetGeneralReduceAtUFuncHandler_XXX(NpyUFuncReduceObject loop)
+        {
+            VoidPtr Result = loop.bufptr[2];
+            if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
+            {
+                IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                if (UFunc != null)
+                {
+                    return UFunc.PerformReduceAtOpArrayIter_XXX;
+                }
+                throw new Exception(string.Format("Unexpected UFUNC Type : {0}", Result.type_num.ToString()));
+            }
+
+            return null;
+        }
 
 
         internal static void UFuncCommon(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, UFuncOperation Ops)
@@ -986,6 +1001,92 @@ namespace NumpyLib
                     loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
                     loop.index++;
                 }
+            }
+
+            public void PerformReduceAtOpArrayIter_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop, NpyArray arr, NpyArray ind, npy_intp nn, int axis)
+            {
+                ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+
+                helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+                npy_intp[] ptr;
+
+                while (loop.index < loop.size)
+                {
+                    ptr = (npy_intp[])NpyArray_BYTES(ind).datap;
+                    for (npy_intp i = 0; i < nn; i++)
+                    {
+                        loop.bufptr[1] = loop.it.dataptr + ptr[i] * loop.steps[1];
+
+                        helper.memmove_init(loop.bufptr[0], loop.bufptr[1]);
+                        helper.memcpy(loop.bufptr[0].data_offset, loop.bufptr[1].data_offset, loop.outsize);
+
+                        npy_intp mm = (i == nn - 1 ? NpyArray_DIM(arr, axis) - ptr[i] : ptr[i + 1] - ptr[i]) - 1;
+                        if (mm > 0)
+                        {
+                            loop.bufptr[1] += loop.steps[1];
+                            loop.bufptr[2] = loop.bufptr[0];
+
+                            ////////////////////
+                            VoidPtr Operand1 = loop.bufptr[0];
+                            VoidPtr Operand2 = loop.bufptr[1];
+                            VoidPtr Result = loop.bufptr[2];
+
+                            npy_intp O1_Step = loop.steps[0];
+                            npy_intp O2_Step = loop.steps[1];
+                            npy_intp R_Step = loop.steps[2];
+
+                            if (Operand2 == null)
+                            {
+                                Operand2 = Operand1;
+                                O2_Step = O1_Step;
+                            }
+                            if (Result == null)
+                            {
+                                Result = Operand1;
+                                R_Step = O1_Step;
+                            }
+
+                            npy_intp O1_Offset = Operand1.data_offset;
+                            npy_intp O2_Offset = Operand2.data_offset;
+                            npy_intp R_Offset = Result.data_offset;
+
+                            npy_intp O1_CalculatedStep = (O1_Step >> ItemDiv);
+                            npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
+
+                            npy_intp O2_CalculatedStep = (O2_Step >> ItemDiv);
+                            npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
+
+                            npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
+                            npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
+
+                            npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+                            npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                            npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
+                            PerformReduceAtOpArrayIter_XXX(Operand1, O1_Index, O1_CalculatedStep,
+                                Operand2, O2_Index, O2_CalculatedStep,
+                                Result, R_Index, R_CalculatedStep,
+                                ufop, mm);
+                        }
+                        loop.bufptr[0] += NpyArray_STRIDE(loop.ret, axis);
+                    }
+                    NpyArray_ITER_NEXT(loop.it);
+                    NpyArray_ITER_NEXT(loop.rit);
+                    loop.bufptr[0] = loop.rit.dataptr;
+                    loop.index++;
+                }
+            }
+
+            protected void PerformReduceAtOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+               VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+               VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+               UFuncOperation ufop, npy_intp N)
+            {
+                PerformAccumulateOpArrayIter_XXX(Operand1, O1_Index, O1_CalculatedStep,
+                                Operand2, O2_Index, O2_CalculatedStep,
+                                Result, R_Index, R_CalculatedStep,
+                                ufop, N);
             }
 
             protected abstract void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,

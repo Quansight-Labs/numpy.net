@@ -1898,32 +1898,7 @@ namespace NumpyDotNetTests
 
         }
 
-        [TestMethod]
-        public void Performance_cumsum_Int32()
-        {
-            int LoopCount = 200;
-
-            var sut = np.arange(16000000, dtype: np.Int32).reshape((40, -1));
-
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
-
-            //matrix = matrix["1:40:2", "1:-2:3"] as ndarray;
-
-            for (int i = 0; i < LoopCount; i++)
-            {
-                var x1 = np.cumsum(sut);
-                var x2 = np.cumsum(sut, axis:0);
-                var x3 = np.cumsum(sut, axis:1);
-
-            }
-
-            sw.Stop();
-
-            Console.WriteLine(string.Format("COPY calculations took {0} milliseconds\n", sw.ElapsedMilliseconds));
-            Console.WriteLine("************\n");
-        }
-
+     
 
     }
 }

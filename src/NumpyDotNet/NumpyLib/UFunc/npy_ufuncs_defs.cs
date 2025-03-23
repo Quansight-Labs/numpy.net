@@ -53,6 +53,7 @@ namespace NumpyLib
         internal delegate void UFuncGeneralReductionHandler(VoidPtr[] bufPtr, npy_intp[] steps, UFuncOperation ops, npy_intp N);
         internal delegate void UFuncGeneralReductionHandler_XXX(UFuncOperation op, NpyUFuncReduceObject loop);
         internal delegate void UFuncGeneralAccumulateHandler_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop);
+        internal delegate void UFuncGeneralReduceAtHandler_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop, NpyArray arr, NpyArray ind, npy_intp nn, int axis);
 
         internal interface IUFUNC_Operations
         {
@@ -64,8 +65,7 @@ namespace NumpyLib
 
             void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop);
             void PerformAccumulateOpArrayIter_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop);
-
-
+            void PerformReduceAtOpArrayIter_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop, NpyArray arr, NpyArray ind, npy_intp nn, int axis);
         }
 
 
