@@ -50,6 +50,41 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                   VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                   VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                   UFuncOperation ufop, npy_intp N)
+        {
+            bool[] retArray = Result.datap as bool[];
+            bool[] Op1Array = Operand1.datap as bool[];
+            bool[] Op2Array = Operand2.datap as bool[];
+
+            switch (ufop)
+            {
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             bool[] OperandArray = Operand.datap as bool[];
@@ -182,6 +217,41 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                   VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                   VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                   UFuncOperation ufop, npy_intp N)
+        {
+            sbyte[] retArray = Result.datap as sbyte[];
+            sbyte[] Op1Array = Operand1.datap as sbyte[];
+            sbyte[] Op2Array = Operand2.datap as sbyte[];
+
+            switch (ufop)
+            {
+  
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             sbyte[] OperandArray = Operand.datap as sbyte[];
@@ -304,6 +374,40 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                   VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                   VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                   UFuncOperation ufop, npy_intp N)
+        {
+            byte[] retArray = Result.datap as byte[];
+            byte[] Op1Array = Operand1.datap as byte[];
+            byte[] Op2Array = Operand2.datap as byte[];
+
+            switch (ufop)
+            {
+ 
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -424,6 +528,53 @@ namespace NumpyLib
     internal partial class UFUNC_Int16 : UFUNC_BASE<Int16>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                         VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                         VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                         UFuncOperation ufop, npy_intp N)
+        {
+            Int16[] retArray = Result.datap as Int16[];
+            Int16[] Op1Array = Operand1.datap as Int16[];
+            Int16[] Op2Array = Operand2.datap as Int16[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
@@ -883,7 +1034,51 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                     VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                     VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                     UFuncOperation ufop, npy_intp N)
+        {
+            UInt16[] retArray = Result.datap as UInt16[];
+            UInt16[] Op1Array = Operand1.datap as UInt16[];
+            UInt16[] Op2Array = Operand2.datap as UInt16[];
 
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -1346,72 +1541,9 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
-        public override void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
-        {
-            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+  
 
-            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
-
-            VoidPtr Operand1 = loop.bufptr[0];
-            VoidPtr Operand2 = loop.bufptr[1];
-
-            while (loop.index < loop.size)
-            {
-                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
-                /* Adjust input pointer */
-                loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-
-
-                VoidPtr Result = loop.bufptr[2];
-
-                npy_intp Operand1_Step = loop.steps[0];
-                npy_intp Operand2_Step = loop.steps[1];
-                npy_intp R_Step = loop.steps[2];
-
-                if (Operand2 == null)
-                {
-                    Operand2 = Operand1;
-                    Operand2_Step = Operand1_Step;
-                }
-                if (Result == null)
-                {
-                    Result = Operand1;
-                    R_Step = Operand1_Step;
-                }
-
-                npy_intp O1_Offset = Operand1.data_offset;
-                npy_intp O2_Offset = Operand2.data_offset;
-                npy_intp R_Offset = Result.data_offset;
-
-                npy_intp O1_CalculatedStep = (Operand1_Step >> ItemDiv);
-                npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
-
-                npy_intp O2_CalculatedStep = (Operand2_Step >> ItemDiv);
-                npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
-
-                npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
-                npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
-
-                npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
-                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
-                npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
-
-                PerformAccumulateOpArrayIter_XXXx(Operand1, O1_Index, O1_CalculatedStep,
-                     Operand2, O2_Index, O2_CalculatedStep,
-                     Result, R_Index, R_CalculatedStep,
-                     ufop, loop.N);
-
-
-                NpyArray_ITER_NEXT(loop.it);
-                NpyArray_ITER_NEXT(loop.rit);
-                loop.bufptr[0] = loop.rit.dataptr;
-                loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
-                loop.index++;
-            }
-        }
-
-
-        private void PerformAccumulateOpArrayIter_XXXx(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
                          VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
                          VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep, 
                          UFuncOperation ufop, npy_intp N)
@@ -1918,6 +2050,51 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+               VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+               VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+               UFuncOperation ufop, npy_intp N)
+        {
+            UInt32[] retArray = Result.datap as UInt32[];
+            UInt32[] Op1Array = Operand1.datap as UInt32[];
+            UInt32[] Op2Array = Operand2.datap as UInt32[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -2378,6 +2555,52 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+           VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+           VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+           UFuncOperation ufop, npy_intp N)
+        {
+            Int64[] retArray = Result.datap as Int64[];
+            Int64[] Op1Array = Operand1.datap as Int64[];
+            Int64[] Op2Array = Operand2.datap as Int64[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             Int64[] OperandArray = Operand.datap as Int64[];
@@ -2835,6 +3058,53 @@ namespace NumpyLib
     internal partial class UFUNC_UInt64 : UFUNC_BASE<UInt64>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+           VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+           VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+           UFuncOperation ufop, npy_intp N)
+        {
+            UInt64[] retArray = Result.datap as UInt64[];
+            UInt64[] Op1Array = Operand1.datap as UInt64[];
+            UInt64[] Op2Array = Operand2.datap as UInt64[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -3296,6 +3566,52 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                                VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                                VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                                UFuncOperation ufop, npy_intp N)
+        {
+            float[] retArray = Result.datap as float[];
+            float[] Op1Array = Operand1.datap as float[];
+            float[] Op2Array = Operand2.datap as float[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             float[] OperandArray = Operand.datap as float[];
@@ -3752,6 +4068,56 @@ namespace NumpyLib
     internal partial class UFUNC_Double : UFUNC_BASE<double>, IUFUNC_Operations
     {
 
+  
+
+        #region Accelerator Handlers
+
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                           VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                           VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                           UFuncOperation ufop, npy_intp N)
+        {
+            double[] retArray = Result.datap as double[];
+            double[] Op1Array = Operand1.datap as double[];
+            double[] Op2Array = Operand2.datap as double[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             double[] OperandArray = Operand.datap as double[];
@@ -3828,7 +4194,6 @@ namespace NumpyLib
         }
 
 
-#region Accelerator Handlers
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -4328,6 +4693,52 @@ namespace NumpyLib
 
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                    VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                    VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                    UFuncOperation ufop, npy_intp N)
+        {
+            decimal[] retArray = Result.datap as decimal[];
+            decimal[] Op1Array = Operand1.datap as decimal[];
+            decimal[] Op2Array = Operand2.datap as decimal[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             decimal[] OperandArray = Operand.datap as decimal[];
@@ -4785,6 +5196,53 @@ namespace NumpyLib
     internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
     {
         #region Accelerator Handlers
+
+
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                    VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                    VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                    UFuncOperation ufop, npy_intp N)
+        {
+            System.Numerics.Complex[] retArray = Result.datap as System.Numerics.Complex[];
+            System.Numerics.Complex[] Op1Array = Operand1.datap as System.Numerics.Complex[];
+            System.Numerics.Complex[] Op2Array = Operand2.datap as System.Numerics.Complex[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -5246,6 +5704,52 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+               VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+               VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+               UFuncOperation ufop, npy_intp N)
+        {
+            System.Numerics.BigInteger[] retArray = Result.datap as System.Numerics.BigInteger[];
+            System.Numerics.BigInteger[] Op1Array = Operand1.datap as System.Numerics.BigInteger[];
+            System.Numerics.BigInteger[] Op2Array = Operand2.datap as System.Numerics.BigInteger[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
+
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
             System.Numerics.BigInteger[] OperandArray = Operand.datap as System.Numerics.BigInteger[];
@@ -5543,6 +6047,51 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                            VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                            VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                            UFuncOperation ufop, npy_intp N)
+        {
+            object[] retArray = Result.datap as object[];
+            object[] Op1Array = Operand1.datap as object[];
+            object[] Op2Array = Operand2.datap as object[];
+
+            switch (ufop)
+            {
+                case NumpyLib.UFuncOperation.add:
+                    AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                    Op2Array, O2_Index, O2_CalculatedStep,
+                                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                case NumpyLib.UFuncOperation.multiply:
+                    MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                    Op2Array, O2_Index, O2_CalculatedStep,
+                    retArray, R_Index, R_CalculatedStep, N);
+                    break;
+
+                default:
+                    var UFuncOperation = GetUFuncOperation(ufop);
+                    if (UFuncOperation == null)
+                    {
+                        throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                    }
+
+                    for (npy_intp i = 0; i < N; i++)
+                    {
+                        var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                        var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                        retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                        O1_Index += O1_CalculatedStep;
+                        O2_Index += O2_CalculatedStep;
+                        R_Index += R_CalculatedStep;
+                    }
+                    break;
+
+            }
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
@@ -5841,6 +6390,13 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        protected override void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                       VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                       VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                       UFuncOperation ufop, npy_intp N)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset)
         {
