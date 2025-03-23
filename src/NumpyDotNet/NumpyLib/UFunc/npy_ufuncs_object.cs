@@ -1324,7 +1324,7 @@ namespace NumpyLib
                     UFuncHandler_XXX = null;
                     if (UFuncHandler_XXX != null)
                     {
-                        UFuncHandler_XXX(operation, loop, self.ops);
+                        UFuncHandler_XXX(self.ops, loop);
                     }
                     else
                     {

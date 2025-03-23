@@ -924,7 +924,7 @@ namespace NumpyLib
             protected int ItemDiv;
 
 
-            public void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
+            public void PerformAccumulateOpArrayIter_XXX(UFuncOperation ufop, NpyUFuncReduceObject loop)
             {
                 ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
 
