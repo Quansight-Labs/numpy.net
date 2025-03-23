@@ -1158,7 +1158,6 @@ namespace NumpyLib
                     if (UFuncHandler_XXX != null)
                     {
                         UFuncHandler_XXX(self.ops, loop);
-                        return loop.ret;
                     }
                     else
                     {
@@ -1325,18 +1324,10 @@ namespace NumpyLib
                     if (UFuncHandler_XXX != null)
                     {
                         UFuncHandler_XXX(operation, loop, self.ops);
-                        break;
                     }
-
-
-
-                    helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
-
-                    var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
-                    UFuncHandler = null;
-                    var loopcnt = loop.size - loop.index;
-                    if (loopcnt <= 1 || UFuncHandler == null)
+                    else
                     {
+                        helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
                         while (loop.index < loop.size)
                         {
                             helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -1352,75 +1343,8 @@ namespace NumpyLib
                             loop.index++;
                         }
                     }
-                    else
-                    {
-                        ConcurrentQueue<UFUNCLoopWorkerParams> workToDo = new ConcurrentQueue<UFUNCLoopWorkerParams>();
-
-                        bool HasError = false;
-                        Task workerThread = null;
-                        bool IsCompleted = false;
-
-                        while (loop.index < loop.size)
-                        {
-                            helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
-                            /* Adjust input pointer */
-                            loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
-
-                            workToDo.Enqueue(new UFUNCLoopWorkerParams(operation, loop.bufptr, loop.N, loop.steps, self.ops));
-
-                            if (workerThread == null)
-                            {
-                                // start worker thread to process the queued up work
-                                workerThread = Task.Factory.StartNew(() =>
-                                {
-                                    while (true)
-                                    {
-                                        Parallel.For(0, workToDo.Count(), xxx =>
-                                        {
-                                            UFUNCLoopWorkerParams work = null;
-                                            if (workToDo.TryDequeue(out work))
-                                            {
-                                                UFuncHandler(work.bufptr, work.steps, work.ops, work.N);
-                                                if (!NPY_UFUNC_CHECK_ERROR(loop))
-                                                {
-                                                    HasError = true;
-                                                }
-                                            }
-
-                                        });
-
-                                        if (workToDo.Count() == 0)
-                                        {
-                                            if (IsCompleted)
-                                                break;
-
-                                            //System.Threading.Thread.Sleep(100);
-                                        }
-                                    
-                                    }
-
-                                });
-                            }
-
-                            NpyArray_ITER_NEXT(loop.it);
-                            NpyArray_ITER_NEXT(loop.rit);
-                            loop.bufptr[0] = loop.rit.dataptr;
-                            loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
-                            loop.index++;
-                        }
-
-                        IsCompleted = true;
-
-                        workerThread.Wait();
-
-                        if (HasError)
-                            goto fail;
-
-                    }
-
-
-
                     break;
+
                 case UFuncLoopMethod.BUFFER_UFUNCLOOP:
 #if BUFFER_UFUNCLOOP
                     /* Accumulate
