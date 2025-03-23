@@ -971,10 +971,74 @@ namespace NumpyLib
             protected int ItemDiv;
 
 
-            public virtual void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
+            public override void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
             {
-                throw new NotImplementedException();
+                ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+
+                helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+                VoidPtr Operand1 = loop.bufptr[0];
+                VoidPtr Operand2 = loop.bufptr[1];
+
+                while (loop.index < loop.size)
+                {
+                    helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+                    /* Adjust input pointer */
+                    loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
+
+
+                    VoidPtr Result = loop.bufptr[2];
+
+                    npy_intp Operand1_Step = loop.steps[0];
+                    npy_intp Operand2_Step = loop.steps[1];
+                    npy_intp R_Step = loop.steps[2];
+
+                    if (Operand2 == null)
+                    {
+                        Operand2 = Operand1;
+                        Operand2_Step = Operand1_Step;
+                    }
+                    if (Result == null)
+                    {
+                        Result = Operand1;
+                        R_Step = Operand1_Step;
+                    }
+
+                    npy_intp O1_Offset = Operand1.data_offset;
+                    npy_intp O2_Offset = Operand2.data_offset;
+                    npy_intp R_Offset = Result.data_offset;
+
+                    npy_intp O1_CalculatedStep = (Operand1_Step >> ItemDiv);
+                    npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
+
+                    npy_intp O2_CalculatedStep = (Operand2_Step >> ItemDiv);
+                    npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
+
+                    npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
+                    npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
+
+                    npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+                    npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                    npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
+                    PerformAccumulateOpArrayIter_XXX(Operand1, O1_Index, O1_CalculatedStep,
+                         Operand2, O2_Index, O2_CalculatedStep,
+                         Result, R_Index, R_CalculatedStep,
+                         ufop, loop.N);
+
+
+                    NpyArray_ITER_NEXT(loop.it);
+                    NpyArray_ITER_NEXT(loop.rit);
+                    loop.bufptr[0] = loop.rit.dataptr;
+                    loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
+                    loop.index++;
+                }
             }
+
+            protected abstract void PerformAccumulateOpArrayIter_XXX(VoidPtr Operand1, npy_intp O1_Index, npy_intp O1_CalculatedStep,
+                      VoidPtr Operand2, npy_intp O2_Index, npy_intp O2_CalculatedStep,
+                      VoidPtr Result, npy_intp R_Index, npy_intp R_CalculatedStep,
+                      UFuncOperation ufop, npy_intp N);
 
             public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
             {
