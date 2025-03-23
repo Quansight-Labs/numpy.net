@@ -1497,6 +1497,110 @@ namespace NumpyLib
     {
         #region Accelerator Handlers
 
+        public override void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
+        {
+            ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+
+            helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+            while (loop.index < loop.size)
+            {
+                helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+                /* Adjust input pointer */
+                loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
+
+
+                ////
+                loop.function(op, loop.bufptr, loop.N, loop.steps, ufop);
+#if false
+                VoidPtr Operand1 = loop.bufptr[0];
+                VoidPtr Operand2 = loop.bufptr[1];
+                VoidPtr Result = loop.bufptr[2];
+
+                npy_intp O1_Step = loop.steps[0];
+                npy_intp O2_Step = loop.steps[1];
+                npy_intp R_Step = loop.steps[2];
+
+                if (Operand2 == null)
+                {
+                    Operand2 = Operand1;
+                    O2_Step = O1_Step;
+                }
+                if (Result == null)
+                {
+                    Result = Operand1;
+                    R_Step = O1_Step;
+                }
+
+                npy_intp O1_Offset = Operand1.data_offset;
+                npy_intp O2_Offset = Operand2.data_offset;
+                npy_intp R_Offset = Result.data_offset;
+
+
+                Int32[] retArray = Result.datap as Int32[];
+                Int32[] Op1Array = Operand1.datap as Int32[];
+                Int32[] Op2Array = Operand2.datap as Int32[];
+
+                npy_intp O1_CalculatedStep = (O1_Step >> ItemDiv);
+                npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
+
+                npy_intp O2_CalculatedStep = (O2_Step >> ItemDiv);
+                npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
+
+                npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
+                npy_intp R_CalculatedOffset = (R_Offset >> ItemDiv);
+
+                npy_intp O1_Index = ((0 * O1_CalculatedStep) + O1_CalculatedOffset);
+                npy_intp O2_Index = ((0 * O2_CalculatedStep) + O2_CalculatedOffset);
+                npy_intp R_Index = ((0 * R_CalculatedStep) + R_CalculatedOffset);
+
+
+                switch (ufop)
+                {
+                    case NumpyLib.UFuncOperation.add:
+                        AddAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                                        Op2Array, O2_Index, O2_CalculatedStep,
+                                        retArray, R_Index, R_CalculatedStep, loop.N);
+                        break;
+
+                    case NumpyLib.UFuncOperation.multiply:
+                        MultiplyAccumulate(Op1Array, O1_Index, O1_CalculatedStep,
+                        Op2Array, O2_Index, O2_CalculatedStep,
+                        retArray, R_Index, R_CalculatedStep, loop.N);
+                        break;
+
+                    default:
+                        var UFuncOperation = GetUFuncOperation(ufop);
+                        if (UFuncOperation == null)
+                        {
+                            throw new Exception(string.Format("UFunc op:{0} is not implemented", ufop.ToString()));
+                        }
+
+                        for (npy_intp i = 0; i < loop.N; i++)
+                        {
+                            var O1Value = Op1Array[O1_Index];                                            // get operand 1
+                            var O2Value = Op2Array[O2_Index];                                            // get operand 2
+
+                            retArray[R_Index] = UFuncOperation(O1Value, O2Value);
+
+                            O1_Index += O1_CalculatedStep;
+                            O2_Index += O2_CalculatedStep;
+                            R_Index += R_CalculatedStep;
+                        }
+                        break;
+
+                }
+#endif
+
+                NpyArray_ITER_NEXT(loop.it);
+                NpyArray_ITER_NEXT(loop.rit);
+                loop.bufptr[0] = loop.rit.dataptr;
+                loop.bufptr[2] = loop.bufptr[0] + loop.steps[0];
+                loop.index++;
+            }
+        }
+
+
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
             ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
@@ -1717,9 +1821,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected Int32 AddReduce(Int32 result, Int32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -1807,9 +1911,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
                 Int32[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 Int32[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -1839,9 +1943,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(Int32[] src, Int32[] dest, Int32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -1980,13 +2084,13 @@ namespace NumpyLib
 
         }
 
-        #endregion
+#endregion
 
     }
 
     internal partial class UFUNC_UInt32 : UFUNC_BASE<UInt32>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -2208,9 +2312,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected UInt32 AddReduce(UInt32 result, UInt32[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -2298,9 +2402,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
                 UInt32[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 UInt32[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -2330,9 +2434,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(UInt32[] src, UInt32[] dest, UInt32 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -2471,13 +2575,13 @@ namespace NumpyLib
 
         }
 
-        #endregion
+#endregion
 
     }
 
     internal partial class UFUNC_Int64 : UFUNC_BASE<Int64>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -2699,9 +2803,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected Int64 AddReduce(Int64 result, Int64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -2789,9 +2893,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
                 Int64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 Int64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -2821,9 +2925,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(Int64[] src, Int64[] dest, Int64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -2961,12 +3065,12 @@ namespace NumpyLib
             }
 
         }
-        #endregion
+#endregion
     }
 
     internal partial class UFUNC_UInt64 : UFUNC_BASE<UInt64>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -3188,9 +3292,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected UInt64 AddReduce(UInt64 result, UInt64[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -3278,9 +3382,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
           UInt64[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
           UInt64[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -3310,10 +3414,10 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(UInt64[] src, UInt64[] dest, UInt64 operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -3451,13 +3555,13 @@ namespace NumpyLib
             }
 
         }
-        #endregion
+#endregion
 
     }
 
     internal partial class UFUNC_Float : UFUNC_BASE<float>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -3679,9 +3783,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected float AddReduce(float result, float[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -3767,9 +3871,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
         float[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
         float[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -3799,10 +3903,10 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(float[] src, float[] dest, float operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -3941,7 +4045,7 @@ namespace NumpyLib
 
         }
 
-        #endregion
+#endregion
     }
 
     internal partial class UFUNC_Double : UFUNC_BASE<double>, IUFUNC_Operations
@@ -4054,7 +4158,7 @@ namespace NumpyLib
         }
 
 
-        #region Accelerator Handlers
+#region Accelerator Handlers
         protected override opFunctionReduce GetUFuncReduceHandler(UFuncOperation ops)
         {
             // these are the commonly used reduce operations.
@@ -4177,9 +4281,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected double AddReduce(double result, double[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -4265,9 +4369,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
          double[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
          double[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -4297,9 +4401,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIter
+#region ScalerIter
         protected void AddScalerIter(
             double[] src, npy_intp[] srcOffsets,
             double[] oper, npy_intp[] operOffsets,
@@ -4344,9 +4448,9 @@ namespace NumpyLib
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region OuterOpContig
+#region OuterOpContig
         protected void AddScalarOuterOpContig(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, npy_intp destIndex, NpyArray destArray, UFuncOperation ops)
         {
             for (npy_intp j = 0; j < bSize; j++)
@@ -4361,9 +4465,9 @@ namespace NumpyLib
                 dp[destIndex++] = aValue * bValues[j];
             }
         }
-        #endregion
+#endregion
 
-        #region OuterOpIter
+#region OuterOpIter
         void AddScalarOuterOpIter(NumericOperations operations, double aValue, double[] bValues, npy_intp bSize, double[] dp, NpyArrayIterObject DestIter, NpyArray destArray, UFuncOperation ops)
         {
             for (npy_intp j = 0; j < bSize; j++)
@@ -4404,9 +4508,9 @@ namespace NumpyLib
                 NpyArray_ITER_NEXT(DestIter);
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(double[] src, double[] dest, double operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -4546,13 +4650,13 @@ namespace NumpyLib
         }
 
  
-        #endregion
+#endregion
     }
 
     internal partial class UFUNC_Decimal : UFUNC_BASE<decimal>, IUFUNC_Operations
     {
 
-        #region Accelerator Handlers
+#region Accelerator Handlers
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
             ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
@@ -4775,9 +4879,9 @@ namespace NumpyLib
             return null;
         }
 
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected decimal AddReduce(decimal result, decimal[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -4865,9 +4969,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
                 decimal[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 decimal[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -4896,9 +5000,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(decimal[] src, decimal[] dest, decimal operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -5037,12 +5141,12 @@ namespace NumpyLib
 
         }
 
-        #endregion
+#endregion
     }
 
     internal partial class UFUNC_Complex : UFUNC_BASE<System.Numerics.Complex>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -5265,9 +5369,9 @@ namespace NumpyLib
             return null;
         }
 
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected System.Numerics.Complex AddReduce(System.Numerics.Complex result, System.Numerics.Complex[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -5355,9 +5459,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
                 System.Numerics.Complex[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
                 System.Numerics.Complex[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -5386,9 +5490,9 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
-        #region ScalerIterContigNoIter Accelerators
+#region ScalerIterContigNoIter Accelerators
         private void AddSubMultScalerIterContigNoIter(System.Numerics.Complex[] src, System.Numerics.Complex[] dest, System.Numerics.Complex operand, npy_intp start, npy_intp end, npy_intp srcAdjustment, npy_intp destAdjustment, UFuncOperation ops)
         {
             npy_intp srcIndex = start - srcAdjustment;
@@ -5526,14 +5630,14 @@ namespace NumpyLib
             }
 
         }
-        #endregion
+#endregion
 
 
     }
 
     internal partial class UFUNC_BigInt : UFUNC_BASE<System.Numerics.BigInteger>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public  void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -5735,9 +5839,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected System.Numerics.BigInteger AddReduce(System.Numerics.BigInteger result, System.Numerics.BigInteger[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -5825,9 +5929,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
           System.Numerics.BigInteger[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
           System.Numerics.BigInteger[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -5856,13 +5960,13 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
 
     }
 
     internal partial class UFUNC_Object : UFUNC_BASE<System.Object>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -6064,9 +6168,9 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
 
-        #region Reduce accelerators
+#region Reduce accelerators
         protected System.Object AddReduce(dynamic result, dynamic[] OperandArray, npy_intp OperIndex, npy_intp OperStep, npy_intp N)
         {
             while (N-- > 0)
@@ -6154,9 +6258,9 @@ namespace NumpyLib
 
             return result;
         }
-        #endregion
+#endregion
 
-        #region Accumulate accelerators
+#region Accumulate accelerators
         protected void AddAccumulate(
          dynamic[] Op1Array, npy_intp O1_Index, npy_intp O1_Step,
          dynamic[] Op2Array, npy_intp O2_Index, npy_intp O2_Step,
@@ -6186,12 +6290,12 @@ namespace NumpyLib
                 R_Index += R_Step;
             }
         }
-        #endregion
+#endregion
     }
 
     internal partial class UFUNC_String : UFUNC_BASE<System.String>, IUFUNC_Operations
     {
-        #region Accelerator Handlers
+#region Accelerator Handlers
 
         public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
         {
@@ -6232,6 +6336,6 @@ namespace NumpyLib
         {
             return null;
         }
-        #endregion
+#endregion
     }
 }

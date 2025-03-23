@@ -1306,6 +1306,7 @@ namespace NumpyLib
                 case UFuncLoopMethod.ONE_EL_REDUCELOOP:
                     /* Accumulate */
                     /* fprintf(stderr, "ONEDIM..%d\n", loop.size); */
+  
 
                     helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
                     while (loop.index < loop.size)
@@ -1320,10 +1321,19 @@ namespace NumpyLib
                     /* Accumulate */
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
+                    var UFuncHandler_XXX = GetGeneralAccumulateUFuncHandler_XXX(loop);
+                    if (UFuncHandler_XXX != null)
+                    {
+                        UFuncHandler_XXX(operation, loop, self.ops);
+                        break;
+                    }
+
+
+
                     helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
                     var UFuncHandler = GetGeneralReductionUFuncHandler(operation, loop.bufptr);
-
+                    UFuncHandler = null;
                     var loopcnt = loop.size - loop.index;
                     if (loopcnt <= 1 || UFuncHandler == null)
                     {

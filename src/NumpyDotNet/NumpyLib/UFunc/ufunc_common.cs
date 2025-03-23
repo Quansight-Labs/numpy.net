@@ -317,8 +317,8 @@ namespace NumpyLib
                             }
                             break;
                         }
-     
-       
+
+                    default:
                         break;
                 }
     
@@ -326,6 +326,47 @@ namespace NumpyLib
 
             return null;
         }
+
+        internal static UFuncGeneralAccumulateHandler_XXX GetGeneralAccumulateUFuncHandler_XXX(NpyUFuncReduceObject loop)
+        {
+            VoidPtr Result = loop.bufptr[2];
+            if (Result.type_num == loop.bufptr[0].type_num && Result.type_num == loop.bufptr[0].type_num)
+            {
+                switch (Result.type_num)
+                {
+                    //case NPY_TYPES.NPY_BOOL:
+                   // case NPY_TYPES.NPY_BYTE:
+                    //case NPY_TYPES.NPY_UBYTE:
+                    //case NPY_TYPES.NPY_INT16:
+                    //case NPY_TYPES.NPY_UINT16:
+                    case NPY_TYPES.NPY_INT32:
+                    //case NPY_TYPES.NPY_UINT32:
+                    //case NPY_TYPES.NPY_INT64:
+                    //case NPY_TYPES.NPY_UINT64:
+                    //case NPY_TYPES.NPY_FLOAT:
+                    //case NPY_TYPES.NPY_DOUBLE:
+                    //case NPY_TYPES.NPY_DECIMAL:
+                    //case NPY_TYPES.NPY_COMPLEX:
+                    //case NPY_TYPES.NPY_BIGINT:
+                    //case NPY_TYPES.NPY_OBJECT:
+                        {
+                            IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                            if (UFunc != null)
+                            {
+                                return UFunc.PerformAccumulateOpArrayIter_XXX;
+                            }
+                            break;
+                        }
+
+                    default:
+                        break;
+                }
+
+            }
+
+            return null;
+        }
+
 
 
         internal static void UFuncCommon(GenericReductionOp op, VoidPtr[] bufPtr, npy_intp N, npy_intp[] steps, UFuncOperation Ops)
@@ -928,6 +969,12 @@ namespace NumpyLib
             }
             protected int ItemSize;
             protected int ItemDiv;
+
+
+            public virtual void PerformAccumulateOpArrayIter_XXX(GenericReductionOp op, NpyUFuncReduceObject loop, UFuncOperation ufop)
+            {
+                throw new NotImplementedException();
+            }
 
 
 
