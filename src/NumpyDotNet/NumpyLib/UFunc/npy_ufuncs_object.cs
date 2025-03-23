@@ -1321,6 +1321,7 @@ namespace NumpyLib
                     /* fprintf(stderr, "NOBUFFER..%d\n", loop.size); */
 
                     var UFuncHandler_XXX = GetGeneralAccumulateUFuncHandler_XXX(loop);
+                    UFuncHandler_XXX = null;
                     if (UFuncHandler_XXX != null)
                     {
                         UFuncHandler_XXX(operation, loop, self.ops);

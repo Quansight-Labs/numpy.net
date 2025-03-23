@@ -976,6 +976,36 @@ namespace NumpyLib
                 throw new NotImplementedException();
             }
 
+            public void PerformReduceOpArrayIter_XXX(UFuncOperation op, NpyUFuncReduceObject loop)
+            {
+                ICopyHelper helper = MemCopy.GetMemcopyHelper(loop.bufptr[0]);
+                helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
+
+                npy_intp OperStep = loop.steps[1] >> ItemDiv;
+
+                while (loop.index < loop.size)
+                {
+                    helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
+
+                    VoidPtr Operand2 = loop.it.dataptr + loop.steps[1];
+                    VoidPtr Result = loop.bufptr[2];
+
+                    npy_intp R_Index = AdjustNegativeIndex(Result, Result.data_offset >> ItemDiv);
+
+                    npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
+
+                    PerformReduceOpArrayIter_XXX(loop.it.dataptr, loop.N, op, Result, R_Index, OperStep, O2_CalculatedOffset);
+
+                    NpyArray_ITER_NEXT(loop.it);
+                    loop.bufptr[0] += loop.outsize;
+                    loop.bufptr[2] = loop.bufptr[0];
+                    loop.index++;
+                }
+
+            }
+
+            protected abstract void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, 
+                                                        npy_intp R_Index, npy_intp OperStep, npy_intp O2_CalculatedOffset);
 
 
             #region SCALAR CALCULATIONS
