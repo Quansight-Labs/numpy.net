@@ -294,6 +294,9 @@ namespace NumpyLib
             {
                 switch (Result.type_num)
                 {
+                    case NPY_TYPES.NPY_BOOL:
+                    case NPY_TYPES.NPY_BYTE:
+                    case NPY_TYPES.NPY_UBYTE:
                     case NPY_TYPES.NPY_INT16:
                     case NPY_TYPES.NPY_UINT16:
                     case NPY_TYPES.NPY_INT32:
@@ -305,15 +308,20 @@ namespace NumpyLib
                     case NPY_TYPES.NPY_DECIMAL:
                     case NPY_TYPES.NPY_COMPLEX:
                     case NPY_TYPES.NPY_BIGINT:
-
-                        IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
-                        if (UFunc != null)
+                    case NPY_TYPES.NPY_OBJECT:
                         {
-                            return UFunc.PerformReduceOpArrayIter_XXX;
+                            IUFUNC_Operations UFunc = GetUFuncHandler(Result.type_num);
+                            if (UFunc != null)
+                            {
+                                return UFunc.PerformReduceOpArrayIter_XXX;
+                            }
+                            break;
                         }
+     
+       
                         break;
                 }
-     
+    
             }
 
             return null;
@@ -1049,7 +1057,6 @@ namespace NumpyLib
                                 npy_intp cacheSize = ldestIter.size - ldestIter.index;
                                 NpyArray_ITER_CACHE(lsrcIter, cacheSize);
                                 NpyArray_ITER_CACHE(loperIter, cacheSize);
-
 
                                 UFuncScalerIterTemplate(UFuncOperation,
                                     src, lsrcIter.internalCache, oper,
