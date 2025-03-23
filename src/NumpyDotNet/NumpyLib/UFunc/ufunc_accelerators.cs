@@ -1511,8 +1511,8 @@ namespace NumpyLib
 
 
                 ////
-                loop.function(op, loop.bufptr, loop.N, loop.steps, ufop);
-#if false
+                //loop.function(op, loop.bufptr, loop.N, loop.steps, ufop);
+#if true
                 VoidPtr Operand1 = loop.bufptr[0];
                 VoidPtr Operand2 = loop.bufptr[1];
                 VoidPtr Result = loop.bufptr[2];
