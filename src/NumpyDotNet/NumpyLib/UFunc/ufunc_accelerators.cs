@@ -1503,6 +1503,9 @@ namespace NumpyLib
 
             helper.memmove_init(loop.bufptr[0], loop.it.dataptr);
 
+            VoidPtr Operand1 = loop.bufptr[0];
+            VoidPtr Operand2 = loop.bufptr[1];
+
             while (loop.index < loop.size)
             {
                 helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -1510,26 +1513,21 @@ namespace NumpyLib
                 loop.bufptr[1] = loop.it.dataptr + loop.steps[1];
 
 
-                ////
-                //loop.function(op, loop.bufptr, loop.N, loop.steps, ufop);
-#if true
-                VoidPtr Operand1 = loop.bufptr[0];
-                VoidPtr Operand2 = loop.bufptr[1];
                 VoidPtr Result = loop.bufptr[2];
 
-                npy_intp O1_Step = loop.steps[0];
-                npy_intp O2_Step = loop.steps[1];
+                npy_intp Operand1_Step = loop.steps[0];
+                npy_intp Operand2_Step = loop.steps[1];
                 npy_intp R_Step = loop.steps[2];
 
                 if (Operand2 == null)
                 {
                     Operand2 = Operand1;
-                    O2_Step = O1_Step;
+                    Operand2_Step = Operand1_Step;
                 }
                 if (Result == null)
                 {
                     Result = Operand1;
-                    R_Step = O1_Step;
+                    R_Step = Operand1_Step;
                 }
 
                 npy_intp O1_Offset = Operand1.data_offset;
@@ -1541,10 +1539,10 @@ namespace NumpyLib
                 Int32[] Op1Array = Operand1.datap as Int32[];
                 Int32[] Op2Array = Operand2.datap as Int32[];
 
-                npy_intp O1_CalculatedStep = (O1_Step >> ItemDiv);
+                npy_intp O1_CalculatedStep = (Operand1_Step >> ItemDiv);
                 npy_intp O1_CalculatedOffset = (O1_Offset >> ItemDiv);
 
-                npy_intp O2_CalculatedStep = (O2_Step >> ItemDiv);
+                npy_intp O2_CalculatedStep = (Operand2_Step >> ItemDiv);
                 npy_intp O2_CalculatedOffset = (O2_Offset >> ItemDiv);
 
                 npy_intp R_CalculatedStep = (R_Step >> ItemDiv);
@@ -1590,7 +1588,7 @@ namespace NumpyLib
                         break;
 
                 }
-#endif
+
 
                 NpyArray_ITER_NEXT(loop.it);
                 NpyArray_ITER_NEXT(loop.rit);
