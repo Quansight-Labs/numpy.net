@@ -1101,7 +1101,7 @@ namespace NumpyLib
 
                 npy_intp OperStep = loop.steps[1] >> ItemDiv;
 
-                List<PerformReduceOpArraydata> OpData = new List<PerformReduceOpArraydata>();
+                ConcurrentQueue<PerformReduceOpArraydata> OpData = new ConcurrentQueue<PerformReduceOpArraydata>();
 
                 while (loop.index < loop.size)
                 {
@@ -1114,18 +1114,18 @@ namespace NumpyLib
 
                     npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
 
-                    //OpData.Add(new PerformReduceOpArraydata()
-                    //{
-                    //    Operand = new VoidPtr(loop.it.dataptr),
-                    //    op = op,
-                    //    N = loop.N,
-                    //    Result = new VoidPtr(Result),
-                    //    R_Index = R_Index,
-                    //    OperStep = OperStep,
-                    //    O2_CalculatedOffset = O2_CalculatedOffset
-                    //});
+                    OpData.Enqueue(new PerformReduceOpArraydata()
+                    {
+                        Operand = new VoidPtr(loop.it.dataptr),
+                        op = op,
+                        N = loop.N,
+                        Result = new VoidPtr(Result),
+                        R_Index = R_Index,
+                        OperStep = OperStep,
+                        O2_CalculatedOffset = O2_CalculatedOffset
+                    });
 
-                    PerformReduceOpArrayIter_XXX(loop.it.dataptr, loop.N, op, Result, R_Index, OperStep, O2_CalculatedOffset);
+                    //PerformReduceOpArrayIter_XXX(loop.it.dataptr, loop.N, op, Result, R_Index, OperStep, O2_CalculatedOffset);
 
                     NpyArray_ITER_NEXT(loop.it);
                     loop.bufptr[0] += loop.outsize;
@@ -1133,12 +1133,12 @@ namespace NumpyLib
                     loop.index++;
                 }
 
-                //Parallel.For(0, OpData.Count(), OpData_Index =>
-                //{
-                //    PerformReduceOpArraydata _opdata = OpData.ElementAt(OpData_Index);
+                Parallel.For(0, OpData.Count(), OpData_Index =>
+                {
+                    PerformReduceOpArraydata _opdata = OpData.ElementAt(OpData_Index);
 
-                //    PerformReduceOpArrayIter_XXX(_opdata.Operand, _opdata.N, _opdata.op, _opdata.Result, _opdata.R_Index, _opdata.OperStep, _opdata.O2_CalculatedOffset);
-                //});
+                    PerformReduceOpArrayIter_XXX(_opdata.Operand, _opdata.N, _opdata.op, _opdata.Result, _opdata.R_Index, _opdata.OperStep, _opdata.O2_CalculatedOffset);
+                });
 
             }
 
