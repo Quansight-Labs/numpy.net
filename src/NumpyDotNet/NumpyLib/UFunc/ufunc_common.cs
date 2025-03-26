@@ -1101,6 +1101,8 @@ namespace NumpyLib
 
                 npy_intp OperStep = loop.steps[1] >> ItemDiv;
 
+                List<PerformReduceOpArraydata> OpData = new List<PerformReduceOpArraydata>();
+
                 while (loop.index < loop.size)
                 {
                     helper.memmove(loop.bufptr[0].data_offset, loop.it.dataptr.data_offset, loop.outsize);
@@ -1112,6 +1114,17 @@ namespace NumpyLib
 
                     npy_intp O2_CalculatedOffset = (Operand2.data_offset >> ItemDiv);
 
+                    //OpData.Add(new PerformReduceOpArraydata()
+                    //{
+                    //    Operand = new VoidPtr(loop.it.dataptr),
+                    //    op = op,
+                    //    N = loop.N,
+                    //    Result = new VoidPtr(Result),
+                    //    R_Index = R_Index,
+                    //    OperStep = OperStep,
+                    //    O2_CalculatedOffset = O2_CalculatedOffset
+                    //});
+
                     PerformReduceOpArrayIter_XXX(loop.it.dataptr, loop.N, op, Result, R_Index, OperStep, O2_CalculatedOffset);
 
                     NpyArray_ITER_NEXT(loop.it);
@@ -1120,6 +1133,24 @@ namespace NumpyLib
                     loop.index++;
                 }
 
+                //Parallel.For(0, OpData.Count(), OpData_Index =>
+                //{
+                //    PerformReduceOpArraydata _opdata = OpData.ElementAt(OpData_Index);
+
+                //    PerformReduceOpArrayIter_XXX(_opdata.Operand, _opdata.N, _opdata.op, _opdata.Result, _opdata.R_Index, _opdata.OperStep, _opdata.O2_CalculatedOffset);
+                //});
+
+            }
+
+            private class PerformReduceOpArraydata
+            {
+                public VoidPtr Operand;
+                public npy_intp N;
+                public UFuncOperation op;
+                public VoidPtr Result;
+                public npy_intp R_Index;
+                public npy_intp OperStep;
+                public npy_intp O2_CalculatedOffset;
             }
 
             protected abstract void PerformReduceOpArrayIter_XXX(VoidPtr Operand, npy_intp N, UFuncOperation op, VoidPtr Result, 
