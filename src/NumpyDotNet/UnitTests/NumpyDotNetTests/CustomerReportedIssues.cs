@@ -1898,7 +1898,48 @@ namespace NumpyDotNetTests
 
         }
 
-     
+
+        [TestMethod]
+        public void test_nsmith29_1()
+        {
+            ndarray a = np.arange(0, 9, dtype: np.Int32).reshape(3, 3);
+            ndarray b = np.arange(0, 9, dtype: np.Int32).reshape(3, 3);
+
+            long row_nbytes = a.shape[1] * a.ItemSize;
+
+            ndarray nomatch = np.array(new Int32[] { 10, 11, 12 });
+
+            for (int i = 0; i < a.shape[1]; i++)
+            {
+                ndarray a_view = a[i, ":"] as ndarray;
+                ndarray b_view = b[0, ":"] as ndarray;
+
+                ndarray mask1 = np.isin(a_view, b_view);
+                bool b1 = (bool)np.all(mask1);
+
+                ndarray mask2 = np.isin(a_view, b);
+                bool b2 = (bool)np.all(mask2);
+
+
+                ndarray mask3 = np.isin(a_view, nomatch);
+                bool b3 = (bool)np.all(mask3);
+
+                ndarray mask4 = np.isin(nomatch, a_view);
+                bool b4 = (bool)np.all(mask4);
+
+                // to get raw bytes
+
+                byte[] rawbytes = a_view.tobytes();
+
+                Console.WriteLine(mask1);
+            }
+
+
+
+ 
+            return;
+
+        }
 
     }
 }

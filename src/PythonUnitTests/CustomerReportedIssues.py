@@ -706,5 +706,25 @@ class Test_CustomerReportedIssues(unittest.TestCase):
         print(mask)
 
 
+    def test_nsmith29_1(self):
+
+        a = np.arange(0,9, dtype = np.int).reshape(3,3)
+        b = np.arange(0,9, dtype = np.int).reshape(3,3)
+
+        row_nbytes = a.shape[1] * a.itemsize
+        # costum dtype which represents a row as a single block.
+        row_dtype = np.dtype((np.void, row_nbytes)) 
+
+        # Views of both a & b with each row as a single element
+        a_view = a.view(row_dtype).ravel()
+
+        b_view = b.view(row_dtype).ravel()
+
+        # From views find rows of a that are in b
+        mask = np.isin(a_view, b_view)
+        print(mask);
+
+        return
+
 if __name__ == '__main__':
     unittest.main()
