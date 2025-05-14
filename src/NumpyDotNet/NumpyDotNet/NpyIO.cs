@@ -85,32 +85,47 @@ namespace NumpyDotNet
                 throw new Exception("Specified file does not exist!");
             }
 
-            // open the specified file
-            var fp = System.IO.File.Open(PathName, System.IO.FileMode.Open);
-            BinaryReader reader = new BinaryReader(fp, Encoding.Default, false);
+            FileStream fp = null;
+            BinaryReader reader = null;
 
-            int N = MAGIC_PREFIX.Length;
-
-            byte[] magic = new byte[N + 200];
-
-            // read in enough to get the magic header
-            var magic_read =  reader.Read(magic, 0, N);
-
-            // reset the stream pointer to after magic header
-            fp.Seek(-Math.Min(N, magic_read), System.IO.SeekOrigin.Current);
-
-            // if the header indicates zip file, throw exceptipn
-            if (IsPrefixMatch(magic, _ZIP_PREFIX))
+            try
             {
-                throw new Exception("Zipped files are not supported");
+                // open the specified file
+                fp = System.IO.File.Open(PathName, System.IO.FileMode.Open);
+                reader = new BinaryReader(fp, Encoding.Default, false);
+
+                int N = MAGIC_PREFIX.Length;
+
+                byte[] magic = new byte[N + 200];
+
+                // read in enough to get the magic header
+                var magic_read = reader.Read(magic, 0, N);
+
+                // reset the stream pointer to after magic header
+                fp.Seek(-Math.Min(N, magic_read), System.IO.SeekOrigin.Current);
+
+                // if the header indicates zip file, throw exceptipn
+                if (IsPrefixMatch(magic, _ZIP_PREFIX))
+                {
+                    throw new Exception("Zipped files are not supported");
+                }
+
+                // if the header matches the expected, ready the array.
+                if (IsPrefixMatch(magic, MAGIC_PREFIX))
+                {
+                    return read_array(reader);
+                }
+                return null;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Dispose();
+                if (fp != null)
+                    fp.Dispose();
             }
 
-            // if the header matches the expected, ready the array.
-            if (IsPrefixMatch(magic, MAGIC_PREFIX))
-            {
-                return read_array(reader);
-            }
-            return null;
+ 
         }
 
         private static ndarray read_array(BinaryReader br)
@@ -582,59 +597,67 @@ namespace NumpyDotNet
         /// <param name="array">array to save as binary file</param>
         public static void save(string PathName, ndarray array)
         {
-            var fp = System.IO.File.Open(PathName, System.IO.FileMode.Create);
-            BinaryWriter writer = new BinaryWriter(fp, Encoding.Default, false);
+            FileStream fp = null;
+            BinaryWriter writer = null;
 
-            writer.Write(MAGIC_PREFIX);
-            writer.Write((byte)1);  // major version
-            writer.Write((byte)0);  // minor version
-
-            string Header = CreateHeader(array);
-            byte[] headerbytes = Encoding.ASCII.GetBytes(Header);
-
-            writer.Write((short)headerbytes.Length);
-            writer.Write(headerbytes); // header
-
-
-            if (array.TypeNum == NPY_TYPES.NPY_DECIMAL)
+            try
             {
-                decimal[] darray = array.rawdata(0).datap as decimal[];
-                foreach (decimal d in darray)
+                fp = System.IO.File.Open(PathName, System.IO.FileMode.Create);
+                writer = new BinaryWriter(fp, Encoding.Default, false);
+
+                writer.Write(MAGIC_PREFIX);
+                writer.Write((byte)1);  // major version
+                writer.Write((byte)0);  // minor version
+
+                string Header = CreateHeader(array);
+                byte[] headerbytes = Encoding.ASCII.GetBytes(Header);
+
+                writer.Write((short)headerbytes.Length);
+                writer.Write(headerbytes); // header
+
+
+                if (array.TypeNum == NPY_TYPES.NPY_DECIMAL)
                 {
-                    writer.Write(d);
+                    decimal[] darray = array.rawdata(0).datap as decimal[];
+                    foreach (decimal d in darray)
+                    {
+                        writer.Write(d);
+                    }
+                }
+                else
+                if (array.TypeNum == NPY_TYPES.NPY_COMPLEX)
+                {
+                    Complex[] carray = array.rawdata(0).datap as Complex[];
+                    foreach (Complex d in carray)
+                    {
+                        writer.Write(d.Real);
+                        writer.Write(d.Imaginary);
+                    }
+                }
+                if (array.TypeNum == NPY_TYPES.NPY_BIGINT)
+                {
+                    BigInteger[] carray = array.rawdata(0).datap as BigInteger[];
+                    foreach (BigInteger d in carray)
+                    {
+                        var biData = d.ToByteArray();
+                        writer.Write((byte)biData.Length);
+                        writer.Write(biData);
+                    }
+                }
+                else
+                {
+                    byte[] rawData = array.tobytes();
+                    writer.Write(rawData);
                 }
             }
-            else
-            if (array.TypeNum == NPY_TYPES.NPY_COMPLEX)
+            finally
             {
-                Complex[] carray = array.rawdata(0).datap as Complex[];
-                foreach (Complex d in carray)
-                {
-                    writer.Write(d.Real);
-                    writer.Write(d.Imaginary);
-                }
-            }
-            if (array.TypeNum == NPY_TYPES.NPY_BIGINT)
-            {
-                BigInteger [] carray = array.rawdata(0).datap as BigInteger[];
-                foreach (BigInteger d in carray)
-                {
-                    var biData = d.ToByteArray();
-                    writer.Write((byte)biData.Length);
-                    writer.Write(biData);
-                }
-            }
-            else
-            {
-                byte[] rawData = array.tobytes();
-                writer.Write(rawData);
-            }
-   
+                if (writer != null)
+                    writer.Dispose();
 
-
-            writer.Close();
-            fp.Close();
-
+                if (fp != null)
+                    fp.Dispose();
+            }
 
         }
 
