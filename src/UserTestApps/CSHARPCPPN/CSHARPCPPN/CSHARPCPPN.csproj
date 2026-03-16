@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="NumSharp.Lite" Version="0.1.4" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.8" />
   </ItemGroup>
 
   <ItemGroup>
